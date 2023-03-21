@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // TaskRunsClient contains the methods for the TaskRuns group.
 // Don't use this type directly, use NewTaskRunsClient() instead.
 type TaskRunsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTaskRunsClient creates a new instance of TaskRunsClient with the specified values.
@@ -36,21 +33,13 @@ type TaskRunsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTaskRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TaskRunsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TaskRunsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TaskRunsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,9 +59,9 @@ func (client *TaskRunsClient) BeginCreate(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[TaskRunsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TaskRunsClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[TaskRunsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TaskRunsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -85,7 +74,7 @@ func (client *TaskRunsClient) create(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +100,7 @@ func (client *TaskRunsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter taskRunName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskRunName}", url.PathEscape(taskRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,9 +125,9 @@ func (client *TaskRunsClient) BeginDelete(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[TaskRunsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TaskRunsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[TaskRunsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TaskRunsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -151,7 +140,7 @@ func (client *TaskRunsClient) deleteOperation(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +166,7 @@ func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter taskRunName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskRunName}", url.PathEscape(taskRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +190,7 @@ func (client *TaskRunsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TaskRunsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TaskRunsClientGetResponse{}, err
 	}
@@ -227,7 +216,7 @@ func (client *TaskRunsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter taskRunName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskRunName}", url.PathEscape(taskRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -260,7 +249,7 @@ func (client *TaskRunsClient) GetDetails(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return TaskRunsClientGetDetailsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TaskRunsClientGetDetailsResponse{}, err
 	}
@@ -286,7 +275,7 @@ func (client *TaskRunsClient) getDetailsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter taskRunName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskRunName}", url.PathEscape(taskRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -328,7 +317,7 @@ func (client *TaskRunsClient) NewListPager(resourceGroupName string, registryNam
 			if err != nil {
 				return TaskRunsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TaskRunsClientListResponse{}, err
 			}
@@ -352,7 +341,7 @@ func (client *TaskRunsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -387,9 +376,9 @@ func (client *TaskRunsClient) BeginUpdate(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[TaskRunsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TaskRunsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[TaskRunsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TaskRunsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -402,7 +391,7 @@ func (client *TaskRunsClient) update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -428,7 +417,7 @@ func (client *TaskRunsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter taskRunName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskRunName}", url.PathEscape(taskRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -11,12 +11,6 @@ package armcontainerregistry
 
 import "time"
 
-// ActivationProperties - The activation properties of the connected registry.
-type ActivationProperties struct {
-	// READ-ONLY; The activation status of the connected registry.
-	Status *ActivationStatus `json:"status,omitempty" azure:"ro"`
-}
-
 // ActiveDirectoryObject - The Active Directory Object that will be used for authenticating the token of a container registry.
 type ActiveDirectoryObject struct {
 	// The user/group/application object ID for Active Directory Object that will be used for authenticating the token of a container
@@ -157,21 +151,6 @@ type Argument struct {
 	IsSecret *bool `json:"isSecret,omitempty"`
 }
 
-// AuthCredential - Authentication credential stored for an upstream.
-type AuthCredential struct {
-	// The name of the credential.
-	Name *CredentialName `json:"name,omitempty"`
-
-	// KeyVault Secret URI for accessing the password.
-	PasswordSecretIdentifier *string `json:"passwordSecretIdentifier,omitempty"`
-
-	// KeyVault Secret URI for accessing the username.
-	UsernameSecretIdentifier *string `json:"usernameSecretIdentifier,omitempty"`
-
-	// READ-ONLY; This provides data pertaining to the health of the auth credential.
-	CredentialHealth *CredentialHealth `json:"credentialHealth,omitempty" azure:"ro"`
-}
-
 // AuthInfo - The authorization properties for accessing the source code repository.
 type AuthInfo struct {
 	// REQUIRED; The access token used to access the source control provider.
@@ -206,12 +185,6 @@ type AuthInfoUpdateParameters struct {
 
 	// The type of Auth token.
 	TokenType *TokenType `json:"tokenType,omitempty"`
-}
-
-// AzureADAuthenticationAsArmPolicy - The policy for using ARM audience token for a container registry.
-type AzureADAuthenticationAsArmPolicy struct {
-	// The value that indicates whether the policy is enabled or not.
-	Status *AzureADAuthenticationAsArmPolicyStatus `json:"status,omitempty"`
 }
 
 // BaseImageDependency - Properties that describe a base image dependency.
@@ -268,91 +241,6 @@ type BaseImageTriggerUpdateParameters struct {
 	UpdateTriggerPayloadType *UpdateTriggerPayloadType `json:"updateTriggerPayloadType,omitempty"`
 }
 
-// CacheRule - An object that represents a cache rule for a container registry.
-type CacheRule struct {
-	// The properties of the cache rule.
-	Properties *CacheRuleProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// CacheRuleProperties - The properties of a cache rule.
-type CacheRuleProperties struct {
-	// The ARM resource ID of the credential store which is associated with the cache rule.
-	CredentialSetResourceID *string `json:"credentialSetResourceId,omitempty"`
-
-	// Source repository pulled from upstream.
-	SourceRepository *string `json:"sourceRepository,omitempty"`
-
-	// Target repository specified in docker pull command. Eg: docker pull myregistry.azurecr.io/{targetRepository}:{tag}
-	TargetRepository *string `json:"targetRepository,omitempty"`
-
-	// READ-ONLY; The creation date of the cache rule.
-	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// CacheRuleUpdateParameters - The parameters for updating a cache rule.
-type CacheRuleUpdateParameters struct {
-	// The properties of the cache rule update parameters.
-	Properties *CacheRuleUpdateProperties `json:"properties,omitempty"`
-}
-
-// CacheRuleUpdateProperties - The parameters for updating cache rule properties.
-type CacheRuleUpdateProperties struct {
-	// The ARM resource ID of the credential store which is associated with the Cache rule.
-	CredentialSetResourceID *string `json:"credentialSetResourceId,omitempty"`
-}
-
-// CacheRulesClientBeginCreateOptions contains the optional parameters for the CacheRulesClient.BeginCreate method.
-type CacheRulesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CacheRulesClientBeginDeleteOptions contains the optional parameters for the CacheRulesClient.BeginDelete method.
-type CacheRulesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CacheRulesClientBeginUpdateOptions contains the optional parameters for the CacheRulesClient.BeginUpdate method.
-type CacheRulesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CacheRulesClientGetOptions contains the optional parameters for the CacheRulesClient.Get method.
-type CacheRulesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CacheRulesClientListOptions contains the optional parameters for the CacheRulesClient.NewListPager method.
-type CacheRulesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CacheRulesListResult - The result of a request to list cache rules for a container registry.
-type CacheRulesListResult struct {
-	// If provided, client must use NextLink URI to request next list of cache rules.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of cache rules.
-	Value []*CacheRule `json:"value,omitempty"`
-}
-
 // CallbackConfig - The configuration of service URI and custom headers for the webhook.
 type CallbackConfig struct {
 	// REQUIRED; The service URI for the webhook to post notifications.
@@ -360,236 +248,6 @@ type CallbackConfig struct {
 
 	// Custom headers that will be added to the webhook notifications.
 	CustomHeaders map[string]*string `json:"customHeaders,omitempty"`
-}
-
-// ConnectedRegistriesClientBeginCreateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginCreate
-// method.
-type ConnectedRegistriesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientBeginDeactivateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginDeactivate
-// method.
-type ConnectedRegistriesClientBeginDeactivateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientBeginDeleteOptions contains the optional parameters for the ConnectedRegistriesClient.BeginDelete
-// method.
-type ConnectedRegistriesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientBeginUpdateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginUpdate
-// method.
-type ConnectedRegistriesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientGetOptions contains the optional parameters for the ConnectedRegistriesClient.Get method.
-type ConnectedRegistriesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectedRegistriesClientListOptions contains the optional parameters for the ConnectedRegistriesClient.NewListPager method.
-type ConnectedRegistriesClientListOptions struct {
-	// An OData filter expression that describes a subset of connectedRegistries to return. The parameters that can be filtered
-	// are parent.id (the resource id of the connectedRegistry parent), mode, and
-	// connectionState. The supported operator is eq.
-	Filter *string
-}
-
-// ConnectedRegistry - An object that represents a connected registry for a container registry.
-type ConnectedRegistry struct {
-	// The properties of the connected registry.
-	Properties *ConnectedRegistryProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ConnectedRegistryListResult - The result of a request to list connected registries for a container registry.
-type ConnectedRegistryListResult struct {
-	// The URI that can be used to request the next list of connected registries.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of connected registries. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of connected registries.
-	Value []*ConnectedRegistry `json:"value,omitempty"`
-}
-
-// ConnectedRegistryProperties - The properties of a connected registry.
-type ConnectedRegistryProperties struct {
-	// REQUIRED; The mode of the connected registry resource that indicates the permissions of the registry.
-	Mode *ConnectedRegistryMode `json:"mode,omitempty"`
-
-	// REQUIRED; The parent of the connected registry.
-	Parent *ParentProperties `json:"parent,omitempty"`
-
-	// The list of the ACR token resource IDs used to authenticate clients to the connected registry.
-	ClientTokenIDs []*string `json:"clientTokenIds,omitempty"`
-
-	// The logging properties of the connected registry.
-	Logging *LoggingProperties `json:"logging,omitempty"`
-
-	// The login server properties of the connected registry.
-	LoginServer *LoginServerProperties `json:"loginServer,omitempty"`
-
-	// The list of notifications subscription information for the connected registry.
-	NotificationsList []*string `json:"notificationsList,omitempty"`
-
-	// READ-ONLY; The activation properties of the connected registry.
-	Activation *ActivationProperties `json:"activation,omitempty" azure:"ro"`
-
-	// READ-ONLY; The current connection state of the connected registry.
-	ConnectionState *ConnectionState `json:"connectionState,omitempty" azure:"ro"`
-
-	// READ-ONLY; The last activity time of the connected registry.
-	LastActivityTime *time.Time `json:"lastActivityTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of current statuses of the connected registry.
-	StatusDetails []*StatusDetailProperties `json:"statusDetails,omitempty" azure:"ro"`
-
-	// READ-ONLY; The current version of ACR runtime on the connected registry.
-	Version *string `json:"version,omitempty" azure:"ro"`
-}
-
-// ConnectedRegistryUpdateParameters - The parameters for updating a connected registry.
-type ConnectedRegistryUpdateParameters struct {
-	// The properties of the connected registry update parameters.
-	Properties *ConnectedRegistryUpdateProperties `json:"properties,omitempty"`
-}
-
-// ConnectedRegistryUpdateProperties - The parameters for updating token properties.
-type ConnectedRegistryUpdateProperties struct {
-	// The list of the ACR token resource IDs used to authenticate clients to the connected registry.
-	ClientTokenIDs []*string `json:"clientTokenIds,omitempty"`
-
-	// The logging properties of the connected registry.
-	Logging *LoggingProperties `json:"logging,omitempty"`
-
-	// The list of notifications subscription information for the connected registry.
-	NotificationsList []*string `json:"notificationsList,omitempty"`
-
-	// The sync properties of the connected registry with its parent.
-	SyncProperties *SyncUpdateProperties `json:"syncProperties,omitempty"`
-}
-
-// CredentialHealth - The health of the auth credential.
-type CredentialHealth struct {
-	// Error code representing the health check error.
-	ErrorCode *string `json:"errorCode,omitempty"`
-
-	// Descriptive message representing the health check error.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
-
-	// The health status of credential.
-	Status *CredentialHealthStatus `json:"status,omitempty"`
-}
-
-// CredentialSet - An object that represents a credential set resource for a container registry.
-type CredentialSet struct {
-	// Identities associated with the resource. This is used to access the KeyVault secrets.
-	Identity *IdentityProperties `json:"identity,omitempty"`
-
-	// The properties of the credential set.
-	Properties *CredentialSetProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// CredentialSetListResult - The result of a request to list credential sets for a container registry.
-type CredentialSetListResult struct {
-	// The URI that can be used to request the next list of credential sets.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of credential sets. Since this list may be incomplete, the nextLink field should be used to request the next list
-	// of credential sets.
-	Value []*CredentialSet `json:"value,omitempty"`
-}
-
-// CredentialSetProperties - The properties of a credential set resource.
-type CredentialSetProperties struct {
-	// List of authentication credentials stored for an upstream. Usually consists of a primary and an optional secondary credential.
-	AuthCredentials []*AuthCredential `json:"authCredentials,omitempty"`
-
-	// The credentials are stored for this upstream or login server.
-	LoginServer *string `json:"loginServer,omitempty"`
-
-	// READ-ONLY; The creation date of credential store resource.
-	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// CredentialSetUpdateParameters - The parameters for updating a credential set
-type CredentialSetUpdateParameters struct {
-	// Identities associated with the resource. This is used to access the KeyVault secrets.
-	Identity *IdentityProperties `json:"identity,omitempty"`
-
-	// The properties of the credential set update parameters
-	Properties *CredentialSetUpdateProperties `json:"properties,omitempty"`
-}
-
-// CredentialSetUpdateProperties - The parameters for updating credential set properties.
-type CredentialSetUpdateProperties struct {
-	// List of authentication credentials stored for an upstream. Usually consists of a primary and an optional secondary credential.
-	AuthCredentials []*AuthCredential `json:"authCredentials,omitempty"`
-}
-
-// CredentialSetsClientBeginCreateOptions contains the optional parameters for the CredentialSetsClient.BeginCreate method.
-type CredentialSetsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CredentialSetsClientBeginDeleteOptions contains the optional parameters for the CredentialSetsClient.BeginDelete method.
-type CredentialSetsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CredentialSetsClientBeginUpdateOptions contains the optional parameters for the CredentialSetsClient.BeginUpdate method.
-type CredentialSetsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CredentialSetsClientGetOptions contains the optional parameters for the CredentialSetsClient.Get method.
-type CredentialSetsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CredentialSetsClientListOptions contains the optional parameters for the CredentialSetsClient.NewListPager method.
-type CredentialSetsClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // Credentials - The parameters that describes a set of credentials that will be used when a run is invoked.
@@ -992,88 +650,6 @@ type EventResponseMessage struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// ExportPipeline - An object that represents an export pipeline for a container registry.
-type ExportPipeline struct {
-	// The identity of the export pipeline.
-	Identity *IdentityProperties `json:"identity,omitempty"`
-
-	// The location of the export pipeline.
-	Location *string `json:"location,omitempty"`
-
-	// The properties of the export pipeline.
-	Properties *ExportPipelineProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ExportPipelineListResult - The result of a request to list export pipelines for a container registry.
-type ExportPipelineListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of export pipelines.
-	Value []*ExportPipeline `json:"value,omitempty"`
-}
-
-// ExportPipelineProperties - The properties of an export pipeline.
-type ExportPipelineProperties struct {
-	// REQUIRED; The target properties of the export pipeline.
-	Target *ExportPipelineTargetProperties `json:"target,omitempty"`
-
-	// The list of all options configured for the pipeline.
-	Options []*PipelineOptions `json:"options,omitempty"`
-
-	// READ-ONLY; The provisioning state of the pipeline at the time the operation was called.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// ExportPipelineTargetProperties - The properties of the export pipeline target.
-type ExportPipelineTargetProperties struct {
-	// REQUIRED; They key vault secret uri to obtain the target storage SAS token.
-	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
-
-	// The type of target for the export pipeline.
-	Type *string `json:"type,omitempty"`
-
-	// The target uri of the export pipeline. When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
-	// When 'AzureStorageBlobContainer':
-	// "https://accountName.blob.core.windows.net/containerName"
-	URI *string `json:"uri,omitempty"`
-}
-
-// ExportPipelinesClientBeginCreateOptions contains the optional parameters for the ExportPipelinesClient.BeginCreate method.
-type ExportPipelinesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ExportPipelinesClientBeginDeleteOptions contains the optional parameters for the ExportPipelinesClient.BeginDelete method.
-type ExportPipelinesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ExportPipelinesClientGetOptions contains the optional parameters for the ExportPipelinesClient.Get method.
-type ExportPipelinesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExportPipelinesClientListOptions contains the optional parameters for the ExportPipelinesClient.NewListPager method.
-type ExportPipelinesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ExportPolicy - The export policy for a container registry.
 type ExportPolicy struct {
 	// The value that indicates whether the policy is enabled or not.
@@ -1285,91 +861,6 @@ type ImportImageParameters struct {
 	UntaggedTargetRepositories []*string `json:"untaggedTargetRepositories,omitempty"`
 }
 
-// ImportPipeline - An object that represents an import pipeline for a container registry.
-type ImportPipeline struct {
-	// The identity of the import pipeline.
-	Identity *IdentityProperties `json:"identity,omitempty"`
-
-	// The location of the import pipeline.
-	Location *string `json:"location,omitempty"`
-
-	// The properties of the import pipeline.
-	Properties *ImportPipelineProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ImportPipelineListResult - The result of a request to list import pipelines for a container registry.
-type ImportPipelineListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of import pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of import pipelines.
-	Value []*ImportPipeline `json:"value,omitempty"`
-}
-
-// ImportPipelineProperties - The properties of an import pipeline.
-type ImportPipelineProperties struct {
-	// REQUIRED; The source properties of the import pipeline.
-	Source *ImportPipelineSourceProperties `json:"source,omitempty"`
-
-	// The list of all options configured for the pipeline.
-	Options []*PipelineOptions `json:"options,omitempty"`
-
-	// The properties that describe the trigger of the import pipeline.
-	Trigger *PipelineTriggerProperties `json:"trigger,omitempty"`
-
-	// READ-ONLY; The provisioning state of the pipeline at the time the operation was called.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// ImportPipelineSourceProperties - The properties of the import pipeline source.
-type ImportPipelineSourceProperties struct {
-	// REQUIRED; They key vault secret uri to obtain the source storage SAS token.
-	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
-
-	// The type of source for the import pipeline.
-	Type *PipelineSourceType `json:"type,omitempty"`
-
-	// The source uri of the import pipeline. When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
-	// When 'AzureStorageBlobContainer':
-	// "https://accountName.blob.core.windows.net/containerName"
-	URI *string `json:"uri,omitempty"`
-}
-
-// ImportPipelinesClientBeginCreateOptions contains the optional parameters for the ImportPipelinesClient.BeginCreate method.
-type ImportPipelinesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ImportPipelinesClientBeginDeleteOptions contains the optional parameters for the ImportPipelinesClient.BeginDelete method.
-type ImportPipelinesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ImportPipelinesClientGetOptions contains the optional parameters for the ImportPipelinesClient.Get method.
-type ImportPipelinesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ImportPipelinesClientListOptions contains the optional parameters for the ImportPipelinesClient.NewListPager method.
-type ImportPipelinesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 type ImportSource struct {
 	// REQUIRED; Repository name of the source image. Specify an image by repository ('hello-world'). This will use the 'latest'
 	// tag. Specify an image by tag ('hello-world:latest'). Specify an image by sha256-based
@@ -1421,24 +912,6 @@ type KeyVaultProperties struct {
 
 	// READ-ONLY; The fully qualified key identifier that includes the version of the key that is actually used for encryption.
 	VersionedKeyIdentifier *string `json:"versionedKeyIdentifier,omitempty" azure:"ro"`
-}
-
-// LoggingProperties - The logging properties of the connected registry.
-type LoggingProperties struct {
-	// Indicates whether audit logs are enabled on the connected registry.
-	AuditLogStatus *AuditLogStatus `json:"auditLogStatus,omitempty"`
-
-	// The verbosity of logs persisted on the connected registry.
-	LogLevel *LogLevel `json:"logLevel,omitempty"`
-}
-
-// LoginServerProperties - The login server properties of the connected registry.
-type LoginServerProperties struct {
-	// READ-ONLY; The host of the connected registry. Can be FQDN or IP.
-	Host *string `json:"host,omitempty" azure:"ro"`
-
-	// READ-ONLY; The TLS properties of the connected registry login server.
-	TLS *TLSProperties `json:"tls,omitempty" azure:"ro"`
 }
 
 // NetworkRuleSet - The network rule set for a container registry.
@@ -1575,169 +1048,6 @@ type PackageType struct {
 	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
 }
 
-// ParentProperties - The properties of the connected registry parent.
-type ParentProperties struct {
-	// REQUIRED; The sync properties of the connected registry with its parent.
-	SyncProperties *SyncProperties `json:"syncProperties,omitempty"`
-
-	// The resource ID of the parent to which the connected registry will be associated.
-	ID *string `json:"id,omitempty"`
-}
-
-// PipelineRun - An object that represents a pipeline run for a container registry.
-type PipelineRun struct {
-	// The properties of a pipeline run.
-	Properties *PipelineRunProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// PipelineRunListResult - The result of a request to list pipeline runs for a container registry.
-type PipelineRunListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of pipeline runs. Since this list may be incomplete, the nextLink field should be used to request the next list
-	// of pipeline runs.
-	Value []*PipelineRun `json:"value,omitempty"`
-}
-
-// PipelineRunProperties - The properties of a pipeline run.
-type PipelineRunProperties struct {
-	// How the pipeline run should be forced to recreate even if the pipeline run configuration has not changed.
-	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
-
-	// The request parameters for a pipeline run.
-	Request *PipelineRunRequest `json:"request,omitempty"`
-
-	// READ-ONLY; The provisioning state of a pipeline run.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; The response of a pipeline run.
-	Response *PipelineRunResponse `json:"response,omitempty" azure:"ro"`
-}
-
-// PipelineRunRequest - The request properties provided for a pipeline run.
-type PipelineRunRequest struct {
-	// List of source artifacts to be transferred by the pipeline. Specify an image by repository ('hello-world'). This will use
-	// the 'latest' tag. Specify an image by tag ('hello-world:latest'). Specify an
-	// image by sha256-based manifest digest ('hello-world@sha256:abc123').
-	Artifacts []*string `json:"artifacts,omitempty"`
-
-	// The digest of the tar used to transfer the artifacts.
-	CatalogDigest *string `json:"catalogDigest,omitempty"`
-
-	// The resource ID of the pipeline to run.
-	PipelineResourceID *string `json:"pipelineResourceId,omitempty"`
-
-	// The source properties of the pipeline run.
-	Source *PipelineRunSourceProperties `json:"source,omitempty"`
-
-	// The target properties of the pipeline run.
-	Target *PipelineRunTargetProperties `json:"target,omitempty"`
-}
-
-// PipelineRunResponse - The response properties returned for a pipeline run.
-type PipelineRunResponse struct {
-	// The digest of the tar used to transfer the artifacts.
-	CatalogDigest *string `json:"catalogDigest,omitempty"`
-
-	// The time the pipeline run finished.
-	FinishTime *time.Time `json:"finishTime,omitempty"`
-
-	// The artifacts imported in the pipeline run.
-	ImportedArtifacts []*string `json:"importedArtifacts,omitempty"`
-
-	// The detailed error message for the pipeline run in the case of failure.
-	PipelineRunErrorMessage *string `json:"pipelineRunErrorMessage,omitempty"`
-
-	// The current progress of the copy operation.
-	Progress *ProgressProperties `json:"progress,omitempty"`
-
-	// The source of the pipeline run.
-	Source *ImportPipelineSourceProperties `json:"source,omitempty"`
-
-	// The time the pipeline run started.
-	StartTime *time.Time `json:"startTime,omitempty"`
-
-	// The current status of the pipeline run.
-	Status *string `json:"status,omitempty"`
-
-	// The target of the pipeline run.
-	Target *ExportPipelineTargetProperties `json:"target,omitempty"`
-
-	// The trigger that caused the pipeline run.
-	Trigger *PipelineTriggerDescriptor `json:"trigger,omitempty"`
-}
-
-type PipelineRunSourceProperties struct {
-	// The name of the source.
-	Name *string `json:"name,omitempty"`
-
-	// The type of the source.
-	Type *PipelineRunSourceType `json:"type,omitempty"`
-}
-
-type PipelineRunTargetProperties struct {
-	// The name of the target.
-	Name *string `json:"name,omitempty"`
-
-	// The type of the target.
-	Type *PipelineRunTargetType `json:"type,omitempty"`
-}
-
-// PipelineRunsClientBeginCreateOptions contains the optional parameters for the PipelineRunsClient.BeginCreate method.
-type PipelineRunsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PipelineRunsClientBeginDeleteOptions contains the optional parameters for the PipelineRunsClient.BeginDelete method.
-type PipelineRunsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PipelineRunsClientGetOptions contains the optional parameters for the PipelineRunsClient.Get method.
-type PipelineRunsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PipelineRunsClientListOptions contains the optional parameters for the PipelineRunsClient.NewListPager method.
-type PipelineRunsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-type PipelineSourceTriggerDescriptor struct {
-	// The timestamp when the source update happened.
-	Timestamp *time.Time `json:"timestamp,omitempty"`
-}
-
-type PipelineSourceTriggerProperties struct {
-	// REQUIRED; The current status of the source trigger.
-	Status *TriggerStatus `json:"status,omitempty"`
-}
-
-type PipelineTriggerDescriptor struct {
-	// The source trigger that caused the pipeline run.
-	SourceTrigger *PipelineSourceTriggerDescriptor `json:"sourceTrigger,omitempty"`
-}
-
-type PipelineTriggerProperties struct {
-	// The source trigger properties of the pipeline.
-	SourceTrigger *PipelineSourceTriggerProperties `json:"sourceTrigger,omitempty"`
-}
-
 // PlatformProperties - The platform properties against which the run has to happen.
 type PlatformProperties struct {
 	// REQUIRED; The operating system type required for the run.
@@ -1764,9 +1074,6 @@ type PlatformUpdateParameters struct {
 
 // Policies - The policies for a container registry.
 type Policies struct {
-	// The policy for using ARM audience token for a container registry.
-	AzureADAuthenticationAsArmPolicy *AzureADAuthenticationAsArmPolicy `json:"azureADAuthenticationAsArmPolicy,omitempty"`
-
 	// The export policy for a container registry.
 	ExportPolicy *ExportPolicy `json:"exportPolicy,omitempty"`
 
@@ -1775,9 +1082,6 @@ type Policies struct {
 
 	// The retention policy for a container registry.
 	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
-
-	// The soft delete policy for a container registry.
-	SoftDeletePolicy *SoftDeletePolicy `json:"softDeletePolicy,omitempty"`
 
 	// The content trust policy for a container registry.
 	TrustPolicy *TrustPolicy `json:"trustPolicy,omitempty"`
@@ -1902,11 +1206,6 @@ type PrivateLinkServiceConnectionState struct {
 
 	// The private link service connection status.
 	Status *ConnectionStatus `json:"status,omitempty"`
-}
-
-type ProgressProperties struct {
-	// The percentage complete of the copy operation.
-	Percentage *string `json:"percentage,omitempty"`
 }
 
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
@@ -2115,9 +1414,6 @@ type RegistryProperties struct {
 	// The value that indicates whether the admin user is enabled.
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
 
-	// Enables registry-wide pull from unauthenticated clients.
-	AnonymousPullEnabled *bool `json:"anonymousPullEnabled,omitempty"`
-
 	// Enable a single data endpoint per region for serving data.
 	DataEndpointEnabled *bool `json:"dataEndpointEnabled,omitempty"`
 
@@ -2162,9 +1458,6 @@ type RegistryProperties struct {
 type RegistryPropertiesUpdateParameters struct {
 	// The value that indicates whether the admin user is enabled.
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
-
-	// Enables registry-wide pull from unauthenticated clients.
-	AnonymousPullEnabled *bool `json:"anonymousPullEnabled,omitempty"`
 
 	// Enable a single data endpoint per region for serving data.
 	DataEndpointEnabled *bool `json:"dataEndpointEnabled,omitempty"`
@@ -2688,18 +1981,6 @@ type SetValue struct {
 	IsSecret *bool `json:"isSecret,omitempty"`
 }
 
-// SoftDeletePolicy - The soft delete policy for a container registry
-type SoftDeletePolicy struct {
-	// The number of days after which a soft-deleted item is permanently deleted.
-	RetentionDays *int32 `json:"retentionDays,omitempty"`
-
-	// The value that indicates whether the policy is enabled or not.
-	Status *PolicyStatus `json:"status,omitempty"`
-
-	// READ-ONLY; The timestamp when the policy was last updated.
-	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty" azure:"ro"`
-}
-
 // Source - The registry node that generated the event. Put differently, while the actor initiates the event, the source generates
 // it.
 type Source struct {
@@ -2824,65 +2105,10 @@ type Status struct {
 	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
 }
 
-// StatusDetailProperties - The status detail properties of the connected registry.
-type StatusDetailProperties struct {
-	// READ-ONLY; The code of the status.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The correlation ID of the status.
-	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The description of the status.
-	Description *string `json:"description,omitempty" azure:"ro"`
-
-	// READ-ONLY; The timestamp of the status.
-	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
-
-	// READ-ONLY; The component of the connected registry corresponding to the status.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // StorageAccountProperties - The properties of a storage account for a container registry. Only applicable to Classic SKU.
 type StorageAccountProperties struct {
 	// REQUIRED; The resource ID of the storage account.
 	ID *string `json:"id,omitempty"`
-}
-
-// SyncProperties - The sync properties of the connected registry with its parent.
-type SyncProperties struct {
-	// REQUIRED; The period of time for which a message is available to sync before it is expired. Specify the duration using
-	// the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
-	MessageTTL *string `json:"messageTtl,omitempty"`
-
-	// REQUIRED; The resource ID of the ACR token used to authenticate the connected registry to its parent during sync.
-	TokenID *string `json:"tokenId,omitempty"`
-
-	// The cron expression indicating the schedule that the connected registry will sync with its parent.
-	Schedule *string `json:"schedule,omitempty"`
-
-	// The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S
-	// as per ISO8601.
-	SyncWindow *string `json:"syncWindow,omitempty"`
-
-	// READ-ONLY; The gateway endpoint used by the connected registry to communicate with its parent.
-	GatewayEndpoint *string `json:"gatewayEndpoint,omitempty" azure:"ro"`
-
-	// READ-ONLY; The last time a sync occurred between the connected registry and its parent.
-	LastSyncTime *time.Time `json:"lastSyncTime,omitempty" azure:"ro"`
-}
-
-// SyncUpdateProperties - The parameters for updating the sync properties of the connected registry with its parent.
-type SyncUpdateProperties struct {
-	// The period of time for which a message is available to sync before it is expired. Specify the duration using the format
-	// P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
-	MessageTTL *string `json:"messageTtl,omitempty"`
-
-	// The cron expression indicating the schedule that the connected registry will sync with its parent.
-	Schedule *string `json:"schedule,omitempty"`
-
-	// The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S
-	// as per ISO8601.
-	SyncWindow *string `json:"syncWindow,omitempty"`
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -2904,24 +2130,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *LastModifiedByType `json:"lastModifiedByType,omitempty"`
-}
-
-// TLSCertificateProperties - The TLS certificate properties of the connected registry login server.
-type TLSCertificateProperties struct {
-	// READ-ONLY; Indicates the location of the certificates.
-	Location *string `json:"location,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of certificate location.
-	Type *CertificateType `json:"type,omitempty" azure:"ro"`
-}
-
-// TLSProperties - The TLS properties of the connected registry login server.
-type TLSProperties struct {
-	// READ-ONLY; The certificate used to configure HTTPS for the login server.
-	Certificate *TLSCertificateProperties `json:"certificate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Indicates whether HTTPS is enabled for the login server.
-	Status *TLSStatus `json:"status,omitempty" azure:"ro"`
 }
 
 // Target - The target of the event.

@@ -31,7 +31,7 @@ func TestChallengePolicy(t *testing.T) {
 	storageScope := "https://storage.azure.com/.default"
 	challenge := `Bearer authorization_uri="https://login.microsoftonline.com/{tenant}", resource_id="{storageResource}"`
 	diskResource := "https://disk.azure.com/"
-	diskScope := "https://disk.azure.com/.default"
+	diskScope := "https://disk.azure.com//.default"
 
 	for _, test := range []struct {
 		expectedScope, format, resource string

@@ -2897,7 +2897,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetBlobTags() {
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
 	_require.Nil(err)
 
-	_, err = abClient.SetTags(context.Background(), testcommon.BasicBlobTagsMap, nil)
+	var tagsMap = map[string]string{
+		"azure": "blob",
+	}
+
+	_, err = abClient.SetTags(context.Background(), tagsMap, nil)
 	_require.Nil(err)
 	time.Sleep(10 * time.Second)
 
@@ -2906,9 +2910,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetBlobTags() {
 
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
-	_require.Len(blobTagsSet, 3)
+	_require.Len(blobTagsSet, 1)
 	for _, blobTag := range blobTagsSet {
-		_require.Equal(testcommon.BasicBlobTagsMap[*blobTag.Key], *blobTag.Value)
+		_require.Equal(tagsMap[*blobTag.Key], *blobTag.Value)
 	}
 }
 

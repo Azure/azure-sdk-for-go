@@ -290,3 +290,4 @@ func (client *Client) revokeCreateRequest(ctx context.Context, baseURL string, c
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, r)
 }
+

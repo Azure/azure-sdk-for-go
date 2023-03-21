@@ -206,3 +206,4 @@ func PossibleRevocationReasonValues() []RevocationReason {
 		RevocationReasonUnspecified,
 	}
 }
+

@@ -22,6 +22,8 @@ func (c CertificateAttributes) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "extendedKeyUsage", c.ExtendedKeyUsage)
 	populate(objectMap, "issuer", c.Issuer)
 	populate(objectMap, "keyUsage", c.KeyUsage)
+	populateTimeRFC3339(objectMap, "notAfter", c.NotAfter)
+	populateTimeRFC3339(objectMap, "notBefore", c.NotBefore)
 	populate(objectMap, "serialNumber", c.SerialNumber)
 	populate(objectMap, "subject", c.Subject)
 	populate(objectMap, "subjectAlternativeNames", c.SubjectAlternativeNames)
@@ -132,6 +134,8 @@ func (c CertificateValue) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "extendedKeyUsage", c.ExtendedKeyUsage)
 	populate(objectMap, "issuer", c.Issuer)
 	populate(objectMap, "keyUsage", c.KeyUsage)
+	populateTimeRFC3339(objectMap, "notAfter", c.NotAfter)
+	populateTimeRFC3339(objectMap, "notBefore", c.NotBefore)
 	populate(objectMap, "PEM", c.PEM)
 	populate(objectMap, "PEMChain", c.PEMChain)
 	populate(objectMap, "PKCS7", c.PKCS7)
@@ -396,6 +400,8 @@ func (s Substitutes) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "distinguishedName", s.DistinguishedName)
 	populate(objectMap, "extendedKeyUsage", s.ExtendedKeyUsage)
 	populate(objectMap, "keyUsage", s.KeyUsage)
+	populateTimeRFC3339(objectMap, "notAfter", s.NotAfter)
+	populateTimeRFC3339(objectMap, "notBefore", s.NotBefore)
 	populate(objectMap, "subjectAlternativeNames", s.SubjectAlternativeNames)
 	populate(objectMap, "subjectName", s.SubjectName)
 	populateTimeRFC3339(objectMap, "validityNotAfter", s.ValidityNotAfter)
@@ -460,3 +466,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

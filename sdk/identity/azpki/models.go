@@ -19,6 +19,12 @@ type CertificateAttributes struct {
 	Issuer *string `json:"issuer,omitempty"`
 	KeyUsage []*KeyUsage `json:"keyUsage,omitempty"`
 
+	// The validity end date in UTC.
+	NotAfter *time.Time `json:"notAfter,omitempty"`
+
+	// The validity start date in UTC.
+	NotBefore *time.Time `json:"notBefore,omitempty"`
+
 	// Serial number for the certificate.
 	SerialNumber *string `json:"serialNumber,omitempty"`
 
@@ -65,6 +71,12 @@ type CertificateValue struct {
 	// Name of the certificate issuer.
 	Issuer *string `json:"issuer,omitempty"`
 	KeyUsage []*KeyUsage `json:"keyUsage,omitempty"`
+
+	// The validity end date in UTC.
+	NotAfter *time.Time `json:"notAfter,omitempty"`
+
+	// The validity start date in UTC.
+	NotBefore *time.Time `json:"notBefore,omitempty"`
 
 	// Certificate in pem format
 	PEM *string `json:"PEM,omitempty"`
@@ -211,3 +223,4 @@ type Substitutes struct {
 	// The validity start date in UTC.
 	ValidityNotBefore *time.Time `json:"validityNotBefore,omitempty"`
 }
+

@@ -1,8 +1,8 @@
 github.com/Azure/azure-sdk-for-go v54.2.1+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
 github.com/Azure/azure-sdk-for-go v63.3.0+incompatible h1:INepVujzUrmArRZjDLHbtER+FkvCoEwyRCXGqOlmDII=
 github.com/Azure/azure-sdk-for-go v63.3.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
-github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20230321110746-6cd8433da5d2 h1:g/31x/m49ITPG6sLlmN3pO/jLRxLl9Olx0jvSaGK9u8=
-github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20230321110746-6cd8433da5d2/go.mod h1:o10ccRC1wnNEL7uLpQUTfuF4aYjkEvDkAP/pdVbw+7M=
+github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20230321225744-d732f7cc62b3 h1:DzwaUc/Tiz82R9D3F/z4lD3pQ3Hdtqq8KQtl3moLH6I=
+github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20230321225744-d732f7cc62b3/go.mod h1:o10ccRC1wnNEL7uLpQUTfuF4aYjkEvDkAP/pdVbw+7M=
 github.com/Azure/go-autorest v14.2.0+incompatible/go.mod h1:r+4oMnoxhatjLLJ6zxSWATqVooLgysK6ZNox3g/xq24=
 github.com/Azure/go-autorest/autorest v0.11.18/go.mod h1:dSiJPy22c3u0OtOKDNttNgqpNFY/GeWa7GH/Pz56QRA=
 github.com/Azure/go-autorest/autorest/adal v0.9.13/go.mod h1:W/MM4U6nLxnIskrw4UwWzlHfGjwUS50aOsc/I3yuU8M=

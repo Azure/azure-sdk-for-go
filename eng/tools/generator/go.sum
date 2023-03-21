@@ -1,5 +1,5 @@
-github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20230321110746-6cd8433da5d2 h1:g/31x/m49ITPG6sLlmN3pO/jLRxLl9Olx0jvSaGK9u8=
-github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20230321110746-6cd8433da5d2/go.mod h1:o10ccRC1wnNEL7uLpQUTfuF4aYjkEvDkAP/pdVbw+7M=
+github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20230321225744-d732f7cc62b3 h1:DzwaUc/Tiz82R9D3F/z4lD3pQ3Hdtqq8KQtl3moLH6I=
+github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20230321225744-d732f7cc62b3/go.mod h1:o10ccRC1wnNEL7uLpQUTfuF4aYjkEvDkAP/pdVbw+7M=
 github.com/Masterminds/semver v1.5.0 h1:H65muMkzWKEuNDnfl9d70GUjFniHKHRbFPGBuZ3QEww=
 github.com/Masterminds/semver v1.5.0/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF078ddwwvV3Y=
 github.com/Microsoft/go-winio v0.5.2/go.mod h1:WpS1mjBmmwHBEWmogvA2mj8546UReBk4v8QkMxJ6pZY=

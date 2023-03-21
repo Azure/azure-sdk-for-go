@@ -58,7 +58,7 @@ func NewStorageMoversClient(subscriptionID string, credential azcore.TokenCreden
 // CreateOrUpdate - Creates or updates a top-level Storage Mover resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - options - StorageMoversClientCreateOrUpdateOptions contains the optional parameters for the StorageMoversClient.CreateOrUpdate
@@ -98,7 +98,7 @@ func (client *StorageMoversClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, storageMover)
@@ -116,7 +116,7 @@ func (client *StorageMoversClient) createOrUpdateHandleResponse(resp *http.Respo
 // BeginDelete - Deletes a Storage Mover resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - options - StorageMoversClientBeginDeleteOptions contains the optional parameters for the StorageMoversClient.BeginDelete
@@ -138,7 +138,7 @@ func (client *StorageMoversClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Deletes a Storage Mover resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-03-01
 func (client *StorageMoversClient) deleteOperation(ctx context.Context, resourceGroupName string, storageMoverName string, options *StorageMoversClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageMoverName, options)
 	if err != nil {
@@ -174,7 +174,7 @@ func (client *StorageMoversClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *StorageMoversClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Gets a Storage Mover resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - options - StorageMoversClientGetOptions contains the optional parameters for the StorageMoversClient.Get method.
@@ -222,7 +222,7 @@ func (client *StorageMoversClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -239,7 +239,7 @@ func (client *StorageMoversClient) getHandleResponse(resp *http.Response) (Stora
 
 // NewListPager - Lists all Storage Movers in a resource group.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - StorageMoversClientListOptions contains the optional parameters for the StorageMoversClient.NewListPager method.
 func (client *StorageMoversClient) NewListPager(resourceGroupName string, options *StorageMoversClientListOptions) *runtime.Pager[StorageMoversClientListResponse] {
@@ -286,7 +286,7 @@ func (client *StorageMoversClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -303,7 +303,7 @@ func (client *StorageMoversClient) listHandleResponse(resp *http.Response) (Stor
 
 // NewListBySubscriptionPager - Lists all Storage Movers in a subscription.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-03-01
 //   - options - StorageMoversClientListBySubscriptionOptions contains the optional parameters for the StorageMoversClient.NewListBySubscriptionPager
 //     method.
 func (client *StorageMoversClient) NewListBySubscriptionPager(options *StorageMoversClientListBySubscriptionOptions) *runtime.Pager[StorageMoversClientListBySubscriptionResponse] {
@@ -346,7 +346,7 @@ func (client *StorageMoversClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -364,7 +364,7 @@ func (client *StorageMoversClient) listBySubscriptionHandleResponse(resp *http.R
 // Update - Updates properties for a Storage Mover resource. Properties not specified in the request body will be unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - options - StorageMoversClientUpdateOptions contains the optional parameters for the StorageMoversClient.Update method.
@@ -403,7 +403,7 @@ func (client *StorageMoversClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, storageMover)

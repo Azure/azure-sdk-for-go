@@ -32,10 +32,10 @@ type ManagerCommitsClient struct {
 }
 
 // NewManagerCommitsClient creates a new instance of ManagerCommitsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewManagerCommitsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagerCommitsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewManagerCommitsClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginPost - Post a Network Manager Commit.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkManagerName - The name of the network manager.
-// parameters - Parameters supplied to specify which Managed Network commit is.
-// options - ManagerCommitsClientBeginPostOptions contains the optional parameters for the ManagerCommitsClient.BeginPost
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkManagerName - The name of the network manager.
+//   - parameters - Parameters supplied to specify which Managed Network commit is.
+//   - options - ManagerCommitsClientBeginPostOptions contains the optional parameters for the ManagerCommitsClient.BeginPost
+//     method.
 func (client *ManagerCommitsClient) BeginPost(ctx context.Context, resourceGroupName string, networkManagerName string, parameters ManagerCommit, options *ManagerCommitsClientBeginPostOptions) (*runtime.Poller[ManagerCommitsClientPostResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.post(ctx, resourceGroupName, networkManagerName, parameters, options)
@@ -80,7 +81,8 @@ func (client *ManagerCommitsClient) BeginPost(ctx context.Context, resourceGroup
 
 // Post - Post a Network Manager Commit.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *ManagerCommitsClient) post(ctx context.Context, resourceGroupName string, networkManagerName string, parameters ManagerCommit, options *ManagerCommitsClientBeginPostOptions) (*http.Response, error) {
 	req, err := client.postCreateRequest(ctx, resourceGroupName, networkManagerName, parameters, options)
 	if err != nil {
@@ -116,7 +118,7 @@ func (client *ManagerCommitsClient) postCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

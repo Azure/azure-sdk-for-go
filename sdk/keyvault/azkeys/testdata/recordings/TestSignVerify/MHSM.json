@@ -81,7 +81,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/key474808603//sign?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key474808603/sign?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -116,7 +116,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/key474808603//verify?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key474808603/verify?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",

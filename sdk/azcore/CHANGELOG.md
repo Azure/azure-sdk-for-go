@@ -1,12 +1,13 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.5.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* Added non-conformant LRO terminal states `Cancelled` and `Completed`.
 
 ### Other Changes
 

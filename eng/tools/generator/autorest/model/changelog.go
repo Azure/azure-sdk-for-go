@@ -156,7 +156,7 @@ func getNewContents(c *delta.Content) []string {
 			for _, cs := range existedTypeAlias[k] {
 				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
 			}
-			line := fmt.Sprintf("New value %s added to type alias `%s`", strings.TrimRight(strings.TrimSpace(aliasValue), ","), k)
+			line := fmt.Sprintf("New value %s added to enum type `%s`", strings.TrimRight(strings.TrimSpace(aliasValue), ","), k)
 			items = append(items, line)
 		}
 
@@ -165,7 +165,7 @@ func getNewContents(c *delta.Content) []string {
 			for _, cs := range newTypeAlias[k] {
 				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
 			}
-			line := fmt.Sprintf("New type alias `%s` with values %s", k, strings.TrimRight(strings.TrimSpace(aliasValue), ","))
+			line := fmt.Sprintf("New enum type `%s` with values %s", k, strings.TrimRight(strings.TrimSpace(aliasValue), ","))
 			items = append(items, line)
 		}
 	}

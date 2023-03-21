@@ -16,7 +16,10 @@ const (
 	ErrorCodeConnectionLost ErrorCode = "connlost"
 
 	// ErrorCodeOwnershipLost means that a partition that you were reading from was opened
-	// by another link with a higher epoch/owner level.
+	// by another link with an epoch/owner level greater or equal to your [PartitionClient].
+	//
+	// When using types like the [Processor], partition ownership will change as instances
+	// rebalance.
 	ErrorCodeOwnershipLost ErrorCode = "ownershiplost"
 )
 

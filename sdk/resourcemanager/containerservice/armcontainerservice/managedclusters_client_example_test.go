@@ -25,11 +25,11 @@ func ExampleManagedClustersClient_GetOSOptions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetOSOptions(ctx, "location1", &armcontainerservice.ManagedClustersClientGetOSOptionsOptions{ResourceType: nil})
+	res, err := clientFactory.NewManagedClustersClient().GetOSOptions(ctx, "location1", &armcontainerservice.ManagedClustersClientGetOSOptionsOptions{ResourceType: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -61,11 +61,11 @@ func ExampleManagedClustersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewManagedClustersClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -140,11 +140,11 @@ func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewManagedClustersClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -219,11 +219,11 @@ func ExampleManagedClustersClient_GetUpgradeProfile() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetUpgradeProfile(ctx, "rg1", "clustername1", nil)
+	res, err := clientFactory.NewManagedClustersClient().GetUpgradeProfile(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -273,11 +273,11 @@ func ExampleManagedClustersClient_GetAccessProfile() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAccessProfile(ctx, "rg1", "clustername1", "clusterUser", nil)
+	res, err := clientFactory.NewManagedClustersClient().GetAccessProfile(ctx, "rg1", "clustername1", "clusterUser", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -302,11 +302,11 @@ func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListClusterAdminCredentials(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions{ServerFqdn: nil})
+	res, err := clientFactory.NewManagedClustersClient().ListClusterAdminCredentials(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions{ServerFqdn: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -329,11 +329,11 @@ func ExampleManagedClustersClient_ListClusterUserCredentials() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListClusterUserCredentials(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions{ServerFqdn: nil,
+	res, err := clientFactory.NewManagedClustersClient().ListClusterUserCredentials(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions{ServerFqdn: nil,
 		Format: nil,
 	})
 	if err != nil {
@@ -358,11 +358,11 @@ func ExampleManagedClustersClient_ListClusterMonitoringUserCredentials() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListClusterMonitoringUserCredentials(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions{ServerFqdn: nil})
+	res, err := clientFactory.NewManagedClustersClient().ListClusterMonitoringUserCredentials(ctx, "rg1", "clustername1", &armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions{ServerFqdn: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -385,11 +385,11 @@ func ExampleManagedClustersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "clustername1", nil)
+	res, err := clientFactory.NewManagedClustersClient().Get(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -493,11 +493,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingA
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -668,11 +668,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAk
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -828,11 +828,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAz
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -1005,11 +1005,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithDe
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -1170,11 +1170,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithEn
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -1339,11 +1339,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithFi
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -1508,11 +1508,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithGp
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -1693,11 +1693,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithHt
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -1876,11 +1876,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -2045,11 +2045,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithOs
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -2230,11 +2230,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPp
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -2399,11 +2399,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -2574,11 +2574,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithRu
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -2748,11 +2748,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithSe
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -2911,11 +2911,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUl
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -3080,11 +3080,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUs
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -3222,11 +3222,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateCluste
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -3399,11 +3399,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateCluste
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -3574,11 +3574,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateAadManagedClus
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -3758,11 +3758,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -3960,11 +3960,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -4152,11 +4152,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -4348,11 +4348,11 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"archv2": to.Ptr(""),
@@ -4560,11 +4560,11 @@ func ExampleManagedClustersClient_BeginUpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateTags(ctx, "rg1", "clustername1", armcontainerservice.TagsObject{
+	poller, err := clientFactory.NewManagedClustersClient().BeginUpdateTags(ctx, "rg1", "clustername1", armcontainerservice.TagsObject{
 		Tags: map[string]*string{
 			"archv3": to.Ptr(""),
 			"tier":   to.Ptr("testing"),
@@ -4638,11 +4638,11 @@ func ExampleManagedClustersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "clustername1", nil)
+	poller, err := clientFactory.NewManagedClustersClient().BeginDelete(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -4659,11 +4659,11 @@ func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResetServicePrincipalProfile(ctx, "rg1", "clustername1", armcontainerservice.ManagedClusterServicePrincipalProfile{
+	poller, err := clientFactory.NewManagedClustersClient().BeginResetServicePrincipalProfile(ctx, "rg1", "clustername1", armcontainerservice.ManagedClusterServicePrincipalProfile{
 		ClientID: to.Ptr("clientid"),
 		Secret:   to.Ptr("secret"),
 	}, nil)
@@ -4683,11 +4683,11 @@ func ExampleManagedClustersClient_BeginResetAADProfile() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResetAADProfile(ctx, "rg1", "clustername1", armcontainerservice.ManagedClusterAADProfile{
+	poller, err := clientFactory.NewManagedClustersClient().BeginResetAADProfile(ctx, "rg1", "clustername1", armcontainerservice.ManagedClusterAADProfile{
 		ClientAppID:     to.Ptr("clientappid"),
 		ServerAppID:     to.Ptr("serverappid"),
 		ServerAppSecret: to.Ptr("serverappsecret"),
@@ -4709,11 +4709,11 @@ func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRotateClusterCertificates(ctx, "rg1", "clustername1", nil)
+	poller, err := clientFactory.NewManagedClustersClient().BeginRotateClusterCertificates(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -4730,11 +4730,11 @@ func ExampleManagedClustersClient_BeginAbortLatestOperation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginAbortLatestOperation(ctx, "rg1", "clustername1", nil)
+	poller, err := clientFactory.NewManagedClustersClient().BeginAbortLatestOperation(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -4751,11 +4751,11 @@ func ExampleManagedClustersClient_BeginRotateServiceAccountSigningKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRotateServiceAccountSigningKeys(ctx, "rg1", "clustername1", nil)
+	poller, err := clientFactory.NewManagedClustersClient().BeginRotateServiceAccountSigningKeys(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -4772,11 +4772,11 @@ func ExampleManagedClustersClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStop(ctx, "rg1", "clustername1", nil)
+	poller, err := clientFactory.NewManagedClustersClient().BeginStop(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -4793,11 +4793,11 @@ func ExampleManagedClustersClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx, "rg1", "clustername1", nil)
+	poller, err := clientFactory.NewManagedClustersClient().BeginStart(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -4814,11 +4814,11 @@ func ExampleManagedClustersClient_BeginRunCommand() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRunCommand(ctx, "rg1", "clustername1", armcontainerservice.RunCommandRequest{
+	poller, err := clientFactory.NewManagedClustersClient().BeginRunCommand(ctx, "rg1", "clustername1", armcontainerservice.RunCommandRequest{
 		ClusterToken: to.Ptr(""),
 		Command:      to.Ptr("kubectl apply -f ns.yaml"),
 		Context:      to.Ptr(""),
@@ -4852,11 +4852,11 @@ func ExampleManagedClustersClient_GetCommandResult_commandFailedResult() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCommandResult(ctx, "rg1", "clustername1", "def7b3ea71bd4f7e9d226ddbc0f00ad9", nil)
+	res, err := clientFactory.NewManagedClustersClient().GetCommandResult(ctx, "rg1", "clustername1", "def7b3ea71bd4f7e9d226ddbc0f00ad9", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -4879,11 +4879,11 @@ func ExampleManagedClustersClient_GetCommandResult_commandSucceedResult() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCommandResult(ctx, "rg1", "clustername1", "def7b3ea71bd4f7e9d226ddbc0f00ad9", nil)
+	res, err := clientFactory.NewManagedClustersClient().GetCommandResult(ctx, "rg1", "clustername1", "def7b3ea71bd4f7e9d226ddbc0f00ad9", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -4909,11 +4909,11 @@ func ExampleManagedClustersClient_NewListOutboundNetworkDependenciesEndpointsPag
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewManagedClustersClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOutboundNetworkDependenciesEndpointsPager("rg1", "clustername1", nil)
+	pager := clientFactory.NewManagedClustersClient().NewListOutboundNetworkDependenciesEndpointsPager("rg1", "clustername1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -25,11 +25,11 @@ func ExampleSnapshotsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewSnapshotsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -80,11 +80,11 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewSnapshotsClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -135,11 +135,11 @@ func ExampleSnapshotsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "snapshot1", nil)
+	res, err := clientFactory.NewSnapshotsClient().Get(ctx, "rg1", "snapshot1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -182,11 +182,11 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "snapshot1", armcontainerservice.Snapshot{
+	res, err := clientFactory.NewSnapshotsClient().CreateOrUpdate(ctx, "rg1", "snapshot1", armcontainerservice.Snapshot{
 		Location: to.Ptr("westus"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("val1"),
@@ -240,11 +240,11 @@ func ExampleSnapshotsClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "snapshot1", armcontainerservice.TagsObject{
+	res, err := clientFactory.NewSnapshotsClient().UpdateTags(ctx, "rg1", "snapshot1", armcontainerservice.TagsObject{
 		Tags: map[string]*string{
 			"key2": to.Ptr("new-val2"),
 			"key3": to.Ptr("val3"),
@@ -292,11 +292,11 @@ func ExampleSnapshotsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "rg1", "snapshot1", nil)
+	_, err = clientFactory.NewSnapshotsClient().Delete(ctx, "rg1", "snapshot1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

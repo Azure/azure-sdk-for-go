@@ -3,8 +3,9 @@
 ## 2.4.0 (2023-03-24)
 ### Features Added
 
-- New value `ManagedClusterSKUNameBase` added to type alias `ManagedClusterSKUName`
-- New value `ManagedClusterSKUTierStandard` added to type alias `ManagedClusterSKUTier`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New value `ManagedClusterSKUNameBase` added to enum type `ManagedClusterSKUName`
+- New value `ManagedClusterSKUTierStandard` added to enum type `ManagedClusterSKUTier`
 - New function `*AgentPoolsClient.BeginAbortLatestOperation(context.Context, string, string, string, *AgentPoolsClientBeginAbortLatestOperationOptions) (*runtime.Poller[AgentPoolsClientAbortLatestOperationResponse], error)`
 - New function `*ManagedClustersClient.BeginAbortLatestOperation(context.Context, string, string, *ManagedClustersClientBeginAbortLatestOperationOptions) (*runtime.Poller[ManagedClustersClientAbortLatestOperationResponse], error)`
 - New struct `ManagedClusterAzureMonitorProfile`

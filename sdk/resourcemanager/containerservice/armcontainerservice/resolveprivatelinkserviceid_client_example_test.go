@@ -25,11 +25,11 @@ func ExampleResolvePrivateLinkServiceIDClient_POST() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewResolvePrivateLinkServiceIDClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.POST(ctx, "rg1", "clustername1", armcontainerservice.PrivateLinkResource{
+	res, err := clientFactory.NewResolvePrivateLinkServiceIDClient().POST(ctx, "rg1", "clustername1", armcontainerservice.PrivateLinkResource{
 		Name: to.Ptr("management"),
 	}, nil)
 	if err != nil {

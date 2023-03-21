@@ -25,11 +25,11 @@ func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginAbortLatestOperation(ctx, "rg1", "clustername1", "agentpool1", nil)
+	poller, err := clientFactory.NewAgentPoolsClient().BeginAbortLatestOperation(ctx, "rg1", "clustername1", "agentpool1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleAgentPoolsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "clustername1", nil)
+	pager := clientFactory.NewAgentPoolsClient().NewListPager("rg1", "clustername1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -88,11 +88,11 @@ func ExampleAgentPoolsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "clustername1", "agentpool1", nil)
+	res, err := clientFactory.NewAgentPoolsClient().Get(ctx, "rg1", "clustername1", "agentpool1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -125,11 +125,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPool
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count: to.Ptr[int32](3),
 			CreationData: &armcontainerservice.CreationData{
@@ -178,11 +178,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:               to.Ptr[int32](3),
 			HostGroupID:         to.Ptr("/subscriptions/subid1/resourcegroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
@@ -224,11 +224,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAt
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:                  to.Ptr[int32](3),
 			EnableEncryptionAtHost: to.Ptr(true),
@@ -271,11 +271,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOsD
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:               to.Ptr[int32](3),
 			OrchestratorVersion: to.Ptr(""),
@@ -320,11 +320,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledO
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:               to.Ptr[int32](3),
 			EnableFIPS:          to.Ptr(true),
@@ -367,11 +367,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:              to.Ptr[int32](3),
 			GpuInstanceProfile: to.Ptr(armcontainerservice.GPUInstanceProfileMIG2G),
@@ -460,11 +460,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndT
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:               to.Ptr[int32](3),
 			Mode:                to.Ptr(armcontainerservice.AgentPoolModeUser),
@@ -511,11 +511,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count: to.Ptr[int32](3),
 			KubeletConfig: &armcontainerservice.KubeletConfig{
@@ -602,11 +602,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count: to.Ptr[int32](3),
 			KubeletConfig: &armcontainerservice.KubeletConfig{
@@ -695,11 +695,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:                     to.Ptr[int32](3),
 			OrchestratorVersion:       to.Ptr(""),
@@ -742,11 +742,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnab
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:               to.Ptr[int32](3),
 			EnableUltraSSD:      to.Ptr(true),
@@ -789,11 +789,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "wnp2", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "wnp2", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:               to.Ptr[int32](3),
 			OrchestratorVersion: to.Ptr("1.23.3"),
@@ -836,11 +836,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count: to.Ptr[int32](3),
 			NodeLabels: map[string]*string{
@@ -902,11 +902,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count: to.Ptr[int32](3),
 			Mode:  to.Ptr(armcontainerservice.AgentPoolModeUser),
@@ -970,11 +970,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			PowerState: &armcontainerservice.PowerState{
 				Code: to.Ptr(armcontainerservice.CodeRunning),
@@ -1015,11 +1015,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			PowerState: &armcontainerservice.PowerState{
 				Code: to.Ptr(armcontainerservice.CodeStopped),
@@ -1058,11 +1058,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:             to.Ptr[int32](3),
 			EnableAutoScaling: to.Ptr(true),
@@ -1117,11 +1117,11 @@ func ExampleAgentPoolsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "clustername1", "agentpool1", nil)
+	poller, err := clientFactory.NewAgentPoolsClient().BeginDelete(ctx, "rg1", "clustername1", "agentpool1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1138,11 +1138,11 @@ func ExampleAgentPoolsClient_GetUpgradeProfile() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetUpgradeProfile(ctx, "rg1", "clustername1", "agentpool1", nil)
+	res, err := clientFactory.NewAgentPoolsClient().GetUpgradeProfile(ctx, "rg1", "clustername1", "agentpool1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1172,11 +1172,11 @@ func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAvailableAgentPoolVersions(ctx, "rg1", "clustername1", nil)
+	res, err := clientFactory.NewAgentPoolsClient().GetAvailableAgentPoolVersions(ctx, "rg1", "clustername1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1211,11 +1211,11 @@ func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewAgentPoolsClient("subid1", cred, nil)
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpgradeNodeImageVersion(ctx, "rg1", "clustername1", "agentpool1", nil)
+	poller, err := clientFactory.NewAgentPoolsClient().BeginUpgradeNodeImageVersion(ctx, "rg1", "clustername1", "agentpool1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

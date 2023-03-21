@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Added non-conformant LRO terminal states `Cancelled` and `Completed`.
 
 ### Other Changes
 

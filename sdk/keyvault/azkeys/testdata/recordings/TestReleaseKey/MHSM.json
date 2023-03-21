@@ -109,7 +109,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/testreleasekey2633194999//release?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testreleasekey2633194999/release?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",

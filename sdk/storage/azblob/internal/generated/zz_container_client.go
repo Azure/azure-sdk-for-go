@@ -1459,7 +1459,7 @@ func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, con
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, req.SetBody(body, "application/xml")
+	return req, req.SetBody(body, multipartContentType)
 }
 
 // submitBatchHandleResponse handles the SubmitBatch response.

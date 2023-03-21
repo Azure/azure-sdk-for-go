@@ -90,7 +90,7 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/keys/key3534672839//sign?api-version=7.3",
+      "RequestUri": "https://fakevault.local/keys/key3534672839/sign?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -125,7 +125,7 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/keys/key3534672839//verify?api-version=7.3",
+      "RequestUri": "https://fakevault.local/keys/key3534672839/verify?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",

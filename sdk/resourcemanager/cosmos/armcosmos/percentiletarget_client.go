@@ -32,9 +32,9 @@ type PercentileTargetClient struct {
 }
 
 // NewPercentileTargetClient creates a new instance of PercentileTargetClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPercentileTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PercentileTargetClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,15 +57,16 @@ func NewPercentileTargetClient(subscriptionID string, credential azcore.TokenCre
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given account target region. This url
 // is only for PBS and Replication Latency data
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// targetRegion - Target region to which data is written. Cosmos DB region, with spaces between words and each word capitalized.
-// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
-// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
-// and timeGrain. The supported operator is eq.
-// options - PercentileTargetClientListMetricsOptions contains the optional parameters for the PercentileTargetClient.ListMetrics
-// method.
+//
+// Generated from API version 2022-11-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - targetRegion - Target region to which data is written. Cosmos DB region, with spaces between words and each word capitalized.
+//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//     name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+//     and timeGrain. The supported operator is eq.
+//   - options - PercentileTargetClientListMetricsOptions contains the optional parameters for the PercentileTargetClient.NewListMetricsPager
+//     method.
 func (client *PercentileTargetClient) NewListMetricsPager(resourceGroupName string, accountName string, targetRegion string, filter string, options *PercentileTargetClientListMetricsOptions) *runtime.Pager[PercentileTargetClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PercentileTargetClientListMetricsResponse]{
 		More: func(page PercentileTargetClientListMetricsResponse) bool {
@@ -112,7 +113,7 @@ func (client *PercentileTargetClient) listMetricsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

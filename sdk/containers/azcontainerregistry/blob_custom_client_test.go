@@ -19,16 +19,16 @@ import (
 
 func TestBlobClient_CompleteUpload(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
-	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
+	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
+	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)
-	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
+	startRes, err := client.StartUpload(ctx, "hello-world", nil)
 	require.NoError(t, err)
 	calculator := NewBlobDigestCalculator()
 	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, bytes.NewReader(blob), calculator, nil)
@@ -40,16 +40,16 @@ func TestBlobClient_CompleteUpload(t *testing.T) {
 
 func TestBlobClient_UploadChunk(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
-	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
+	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
+	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)
-	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
+	startRes, err := client.StartUpload(ctx, "hello-world", nil)
 	require.NoError(t, err)
 	calculator := NewBlobDigestCalculator()
 	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, bytes.NewReader(blob), calculator, nil)
@@ -61,16 +61,16 @@ func TestBlobClient_UploadChunk(t *testing.T) {
 
 func TestBlobClient_CompleteUpload_uploadByChunk(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
-	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
+	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
+	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)
-	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
+	startRes, err := client.StartUpload(ctx, "hello-world", nil)
 	require.NoError(t, err)
 	calculator := NewBlobDigestCalculator()
 	oriReader := bytes.NewReader(blob)

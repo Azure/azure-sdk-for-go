@@ -53,7 +53,7 @@ type BatchQueryResults struct {
 	// Statistics represented in JSON format.
 	Statistics []byte `json:"statistics,omitempty"`
 
-	// The list of tables, columns and rows.
+	// The results of the query in tabular format.
 	Tables []*Table `json:"tables,omitempty"`
 
 	// Visualization data in JSON format.
@@ -132,7 +132,7 @@ type Metric struct {
 	Name *LocalizableString `json:"name,omitempty"`
 
 	// REQUIRED; the time series returned when a data query is performed.
-	Timeseries []*TimeSeriesElement `json:"timeseries,omitempty"`
+	TimeSeries []*TimeSeriesElement `json:"timeseries,omitempty"`
 
 	// REQUIRED; the resource type of the metric resource.
 	Type *string `json:"type,omitempty"`
@@ -263,7 +263,7 @@ type MetricValue struct {
 // MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.ListDefinitions method.
 type MetricsClientListDefinitionsOptions struct {
 	// Metric namespace to query metric definitions for.
-	Metricnamespace *string
+	MetricNamespace *string
 }
 
 // MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.ListNamespaces method.
@@ -274,8 +274,8 @@ type MetricsClientListNamespacesOptions struct {
 
 // MetricsClientQueryResourceOptions contains the optional parameters for the MetricsClient.QueryResource method.
 type MetricsClientQueryResourceOptions struct {
-	// The list of aggregation types (comma separated) to retrieve.
-	Aggregation *string
+	// The list of aggregation types to retrieve
+	Aggregation []*AggregationType
 	// The $filter is used to reduce the set of metric data returned. Example: Metric contains metadata A, B and C. - Return all
 	// time series of C where A = a1 and B = b1 or b2 $filter=A eq 'a1' and B eq 'b1'
 	// or B eq 'b2' and C eq '' - Invalid variant: $filter=A eq 'a1' and B eq 'b1' and C eq '' or B = 'b2' This is invalid because
@@ -291,12 +291,12 @@ type MetricsClientQueryResourceOptions struct {
 	Interval *string
 	// The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in it then use
 	// %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
-	Metricnames *string
+	MetricNames *string
 	// Metric namespace to query metric definitions for.
-	Metricnamespace *string
+	MetricNamespace *string
 	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified. Examples: sum
 	// asc.
-	Orderby *string
+	OrderBy *string
 	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
 	ResultType *ResultType
 	// The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
@@ -327,12 +327,12 @@ type Response struct {
 	Namespace *string `json:"namespace,omitempty"`
 
 	// The region of the resource being queried for metrics.
-	Resourceregion *string `json:"resourceregion,omitempty"`
+	ResourceRegion *string `json:"resourceregion,omitempty"`
 }
 
 // Results - Contains the tables, columns & rows resulting from a query.
 type Results struct {
-	// REQUIRED; The list of tables, columns and rows.
+	// REQUIRED; The results of the query in tabular format.
 	Tables []*Table `json:"tables,omitempty"`
 
 	// The code and message for an error.
@@ -363,5 +363,5 @@ type TimeSeriesElement struct {
 	Data []*MetricValue `json:"data,omitempty"`
 
 	// the metadata values returned if $filter was specified in the call.
-	Metadatavalues []*MetadataValue `json:"metadatavalues,omitempty"`
+	MetadataValues []*MetadataValue `json:"metadatavalues,omitempty"`
 }

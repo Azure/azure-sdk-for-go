@@ -225,7 +225,7 @@ func (lb *processorLoadBalancer) balancedLoadBalancer(ctx context.Context, lbinf
 }
 
 func (lb *processorLoadBalancer) resetOwnership(o Ownership) Ownership {
-	o.ETag = ""
+	o.ETag = nil
 	o.OwnerID = lb.details.ClientID
 	return o
 }

@@ -38,7 +38,7 @@ func (testsuite *WorkspacesTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.workspaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "oiautorest", 6)
+	testsuite.workspaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "oiautorestws", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")

@@ -260,10 +260,6 @@ func TestTimeInterval(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestLogsQueryOptions(t *testing.T) {
-
-}
-
 func TestLogConstants(t *testing.T) {
 	batchMethod := []azquery.BatchQueryRequestMethod{azquery.BatchQueryRequestMethodPOST}
 	batchMethodRes := azquery.PossibleBatchQueryRequestMethodValues()

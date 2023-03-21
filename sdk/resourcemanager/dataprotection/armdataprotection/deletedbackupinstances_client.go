@@ -32,9 +32,9 @@ type DeletedBackupInstancesClient struct {
 }
 
 // NewDeletedBackupInstancesClient creates a new instance of DeletedBackupInstancesClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDeletedBackupInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedBackupInstancesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewDeletedBackupInstancesClient(subscriptionID string, credential azcore.To
 
 // Get - Gets a deleted backup instance with name in a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// backupInstanceName - The name of the deleted backup instance
-// options - DeletedBackupInstancesClientGetOptions contains the optional parameters for the DeletedBackupInstancesClient.Get
-// method.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the backup vault.
+//   - backupInstanceName - The name of the deleted backup instance
+//   - options - DeletedBackupInstancesClientGetOptions contains the optional parameters for the DeletedBackupInstancesClient.Get
+//     method.
 func (client *DeletedBackupInstancesClient) Get(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientGetOptions) (DeletedBackupInstancesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, options)
 	if err != nil {
@@ -81,9 +82,6 @@ func (client *DeletedBackupInstancesClient) Get(ctx context.Context, resourceGro
 // getCreateRequest creates the Get request.
 func (client *DeletedBackupInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/deletedBackupInstances/{backupInstanceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -102,7 +100,7 @@ func (client *DeletedBackupInstancesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -118,11 +116,12 @@ func (client *DeletedBackupInstancesClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListPager - Gets deleted backup instances belonging to a backup vault
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// options - DeletedBackupInstancesClientListOptions contains the optional parameters for the DeletedBackupInstancesClient.List
-// method.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the backup vault.
+//   - options - DeletedBackupInstancesClientListOptions contains the optional parameters for the DeletedBackupInstancesClient.NewListPager
+//     method.
 func (client *DeletedBackupInstancesClient) NewListPager(resourceGroupName string, vaultName string, options *DeletedBackupInstancesClientListOptions) *runtime.Pager[DeletedBackupInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeletedBackupInstancesClientListResponse]{
 		More: func(page DeletedBackupInstancesClientListResponse) bool {
@@ -154,9 +153,6 @@ func (client *DeletedBackupInstancesClient) NewListPager(resourceGroupName strin
 // listCreateRequest creates the List request.
 func (client *DeletedBackupInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *DeletedBackupInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/deletedBackupInstances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -171,7 +167,7 @@ func (client *DeletedBackupInstancesClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,12 +184,13 @@ func (client *DeletedBackupInstancesClient) listHandleResponse(resp *http.Respon
 
 // BeginUndelete -
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// backupInstanceName - The name of the deleted backup instance
-// options - DeletedBackupInstancesClientBeginUndeleteOptions contains the optional parameters for the DeletedBackupInstancesClient.BeginUndelete
-// method.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the backup vault.
+//   - backupInstanceName - The name of the deleted backup instance
+//   - options - DeletedBackupInstancesClientBeginUndeleteOptions contains the optional parameters for the DeletedBackupInstancesClient.BeginUndelete
+//     method.
 func (client *DeletedBackupInstancesClient) BeginUndelete(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientBeginUndeleteOptions) (*runtime.Poller[DeletedBackupInstancesClientUndeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.undelete(ctx, resourceGroupName, vaultName, backupInstanceName, options)
@@ -208,7 +205,8 @@ func (client *DeletedBackupInstancesClient) BeginUndelete(ctx context.Context, r
 
 // Undelete -
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01
 func (client *DeletedBackupInstancesClient) undelete(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientBeginUndeleteOptions) (*http.Response, error) {
 	req, err := client.undeleteCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, options)
 	if err != nil {
@@ -227,9 +225,6 @@ func (client *DeletedBackupInstancesClient) undelete(ctx context.Context, resour
 // undeleteCreateRequest creates the Undelete request.
 func (client *DeletedBackupInstancesClient) undeleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientBeginUndeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/deletedBackupInstances/{backupInstanceName}/undelete"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -248,7 +243,7 @@ func (client *DeletedBackupInstancesClient) undeleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

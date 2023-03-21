@@ -83,7 +83,7 @@ func (s *syncer) GetToken(ctx context.Context, opts policy.TokenRequestOptions) 
 		var unavailableErr *credentialUnavailableError
 		if !errors.As(err, &unavailableErr) {
 			res := getResponseFromError(err)
-			err = newAuthenticationFailedError(s.name, err.Error(), res)
+			err = newAuthenticationFailedError(s.name, err.Error(), res, err)
 		}
 	} else if log.Should(EventAuthentication) {
 		scope := strings.Join(opts.Scopes, ", ")

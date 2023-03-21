@@ -13,3 +13,11 @@ func (client *Client) BeginCreateOrUpdate(resourceGroupName string, options *Cli
 type ClientBeginCreateOrUpdateOptions struct{}
 
 type ClientBeginCreateOrUpdateResponse struct{}
+
+func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
+	return &runtime.Pager[ClientListBySubscriptionResponse]
+}
+
+type ClientListBySubscriptionOptions struct{}
+
+type ClientListBySubscriptionResponse struct{}

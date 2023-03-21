@@ -19,23 +19,39 @@ func RapidOpenCloseTest(remainingArgs []string) {
 
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
 
-	for i := 0; i < 100; i++ {
-		log.Printf("[%d] Open/Close", i)
-		client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
-		sc.PanicOnError("failed to create client", err)
+	for round := 0; round < 100; round++ {
+		func() {
+			log.Printf("[%d] Open/Close", round)
+			client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+			sc.PanicOnError("failed to create client", err)
 
-		sender, err := client.NewSender(queueName, nil)
-		sc.PanicOnError("failed to create sender", err)
+			defer func() {
+				err = client.Close(context.Background())
+				sc.PanicOnError("failed to close client", err)
+			}()
 
-		err = sender.SendMessage(context.Background(), &azservicebus.Message{
-			Body: []byte("ping"),
-		}, nil)
-		sc.PanicOnError("failed to send message", err)
+			for i := 0; i < 1000; i++ {
+				sender, err := client.NewSender(queueName, nil)
+				sc.PanicOnError("failed to create sender", err)
 
-		err = sender.Close(sc.Context)
-		sc.PanicOnError("failed to close client", err)
+				err = sender.SendMessage(context.Background(), &azservicebus.Message{
+					Body: []byte("ping"),
+				}, nil)
+				sc.PanicOnError("failed to send message", err)
 
-		err = client.Close(context.Background())
-		sc.PanicOnError("failed to close client", err)
+				err = sender.Close(sc.Context)
+				sc.PanicOnError("failed to close client", err)
+
+				receiver, err := client.NewReceiverForQueue(queueName, nil)
+				sc.NoError(err)
+
+				messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+				sc.NoError(err)
+				sc.Equal(1, len(messages))
+
+				err = receiver.Close(context.Background())
+				sc.NoError(err)
+			}
+		}()
 	}
 }

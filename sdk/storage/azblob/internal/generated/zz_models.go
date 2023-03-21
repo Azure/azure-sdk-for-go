@@ -1070,11 +1070,11 @@ type ContainerProperties struct {
 	RemainingRetentionDays                  *int32             `xml:"RemainingRetentionDays"`
 }
 
-// CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
+// CORSRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
 // domain. Web browsers implement a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
 // domain) to call APIs in another domain
-type CorsRule struct {
+type CORSRule struct {
 	// REQUIRED; the request headers that the origin domain may specify on the CORS request.
 	AllowedHeaders *string `xml:"AllowedHeaders"`
 
@@ -1680,7 +1680,7 @@ type StorageError struct {
 // StorageServiceProperties - Storage Service Properties.
 type StorageServiceProperties struct {
 	// The set of CORS rules.
-	Cors []*CorsRule `xml:"Cors>CorsRule"`
+	CORS []*CORSRule `xml:"Cors>CorsRule"`
 
 	// The default version to use for requests to the Blob service if an incoming request's version is not specified. Possible
 	// values include version 2008-10-27 and all more recent versions

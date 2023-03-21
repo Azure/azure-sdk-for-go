@@ -12,6 +12,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
@@ -24,19 +26,19 @@ const (
 func TestGetEnv(t *testing.T) {
 	err := os.Setenv("test", "test")
 	require.NoError(t, err)
-	require.Equal(t, GetEnv("test", ""), "test")
-	require.Equal(t, GetEnv("testfail", "fail"), "fail")
+	require.Equal(t, "test", GetEnv("test", ""))
+	require.Equal(t, "fail", GetEnv("testfail", "fail"))
 }
 
 func TestCreateDeleteResourceGroup(t *testing.T) {
 	ctx := context.Background()
 	cred, options := GetCredAndClientOptions(t)
-	subscriptionID := GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	stop := StartRecording(t, pathToPackage)
 	defer stop()
 	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
 	require.NoError(t, err)
-	require.Equal(t, strings.HasPrefix(*resourceGroup.Name, "go-sdk-test-"), true)
+	require.True(t, strings.HasPrefix(*resourceGroup.Name, "go-sdk-test-"))
 	_, err = DeleteResourceGroup(ctx, subscriptionID, cred, options, *resourceGroup.Name)
 	require.NoError(t, err)
 }
@@ -44,7 +46,7 @@ func TestCreateDeleteResourceGroup(t *testing.T) {
 func TestCreateDeployment(t *testing.T) {
 	ctx := context.Background()
 	cred, options := GetCredAndClientOptions(t)
-	subscriptionID := GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	stop := StartRecording(t, pathToPackage)
 	defer stop()
 	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")

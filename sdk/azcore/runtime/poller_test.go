@@ -8,6 +8,7 @@ package runtime
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -1083,4 +1084,95 @@ func TestNewPollerWithResponseType(t *testing.T) {
 	if result.Preconstructed != 12345 {
 		t.Fatalf("unexpected value %d", result.Preconstructed)
 	}
+}
+
+// purposefully looks like an async poller but isn't
+type customHandler struct {
+	PollURL string `json:"asyncURL"`
+	State   string `json:"state"`
+	p       Pipeline
+}
+
+func (c *customHandler) Done() bool {
+	return c.State == "Succeeded"
+}
+
+func (c *customHandler) Poll(ctx context.Context) (*http.Response, error) {
+	req, err := NewRequest(ctx, http.MethodGet, c.PollURL)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.p.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	body, err := Payload(resp)
+	if err != nil {
+		return nil, err
+	}
+	type statusMon struct {
+		Status string `json:"status"`
+	}
+	var sm statusMon
+	if err = json.Unmarshal(body, &sm); err != nil {
+		return nil, err
+	}
+	c.State = sm.Status
+	return resp, nil
+}
+
+func (c *customHandler) Result(ctx context.Context, out *mockType) error {
+	req, err := NewRequest(ctx, http.MethodGet, c.PollURL)
+	if err != nil {
+		return err
+	}
+	resp, err := c.p.Do(req)
+	if err != nil {
+		return err
+	}
+	body, err := Payload(resp)
+	if err != nil {
+		return err
+	}
+	if err = json.Unmarshal(body, out); err != nil {
+		return err
+	}
+	return nil
+}
+
+func TestNewPollerWithCustomHandler(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
+	srv.AppendResponse(mock.WithBody([]byte(statusSucceeded)))
+	srv.AppendResponse(mock.WithBody([]byte(successResp)))
+	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller(resp, pl, &NewPollerOptions[mockType]{
+		Handler: &customHandler{
+			PollURL: srv.URL(),
+			State:   "InProgress",
+			p:       pl,
+		},
+	})
+	require.NoError(t, err)
+	require.False(t, closed())
+	require.IsType(t, &customHandler{}, poller.op)
+	tk, err := poller.ResumeToken()
+	require.NoError(t, err)
+	poller, err = NewPollerFromResumeToken(tk, pl, &NewPollerFromResumeTokenOptions[mockType]{
+		Handler: &customHandler{
+			p: pl,
+		},
+	})
+	require.IsType(t, &customHandler{}, poller.op)
+	require.NoError(t, err)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
+	require.NoError(t, err)
+	require.EqualValues(t, "value", *result.Field)
+	result, err = poller.Result(context.Background())
+	require.NoError(t, err)
+	require.EqualValues(t, "value", *result.Field)
 }

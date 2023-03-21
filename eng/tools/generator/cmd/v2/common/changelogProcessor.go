@@ -276,6 +276,31 @@ func FuncFilter(changelog *model.Changelog) {
 
 	if changelog.Modified.HasBreakingChanges() {
 		funcOperation(changelog.Modified.BreakingChanges.Removed)
+
+		// function operation parameters from interface{} to any is not a breaking change
+		for f, v := range changelog.Modified.BreakingChanges.Funcs {
+			from := strings.Split(v.Params.From, ",")
+			to := strings.Split(v.Params.To, ",")
+			if len(from) != len(to) {
+				continue
+			}
+
+			flag := false
+			for i := range from {
+				if strings.TrimSpace(from[i]) != strings.TrimSpace(to[i]) {
+					if strings.TrimSpace(from[i]) == "interface{}" && strings.TrimSpace(to[i]) == "any" {
+						flag = true
+					} else {
+						flag = false
+						break
+					}
+				}
+			}
+
+			if flag {
+				delete(changelog.Modified.BreakingChanges.Funcs, f)
+			}
+		}
 	}
 }
 
@@ -305,7 +330,7 @@ func funcOperation(content *delta.Content) {
 				if funcValue.Returns != nil {
 					rs := strings.Split(*funcValue.Returns, ",")
 					clientFuncResponse := rs[0]
-					if strings.Contains(clientFunc[1], "runtime.Poller") {
+					if strings.Contains(clientFuncResponse, "runtime") {
 						re := regexp.MustCompile("\\[(?P<response>.*)\\]")
 						clientFuncResponse = re.FindString(clientFuncResponse)
 						clientFuncResponse = re.ReplaceAllString(clientFuncResponse, "${response}")
@@ -337,7 +362,7 @@ func LROFilter(changelog *model.Changelog) {
 			clientFunc := strings.Split(bFunc, ".")
 			if len(clientFunc) == 2 {
 				if strings.Contains(clientFunc[1], "Begin") {
-					clientFunc[1] = strings.ReplaceAll(clientFunc[1], "Being", "")
+					clientFunc[1] = strings.TrimPrefix(clientFunc[1], "Begin")
 					beginFunc = fmt.Sprintf("%s.%s", clientFunc[0], clientFunc[1])
 				} else {
 					beginFunc = fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])
@@ -345,6 +370,30 @@ func LROFilter(changelog *model.Changelog) {
 				if _, ok := changelog.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
 					delete(changelog.Modified.AdditiveChanges.Funcs, beginFunc)
 					v.ReplacedBy = &beginFunc
+					removedContent.Funcs[bFunc] = v
+				}
+			}
+		}
+	}
+}
+
+// PageableFilter PageableFilter after OperationFilter
+func PageableFilter(changelog *model.Changelog) {
+	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && changelog.Modified.BreakingChanges.Removed != nil && changelog.Modified.BreakingChanges.Removed.Funcs != nil {
+		removedContent := changelog.Modified.BreakingChanges.Removed
+		for bFunc, v := range removedContent.Funcs {
+			var pagination string
+			clientFunc := strings.Split(bFunc, ".")
+			if len(clientFunc) == 2 {
+				if strings.Contains(clientFunc[1], "New") && strings.Contains(clientFunc[1], "Pager") {
+					clientFunc[1] = strings.TrimPrefix(strings.TrimSuffix(clientFunc[1], "Pager"), "New")
+					pagination = fmt.Sprintf("%s.%s", clientFunc[0], clientFunc[1])
+				} else {
+					pagination = fmt.Sprintf("%s.New%sPager", clientFunc[0], clientFunc[1])
+				}
+				if _, ok := changelog.Modified.AdditiveChanges.Funcs[pagination]; ok {
+					delete(changelog.Modified.AdditiveChanges.Funcs, pagination)
+					v.ReplacedBy = &pagination
 					removedContent.Funcs[bFunc] = v
 				}
 			}

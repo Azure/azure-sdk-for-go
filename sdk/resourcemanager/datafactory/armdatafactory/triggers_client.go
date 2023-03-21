@@ -32,9 +32,9 @@ type TriggersClient struct {
 }
 
 // NewTriggersClient creates a new instance of TriggersClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Creates or updates a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// trigger - Trigger resource definition.
-// options - TriggersClientCreateOrUpdateOptions contains the optional parameters for the TriggersClient.CreateOrUpdate method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - trigger - Trigger resource definition.
+//   - options - TriggersClientCreateOrUpdateOptions contains the optional parameters for the TriggersClient.CreateOrUpdate method.
 func (client *TriggersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, trigger TriggerResource, options *TriggersClientCreateOrUpdateOptions) (TriggersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, triggerName, trigger, options)
 	if err != nil {
@@ -122,11 +123,12 @@ func (client *TriggersClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// options - TriggersClientDeleteOptions contains the optional parameters for the TriggersClient.Delete method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - options - TriggersClientDeleteOptions contains the optional parameters for the TriggersClient.Delete method.
 func (client *TriggersClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientDeleteOptions) (TriggersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
@@ -174,11 +176,12 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// options - TriggersClientGetOptions contains the optional parameters for the TriggersClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - options - TriggersClientGetOptions contains the optional parameters for the TriggersClient.Get method.
 func (client *TriggersClient) Get(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientGetOptions) (TriggersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
@@ -238,12 +241,13 @@ func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersCl
 
 // GetEventSubscriptionStatus - Get a trigger's event subscription status.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// options - TriggersClientGetEventSubscriptionStatusOptions contains the optional parameters for the TriggersClient.GetEventSubscriptionStatus
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - options - TriggersClientGetEventSubscriptionStatusOptions contains the optional parameters for the TriggersClient.GetEventSubscriptionStatus
+//     method.
 func (client *TriggersClient) GetEventSubscriptionStatus(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientGetEventSubscriptionStatusOptions) (TriggersClientGetEventSubscriptionStatusResponse, error) {
 	req, err := client.getEventSubscriptionStatusCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
@@ -299,10 +303,12 @@ func (client *TriggersClient) getEventSubscriptionStatusHandleResponse(resp *htt
 }
 
 // NewListByFactoryPager - Lists triggers.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - TriggersClientListByFactoryOptions contains the optional parameters for the TriggersClient.ListByFactory method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - TriggersClientListByFactoryOptions contains the optional parameters for the TriggersClient.NewListByFactoryPager
+//     method.
 func (client *TriggersClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *TriggersClientListByFactoryOptions) *runtime.Pager[TriggersClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TriggersClientListByFactoryResponse]{
 		More: func(page TriggersClientListByFactoryResponse) bool {
@@ -368,11 +374,12 @@ func (client *TriggersClient) listByFactoryHandleResponse(resp *http.Response) (
 
 // QueryByFactory - Query triggers.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// filterParameters - Parameters to filter the triggers.
-// options - TriggersClientQueryByFactoryOptions contains the optional parameters for the TriggersClient.QueryByFactory method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - filterParameters - Parameters to filter the triggers.
+//   - options - TriggersClientQueryByFactoryOptions contains the optional parameters for the TriggersClient.QueryByFactory method.
 func (client *TriggersClient) QueryByFactory(ctx context.Context, resourceGroupName string, factoryName string, filterParameters TriggerFilterParameters, options *TriggersClientQueryByFactoryOptions) (TriggersClientQueryByFactoryResponse, error) {
 	req, err := client.queryByFactoryCreateRequest(ctx, resourceGroupName, factoryName, filterParameters, options)
 	if err != nil {
@@ -425,11 +432,12 @@ func (client *TriggersClient) queryByFactoryHandleResponse(resp *http.Response) 
 
 // BeginStart - Starts a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// options - TriggersClientBeginStartOptions contains the optional parameters for the TriggersClient.BeginStart method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - options - TriggersClientBeginStartOptions contains the optional parameters for the TriggersClient.BeginStart method.
 func (client *TriggersClient) BeginStart(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStartOptions) (*runtime.Poller[TriggersClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, factoryName, triggerName, options)
@@ -444,6 +452,7 @@ func (client *TriggersClient) BeginStart(ctx context.Context, resourceGroupName 
 
 // Start - Starts a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *TriggersClient) start(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
@@ -492,11 +501,12 @@ func (client *TriggersClient) startCreateRequest(ctx context.Context, resourceGr
 
 // BeginStop - Stops a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// options - TriggersClientBeginStopOptions contains the optional parameters for the TriggersClient.BeginStop method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - options - TriggersClientBeginStopOptions contains the optional parameters for the TriggersClient.BeginStop method.
 func (client *TriggersClient) BeginStop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStopOptions) (*runtime.Poller[TriggersClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, factoryName, triggerName, options)
@@ -511,6 +521,7 @@ func (client *TriggersClient) BeginStop(ctx context.Context, resourceGroupName s
 
 // Stop - Stops a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *TriggersClient) stop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
@@ -559,12 +570,13 @@ func (client *TriggersClient) stopCreateRequest(ctx context.Context, resourceGro
 
 // BeginSubscribeToEvents - Subscribe event trigger to events.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// options - TriggersClientBeginSubscribeToEventsOptions contains the optional parameters for the TriggersClient.BeginSubscribeToEvents
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - options - TriggersClientBeginSubscribeToEventsOptions contains the optional parameters for the TriggersClient.BeginSubscribeToEvents
+//     method.
 func (client *TriggersClient) BeginSubscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginSubscribeToEventsOptions) (*runtime.Poller[TriggersClientSubscribeToEventsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.subscribeToEvents(ctx, resourceGroupName, factoryName, triggerName, options)
@@ -579,6 +591,7 @@ func (client *TriggersClient) BeginSubscribeToEvents(ctx context.Context, resour
 
 // SubscribeToEvents - Subscribe event trigger to events.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *TriggersClient) subscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginSubscribeToEventsOptions) (*http.Response, error) {
 	req, err := client.subscribeToEventsCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
@@ -627,12 +640,13 @@ func (client *TriggersClient) subscribeToEventsCreateRequest(ctx context.Context
 
 // BeginUnsubscribeFromEvents - Unsubscribe event trigger from events.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// options - TriggersClientBeginUnsubscribeFromEventsOptions contains the optional parameters for the TriggersClient.BeginUnsubscribeFromEvents
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - options - TriggersClientBeginUnsubscribeFromEventsOptions contains the optional parameters for the TriggersClient.BeginUnsubscribeFromEvents
+//     method.
 func (client *TriggersClient) BeginUnsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginUnsubscribeFromEventsOptions) (*runtime.Poller[TriggersClientUnsubscribeFromEventsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.unsubscribeFromEvents(ctx, resourceGroupName, factoryName, triggerName, options)
@@ -647,6 +661,7 @@ func (client *TriggersClient) BeginUnsubscribeFromEvents(ctx context.Context, re
 
 // UnsubscribeFromEvents - Unsubscribe event trigger from events.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *TriggersClient) unsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginUnsubscribeFromEventsOptions) (*http.Response, error) {
 	req, err := client.unsubscribeFromEventsCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)

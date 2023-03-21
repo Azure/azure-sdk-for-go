@@ -32,9 +32,9 @@ type DataFlowsClient struct {
 }
 
 // NewDataFlowsClient creates a new instance of DataFlowsClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDataFlowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataFlowsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,13 +57,14 @@ func NewDataFlowsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Creates or updates a data flow.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// dataFlowName - The data flow name.
-// dataFlow - Data flow resource definition.
-// options - DataFlowsClientCreateOrUpdateOptions contains the optional parameters for the DataFlowsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - dataFlowName - The data flow name.
+//   - dataFlow - Data flow resource definition.
+//   - options - DataFlowsClientCreateOrUpdateOptions contains the optional parameters for the DataFlowsClient.CreateOrUpdate
+//     method.
 func (client *DataFlowsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, dataFlow DataFlowResource, options *DataFlowsClientCreateOrUpdateOptions) (DataFlowsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, dataFlowName, dataFlow, options)
 	if err != nil {
@@ -123,11 +124,12 @@ func (client *DataFlowsClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Deletes a data flow.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// dataFlowName - The data flow name.
-// options - DataFlowsClientDeleteOptions contains the optional parameters for the DataFlowsClient.Delete method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - dataFlowName - The data flow name.
+//   - options - DataFlowsClientDeleteOptions contains the optional parameters for the DataFlowsClient.Delete method.
 func (client *DataFlowsClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsClientDeleteOptions) (DataFlowsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, dataFlowName, options)
 	if err != nil {
@@ -175,11 +177,12 @@ func (client *DataFlowsClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Gets a data flow.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// dataFlowName - The data flow name.
-// options - DataFlowsClientGetOptions contains the optional parameters for the DataFlowsClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - dataFlowName - The data flow name.
+//   - options - DataFlowsClientGetOptions contains the optional parameters for the DataFlowsClient.Get method.
 func (client *DataFlowsClient) Get(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsClientGetOptions) (DataFlowsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, dataFlowName, options)
 	if err != nil {
@@ -238,10 +241,12 @@ func (client *DataFlowsClient) getHandleResponse(resp *http.Response) (DataFlows
 }
 
 // NewListByFactoryPager - Lists data flows.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - DataFlowsClientListByFactoryOptions contains the optional parameters for the DataFlowsClient.ListByFactory method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - DataFlowsClientListByFactoryOptions contains the optional parameters for the DataFlowsClient.NewListByFactoryPager
+//     method.
 func (client *DataFlowsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *DataFlowsClientListByFactoryOptions) *runtime.Pager[DataFlowsClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataFlowsClientListByFactoryResponse]{
 		More: func(page DataFlowsClientListByFactoryResponse) bool {

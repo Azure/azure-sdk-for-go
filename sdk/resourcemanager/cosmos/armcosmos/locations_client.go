@@ -32,9 +32,9 @@ type LocationsClient struct {
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,9 +57,10 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Get the properties of an existing Cosmos DB location
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-15-preview
-// location - Cosmos DB region, with spaces between words and each word capitalized.
-// options - LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
+//
+// Generated from API version 2022-11-15
+//   - location - Cosmos DB region, with spaces between words and each word capitalized.
+//   - options - LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
 func (client *LocationsClient) Get(ctx context.Context, location string, options *LocationsClientGetOptions) (LocationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, options)
 	if err != nil {
@@ -91,7 +92,7 @@ func (client *LocationsClient) getCreateRequest(ctx context.Context, location st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -107,8 +108,9 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 }
 
 // NewListPager - List Cosmos DB locations and their properties
-// Generated from API version 2022-08-15-preview
-// options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
+//
+// Generated from API version 2022-11-15
+//   - options - LocationsClientListOptions contains the optional parameters for the LocationsClient.NewListPager method.
 func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LocationsClientListResponse]{
 		More: func(page LocationsClientListResponse) bool {
@@ -143,7 +145,7 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, options *L
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

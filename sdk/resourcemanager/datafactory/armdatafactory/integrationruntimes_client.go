@@ -32,9 +32,9 @@ type IntegrationRuntimesClient struct {
 }
 
 // NewIntegrationRuntimesClient creates a new instance of IntegrationRuntimesClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIntegrationRuntimesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationRuntimesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,13 +57,14 @@ func NewIntegrationRuntimesClient(subscriptionID string, credential azcore.Token
 
 // CreateLinkedIntegrationRuntime - Create a linked integration runtime entry in a shared integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// createLinkedIntegrationRuntimeRequest - The linked integration runtime properties.
-// options - IntegrationRuntimesClientCreateLinkedIntegrationRuntimeOptions contains the optional parameters for the IntegrationRuntimesClient.CreateLinkedIntegrationRuntime
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - createLinkedIntegrationRuntimeRequest - The linked integration runtime properties.
+//   - options - IntegrationRuntimesClientCreateLinkedIntegrationRuntimeOptions contains the optional parameters for the IntegrationRuntimesClient.CreateLinkedIntegrationRuntime
+//     method.
 func (client *IntegrationRuntimesClient) CreateLinkedIntegrationRuntime(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, createLinkedIntegrationRuntimeRequest CreateLinkedIntegrationRuntimeRequest, options *IntegrationRuntimesClientCreateLinkedIntegrationRuntimeOptions) (IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse, error) {
 	req, err := client.createLinkedIntegrationRuntimeCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest, options)
 	if err != nil {
@@ -120,13 +121,14 @@ func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeHandleRes
 
 // CreateOrUpdate - Creates or updates an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// integrationRuntime - Integration runtime resource definition.
-// options - IntegrationRuntimesClientCreateOrUpdateOptions contains the optional parameters for the IntegrationRuntimesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - integrationRuntime - Integration runtime resource definition.
+//   - options - IntegrationRuntimesClientCreateOrUpdateOptions contains the optional parameters for the IntegrationRuntimesClient.CreateOrUpdate
+//     method.
 func (client *IntegrationRuntimesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntime IntegrationRuntimeResource, options *IntegrationRuntimesClientCreateOrUpdateOptions) (IntegrationRuntimesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, integrationRuntime, options)
 	if err != nil {
@@ -186,12 +188,13 @@ func (client *IntegrationRuntimesClient) createOrUpdateHandleResponse(resp *http
 
 // Delete - Deletes an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientDeleteOptions contains the optional parameters for the IntegrationRuntimesClient.Delete
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientDeleteOptions contains the optional parameters for the IntegrationRuntimesClient.Delete
+//     method.
 func (client *IntegrationRuntimesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientDeleteOptions) (IntegrationRuntimesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -239,11 +242,12 @@ func (client *IntegrationRuntimesClient) deleteCreateRequest(ctx context.Context
 
 // Get - Gets an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientGetOptions contains the optional parameters for the IntegrationRuntimesClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientGetOptions contains the optional parameters for the IntegrationRuntimesClient.Get method.
 func (client *IntegrationRuntimesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetOptions) (IntegrationRuntimesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -304,12 +308,13 @@ func (client *IntegrationRuntimesClient) getHandleResponse(resp *http.Response) 
 // GetConnectionInfo - Gets the on-premises integration runtime connection information for encrypting the on-premises data
 // source credentials.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientGetConnectionInfoOptions contains the optional parameters for the IntegrationRuntimesClient.GetConnectionInfo
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientGetConnectionInfoOptions contains the optional parameters for the IntegrationRuntimesClient.GetConnectionInfo
+//     method.
 func (client *IntegrationRuntimesClient) GetConnectionInfo(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetConnectionInfoOptions) (IntegrationRuntimesClientGetConnectionInfoResponse, error) {
 	req, err := client.getConnectionInfoCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -367,12 +372,13 @@ func (client *IntegrationRuntimesClient) getConnectionInfoHandleResponse(resp *h
 // GetMonitoringData - Get the integration runtime monitoring data, which includes the monitor data for all the nodes under
 // this integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientGetMonitoringDataOptions contains the optional parameters for the IntegrationRuntimesClient.GetMonitoringData
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientGetMonitoringDataOptions contains the optional parameters for the IntegrationRuntimesClient.GetMonitoringData
+//     method.
 func (client *IntegrationRuntimesClient) GetMonitoringData(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetMonitoringDataOptions) (IntegrationRuntimesClientGetMonitoringDataResponse, error) {
 	req, err := client.getMonitoringDataCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -429,12 +435,13 @@ func (client *IntegrationRuntimesClient) getMonitoringDataHandleResponse(resp *h
 
 // GetStatus - Gets detailed status information for an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientGetStatusOptions contains the optional parameters for the IntegrationRuntimesClient.GetStatus
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientGetStatusOptions contains the optional parameters for the IntegrationRuntimesClient.GetStatus
+//     method.
 func (client *IntegrationRuntimesClient) GetStatus(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientGetStatusOptions) (IntegrationRuntimesClientGetStatusResponse, error) {
 	req, err := client.getStatusCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -491,12 +498,13 @@ func (client *IntegrationRuntimesClient) getStatusHandleResponse(resp *http.Resp
 
 // ListAuthKeys - Retrieves the authentication keys for an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientListAuthKeysOptions contains the optional parameters for the IntegrationRuntimesClient.ListAuthKeys
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientListAuthKeysOptions contains the optional parameters for the IntegrationRuntimesClient.ListAuthKeys
+//     method.
 func (client *IntegrationRuntimesClient) ListAuthKeys(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientListAuthKeysOptions) (IntegrationRuntimesClientListAuthKeysResponse, error) {
 	req, err := client.listAuthKeysCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -552,11 +560,12 @@ func (client *IntegrationRuntimesClient) listAuthKeysHandleResponse(resp *http.R
 }
 
 // NewListByFactoryPager - Lists integration runtimes.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - IntegrationRuntimesClientListByFactoryOptions contains the optional parameters for the IntegrationRuntimesClient.ListByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - IntegrationRuntimesClientListByFactoryOptions contains the optional parameters for the IntegrationRuntimesClient.NewListByFactoryPager
+//     method.
 func (client *IntegrationRuntimesClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *IntegrationRuntimesClientListByFactoryOptions) *runtime.Pager[IntegrationRuntimesClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IntegrationRuntimesClientListByFactoryResponse]{
 		More: func(page IntegrationRuntimesClientListByFactoryResponse) bool {
@@ -623,12 +632,13 @@ func (client *IntegrationRuntimesClient) listByFactoryHandleResponse(resp *http.
 // ListOutboundNetworkDependenciesEndpoints - Gets the list of outbound network dependencies for a given Azure-SSIS integration
 // runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for
-// the IntegrationRuntimesClient.ListOutboundNetworkDependenciesEndpoints method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for
+//     the IntegrationRuntimesClient.ListOutboundNetworkDependenciesEndpoints method.
 func (client *IntegrationRuntimesClient) ListOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions) (IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse, error) {
 	req, err := client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -685,13 +695,14 @@ func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpoint
 
 // RegenerateAuthKey - Regenerates the authentication key for an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// regenerateKeyParameters - The parameters for regenerating integration runtime authentication key.
-// options - IntegrationRuntimesClientRegenerateAuthKeyOptions contains the optional parameters for the IntegrationRuntimesClient.RegenerateAuthKey
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - regenerateKeyParameters - The parameters for regenerating integration runtime authentication key.
+//   - options - IntegrationRuntimesClientRegenerateAuthKeyOptions contains the optional parameters for the IntegrationRuntimesClient.RegenerateAuthKey
+//     method.
 func (client *IntegrationRuntimesClient) RegenerateAuthKey(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, regenerateKeyParameters IntegrationRuntimeRegenerateKeyParameters, options *IntegrationRuntimesClientRegenerateAuthKeyOptions) (IntegrationRuntimesClientRegenerateAuthKeyResponse, error) {
 	req, err := client.regenerateAuthKeyCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters, options)
 	if err != nil {
@@ -748,13 +759,14 @@ func (client *IntegrationRuntimesClient) regenerateAuthKeyHandleResponse(resp *h
 
 // RemoveLinks - Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// linkedIntegrationRuntimeRequest - The data factory name for the linked integration runtime.
-// options - IntegrationRuntimesClientRemoveLinksOptions contains the optional parameters for the IntegrationRuntimesClient.RemoveLinks
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - linkedIntegrationRuntimeRequest - The data factory name for the linked integration runtime.
+//   - options - IntegrationRuntimesClientRemoveLinksOptions contains the optional parameters for the IntegrationRuntimesClient.RemoveLinks
+//     method.
 func (client *IntegrationRuntimesClient) RemoveLinks(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, linkedIntegrationRuntimeRequest LinkedIntegrationRuntimeRequest, options *IntegrationRuntimesClientRemoveLinksOptions) (IntegrationRuntimesClientRemoveLinksResponse, error) {
 	req, err := client.removeLinksCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest, options)
 	if err != nil {
@@ -802,12 +814,13 @@ func (client *IntegrationRuntimesClient) removeLinksCreateRequest(ctx context.Co
 
 // BeginStart - Starts a ManagedReserved type integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientBeginStartOptions contains the optional parameters for the IntegrationRuntimesClient.BeginStart
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientBeginStartOptions contains the optional parameters for the IntegrationRuntimesClient.BeginStart
+//     method.
 func (client *IntegrationRuntimesClient) BeginStart(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (*runtime.Poller[IntegrationRuntimesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
@@ -822,6 +835,7 @@ func (client *IntegrationRuntimesClient) BeginStart(ctx context.Context, resourc
 
 // Start - Starts a ManagedReserved type integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *IntegrationRuntimesClient) start(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
@@ -870,12 +884,13 @@ func (client *IntegrationRuntimesClient) startCreateRequest(ctx context.Context,
 
 // BeginStop - Stops a ManagedReserved type integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientBeginStopOptions contains the optional parameters for the IntegrationRuntimesClient.BeginStop
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientBeginStopOptions contains the optional parameters for the IntegrationRuntimesClient.BeginStop
+//     method.
 func (client *IntegrationRuntimesClient) BeginStop(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (*runtime.Poller[IntegrationRuntimesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
@@ -890,6 +905,7 @@ func (client *IntegrationRuntimesClient) BeginStop(ctx context.Context, resource
 
 // Stop - Stops a ManagedReserved type integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *IntegrationRuntimesClient) stop(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
@@ -941,12 +957,13 @@ func (client *IntegrationRuntimesClient) stopCreateRequest(ctx context.Context, 
 // If you already have the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
 // runtime node than using this API directly.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientSyncCredentialsOptions contains the optional parameters for the IntegrationRuntimesClient.SyncCredentials
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientSyncCredentialsOptions contains the optional parameters for the IntegrationRuntimesClient.SyncCredentials
+//     method.
 func (client *IntegrationRuntimesClient) SyncCredentials(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientSyncCredentialsOptions) (IntegrationRuntimesClientSyncCredentialsResponse, error) {
 	req, err := client.syncCredentialsCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -994,13 +1011,14 @@ func (client *IntegrationRuntimesClient) syncCredentialsCreateRequest(ctx contex
 
 // Update - Updates an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// updateIntegrationRuntimeRequest - The parameters for updating an integration runtime.
-// options - IntegrationRuntimesClientUpdateOptions contains the optional parameters for the IntegrationRuntimesClient.Update
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - updateIntegrationRuntimeRequest - The parameters for updating an integration runtime.
+//   - options - IntegrationRuntimesClientUpdateOptions contains the optional parameters for the IntegrationRuntimesClient.Update
+//     method.
 func (client *IntegrationRuntimesClient) Update(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, updateIntegrationRuntimeRequest UpdateIntegrationRuntimeRequest, options *IntegrationRuntimesClientUpdateOptions) (IntegrationRuntimesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, updateIntegrationRuntimeRequest, options)
 	if err != nil {
@@ -1057,12 +1075,13 @@ func (client *IntegrationRuntimesClient) updateHandleResponse(resp *http.Respons
 
 // Upgrade - Upgrade self-hosted integration runtime to latest version if availability.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimesClientUpgradeOptions contains the optional parameters for the IntegrationRuntimesClient.Upgrade
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimesClientUpgradeOptions contains the optional parameters for the IntegrationRuntimesClient.Upgrade
+//     method.
 func (client *IntegrationRuntimesClient) Upgrade(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientUpgradeOptions) (IntegrationRuntimesClientUpgradeResponse, error) {
 	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {

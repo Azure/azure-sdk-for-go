@@ -32,9 +32,9 @@ type DataFlowDebugSessionClient struct {
 }
 
 // NewDataFlowDebugSessionClient creates a new instance of DataFlowDebugSessionClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDataFlowDebugSessionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataFlowDebugSessionClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewDataFlowDebugSessionClient(subscriptionID string, credential azcore.Toke
 
 // AddDataFlow - Add a data flow into debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// request - Data flow debug session definition with debug content.
-// options - DataFlowDebugSessionClientAddDataFlowOptions contains the optional parameters for the DataFlowDebugSessionClient.AddDataFlow
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - request - Data flow debug session definition with debug content.
+//   - options - DataFlowDebugSessionClientAddDataFlowOptions contains the optional parameters for the DataFlowDebugSessionClient.AddDataFlow
+//     method.
 func (client *DataFlowDebugSessionClient) AddDataFlow(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugPackage, options *DataFlowDebugSessionClientAddDataFlowOptions) (DataFlowDebugSessionClientAddDataFlowResponse, error) {
 	req, err := client.addDataFlowCreateRequest(ctx, resourceGroupName, factoryName, request, options)
 	if err != nil {
@@ -115,12 +116,13 @@ func (client *DataFlowDebugSessionClient) addDataFlowHandleResponse(resp *http.R
 
 // BeginCreate - Creates a data flow debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// request - Data flow debug session definition
-// options - DataFlowDebugSessionClientBeginCreateOptions contains the optional parameters for the DataFlowDebugSessionClient.BeginCreate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - request - Data flow debug session definition
+//   - options - DataFlowDebugSessionClientBeginCreateOptions contains the optional parameters for the DataFlowDebugSessionClient.BeginCreate
+//     method.
 func (client *DataFlowDebugSessionClient) BeginCreate(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionClientBeginCreateOptions) (*runtime.Poller[DataFlowDebugSessionClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, factoryName, request, options)
@@ -135,6 +137,7 @@ func (client *DataFlowDebugSessionClient) BeginCreate(ctx context.Context, resou
 
 // Create - Creates a data flow debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *DataFlowDebugSessionClient) create(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, factoryName, request, options)
@@ -179,12 +182,13 @@ func (client *DataFlowDebugSessionClient) createCreateRequest(ctx context.Contex
 
 // Delete - Deletes a data flow debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// request - Data flow debug session definition for deletion
-// options - DataFlowDebugSessionClientDeleteOptions contains the optional parameters for the DataFlowDebugSessionClient.Delete
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - request - Data flow debug session definition for deletion
+//   - options - DataFlowDebugSessionClientDeleteOptions contains the optional parameters for the DataFlowDebugSessionClient.Delete
+//     method.
 func (client *DataFlowDebugSessionClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, request DeleteDataFlowDebugSessionRequest, options *DataFlowDebugSessionClientDeleteOptions) (DataFlowDebugSessionClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, request, options)
 	if err != nil {
@@ -228,12 +232,13 @@ func (client *DataFlowDebugSessionClient) deleteCreateRequest(ctx context.Contex
 
 // BeginExecuteCommand - Execute a data flow debug command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// request - Data flow debug command definition.
-// options - DataFlowDebugSessionClientBeginExecuteCommandOptions contains the optional parameters for the DataFlowDebugSessionClient.BeginExecuteCommand
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - request - Data flow debug command definition.
+//   - options - DataFlowDebugSessionClientBeginExecuteCommandOptions contains the optional parameters for the DataFlowDebugSessionClient.BeginExecuteCommand
+//     method.
 func (client *DataFlowDebugSessionClient) BeginExecuteCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionClientBeginExecuteCommandOptions) (*runtime.Poller[DataFlowDebugSessionClientExecuteCommandResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.executeCommand(ctx, resourceGroupName, factoryName, request, options)
@@ -248,6 +253,7 @@ func (client *DataFlowDebugSessionClient) BeginExecuteCommand(ctx context.Contex
 
 // ExecuteCommand - Execute a data flow debug command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *DataFlowDebugSessionClient) executeCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionClientBeginExecuteCommandOptions) (*http.Response, error) {
 	req, err := client.executeCommandCreateRequest(ctx, resourceGroupName, factoryName, request, options)
@@ -291,11 +297,12 @@ func (client *DataFlowDebugSessionClient) executeCommandCreateRequest(ctx contex
 }
 
 // NewQueryByFactoryPager - Query all active data flow debug sessions.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - DataFlowDebugSessionClientQueryByFactoryOptions contains the optional parameters for the DataFlowDebugSessionClient.QueryByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - DataFlowDebugSessionClientQueryByFactoryOptions contains the optional parameters for the DataFlowDebugSessionClient.NewQueryByFactoryPager
+//     method.
 func (client *DataFlowDebugSessionClient) NewQueryByFactoryPager(resourceGroupName string, factoryName string, options *DataFlowDebugSessionClientQueryByFactoryOptions) *runtime.Pager[DataFlowDebugSessionClientQueryByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataFlowDebugSessionClientQueryByFactoryResponse]{
 		More: func(page DataFlowDebugSessionClientQueryByFactoryResponse) bool {

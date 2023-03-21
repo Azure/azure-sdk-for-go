@@ -112,25 +112,6 @@ func TestAccountPermissions_ParseNegative(t *testing.T) {
 	require.Contains(t, err.Error(), "122")
 }
 
-func TestAccountServices_String(t *testing.T) {
-	testdata := []struct {
-		input    AccountServices
-		expected string
-	}{
-		{input: AccountServices{Blob: true}, expected: "b"},
-		{input: AccountServices{Queue: true}, expected: "q"},
-		{input: AccountServices{File: true}, expected: "f"},
-		{input: AccountServices{
-			Blob:  true,
-			Queue: true,
-			File:  true,
-		}, expected: "bqf"},
-	}
-	for _, c := range testdata {
-		require.Equal(t, c.expected, c.input.String())
-	}
-}
-
 func TestAccountResourceTypes_String(t *testing.T) {
 	testdata := []struct {
 		input    AccountResourceTypes
@@ -148,6 +129,38 @@ func TestAccountResourceTypes_String(t *testing.T) {
 	for _, c := range testdata {
 		require.Equal(t, c.expected, c.input.String())
 	}
+}
+
+func TestAccountResourceTypes_Parse(t *testing.T) {
+	testdata := []struct {
+		input    string
+		expected AccountResourceTypes
+	}{
+		{expected: AccountResourceTypes{Service: true}, input: "s"},
+		{expected: AccountResourceTypes{Container: true}, input: "c"},
+		{expected: AccountResourceTypes{Object: true}, input: "o"},
+		{expected: AccountResourceTypes{
+			Service:   true,
+			Container: true,
+			Object:    true,
+		}, input: "sco"},
+		{expected: AccountResourceTypes{
+			Service:   true,
+			Container: true,
+			Object:    true,
+		}, input: "osc"},
+	}
+	for _, c := range testdata {
+		permissions, err := parseAccountResourceTypes(c.input)
+		require.Nil(t, err)
+		require.Equal(t, c.expected, permissions)
+	}
+}
+
+func TestAccountResourceTypes_ParseNegative(t *testing.T) {
+	_, err := parseAccountResourceTypes("scoz") // Here 'z' is invalid
+	require.NotNil(t, err)
+	require.Contains(t, err.Error(), "122")
 }
 
 // TODO: Sign With Shared Key

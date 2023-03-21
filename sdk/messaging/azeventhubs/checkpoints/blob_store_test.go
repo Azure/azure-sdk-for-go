@@ -9,10 +9,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
 )
@@ -21,7 +22,10 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 	testData := getContainerClient(t)
 	defer testData.Cleanup()
 
-	store, err := checkpoints.NewBlobStoreFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	cc, err := container.NewClientFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	require.NoError(t, err)
+
+	store, err := checkpoints.NewBlobStore(cc, nil)
 	require.NoError(t, err)
 
 	checkpoints, err := store.ListCheckpoints(context.Background(), "fully-qualified-namespace", "event-hub-name", "consumer-group", nil)
@@ -49,13 +53,40 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 		Offset:                  to.Ptr[int64](101),
 		SequenceNumber:          to.Ptr[int64](202),
 	}, checkpoints[0])
+
+	// There's a code path to allow updating the blob after it's been created but without an etag
+	// in which case it just updates it.
+	err = store.UpdateCheckpoint(context.Background(), azeventhubs.Checkpoint{
+		ConsumerGroup:           "$Default",
+		EventHubName:            "event-hub-name",
+		FullyQualifiedNamespace: "ns.servicebus.windows.net",
+		PartitionID:             "partition-id",
+		Offset:                  to.Ptr[int64](102),
+		SequenceNumber:          to.Ptr[int64](203),
+	}, nil)
+	require.NoError(t, err)
+
+	checkpoints, err = store.ListCheckpoints(context.Background(), "ns.servicebus.windows.net", "event-hub-name", "$Default", nil)
+	require.NoError(t, err)
+
+	require.Equal(t, azeventhubs.Checkpoint{
+		ConsumerGroup:           "$Default",
+		EventHubName:            "event-hub-name",
+		FullyQualifiedNamespace: "ns.servicebus.windows.net",
+		PartitionID:             "partition-id",
+		Offset:                  to.Ptr[int64](102),
+		SequenceNumber:          to.Ptr[int64](203),
+	}, checkpoints[0])
 }
 
 func TestBlobStore_Ownership(t *testing.T) {
 	testData := getContainerClient(t)
 	defer testData.Cleanup()
 
-	store, err := checkpoints.NewBlobStoreFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	cc, err := container.NewClientFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	require.NoError(t, err)
+
+	store, err := checkpoints.NewBlobStore(cc, nil)
 	require.NoError(t, err)
 
 	ownerships, err := store.ListOwnership(context.Background(), "fully-qualified-namespace", "event-hub-name", "consumer-group", nil)
@@ -104,7 +135,7 @@ func TestBlobStore_Ownership(t *testing.T) {
 			FullyQualifiedNamespace: "ns.servicebus.windows.net",
 			PartitionID:             "partition-id",
 			OwnerID:                 "owner-id",
-			ETag:                    "non-matching-etag",
+			ETag:                    to.Ptr(azcore.ETag("non-matching-etag")),
 		},
 	}, nil)
 	require.NoError(t, err)
@@ -143,7 +174,10 @@ func TestBlobStore_ListAndClaim(t *testing.T) {
 	testData := getContainerClient(t)
 	defer testData.Cleanup()
 
-	store, err := checkpoints.NewBlobStoreFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	cc, err := container.NewClientFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	require.NoError(t, err)
+
+	store, err := checkpoints.NewBlobStore(cc, nil)
 	require.NoError(t, err)
 
 	claimedOwnerships, err := store.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
@@ -203,10 +237,10 @@ func getContainerClient(t *testing.T) struct {
 	nano := time.Now().UTC().UnixNano()
 
 	containerName := strconv.FormatInt(nano, 10)
-	cc, err := blob.NewContainerClientFromConnectionString(storageCS, containerName, nil)
+	client, err := container.NewClientFromConnectionString(storageCS, containerName, nil)
 	require.NoError(t, err)
 
-	_, err = cc.Create(context.Background(), nil)
+	_, err = client.Create(context.Background(), nil)
 	require.NoError(t, err)
 
 	return struct {
@@ -217,7 +251,7 @@ func getContainerClient(t *testing.T) struct {
 		ConnectionString: storageCS,
 		ContainerName:    containerName,
 		Cleanup: func() {
-			_, err := cc.Delete(context.Background(), nil)
+			_, err := client.Delete(context.Background(), nil)
 			require.NoError(t, err)
 		},
 	}

@@ -112,6 +112,7 @@
 
 ### Features Added
 
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 - New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
 - New function `*ClientFactory.NewAgentPoolsClient() *AgentPoolsClient`
 - New function `*ClientFactory.NewOperationsClient() *OperationsClient`

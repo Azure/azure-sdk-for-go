@@ -108,9 +108,12 @@ func (client *FileClient) abortCopyHandleResponse(resp *http.Response) (FileClie
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-10-02
+//   - duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
+//     lease can be between 15 and 60 seconds. A lease duration cannot be changed using
+//     renew or change.
 //   - options - FileClientAcquireLeaseOptions contains the optional parameters for the FileClient.AcquireLease method.
-func (client *FileClient) AcquireLease(ctx context.Context, options *FileClientAcquireLeaseOptions) (FileClientAcquireLeaseResponse, error) {
-	req, err := client.acquireLeaseCreateRequest(ctx, options)
+func (client *FileClient) AcquireLease(ctx context.Context, duration int32, options *FileClientAcquireLeaseOptions) (FileClientAcquireLeaseResponse, error) {
+	req, err := client.acquireLeaseCreateRequest(ctx, duration, options)
 	if err != nil {
 		return FileClientAcquireLeaseResponse{}, err
 	}
@@ -125,7 +128,7 @@ func (client *FileClient) AcquireLease(ctx context.Context, options *FileClientA
 }
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
-func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, options *FileClientAcquireLeaseOptions) (*policy.Request, error) {
+func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, duration int32, options *FileClientAcquireLeaseOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -137,9 +140,7 @@ func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, options
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-lease-action"] = []string{"acquire"}
-	if options != nil && options.Duration != nil {
-		req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(*options.Duration), 10)}
-	}
+	req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(duration), 10)}
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}

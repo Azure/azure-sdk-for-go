@@ -284,3 +284,13 @@ directive:
         replace(/fileLastWriteTime,\s+err\s+\:=\s+time\.Parse\(time\.RFC1123,\s+val\)/g, `fileLastWriteTime, err := time.Parse(ISO8601, val)`).
         replace(/fileChangeTime,\s+err\s+\:=\s+time\.Parse\(time\.RFC1123,\s+val\)/g, `fileChangeTime, err := time.Parse(ISO8601, val)`);
 ```
+
+### Change `Duration` parameter in leases to be required
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.LeaseDuration
+  transform: >
+    $.required = true;
+```

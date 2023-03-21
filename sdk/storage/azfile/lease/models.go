@@ -13,9 +13,13 @@ type AccessConditions = generated.LeaseAccessConditions
 
 // FileAcquireOptions contains the optional parameters for the FileClient.Acquire method.
 type FileAcquireOptions struct {
-	// Proposed lease ID, in a GUID string format.
-	// The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
-	ProposedLeaseID *string
+	// placeholder for future options
+}
+
+func (o *FileAcquireOptions) format(proposedLeaseID *string) *generated.FileClientAcquireLeaseOptions {
+	return &generated.FileClientAcquireLeaseOptions{
+		ProposedLeaseID: proposedLeaseID,
+	}
 }
 
 // FileBreakOptions contains the optional parameters for the FileClient.Break method.
@@ -24,14 +28,32 @@ type FileBreakOptions struct {
 	AccessConditions *AccessConditions
 }
 
+func (o *FileBreakOptions) format() (*generated.FileClientBreakLeaseOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return nil, o.AccessConditions
+}
+
 // FileChangeOptions contains the optional parameters for the FileClient.Change method.
 type FileChangeOptions struct {
 	// placeholder for future options
 }
 
+func (o *FileChangeOptions) format(proposedLeaseID *string) *generated.FileClientChangeLeaseOptions {
+	return &generated.FileClientChangeLeaseOptions{
+		ProposedLeaseID: proposedLeaseID,
+	}
+}
+
 // FileReleaseOptions contains the optional parameters for the FileClient.Release method.
 type FileReleaseOptions struct {
 	// placeholder for future options
+}
+
+func (o *FileReleaseOptions) format() *generated.FileClientReleaseLeaseOptions {
+	return nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

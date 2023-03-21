@@ -47,7 +47,7 @@ More code samples for using the management modules for Go SDK can be found in th
 
 ## Historical releases
 
-Note that the latest modules from Microsoft are grouped by service in the `/sdk` directory. If you're using packages with prefix `github.com/Azure/azure-sdk-for-go/services`/`github.com/Azure/azure-sdk-for-go/storage`/`github.com/Azure/azure-sdk-for-go/profiles`, please consider migrating to the latest libraries. You can find a mapping table from these historical releases to their equivalent [here](https://azure.github.io/azure-sdk/releases/deprecated/index.html#go). 
+Note that the latest modules from Microsoft are grouped by service in the `/sdk` directory. If you're using packages with prefix `github.com/Azure/azure-sdk-for-go/services`, `github.com/Azure/azure-sdk-for-go/storage`, `github.com/Azure/azure-sdk-for-go/profiles`, please consider migrating to the latest modules. You can find a mapping table from these historical releases to their equivalent [here](https://azure.github.io/azure-sdk/releases/deprecated/index.html#go). 
 
 ## Reporting security issues and security bugs
 

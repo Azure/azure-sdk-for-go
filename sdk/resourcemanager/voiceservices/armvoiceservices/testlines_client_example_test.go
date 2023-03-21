@@ -25,11 +25,11 @@ func ExampleTestLinesClient_NewListByCommunicationsGatewayPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvoiceservices.NewTestLinesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armvoiceservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByCommunicationsGatewayPager("testrg", "myname", nil)
+	pager := clientFactory.NewTestLinesClient().NewListByCommunicationsGatewayPager("testrg", "myname", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -63,11 +63,11 @@ func ExampleTestLinesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvoiceservices.NewTestLinesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armvoiceservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testrg", "myname", "myline", nil)
+	res, err := clientFactory.NewTestLinesClient().Get(ctx, "testrg", "myname", "myline", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -93,11 +93,11 @@ func ExampleTestLinesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvoiceservices.NewTestLinesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armvoiceservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "testrg", "myname", "myline", armvoiceservices.TestLine{
+	poller, err := clientFactory.NewTestLinesClient().BeginCreateOrUpdate(ctx, "testrg", "myname", "myline", armvoiceservices.TestLine{
 		Location: to.Ptr("useast"),
 		Properties: &armvoiceservices.TestLineProperties{
 			PhoneNumber: to.Ptr("+1-555-1234"),
@@ -133,11 +133,11 @@ func ExampleTestLinesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvoiceservices.NewTestLinesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armvoiceservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "testrg", "myname", "myline", nil)
+	poller, err := clientFactory.NewTestLinesClient().BeginDelete(ctx, "testrg", "myname", "myline", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -154,11 +154,11 @@ func ExampleTestLinesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvoiceservices.NewTestLinesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armvoiceservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "testrg", "myname", "myline", armvoiceservices.TestLineUpdate{}, nil)
+	res, err := clientFactory.NewTestLinesClient().Update(ctx, "testrg", "myname", "myline", armvoiceservices.TestLineUpdate{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -25,11 +25,11 @@ func ExampleNameAvailabilityClient_CheckLocal() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvoiceservices.NewNameAvailabilityClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armvoiceservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckLocal(ctx, "useast", armvoiceservices.CheckNameAvailabilityRequest{
+	res, err := clientFactory.NewNameAvailabilityClient().CheckLocal(ctx, "useast", armvoiceservices.CheckNameAvailabilityRequest{
 		Name: to.Ptr("myname"),
 		Type: to.Ptr("Microsoft.VoiceServices/CommunicationsGateway"),
 	}, nil)

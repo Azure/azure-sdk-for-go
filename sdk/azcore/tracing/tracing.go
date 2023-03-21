@@ -45,28 +45,21 @@ func (p Provider) NewTracer(name, version string) (tracer Tracer) {
 
 // TracerOptions contains the optional values when creating a Tracer.
 type TracerOptions struct {
-	// SpanFromContext contains the implementation for the Tracer.SpanFromContext method.
-	SpanFromContext func(context.Context) (Span, bool)
+	// for future expansion
 }
 
 // NewTracer creates a Tracer with the specified values.
 //   - newSpanFn is the underlying implementation for creating Span instances
 //   - options contains optional values; pass nil to accept the default value
 func NewTracer(newSpanFn func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span), options *TracerOptions) Tracer {
-	if options == nil {
-		options = &TracerOptions{}
-	}
 	return Tracer{
-		newSpanFn:         newSpanFn,
-		spanFromContextFn: options.SpanFromContext,
+		newSpanFn: newSpanFn,
 	}
 }
 
 // Tracer is the factory that creates Span instances.
 type Tracer struct {
-	attrs             []Attribute
-	newSpanFn         func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span)
-	spanFromContextFn func(ctx context.Context) (Span, bool)
+	newSpanFn func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span)
 }
 
 // Start creates a new span and a context.Context that contains it.
@@ -75,35 +68,9 @@ type Tracer struct {
 //   - options contains optional values for the span, pass nil to accept any defaults
 func (t Tracer) Start(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span) {
 	if t.newSpanFn != nil {
-		opts := SpanOptions{}
-		if options != nil {
-			opts = *options
-		}
-		opts.Attributes = append(opts.Attributes, t.attrs...)
-		return t.newSpanFn(ctx, spanName, &opts)
+		return t.newSpanFn(ctx, spanName, options)
 	}
 	return ctx, Span{}
-}
-
-// SetAttributes sets attrs to be applied to each Span. If a key from attrs
-// already exists for an attribute of the Span it will be overwritten with
-// the value contained in attrs.
-func (t *Tracer) SetAttributes(attrs ...Attribute) {
-	t.attrs = append(t.attrs, attrs...)
-}
-
-// Enabled returns true if this Tracer is capable of creating Spans.
-func (t Tracer) Enabled() bool {
-	return t.newSpanFn != nil
-}
-
-// SpanFromContext returns the Span associated with the current context.
-// If the provided context has no Span, false is returned.
-func (t Tracer) SpanFromContext(ctx context.Context) (Span, bool) {
-	if t.spanFromContextFn != nil {
-		return t.spanFromContextFn(ctx)
-	}
-	return Span{}, false
 }
 
 // SpanOptions contains optional settings for creating a span.

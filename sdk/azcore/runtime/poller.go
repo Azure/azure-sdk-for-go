@@ -13,8 +13,6 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
-	"reflect"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
@@ -25,7 +23,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/loc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/op"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 // FinalStateVia is the enumerated type for the possible final-state-via values.
@@ -56,9 +53,6 @@ type NewPollerOptions[T any] struct {
 
 	// Handler[T] contains a custom polling implementation.
 	Handler PollingHandler[T]
-
-	// Tracer contains the Tracer from the client that's creating the Poller.
-	Tracer tracing.Tracer
 }
 
 // NewPoller creates a Poller based on the provided initial response.
@@ -75,7 +69,6 @@ func NewPoller[T any](resp *http.Response, pl exported.Pipeline, options *NewPol
 			op:     options.Handler,
 			resp:   resp,
 			result: result,
-			tracer: options.Tracer,
 		}, nil
 	}
 
@@ -116,7 +109,6 @@ func NewPoller[T any](resp *http.Response, pl exported.Pipeline, options *NewPol
 		op:     opr,
 		resp:   resp,
 		result: result,
-		tracer: options.Tracer,
 	}, nil
 }
 
@@ -128,9 +120,6 @@ type NewPollerFromResumeTokenOptions[T any] struct {
 
 	// Handler[T] contains a custom polling implementation.
 	Handler PollingHandler[T]
-
-	// Tracer contains the Tracer from the client that's creating the Poller.
-	Tracer tracing.Tracer
 }
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
@@ -176,7 +165,6 @@ func NewPollerFromResumeToken[T any](token string, pl exported.Pipeline, options
 	return &Poller[T]{
 		op:     opr,
 		result: result,
-		tracer: options.Tracer,
 	}, nil
 }
 
@@ -199,7 +187,6 @@ type Poller[T any] struct {
 	resp   *http.Response
 	err    error
 	result *T
-	tracer tracing.Tracer
 	done   bool
 }
 
@@ -215,7 +202,7 @@ type PollUntilDoneOptions struct {
 // options: pass nil to accept the default values.
 // NOTE: the default polling frequency is 30 seconds which works well for most operations.  However, some operations might
 // benefit from a shorter or longer duration.
-func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOptions) (res T, err error) {
+func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOptions) (T, error) {
 	if options == nil {
 		options = &PollUntilDoneOptions{}
 	}
@@ -224,13 +211,9 @@ func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOpt
 		cp.Frequency = 30 * time.Second
 	}
 
-	ctx, endSpan := StartSpan(ctx, fmt.Sprintf("%s.PollUntilDone", shortenTypeName(reflect.TypeOf(*p).Name())), p.tracer, nil)
-	defer func() { endSpan(err) }()
-
 	// skip the floor check when executing tests so they don't take so long
 	if isTest := flag.Lookup("test.v"); isTest == nil && cp.Frequency < time.Second {
-		err = errors.New("polling frequency minimum is one second")
-		return
+		return *new(T), errors.New("polling frequency minimum is one second")
 	}
 
 	start := time.Now()
@@ -242,24 +225,22 @@ func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOpt
 		// initial check for a retry-after header existing on the initial response
 		if retryAfter := shared.RetryAfter(p.resp); retryAfter > 0 {
 			log.Writef(log.EventLRO, "initial Retry-After delay for %s", retryAfter.String())
-			if err = shared.Delay(ctx, retryAfter); err != nil {
+			if err := shared.Delay(ctx, retryAfter); err != nil {
 				logPollUntilDoneExit(err)
-				return
+				return *new(T), err
 			}
 		}
 	}
 	// begin polling the endpoint until a terminal state is reached
 	for {
-		var resp *http.Response
-		resp, err = p.Poll(ctx)
+		resp, err := p.Poll(ctx)
 		if err != nil {
 			logPollUntilDoneExit(err)
-			return
+			return *new(T), err
 		}
 		if p.Done() {
 			logPollUntilDoneExit("succeeded")
-			res, err = p.Result(ctx)
-			return
+			return p.Result(ctx)
 		}
 		d := cp.Frequency
 		if retryAfter := shared.RetryAfter(resp); retryAfter > 0 {
@@ -270,7 +251,7 @@ func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOpt
 		}
 		if err = shared.Delay(ctx, d); err != nil {
 			logPollUntilDoneExit(err)
-			return
+			return *new(T), err
 		}
 	}
 }
@@ -279,22 +260,17 @@ func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOpt
 // If Poll succeeds, the poller's state is updated and the HTTP response is returned.
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the last HTTP response.
-func (p *Poller[T]) Poll(ctx context.Context) (resp *http.Response, err error) {
+func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 	if p.Done() {
 		// the LRO has reached a terminal state, don't poll again
-		resp = p.resp
-		return
+		return p.resp, nil
 	}
-
-	ctx, endSpan := StartSpan(ctx, fmt.Sprintf("%s.Poll", shortenTypeName(reflect.TypeOf(*p).Name())), p.tracer, nil)
-	defer func() { endSpan(err) }()
-
-	resp, err = p.op.Poll(ctx)
+	resp, err := p.op.Poll(ctx)
 	if err != nil {
-		return
+		return nil, err
 	}
 	p.resp = resp
-	return
+	return p.resp, nil
 }
 
 // Done returns true if the LRO has reached a terminal state.
@@ -307,40 +283,31 @@ func (p *Poller[T]) Done() bool {
 // If the LRO completed successfully, a populated instance of T is returned.
 // If the LRO failed or was canceled, an *azcore.ResponseError error is returned.
 // Calling this on an LRO in a non-terminal state will return an error.
-func (p *Poller[T]) Result(ctx context.Context) (res T, err error) {
+func (p *Poller[T]) Result(ctx context.Context) (T, error) {
 	if !p.Done() {
-		err = errors.New("poller is in a non-terminal state")
-		return
+		return *new(T), errors.New("poller is in a non-terminal state")
 	}
 	if p.done {
 		// the result has already been retrieved, return the cached value
 		if p.err != nil {
-			err = p.err
-			return
+			return *new(T), p.err
 		}
-		res = *p.result
-		return
+		return *p.result, nil
 	}
-
-	ctx, endSpan := StartSpan(ctx, fmt.Sprintf("%s.Result", shortenTypeName(reflect.TypeOf(*p).Name())), p.tracer, nil)
-	defer func() { endSpan(err) }()
-
-	err = p.op.Result(ctx, p.result)
+	err := p.op.Result(ctx, p.result)
 	var respErr *exported.ResponseError
 	if errors.As(err, &respErr) {
 		// the LRO failed. record the error
 		p.err = err
 	} else if err != nil {
 		// the call to Result failed, don't cache anything in this case
-		return
+		return *new(T), err
 	}
 	p.done = true
 	if p.err != nil {
-		err = p.err
-		return
+		return *new(T), p.err
 	}
-	res = *p.result
-	return
+	return *p.result, nil
 }
 
 // ResumeToken returns a value representing the poller that can be used to resume
@@ -356,23 +323,4 @@ func (p *Poller[T]) ResumeToken() (string, error) {
 		return "", err
 	}
 	return tk, err
-}
-
-// extracts the type name from the string returned from reflect.Value.Name()
-func shortenTypeName(s string) string {
-	// the value is formatted as follows
-	// Poller[module/Package.Type].Method
-	// we want to shorten the generic type parameter string to Type
-	// anything we don't recognize will be left as-is
-	begin := strings.Index(s, "[")
-	end := strings.Index(s, "]")
-	if begin == -1 || end == -1 {
-		return s
-	}
-
-	typeName := s[begin+1 : end]
-	if i := strings.LastIndex(typeName, "."); i > -1 {
-		typeName = typeName[i+1:]
-	}
-	return s[:begin+1] + typeName + s[end:]
 }

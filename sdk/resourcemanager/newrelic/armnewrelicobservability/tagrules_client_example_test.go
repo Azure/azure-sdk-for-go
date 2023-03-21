@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.json
 func ExampleTagRulesClient_NewListByNewRelicMonitorResourcePager_tagRulesListByNewRelicMonitorResourceMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewTagRulesClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByNewRelicMonitorResourcePager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
+	pager := clientFactory.NewTagRulesClient().NewListByNewRelicMonitorResourcePager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -82,18 +82,18 @@ func ExampleTagRulesClient_NewListByNewRelicMonitorResourcePager_tagRulesListByN
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.json
 func ExampleTagRulesClient_NewListByNewRelicMonitorResourcePager_tagRulesListByNewRelicMonitorResourceMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewTagRulesClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByNewRelicMonitorResourcePager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
+	pager := clientFactory.NewTagRulesClient().NewListByNewRelicMonitorResourcePager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -115,18 +115,18 @@ func ExampleTagRulesClient_NewListByNewRelicMonitorResourcePager_tagRulesListByN
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Get_MaximumSet_Gen.json
 func ExampleTagRulesClient_Get_tagRulesGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewTagRulesClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", nil)
+	res, err := clientFactory.NewTagRulesClient().Get(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -171,18 +171,18 @@ func ExampleTagRulesClient_Get_tagRulesGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Get_MinimumSet_Gen.json
 func ExampleTagRulesClient_Get_tagRulesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewTagRulesClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", nil)
+	res, err := clientFactory.NewTagRulesClient().Get(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -196,18 +196,18 @@ func ExampleTagRulesClient_Get_tagRulesGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleTagRulesClient_BeginCreateOrUpdate_tagRulesCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewTagRulesClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", armnewrelicobservability.TagRule{
+	poller, err := clientFactory.NewTagRulesClient().BeginCreateOrUpdate(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", armnewrelicobservability.TagRule{
 		Properties: &armnewrelicobservability.MonitoringTagRulesProperties{
 			LogRules: &armnewrelicobservability.LogRules{
 				FilteringTags: []*armnewrelicobservability.FilteringTag{
@@ -279,18 +279,18 @@ func ExampleTagRulesClient_BeginCreateOrUpdate_tagRulesCreateOrUpdateMaximumSetG
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleTagRulesClient_BeginCreateOrUpdate_tagRulesCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewTagRulesClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", armnewrelicobservability.TagRule{
+	poller, err := clientFactory.NewTagRulesClient().BeginCreateOrUpdate(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", armnewrelicobservability.TagRule{
 		Properties: &armnewrelicobservability.MonitoringTagRulesProperties{},
 	}, nil)
 	if err != nil {
@@ -310,18 +310,18 @@ func ExampleTagRulesClient_BeginCreateOrUpdate_tagRulesCreateOrUpdateMinimumSetG
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Delete_MaximumSet_Gen.json
 func ExampleTagRulesClient_BeginDelete_tagRulesDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewTagRulesClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", nil)
+	poller, err := clientFactory.NewTagRulesClient().BeginDelete(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -331,18 +331,18 @@ func ExampleTagRulesClient_BeginDelete_tagRulesDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Delete_MinimumSet_Gen.json
 func ExampleTagRulesClient_BeginDelete_tagRulesDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewTagRulesClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", nil)
+	poller, err := clientFactory.NewTagRulesClient().BeginDelete(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -352,18 +352,18 @@ func ExampleTagRulesClient_BeginDelete_tagRulesDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Update_MaximumSet_Gen.json
 func ExampleTagRulesClient_Update_tagRulesUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewTagRulesClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", armnewrelicobservability.TagRuleUpdate{
+	res, err := clientFactory.NewTagRulesClient().Update(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", armnewrelicobservability.TagRuleUpdate{
 		Properties: &armnewrelicobservability.TagRuleUpdateProperties{
 			LogRules: &armnewrelicobservability.LogRules{
 				FilteringTags: []*armnewrelicobservability.FilteringTag{
@@ -431,18 +431,18 @@ func ExampleTagRulesClient_Update_tagRulesUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Update_MinimumSet_Gen.json
 func ExampleTagRulesClient_Update_tagRulesUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewTagRulesClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", armnewrelicobservability.TagRuleUpdate{}, nil)
+	res, err := clientFactory.NewTagRulesClient().Update(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb", armnewrelicobservability.TagRuleUpdate{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

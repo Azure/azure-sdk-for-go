@@ -20,18 +20,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListBySubscription_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("hfmjmpyqgezxkp", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewMonitorsClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -115,18 +115,18 @@ func ExampleMonitorsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("hfmjmpyqgezxkp", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rgNewRelic", nil)
+	pager := clientFactory.NewMonitorsClient().NewListByResourceGroupPager("rgNewRelic", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -210,18 +210,18 @@ func ExampleMonitorsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Get_MaximumSet_Gen.json
 func ExampleMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("hfmjmpyqgezxkp", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rgNewRelic", "cdlymktqw", nil)
+	res, err := clientFactory.NewMonitorsClient().Get(ctx, "rgNewRelic", "cdlymktqw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -297,18 +297,18 @@ func ExampleMonitorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleMonitorsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("hfmjmpyqgezxkp", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rgNewRelic", "cdlymktqw", armnewrelicobservability.NewRelicMonitorResource{
+	poller, err := clientFactory.NewMonitorsClient().BeginCreateOrUpdate(ctx, "rgNewRelic", "cdlymktqw", armnewrelicobservability.NewRelicMonitorResource{
 		Location: to.Ptr("k"),
 		Tags: map[string]*string{
 			"key6976": to.Ptr("oaxfhf"),
@@ -437,18 +437,18 @@ func ExampleMonitorsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Update_MaximumSet_Gen.json
 func ExampleMonitorsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("hfmjmpyqgezxkp", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "rgNewRelic", "cdlymktqw", armnewrelicobservability.NewRelicMonitorResourceUpdate{
+	res, err := clientFactory.NewMonitorsClient().Update(ctx, "rgNewRelic", "cdlymktqw", armnewrelicobservability.NewRelicMonitorResourceUpdate{
 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
 			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
@@ -568,18 +568,18 @@ func ExampleMonitorsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Delete_MaximumSet_Gen.json
 func ExampleMonitorsClient_BeginDelete_monitorsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rgopenapi", "ruxvg@xqkmdhrnoo.hlmbpm", "ipxmlcbonyxtolzejcjshkmlron", nil)
+	poller, err := clientFactory.NewMonitorsClient().BeginDelete(ctx, "rgopenapi", "ruxvg@xqkmdhrnoo.hlmbpm", "ipxmlcbonyxtolzejcjshkmlron", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -589,18 +589,18 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Delete_MinimumSet_Gen.json
 func ExampleMonitorsClient_BeginDelete_monitorsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rgopenapi", "<user-email>", "ipxmlcbonyxtolzejcjshkmlron", nil)
+	poller, err := clientFactory.NewMonitorsClient().BeginDelete(ctx, "rgopenapi", "<user-email>", "ipxmlcbonyxtolzejcjshkmlron", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -610,18 +610,18 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricRules_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricRules_MaximumSet_Gen.json
 func ExampleMonitorsClient_GetMetricRules_monitorsGetMetricRulesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("nqmcgifgaqlf", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMetricRules(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.MetricsRequest{
+	res, err := clientFactory.NewMonitorsClient().GetMetricRules(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.MetricsRequest{
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	if err != nil {
@@ -642,18 +642,18 @@ func ExampleMonitorsClient_GetMetricRules_monitorsGetMetricRulesMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricRules_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricRules_MinimumSet_Gen.json
 func ExampleMonitorsClient_GetMetricRules_monitorsGetMetricRulesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("nqmcgifgaqlf", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMetricRules(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.MetricsRequest{
+	res, err := clientFactory.NewMonitorsClient().GetMetricRules(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.MetricsRequest{
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	if err != nil {
@@ -666,18 +666,18 @@ func ExampleMonitorsClient_GetMetricRules_monitorsGetMetricRulesMinimumSetGen() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricStatus_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricStatus_MaximumSet_Gen.json
 func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("nqmcgifgaqlf", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMetricStatus(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.MetricsStatusRequest{
+	res, err := clientFactory.NewMonitorsClient().GetMetricStatus(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.MetricsStatusRequest{
 		AzureResourceIDs: []*string{
 			to.Ptr("enfghpfw")},
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
@@ -694,18 +694,18 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMaximumSetGen(
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricStatus_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricStatus_MinimumSet_Gen.json
 func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("nqmcgifgaqlf", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMetricStatus(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.MetricsStatusRequest{
+	res, err := clientFactory.NewMonitorsClient().GetMetricStatus(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.MetricsStatusRequest{
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	if err != nil {
@@ -718,18 +718,18 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMinimumSetGen(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListAppServices_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListAppServices_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("nqmcgifgaqlf", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAppServicesPager("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.AppServicesGetRequest{
+	pager := clientFactory.NewMonitorsClient().NewListAppServicesPager("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.AppServicesGetRequest{
 		AzureResourceIDs: []*string{
 			to.Ptr("pvzrksrmzowobuhxpwiotnpcvjbu")},
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
@@ -755,18 +755,18 @@ func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMaximu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListAppServices_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListAppServices_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("nqmcgifgaqlf", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAppServicesPager("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.AppServicesGetRequest{
+	pager := clientFactory.NewMonitorsClient().NewListAppServicesPager("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.AppServicesGetRequest{
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	for pager.More() {
@@ -787,18 +787,18 @@ func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMinimu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_SwitchBilling_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_SwitchBilling_MaximumSet_Gen.json
 func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("nqmcgifgaqlf", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.SwitchBilling(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.SwitchBillingRequest{
+	_, err = clientFactory.NewMonitorsClient().SwitchBilling(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.SwitchBillingRequest{
 		AzureResourceID: to.Ptr("enfghpfw"),
 		OrganizationID:  to.Ptr("k"),
 		PlanData: &armnewrelicobservability.PlanData{
@@ -814,18 +814,18 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_SwitchBilling_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_SwitchBilling_MinimumSet_Gen.json
 func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("nqmcgifgaqlf", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.SwitchBilling(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.SwitchBillingRequest{
+	_, err = clientFactory.NewMonitorsClient().SwitchBilling(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.SwitchBillingRequest{
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	if err != nil {
@@ -833,18 +833,18 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListHosts_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListHosts_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListHostsPager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", armnewrelicobservability.HostsGetRequest{
+	pager := clientFactory.NewMonitorsClient().NewListHostsPager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", armnewrelicobservability.HostsGetRequest{
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 		VMIDs: []*string{
 			to.Ptr("xzphvxvfmvjrnsgyns")},
@@ -870,18 +870,18 @@ func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListHosts_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListHosts_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListHostsPager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", armnewrelicobservability.HostsGetRequest{
+	pager := clientFactory.NewMonitorsClient().NewListHostsPager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", armnewrelicobservability.HostsGetRequest{
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 		VMIDs: []*string{
 			to.Ptr("xzphvxvfmvjrnsgyns")},
@@ -904,18 +904,18 @@ func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredResourcesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMonitoredResourcesPager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
+	pager := clientFactory.NewMonitorsClient().NewListMonitoredResourcesPager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -939,18 +939,18 @@ func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredR
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredResourcesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMonitoredResourcesPager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
+	pager := clientFactory.NewMonitorsClient().NewListMonitoredResourcesPager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -969,18 +969,18 @@ func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredR
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_VmHostPayload_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_VmHostPayload_MaximumSet_Gen.json
 func ExampleMonitorsClient_VMHostPayload_monitorsVmHostPayloadMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.VMHostPayload(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
+	res, err := clientFactory.NewMonitorsClient().VMHostPayload(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -992,18 +992,18 @@ func ExampleMonitorsClient_VMHostPayload_monitorsVmHostPayloadMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_VmHostPayload_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_VmHostPayload_MinimumSet_Gen.json
 func ExampleMonitorsClient_VMHostPayload_monitorsVmHostPayloadMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewMonitorsClient("ddqonpqwjr", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.VMHostPayload(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
+	res, err := clientFactory.NewMonitorsClient().VMHostPayload(ctx, "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

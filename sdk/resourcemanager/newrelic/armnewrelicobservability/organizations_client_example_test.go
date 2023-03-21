@@ -17,18 +17,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Organizations_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Organizations_List_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListPager_organizationsListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewOrganizationsClient("nqmcgifgaqlf", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("ruxvg@xqkmdhrnoo.hlmbpm", "egh", nil)
+	pager := clientFactory.NewOrganizationsClient().NewListPager("ruxvg@xqkmdhrnoo.hlmbpm", "egh", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -53,18 +53,18 @@ func ExampleOrganizationsClient_NewListPager_organizationsListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce14bf881523f16b14d8ecf325e004465cdcf56/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Organizations_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Organizations_List_MinimumSet_Gen.json
 func ExampleOrganizationsClient_NewListPager_organizationsListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnewrelicobservability.NewOrganizationsClient("nqmcgifgaqlf", cred, nil)
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("ruxvg@xqkmdhrnoo.hlmbpm", "egh", nil)
+	pager := clientFactory.NewOrganizationsClient().NewListPager("ruxvg@xqkmdhrnoo.hlmbpm", "egh", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

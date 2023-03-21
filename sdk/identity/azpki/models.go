@@ -15,22 +15,22 @@ import "time"
 type CertificateAttributes struct {
 	ExtendedKeyUsage []*ExtendedKeyUsage `json:"extendedKeyUsage,omitempty"`
 
-	// The validity end date in UTC.
-	InvalidAt *time.Time `json:"invalidAt,omitempty"`
-
 	// Name of the certificate issuer.
-	Issuer   *string     `json:"issuer,omitempty"`
+	Issuer *string `json:"issuer,omitempty"`
 	KeyUsage []*KeyUsage `json:"keyUsage,omitempty"`
+
+	// The validity end date in UTC.
+	NotAfter *time.Time `json:"notAfter,omitempty"`
+
+	// The validity start date in UTC.
+	NotBefore *time.Time `json:"notBefore,omitempty"`
 
 	// Serial number for the certificate.
 	SerialNumber *string `json:"serialNumber,omitempty"`
 
 	// Distinguished name for the certificate.
-	Subject                 *string   `json:"subject,omitempty"`
+	Subject *string `json:"subject,omitempty"`
 	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
-
-	// The validity start date in UTC.
-	ValidAt *time.Time `json:"validAt,omitempty"`
 }
 
 // CertificateDescriptionResponse - The attributes returned on the certificate description.
@@ -44,15 +44,15 @@ type CertificateDescriptionResponse struct {
 	// The version of the enrollment policy which was used for this enroll request.
 	EnrollmentPolicyVersion *string `json:"enrollmentPolicyVersion,omitempty"`
 
-	// The timestamp in UTC for when the certificate was revoked.
-	InvalidAt *time.Time `json:"invalidAt,omitempty"`
-
 	// The timestamp in UTC for when the certificate is issued.
 	IssuedAt *time.Time `json:"issuedAt,omitempty"`
 
 	// The name of the PKI.
-	Name             *string             `json:"name,omitempty"`
-	RevocationReason []*RevocationReason `json:"revocationReason,omitempty"`
+	Name *string `json:"name,omitempty"`
+	RevocationReason *string `json:"revocationReason,omitempty"`
+
+	// The timestamp in UTC for when the certificate was revoked.
+	RevokedAt *time.Time `json:"revokedAt,omitempty"`
 
 	// The attributes of the certificate.
 	Value *CertificateAttributes `json:"value,omitempty"`
@@ -62,12 +62,15 @@ type CertificateDescriptionResponse struct {
 type CertificateValue struct {
 	ExtendedKeyUsage []*ExtendedKeyUsage `json:"extendedKeyUsage,omitempty"`
 
-	// The validity end date in UTC.
-	InvalidAt *time.Time `json:"invalidAt,omitempty"`
-
 	// Name of the certificate issuer.
-	Issuer   *string     `json:"issuer,omitempty"`
+	Issuer *string `json:"issuer,omitempty"`
 	KeyUsage []*KeyUsage `json:"keyUsage,omitempty"`
+
+	// The validity end date in UTC.
+	NotAfter *time.Time `json:"notAfter,omitempty"`
+
+	// The validity start date in UTC.
+	NotBefore *time.Time `json:"notBefore,omitempty"`
 
 	// Certificate in pem format
 	PEM *string `json:"PEM,omitempty"`
@@ -82,14 +85,11 @@ type CertificateValue struct {
 	SerialNumber *string `json:"serialNumber,omitempty"`
 
 	// Distinguished name for the certificate.
-	Subject                 *string   `json:"subject,omitempty"`
+	Subject *string `json:"subject,omitempty"`
 	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
 
 	// Thumbprint of the certificate.
 	Thumbprint *string `json:"thumbprint,omitempty"`
-
-	// The validity start date in UTC.
-	ValidAt *time.Time `json:"validAt,omitempty"`
 }
 
 // ClientCertificateDetailsOptions contains the optional parameters for the Client.CertificateDetails method.
@@ -108,7 +108,7 @@ type ClientEnrollCertificateOptions struct {
 	// Flag to indicate if the full certificate chain is to be included in the response.
 	FullChain *bool
 	// If set to 'logs', the response will include warnings/information from the requested endpoint operation.
-	Include []Include
+	Include *string
 }
 
 // ClientGetCaCertificateOptions contains the optional parameters for the Client.GetCaCertificate method.
@@ -120,7 +120,7 @@ type ClientGetCaCertificateOptions struct {
 // ClientRevokeOptions contains the optional parameters for the Client.Revoke method.
 type ClientRevokeOptions struct {
 	// If set to 'logs', the response will include warnings/information from the requested endpoint operation.
-	Include []Include
+	Include *string
 }
 
 // EnrollRequest - The attributes for the enroll request.
@@ -143,23 +143,24 @@ type EnrollResponse struct {
 	// The version of the enrollment policy which was used for this enroll request.
 	EnrollmentPolicyVersion *string `json:"enrollmentPolicyVersion,omitempty"`
 
-	// The timestamp in UTC for when the certificate was revoked.
-	InvalidAt *time.Time `json:"invalidAt,omitempty"`
-
 	// The timestamp in UTC for when the certificate is issued.
 	IssuedAt *time.Time `json:"issuedAt,omitempty"`
 
 	// This is a part of the response only if the 'include' query parameter is set to 'log'. Contains warnings/errors generated
-	// during the enrollment.
+// during the enrollment.
 	Log []*LogEntry `json:"log,omitempty"`
 
 	// The name of the PKI.
-	Name             *string             `json:"name,omitempty"`
-	RevocationReason []*RevocationReason `json:"revocationReason,omitempty"`
+	Name *string `json:"name,omitempty"`
+	RevocationReason *string `json:"revocationReason,omitempty"`
+
+	// The timestamp in UTC for when the certificate was revoked.
+	RevokedAt *time.Time `json:"revokedAt,omitempty"`
 
 	// The attributes and the certificate value in pem/pkcs7 format. Can also contain the certificate chain in pkcs7/pem formats.
 	Value *CertificateValue `json:"value,omitempty"`
 }
+
 
 // LogEntry - Logs generated during a particular operation enrollment/revocation.
 type LogEntry struct {
@@ -172,7 +173,7 @@ type LogEntry struct {
 
 // RevokeRequest - The attributes for the revoke request.
 type RevokeRequest struct {
-	RevocationReason []*RevocationReason `json:"revocationReason,omitempty"`
+	RevocationReason *string `json:"revocationReason,omitempty"`
 }
 
 // RevokeResponse - The attributes for the revoke response.
@@ -180,14 +181,14 @@ type RevokeResponse struct {
 	// Name of Certificate Authority(CA).
 	CAName *string `json:"CAName,omitempty"`
 
-	// The timestamp in UTC for when the certificate was revoked.
-	InvalidAt *time.Time `json:"invalidAt,omitempty"`
-
 	// Contains warnings/errors generated during the revocation.
 	Log []*LogEntry `json:"log,omitempty"`
 
 	// Name of PKI.
 	Name *string `json:"name,omitempty"`
+
+	// The timestamp in UTC for when the certificate was revoked.
+	RevokedAt *time.Time `json:"revokedAt,omitempty"`
 
 	// Serial number of the certificate.
 	SerialNumber *string `json:"serialNumber,omitempty"`
@@ -196,17 +197,18 @@ type RevokeResponse struct {
 // Substitutes - List of attributes which can be specified under substitutes.
 type Substitutes struct {
 	// Distinguished name for the certificate.
-	DistinguishedName *string             `json:"distinguishedName,omitempty"`
-	ExtendedKeyUsage  []*ExtendedKeyUsage `json:"extendedKeyUsage,omitempty"`
+	DistinguishedName *string `json:"distinguishedName,omitempty"`
+	ExtendedKeyUsage []*ExtendedKeyUsage `json:"extendedKeyUsage,omitempty"`
+	KeyUsage []*KeyUsage `json:"keyUsage,omitempty"`
 
 	// The validity end date in UTC.
-	InvalidAt               *time.Time  `json:"invalidAt,omitempty"`
-	KeyUsage                []*KeyUsage `json:"keyUsage,omitempty"`
-	SubjectAlternativeNames []*string   `json:"subjectAlternativeNames,omitempty"`
+	NotAfter *time.Time `json:"notAfter,omitempty"`
+
+	// The validity start date in UTC.
+	NotBefore *time.Time `json:"notBefore,omitempty"`
+	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
 
 	// Subject name for the certificate.
 	SubjectName *string `json:"subjectName,omitempty"`
-
-	// The validity start date in UTC.
-	ValidAt *time.Time `json:"validAt,omitempty"`
 }
+

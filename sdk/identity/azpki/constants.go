@@ -9,29 +9,29 @@
 
 package azpki
 
-// CertificateFileFormat - Possible CertificateFileFormat values
-type CertificateFileFormat string
+// Accept - Possible Accept values
+ type Accept string
 
 const (
-	// CertificateFileFormatApplicationPkixCert - Pkix-cert Format
-	CertificateFileFormatApplicationPkixCert CertificateFileFormat = "application/pkix-cert"
-	// CertificateFileFormatApplicationXPemFile - X-Pem-File Format
-	CertificateFileFormatApplicationXPemFile CertificateFileFormat = "application/x-pem-file"
-	// CertificateFileFormatApplicationXPkcs7Certificates - X-Pkcs7-Certificates Format
-	CertificateFileFormatApplicationXPkcs7Certificates CertificateFileFormat = "application/x-pkcs7-certificates"
+	// AcceptApplicationPkixCert - Pkix-cert Format
+	AcceptApplicationPkixCert Accept = "application/pkix-cert"
+	// AcceptApplicationXPemFile - X-Pem-File Format
+	AcceptApplicationXPemFile Accept = "application/x-pem-file"
+	// AcceptApplicationXPkcs7Certificates - X-Pkcs7-Certificates Format
+	AcceptApplicationXPkcs7Certificates Accept = "application/x-pkcs7-certificates"
 )
 
-// PossibleCertificateFileFormatValues returns the possible values for the CertificateFileFormat const type.
-func PossibleCertificateFileFormatValues() []CertificateFileFormat {
-	return []CertificateFileFormat{
-		CertificateFileFormatApplicationPkixCert,
-		CertificateFileFormatApplicationXPemFile,
-		CertificateFileFormatApplicationXPkcs7Certificates,
+// PossibleAcceptValues returns the possible values for the Accept const type.
+func PossibleAcceptValues() []Accept {
+	return []Accept{	
+		AcceptApplicationPkixCert,
+		AcceptApplicationXPemFile,
+		AcceptApplicationXPkcs7Certificates,
 	}
 }
 
 // CertificateFormat - Possible CertificateFormat values
-type CertificateFormat string
+ type CertificateFormat string
 
 const (
 	// CertificateFormatPem - PEM
@@ -42,14 +42,14 @@ const (
 
 // PossibleCertificateFormatValues returns the possible values for the CertificateFormat const type.
 func PossibleCertificateFormatValues() []CertificateFormat {
-	return []CertificateFormat{
+	return []CertificateFormat{	
 		CertificateFormatPem,
 		CertificateFormatPkcs7,
 	}
 }
 
 // ChainFormat - Possible ChainFormat values
-type ChainFormat string
+ type ChainFormat string
 
 const (
 	// ChainFormatP7B - P7B
@@ -60,7 +60,7 @@ const (
 
 // PossibleChainFormatValues returns the possible values for the ChainFormat const type.
 func PossibleChainFormatValues() []ChainFormat {
-	return []ChainFormat{
+	return []ChainFormat{	
 		ChainFormatP7B,
 		ChainFormatPem,
 	}
@@ -96,7 +96,7 @@ const (
 
 // PossibleExtendedKeyUsageValues returns the possible values for the ExtendedKeyUsage const type.
 func PossibleExtendedKeyUsageValues() []ExtendedKeyUsage {
-	return []ExtendedKeyUsage{
+	return []ExtendedKeyUsage{	
 		ExtendedKeyUsageClientAuth,
 		ExtendedKeyUsageCodeSigning,
 		ExtendedKeyUsageEmailProtection,
@@ -112,7 +112,7 @@ func PossibleExtendedKeyUsageValues() []ExtendedKeyUsage {
 }
 
 // Include - Possible include values
-type Include string
+ type Include string
 
 const (
 	// IncludeLogs - Logs
@@ -121,7 +121,7 @@ const (
 
 // PossibleIncludeValues returns the possible values for the Include const type.
 func PossibleIncludeValues() []Include {
-	return []Include{
+	return []Include{	
 		IncludeLogs,
 	}
 }
@@ -152,7 +152,7 @@ const (
 
 // PossibleKeyUsageValues returns the possible values for the KeyUsage const type.
 func PossibleKeyUsageValues() []KeyUsage {
-	return []KeyUsage{
+	return []KeyUsage{	
 		KeyUsageCrlSign,
 		KeyUsageDataEncipherment,
 		KeyUsageDecipherOnly,
@@ -193,7 +193,7 @@ const (
 
 // PossibleRevocationReasonValues returns the possible values for the RevocationReason const type.
 func PossibleRevocationReasonValues() []RevocationReason {
-	return []RevocationReason{
+	return []RevocationReason{	
 		RevocationReasonAACompromise,
 		RevocationReasonAffiliationChanged,
 		RevocationReasonCACompromise,
@@ -206,3 +206,4 @@ func PossibleRevocationReasonValues() []RevocationReason {
 		RevocationReasonUnspecified,
 	}
 }
+

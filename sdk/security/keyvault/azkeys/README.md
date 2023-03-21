@@ -62,7 +62,7 @@ Azure Key Vault can create and store RSA and elliptic curve keys. Both can optio
 
 ## Examples
 
-Get started with our [examples](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#pkg-examples).
+Get started with our [examples][keys_samples].
 
 ## Troubleshooting
 
@@ -140,7 +140,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-keys/docs
 [client_docs]: https://aka.ms/azsdk/go/keyvault-keys/docs#Client
 [key_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/client.go
-[keys_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/example_test.go
+[keys_samples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#pkg-examples
 [managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fsecurity%2F%2Fkeyvault%2Fazkeys%2FREADME.png)

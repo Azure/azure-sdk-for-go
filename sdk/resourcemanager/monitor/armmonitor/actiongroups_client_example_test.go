@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/createOrUpdateActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/createOrUpdateActionGroup.json
 func ExampleActionGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "Default-NotificationRules", "SampleActionGroup", armmonitor.ActionGroupResource{
+	res, err := clientFactory.NewActionGroupsClient().CreateOrUpdate(ctx, "Default-NotificationRules", "SampleActionGroup", armmonitor.ActionGroupResource{
 		Location: to.Ptr("Global"),
 		Tags:     map[string]*string{},
 		Properties: &armmonitor.ActionGroup{
@@ -252,18 +252,18 @@ func ExampleActionGroupsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/getActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/getActionGroup.json
 func ExampleActionGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "Default-NotificationRules", "SampleActionGroup", nil)
+	res, err := clientFactory.NewActionGroupsClient().Get(ctx, "Default-NotificationRules", "SampleActionGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -341,35 +341,35 @@ func ExampleActionGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/deleteActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/deleteActionGroup.json
 func ExampleActionGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "Default-NotificationRules", "SampleActionGroup", nil)
+	_, err = clientFactory.NewActionGroupsClient().Delete(ctx, "Default-NotificationRules", "SampleActionGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/patchActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/patchActionGroup.json
 func ExampleActionGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "Default-NotificationRules", "SampleActionGroup", armmonitor.ActionGroupPatchBody{
+	res, err := clientFactory.NewActionGroupsClient().Update(ctx, "Default-NotificationRules", "SampleActionGroup", armmonitor.ActionGroupPatchBody{
 		Properties: &armmonitor.ActionGroupPatch{
 			Enabled: to.Ptr(false),
 		},
@@ -457,18 +457,18 @@ func ExampleActionGroupsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/postTestNotificationsAtActionGroupResourceLevel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/postTestNotificationsAtActionGroupResourceLevel.json
 func ExampleActionGroupsClient_BeginCreateNotificationsAtActionGroupResourceLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateNotificationsAtActionGroupResourceLevel(ctx, "TestRgName", "TestAgName", armmonitor.NotificationRequestBody{
+	poller, err := clientFactory.NewActionGroupsClient().BeginCreateNotificationsAtActionGroupResourceLevel(ctx, "TestRgName", "TestAgName", armmonitor.NotificationRequestBody{
 		AlertType: to.Ptr("budget"),
 		ArmRoleReceivers: []*armmonitor.ArmRoleReceiver{
 			{
@@ -670,18 +670,18 @@ func ExampleActionGroupsClient_BeginCreateNotificationsAtActionGroupResourceLeve
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/getTestNotificationsAtActionGroupResourceLevel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/getTestNotificationsAtActionGroupResourceLevel.json
 func ExampleActionGroupsClient_GetTestNotificationsAtActionGroupResourceLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetTestNotificationsAtActionGroupResourceLevel(ctx, "TestRgName", "TestAgName", "11000222191287", nil)
+	res, err := clientFactory.NewActionGroupsClient().GetTestNotificationsAtActionGroupResourceLevel(ctx, "TestRgName", "TestAgName", "11000222191287", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -777,18 +777,18 @@ func ExampleActionGroupsClient_GetTestNotificationsAtActionGroupResourceLevel() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/listActionGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/listActionGroups.json
 func ExampleActionGroupsClient_NewListBySubscriptionIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionIDPager(nil)
+	pager := clientFactory.NewActionGroupsClient().NewListBySubscriptionIDPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -918,18 +918,18 @@ func ExampleActionGroupsClient_NewListBySubscriptionIDPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/enableReceiver.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/enableReceiver.json
 func ExampleActionGroupsClient_EnableReceiver() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.EnableReceiver(ctx, "Default-NotificationRules", "SampleActionGroup", armmonitor.EnableRequest{
+	_, err = clientFactory.NewActionGroupsClient().EnableReceiver(ctx, "Default-NotificationRules", "SampleActionGroup", armmonitor.EnableRequest{
 		ReceiverName: to.Ptr("John Doe's mobile"),
 	}, nil)
 	if err != nil {

@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetricDefinitions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetricDefinitions.json
 func ExampleMetricDefinitionsClient_NewListAtSubscriptionScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricDefinitionsClient("92d2a2d8-b514-432d-8cc9-a5f9272630d5", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAtSubscriptionScopePager("westus2", &armmonitor.MetricDefinitionsClientListAtSubscriptionScopeOptions{Metricnamespace: to.Ptr("microsoft.compute/virtualmachines")})
+	pager := clientFactory.NewMetricDefinitionsClient().NewListAtSubscriptionScopePager("westus2", &armmonitor.MetricDefinitionsClientListAtSubscriptionScopeOptions{Metricnamespace: to.Ptr("microsoft.compute/virtualmachines")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -3176,18 +3176,18 @@ func ExampleMetricDefinitionsClient_NewListAtSubscriptionScopePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitionsApplicationInsights.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitionsApplicationInsights.json
 func ExampleMetricDefinitionsClient_NewListPager_getApplicationInsightsMetricDefinitionsWithoutFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricDefinitionsClient("<subscription-id>", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill/providers/microsoft.insights/metricdefinitions", &armmonitor.MetricDefinitionsClientListOptions{Metricnamespace: to.Ptr("microsoft.insights/components")})
+	pager := clientFactory.NewMetricDefinitionsClient().NewListPager("subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill/providers/microsoft.insights/metricdefinitions", &armmonitor.MetricDefinitionsClientListOptions{Metricnamespace: to.Ptr("microsoft.insights/components")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -5043,18 +5043,18 @@ func ExampleMetricDefinitionsClient_NewListPager_getApplicationInsightsMetricDef
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitions.json
 func ExampleMetricDefinitionsClient_NewListPager_getMetricDefinitionsWithoutFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricDefinitionsClient("<subscription-id>", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("subscriptions/07c0b09d-9f69-4e6e-8d05-f59f67299cb2/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/alertruleTest/providers/microsoft.insights/metricDefinitions", &armmonitor.MetricDefinitionsClientListOptions{Metricnamespace: to.Ptr("Microsoft.Web/sites")})
+	pager := clientFactory.NewMetricDefinitionsClient().NewListPager("subscriptions/07c0b09d-9f69-4e6e-8d05-f59f67299cb2/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/alertruleTest/providers/microsoft.insights/metricDefinitions", &armmonitor.MetricDefinitionsClientListOptions{Metricnamespace: to.Ptr("Microsoft.Web/sites")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -5983,18 +5983,18 @@ func ExampleMetricDefinitionsClient_NewListPager_getMetricDefinitionsWithoutFilt
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitionsMetricClass.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitionsMetricClass.json
 func ExampleMetricDefinitionsClient_NewListPager_getStorageCacheMetricDefinitionsWithMetricClass() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricDefinitionsClient("<subscription-id>", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("subscriptions/46841c0e-69c8-4b17-af46-6626ecb15fc2/resourceGroups/adgarntptestrg/providers/Microsoft.StorageCache/caches/adgarntptestcache", &armmonitor.MetricDefinitionsClientListOptions{Metricnamespace: to.Ptr("microsoft.storagecache/caches")})
+	pager := clientFactory.NewMetricDefinitionsClient().NewListPager("subscriptions/46841c0e-69c8-4b17-af46-6626ecb15fc2/resourceGroups/adgarntptestrg/providers/Microsoft.StorageCache/caches/adgarntptestcache", &armmonitor.MetricDefinitionsClientListOptions{Metricnamespace: to.Ptr("microsoft.storagecache/caches")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

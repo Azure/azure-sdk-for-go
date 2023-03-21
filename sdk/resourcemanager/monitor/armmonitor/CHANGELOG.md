@@ -14,21 +14,22 @@
 
 ### Features Added
 
-- New value `KnownDataCollectionEndpointProvisioningStateCanceled` added to type alias `KnownDataCollectionEndpointProvisioningState`
-- New value `KnownDataCollectionRuleAssociationProvisioningStateCanceled` added to type alias `KnownDataCollectionRuleAssociationProvisioningState`
-- New value `KnownDataCollectionRuleProvisioningStateCanceled` added to type alias `KnownDataCollectionRuleProvisioningState`
-- New value `KnownPublicNetworkAccessOptionsSecuredByPerimeter` added to type alias `KnownPublicNetworkAccessOptions`
-- New type alias `ActionType` with values `ActionTypeInternal`
-- New type alias `IdentityType` with values `IdentityTypeNone`, `IdentityTypeSystemAssigned`, `IdentityTypeUserAssigned`
-- New type alias `KnownLocationSpecProvisioningStatus` with values `KnownLocationSpecProvisioningStatusCanceled`, `KnownLocationSpecProvisioningStatusCreating`, `KnownLocationSpecProvisioningStatusDeleting`, `KnownLocationSpecProvisioningStatusFailed`, `KnownLocationSpecProvisioningStatusSucceeded`, `KnownLocationSpecProvisioningStatusUpdating`
-- New type alias `KnownPrometheusForwarderDataSourceStreams` with values `KnownPrometheusForwarderDataSourceStreamsMicrosoftPrometheusMetrics`
-- New type alias `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
-- New type alias `MetricAggregationType` with values `MetricAggregationTypeAverage`, `MetricAggregationTypeCount`, `MetricAggregationTypeMaximum`, `MetricAggregationTypeMinimum`, `MetricAggregationTypeNone`, `MetricAggregationTypeTotal`
-- New type alias `MetricResultType` with values `MetricResultTypeData`, `MetricResultTypeMetadata`
-- New type alias `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
-- New type alias `ProvisioningState` with values `ProvisioningStateCanceled`, `ProvisioningStateCreating`, `ProvisioningStateDeleting`, `ProvisioningStateFailed`, `ProvisioningStateSucceeded`
-- New type alias `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`, `PublicNetworkAccessSecuredByPerimeter`
-- New type alias `Unit` with values `UnitBitsPerSecond`, `UnitByteSeconds`, `UnitBytes`, `UnitBytesPerSecond`, `UnitCores`, `UnitCount`, `UnitCountPerSecond`, `UnitMilliCores`, `UnitMilliSeconds`, `UnitNanoCores`, `UnitPercent`, `UnitSeconds`, `UnitUnspecified`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New value `KnownDataCollectionEndpointProvisioningStateCanceled` added to enum type `KnownDataCollectionEndpointProvisioningState`
+- New value `KnownDataCollectionRuleAssociationProvisioningStateCanceled` added to enum type `KnownDataCollectionRuleAssociationProvisioningState`
+- New value `KnownDataCollectionRuleProvisioningStateCanceled` added to enum type `KnownDataCollectionRuleProvisioningState`
+- New value `KnownPublicNetworkAccessOptionsSecuredByPerimeter` added to enum type `KnownPublicNetworkAccessOptions`
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `IdentityType` with values `IdentityTypeNone`, `IdentityTypeSystemAssigned`, `IdentityTypeUserAssigned`
+- New enum type `KnownLocationSpecProvisioningStatus` with values `KnownLocationSpecProvisioningStatusCanceled`, `KnownLocationSpecProvisioningStatusCreating`, `KnownLocationSpecProvisioningStatusDeleting`, `KnownLocationSpecProvisioningStatusFailed`, `KnownLocationSpecProvisioningStatusSucceeded`, `KnownLocationSpecProvisioningStatusUpdating`
+- New enum type `KnownPrometheusForwarderDataSourceStreams` with values `KnownPrometheusForwarderDataSourceStreamsMicrosoftPrometheusMetrics`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `MetricAggregationType` with values `MetricAggregationTypeAverage`, `MetricAggregationTypeCount`, `MetricAggregationTypeMaximum`, `MetricAggregationTypeMinimum`, `MetricAggregationTypeNone`, `MetricAggregationTypeTotal`
+- New enum type `MetricResultType` with values `MetricResultTypeData`, `MetricResultTypeMetadata`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New enum type `ProvisioningState` with values `ProvisioningStateCanceled`, `ProvisioningStateCreating`, `ProvisioningStateDeleting`, `ProvisioningStateFailed`, `ProvisioningStateSucceeded`
+- New enum type `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`, `PublicNetworkAccessSecuredByPerimeter`
+- New enum type `Unit` with values `UnitBitsPerSecond`, `UnitByteSeconds`, `UnitBytes`, `UnitBytesPerSecond`, `UnitCores`, `UnitCount`, `UnitCountPerSecond`, `UnitMilliCores`, `UnitMilliSeconds`, `UnitNanoCores`, `UnitPercent`, `UnitSeconds`, `UnitUnspecified`
 - New function `NewAzureMonitorWorkspacesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AzureMonitorWorkspacesClient, error)`
 - New function `*AzureMonitorWorkspacesClient.Create(context.Context, string, string, AzureMonitorWorkspaceResource, *AzureMonitorWorkspacesClientCreateOptions) (AzureMonitorWorkspacesClientCreateResponse, error)`
 - New function `*AzureMonitorWorkspacesClient.Delete(context.Context, string, string, *AzureMonitorWorkspacesClientDeleteOptions) (AzureMonitorWorkspacesClientDeleteResponse, error)`
@@ -57,7 +58,6 @@
 - New struct `AzureMonitorWorkspaceResourceForUpdate`
 - New struct `AzureMonitorWorkspaceResourceListResult`
 - New struct `AzureMonitorWorkspaceResourceProperties`
-- New struct `AzureMonitorWorkspacesClient`
 - New struct `DataCollectionEndpointFailoverConfiguration`
 - New struct `DataCollectionEndpointMetadata`
 - New struct `DataCollectionEndpointMetricsIngestion`
@@ -84,7 +84,6 @@
 - New struct `OperationAutoGenerated`
 - New struct `OperationDisplayAutoGenerated`
 - New struct `OperationListResultAutoGenerated`
-- New struct `OperationsForMonitorClient`
 - New struct `PlatformTelemetryDataSource`
 - New struct `PrivateLinkScopedResource`
 - New struct `PrometheusForwarderDataSource`
@@ -102,7 +101,6 @@
 - New struct `TenantActionGroup`
 - New struct `TenantActionGroupList`
 - New struct `TenantActionGroupResource`
-- New struct `TenantActionGroupsClient`
 - New struct `TrackedResourceAutoGenerated`
 - New struct `UserAssignedIdentity`
 - New struct `UserIdentityProperties`

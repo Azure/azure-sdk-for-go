@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // DataCollectionEndpointsClient contains the methods for the DataCollectionEndpoints group.
 // Don't use this type directly, use NewDataCollectionEndpointsClient() instead.
 type DataCollectionEndpointsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDataCollectionEndpointsClient creates a new instance of DataCollectionEndpointsClient with the specified values.
@@ -36,21 +33,13 @@ type DataCollectionEndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDataCollectionEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataCollectionEndpointsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DataCollectionEndpointsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DataCollectionEndpointsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -68,7 +57,7 @@ func (client *DataCollectionEndpointsClient) Create(ctx context.Context, resourc
 	if err != nil {
 		return DataCollectionEndpointsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataCollectionEndpointsClientCreateResponse{}, err
 	}
@@ -93,7 +82,7 @@ func (client *DataCollectionEndpointsClient) createCreateRequest(ctx context.Con
 		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +118,7 @@ func (client *DataCollectionEndpointsClient) Delete(ctx context.Context, resourc
 	if err != nil {
 		return DataCollectionEndpointsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataCollectionEndpointsClientDeleteResponse{}, err
 	}
@@ -154,7 +143,7 @@ func (client *DataCollectionEndpointsClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +167,7 @@ func (client *DataCollectionEndpointsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return DataCollectionEndpointsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataCollectionEndpointsClientGetResponse{}, err
 	}
@@ -203,7 +192,7 @@ func (client *DataCollectionEndpointsClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -245,7 +234,7 @@ func (client *DataCollectionEndpointsClient) NewListByResourceGroupPager(resourc
 			if err != nil {
 				return DataCollectionEndpointsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataCollectionEndpointsClientListByResourceGroupResponse{}, err
 			}
@@ -268,7 +257,7 @@ func (client *DataCollectionEndpointsClient) listByResourceGroupCreateRequest(ct
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -309,7 +298,7 @@ func (client *DataCollectionEndpointsClient) NewListBySubscriptionPager(options 
 			if err != nil {
 				return DataCollectionEndpointsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataCollectionEndpointsClientListBySubscriptionResponse{}, err
 			}
@@ -328,7 +317,7 @@ func (client *DataCollectionEndpointsClient) listBySubscriptionCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -361,7 +350,7 @@ func (client *DataCollectionEndpointsClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return DataCollectionEndpointsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataCollectionEndpointsClientUpdateResponse{}, err
 	}
@@ -386,7 +375,7 @@ func (client *DataCollectionEndpointsClient) updateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // AzureMonitorWorkspacesClient contains the methods for the AzureMonitorWorkspaces group.
 // Don't use this type directly, use NewAzureMonitorWorkspacesClient() instead.
 type AzureMonitorWorkspacesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAzureMonitorWorkspacesClient creates a new instance of AzureMonitorWorkspacesClient with the specified values.
@@ -36,21 +33,13 @@ type AzureMonitorWorkspacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAzureMonitorWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureMonitorWorkspacesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AzureMonitorWorkspacesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AzureMonitorWorkspacesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *AzureMonitorWorkspacesClient) Create(ctx context.Context, resource
 	if err != nil {
 		return AzureMonitorWorkspacesClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AzureMonitorWorkspacesClientCreateResponse{}, err
 	}
@@ -94,7 +83,7 @@ func (client *AzureMonitorWorkspacesClient) createCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +116,7 @@ func (client *AzureMonitorWorkspacesClient) Delete(ctx context.Context, resource
 	if err != nil {
 		return AzureMonitorWorkspacesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AzureMonitorWorkspacesClientDeleteResponse{}, err
 	}
@@ -152,7 +141,7 @@ func (client *AzureMonitorWorkspacesClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +165,7 @@ func (client *AzureMonitorWorkspacesClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return AzureMonitorWorkspacesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AzureMonitorWorkspacesClientGetResponse{}, err
 	}
@@ -201,7 +190,7 @@ func (client *AzureMonitorWorkspacesClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +232,7 @@ func (client *AzureMonitorWorkspacesClient) NewListByResourceGroupPager(resource
 			if err != nil {
 				return AzureMonitorWorkspacesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AzureMonitorWorkspacesClientListByResourceGroupResponse{}, err
 			}
@@ -266,7 +255,7 @@ func (client *AzureMonitorWorkspacesClient) listByResourceGroupCreateRequest(ctx
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,7 +296,7 @@ func (client *AzureMonitorWorkspacesClient) NewListBySubscriptionPager(options *
 			if err != nil {
 				return AzureMonitorWorkspacesClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AzureMonitorWorkspacesClientListBySubscriptionResponse{}, err
 			}
@@ -326,7 +315,7 @@ func (client *AzureMonitorWorkspacesClient) listBySubscriptionCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -359,7 +348,7 @@ func (client *AzureMonitorWorkspacesClient) Update(ctx context.Context, resource
 	if err != nil {
 		return AzureMonitorWorkspacesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AzureMonitorWorkspacesClientUpdateResponse{}, err
 	}
@@ -384,7 +373,7 @@ func (client *AzureMonitorWorkspacesClient) updateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -17,18 +17,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/privateLinkScopeOperationStatuses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/privateLinkScopeOperationStatuses.json
 func ExamplePrivateLinkScopeOperationStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewPrivateLinkScopeOperationStatusClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "713192d7-503f-477a-9cfe-4efc3ee2bd11", "MyResourceGroup", nil)
+	res, err := clientFactory.NewPrivateLinkScopeOperationStatusClient().Get(ctx, "713192d7-503f-477a-9cfe-4efc3ee2bd11", "MyResourceGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/createOrUpdateTenantActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/createOrUpdateTenantActionGroup.json
 func ExampleTenantActionGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewTenantActionGroupsClient(cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "72f988bf-86f1-41af-91ab-2d7cd011db47", "testTenantActionGroup", "72f988bf-86f1-41af-91ab-2d7cd011db47", armmonitor.TenantActionGroupResource{
+	res, err := clientFactory.NewTenantActionGroupsClient().CreateOrUpdate(ctx, "72f988bf-86f1-41af-91ab-2d7cd011db47", "testTenantActionGroup", "72f988bf-86f1-41af-91ab-2d7cd011db47", armmonitor.TenantActionGroupResource{
 		Location: to.Ptr("Global"),
 		Tags:     map[string]*string{},
 		Properties: &armmonitor.TenantActionGroup{
@@ -152,18 +152,18 @@ func ExampleTenantActionGroupsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/getTenantActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/getTenantActionGroup.json
 func ExampleTenantActionGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewTenantActionGroupsClient(cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "72f988bf-86f1-41af-91ab-2d7cd011db47", "testTenantActionGroup", "72f988bf-86f1-41af-91ab-2d7cd011db47", nil)
+	res, err := clientFactory.NewTenantActionGroupsClient().Get(ctx, "72f988bf-86f1-41af-91ab-2d7cd011db47", "testTenantActionGroup", "72f988bf-86f1-41af-91ab-2d7cd011db47", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -231,35 +231,35 @@ func ExampleTenantActionGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/deleteTenantActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/deleteTenantActionGroup.json
 func ExampleTenantActionGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewTenantActionGroupsClient(cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "72f988bf-86f1-41af-91ab-2d7cd011db47", "testTenantActionGroup", "72f988bf-86f1-41af-91ab-2d7cd011db47", nil)
+	_, err = clientFactory.NewTenantActionGroupsClient().Delete(ctx, "72f988bf-86f1-41af-91ab-2d7cd011db47", "testTenantActionGroup", "72f988bf-86f1-41af-91ab-2d7cd011db47", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/patchTenantActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/patchTenantActionGroup.json
 func ExampleTenantActionGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewTenantActionGroupsClient(cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "72f988bf-86f1-41af-91ab-2d7cd011db47", "testTenantActionGroup", "72f988bf-86f1-41af-91ab-2d7cd011db47", armmonitor.ActionGroupPatchBodyAutoGenerated{
+	res, err := clientFactory.NewTenantActionGroupsClient().Update(ctx, "72f988bf-86f1-41af-91ab-2d7cd011db47", "testTenantActionGroup", "72f988bf-86f1-41af-91ab-2d7cd011db47", armmonitor.ActionGroupPatchBodyAutoGenerated{
 		Properties: &armmonitor.ActionGroupPatchAutoGenerated{
 			Enabled: to.Ptr(false),
 		},
@@ -337,18 +337,18 @@ func ExampleTenantActionGroupsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/listTenantActionGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/listTenantActionGroups.json
 func ExampleTenantActionGroupsClient_NewListByManagementGroupIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewTenantActionGroupsClient(cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByManagementGroupIDPager("72f988bf-86f1-41af-91ab-2d7cd011db47", "72f988bf-86f1-41af-91ab-2d7cd011db47", nil)
+	pager := clientFactory.NewTenantActionGroupsClient().NewListByManagementGroupIDPager("72f988bf-86f1-41af-91ab-2d7cd011db47", "72f988bf-86f1-41af-91ab-2d7cd011db47", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ActivityLogAlertsClient contains the methods for the ActivityLogAlerts group.
 // Don't use this type directly, use NewActivityLogAlertsClient() instead.
 type ActivityLogAlertsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewActivityLogAlertsClient creates a new instance of ActivityLogAlertsClient with the specified values.
@@ -36,21 +33,13 @@ type ActivityLogAlertsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActivityLogAlertsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ActivityLogAlertsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ActivityLogAlertsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return ActivityLogAlertsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ActivityLogAlertsClientCreateOrUpdateResponse{}, err
 	}
@@ -94,7 +83,7 @@ func (client *ActivityLogAlertsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter activityLogAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{activityLogAlertName}", url.PathEscape(activityLogAlertName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +116,7 @@ func (client *ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroup
 	if err != nil {
 		return ActivityLogAlertsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ActivityLogAlertsClientDeleteResponse{}, err
 	}
@@ -152,7 +141,7 @@ func (client *ActivityLogAlertsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter activityLogAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{activityLogAlertName}", url.PathEscape(activityLogAlertName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +164,7 @@ func (client *ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ActivityLogAlertsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ActivityLogAlertsClientGetResponse{}, err
 	}
@@ -200,7 +189,7 @@ func (client *ActivityLogAlertsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter activityLogAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{activityLogAlertName}", url.PathEscape(activityLogAlertName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,7 +231,7 @@ func (client *ActivityLogAlertsClient) NewListByResourceGroupPager(resourceGroup
 			if err != nil {
 				return ActivityLogAlertsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ActivityLogAlertsClientListByResourceGroupResponse{}, err
 			}
@@ -265,7 +254,7 @@ func (client *ActivityLogAlertsClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -306,7 +295,7 @@ func (client *ActivityLogAlertsClient) NewListBySubscriptionIDPager(options *Act
 			if err != nil {
 				return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
 			}
@@ -325,7 +314,7 @@ func (client *ActivityLogAlertsClient) listBySubscriptionIDCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -361,7 +350,7 @@ func (client *ActivityLogAlertsClient) Update(ctx context.Context, resourceGroup
 	if err != nil {
 		return ActivityLogAlertsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ActivityLogAlertsClientUpdateResponse{}, err
 	}
@@ -386,7 +375,7 @@ func (client *ActivityLogAlertsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter activityLogAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{activityLogAlertName}", url.PathEscape(activityLogAlertName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

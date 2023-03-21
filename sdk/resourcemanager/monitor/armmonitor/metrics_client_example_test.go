@@ -20,18 +20,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetric.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetric.json
 func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricsClient("92d2a2d8-b514-432d-8cc9-a5f9272630d5", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAtSubscriptionScope(ctx, "westus2", &armmonitor.MetricsClientListAtSubscriptionScopeOptions{Timespan: to.Ptr("2021-06-08T19:00:00Z/2021-06-12T01:00:00Z"),
+	res, err := clientFactory.NewMetricsClient().ListAtSubscriptionScope(ctx, "westus2", &armmonitor.MetricsClientListAtSubscriptionScopeOptions{Timespan: to.Ptr("2021-06-08T19:00:00Z/2021-06-12T01:00:00Z"),
 		Interval:            to.Ptr("PT6H"),
 		Metricnames:         to.Ptr("Data Disk Max Burst IOPS"),
 		Aggregation:         to.Ptr("count"),
@@ -386,18 +386,18 @@ func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricData
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetricMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetricMetadata.json
 func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricsClient("92d2a2d8-b514-432d-8cc9-a5f9272630d5", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAtSubscriptionScope(ctx, "westus2", &armmonitor.MetricsClientListAtSubscriptionScopeOptions{Timespan: to.Ptr("2021-06-10T02:23:16.129Z/2021-06-12T02:23:16.129Z"),
+	res, err := clientFactory.NewMetricsClient().ListAtSubscriptionScope(ctx, "westus2", &armmonitor.MetricsClientListAtSubscriptionScopeOptions{Timespan: to.Ptr("2021-06-10T02:23:16.129Z/2021-06-12T02:23:16.129Z"),
 		Interval:            nil,
 		Metricnames:         to.Ptr("Data Disk Max Burst IOPS"),
 		Aggregation:         nil,
@@ -455,18 +455,18 @@ func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricMeta
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/PostMultiResourceMetricBody.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/PostMultiResourceMetricBody.json
 func ExampleMetricsClient_ListAtSubscriptionScopePost_postRequestForSubscriptionLevelMetricDataUsingBodyParams() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricsClient("92d2a2d8-b514-432d-8cc9-a5f9272630d5", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAtSubscriptionScopePost(ctx, "westus2", &armmonitor.MetricsClientListAtSubscriptionScopePostOptions{Timespan: nil,
+	res, err := clientFactory.NewMetricsClient().ListAtSubscriptionScopePost(ctx, "westus2", &armmonitor.MetricsClientListAtSubscriptionScopePostOptions{Timespan: nil,
 		Interval:            nil,
 		Metricnames:         nil,
 		Aggregation:         nil,
@@ -837,18 +837,18 @@ func ExampleMetricsClient_ListAtSubscriptionScopePost_postRequestForSubscription
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetric.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetric.json
 func ExampleMetricsClient_List_getMetricForData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricsClient("<subscription-id>", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "subscriptions/1f3fa6d2-851c-4a91-9087-1a050f3a9c38/resourceGroups/todking/providers/Microsoft.Storage/storageAccounts/tkfileserv/blobServices/default", &armmonitor.MetricsClientListOptions{Timespan: to.Ptr("2021-04-20T09:00:00.000Z/2021-04-20T14:00:00.000Z"),
+	res, err := clientFactory.NewMetricsClient().List(ctx, "subscriptions/1f3fa6d2-851c-4a91-9087-1a050f3a9c38/resourceGroups/todking/providers/Microsoft.Storage/storageAccounts/tkfileserv/blobServices/default", &armmonitor.MetricsClientListOptions{Timespan: to.Ptr("2021-04-20T09:00:00.000Z/2021-04-20T14:00:00.000Z"),
 		Interval:            to.Ptr("PT6H"),
 		Metricnames:         to.Ptr("BlobCount,BlobCapacity"),
 		Aggregation:         to.Ptr("average,minimum,maximum"),
@@ -1310,18 +1310,18 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricMetadata.json
 func ExampleMetricsClient_List_getMetricForMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricsClient("<subscription-id>", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "subscriptions/1f3fa6d2-851c-4a91-9087-1a050f3a9c38/resourceGroups/todking/providers/Microsoft.Storage/storageAccounts/tkfileserv/blobServices/default", &armmonitor.MetricsClientListOptions{Timespan: to.Ptr("2017-04-14T02:20:00Z/2017-04-14T04:20:00Z"),
+	res, err := clientFactory.NewMetricsClient().List(ctx, "subscriptions/1f3fa6d2-851c-4a91-9087-1a050f3a9c38/resourceGroups/todking/providers/Microsoft.Storage/storageAccounts/tkfileserv/blobServices/default", &armmonitor.MetricsClientListOptions{Timespan: to.Ptr("2017-04-14T02:20:00Z/2017-04-14T04:20:00Z"),
 		Interval:            nil,
 		Metricnames:         nil,
 		Aggregation:         nil,
@@ -1409,18 +1409,18 @@ func ExampleMetricsClient_List_getMetricForMetadata() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricError.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricError.json
 func ExampleMetricsClient_List_getMetricWithError() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricsClient("<subscription-id>", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "subscriptions/ac41e21f-afd6-4a79-8070-f01eba278f97/resourceGroups/todking/providers/Microsoft.DocumentDb/databaseAccounts/tk-cosmos-mongo", &armmonitor.MetricsClientListOptions{Timespan: to.Ptr("2021-06-07T21:51:00Z/2021-06-08T01:51:00Z"),
+	res, err := clientFactory.NewMetricsClient().List(ctx, "subscriptions/ac41e21f-afd6-4a79-8070-f01eba278f97/resourceGroups/todking/providers/Microsoft.DocumentDb/databaseAccounts/tk-cosmos-mongo", &armmonitor.MetricsClientListOptions{Timespan: to.Ptr("2021-06-07T21:51:00Z/2021-06-08T01:51:00Z"),
 		Interval:            to.Ptr("FULL"),
 		Metricnames:         to.Ptr("MongoRequestsCount,MongoRequests"),
 		Aggregation:         to.Ptr("average"),

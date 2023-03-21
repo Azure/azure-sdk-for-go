@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,28 +24,19 @@ import (
 // TenantActionGroupsClient contains the methods for the TenantActionGroups group.
 // Don't use this type directly, use NewTenantActionGroupsClient() instead.
 type TenantActionGroupsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewTenantActionGroupsClient creates a new instance of TenantActionGroupsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTenantActionGroupsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantActionGroupsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TenantActionGroupsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TenantActionGroupsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -67,7 +56,7 @@ func (client *TenantActionGroupsClient) CreateOrUpdate(ctx context.Context, mana
 	if err != nil {
 		return TenantActionGroupsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TenantActionGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -88,7 +77,7 @@ func (client *TenantActionGroupsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter tenantActionGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tenantActionGroupName}", url.PathEscape(tenantActionGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +112,7 @@ func (client *TenantActionGroupsClient) Delete(ctx context.Context, managementGr
 	if err != nil {
 		return TenantActionGroupsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TenantActionGroupsClientDeleteResponse{}, err
 	}
@@ -144,7 +133,7 @@ func (client *TenantActionGroupsClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter tenantActionGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tenantActionGroupName}", url.PathEscape(tenantActionGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +158,7 @@ func (client *TenantActionGroupsClient) Get(ctx context.Context, managementGroup
 	if err != nil {
 		return TenantActionGroupsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TenantActionGroupsClientGetResponse{}, err
 	}
@@ -190,7 +179,7 @@ func (client *TenantActionGroupsClient) getCreateRequest(ctx context.Context, ma
 		return nil, errors.New("parameter tenantActionGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tenantActionGroupName}", url.PathEscape(tenantActionGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -228,7 +217,7 @@ func (client *TenantActionGroupsClient) NewListByManagementGroupIDPager(manageme
 			if err != nil {
 				return TenantActionGroupsClientListByManagementGroupIDResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TenantActionGroupsClientListByManagementGroupIDResponse{}, err
 			}
@@ -247,7 +236,7 @@ func (client *TenantActionGroupsClient) listByManagementGroupIDCreateRequest(ctx
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -283,7 +272,7 @@ func (client *TenantActionGroupsClient) Update(ctx context.Context, managementGr
 	if err != nil {
 		return TenantActionGroupsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TenantActionGroupsClientUpdateResponse{}, err
 	}
@@ -304,7 +293,7 @@ func (client *TenantActionGroupsClient) updateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter tenantActionGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tenantActionGroupName}", url.PathEscape(tenantActionGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_CreateOrUpdate.json
 func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActivityLogAlertsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "MyResourceGroup", "SampleActivityLogAlertRule", armmonitor.ActivityLogAlertResource{
+	res, err := clientFactory.NewActivityLogAlertsClient().CreateOrUpdate(ctx, "MyResourceGroup", "SampleActivityLogAlertRule", armmonitor.ActivityLogAlertResource{
 		Location: to.Ptr("Global"),
 		Tags:     map[string]*string{},
 		Properties: &armmonitor.AlertRuleProperties{
@@ -101,18 +101,18 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_CreateOrUpdateRuleWithAnyOfCondition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_CreateOrUpdateRuleWithAnyOfCondition.json
 func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAlertRuleWithAnyOfCondition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActivityLogAlertsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "MyResourceGroup", "SampleActivityLogAlertRuleWithAnyOfCondition", armmonitor.ActivityLogAlertResource{
+	res, err := clientFactory.NewActivityLogAlertsClient().CreateOrUpdate(ctx, "MyResourceGroup", "SampleActivityLogAlertRuleWithAnyOfCondition", armmonitor.ActivityLogAlertResource{
 		Location: to.Ptr("Global"),
 		Tags:     map[string]*string{},
 		Properties: &armmonitor.AlertRuleProperties{
@@ -198,18 +198,18 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_CreateOrUpdateRuleWithContainsAny.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_CreateOrUpdateRuleWithContainsAny.json
 func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAlertRuleWithContainsAny() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActivityLogAlertsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "MyResourceGroup", "SampleActivityLogAlertRuleWithContainsAny", armmonitor.ActivityLogAlertResource{
+	res, err := clientFactory.NewActivityLogAlertsClient().CreateOrUpdate(ctx, "MyResourceGroup", "SampleActivityLogAlertRuleWithContainsAny", armmonitor.ActivityLogAlertResource{
 		Location: to.Ptr("Global"),
 		Tags:     map[string]*string{},
 		Properties: &armmonitor.AlertRuleProperties{
@@ -285,18 +285,18 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_Get.json
 func ExampleActivityLogAlertsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActivityLogAlertsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "MyResourceGroup", "SampleActivityLogAlertRule", nil)
+	res, err := clientFactory.NewActivityLogAlertsClient().Get(ctx, "MyResourceGroup", "SampleActivityLogAlertRule", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -339,35 +339,35 @@ func ExampleActivityLogAlertsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_Delete.json
 func ExampleActivityLogAlertsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActivityLogAlertsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "MyResourceGroup", "SampleActivityLogAlertRule", nil)
+	_, err = clientFactory.NewActivityLogAlertsClient().Delete(ctx, "MyResourceGroup", "SampleActivityLogAlertRule", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_Update.json
 func ExampleActivityLogAlertsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActivityLogAlertsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "MyResourceGroup", "SampleActivityLogAlertRule", armmonitor.AlertRulePatchObject{
+	res, err := clientFactory.NewActivityLogAlertsClient().Update(ctx, "MyResourceGroup", "SampleActivityLogAlertRule", armmonitor.AlertRulePatchObject{
 		Properties: &armmonitor.AlertRulePatchProperties{
 			Enabled: to.Ptr(false),
 		},
@@ -420,18 +420,18 @@ func ExampleActivityLogAlertsClient_Update() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_ListBySubscriptionId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_ListBySubscriptionId.json
 func ExampleActivityLogAlertsClient_NewListBySubscriptionIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActivityLogAlertsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionIDPager(nil)
+	pager := clientFactory.NewActivityLogAlertsClient().NewListBySubscriptionIDPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -515,18 +515,18 @@ func ExampleActivityLogAlertsClient_NewListBySubscriptionIDPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_ListByResourceGroupName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_ListByResourceGroupName.json
 func ExampleActivityLogAlertsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActivityLogAlertsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("MyResourceGroup", nil)
+	pager := clientFactory.NewActivityLogAlertsClient().NewListByResourceGroupPager("MyResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

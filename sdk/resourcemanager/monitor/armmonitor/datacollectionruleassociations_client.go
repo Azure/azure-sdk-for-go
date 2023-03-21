@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // DataCollectionRuleAssociationsClient contains the methods for the DataCollectionRuleAssociations group.
 // Don't use this type directly, use NewDataCollectionRuleAssociationsClient() instead.
 type DataCollectionRuleAssociationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDataCollectionRuleAssociationsClient creates a new instance of DataCollectionRuleAssociationsClient with the specified values.
@@ -36,21 +33,13 @@ type DataCollectionRuleAssociationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataCollectionRuleAssociationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DataCollectionRuleAssociationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DataCollectionRuleAssociationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -68,7 +57,7 @@ func (client *DataCollectionRuleAssociationsClient) Create(ctx context.Context, 
 	if err != nil {
 		return DataCollectionRuleAssociationsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataCollectionRuleAssociationsClientCreateResponse{}, err
 	}
@@ -86,7 +75,7 @@ func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx cont
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +111,7 @@ func (client *DataCollectionRuleAssociationsClient) Delete(ctx context.Context, 
 	if err != nil {
 		return DataCollectionRuleAssociationsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataCollectionRuleAssociationsClientDeleteResponse{}, err
 	}
@@ -140,7 +129,7 @@ func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx cont
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +153,7 @@ func (client *DataCollectionRuleAssociationsClient) Get(ctx context.Context, res
 	if err != nil {
 		return DataCollectionRuleAssociationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataCollectionRuleAssociationsClientGetResponse{}, err
 	}
@@ -182,7 +171,7 @@ func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +214,7 @@ func (client *DataCollectionRuleAssociationsClient) NewListByDataCollectionEndpo
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, err
 			}
@@ -252,7 +241,7 @@ func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpoint
 		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -294,7 +283,7 @@ func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resou
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByResourceResponse{}, err
 			}
@@ -310,7 +299,7 @@ func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resou
 func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(ctx context.Context, resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -353,7 +342,7 @@ func (client *DataCollectionRuleAssociationsClient) NewListByRulePager(resourceG
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByRuleResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByRuleResponse{}, err
 			}
@@ -380,7 +369,7 @@ func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx 
 		return nil, errors.New("parameter dataCollectionRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionRuleName}", url.PathEscape(dataCollectionRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -19,18 +19,18 @@ type CertificateAttributes struct {
 	Issuer *string `json:"issuer,omitempty"`
 	KeyUsage []*KeyUsage `json:"keyUsage,omitempty"`
 
-	// The validity end date in UTC.
-	NotAfter *time.Time `json:"notAfter,omitempty"`
-
-	// The validity start date in UTC.
-	NotBefore *time.Time `json:"notBefore,omitempty"`
-
 	// Serial number for the certificate.
 	SerialNumber *string `json:"serialNumber,omitempty"`
 
 	// Distinguished name for the certificate.
 	Subject *string `json:"subject,omitempty"`
 	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
+
+	// The validity end date in UTC.
+	ValidityNotAfter *time.Time `json:"validityNotAfter,omitempty"`
+
+	// The validity start date in UTC.
+	ValidityNotBefore *time.Time `json:"validityNotBefore,omitempty"`
 }
 
 // CertificateDescriptionResponse - The attributes returned on the certificate description.
@@ -52,7 +52,7 @@ type CertificateDescriptionResponse struct {
 	RevocationReason *string `json:"revocationReason,omitempty"`
 
 	// The timestamp in UTC for when the certificate was revoked.
-	RevokedAt *time.Time `json:"revokedAt,omitempty"`
+	RevocationTime *time.Time `json:"revocationTime,omitempty"`
 
 	// The attributes of the certificate.
 	Value *CertificateAttributes `json:"value,omitempty"`
@@ -65,12 +65,6 @@ type CertificateValue struct {
 	// Name of the certificate issuer.
 	Issuer *string `json:"issuer,omitempty"`
 	KeyUsage []*KeyUsage `json:"keyUsage,omitempty"`
-
-	// The validity end date in UTC.
-	NotAfter *time.Time `json:"notAfter,omitempty"`
-
-	// The validity start date in UTC.
-	NotBefore *time.Time `json:"notBefore,omitempty"`
 
 	// Certificate in pem format
 	PEM *string `json:"PEM,omitempty"`
@@ -90,6 +84,12 @@ type CertificateValue struct {
 
 	// Thumbprint of the certificate.
 	Thumbprint *string `json:"thumbprint,omitempty"`
+
+	// The validity end date in UTC.
+	ValidityNotAfter *time.Time `json:"validityNotAfter,omitempty"`
+
+	// The validity start date in UTC.
+	ValidityNotBefore *time.Time `json:"validityNotBefore,omitempty"`
 }
 
 // ClientCertificateDetailsOptions contains the optional parameters for the Client.CertificateDetails method.
@@ -155,7 +155,7 @@ type EnrollResponse struct {
 	RevocationReason *string `json:"revocationReason,omitempty"`
 
 	// The timestamp in UTC for when the certificate was revoked.
-	RevokedAt *time.Time `json:"revokedAt,omitempty"`
+	RevocationTime *time.Time `json:"revocationTime,omitempty"`
 
 	// The attributes and the certificate value in pem/pkcs7 format. Can also contain the certificate chain in pkcs7/pem formats.
 	Value *CertificateValue `json:"value,omitempty"`
@@ -200,15 +200,15 @@ type Substitutes struct {
 	DistinguishedName *string `json:"distinguishedName,omitempty"`
 	ExtendedKeyUsage []*ExtendedKeyUsage `json:"extendedKeyUsage,omitempty"`
 	KeyUsage []*KeyUsage `json:"keyUsage,omitempty"`
-
-	// The validity end date in UTC.
-	NotAfter *time.Time `json:"notAfter,omitempty"`
-
-	// The validity start date in UTC.
-	NotBefore *time.Time `json:"notBefore,omitempty"`
 	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
 
 	// Subject name for the certificate.
 	SubjectName *string `json:"subjectName,omitempty"`
+
+	// The validity end date in UTC.
+	ValidityNotAfter *time.Time `json:"validityNotAfter,omitempty"`
+
+	// The validity start date in UTC.
+	ValidityNotBefore *time.Time `json:"validityNotBefore,omitempty"`
 }
 

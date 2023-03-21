@@ -22,11 +22,11 @@ func (c CertificateAttributes) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "extendedKeyUsage", c.ExtendedKeyUsage)
 	populate(objectMap, "issuer", c.Issuer)
 	populate(objectMap, "keyUsage", c.KeyUsage)
-	populateTimeRFC3339(objectMap, "notAfter", c.NotAfter)
-	populateTimeRFC3339(objectMap, "notBefore", c.NotBefore)
 	populate(objectMap, "serialNumber", c.SerialNumber)
 	populate(objectMap, "subject", c.Subject)
 	populate(objectMap, "subjectAlternativeNames", c.SubjectAlternativeNames)
+	populateTimeRFC3339(objectMap, "validityNotAfter", c.ValidityNotAfter)
+	populateTimeRFC3339(objectMap, "validityNotBefore", c.ValidityNotBefore)
 	return json.Marshal(objectMap)
 }
 
@@ -48,12 +48,6 @@ func (c *CertificateAttributes) UnmarshalJSON(data []byte) error {
 		case "keyUsage":
 				err = unpopulate(val, "KeyUsage", &c.KeyUsage)
 				delete(rawMsg, key)
-		case "notAfter":
-				err = unpopulateTimeRFC3339(val, "NotAfter", &c.NotAfter)
-				delete(rawMsg, key)
-		case "notBefore":
-				err = unpopulateTimeRFC3339(val, "NotBefore", &c.NotBefore)
-				delete(rawMsg, key)
 		case "serialNumber":
 				err = unpopulate(val, "SerialNumber", &c.SerialNumber)
 				delete(rawMsg, key)
@@ -62,6 +56,12 @@ func (c *CertificateAttributes) UnmarshalJSON(data []byte) error {
 				delete(rawMsg, key)
 		case "subjectAlternativeNames":
 				err = unpopulate(val, "SubjectAlternativeNames", &c.SubjectAlternativeNames)
+				delete(rawMsg, key)
+		case "validityNotAfter":
+				err = unpopulateTimeRFC3339(val, "ValidityNotAfter", &c.ValidityNotAfter)
+				delete(rawMsg, key)
+		case "validityNotBefore":
+				err = unpopulateTimeRFC3339(val, "ValidityNotBefore", &c.ValidityNotBefore)
 				delete(rawMsg, key)
 		}
 		if err != nil {
@@ -80,7 +80,7 @@ func (c CertificateDescriptionResponse) MarshalJSON() ([]byte, error) {
 	populateTimeRFC3339(objectMap, "issuedAt", c.IssuedAt)
 	populate(objectMap, "name", c.Name)
 	populate(objectMap, "revocationReason", c.RevocationReason)
-	populateTimeRFC3339(objectMap, "revokedAt", c.RevokedAt)
+	populateTimeRFC3339(objectMap, "revocationTime", c.RevocationTime)
 	populate(objectMap, "value", c.Value)
 	return json.Marshal(objectMap)
 }
@@ -112,8 +112,8 @@ func (c *CertificateDescriptionResponse) UnmarshalJSON(data []byte) error {
 		case "revocationReason":
 				err = unpopulate(val, "RevocationReason", &c.RevocationReason)
 				delete(rawMsg, key)
-		case "revokedAt":
-				err = unpopulateTimeRFC3339(val, "RevokedAt", &c.RevokedAt)
+		case "revocationTime":
+				err = unpopulateTimeRFC3339(val, "RevocationTime", &c.RevocationTime)
 				delete(rawMsg, key)
 		case "value":
 				err = unpopulate(val, "Value", &c.Value)
@@ -132,8 +132,6 @@ func (c CertificateValue) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "extendedKeyUsage", c.ExtendedKeyUsage)
 	populate(objectMap, "issuer", c.Issuer)
 	populate(objectMap, "keyUsage", c.KeyUsage)
-	populateTimeRFC3339(objectMap, "notAfter", c.NotAfter)
-	populateTimeRFC3339(objectMap, "notBefore", c.NotBefore)
 	populate(objectMap, "PEM", c.PEM)
 	populate(objectMap, "PEMChain", c.PEMChain)
 	populate(objectMap, "PKCS7", c.PKCS7)
@@ -141,6 +139,8 @@ func (c CertificateValue) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "subject", c.Subject)
 	populate(objectMap, "subjectAlternativeNames", c.SubjectAlternativeNames)
 	populate(objectMap, "thumbprint", c.Thumbprint)
+	populateTimeRFC3339(objectMap, "validityNotAfter", c.ValidityNotAfter)
+	populateTimeRFC3339(objectMap, "validityNotBefore", c.ValidityNotBefore)
 	return json.Marshal(objectMap)
 }
 
@@ -162,12 +162,6 @@ func (c *CertificateValue) UnmarshalJSON(data []byte) error {
 		case "keyUsage":
 				err = unpopulate(val, "KeyUsage", &c.KeyUsage)
 				delete(rawMsg, key)
-		case "notAfter":
-				err = unpopulateTimeRFC3339(val, "NotAfter", &c.NotAfter)
-				delete(rawMsg, key)
-		case "notBefore":
-				err = unpopulateTimeRFC3339(val, "NotBefore", &c.NotBefore)
-				delete(rawMsg, key)
 		case "PEM":
 				err = unpopulate(val, "PEM", &c.PEM)
 				delete(rawMsg, key)
@@ -188,6 +182,12 @@ func (c *CertificateValue) UnmarshalJSON(data []byte) error {
 				delete(rawMsg, key)
 		case "thumbprint":
 				err = unpopulate(val, "Thumbprint", &c.Thumbprint)
+				delete(rawMsg, key)
+		case "validityNotAfter":
+				err = unpopulateTimeRFC3339(val, "ValidityNotAfter", &c.ValidityNotAfter)
+				delete(rawMsg, key)
+		case "validityNotBefore":
+				err = unpopulateTimeRFC3339(val, "ValidityNotBefore", &c.ValidityNotBefore)
 				delete(rawMsg, key)
 		}
 		if err != nil {
@@ -238,7 +238,7 @@ func (e EnrollResponse) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "log", e.Log)
 	populate(objectMap, "name", e.Name)
 	populate(objectMap, "revocationReason", e.RevocationReason)
-	populateTimeRFC3339(objectMap, "revokedAt", e.RevokedAt)
+	populateTimeRFC3339(objectMap, "revocationTime", e.RevocationTime)
 	populate(objectMap, "value", e.Value)
 	return json.Marshal(objectMap)
 }
@@ -273,8 +273,8 @@ func (e *EnrollResponse) UnmarshalJSON(data []byte) error {
 		case "revocationReason":
 				err = unpopulate(val, "RevocationReason", &e.RevocationReason)
 				delete(rawMsg, key)
-		case "revokedAt":
-				err = unpopulateTimeRFC3339(val, "RevokedAt", &e.RevokedAt)
+		case "revocationTime":
+				err = unpopulateTimeRFC3339(val, "RevocationTime", &e.RevocationTime)
 				delete(rawMsg, key)
 		case "value":
 				err = unpopulate(val, "Value", &e.Value)
@@ -396,10 +396,10 @@ func (s Substitutes) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "distinguishedName", s.DistinguishedName)
 	populate(objectMap, "extendedKeyUsage", s.ExtendedKeyUsage)
 	populate(objectMap, "keyUsage", s.KeyUsage)
-	populateTimeRFC3339(objectMap, "notAfter", s.NotAfter)
-	populateTimeRFC3339(objectMap, "notBefore", s.NotBefore)
 	populate(objectMap, "subjectAlternativeNames", s.SubjectAlternativeNames)
 	populate(objectMap, "subjectName", s.SubjectName)
+	populateTimeRFC3339(objectMap, "validityNotAfter", s.ValidityNotAfter)
+	populateTimeRFC3339(objectMap, "validityNotBefore", s.ValidityNotBefore)
 	return json.Marshal(objectMap)
 }
 
@@ -421,17 +421,17 @@ func (s *Substitutes) UnmarshalJSON(data []byte) error {
 		case "keyUsage":
 				err = unpopulate(val, "KeyUsage", &s.KeyUsage)
 				delete(rawMsg, key)
-		case "notAfter":
-				err = unpopulateTimeRFC3339(val, "NotAfter", &s.NotAfter)
-				delete(rawMsg, key)
-		case "notBefore":
-				err = unpopulateTimeRFC3339(val, "NotBefore", &s.NotBefore)
-				delete(rawMsg, key)
 		case "subjectAlternativeNames":
 				err = unpopulate(val, "SubjectAlternativeNames", &s.SubjectAlternativeNames)
 				delete(rawMsg, key)
 		case "subjectName":
 				err = unpopulate(val, "SubjectName", &s.SubjectName)
+				delete(rawMsg, key)
+		case "validityNotAfter":
+				err = unpopulateTimeRFC3339(val, "ValidityNotAfter", &s.ValidityNotAfter)
+				delete(rawMsg, key)
+		case "validityNotBefore":
+				err = unpopulateTimeRFC3339(val, "ValidityNotBefore", &s.ValidityNotBefore)
 				delete(rawMsg, key)
 		}
 		if err != nil {

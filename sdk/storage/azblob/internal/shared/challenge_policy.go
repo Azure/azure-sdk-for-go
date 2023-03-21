@@ -8,7 +8,6 @@ package shared
 
 import (
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -79,7 +78,6 @@ func parseTenant(url string) string {
 
 func (s *storageAuthorizer) parseChallenge(resp *http.Response) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
-	fmt.Println(authHeader)
 	if authHeader == "" {
 		return &challengePolicyError{err: errors.New("response has no WWW-Authenticate header for challenge authentication")}
 	}
@@ -101,7 +99,6 @@ func (s *storageAuthorizer) parseChallenge(resp *http.Response) error {
 	}
 
 	s.tenantID = parseTenant(vals["authorization_uri"])
-	fmt.Println(s.tenantID)
 
 	scope := vals["resource_id"]
 	if scope == "" {
@@ -112,6 +109,5 @@ func (s *storageAuthorizer) parseChallenge(resp *http.Response) error {
 		scope += "/.default"
 	}
 	s.scopes = []string{scope}
-	fmt.Println(s.scopes)
 	return nil
 }

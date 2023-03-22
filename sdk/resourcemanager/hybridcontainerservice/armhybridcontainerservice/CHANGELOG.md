@@ -8,6 +8,7 @@
 
 ### Features Added
 
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 - New function `*ProvisionedClustersClient.GetUpgradeProfile(context.Context, string, string, *ProvisionedClustersClientGetUpgradeProfileOptions) (ProvisionedClustersClientGetUpgradeProfileResponse, error)`
 - New function `*ProvisionedClustersClient.BeginUpgradeNodeImageVersionForEntireCluster(context.Context, string, string, *ProvisionedClustersClientBeginUpgradeNodeImageVersionForEntireClusterOptions) (*runtime.Poller[ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse], error)`
 - New struct `ProvisionedClusterPoolUpgradeProfile`

@@ -25,11 +25,11 @@ func ExampleProvisionedClustersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewProvisionedClustersClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", nil)
+	res, err := clientFactory.NewProvisionedClustersClient().Get(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -115,11 +115,11 @@ func ExampleProvisionedClustersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewProvisionedClustersClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", armhybridcontainerservice.ProvisionedClusters{
+	poller, err := clientFactory.NewProvisionedClustersClient().BeginCreateOrUpdate(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", armhybridcontainerservice.ProvisionedClusters{
 		Location: to.Ptr("westus"),
 		ExtendedLocation: &armhybridcontainerservice.ProvisionedClustersExtendedLocation{
 			Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
@@ -274,11 +274,11 @@ func ExampleProvisionedClustersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewProvisionedClustersClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", nil)
+	_, err = clientFactory.NewProvisionedClustersClient().Delete(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -291,11 +291,11 @@ func ExampleProvisionedClustersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewProvisionedClustersClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", armhybridcontainerservice.ProvisionedClustersPatch{
+	poller, err := clientFactory.NewProvisionedClustersClient().BeginUpdate(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", armhybridcontainerservice.ProvisionedClustersPatch{
 		Tags: map[string]*string{
 			"additionalProperties": to.Ptr("sample"),
 		},
@@ -389,11 +389,11 @@ func ExampleProvisionedClustersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewProvisionedClustersClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("test-arcappliance-resgrp", nil)
+	pager := clientFactory.NewProvisionedClustersClient().NewListByResourceGroupPager("test-arcappliance-resgrp", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -487,11 +487,11 @@ func ExampleProvisionedClustersClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewProvisionedClustersClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewProvisionedClustersClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -585,11 +585,11 @@ func ExampleProvisionedClustersClient_GetUpgradeProfile() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewProvisionedClustersClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetUpgradeProfile(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", nil)
+	res, err := clientFactory.NewProvisionedClustersClient().GetUpgradeProfile(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -639,11 +639,11 @@ func ExampleProvisionedClustersClient_BeginUpgradeNodeImageVersionForEntireClust
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewProvisionedClustersClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpgradeNodeImageVersionForEntireCluster(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", nil)
+	poller, err := clientFactory.NewProvisionedClustersClient().BeginUpgradeNodeImageVersionForEntireCluster(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -25,11 +25,11 @@ func ExampleStorageSpacesClient_Retrieve() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewStorageSpacesClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Retrieve(ctx, "test-arcappliance-resgrp", "test-storage", nil)
+	res, err := clientFactory.NewStorageSpacesClient().Retrieve(ctx, "test-arcappliance-resgrp", "test-storage", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -63,11 +63,11 @@ func ExampleStorageSpacesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewStorageSpacesClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "test-arcappliance-resgrp", "test-storage", armhybridcontainerservice.StorageSpaces{
+	poller, err := clientFactory.NewStorageSpacesClient().BeginCreateOrUpdate(ctx, "test-arcappliance-resgrp", "test-storage", armhybridcontainerservice.StorageSpaces{
 		Location: to.Ptr("westus"),
 		ExtendedLocation: &armhybridcontainerservice.StorageSpacesExtendedLocation{
 			Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
@@ -118,11 +118,11 @@ func ExampleStorageSpacesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewStorageSpacesClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "test-arcappliance-resgrp", "test-storage", nil)
+	_, err = clientFactory.NewStorageSpacesClient().Delete(ctx, "test-arcappliance-resgrp", "test-storage", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -135,11 +135,11 @@ func ExampleStorageSpacesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewStorageSpacesClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "test-arcappliance-resgrp", "test-storage", armhybridcontainerservice.StorageSpacesPatch{
+	poller, err := clientFactory.NewStorageSpacesClient().BeginUpdate(ctx, "test-arcappliance-resgrp", "test-storage", armhybridcontainerservice.StorageSpacesPatch{
 		Tags: map[string]*string{
 			"additionalProperties": to.Ptr("sample"),
 		},
@@ -180,11 +180,11 @@ func ExampleStorageSpacesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewStorageSpacesClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("test-arcappliance-resgrp", nil)
+	pager := clientFactory.NewStorageSpacesClient().NewListByResourceGroupPager("test-arcappliance-resgrp", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -226,11 +226,11 @@ func ExampleStorageSpacesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewStorageSpacesClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewStorageSpacesClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

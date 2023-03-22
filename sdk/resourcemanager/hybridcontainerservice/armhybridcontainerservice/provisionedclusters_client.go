@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ProvisionedClustersClient contains the methods for the ProvisionedClusters group.
 // Don't use this type directly, use NewProvisionedClustersClient() instead.
 type ProvisionedClustersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewProvisionedClustersClient creates a new instance of ProvisionedClustersClient with the specified values.
@@ -36,21 +33,13 @@ type ProvisionedClustersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProvisionedClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProvisionedClustersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ProvisionedClustersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProvisionedClustersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,11 +58,11 @@ func (client *ProvisionedClustersClient) BeginCreateOrUpdate(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ProvisionedClustersClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProvisionedClustersClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ProvisionedClustersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ProvisionedClustersClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *ProvisionedClustersClient) createOrUpdate(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +100,7 @@ func (client *ProvisionedClustersClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +124,7 @@ func (client *ProvisionedClustersClient) Delete(ctx context.Context, resourceGro
 	if err != nil {
 		return ProvisionedClustersClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProvisionedClustersClientDeleteResponse{}, err
 	}
@@ -160,7 +149,7 @@ func (client *ProvisionedClustersClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +172,7 @@ func (client *ProvisionedClustersClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ProvisionedClustersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProvisionedClustersClientGetResponse{}, err
 	}
@@ -208,7 +197,7 @@ func (client *ProvisionedClustersClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -241,7 +230,7 @@ func (client *ProvisionedClustersClient) GetUpgradeProfile(ctx context.Context, 
 	if err != nil {
 		return ProvisionedClustersClientGetUpgradeProfileResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProvisionedClustersClientGetUpgradeProfileResponse{}, err
 	}
@@ -266,7 +255,7 @@ func (client *ProvisionedClustersClient) getUpgradeProfileCreateRequest(ctx cont
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,7 +297,7 @@ func (client *ProvisionedClustersClient) NewListByResourceGroupPager(resourceGro
 			if err != nil {
 				return ProvisionedClustersClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProvisionedClustersClientListByResourceGroupResponse{}, err
 			}
@@ -331,7 +320,7 @@ func (client *ProvisionedClustersClient) listByResourceGroupCreateRequest(ctx co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -372,7 +361,7 @@ func (client *ProvisionedClustersClient) NewListBySubscriptionPager(options *Pro
 			if err != nil {
 				return ProvisionedClustersClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProvisionedClustersClientListBySubscriptionResponse{}, err
 			}
@@ -391,7 +380,7 @@ func (client *ProvisionedClustersClient) listBySubscriptionCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -425,11 +414,11 @@ func (client *ProvisionedClustersClient) BeginUpdate(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ProvisionedClustersClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProvisionedClustersClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ProvisionedClustersClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ProvisionedClustersClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -442,7 +431,7 @@ func (client *ProvisionedClustersClient) update(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -467,7 +456,7 @@ func (client *ProvisionedClustersClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -493,11 +482,11 @@ func (client *ProvisionedClustersClient) BeginUpgradeNodeImageVersionForEntireCl
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -511,7 +500,7 @@ func (client *ProvisionedClustersClient) upgradeNodeImageVersionForEntireCluster
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -536,7 +525,7 @@ func (client *ProvisionedClustersClient) upgradeNodeImageVersionForEntireCluster
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

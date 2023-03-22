@@ -25,11 +25,11 @@ func ExampleAgentPoolClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewAgentPoolClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", nil)
+	res, err := clientFactory.NewAgentPoolClient().Get(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -57,11 +57,11 @@ func ExampleAgentPoolClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewAgentPoolClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", armhybridcontainerservice.AgentPool{
+	poller, err := clientFactory.NewAgentPoolClient().BeginCreateOrUpdate(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", armhybridcontainerservice.AgentPool{
 		Location: to.Ptr("westus"),
 		Properties: &armhybridcontainerservice.AgentPoolProperties{
 			Count:  to.Ptr[int32](1),
@@ -100,11 +100,11 @@ func ExampleAgentPoolClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewAgentPoolClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", nil)
+	_, err = clientFactory.NewAgentPoolClient().Delete(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -117,11 +117,11 @@ func ExampleAgentPoolClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewAgentPoolClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", armhybridcontainerservice.AgentPool{
+	res, err := clientFactory.NewAgentPoolClient().Update(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", armhybridcontainerservice.AgentPool{
 		Location: to.Ptr("westus"),
 		Properties: &armhybridcontainerservice.AgentPoolProperties{
 			Count: to.Ptr[int32](3),
@@ -154,11 +154,11 @@ func ExampleAgentPoolClient_ListByProvisionedCluster() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewAgentPoolClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListByProvisionedCluster(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", nil)
+	res, err := clientFactory.NewAgentPoolClient().ListByProvisionedCluster(ctx, "test-arcappliance-resgrp", "test-hybridakscluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

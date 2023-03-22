@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,28 +22,19 @@ import (
 // Client contains the methods for the HybridContainerService group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewClient creates a new instance of Client with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &Client{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -61,7 +50,7 @@ func (client *Client) ListOrchestrators(ctx context.Context, customLocationResou
 	if err != nil {
 		return ClientListOrchestratorsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientListOrchestratorsResponse{}, err
 	}
@@ -75,7 +64,7 @@ func (client *Client) ListOrchestrators(ctx context.Context, customLocationResou
 func (client *Client) listOrchestratorsCreateRequest(ctx context.Context, customLocationResourceURI string, options *ClientListOrchestratorsOptions) (*policy.Request, error) {
 	urlPath := "/{customLocationResourceUri}/providers/Microsoft.HybridContainerService/orchestrators"
 	urlPath = strings.ReplaceAll(urlPath, "{customLocationResourceUri}", customLocationResourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +95,7 @@ func (client *Client) ListVMSKUs(ctx context.Context, customLocationResourceURI 
 	if err != nil {
 		return ClientListVMSKUsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientListVMSKUsResponse{}, err
 	}
@@ -120,7 +109,7 @@ func (client *Client) ListVMSKUs(ctx context.Context, customLocationResourceURI 
 func (client *Client) listVMSKUsCreateRequest(ctx context.Context, customLocationResourceURI string, options *ClientListVMSKUsOptions) (*policy.Request, error) {
 	urlPath := "/{customLocationResourceUri}/providers/Microsoft.HybridContainerService/vmSkus"
 	urlPath = strings.ReplaceAll(urlPath, "{customLocationResourceUri}", customLocationResourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

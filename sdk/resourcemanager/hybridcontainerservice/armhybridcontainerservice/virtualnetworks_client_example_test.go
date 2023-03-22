@@ -25,11 +25,11 @@ func ExampleVirtualNetworksClient_Retrieve() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewVirtualNetworksClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Retrieve(ctx, "test-arcappliance-resgrp", "test-vnet-static", nil)
+	res, err := clientFactory.NewVirtualNetworksClient().Retrieve(ctx, "test-arcappliance-resgrp", "test-vnet-static", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -79,11 +79,11 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewVirtualNetworksClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "test-arcappliance-resgrp", "test-vnet-static", armhybridcontainerservice.VirtualNetworks{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "test-arcappliance-resgrp", "test-vnet-static", armhybridcontainerservice.VirtualNetworks{
 		Location: to.Ptr("westus"),
 		ExtendedLocation: &armhybridcontainerservice.VirtualNetworksExtendedLocation{
 			Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
@@ -162,11 +162,11 @@ func ExampleVirtualNetworksClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewVirtualNetworksClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "test-arcappliance-resgrp", "test-vnet-static", nil)
+	_, err = clientFactory.NewVirtualNetworksClient().Delete(ctx, "test-arcappliance-resgrp", "test-vnet-static", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -179,11 +179,11 @@ func ExampleVirtualNetworksClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewVirtualNetworksClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "test-arcappliance-resgrp", "test-vnet-static", armhybridcontainerservice.VirtualNetworksPatch{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginUpdate(ctx, "test-arcappliance-resgrp", "test-vnet-static", armhybridcontainerservice.VirtualNetworksPatch{
 		Tags: map[string]*string{
 			"additionalProperties": to.Ptr("sample"),
 		},
@@ -244,11 +244,11 @@ func ExampleVirtualNetworksClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewVirtualNetworksClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("test-arcappliance-resgrp", nil)
+	pager := clientFactory.NewVirtualNetworksClient().NewListByResourceGroupPager("test-arcappliance-resgrp", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -306,11 +306,11 @@ func ExampleVirtualNetworksClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcontainerservice.NewVirtualNetworksClient("a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b", cred, nil)
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewVirtualNetworksClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

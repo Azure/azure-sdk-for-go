@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // AgentPoolClient contains the methods for the AgentPool group.
 // Don't use this type directly, use NewAgentPoolClient() instead.
 type AgentPoolClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAgentPoolClient creates a new instance of AgentPoolClient with the specified values.
@@ -36,21 +33,13 @@ type AgentPoolClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAgentPoolClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentPoolClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AgentPoolClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AgentPoolClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,11 +59,11 @@ func (client *AgentPoolClient) BeginCreateOrUpdate(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AgentPoolClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentPoolClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AgentPoolClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AgentPoolClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -87,7 +76,7 @@ func (client *AgentPoolClient) createOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +105,7 @@ func (client *AgentPoolClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +129,7 @@ func (client *AgentPoolClient) Delete(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return AgentPoolClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentPoolClientDeleteResponse{}, err
 	}
@@ -169,7 +158,7 @@ func (client *AgentPoolClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +182,7 @@ func (client *AgentPoolClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return AgentPoolClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentPoolClientGetResponse{}, err
 	}
@@ -222,7 +211,7 @@ func (client *AgentPoolClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -255,7 +244,7 @@ func (client *AgentPoolClient) ListByProvisionedCluster(ctx context.Context, res
 	if err != nil {
 		return AgentPoolClientListByProvisionedClusterResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentPoolClientListByProvisionedClusterResponse{}, err
 	}
@@ -280,7 +269,7 @@ func (client *AgentPoolClient) listByProvisionedClusterCreateRequest(ctx context
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -313,7 +302,7 @@ func (client *AgentPoolClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return AgentPoolClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentPoolClientUpdateResponse{}, err
 	}
@@ -342,7 +331,7 @@ func (client *AgentPoolClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

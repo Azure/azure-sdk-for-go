@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // VirtualNetworksClient contains the methods for the VirtualNetworks group.
 // Don't use this type directly, use NewVirtualNetworksClient() instead.
 type VirtualNetworksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewVirtualNetworksClient creates a new instance of VirtualNetworksClient with the specified values.
@@ -36,21 +33,13 @@ type VirtualNetworksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".VirtualNetworksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &VirtualNetworksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,11 +58,11 @@ func (client *VirtualNetworksClient) BeginCreateOrUpdate(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworksClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworksClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *VirtualNetworksClient) createOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +100,7 @@ func (client *VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter virtualNetworksName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworksName}", url.PathEscape(virtualNetworksName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +123,7 @@ func (client *VirtualNetworksClient) Delete(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return VirtualNetworksClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualNetworksClientDeleteResponse{}, err
 	}
@@ -159,7 +148,7 @@ func (client *VirtualNetworksClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter virtualNetworksName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworksName}", url.PathEscape(virtualNetworksName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +181,7 @@ func (client *VirtualNetworksClient) NewListByResourceGroupPager(resourceGroupNa
 			if err != nil {
 				return VirtualNetworksClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return VirtualNetworksClientListByResourceGroupResponse{}, err
 			}
@@ -215,7 +204,7 @@ func (client *VirtualNetworksClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,7 +245,7 @@ func (client *VirtualNetworksClient) NewListBySubscriptionPager(options *Virtual
 			if err != nil {
 				return VirtualNetworksClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return VirtualNetworksClientListBySubscriptionResponse{}, err
 			}
@@ -275,7 +264,7 @@ func (client *VirtualNetworksClient) listBySubscriptionCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,7 +297,7 @@ func (client *VirtualNetworksClient) Retrieve(ctx context.Context, resourceGroup
 	if err != nil {
 		return VirtualNetworksClientRetrieveResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualNetworksClientRetrieveResponse{}, err
 	}
@@ -333,7 +322,7 @@ func (client *VirtualNetworksClient) retrieveCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter virtualNetworksName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworksName}", url.PathEscape(virtualNetworksName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -367,11 +356,11 @@ func (client *VirtualNetworksClient) BeginUpdate(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworksClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworksClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworksClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworksClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -384,7 +373,7 @@ func (client *VirtualNetworksClient) update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -409,7 +398,7 @@ func (client *VirtualNetworksClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter virtualNetworksName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworksName}", url.PathEscape(virtualNetworksName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

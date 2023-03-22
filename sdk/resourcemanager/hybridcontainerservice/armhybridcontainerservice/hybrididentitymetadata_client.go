@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // HybridIdentityMetadataClient contains the methods for the HybridIdentityMetadata group.
 // Don't use this type directly, use NewHybridIdentityMetadataClient() instead.
 type HybridIdentityMetadataClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewHybridIdentityMetadataClient creates a new instance of HybridIdentityMetadataClient with the specified values.
@@ -36,21 +33,13 @@ type HybridIdentityMetadataClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHybridIdentityMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HybridIdentityMetadataClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".HybridIdentityMetadataClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &HybridIdentityMetadataClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *HybridIdentityMetadataClient) Delete(ctx context.Context, resource
 	if err != nil {
 		return HybridIdentityMetadataClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HybridIdentityMetadataClientDeleteResponse{}, err
 	}
@@ -98,7 +87,7 @@ func (client *HybridIdentityMetadataClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter hybridIdentityMetadataResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hybridIdentityMetadataResourceName}", url.PathEscape(hybridIdentityMetadataResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +112,7 @@ func (client *HybridIdentityMetadataClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return HybridIdentityMetadataClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HybridIdentityMetadataClientGetResponse{}, err
 	}
@@ -152,7 +141,7 @@ func (client *HybridIdentityMetadataClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter hybridIdentityMetadataResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hybridIdentityMetadataResourceName}", url.PathEscape(hybridIdentityMetadataResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -195,7 +184,7 @@ func (client *HybridIdentityMetadataClient) NewListByClusterPager(resourceGroupN
 			if err != nil {
 				return HybridIdentityMetadataClientListByClusterResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return HybridIdentityMetadataClientListByClusterResponse{}, err
 			}
@@ -222,7 +211,7 @@ func (client *HybridIdentityMetadataClient) listByClusterCreateRequest(ctx conte
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,7 +245,7 @@ func (client *HybridIdentityMetadataClient) Put(ctx context.Context, resourceGro
 	if err != nil {
 		return HybridIdentityMetadataClientPutResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HybridIdentityMetadataClientPutResponse{}, err
 	}
@@ -285,7 +274,7 @@ func (client *HybridIdentityMetadataClient) putCreateRequest(ctx context.Context
 		return nil, errors.New("parameter hybridIdentityMetadataResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hybridIdentityMetadataResourceName}", url.PathEscape(hybridIdentityMetadataResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

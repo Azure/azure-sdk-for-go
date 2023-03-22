@@ -378,6 +378,8 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 	// connection strings with embedded SAS tokens will return a zero expiration time since they can't be renewed.
 	if expiresOn.IsZero() {
+		log.Writef(exported.EventAuth, "Token does not have an expiration date, no background renewal needed.")
+
 		// cancel everything related to the claims refresh loop.
 		cancelRefreshCtx()
 		close(refreshStoppedCh)

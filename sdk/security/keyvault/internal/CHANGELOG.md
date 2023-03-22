@@ -1,16 +1,22 @@
 # Release History
 
-## 0.8.0 (Unreleased)
+## 0.8.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
-* Moved to new location
 
 ### Bugs Fixed
 
 ### Other Changes
-* Upgrade to `azcore` v1.3.0
+
+## 0.8.0 (2023-03-08)
+
+### Breaking Changes
+* Moved to new location
+
+### Other Changes
+* Upgrade dependencies
 
 ## 0.7.1 (2022-11-14)
 

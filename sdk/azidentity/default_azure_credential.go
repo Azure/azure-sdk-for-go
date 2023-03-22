@@ -182,7 +182,7 @@ func (w *timeoutWrapper) GetToken(ctx context.Context, opts policy.TokenRequestO
 		c, cancel := context.WithTimeout(ctx, w.timeout)
 		defer cancel()
 		tk, err = w.mic.GetToken(c, opts)
-		if ce := c.Err(); errors.Is(ce, context.DeadlineExceeded) {
+		if isAuthFailedDueToContext(err) {
 			err = newCredentialUnavailableError(credNameManagedIdentity, "managed identity timed out")
 		} else {
 			// some managed identity implementation is available, so don't apply the timeout to future calls
@@ -192,4 +192,16 @@ func (w *timeoutWrapper) GetToken(ctx context.Context, opts policy.TokenRequestO
 		tk, err = w.mic.GetToken(ctx, opts)
 	}
 	return tk, err
+}
+
+// unwraps nested AuthenticationFailedErrors to get the root error
+func isAuthFailedDueToContext(err error) bool {
+	for {
+		var authFailedErr *AuthenticationFailedError
+		if !errors.As(err, &authFailedErr) {
+			break
+		}
+		err = authFailedErr.err
+	}
+	return errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)
 }

@@ -79,7 +79,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/key817673446//wrapkey?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key817673446/wrapkey?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -114,7 +114,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/key817673446//unwrapkey?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key817673446/unwrapkey?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",

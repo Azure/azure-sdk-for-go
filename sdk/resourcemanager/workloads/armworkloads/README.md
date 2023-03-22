@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Compute modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure Workloads modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armworkloads.NewClientFactory(<subscription ID>, cred, nil)

@@ -32,10 +32,10 @@ type DefaultSecurityRulesClient struct {
 }
 
 // NewDefaultSecurityRulesClient creates a new instance of DefaultSecurityRulesClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDefaultSecurityRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefaultSecurityRulesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewDefaultSecurityRulesClient(subscriptionID string, credential azcore.Toke
 
 // Get - Get the specified default network security rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkSecurityGroupName - The name of the network security group.
-// defaultSecurityRuleName - The name of the default security rule.
-// options - DefaultSecurityRulesClientGetOptions contains the optional parameters for the DefaultSecurityRulesClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkSecurityGroupName - The name of the network security group.
+//   - defaultSecurityRuleName - The name of the default security rule.
+//   - options - DefaultSecurityRulesClientGetOptions contains the optional parameters for the DefaultSecurityRulesClient.Get
+//     method.
 func (client *DefaultSecurityRulesClient) Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, defaultSecurityRuleName string, options *DefaultSecurityRulesClientGetOptions) (DefaultSecurityRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkSecurityGroupName, defaultSecurityRuleName, options)
 	if err != nil {
@@ -103,7 +104,7 @@ func (client *DefaultSecurityRulesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,11 +120,12 @@ func (client *DefaultSecurityRulesClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - Gets all default security rules in a network security group.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkSecurityGroupName - The name of the network security group.
-// options - DefaultSecurityRulesClientListOptions contains the optional parameters for the DefaultSecurityRulesClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkSecurityGroupName - The name of the network security group.
+//   - options - DefaultSecurityRulesClientListOptions contains the optional parameters for the DefaultSecurityRulesClient.NewListPager
+//     method.
 func (client *DefaultSecurityRulesClient) NewListPager(resourceGroupName string, networkSecurityGroupName string, options *DefaultSecurityRulesClientListOptions) *runtime.Pager[DefaultSecurityRulesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DefaultSecurityRulesClientListResponse]{
 		More: func(page DefaultSecurityRulesClientListResponse) bool {
@@ -172,7 +174,7 @@ func (client *DefaultSecurityRulesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

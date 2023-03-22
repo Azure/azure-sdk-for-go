@@ -32,10 +32,10 @@ type RoutesClient struct {
 }
 
 // NewRoutesClient creates a new instance of RoutesClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RoutesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Creates or updates a route in the specified route table.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// routeTableName - The name of the route table.
-// routeName - The name of the route.
-// routeParameters - Parameters supplied to the create or update route operation.
-// options - RoutesClientBeginCreateOrUpdateOptions contains the optional parameters for the RoutesClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - routeTableName - The name of the route table.
+//   - routeName - The name of the route.
+//   - routeParameters - Parameters supplied to the create or update route operation.
+//   - options - RoutesClientBeginCreateOrUpdateOptions contains the optional parameters for the RoutesClient.BeginCreateOrUpdate
+//     method.
 func (client *RoutesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route, options *RoutesClientBeginCreateOrUpdateOptions) (*runtime.Poller[RoutesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, routeTableName, routeName, routeParameters, options)
@@ -81,7 +82,8 @@ func (client *RoutesClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 
 // CreateOrUpdate - Creates or updates a route in the specified route table.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *RoutesClient) createOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route, options *RoutesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, routeTableName, routeName, routeParameters, options)
 	if err != nil {
@@ -121,7 +123,7 @@ func (client *RoutesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, routeParameters)
@@ -129,11 +131,12 @@ func (client *RoutesClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // BeginDelete - Deletes the specified route from a route table.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// routeTableName - The name of the route table.
-// routeName - The name of the route.
-// options - RoutesClientBeginDeleteOptions contains the optional parameters for the RoutesClient.BeginDelete method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - routeTableName - The name of the route table.
+//   - routeName - The name of the route.
+//   - options - RoutesClientBeginDeleteOptions contains the optional parameters for the RoutesClient.BeginDelete method.
 func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, options *RoutesClientBeginDeleteOptions) (*runtime.Poller[RoutesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, routeTableName, routeName, options)
@@ -150,7 +153,8 @@ func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Deletes the specified route from a route table.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *RoutesClient) deleteOperation(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, options *RoutesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, routeTableName, routeName, options)
 	if err != nil {
@@ -190,7 +194,7 @@ func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,11 +202,12 @@ func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGro
 
 // Get - Gets the specified route from a route table.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// routeTableName - The name of the route table.
-// routeName - The name of the route.
-// options - RoutesClientGetOptions contains the optional parameters for the RoutesClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - routeTableName - The name of the route table.
+//   - routeName - The name of the route.
+//   - options - RoutesClientGetOptions contains the optional parameters for the RoutesClient.Get method.
 func (client *RoutesClient) Get(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, options *RoutesClientGetOptions) (RoutesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, routeTableName, routeName, options)
 	if err != nil {
@@ -242,7 +247,7 @@ func (client *RoutesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -258,10 +263,11 @@ func (client *RoutesClient) getHandleResponse(resp *http.Response) (RoutesClient
 }
 
 // NewListPager - Gets all routes in a route table.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// routeTableName - The name of the route table.
-// options - RoutesClientListOptions contains the optional parameters for the RoutesClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - routeTableName - The name of the route table.
+//   - options - RoutesClientListOptions contains the optional parameters for the RoutesClient.NewListPager method.
 func (client *RoutesClient) NewListPager(resourceGroupName string, routeTableName string, options *RoutesClientListOptions) *runtime.Pager[RoutesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RoutesClientListResponse]{
 		More: func(page RoutesClientListResponse) bool {
@@ -310,7 +316,7 @@ func (client *RoutesClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

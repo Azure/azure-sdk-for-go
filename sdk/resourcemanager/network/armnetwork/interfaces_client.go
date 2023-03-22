@@ -32,10 +32,10 @@ type InterfacesClient struct {
 }
 
 // NewInterfacesClient creates a new instance of InterfacesClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewInterfacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InterfacesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewInterfacesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Creates or updates a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkInterfaceName - The name of the network interface.
-// parameters - Parameters supplied to the create or update network interface operation.
-// options - InterfacesClientBeginCreateOrUpdateOptions contains the optional parameters for the InterfacesClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkInterfaceName - The name of the network interface.
+//   - parameters - Parameters supplied to the create or update network interface operation.
+//   - options - InterfacesClientBeginCreateOrUpdateOptions contains the optional parameters for the InterfacesClient.BeginCreateOrUpdate
+//     method.
 func (client *InterfacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters Interface, options *InterfacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[InterfacesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, networkInterfaceName, parameters, options)
@@ -80,7 +81,8 @@ func (client *InterfacesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Creates or updates a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *InterfacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters Interface, options *InterfacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkInterfaceName, parameters, options)
 	if err != nil {
@@ -116,7 +118,7 @@ func (client *InterfacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -124,10 +126,11 @@ func (client *InterfacesClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Deletes the specified network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkInterfaceName - The name of the network interface.
-// options - InterfacesClientBeginDeleteOptions contains the optional parameters for the InterfacesClient.BeginDelete method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkInterfaceName - The name of the network interface.
+//   - options - InterfacesClientBeginDeleteOptions contains the optional parameters for the InterfacesClient.BeginDelete method.
 func (client *InterfacesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginDeleteOptions) (*runtime.Poller[InterfacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, networkInterfaceName, options)
@@ -144,7 +147,8 @@ func (client *InterfacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes the specified network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *InterfacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
 	if err != nil {
@@ -180,7 +184,7 @@ func (client *InterfacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,10 +192,11 @@ func (client *InterfacesClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets information about the specified network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkInterfaceName - The name of the network interface.
-// options - InterfacesClientGetOptions contains the optional parameters for the InterfacesClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkInterfaceName - The name of the network interface.
+//   - options - InterfacesClientGetOptions contains the optional parameters for the InterfacesClient.Get method.
 func (client *InterfacesClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientGetOptions) (InterfacesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
 	if err != nil {
@@ -227,7 +232,7 @@ func (client *InterfacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -247,13 +252,14 @@ func (client *InterfacesClient) getHandleResponse(resp *http.Response) (Interfac
 
 // GetCloudServiceNetworkInterface - Get the specified network interface in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// cloudServiceName - The name of the cloud service.
-// roleInstanceName - The name of role instance.
-// networkInterfaceName - The name of the network interface.
-// options - InterfacesClientGetCloudServiceNetworkInterfaceOptions contains the optional parameters for the InterfacesClient.GetCloudServiceNetworkInterface
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - cloudServiceName - The name of the cloud service.
+//   - roleInstanceName - The name of role instance.
+//   - networkInterfaceName - The name of the network interface.
+//   - options - InterfacesClientGetCloudServiceNetworkInterfaceOptions contains the optional parameters for the InterfacesClient.GetCloudServiceNetworkInterface
+//     method.
 func (client *InterfacesClient) GetCloudServiceNetworkInterface(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, options *InterfacesClientGetCloudServiceNetworkInterfaceOptions) (InterfacesClientGetCloudServiceNetworkInterfaceResponse, error) {
 	req, err := client.getCloudServiceNetworkInterfaceCreateRequest(ctx, resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, options)
 	if err != nil {
@@ -297,7 +303,7 @@ func (client *InterfacesClient) getCloudServiceNetworkInterfaceCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -317,11 +323,12 @@ func (client *InterfacesClient) getCloudServiceNetworkInterfaceHandleResponse(re
 
 // BeginGetEffectiveRouteTable - Gets all route tables applied to a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkInterfaceName - The name of the network interface.
-// options - InterfacesClientBeginGetEffectiveRouteTableOptions contains the optional parameters for the InterfacesClient.BeginGetEffectiveRouteTable
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkInterfaceName - The name of the network interface.
+//   - options - InterfacesClientBeginGetEffectiveRouteTableOptions contains the optional parameters for the InterfacesClient.BeginGetEffectiveRouteTable
+//     method.
 func (client *InterfacesClient) BeginGetEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginGetEffectiveRouteTableOptions) (*runtime.Poller[InterfacesClientGetEffectiveRouteTableResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getEffectiveRouteTable(ctx, resourceGroupName, networkInterfaceName, options)
@@ -338,7 +345,8 @@ func (client *InterfacesClient) BeginGetEffectiveRouteTable(ctx context.Context,
 
 // GetEffectiveRouteTable - Gets all route tables applied to a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *InterfacesClient) getEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginGetEffectiveRouteTableOptions) (*http.Response, error) {
 	req, err := client.getEffectiveRouteTableCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
 	if err != nil {
@@ -374,7 +382,7 @@ func (client *InterfacesClient) getEffectiveRouteTableCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -383,14 +391,15 @@ func (client *InterfacesClient) getEffectiveRouteTableCreateRequest(ctx context.
 // GetVirtualMachineScaleSetIPConfiguration - Get the specified network interface ip configuration in a virtual machine scale
 // set.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-10-01
-// resourceGroupName - The name of the resource group.
-// virtualMachineScaleSetName - The name of the virtual machine scale set.
-// virtualmachineIndex - The virtual machine index.
-// networkInterfaceName - The name of the network interface.
-// ipConfigurationName - The name of the ip configuration.
-// options - InterfacesClientGetVirtualMachineScaleSetIPConfigurationOptions contains the optional parameters for the InterfacesClient.GetVirtualMachineScaleSetIPConfiguration
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - virtualMachineScaleSetName - The name of the virtual machine scale set.
+//   - virtualmachineIndex - The virtual machine index.
+//   - networkInterfaceName - The name of the network interface.
+//   - ipConfigurationName - The name of the ip configuration.
+//   - options - InterfacesClientGetVirtualMachineScaleSetIPConfigurationOptions contains the optional parameters for the InterfacesClient.GetVirtualMachineScaleSetIPConfiguration
+//     method.
 func (client *InterfacesClient) GetVirtualMachineScaleSetIPConfiguration(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *InterfacesClientGetVirtualMachineScaleSetIPConfigurationOptions) (InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse, error) {
 	req, err := client.getVirtualMachineScaleSetIPConfigurationCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, options)
 	if err != nil {
@@ -458,13 +467,14 @@ func (client *InterfacesClient) getVirtualMachineScaleSetIPConfigurationHandleRe
 
 // GetVirtualMachineScaleSetNetworkInterface - Get the specified network interface in a virtual machine scale set.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-10-01
-// resourceGroupName - The name of the resource group.
-// virtualMachineScaleSetName - The name of the virtual machine scale set.
-// virtualmachineIndex - The virtual machine index.
-// networkInterfaceName - The name of the network interface.
-// options - InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions contains the optional parameters for the InterfacesClient.GetVirtualMachineScaleSetNetworkInterface
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - virtualMachineScaleSetName - The name of the virtual machine scale set.
+//   - virtualmachineIndex - The virtual machine index.
+//   - networkInterfaceName - The name of the network interface.
+//   - options - InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions contains the optional parameters for the InterfacesClient.GetVirtualMachineScaleSetNetworkInterface
+//     method.
 func (client *InterfacesClient) GetVirtualMachineScaleSetNetworkInterface(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, options *InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions) (InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse, error) {
 	req, err := client.getVirtualMachineScaleSetNetworkInterfaceCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, options)
 	if err != nil {
@@ -527,9 +537,10 @@ func (client *InterfacesClient) getVirtualMachineScaleSetNetworkInterfaceHandleR
 }
 
 // NewListPager - Gets all network interfaces in a resource group.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// options - InterfacesClientListOptions contains the optional parameters for the InterfacesClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - options - InterfacesClientListOptions contains the optional parameters for the InterfacesClient.NewListPager method.
 func (client *InterfacesClient) NewListPager(resourceGroupName string, options *InterfacesClientListOptions) *runtime.Pager[InterfacesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListResponse]{
 		More: func(page InterfacesClientListResponse) bool {
@@ -574,7 +585,7 @@ func (client *InterfacesClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -590,8 +601,9 @@ func (client *InterfacesClient) listHandleResponse(resp *http.Response) (Interfa
 }
 
 // NewListAllPager - Gets all network interfaces in a subscription.
-// Generated from API version 2022-07-01
-// options - InterfacesClientListAllOptions contains the optional parameters for the InterfacesClient.ListAll method.
+//
+// Generated from API version 2022-09-01
+//   - options - InterfacesClientListAllOptions contains the optional parameters for the InterfacesClient.NewListAllPager method.
 func (client *InterfacesClient) NewListAllPager(options *InterfacesClientListAllOptions) *runtime.Pager[InterfacesClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListAllResponse]{
 		More: func(page InterfacesClientListAllResponse) bool {
@@ -632,7 +644,7 @@ func (client *InterfacesClient) listAllCreateRequest(ctx context.Context, option
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -648,11 +660,12 @@ func (client *InterfacesClient) listAllHandleResponse(resp *http.Response) (Inte
 }
 
 // NewListCloudServiceNetworkInterfacesPager - Gets all network interfaces in a cloud service.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// cloudServiceName - The name of the cloud service.
-// options - InterfacesClientListCloudServiceNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.ListCloudServiceNetworkInterfaces
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - cloudServiceName - The name of the cloud service.
+//   - options - InterfacesClientListCloudServiceNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.NewListCloudServiceNetworkInterfacesPager
+//     method.
 func (client *InterfacesClient) NewListCloudServiceNetworkInterfacesPager(resourceGroupName string, cloudServiceName string, options *InterfacesClientListCloudServiceNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListCloudServiceNetworkInterfacesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListCloudServiceNetworkInterfacesResponse]{
 		More: func(page InterfacesClientListCloudServiceNetworkInterfacesResponse) bool {
@@ -701,7 +714,7 @@ func (client *InterfacesClient) listCloudServiceNetworkInterfacesCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -718,12 +731,13 @@ func (client *InterfacesClient) listCloudServiceNetworkInterfacesHandleResponse(
 
 // NewListCloudServiceRoleInstanceNetworkInterfacesPager - Gets information about all network interfaces in a role instance
 // in a cloud service.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// cloudServiceName - The name of the cloud service.
-// roleInstanceName - The name of role instance.
-// options - InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions contains the optional parameters for the
-// InterfacesClient.ListCloudServiceRoleInstanceNetworkInterfaces method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - cloudServiceName - The name of the cloud service.
+//   - roleInstanceName - The name of role instance.
+//   - options - InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions contains the optional parameters for the
+//     InterfacesClient.NewListCloudServiceRoleInstanceNetworkInterfacesPager method.
 func (client *InterfacesClient) NewListCloudServiceRoleInstanceNetworkInterfacesPager(resourceGroupName string, cloudServiceName string, roleInstanceName string, options *InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse]{
 		More: func(page InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse) bool {
@@ -776,7 +790,7 @@ func (client *InterfacesClient) listCloudServiceRoleInstanceNetworkInterfacesCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -793,11 +807,12 @@ func (client *InterfacesClient) listCloudServiceRoleInstanceNetworkInterfacesHan
 
 // BeginListEffectiveNetworkSecurityGroups - Gets all network security groups applied to a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkInterfaceName - The name of the network interface.
-// options - InterfacesClientBeginListEffectiveNetworkSecurityGroupsOptions contains the optional parameters for the InterfacesClient.BeginListEffectiveNetworkSecurityGroups
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkInterfaceName - The name of the network interface.
+//   - options - InterfacesClientBeginListEffectiveNetworkSecurityGroupsOptions contains the optional parameters for the InterfacesClient.BeginListEffectiveNetworkSecurityGroups
+//     method.
 func (client *InterfacesClient) BeginListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginListEffectiveNetworkSecurityGroupsOptions) (*runtime.Poller[InterfacesClientListEffectiveNetworkSecurityGroupsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.listEffectiveNetworkSecurityGroups(ctx, resourceGroupName, networkInterfaceName, options)
@@ -814,7 +829,8 @@ func (client *InterfacesClient) BeginListEffectiveNetworkSecurityGroups(ctx cont
 
 // ListEffectiveNetworkSecurityGroups - Gets all network security groups applied to a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *InterfacesClient) listEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginListEffectiveNetworkSecurityGroupsOptions) (*http.Response, error) {
 	req, err := client.listEffectiveNetworkSecurityGroupsCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
 	if err != nil {
@@ -850,7 +866,7 @@ func (client *InterfacesClient) listEffectiveNetworkSecurityGroupsCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -858,13 +874,14 @@ func (client *InterfacesClient) listEffectiveNetworkSecurityGroupsCreateRequest(
 
 // NewListVirtualMachineScaleSetIPConfigurationsPager - Get the specified network interface ip configuration in a virtual
 // machine scale set.
+//
 // Generated from API version 2018-10-01
-// resourceGroupName - The name of the resource group.
-// virtualMachineScaleSetName - The name of the virtual machine scale set.
-// virtualmachineIndex - The virtual machine index.
-// networkInterfaceName - The name of the network interface.
-// options - InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions contains the optional parameters for the InterfacesClient.ListVirtualMachineScaleSetIPConfigurations
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - virtualMachineScaleSetName - The name of the virtual machine scale set.
+//   - virtualmachineIndex - The virtual machine index.
+//   - networkInterfaceName - The name of the network interface.
+//   - options - InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions contains the optional parameters for the InterfacesClient.NewListVirtualMachineScaleSetIPConfigurationsPager
+//     method.
 func (client *InterfacesClient) NewListVirtualMachineScaleSetIPConfigurationsPager(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, options *InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions) *runtime.Pager[InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]{
 		More: func(page InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse) bool {
@@ -940,11 +957,12 @@ func (client *InterfacesClient) listVirtualMachineScaleSetIPConfigurationsHandle
 }
 
 // NewListVirtualMachineScaleSetNetworkInterfacesPager - Gets all network interfaces in a virtual machine scale set.
+//
 // Generated from API version 2018-10-01
-// resourceGroupName - The name of the resource group.
-// virtualMachineScaleSetName - The name of the virtual machine scale set.
-// options - InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.ListVirtualMachineScaleSetNetworkInterfaces
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - virtualMachineScaleSetName - The name of the virtual machine scale set.
+//   - options - InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.NewListVirtualMachineScaleSetNetworkInterfacesPager
+//     method.
 func (client *InterfacesClient) NewListVirtualMachineScaleSetNetworkInterfacesPager(resourceGroupName string, virtualMachineScaleSetName string, options *InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]{
 		More: func(page InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse) bool {
@@ -1010,12 +1028,13 @@ func (client *InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesHandl
 
 // NewListVirtualMachineScaleSetVMNetworkInterfacesPager - Gets information about all network interfaces in a virtual machine
 // in a virtual machine scale set.
+//
 // Generated from API version 2018-10-01
-// resourceGroupName - The name of the resource group.
-// virtualMachineScaleSetName - The name of the virtual machine scale set.
-// virtualmachineIndex - The virtual machine index.
-// options - InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions contains the optional parameters for the
-// InterfacesClient.ListVirtualMachineScaleSetVMNetworkInterfaces method.
+//   - resourceGroupName - The name of the resource group.
+//   - virtualMachineScaleSetName - The name of the virtual machine scale set.
+//   - virtualmachineIndex - The virtual machine index.
+//   - options - InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions contains the optional parameters for the
+//     InterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager method.
 func (client *InterfacesClient) NewListVirtualMachineScaleSetVMNetworkInterfacesPager(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, options *InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]{
 		More: func(page InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse) bool {
@@ -1085,11 +1104,12 @@ func (client *InterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesHan
 
 // UpdateTags - Updates a network interface tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkInterfaceName - The name of the network interface.
-// parameters - Parameters supplied to update network interface tags.
-// options - InterfacesClientUpdateTagsOptions contains the optional parameters for the InterfacesClient.UpdateTags method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkInterfaceName - The name of the network interface.
+//   - parameters - Parameters supplied to update network interface tags.
+//   - options - InterfacesClientUpdateTagsOptions contains the optional parameters for the InterfacesClient.UpdateTags method.
 func (client *InterfacesClient) UpdateTags(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters TagsObject, options *InterfacesClientUpdateTagsOptions) (InterfacesClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, networkInterfaceName, parameters, options)
 	if err != nil {
@@ -1125,7 +1145,7 @@ func (client *InterfacesClient) updateTagsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

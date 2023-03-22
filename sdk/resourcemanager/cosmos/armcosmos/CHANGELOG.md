@@ -3,12 +3,13 @@
 ## 2.3.0-beta.1 (2023-03-24)
 ### Features Added
 
-- New value `AuthenticationMethodLdap` added to type alias `AuthenticationMethod`
-- New value `OperationTypeRecreate` added to type alias `OperationType`
-- New type alias `ContinuousTier` with values `ContinuousTierContinuous30Days`, `ContinuousTierContinuous7Days`
-- New type alias `DataTransferComponent` with values `DataTransferComponentAzureBlobStorage`, `DataTransferComponentCosmosDBCassandra`, `DataTransferComponentCosmosDBSQL`
-- New type alias `EnableFullTextQuery` with values `EnableFullTextQueryFalse`, `EnableFullTextQueryNone`, `EnableFullTextQueryTrue`
-- New type alias `ThroughputPolicyType` with values `ThroughputPolicyTypeCustom`, `ThroughputPolicyTypeEqual`, `ThroughputPolicyTypeNone`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New value `AuthenticationMethodLdap` added to enum type `AuthenticationMethod`
+- New value `OperationTypeRecreate` added to enum type `OperationType`
+- New enum type `ContinuousTier` with values `ContinuousTierContinuous30Days`, `ContinuousTierContinuous7Days`
+- New enum type `DataTransferComponent` with values `DataTransferComponentAzureBlobStorage`, `DataTransferComponentCosmosDBCassandra`, `DataTransferComponentCosmosDBSQL`
+- New enum type `EnableFullTextQuery` with values `EnableFullTextQueryFalse`, `EnableFullTextQueryNone`, `EnableFullTextQueryTrue`
+- New enum type `ThroughputPolicyType` with values `ThroughputPolicyTypeCustom`, `ThroughputPolicyTypeEqual`, `ThroughputPolicyTypeNone`
 - New function `*AzureBlobDataTransferDataSourceSink.GetDataTransferDataSourceSink() *DataTransferDataSourceSink`
 - New function `*CassandraClustersClient.GetBackup(context.Context, string, string, string, *CassandraClustersClientGetBackupOptions) (CassandraClustersClientGetBackupResponse, error)`
 - New function `*CassandraClustersClient.NewListBackupsPager(string, string, *CassandraClustersClientListBackupsOptions) *runtime.Pager[CassandraClustersClientListBackupsResponse]`
@@ -63,7 +64,6 @@
 - New struct `DataTransferJobFeedResults`
 - New struct `DataTransferJobGetResults`
 - New struct `DataTransferJobProperties`
-- New struct `DataTransferJobsClient`
 - New struct `DiagnosticLogSettings`
 - New struct `GraphResource`
 - New struct `GraphResourceCreateUpdateParameters`
@@ -72,7 +72,6 @@
 - New struct `GraphResourceGetPropertiesOptions`
 - New struct `GraphResourceGetPropertiesResource`
 - New struct `GraphResourceGetResults`
-- New struct `GraphResourcesClient`
 - New struct `GraphResourcesListResult`
 - New struct `ListBackups`
 - New struct `MergeParameters`

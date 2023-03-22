@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // GraphResourcesClient contains the methods for the GraphResources group.
 // Don't use this type directly, use NewGraphResourcesClient() instead.
 type GraphResourcesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewGraphResourcesClient creates a new instance of GraphResourcesClient with the specified values.
@@ -36,21 +33,13 @@ type GraphResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGraphResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GraphResourcesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GraphResourcesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GraphResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *GraphResourcesClient) BeginCreateUpdateGraph(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GraphResourcesClientCreateUpdateGraphResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GraphResourcesClientCreateUpdateGraphResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GraphResourcesClientCreateUpdateGraphResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GraphResourcesClientCreateUpdateGraphResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *GraphResourcesClient) createUpdateGraph(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,7 @@ func (client *GraphResourcesClient) createUpdateGraphCreateRequest(ctx context.C
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -141,9 +130,9 @@ func (client *GraphResourcesClient) BeginDeleteGraphResource(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GraphResourcesClientDeleteGraphResourceResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GraphResourcesClientDeleteGraphResourceResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GraphResourcesClientDeleteGraphResourceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GraphResourcesClientDeleteGraphResourceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -156,7 +145,7 @@ func (client *GraphResourcesClient) deleteGraphResource(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +174,7 @@ func (client *GraphResourcesClient) deleteGraphResourceCreateRequest(ctx context
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +197,7 @@ func (client *GraphResourcesClient) GetGraph(ctx context.Context, resourceGroupN
 	if err != nil {
 		return GraphResourcesClientGetGraphResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GraphResourcesClientGetGraphResponse{}, err
 	}
@@ -237,7 +226,7 @@ func (client *GraphResourcesClient) getGraphCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -274,7 +263,7 @@ func (client *GraphResourcesClient) NewListGraphsPager(resourceGroupName string,
 			if err != nil {
 				return GraphResourcesClientListGraphsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GraphResourcesClientListGraphsResponse{}, err
 			}
@@ -301,7 +290,7 @@ func (client *GraphResourcesClient) listGraphsCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

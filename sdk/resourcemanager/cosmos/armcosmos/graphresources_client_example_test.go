@@ -25,11 +25,11 @@ func ExampleGraphResourcesClient_NewListGraphsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListGraphsPager("rgName", "ddb1", nil)
+	pager := clientFactory.NewGraphResourcesClient().NewListGraphsPager("rgName", "ddb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,11 +66,11 @@ func ExampleGraphResourcesClient_GetGraph() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetGraph(ctx, "rg1", "ddb1", "graphName", nil)
+	res, err := clientFactory.NewGraphResourcesClient().GetGraph(ctx, "rg1", "ddb1", "graphName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -99,11 +99,11 @@ func ExampleGraphResourcesClient_BeginCreateUpdateGraph() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateGraph(ctx, "rg1", "ddb1", "graphName", armcosmos.GraphResourceCreateUpdateParameters{
+	poller, err := clientFactory.NewGraphResourcesClient().BeginCreateUpdateGraph(ctx, "rg1", "ddb1", "graphName", armcosmos.GraphResourceCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.GraphResourceCreateUpdateProperties{
@@ -145,11 +145,11 @@ func ExampleGraphResourcesClient_BeginDeleteGraphResource() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteGraphResource(ctx, "rg1", "ddb1", "graphName", nil)
+	poller, err := clientFactory.NewGraphResourcesClient().BeginDeleteGraphResource(ctx, "rg1", "ddb1", "graphName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

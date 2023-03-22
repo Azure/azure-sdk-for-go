@@ -27,11 +27,11 @@ func ExampleMongoDBResourcesClient_NewListMongoDBDatabasesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMongoDBDatabasesPager("rgName", "ddb1", nil)
+	pager := clientFactory.NewMongoDBResourcesClient().NewListMongoDBDatabasesPager("rgName", "ddb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -68,11 +68,11 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", nil)
+	res, err := clientFactory.NewMongoDBResourcesClient().GetMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -104,11 +104,11 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMong
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.MongoDBDatabaseCreateUpdateParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.MongoDBDatabaseCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.MongoDBDatabaseCreateUpdateProperties{
@@ -150,11 +150,11 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMong
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.MongoDBDatabaseCreateUpdateParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.MongoDBDatabaseCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.MongoDBDatabaseCreateUpdateProperties{
@@ -201,11 +201,11 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", nil)
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginDeleteMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -222,11 +222,11 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMongoDBDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
+	res, err := clientFactory.NewMongoDBResourcesClient().GetMongoDBDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -260,11 +260,11 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateMongoDBDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.ThroughputSettingsUpdateParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginUpdateMongoDBDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
@@ -310,11 +310,11 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateMongoDBDatabaseToAutoscale(ctx, "rg1", "ddb1", "databaseName", nil)
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMigrateMongoDBDatabaseToAutoscale(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -349,11 +349,11 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateMongoDBDatabaseToManualThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMigrateMongoDBDatabaseToManualThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -385,11 +385,11 @@ func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRetrieveThroughputDistrib
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMongoDBDatabaseRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", armcosmos.RetrieveThroughputParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBDatabaseRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", armcosmos.RetrieveThroughputParameters{
 		Properties: &armcosmos.RetrieveThroughputProperties{
 			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
 				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
@@ -436,11 +436,11 @@ func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRedistributeThroughput() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMongoDBDatabaseRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.RedistributeThroughputParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBDatabaseRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.RedistributeThroughputParameters{
 		Properties: &armcosmos.RedistributeThroughputProperties{
 			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
 				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
@@ -506,11 +506,11 @@ func ExampleMongoDBResourcesClient_BeginMongoDBContainerRetrieveThroughputDistri
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMongoDBContainerRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.RetrieveThroughputParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBContainerRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.RetrieveThroughputParameters{
 		Properties: &armcosmos.RetrieveThroughputProperties{
 			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
 				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
@@ -557,11 +557,11 @@ func ExampleMongoDBResourcesClient_BeginMongoDBContainerRedistributeThroughput()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMongoDBContainerRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.RedistributeThroughputParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBContainerRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.RedistributeThroughputParameters{
 		Properties: &armcosmos.RedistributeThroughputProperties{
 			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
 				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
@@ -627,11 +627,11 @@ func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMongoDBCollectionsPager("rgName", "ddb1", "databaseName", nil)
+	pager := clientFactory.NewMongoDBResourcesClient().NewListMongoDBCollectionsPager("rgName", "ddb1", "databaseName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -683,11 +683,11 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMongoDBCollection(ctx, "rgName", "ddb1", "databaseName", "collectionName", nil)
+	res, err := clientFactory.NewMongoDBResourcesClient().GetMongoDBCollection(ctx, "rgName", "ddb1", "databaseName", "collectionName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -734,11 +734,11 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateMongoDBCollection(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.MongoDBCollectionCreateUpdateParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoDBCollection(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.MongoDBCollectionCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.MongoDBCollectionCreateUpdateProperties{
@@ -822,11 +822,11 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateMongoDBCollection(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.MongoDBCollectionCreateUpdateParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoDBCollection(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.MongoDBCollectionCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.MongoDBCollectionCreateUpdateProperties{
@@ -894,11 +894,11 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteMongoDBCollection(ctx, "rg1", "ddb1", "databaseName", "collectionName", nil)
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginDeleteMongoDBCollection(ctx, "rg1", "ddb1", "databaseName", "collectionName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -915,11 +915,11 @@ func ExampleMongoDBResourcesClient_BeginListMongoDBCollectionPartitionMerge() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListMongoDBCollectionPartitionMerge(ctx, "rgName", "ddb1", "databaseName", "collectionName", armcosmos.MergeParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginListMongoDBCollectionPartitionMerge(ctx, "rgName", "ddb1", "databaseName", "collectionName", armcosmos.MergeParameters{
 		IsDryRun: to.Ptr(false),
 	}, nil)
 	if err != nil {
@@ -976,11 +976,11 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMongoDBCollectionThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", nil)
+	res, err := clientFactory.NewMongoDBResourcesClient().GetMongoDBCollectionThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1014,11 +1014,11 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateMongoDBCollectionThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.ThroughputSettingsUpdateParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginUpdateMongoDBCollectionThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
@@ -1064,11 +1064,11 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateMongoDBCollectionToAutoscale(ctx, "rg1", "ddb1", "databaseName", "collectionName", nil)
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMigrateMongoDBCollectionToAutoscale(ctx, "rg1", "ddb1", "databaseName", "collectionName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1103,11 +1103,11 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughp
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateMongoDBCollectionToManualThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", nil)
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMigrateMongoDBCollectionToManualThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1139,11 +1139,11 @@ func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMongoRoleDefinition(ctx, "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", nil)
+	res, err := clientFactory.NewMongoDBResourcesClient().GetMongoRoleDefinition(ctx, "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1184,11 +1184,11 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateMongoRoleDefinition(ctx, "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", armcosmos.MongoRoleDefinitionCreateUpdateParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoRoleDefinition(ctx, "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", armcosmos.MongoRoleDefinitionCreateUpdateParameters{
 		Properties: &armcosmos.MongoRoleDefinitionResource{
 			DatabaseName: to.Ptr("sales"),
 			Privileges: []*armcosmos.Privilege{
@@ -1253,11 +1253,11 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteMongoRoleDefinition(ctx, "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", nil)
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginDeleteMongoRoleDefinition(ctx, "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1274,11 +1274,11 @@ func ExampleMongoDBResourcesClient_NewListMongoRoleDefinitionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMongoRoleDefinitionsPager("myResourceGroupName", "myAccountName", nil)
+	pager := clientFactory.NewMongoDBResourcesClient().NewListMongoRoleDefinitionsPager("myResourceGroupName", "myAccountName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1327,11 +1327,11 @@ func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMongoUserDefinition(ctx, "myMongoUserDefinitionId", "myResourceGroupName", "myAccountName", nil)
+	res, err := clientFactory.NewMongoDBResourcesClient().GetMongoUserDefinition(ctx, "myMongoUserDefinitionId", "myResourceGroupName", "myAccountName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1363,11 +1363,11 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateMongoUserDefinition(ctx, "myMongoUserDefinitionId", "myResourceGroupName", "myAccountName", armcosmos.MongoUserDefinitionCreateUpdateParameters{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoUserDefinition(ctx, "myMongoUserDefinitionId", "myResourceGroupName", "myAccountName", armcosmos.MongoUserDefinitionCreateUpdateParameters{
 		Properties: &armcosmos.MongoUserDefinitionResource{
 			CustomData:   to.Ptr("My custom data"),
 			DatabaseName: to.Ptr("sales"),
@@ -1416,11 +1416,11 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteMongoUserDefinition(ctx, "myMongoUserDefinitionId", "myResourceGroupName", "myAccountName", nil)
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginDeleteMongoUserDefinition(ctx, "myMongoUserDefinitionId", "myResourceGroupName", "myAccountName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1437,11 +1437,11 @@ func ExampleMongoDBResourcesClient_NewListMongoUserDefinitionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMongoUserDefinitionsPager("myResourceGroupName", "myAccountName", nil)
+	pager := clientFactory.NewMongoDBResourcesClient().NewListMongoUserDefinitionsPager("myResourceGroupName", "myAccountName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1481,11 +1481,11 @@ func ExampleMongoDBResourcesClient_BeginRetrieveContinuousBackupInformation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewMongoDBResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRetrieveContinuousBackupInformation(ctx, "rgName", "ddb1", "databaseName", "collectionName", armcosmos.ContinuousBackupRestoreLocation{
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginRetrieveContinuousBackupInformation(ctx, "rgName", "ddb1", "databaseName", "collectionName", armcosmos.ContinuousBackupRestoreLocation{
 		Location: to.Ptr("North Europe"),
 	}, nil)
 	if err != nil {

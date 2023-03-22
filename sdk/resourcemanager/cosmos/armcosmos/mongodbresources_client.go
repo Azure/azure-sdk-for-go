@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // MongoDBResourcesClient contains the methods for the MongoDBResources group.
 // Don't use this type directly, use NewMongoDBResourcesClient() instead.
 type MongoDBResourcesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewMongoDBResourcesClient creates a new instance of MongoDBResourcesClient with the specified values.
@@ -36,21 +33,13 @@ type MongoDBResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMongoDBResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MongoDBResourcesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MongoDBResourcesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MongoDBResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -72,9 +61,9 @@ func (client *MongoDBResourcesClient) BeginCreateUpdateMongoDBCollection(ctx con
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -87,7 +76,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBCollection(ctx context.
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +109,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBCollectionCreateRequest
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,9 +136,9 @@ func (client *MongoDBResourcesClient) BeginCreateUpdateMongoDBDatabase(ctx conte
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -162,7 +151,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBDatabase(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +180,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBDatabaseCreateRequest(c
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,9 +207,9 @@ func (client *MongoDBResourcesClient) BeginCreateUpdateMongoRoleDefinition(ctx c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -233,7 +222,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoRoleDefinition(ctx contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -262,7 +251,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoRoleDefinitionCreateReque
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -289,9 +278,9 @@ func (client *MongoDBResourcesClient) BeginCreateUpdateMongoUserDefinition(ctx c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -304,7 +293,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoUserDefinition(ctx contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -333,7 +322,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoUserDefinitionCreateReque
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,9 +349,9 @@ func (client *MongoDBResourcesClient) BeginDeleteMongoDBCollection(ctx context.C
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientDeleteMongoDBCollectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientDeleteMongoDBCollectionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientDeleteMongoDBCollectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientDeleteMongoDBCollectionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -375,7 +364,7 @@ func (client *MongoDBResourcesClient) deleteMongoDBCollection(ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -408,7 +397,7 @@ func (client *MongoDBResourcesClient) deleteMongoDBCollectionCreateRequest(ctx c
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -433,9 +422,9 @@ func (client *MongoDBResourcesClient) BeginDeleteMongoDBDatabase(ctx context.Con
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientDeleteMongoDBDatabaseResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientDeleteMongoDBDatabaseResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientDeleteMongoDBDatabaseResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientDeleteMongoDBDatabaseResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -448,7 +437,7 @@ func (client *MongoDBResourcesClient) deleteMongoDBDatabase(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -477,7 +466,7 @@ func (client *MongoDBResourcesClient) deleteMongoDBDatabaseCreateRequest(ctx con
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -502,9 +491,9 @@ func (client *MongoDBResourcesClient) BeginDeleteMongoRoleDefinition(ctx context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientDeleteMongoRoleDefinitionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientDeleteMongoRoleDefinitionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientDeleteMongoRoleDefinitionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientDeleteMongoRoleDefinitionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -517,7 +506,7 @@ func (client *MongoDBResourcesClient) deleteMongoRoleDefinition(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -546,7 +535,7 @@ func (client *MongoDBResourcesClient) deleteMongoRoleDefinitionCreateRequest(ctx
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -572,9 +561,9 @@ func (client *MongoDBResourcesClient) BeginDeleteMongoUserDefinition(ctx context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientDeleteMongoUserDefinitionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientDeleteMongoUserDefinitionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientDeleteMongoUserDefinitionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientDeleteMongoUserDefinitionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -587,7 +576,7 @@ func (client *MongoDBResourcesClient) deleteMongoUserDefinition(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -616,7 +605,7 @@ func (client *MongoDBResourcesClient) deleteMongoUserDefinitionCreateRequest(ctx
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -642,7 +631,7 @@ func (client *MongoDBResourcesClient) GetMongoDBCollection(ctx context.Context, 
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBCollectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBCollectionResponse{}, err
 	}
@@ -675,7 +664,7 @@ func (client *MongoDBResourcesClient) getMongoDBCollectionCreateRequest(ctx cont
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -711,7 +700,7 @@ func (client *MongoDBResourcesClient) GetMongoDBCollectionThroughput(ctx context
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBCollectionThroughputResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBCollectionThroughputResponse{}, err
 	}
@@ -744,7 +733,7 @@ func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputCreateReques
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -778,7 +767,7 @@ func (client *MongoDBResourcesClient) GetMongoDBDatabase(ctx context.Context, re
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBDatabaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBDatabaseResponse{}, err
 	}
@@ -807,7 +796,7 @@ func (client *MongoDBResourcesClient) getMongoDBDatabaseCreateRequest(ctx contex
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -842,7 +831,7 @@ func (client *MongoDBResourcesClient) GetMongoDBDatabaseThroughput(ctx context.C
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse{}, err
 	}
@@ -871,7 +860,7 @@ func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputCreateRequest(
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -905,7 +894,7 @@ func (client *MongoDBResourcesClient) GetMongoRoleDefinition(ctx context.Context
 	if err != nil {
 		return MongoDBResourcesClientGetMongoRoleDefinitionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MongoDBResourcesClientGetMongoRoleDefinitionResponse{}, err
 	}
@@ -934,7 +923,7 @@ func (client *MongoDBResourcesClient) getMongoRoleDefinitionCreateRequest(ctx co
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -968,7 +957,7 @@ func (client *MongoDBResourcesClient) GetMongoUserDefinition(ctx context.Context
 	if err != nil {
 		return MongoDBResourcesClientGetMongoUserDefinitionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MongoDBResourcesClientGetMongoUserDefinitionResponse{}, err
 	}
@@ -997,7 +986,7 @@ func (client *MongoDBResourcesClient) getMongoUserDefinitionCreateRequest(ctx co
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1034,11 +1023,11 @@ func (client *MongoDBResourcesClient) BeginListMongoDBCollectionPartitionMerge(c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1051,7 +1040,7 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionPartitionMerge(ctx co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1084,7 +1073,7 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionPartitionMergeCreateR
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1113,7 +1102,7 @@ func (client *MongoDBResourcesClient) NewListMongoDBCollectionsPager(resourceGro
 			if err != nil {
 				return MongoDBResourcesClientListMongoDBCollectionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MongoDBResourcesClientListMongoDBCollectionsResponse{}, err
 			}
@@ -1144,7 +1133,7 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionsCreateRequest(ctx co
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1181,7 +1170,7 @@ func (client *MongoDBResourcesClient) NewListMongoDBDatabasesPager(resourceGroup
 			if err != nil {
 				return MongoDBResourcesClientListMongoDBDatabasesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MongoDBResourcesClientListMongoDBDatabasesResponse{}, err
 			}
@@ -1208,7 +1197,7 @@ func (client *MongoDBResourcesClient) listMongoDBDatabasesCreateRequest(ctx cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1245,7 +1234,7 @@ func (client *MongoDBResourcesClient) NewListMongoRoleDefinitionsPager(resourceG
 			if err != nil {
 				return MongoDBResourcesClientListMongoRoleDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MongoDBResourcesClientListMongoRoleDefinitionsResponse{}, err
 			}
@@ -1272,7 +1261,7 @@ func (client *MongoDBResourcesClient) listMongoRoleDefinitionsCreateRequest(ctx 
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1309,7 +1298,7 @@ func (client *MongoDBResourcesClient) NewListMongoUserDefinitionsPager(resourceG
 			if err != nil {
 				return MongoDBResourcesClientListMongoUserDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MongoDBResourcesClientListMongoUserDefinitionsResponse{}, err
 			}
@@ -1336,7 +1325,7 @@ func (client *MongoDBResourcesClient) listMongoUserDefinitionsCreateRequest(ctx 
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1372,9 +1361,9 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBCollectionToAutoscale(c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1387,7 +1376,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscale(ctx co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1420,7 +1409,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscaleCreateR
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1448,9 +1437,9 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBCollectionToManualThrou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1463,7 +1452,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughput
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1496,7 +1485,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughput
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1522,9 +1511,9 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBDatabaseToAutoscale(ctx
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1537,7 +1526,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscale(ctx cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1566,7 +1555,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscaleCreateReq
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1592,9 +1581,9 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBDatabaseToManualThrough
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1607,7 +1596,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughput(c
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1636,7 +1625,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughputCr
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1664,11 +1653,11 @@ func (client *MongoDBResourcesClient) BeginMongoDBContainerRedistributeThroughpu
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1681,7 +1670,7 @@ func (client *MongoDBResourcesClient) mongoDBContainerRedistributeThroughput(ctx
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1714,7 +1703,7 @@ func (client *MongoDBResourcesClient) mongoDBContainerRedistributeThroughputCrea
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1743,11 +1732,11 @@ func (client *MongoDBResourcesClient) BeginMongoDBContainerRetrieveThroughputDis
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1760,7 +1749,7 @@ func (client *MongoDBResourcesClient) mongoDBContainerRetrieveThroughputDistribu
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1793,7 +1782,7 @@ func (client *MongoDBResourcesClient) mongoDBContainerRetrieveThroughputDistribu
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1820,11 +1809,11 @@ func (client *MongoDBResourcesClient) BeginMongoDBDatabaseRedistributeThroughput
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1837,7 +1826,7 @@ func (client *MongoDBResourcesClient) mongoDBDatabaseRedistributeThroughput(ctx 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1866,7 +1855,7 @@ func (client *MongoDBResourcesClient) mongoDBDatabaseRedistributeThroughputCreat
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1894,11 +1883,11 @@ func (client *MongoDBResourcesClient) BeginMongoDBDatabaseRetrieveThroughputDist
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1911,7 +1900,7 @@ func (client *MongoDBResourcesClient) mongoDBDatabaseRetrieveThroughputDistribut
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1940,7 +1929,7 @@ func (client *MongoDBResourcesClient) mongoDBDatabaseRetrieveThroughputDistribut
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1968,11 +1957,11 @@ func (client *MongoDBResourcesClient) BeginRetrieveContinuousBackupInformation(c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MongoDBResourcesClientRetrieveContinuousBackupInformationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MongoDBResourcesClientRetrieveContinuousBackupInformationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientRetrieveContinuousBackupInformationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientRetrieveContinuousBackupInformationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1985,7 +1974,7 @@ func (client *MongoDBResourcesClient) retrieveContinuousBackupInformation(ctx co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2018,7 +2007,7 @@ func (client *MongoDBResourcesClient) retrieveContinuousBackupInformationCreateR
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2046,9 +2035,9 @@ func (client *MongoDBResourcesClient) BeginUpdateMongoDBCollectionThroughput(ctx
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -2061,7 +2050,7 @@ func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughput(ctx cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2094,7 +2083,7 @@ func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughputCreateReq
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2121,9 +2110,9 @@ func (client *MongoDBResourcesClient) BeginUpdateMongoDBDatabaseThroughput(ctx c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -2136,7 +2125,7 @@ func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughput(ctx contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2165,7 +2154,7 @@ func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughputCreateReque
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

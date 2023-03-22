@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // DataTransferJobsClient contains the methods for the DataTransferJobs group.
 // Don't use this type directly, use NewDataTransferJobsClient() instead.
 type DataTransferJobsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDataTransferJobsClient creates a new instance of DataTransferJobsClient with the specified values.
@@ -36,21 +33,13 @@ type DataTransferJobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDataTransferJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataTransferJobsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DataTransferJobsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DataTransferJobsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -68,7 +57,7 @@ func (client *DataTransferJobsClient) Cancel(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DataTransferJobsClientCancelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataTransferJobsClientCancelResponse{}, err
 	}
@@ -97,7 +86,7 @@ func (client *DataTransferJobsClient) cancelCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +119,7 @@ func (client *DataTransferJobsClient) Create(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DataTransferJobsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataTransferJobsClientCreateResponse{}, err
 	}
@@ -159,7 +148,7 @@ func (client *DataTransferJobsClient) createCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +181,7 @@ func (client *DataTransferJobsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DataTransferJobsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataTransferJobsClientGetResponse{}, err
 	}
@@ -221,7 +210,7 @@ func (client *DataTransferJobsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -264,7 +253,7 @@ func (client *DataTransferJobsClient) NewListByDatabaseAccountPager(resourceGrou
 			if err != nil {
 				return DataTransferJobsClientListByDatabaseAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataTransferJobsClientListByDatabaseAccountResponse{}, err
 			}
@@ -291,7 +280,7 @@ func (client *DataTransferJobsClient) listByDatabaseAccountCreateRequest(ctx con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -324,7 +313,7 @@ func (client *DataTransferJobsClient) Pause(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return DataTransferJobsClientPauseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataTransferJobsClientPauseResponse{}, err
 	}
@@ -353,7 +342,7 @@ func (client *DataTransferJobsClient) pauseCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -386,7 +375,7 @@ func (client *DataTransferJobsClient) Resume(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DataTransferJobsClientResumeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataTransferJobsClientResumeResponse{}, err
 	}
@@ -415,7 +404,7 @@ func (client *DataTransferJobsClient) resumeCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

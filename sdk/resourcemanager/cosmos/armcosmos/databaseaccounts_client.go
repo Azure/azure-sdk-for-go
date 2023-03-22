@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // DatabaseAccountsClient contains the methods for the DatabaseAccounts group.
 // Don't use this type directly, use NewDatabaseAccountsClient() instead.
 type DatabaseAccountsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDatabaseAccountsClient creates a new instance of DatabaseAccountsClient with the specified values.
@@ -36,21 +33,13 @@ type DatabaseAccountsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabaseAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseAccountsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DatabaseAccountsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DatabaseAccountsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -67,7 +56,7 @@ func (client *DatabaseAccountsClient) CheckNameExists(ctx context.Context, accou
 	if err != nil {
 		return DatabaseAccountsClientCheckNameExistsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientCheckNameExistsResponse{}, err
 	}
@@ -84,7 +73,7 @@ func (client *DatabaseAccountsClient) checkNameExistsCreateRequest(ctx context.C
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,9 +99,9 @@ func (client *DatabaseAccountsClient) BeginCreateOrUpdate(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -126,7 +115,7 @@ func (client *DatabaseAccountsClient) createOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -151,7 +140,7 @@ func (client *DatabaseAccountsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -176,9 +165,9 @@ func (client *DatabaseAccountsClient) BeginDelete(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -191,7 +180,7 @@ func (client *DatabaseAccountsClient) deleteOperation(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -216,7 +205,7 @@ func (client *DatabaseAccountsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,9 +232,9 @@ func (client *DatabaseAccountsClient) BeginFailoverPriorityChange(ctx context.Co
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientFailoverPriorityChangeResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientFailoverPriorityChangeResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientFailoverPriorityChangeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientFailoverPriorityChangeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -260,7 +249,7 @@ func (client *DatabaseAccountsClient) failoverPriorityChange(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -285,7 +274,7 @@ func (client *DatabaseAccountsClient) failoverPriorityChangeCreateRequest(ctx co
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,7 +296,7 @@ func (client *DatabaseAccountsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DatabaseAccountsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientGetResponse{}, err
 	}
@@ -332,7 +321,7 @@ func (client *DatabaseAccountsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -365,7 +354,7 @@ func (client *DatabaseAccountsClient) GetReadOnlyKeys(ctx context.Context, resou
 	if err != nil {
 		return DatabaseAccountsClientGetReadOnlyKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientGetReadOnlyKeysResponse{}, err
 	}
@@ -390,7 +379,7 @@ func (client *DatabaseAccountsClient) getReadOnlyKeysCreateRequest(ctx context.C
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -425,7 +414,7 @@ func (client *DatabaseAccountsClient) NewListPager(options *DatabaseAccountsClie
 			if err != nil {
 				return DatabaseAccountsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabaseAccountsClientListResponse{}, err
 			}
@@ -444,7 +433,7 @@ func (client *DatabaseAccountsClient) listCreateRequest(ctx context.Context, opt
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -480,7 +469,7 @@ func (client *DatabaseAccountsClient) NewListByResourceGroupPager(resourceGroupN
 			if err != nil {
 				return DatabaseAccountsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabaseAccountsClientListByResourceGroupResponse{}, err
 			}
@@ -503,7 +492,7 @@ func (client *DatabaseAccountsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -536,7 +525,7 @@ func (client *DatabaseAccountsClient) ListConnectionStrings(ctx context.Context,
 	if err != nil {
 		return DatabaseAccountsClientListConnectionStringsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientListConnectionStringsResponse{}, err
 	}
@@ -561,7 +550,7 @@ func (client *DatabaseAccountsClient) listConnectionStringsCreateRequest(ctx con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -594,7 +583,7 @@ func (client *DatabaseAccountsClient) ListKeys(ctx context.Context, resourceGrou
 	if err != nil {
 		return DatabaseAccountsClientListKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientListKeysResponse{}, err
 	}
@@ -619,7 +608,7 @@ func (client *DatabaseAccountsClient) listKeysCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -656,7 +645,7 @@ func (client *DatabaseAccountsClient) NewListMetricDefinitionsPager(resourceGrou
 			if err != nil {
 				return DatabaseAccountsClientListMetricDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabaseAccountsClientListMetricDefinitionsResponse{}, err
 			}
@@ -683,7 +672,7 @@ func (client *DatabaseAccountsClient) listMetricDefinitionsCreateRequest(ctx con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -723,7 +712,7 @@ func (client *DatabaseAccountsClient) NewListMetricsPager(resourceGroupName stri
 			if err != nil {
 				return DatabaseAccountsClientListMetricsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabaseAccountsClientListMetricsResponse{}, err
 			}
@@ -750,7 +739,7 @@ func (client *DatabaseAccountsClient) listMetricsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -784,7 +773,7 @@ func (client *DatabaseAccountsClient) ListReadOnlyKeys(ctx context.Context, reso
 	if err != nil {
 		return DatabaseAccountsClientListReadOnlyKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientListReadOnlyKeysResponse{}, err
 	}
@@ -809,7 +798,7 @@ func (client *DatabaseAccountsClient) listReadOnlyKeysCreateRequest(ctx context.
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -846,7 +835,7 @@ func (client *DatabaseAccountsClient) NewListUsagesPager(resourceGroupName strin
 			if err != nil {
 				return DatabaseAccountsClientListUsagesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabaseAccountsClientListUsagesResponse{}, err
 			}
@@ -873,7 +862,7 @@ func (client *DatabaseAccountsClient) listUsagesCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -911,9 +900,9 @@ func (client *DatabaseAccountsClient) BeginOfflineRegion(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientOfflineRegionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientOfflineRegionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientOfflineRegionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientOfflineRegionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -926,7 +915,7 @@ func (client *DatabaseAccountsClient) offlineRegion(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -951,7 +940,7 @@ func (client *DatabaseAccountsClient) offlineRegionCreateRequest(ctx context.Con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -977,9 +966,9 @@ func (client *DatabaseAccountsClient) BeginOnlineRegion(ctx context.Context, res
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientOnlineRegionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientOnlineRegionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientOnlineRegionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientOnlineRegionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -992,7 +981,7 @@ func (client *DatabaseAccountsClient) onlineRegion(ctx context.Context, resource
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1017,7 +1006,7 @@ func (client *DatabaseAccountsClient) onlineRegionCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1043,9 +1032,9 @@ func (client *DatabaseAccountsClient) BeginRegenerateKey(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientRegenerateKeyResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientRegenerateKeyResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientRegenerateKeyResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientRegenerateKeyResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1058,7 +1047,7 @@ func (client *DatabaseAccountsClient) regenerateKey(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1083,7 +1072,7 @@ func (client *DatabaseAccountsClient) regenerateKeyCreateRequest(ctx context.Con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1108,9 +1097,9 @@ func (client *DatabaseAccountsClient) BeginUpdate(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1123,7 +1112,7 @@ func (client *DatabaseAccountsClient) update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1148,7 +1137,7 @@ func (client *DatabaseAccountsClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

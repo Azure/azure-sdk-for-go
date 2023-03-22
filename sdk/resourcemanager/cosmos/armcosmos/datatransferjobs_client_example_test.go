@@ -25,11 +25,11 @@ func ExampleDataTransferJobsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Create(ctx, "rg1", "ddb1", "j1", armcosmos.CreateJobRequest{
+	res, err := clientFactory.NewDataTransferJobsClient().Create(ctx, "rg1", "ddb1", "j1", armcosmos.CreateJobRequest{
 		Properties: &armcosmos.DataTransferJobProperties{
 			Destination: &armcosmos.AzureBlobDataTransferDataSourceSink{
 				Component:     to.Ptr(armcosmos.DataTransferComponentAzureBlobStorage),
@@ -79,11 +79,11 @@ func ExampleDataTransferJobsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "ddb1", "j1", nil)
+	res, err := clientFactory.NewDataTransferJobsClient().Get(ctx, "rg1", "ddb1", "j1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -120,11 +120,11 @@ func ExampleDataTransferJobsClient_Pause() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Pause(ctx, "rg1", "ddb1", "j1", nil)
+	res, err := clientFactory.NewDataTransferJobsClient().Pause(ctx, "rg1", "ddb1", "j1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -161,11 +161,11 @@ func ExampleDataTransferJobsClient_Resume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Resume(ctx, "rg1", "ddb1", "j1", nil)
+	res, err := clientFactory.NewDataTransferJobsClient().Resume(ctx, "rg1", "ddb1", "j1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -202,11 +202,11 @@ func ExampleDataTransferJobsClient_Cancel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Cancel(ctx, "rg1", "ddb1", "j1", nil)
+	res, err := clientFactory.NewDataTransferJobsClient().Cancel(ctx, "rg1", "ddb1", "j1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -243,11 +243,11 @@ func ExampleDataTransferJobsClient_NewListByDatabaseAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabaseAccountPager("rg1", "ddb1", nil)
+	pager := clientFactory.NewDataTransferJobsClient().NewListByDatabaseAccountPager("rg1", "ddb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

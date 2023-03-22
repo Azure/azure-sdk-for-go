@@ -25,11 +25,11 @@ func ExampleCassandraResourcesClient_NewListCassandraKeyspacesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCassandraKeyspacesPager("rgName", "ddb1", nil)
+	pager := clientFactory.NewCassandraResourcesClient().NewListCassandraKeyspacesPager("rgName", "ddb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,11 +66,11 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCassandraKeyspace(ctx, "rg1", "ddb1", "keyspaceName", nil)
+	res, err := clientFactory.NewCassandraResourcesClient().GetCassandraKeyspace(ctx, "rg1", "ddb1", "keyspaceName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,11 +102,11 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraKeyspace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateCassandraKeyspace(ctx, "rg1", "ddb1", "keyspaceName", armcosmos.CassandraKeyspaceCreateUpdateParameters{
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginCreateUpdateCassandraKeyspace(ctx, "rg1", "ddb1", "keyspaceName", armcosmos.CassandraKeyspaceCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.CassandraKeyspaceCreateUpdateProperties{
@@ -148,11 +148,11 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraKeyspace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteCassandraKeyspace(ctx, "rg1", "ddb1", "keyspaceName", nil)
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginDeleteCassandraKeyspace(ctx, "rg1", "ddb1", "keyspaceName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -169,11 +169,11 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspaceThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCassandraKeyspaceThroughput(ctx, "rg1", "ddb1", "keyspaceName", nil)
+	res, err := clientFactory.NewCassandraResourcesClient().GetCassandraKeyspaceThroughput(ctx, "rg1", "ddb1", "keyspaceName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -207,11 +207,11 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraKeyspaceThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateCassandraKeyspaceThroughput(ctx, "rg1", "ddb1", "keyspaceName", armcosmos.ThroughputSettingsUpdateParameters{
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginUpdateCassandraKeyspaceThroughput(ctx, "rg1", "ddb1", "keyspaceName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
@@ -257,11 +257,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToAutoscale() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateCassandraKeyspaceToAutoscale(ctx, "rg1", "ddb1", "keyspaceName", nil)
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginMigrateCassandraKeyspaceToAutoscale(ctx, "rg1", "ddb1", "keyspaceName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -296,11 +296,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToManualThroug
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateCassandraKeyspaceToManualThroughput(ctx, "rg1", "ddb1", "keyspaceName", nil)
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginMigrateCassandraKeyspaceToManualThroughput(ctx, "rg1", "ddb1", "keyspaceName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -332,11 +332,11 @@ func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCassandraTablesPager("rgName", "ddb1", "keyspaceName", nil)
+	pager := clientFactory.NewCassandraResourcesClient().NewListCassandraTablesPager("rgName", "ddb1", "keyspaceName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -391,11 +391,11 @@ func ExampleCassandraResourcesClient_GetCassandraTable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCassandraTable(ctx, "rg1", "ddb1", "keyspaceName", "tableName", nil)
+	res, err := clientFactory.NewCassandraResourcesClient().GetCassandraTable(ctx, "rg1", "ddb1", "keyspaceName", "tableName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -445,11 +445,11 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateCassandraTable(ctx, "rg1", "ddb1", "keyspaceName", "tableName", armcosmos.CassandraTableCreateUpdateParameters{
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginCreateUpdateCassandraTable(ctx, "rg1", "ddb1", "keyspaceName", "tableName", armcosmos.CassandraTableCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.CassandraTableCreateUpdateProperties{
@@ -527,11 +527,11 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraTable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteCassandraTable(ctx, "rg1", "ddb1", "keyspaceName", "tableName", nil)
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginDeleteCassandraTable(ctx, "rg1", "ddb1", "keyspaceName", "tableName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -548,11 +548,11 @@ func ExampleCassandraResourcesClient_GetCassandraTableThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCassandraTableThroughput(ctx, "rg1", "ddb1", "keyspaceName", "tableName", nil)
+	res, err := clientFactory.NewCassandraResourcesClient().GetCassandraTableThroughput(ctx, "rg1", "ddb1", "keyspaceName", "tableName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -586,11 +586,11 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraTableThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateCassandraTableThroughput(ctx, "rg1", "ddb1", "keyspaceName", "tableName", armcosmos.ThroughputSettingsUpdateParameters{
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginUpdateCassandraTableThroughput(ctx, "rg1", "ddb1", "keyspaceName", "tableName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
@@ -633,11 +633,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToAutoscale() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateCassandraTableToAutoscale(ctx, "rg1", "ddb1", "keyspaceName", "tableName", nil)
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginMigrateCassandraTableToAutoscale(ctx, "rg1", "ddb1", "keyspaceName", "tableName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -672,11 +672,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToManualThroughpu
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateCassandraTableToManualThroughput(ctx, "rg1", "ddb1", "keyspaceName", "tableName", nil)
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginMigrateCassandraTableToManualThroughput(ctx, "rg1", "ddb1", "keyspaceName", "tableName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -708,11 +708,11 @@ func ExampleCassandraResourcesClient_NewListCassandraViewsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCassandraViewsPager("rgName", "ddb1", "keyspacename", nil)
+	pager := clientFactory.NewCassandraResourcesClient().NewListCassandraViewsPager("rgName", "ddb1", "keyspacename", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -749,11 +749,11 @@ func ExampleCassandraResourcesClient_GetCassandraView() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
+	res, err := clientFactory.NewCassandraResourcesClient().GetCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -782,11 +782,11 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraView() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", armcosmos.CassandraViewCreateUpdateParameters{
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginCreateUpdateCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", armcosmos.CassandraViewCreateUpdateParameters{
 		Tags: map[string]*string{},
 		Properties: &armcosmos.CassandraViewCreateUpdateProperties{
 			Options: &armcosmos.CreateUpdateOptions{},
@@ -828,11 +828,11 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraView() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginDeleteCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -849,11 +849,11 @@ func ExampleCassandraResourcesClient_GetCassandraViewThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCassandraViewThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
+	res, err := clientFactory.NewCassandraResourcesClient().GetCassandraViewThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -883,11 +883,11 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraViewThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateCassandraViewThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", armcosmos.ThroughputSettingsUpdateParameters{
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginUpdateCassandraViewThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", armcosmos.ThroughputSettingsUpdateParameters{
 		Tags: map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 			Resource: &armcosmos.ThroughputSettingsResource{
@@ -926,11 +926,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraViewToAutoscale() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateCassandraViewToAutoscale(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginMigrateCassandraViewToAutoscale(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -962,11 +962,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraViewToManualThroughput
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateCassandraViewToManualThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
+	poller, err := clientFactory.NewCassandraResourcesClient().BeginMigrateCassandraViewToManualThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

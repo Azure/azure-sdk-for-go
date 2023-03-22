@@ -25,11 +25,11 @@ func ExampleTableResourcesClient_NewListTablesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewTableResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListTablesPager("rgName", "ddb1", nil)
+	pager := clientFactory.NewTableResourcesClient().NewListTablesPager("rgName", "ddb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,11 +66,11 @@ func ExampleTableResourcesClient_GetTable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewTableResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetTable(ctx, "rg1", "ddb1", "tableName", nil)
+	res, err := clientFactory.NewTableResourcesClient().GetTable(ctx, "rg1", "ddb1", "tableName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,11 +102,11 @@ func ExampleTableResourcesClient_BeginCreateUpdateTable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewTableResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateTable(ctx, "rg1", "ddb1", "tableName", armcosmos.TableCreateUpdateParameters{
+	poller, err := clientFactory.NewTableResourcesClient().BeginCreateUpdateTable(ctx, "rg1", "ddb1", "tableName", armcosmos.TableCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.TableCreateUpdateProperties{
@@ -146,11 +146,11 @@ func ExampleTableResourcesClient_BeginDeleteTable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewTableResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteTable(ctx, "rg1", "ddb1", "tableName", nil)
+	poller, err := clientFactory.NewTableResourcesClient().BeginDeleteTable(ctx, "rg1", "ddb1", "tableName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -167,11 +167,11 @@ func ExampleTableResourcesClient_GetTableThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewTableResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetTableThroughput(ctx, "rg1", "ddb1", "tableName", nil)
+	res, err := clientFactory.NewTableResourcesClient().GetTableThroughput(ctx, "rg1", "ddb1", "tableName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -205,11 +205,11 @@ func ExampleTableResourcesClient_BeginUpdateTableThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewTableResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateTableThroughput(ctx, "rg1", "ddb1", "tableName", armcosmos.ThroughputSettingsUpdateParameters{
+	poller, err := clientFactory.NewTableResourcesClient().BeginUpdateTableThroughput(ctx, "rg1", "ddb1", "tableName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
@@ -255,11 +255,11 @@ func ExampleTableResourcesClient_BeginMigrateTableToAutoscale() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewTableResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateTableToAutoscale(ctx, "rg1", "ddb1", "tableName", nil)
+	poller, err := clientFactory.NewTableResourcesClient().BeginMigrateTableToAutoscale(ctx, "rg1", "ddb1", "tableName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -294,11 +294,11 @@ func ExampleTableResourcesClient_BeginMigrateTableToManualThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewTableResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateTableToManualThroughput(ctx, "rg1", "ddb1", "tableName", nil)
+	poller, err := clientFactory.NewTableResourcesClient().BeginMigrateTableToManualThroughput(ctx, "rg1", "ddb1", "tableName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -330,11 +330,11 @@ func ExampleTableResourcesClient_BeginRetrieveContinuousBackupInformation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewTableResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRetrieveContinuousBackupInformation(ctx, "rgName", "ddb1", "tableName1", armcosmos.ContinuousBackupRestoreLocation{
+	poller, err := clientFactory.NewTableResourcesClient().BeginRetrieveContinuousBackupInformation(ctx, "rgName", "ddb1", "tableName1", armcosmos.ContinuousBackupRestoreLocation{
 		Location: to.Ptr("North Europe"),
 	}, nil)
 	if err != nil {

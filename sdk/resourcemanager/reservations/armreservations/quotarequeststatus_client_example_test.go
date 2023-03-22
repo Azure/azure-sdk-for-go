@@ -24,11 +24,11 @@ func ExampleQuotaRequestStatusClient_Get_quotaRequestFailed() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaRequestStatusClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus", "2B5C8515-37D8-4B6A-879B-CD641A2CF605", nil)
+	res, err := clientFactory.NewQuotaRequestStatusClient().Get(ctx, "00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus", "2B5C8515-37D8-4B6A-879B-CD641A2CF605", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -75,11 +75,11 @@ func ExampleQuotaRequestStatusClient_Get_quotaRequestInProgress() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaRequestStatusClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus", "2B5C8515-37D8-4B6A-879B-CD641A2CF605", nil)
+	res, err := clientFactory.NewQuotaRequestStatusClient().Get(ctx, "00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus", "2B5C8515-37D8-4B6A-879B-CD641A2CF605", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -116,11 +116,11 @@ func ExampleQuotaRequestStatusClient_Get_quotaRequestStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaRequestStatusClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus", "2B5C8515-37D8-4B6A-879B-CD641A2CF605", nil)
+	res, err := clientFactory.NewQuotaRequestStatusClient().Get(ctx, "00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus", "2B5C8515-37D8-4B6A-879B-CD641A2CF605", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -166,11 +166,11 @@ func ExampleQuotaRequestStatusClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaRequestStatusClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("3f75fdf7-977e-44ad-990d-99f14f0f299f", "Microsoft.Compute", "eastus", &armreservations.QuotaRequestStatusClientListOptions{Filter: nil,
+	pager := clientFactory.NewQuotaRequestStatusClient().NewListPager("3f75fdf7-977e-44ad-990d-99f14f0f299f", "Microsoft.Compute", "eastus", &armreservations.QuotaRequestStatusClientListOptions{Filter: nil,
 		Top:       nil,
 		Skiptoken: nil,
 	})

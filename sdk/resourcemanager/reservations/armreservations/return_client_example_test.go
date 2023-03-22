@@ -25,11 +25,11 @@ func ExampleReturnClient_BeginPost() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReturnClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPost(ctx, "50000000-aaaa-bbbb-cccc-100000000004", armreservations.RefundRequest{
+	poller, err := clientFactory.NewReturnClient().BeginPost(ctx, "50000000-aaaa-bbbb-cccc-100000000004", armreservations.RefundRequest{
 		Properties: &armreservations.RefundRequestProperties{
 			ReservationToReturn: &armreservations.ReservationToReturn{
 				Quantity:      to.Ptr[int32](1),

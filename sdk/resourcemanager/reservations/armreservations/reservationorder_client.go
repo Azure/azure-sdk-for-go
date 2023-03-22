@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,28 +24,19 @@ import (
 // ReservationOrderClient contains the methods for the ReservationOrder group.
 // Don't use this type directly, use NewReservationOrderClient() instead.
 type ReservationOrderClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewReservationOrderClient creates a new instance of ReservationOrderClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReservationOrderClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationOrderClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ReservationOrderClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ReservationOrderClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -64,7 +53,7 @@ func (client *ReservationOrderClient) Calculate(ctx context.Context, body Purcha
 	if err != nil {
 		return ReservationOrderClientCalculateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReservationOrderClientCalculateResponse{}, err
 	}
@@ -77,7 +66,7 @@ func (client *ReservationOrderClient) Calculate(ctx context.Context, body Purcha
 // calculateCreateRequest creates the Calculate request.
 func (client *ReservationOrderClient) calculateCreateRequest(ctx context.Context, body PurchaseRequest, options *ReservationOrderClientCalculateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/calculatePrice"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +99,7 @@ func (client *ReservationOrderClient) ChangeDirectory(ctx context.Context, reser
 	if err != nil {
 		return ReservationOrderClientChangeDirectoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReservationOrderClientChangeDirectoryResponse{}, err
 	}
@@ -127,7 +116,7 @@ func (client *ReservationOrderClient) changeDirectoryCreateRequest(ctx context.C
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,7 +147,7 @@ func (client *ReservationOrderClient) Get(ctx context.Context, reservationOrderI
 	if err != nil {
 		return ReservationOrderClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReservationOrderClientGetResponse{}, err
 	}
@@ -175,7 +164,7 @@ func (client *ReservationOrderClient) getCreateRequest(ctx context.Context, rese
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,7 +208,7 @@ func (client *ReservationOrderClient) NewListPager(options *ReservationOrderClie
 			if err != nil {
 				return ReservationOrderClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReservationOrderClientListResponse{}, err
 			}
@@ -234,7 +223,7 @@ func (client *ReservationOrderClient) NewListPager(options *ReservationOrderClie
 // listCreateRequest creates the List request.
 func (client *ReservationOrderClient) listCreateRequest(ctx context.Context, options *ReservationOrderClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,11 +257,11 @@ func (client *ReservationOrderClient) BeginPurchase(ctx context.Context, reserva
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ReservationOrderClientPurchaseResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReservationOrderClientPurchaseResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ReservationOrderClientPurchaseResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReservationOrderClientPurchaseResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -285,7 +274,7 @@ func (client *ReservationOrderClient) purchase(ctx context.Context, reservationO
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -302,7 +291,7 @@ func (client *ReservationOrderClient) purchaseCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

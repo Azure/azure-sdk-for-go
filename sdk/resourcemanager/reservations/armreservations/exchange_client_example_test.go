@@ -25,11 +25,11 @@ func ExampleExchangeClient_BeginPost() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewExchangeClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPost(ctx, armreservations.ExchangeRequest{
+	poller, err := clientFactory.NewExchangeClient().BeginPost(ctx, armreservations.ExchangeRequest{
 		Properties: &armreservations.ExchangeRequestProperties{
 			SessionID: to.Ptr("66e2ac8f-439e-4345-8235-6fef07608081"),
 		},

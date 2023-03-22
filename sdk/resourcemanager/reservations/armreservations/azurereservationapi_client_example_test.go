@@ -25,11 +25,11 @@ func ExampleAzureReservationAPIClient_NewGetCatalogPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewAzureReservationAPIClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetCatalogPager("23bc208b-083f-4901-ae85-4f98c0c3b4b6", &armreservations.AzureReservationAPIClientGetCatalogOptions{ReservedResourceType: to.Ptr("VirtualMachines"),
+	pager := clientFactory.NewAzureReservationAPIClient().NewGetCatalogPager("23bc208b-083f-4901-ae85-4f98c0c3b4b6", &armreservations.AzureReservationAPIClientGetCatalogOptions{ReservedResourceType: to.Ptr("VirtualMachines"),
 		Location:    to.Ptr("eastus"),
 		PublisherID: nil,
 		OfferID:     nil,
@@ -198,11 +198,11 @@ func ExampleAzureReservationAPIClient_GetAppliedReservationList() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewAzureReservationAPIClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAppliedReservationList(ctx, "23bc208b-083f-4901-ae85-4f98c0c3b4b6", nil)
+	res, err := clientFactory.NewAzureReservationAPIClient().GetAppliedReservationList(ctx, "23bc208b-083f-4901-ae85-4f98c0c3b4b6", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -25,11 +25,11 @@ func ExampleReservationOrderClient_Calculate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Calculate(ctx, armreservations.PurchaseRequest{
+	res, err := clientFactory.NewReservationOrderClient().Calculate(ctx, armreservations.PurchaseRequest{
 		Location: to.Ptr("westus"),
 		Properties: &armreservations.PurchaseRequestProperties{
 			AppliedScopeType: to.Ptr(armreservations.AppliedScopeTypeShared),
@@ -103,11 +103,11 @@ func ExampleReservationOrderClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewReservationOrderClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -197,11 +197,11 @@ func ExampleReservationOrderClient_BeginPurchase() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPurchase(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", armreservations.PurchaseRequest{
+	poller, err := clientFactory.NewReservationOrderClient().BeginPurchase(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", armreservations.PurchaseRequest{
 		Location: to.Ptr("westus"),
 		Properties: &armreservations.PurchaseRequestProperties{
 			AppliedScopeType: to.Ptr(armreservations.AppliedScopeTypeShared),
@@ -260,11 +260,11 @@ func ExampleReservationOrderClient_Get_getReservationOrder() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", &armreservations.ReservationOrderClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewReservationOrderClient().Get(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", &armreservations.ReservationOrderClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -302,11 +302,11 @@ func ExampleReservationOrderClient_Get_getReservationWithExpandPayments() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", &armreservations.ReservationOrderClientGetOptions{Expand: to.Ptr("schedule")})
+	res, err := clientFactory.NewReservationOrderClient().Get(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", &armreservations.ReservationOrderClientGetOptions{Expand: to.Ptr("schedule")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -441,11 +441,11 @@ func ExampleReservationOrderClient_ChangeDirectory() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ChangeDirectory(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", armreservations.ChangeDirectoryRequest{
+	res, err := clientFactory.NewReservationOrderClient().ChangeDirectory(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", armreservations.ChangeDirectoryRequest{
 		DestinationTenantID: to.Ptr("906655ea-30be-4587-9d12-b50e077b0f32"),
 	}, nil)
 	if err != nil {

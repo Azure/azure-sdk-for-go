@@ -25,11 +25,11 @@ func ExampleCalculateExchangeClient_BeginPost() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewCalculateExchangeClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPost(ctx, armreservations.CalculateExchangeRequest{
+	poller, err := clientFactory.NewCalculateExchangeClient().BeginPost(ctx, armreservations.CalculateExchangeRequest{
 		Properties: &armreservations.CalculateExchangeRequestProperties{
 			ReservationsToExchange: []*armreservations.ReservationToReturn{
 				{

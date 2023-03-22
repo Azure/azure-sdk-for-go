@@ -7,6 +7,7 @@
 
 ### Features Added
 
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 - New field `P3Y` in struct `CatalogMsrp`
 - New field `P5Y` in struct `CatalogMsrp`
 - New anonymous field `ReservationOrderResponse` in struct `ReturnClientPostResponse`

@@ -25,11 +25,11 @@ func ExampleReservationClient_BeginAvailableScopes() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginAvailableScopes(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "356e7ae4-84d0-4da6-ab4b-d6b94f3557da", armreservations.AvailableScopeRequest{
+	poller, err := clientFactory.NewReservationClient().BeginAvailableScopes(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "356e7ae4-84d0-4da6-ab4b-d6b94f3557da", armreservations.AvailableScopeRequest{
 		Properties: &armreservations.AvailableScopeRequestProperties{
 			Scopes: []*string{
 				to.Ptr("/subscriptions/efc7c997-7700-4a74-b731-55aec16c15e9")},
@@ -63,11 +63,11 @@ func ExampleReservationClient_BeginSplit() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginSplit(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", armreservations.SplitRequest{
+	poller, err := clientFactory.NewReservationClient().BeginSplit(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", armreservations.SplitRequest{
 		Properties: &armreservations.SplitProperties{
 			Quantities: []*int32{
 				to.Ptr[int32](1),
@@ -200,11 +200,11 @@ func ExampleReservationClient_BeginMerge() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMerge(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", armreservations.MergeRequest{
+	poller, err := clientFactory.NewReservationClient().BeginMerge(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", armreservations.MergeRequest{
 		Properties: &armreservations.MergeProperties{
 			Sources: []*string{
 				to.Ptr("/providers/Microsoft.Capacity/reservationOrders/c0565a8a-4491-4e77-b07b-5e6d66718e1c/reservations/cea04232-932e-47db-acb5-e29a945ecc73"),
@@ -346,11 +346,11 @@ func ExampleReservationClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("276e7ae4-84d0-4da6-ab4b-d6b94f3557da", nil)
+	pager := clientFactory.NewReservationClient().NewListPager("276e7ae4-84d0-4da6-ab4b-d6b94f3557da", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -566,11 +566,11 @@ func ExampleReservationClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "6ef59113-3482-40da-8d79-787f823e34bc", &armreservations.ReservationClientGetOptions{Expand: to.Ptr("renewProperties")})
+	res, err := clientFactory.NewReservationClient().Get(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "6ef59113-3482-40da-8d79-787f823e34bc", &armreservations.ReservationClientGetOptions{Expand: to.Ptr("renewProperties")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -656,11 +656,11 @@ func ExampleReservationClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "6ef59113-3482-40da-8d79-787f823e34bc", armreservations.Patch{
+	poller, err := clientFactory.NewReservationClient().BeginUpdate(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "6ef59113-3482-40da-8d79-787f823e34bc", armreservations.Patch{
 		Properties: &armreservations.PatchProperties{
 			AppliedScopeType:    to.Ptr(armreservations.AppliedScopeTypeShared),
 			InstanceFlexibility: to.Ptr(armreservations.InstanceFlexibilityOff),
@@ -716,11 +716,11 @@ func ExampleReservationClient_Archive() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Archive(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "356e7ae4-84d0-4da6-ab4b-d6b94f3557da", nil)
+	_, err = clientFactory.NewReservationClient().Archive(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "356e7ae4-84d0-4da6-ab4b-d6b94f3557da", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -733,11 +733,11 @@ func ExampleReservationClient_Unarchive() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Unarchive(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "356e7ae4-84d0-4da6-ab4b-d6b94f3557da", nil)
+	_, err = clientFactory.NewReservationClient().Unarchive(ctx, "276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "356e7ae4-84d0-4da6-ab4b-d6b94f3557da", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -750,11 +750,11 @@ func ExampleReservationClient_NewListRevisionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListRevisionsPager("276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "6ef59113-3482-40da-8d79-787f823e34bc", nil)
+	pager := clientFactory.NewReservationClient().NewListRevisionsPager("276e7ae4-84d0-4da6-ab4b-d6b94f3557da", "6ef59113-3482-40da-8d79-787f823e34bc", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -912,11 +912,11 @@ func ExampleReservationClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewReservationClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(&armreservations.ReservationClientListAllOptions{Filter: to.Ptr("(properties%2farchived+eq+false)"),
+	pager := clientFactory.NewReservationClient().NewListAllPager(&armreservations.ReservationClientListAllOptions{Filter: to.Ptr("(properties%2farchived+eq+false)"),
 		Orderby:        to.Ptr("properties/displayName asc"),
 		RefreshSummary: nil,
 		Skiptoken:      to.Ptr[float32](50),

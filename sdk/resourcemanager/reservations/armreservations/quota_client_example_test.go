@@ -25,11 +25,11 @@ func ExampleQuotaClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus", "standardNDSFamily", nil)
+	res, err := clientFactory.NewQuotaClient().Get(ctx, "00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus", "standardNDSFamily", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -56,11 +56,11 @@ func ExampleQuotaClient_BeginCreateOrUpdate_quotasRequestPutForCompute() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "D7EC67B3-7657-4966-BFFC-41EFD36BAAB3", "Microsoft.Compute", "eastus", "standardFSv2Family", armreservations.CurrentQuotaLimitBase{
+	poller, err := clientFactory.NewQuotaClient().BeginCreateOrUpdate(ctx, "D7EC67B3-7657-4966-BFFC-41EFD36BAAB3", "Microsoft.Compute", "eastus", "standardFSv2Family", armreservations.CurrentQuotaLimitBase{
 		Properties: &armreservations.QuotaProperties{
 			Name: &armreservations.ResourceName{
 				Value: to.Ptr("standardFSv2Family"),
@@ -105,11 +105,11 @@ func ExampleQuotaClient_BeginCreateOrUpdate_quotasRequestPutForMachineLearningSe
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "D7EC67B3-7657-4966-BFFC-41EFD36BAAB3", "Microsoft.MachineLearningServices", "eastus", "StandardDv2Family", armreservations.CurrentQuotaLimitBase{
+	poller, err := clientFactory.NewQuotaClient().BeginCreateOrUpdate(ctx, "D7EC67B3-7657-4966-BFFC-41EFD36BAAB3", "Microsoft.MachineLearningServices", "eastus", "StandardDv2Family", armreservations.CurrentQuotaLimitBase{
 		Properties: &armreservations.QuotaProperties{
 			Name: &armreservations.ResourceName{
 				Value: to.Ptr("StandardDv2Family"),
@@ -156,11 +156,11 @@ func ExampleQuotaClient_BeginCreateOrUpdate_quotasRequestPutForMachineLearningSe
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "D7EC67B3-7657-4966-BFFC-41EFD36BAAB3", "Microsoft.MachineLearningServices", "eastus", "TotalLowPriorityCores", armreservations.CurrentQuotaLimitBase{
+	poller, err := clientFactory.NewQuotaClient().BeginCreateOrUpdate(ctx, "D7EC67B3-7657-4966-BFFC-41EFD36BAAB3", "Microsoft.MachineLearningServices", "eastus", "TotalLowPriorityCores", armreservations.CurrentQuotaLimitBase{
 		Properties: &armreservations.QuotaProperties{
 			Name: &armreservations.ResourceName{
 				Value: to.Ptr("TotalLowPriorityCores"),
@@ -207,11 +207,11 @@ func ExampleQuotaClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "D7EC67B3-7657-4966-BFFC-41EFD36BAAB3", "Microsoft.Compute", "eastus", "standardFSv2Family", armreservations.CurrentQuotaLimitBase{
+	poller, err := clientFactory.NewQuotaClient().BeginUpdate(ctx, "D7EC67B3-7657-4966-BFFC-41EFD36BAAB3", "Microsoft.Compute", "eastus", "standardFSv2Family", armreservations.CurrentQuotaLimitBase{
 		Properties: &armreservations.QuotaProperties{
 			Name: &armreservations.ResourceName{
 				Value: to.Ptr("standardFSv2Family"),
@@ -256,11 +256,11 @@ func ExampleQuotaClient_NewListPager_quotasListUsagesForCompute() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus", nil)
+	pager := clientFactory.NewQuotaClient().NewListPager("00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -405,11 +405,11 @@ func ExampleQuotaClient_NewListPager_quotasListUsagesMachineLearningServices() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armreservations.NewQuotaClient(cred, nil)
+	clientFactory, err := armreservations.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("00000000-0000-0000-0000-000000000000", "Microsoft.MachineLearningServices", "eastus", nil)
+	pager := clientFactory.NewQuotaClient().NewListPager("00000000-0000-0000-0000-000000000000", "Microsoft.MachineLearningServices", "eastus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

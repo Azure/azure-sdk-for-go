@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // CertificatesClient contains the methods for the Certificates group.
 // Don't use this type directly, use NewCertificatesClient() instead.
 type CertificatesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCertificatesClient creates a new instance of CertificatesClient with the specified values.
@@ -36,21 +33,13 @@ type CertificatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificatesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CertificatesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CertificatesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return CertificatesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificatesClientCreateOrUpdateResponse{}, err
 	}
@@ -94,7 +83,7 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +115,7 @@ func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return CertificatesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificatesClientDeleteResponse{}, err
 	}
@@ -151,7 +140,7 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +163,7 @@ func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return CertificatesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificatesClientGetResponse{}, err
 	}
@@ -199,7 +188,7 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -239,7 +228,7 @@ func (client *CertificatesClient) NewListPager(options *CertificatesClientListOp
 			if err != nil {
 				return CertificatesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CertificatesClientListResponse{}, err
 			}
@@ -258,7 +247,7 @@ func (client *CertificatesClient) listCreateRequest(ctx context.Context, options
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -305,7 +294,7 @@ func (client *CertificatesClient) NewListByResourceGroupPager(resourceGroupName 
 			if err != nil {
 				return CertificatesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CertificatesClientListByResourceGroupResponse{}, err
 			}
@@ -328,7 +317,7 @@ func (client *CertificatesClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -361,7 +350,7 @@ func (client *CertificatesClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return CertificatesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificatesClientUpdateResponse{}, err
 	}
@@ -386,7 +375,7 @@ func (client *CertificatesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

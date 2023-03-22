@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // WorkflowRunsClient contains the methods for the WorkflowRuns group.
 // Don't use this type directly, use NewWorkflowRunsClient() instead.
 type WorkflowRunsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkflowRunsClient creates a new instance of WorkflowRunsClient with the specified values.
@@ -37,21 +34,13 @@ type WorkflowRunsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWorkflowRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowRunsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkflowRunsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkflowRunsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *WorkflowRunsClient) Cancel(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WorkflowRunsClientCancelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkflowRunsClientCancelResponse{}, err
 	}
@@ -103,7 +92,7 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter runName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +117,7 @@ func (client *WorkflowRunsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return WorkflowRunsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkflowRunsClientGetResponse{}, err
 	}
@@ -161,7 +150,7 @@ func (client *WorkflowRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter runName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -204,7 +193,7 @@ func (client *WorkflowRunsClient) NewListPager(resourceGroupName string, name st
 			if err != nil {
 				return WorkflowRunsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkflowRunsClientListResponse{}, err
 			}
@@ -235,7 +224,7 @@ func (client *WorkflowRunsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter workflowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

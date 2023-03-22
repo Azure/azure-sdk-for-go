@@ -3,9 +3,10 @@
 ## 2.1.0 (2023-03-24)
 ### Features Added
 
-- New type alias `BasicAuthName` with values `BasicAuthNameDefault`
-- New type alias `DefaultAction` with values `DefaultActionAllow`, `DefaultActionDeny`
-- New type alias `WorkflowHealthState` with values `WorkflowHealthStateHealthy`, `WorkflowHealthStateNotSpecified`, `WorkflowHealthStateUnhealthy`, `WorkflowHealthStateUnknown`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `BasicAuthName` with values `BasicAuthNameDefault`
+- New enum type `DefaultAction` with values `DefaultActionAllow`, `DefaultActionDeny`
+- New enum type `WorkflowHealthState` with values `WorkflowHealthStateHealthy`, `WorkflowHealthStateNotSpecified`, `WorkflowHealthStateUnhealthy`, `WorkflowHealthStateUnknown`
 - New function `*StaticSitesClient.CreateOrUpdateBasicAuth(context.Context, string, string, BasicAuthName, StaticSiteBasicAuthPropertiesARMResource, *StaticSitesClientCreateOrUpdateBasicAuthOptions) (StaticSitesClientCreateOrUpdateBasicAuthResponse, error)`
 - New function `*StaticSitesClient.CreateOrUpdateBuildDatabaseConnection(context.Context, string, string, string, string, DatabaseConnection, *StaticSitesClientCreateOrUpdateBuildDatabaseConnectionOptions) (StaticSitesClientCreateOrUpdateBuildDatabaseConnectionResponse, error)`
 - New function `*StaticSitesClient.CreateOrUpdateDatabaseConnection(context.Context, string, string, string, DatabaseConnection, *StaticSitesClientCreateOrUpdateDatabaseConnectionOptions) (StaticSitesClientCreateOrUpdateDatabaseConnectionResponse, error)`

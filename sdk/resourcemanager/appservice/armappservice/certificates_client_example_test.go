@@ -25,11 +25,11 @@ func ExampleCertificatesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificatesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(&armappservice.CertificatesClientListOptions{Filter: nil})
+	pager := clientFactory.NewCertificatesClient().NewListPager(&armappservice.CertificatesClientListOptions{Filter: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -85,11 +85,11 @@ func ExampleCertificatesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificatesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("testrg123", nil)
+	pager := clientFactory.NewCertificatesClient().NewListByResourceGroupPager("testrg123", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -145,11 +145,11 @@ func ExampleCertificatesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificatesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testrg123", "testc6282", nil)
+	res, err := clientFactory.NewCertificatesClient().Get(ctx, "testrg123", "testc6282", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -181,11 +181,11 @@ func ExampleCertificatesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificatesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "testrg123", "testc6282", armappservice.AppCertificate{
+	res, err := clientFactory.NewCertificatesClient().CreateOrUpdate(ctx, "testrg123", "testc6282", armappservice.AppCertificate{
 		Location: to.Ptr("East US"),
 		Properties: &armappservice.AppCertificateProperties{
 			HostNames: []*string{
@@ -224,11 +224,11 @@ func ExampleCertificatesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificatesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "testrg123", "testc6282", nil)
+	_, err = clientFactory.NewCertificatesClient().Delete(ctx, "testrg123", "testc6282", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -241,11 +241,11 @@ func ExampleCertificatesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificatesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "testrg123", "testc6282", armappservice.AppCertificatePatchResource{
+	res, err := clientFactory.NewCertificatesClient().Update(ctx, "testrg123", "testc6282", armappservice.AppCertificatePatchResource{
 		Properties: &armappservice.AppCertificatePatchResourceProperties{
 			Password: to.Ptr("<password>"),
 		},

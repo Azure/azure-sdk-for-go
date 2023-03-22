@@ -24,11 +24,11 @@ func ExampleWorkflowRunsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowRunsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("test-resource-group", "test-name", "test-workflow", &armappservice.WorkflowRunsClientListOptions{Top: nil,
+	pager := clientFactory.NewWorkflowRunsClient().NewListPager("test-resource-group", "test-name", "test-workflow", &armappservice.WorkflowRunsClientListOptions{Top: nil,
 		Filter: nil,
 	})
 	for pager.More() {
@@ -86,11 +86,11 @@ func ExampleWorkflowRunsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowRunsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "test-resource-group", "test-name", "test-workflow", "08586676746934337772206998657CU22", nil)
+	res, err := clientFactory.NewWorkflowRunsClient().Get(ctx, "test-resource-group", "test-name", "test-workflow", "08586676746934337772206998657CU22", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -138,11 +138,11 @@ func ExampleWorkflowRunsClient_Cancel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowRunsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Cancel(ctx, "test-resource-group", "test-name", "test-workflow", "08586676746934337772206998657CU22", nil)
+	_, err = clientFactory.NewWorkflowRunsClient().Cancel(ctx, "test-resource-group", "test-name", "test-workflow", "08586676746934337772206998657CU22", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

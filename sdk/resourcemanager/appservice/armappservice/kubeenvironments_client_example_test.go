@@ -25,11 +25,11 @@ func ExampleKubeEnvironmentsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewKubeEnvironmentsClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -81,11 +81,11 @@ func ExampleKubeEnvironmentsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("examplerg", nil)
+	pager := clientFactory.NewKubeEnvironmentsClient().NewListByResourceGroupPager("examplerg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -145,11 +145,11 @@ func ExampleKubeEnvironmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "examplerg", "jlaw-demo1", nil)
+	res, err := clientFactory.NewKubeEnvironmentsClient().Get(ctx, "examplerg", "jlaw-demo1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -184,11 +184,11 @@ func ExampleKubeEnvironmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "examplerg", "testkubeenv", armappservice.KubeEnvironment{
+	poller, err := clientFactory.NewKubeEnvironmentsClient().BeginCreateOrUpdate(ctx, "examplerg", "testkubeenv", armappservice.KubeEnvironment{
 		Location: to.Ptr("East US"),
 		Properties: &armappservice.KubeEnvironmentProperties{
 			StaticIP: to.Ptr("1.2.3.4"),
@@ -232,11 +232,11 @@ func ExampleKubeEnvironmentsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "examplerg", "examplekenv", nil)
+	poller, err := clientFactory.NewKubeEnvironmentsClient().BeginDelete(ctx, "examplerg", "examplekenv", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -253,11 +253,11 @@ func ExampleKubeEnvironmentsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "examplerg", "testkubeenv", armappservice.KubeEnvironmentPatchResource{
+	res, err := clientFactory.NewKubeEnvironmentsClient().Update(ctx, "examplerg", "testkubeenv", armappservice.KubeEnvironmentPatchResource{
 		Properties: &armappservice.KubeEnvironmentPatchResourceProperties{
 			StaticIP: to.Ptr("1.2.3.4"),
 		},

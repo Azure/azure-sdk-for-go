@@ -25,11 +25,11 @@ func ExamplePlansClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewPlansClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(&armappservice.PlansClientListOptions{Detailed: nil})
+	pager := clientFactory.NewPlansClient().NewListPager(&armappservice.PlansClientListOptions{Detailed: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -105,11 +105,11 @@ func ExamplePlansClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewPlansClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("testrg123", nil)
+	pager := clientFactory.NewPlansClient().NewListByResourceGroupPager("testrg123", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -185,11 +185,11 @@ func ExamplePlansClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewPlansClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testrg123", "testsf6141", nil)
+	res, err := clientFactory.NewPlansClient().Get(ctx, "testrg123", "testsf6141", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -231,11 +231,11 @@ func ExamplePlansClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewPlansClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "testrg123", "testsf6141", armappservice.Plan{
+	poller, err := clientFactory.NewPlansClient().BeginCreateOrUpdate(ctx, "testrg123", "testsf6141", armappservice.Plan{
 		Kind:       to.Ptr("app"),
 		Location:   to.Ptr("East US"),
 		Properties: &armappservice.PlanProperties{},
@@ -290,11 +290,11 @@ func ExamplePlansClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewPlansClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "testrg123", "testsf6141", nil)
+	_, err = clientFactory.NewPlansClient().Delete(ctx, "testrg123", "testsf6141", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -307,11 +307,11 @@ func ExamplePlansClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewPlansClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "testrg123", "testsf6141", armappservice.PlanPatchResource{
+	res, err := clientFactory.NewPlansClient().Update(ctx, "testrg123", "testsf6141", armappservice.PlanPatchResource{
 		Kind:       to.Ptr("app"),
 		Properties: &armappservice.PlanPatchResourceProperties{},
 	}, nil)

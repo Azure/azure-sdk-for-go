@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // DiagnosticsClient contains the methods for the Diagnostics group.
 // Don't use this type directly, use NewDiagnosticsClient() instead.
 type DiagnosticsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDiagnosticsClient creates a new instance of DiagnosticsClient with the specified values.
@@ -37,21 +34,13 @@ type DiagnosticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DiagnosticsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DiagnosticsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,7 +60,7 @@ func (client *DiagnosticsClient) ExecuteSiteAnalysis(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
@@ -104,7 +93,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -149,7 +138,7 @@ func (client *DiagnosticsClient) ExecuteSiteAnalysisSlot(ctx context.Context, re
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
@@ -186,7 +175,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -230,7 +219,7 @@ func (client *DiagnosticsClient) ExecuteSiteDetector(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
@@ -263,7 +252,7 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,7 +297,7 @@ func (client *DiagnosticsClient) ExecuteSiteDetectorSlot(ctx context.Context, re
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
@@ -345,7 +334,7 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -388,7 +377,7 @@ func (client *DiagnosticsClient) GetHostingEnvironmentDetectorResponse(ctx conte
 	if err != nil {
 		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
@@ -417,7 +406,7 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -461,7 +450,7 @@ func (client *DiagnosticsClient) GetSiteAnalysis(ctx context.Context, resourceGr
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
@@ -494,7 +483,7 @@ func (client *DiagnosticsClient) getSiteAnalysisCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -530,7 +519,7 @@ func (client *DiagnosticsClient) GetSiteAnalysisSlot(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
@@ -567,7 +556,7 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -602,7 +591,7 @@ func (client *DiagnosticsClient) GetSiteDetector(ctx context.Context, resourceGr
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
@@ -635,7 +624,7 @@ func (client *DiagnosticsClient) getSiteDetectorCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -669,7 +658,7 @@ func (client *DiagnosticsClient) GetSiteDetectorResponse(ctx context.Context, re
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
@@ -698,7 +687,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -742,7 +731,7 @@ func (client *DiagnosticsClient) GetSiteDetectorResponseSlot(ctx context.Context
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
@@ -775,7 +764,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -820,7 +809,7 @@ func (client *DiagnosticsClient) GetSiteDetectorSlot(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
@@ -857,7 +846,7 @@ func (client *DiagnosticsClient) getSiteDetectorSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -891,7 +880,7 @@ func (client *DiagnosticsClient) GetSiteDiagnosticCategory(ctx context.Context, 
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
@@ -920,7 +909,7 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -955,7 +944,7 @@ func (client *DiagnosticsClient) GetSiteDiagnosticCategorySlot(ctx context.Conte
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
@@ -988,7 +977,7 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1031,7 +1020,7 @@ func (client *DiagnosticsClient) NewListHostingEnvironmentDetectorResponsesPager
 			if err != nil {
 				return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
 			}
@@ -1058,7 +1047,7 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1102,7 +1091,7 @@ func (client *DiagnosticsClient) NewListSiteAnalysesPager(resourceGroupName stri
 			if err != nil {
 				return DiagnosticsClientListSiteAnalysesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteAnalysesResponse{}, err
 			}
@@ -1133,7 +1122,7 @@ func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1178,7 +1167,7 @@ func (client *DiagnosticsClient) NewListSiteAnalysesSlotPager(resourceGroupName 
 			if err != nil {
 				return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
 			}
@@ -1213,7 +1202,7 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1256,7 +1245,7 @@ func (client *DiagnosticsClient) NewListSiteDetectorResponsesPager(resourceGroup
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
 			}
@@ -1283,7 +1272,7 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1327,7 +1316,7 @@ func (client *DiagnosticsClient) NewListSiteDetectorResponsesSlotPager(resourceG
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
 			}
@@ -1358,7 +1347,7 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1402,7 +1391,7 @@ func (client *DiagnosticsClient) NewListSiteDetectorsPager(resourceGroupName str
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorsResponse{}, err
 			}
@@ -1433,7 +1422,7 @@ func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1478,7 +1467,7 @@ func (client *DiagnosticsClient) NewListSiteDetectorsSlotPager(resourceGroupName
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
 			}
@@ -1513,7 +1502,7 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1556,7 +1545,7 @@ func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesPager(resourceGr
 			if err != nil {
 				return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
 			}
@@ -1583,7 +1572,7 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1627,7 +1616,7 @@ func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesSlotPager(resour
 			if err != nil {
 				return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
 			}
@@ -1658,7 +1647,7 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

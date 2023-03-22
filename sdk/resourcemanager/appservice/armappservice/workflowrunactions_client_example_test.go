@@ -24,11 +24,11 @@ func ExampleWorkflowRunActionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowRunActionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("test-resource-group", "test-name", "test-workflow", "08586676746934337772206998657CU22", &armappservice.WorkflowRunActionsClientListOptions{Top: nil,
+	pager := clientFactory.NewWorkflowRunActionsClient().NewListPager("test-resource-group", "test-name", "test-workflow", "08586676746934337772206998657CU22", &armappservice.WorkflowRunActionsClientListOptions{Top: nil,
 		Filter: nil,
 	})
 	for pager.More() {
@@ -77,11 +77,11 @@ func ExampleWorkflowRunActionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowRunActionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "test-resource-group", "test-name", "test-workflow", "08586676746934337772206998657CU22", "HTTP", nil)
+	res, err := clientFactory.NewWorkflowRunActionsClient().Get(ctx, "test-resource-group", "test-name", "test-workflow", "08586676746934337772206998657CU22", "HTTP", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -120,11 +120,11 @@ func ExampleWorkflowRunActionsClient_NewListExpressionTracesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowRunActionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListExpressionTracesPager("testResourceGroup", "test-name", "testFlow", "08586776228332053161046300351", "testAction", nil)
+	pager := clientFactory.NewWorkflowRunActionsClient().NewListExpressionTracesPager("testResourceGroup", "test-name", "testFlow", "08586776228332053161046300351", "testAction", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

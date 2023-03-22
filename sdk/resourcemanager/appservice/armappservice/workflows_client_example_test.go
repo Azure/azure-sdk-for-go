@@ -25,11 +25,11 @@ func ExampleWorkflowsClient_RegenerateAccessKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.RegenerateAccessKey(ctx, "testResourceGroup", "test-name", "testWorkflowName", armappservice.RegenerateActionParameter{
+	_, err = clientFactory.NewWorkflowsClient().RegenerateAccessKey(ctx, "testResourceGroup", "test-name", "testWorkflowName", armappservice.RegenerateActionParameter{
 		KeyType: to.Ptr(armappservice.KeyTypePrimary),
 	}, nil)
 	if err != nil {
@@ -44,11 +44,11 @@ func ExampleWorkflowsClient_Validate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Validate(ctx, "test-resource-group", "test-name", "test-workflow", armappservice.Workflow{
+	_, err = clientFactory.NewWorkflowsClient().Validate(ctx, "test-resource-group", "test-name", "test-workflow", armappservice.Workflow{
 		Properties: &armappservice.WorkflowProperties{
 			Definition: map[string]any{
 				"$schema":        "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",

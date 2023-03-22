@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // WebSiteManagementClient contains the methods for the WebSiteManagementClient group.
 // Don't use this type directly, use NewWebSiteManagementClient() instead.
 type WebSiteManagementClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWebSiteManagementClient creates a new instance of WebSiteManagementClient with the specified values.
@@ -37,21 +34,13 @@ type WebSiteManagementClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWebSiteManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WebSiteManagementClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WebSiteManagementClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WebSiteManagementClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -68,7 +57,7 @@ func (client *WebSiteManagementClient) CheckNameAvailability(ctx context.Context
 	if err != nil {
 		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
@@ -85,7 +74,7 @@ func (client *WebSiteManagementClient) checkNameAvailabilityCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +105,7 @@ func (client *WebSiteManagementClient) GetPublishingUser(ctx context.Context, op
 	if err != nil {
 		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
@@ -129,7 +118,7 @@ func (client *WebSiteManagementClient) GetPublishingUser(ctx context.Context, op
 // getPublishingUserCreateRequest creates the GetPublishingUser request.
 func (client *WebSiteManagementClient) getPublishingUserCreateRequest(ctx context.Context, options *WebSiteManagementClientGetPublishingUserOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/publishingUsers/web"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +150,7 @@ func (client *WebSiteManagementClient) GetSourceControl(ctx context.Context, sou
 	if err != nil {
 		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
@@ -178,7 +167,7 @@ func (client *WebSiteManagementClient) getSourceControlCreateRequest(ctx context
 		return nil, errors.New("parameter sourceControlType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sourceControlType}", url.PathEscape(sourceControlType))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -209,7 +198,7 @@ func (client *WebSiteManagementClient) GetSubscriptionDeploymentLocations(ctx co
 	if err != nil {
 		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
@@ -226,7 +215,7 @@ func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -267,7 +256,7 @@ func (client *WebSiteManagementClient) NewListBillingMetersPager(options *WebSit
 			if err != nil {
 				return WebSiteManagementClientListBillingMetersResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebSiteManagementClientListBillingMetersResponse{}, err
 			}
@@ -286,7 +275,7 @@ func (client *WebSiteManagementClient) listBillingMetersCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -333,7 +322,7 @@ func (client *WebSiteManagementClient) NewListCustomHostNameSitesPager(options *
 			if err != nil {
 				return WebSiteManagementClientListCustomHostNameSitesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebSiteManagementClientListCustomHostNameSitesResponse{}, err
 			}
@@ -352,7 +341,7 @@ func (client *WebSiteManagementClient) listCustomHostNameSitesCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -396,7 +385,7 @@ func (client *WebSiteManagementClient) NewListGeoRegionsPager(options *WebSiteMa
 			if err != nil {
 				return WebSiteManagementClientListGeoRegionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebSiteManagementClientListGeoRegionsResponse{}, err
 			}
@@ -415,7 +404,7 @@ func (client *WebSiteManagementClient) listGeoRegionsCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -468,7 +457,7 @@ func (client *WebSiteManagementClient) NewListPremierAddOnOffersPager(options *W
 			if err != nil {
 				return WebSiteManagementClientListPremierAddOnOffersResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebSiteManagementClientListPremierAddOnOffersResponse{}, err
 			}
@@ -487,7 +476,7 @@ func (client *WebSiteManagementClient) listPremierAddOnOffersCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -518,7 +507,7 @@ func (client *WebSiteManagementClient) ListSKUs(ctx context.Context, options *We
 	if err != nil {
 		return WebSiteManagementClientListSKUsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientListSKUsResponse{}, err
 	}
@@ -535,7 +524,7 @@ func (client *WebSiteManagementClient) listSKUsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -577,7 +566,7 @@ func (client *WebSiteManagementClient) NewListSiteIdentifiersAssignedToHostNameP
 			if err != nil {
 				return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
 			}
@@ -596,7 +585,7 @@ func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -637,7 +626,7 @@ func (client *WebSiteManagementClient) NewListSourceControlsPager(options *WebSi
 			if err != nil {
 				return WebSiteManagementClientListSourceControlsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebSiteManagementClientListSourceControlsResponse{}, err
 			}
@@ -652,7 +641,7 @@ func (client *WebSiteManagementClient) NewListSourceControlsPager(options *WebSi
 // listSourceControlsCreateRequest creates the ListSourceControls request.
 func (client *WebSiteManagementClient) listSourceControlsCreateRequest(ctx context.Context, options *WebSiteManagementClientListSourceControlsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/sourcecontrols"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -684,7 +673,7 @@ func (client *WebSiteManagementClient) Move(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebSiteManagementClientMoveResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientMoveResponse{}, err
 	}
@@ -705,7 +694,7 @@ func (client *WebSiteManagementClient) moveCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -728,7 +717,7 @@ func (client *WebSiteManagementClient) UpdatePublishingUser(ctx context.Context,
 	if err != nil {
 		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
@@ -741,7 +730,7 @@ func (client *WebSiteManagementClient) UpdatePublishingUser(ctx context.Context,
 // updatePublishingUserCreateRequest creates the UpdatePublishingUser request.
 func (client *WebSiteManagementClient) updatePublishingUserCreateRequest(ctx context.Context, userDetails User, options *WebSiteManagementClientUpdatePublishingUserOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/publishingUsers/web"
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -774,7 +763,7 @@ func (client *WebSiteManagementClient) UpdateSourceControl(ctx context.Context, 
 	if err != nil {
 		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
@@ -791,7 +780,7 @@ func (client *WebSiteManagementClient) updateSourceControlCreateRequest(ctx cont
 		return nil, errors.New("parameter sourceControlType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sourceControlType}", url.PathEscape(sourceControlType))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -824,7 +813,7 @@ func (client *WebSiteManagementClient) Validate(ctx context.Context, resourceGro
 	if err != nil {
 		return WebSiteManagementClientValidateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientValidateResponse{}, err
 	}
@@ -845,7 +834,7 @@ func (client *WebSiteManagementClient) validateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -878,7 +867,7 @@ func (client *WebSiteManagementClient) ValidateMove(ctx context.Context, resourc
 	if err != nil {
 		return WebSiteManagementClientValidateMoveResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientValidateMoveResponse{}, err
 	}
@@ -899,7 +888,7 @@ func (client *WebSiteManagementClient) validateMoveCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -923,7 +912,7 @@ func (client *WebSiteManagementClient) VerifyHostingEnvironmentVnet(ctx context.
 	if err != nil {
 		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}
@@ -940,7 +929,7 @@ func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

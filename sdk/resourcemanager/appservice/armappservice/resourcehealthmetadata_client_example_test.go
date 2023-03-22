@@ -24,11 +24,11 @@ func ExampleResourceHealthMetadataClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewResourceHealthMetadataClient("4adb32ad-8327-4cbb-b775-b84b4465bb38", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewResourceHealthMetadataClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -61,11 +61,11 @@ func ExampleResourceHealthMetadataClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewResourceHealthMetadataClient("4adb32ad-8327-4cbb-b775-b84b4465bb38", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("Default-Web-NorthCentralUS", nil)
+	pager := clientFactory.NewResourceHealthMetadataClient().NewListByResourceGroupPager("Default-Web-NorthCentralUS", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -98,11 +98,11 @@ func ExampleResourceHealthMetadataClient_NewListBySitePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewResourceHealthMetadataClient("4adb32ad-8327-4cbb-b775-b84b4465bb38", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySitePager("Default-Web-NorthCentralUS", "newsiteinnewASE-NCUS", nil)
+	pager := clientFactory.NewResourceHealthMetadataClient().NewListBySitePager("Default-Web-NorthCentralUS", "newsiteinnewASE-NCUS", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -135,11 +135,11 @@ func ExampleResourceHealthMetadataClient_GetBySite() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewResourceHealthMetadataClient("4adb32ad-8327-4cbb-b775-b84b4465bb38", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetBySite(ctx, "Default-Web-NorthCentralUS", "newsiteinnewASE-NCUS", nil)
+	res, err := clientFactory.NewResourceHealthMetadataClient().GetBySite(ctx, "Default-Web-NorthCentralUS", "newsiteinnewASE-NCUS", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

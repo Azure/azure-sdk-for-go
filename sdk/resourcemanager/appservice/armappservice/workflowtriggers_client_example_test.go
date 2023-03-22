@@ -24,11 +24,11 @@ func ExampleWorkflowTriggersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowTriggersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("test-resource-group", "test-name", "test-workflow", &armappservice.WorkflowTriggersClientListOptions{Top: nil,
+	pager := clientFactory.NewWorkflowTriggersClient().NewListPager("test-resource-group", "test-name", "test-workflow", &armappservice.WorkflowTriggersClientListOptions{Top: nil,
 		Filter: nil,
 	})
 	for pager.More() {
@@ -70,11 +70,11 @@ func ExampleWorkflowTriggersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowTriggersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "test-resource-group", "test-name", "test-workflow", "manual", nil)
+	res, err := clientFactory.NewWorkflowTriggersClient().Get(ctx, "test-resource-group", "test-name", "test-workflow", "manual", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -106,11 +106,11 @@ func ExampleWorkflowTriggersClient_ListCallbackURL() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowTriggersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListCallbackURL(ctx, "test-resource-group", "test-name", "test-workflow", "manual", nil)
+	res, err := clientFactory.NewWorkflowTriggersClient().ListCallbackURL(ctx, "test-resource-group", "test-name", "test-workflow", "manual", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -137,11 +137,11 @@ func ExampleWorkflowTriggersClient_BeginRun() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowTriggersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRun(ctx, "test-resource-group", "test-name", "test-workflow", "recurrence", nil)
+	poller, err := clientFactory.NewWorkflowTriggersClient().BeginRun(ctx, "test-resource-group", "test-name", "test-workflow", "recurrence", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -158,11 +158,11 @@ func ExampleWorkflowTriggersClient_GetSchemaJSON() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowTriggersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSchemaJSON(ctx, "testResourceGroup", "test-name", "testWorkflow", "testTrigger", nil)
+	res, err := clientFactory.NewWorkflowTriggersClient().GetSchemaJSON(ctx, "testResourceGroup", "test-name", "testWorkflow", "testTrigger", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

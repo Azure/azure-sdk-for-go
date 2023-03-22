@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ResourceHealthMetadataClient contains the methods for the ResourceHealthMetadata group.
 // Don't use this type directly, use NewResourceHealthMetadataClient() instead.
 type ResourceHealthMetadataClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewResourceHealthMetadataClient creates a new instance of ResourceHealthMetadataClient with the specified values.
@@ -36,21 +33,13 @@ type ResourceHealthMetadataClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceHealthMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceHealthMetadataClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ResourceHealthMetadataClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ResourceHealthMetadataClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -68,7 +57,7 @@ func (client *ResourceHealthMetadataClient) GetBySite(ctx context.Context, resou
 	if err != nil {
 		return ResourceHealthMetadataClientGetBySiteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceHealthMetadataClientGetBySiteResponse{}, err
 	}
@@ -93,7 +82,7 @@ func (client *ResourceHealthMetadataClient) getBySiteCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +116,7 @@ func (client *ResourceHealthMetadataClient) GetBySiteSlot(ctx context.Context, r
 	if err != nil {
 		return ResourceHealthMetadataClientGetBySiteSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceHealthMetadataClientGetBySiteSlotResponse{}, err
 	}
@@ -156,7 +145,7 @@ func (client *ResourceHealthMetadataClient) getBySiteSlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -197,7 +186,7 @@ func (client *ResourceHealthMetadataClient) NewListPager(options *ResourceHealth
 			if err != nil {
 				return ResourceHealthMetadataClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ResourceHealthMetadataClientListResponse{}, err
 			}
@@ -216,7 +205,7 @@ func (client *ResourceHealthMetadataClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -259,7 +248,7 @@ func (client *ResourceHealthMetadataClient) NewListByResourceGroupPager(resource
 			if err != nil {
 				return ResourceHealthMetadataClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ResourceHealthMetadataClientListByResourceGroupResponse{}, err
 			}
@@ -282,7 +271,7 @@ func (client *ResourceHealthMetadataClient) listByResourceGroupCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -325,7 +314,7 @@ func (client *ResourceHealthMetadataClient) NewListBySitePager(resourceGroupName
 			if err != nil {
 				return ResourceHealthMetadataClientListBySiteResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ResourceHealthMetadataClientListBySiteResponse{}, err
 			}
@@ -352,7 +341,7 @@ func (client *ResourceHealthMetadataClient) listBySiteCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -396,7 +385,7 @@ func (client *ResourceHealthMetadataClient) NewListBySiteSlotPager(resourceGroup
 			if err != nil {
 				return ResourceHealthMetadataClientListBySiteSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ResourceHealthMetadataClientListBySiteSlotResponse{}, err
 			}
@@ -427,7 +416,7 @@ func (client *ResourceHealthMetadataClient) listBySiteSlotCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

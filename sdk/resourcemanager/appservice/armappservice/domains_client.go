@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // DomainsClient contains the methods for the Domains group.
 // Don't use this type directly, use NewDomainsClient() instead.
 type DomainsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDomainsClient creates a new instance of DomainsClient with the specified values.
@@ -37,21 +34,13 @@ type DomainsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DomainsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DomainsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DomainsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -68,7 +57,7 @@ func (client *DomainsClient) CheckAvailability(ctx context.Context, identifier N
 	if err != nil {
 		return DomainsClientCheckAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientCheckAvailabilityResponse{}, err
 	}
@@ -85,7 +74,7 @@ func (client *DomainsClient) checkAvailabilityCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,9 +109,9 @@ func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DomainsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DomainsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DomainsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DomainsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -135,7 +124,7 @@ func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -160,7 +149,7 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,7 +176,7 @@ func (client *DomainsClient) CreateOrUpdateOwnershipIdentifier(ctx context.Conte
 	if err != nil {
 		return DomainsClientCreateOrUpdateOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientCreateOrUpdateOwnershipIdentifierResponse{}, err
 	}
@@ -216,7 +205,7 @@ func (client *DomainsClient) createOrUpdateOwnershipIdentifierCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -248,7 +237,7 @@ func (client *DomainsClient) Delete(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return DomainsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientDeleteResponse{}, err
 	}
@@ -273,7 +262,7 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -301,7 +290,7 @@ func (client *DomainsClient) DeleteOwnershipIdentifier(ctx context.Context, reso
 	if err != nil {
 		return DomainsClientDeleteOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientDeleteOwnershipIdentifierResponse{}, err
 	}
@@ -330,7 +319,7 @@ func (client *DomainsClient) deleteOwnershipIdentifierCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -353,7 +342,7 @@ func (client *DomainsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return DomainsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientGetResponse{}, err
 	}
@@ -378,7 +367,7 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -409,7 +398,7 @@ func (client *DomainsClient) GetControlCenterSsoRequest(ctx context.Context, opt
 	if err != nil {
 		return DomainsClientGetControlCenterSsoRequestResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientGetControlCenterSsoRequestResponse{}, err
 	}
@@ -426,7 +415,7 @@ func (client *DomainsClient) getControlCenterSsoRequestCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -460,7 +449,7 @@ func (client *DomainsClient) GetOwnershipIdentifier(ctx context.Context, resourc
 	if err != nil {
 		return DomainsClientGetOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientGetOwnershipIdentifierResponse{}, err
 	}
@@ -489,7 +478,7 @@ func (client *DomainsClient) getOwnershipIdentifierCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -529,7 +518,7 @@ func (client *DomainsClient) NewListPager(options *DomainsClientListOptions) *ru
 			if err != nil {
 				return DomainsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DomainsClientListResponse{}, err
 			}
@@ -548,7 +537,7 @@ func (client *DomainsClient) listCreateRequest(ctx context.Context, options *Dom
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -590,7 +579,7 @@ func (client *DomainsClient) NewListByResourceGroupPager(resourceGroupName strin
 			if err != nil {
 				return DomainsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DomainsClientListByResourceGroupResponse{}, err
 			}
@@ -613,7 +602,7 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -656,7 +645,7 @@ func (client *DomainsClient) NewListOwnershipIdentifiersPager(resourceGroupName 
 			if err != nil {
 				return DomainsClientListOwnershipIdentifiersResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DomainsClientListOwnershipIdentifiersResponse{}, err
 			}
@@ -683,7 +672,7 @@ func (client *DomainsClient) listOwnershipIdentifiersCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -725,7 +714,7 @@ func (client *DomainsClient) NewListRecommendationsPager(parameters DomainRecomm
 			if err != nil {
 				return DomainsClientListRecommendationsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DomainsClientListRecommendationsResponse{}, err
 			}
@@ -744,7 +733,7 @@ func (client *DomainsClient) listRecommendationsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -776,7 +765,7 @@ func (client *DomainsClient) Renew(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return DomainsClientRenewResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientRenewResponse{}, err
 	}
@@ -801,7 +790,7 @@ func (client *DomainsClient) renewCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -824,7 +813,7 @@ func (client *DomainsClient) TransferOut(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return DomainsClientTransferOutResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientTransferOutResponse{}, err
 	}
@@ -849,7 +838,7 @@ func (client *DomainsClient) transferOutCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -882,7 +871,7 @@ func (client *DomainsClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return DomainsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientUpdateResponse{}, err
 	}
@@ -907,7 +896,7 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -943,7 +932,7 @@ func (client *DomainsClient) UpdateOwnershipIdentifier(ctx context.Context, reso
 	if err != nil {
 		return DomainsClientUpdateOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientUpdateOwnershipIdentifierResponse{}, err
 	}
@@ -972,7 +961,7 @@ func (client *DomainsClient) updateOwnershipIdentifierCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

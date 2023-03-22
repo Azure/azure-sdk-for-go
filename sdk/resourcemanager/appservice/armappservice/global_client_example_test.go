@@ -24,11 +24,11 @@ func ExampleGlobalClient_GetDeletedWebApp() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewGlobalClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDeletedWebApp(ctx, "9", nil)
+	res, err := clientFactory.NewGlobalClient().GetDeletedWebApp(ctx, "9", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -59,11 +59,11 @@ func ExampleGlobalClient_GetDeletedWebAppSnapshots() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewGlobalClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDeletedWebAppSnapshots(ctx, "9", nil)
+	res, err := clientFactory.NewGlobalClient().GetDeletedWebAppSnapshots(ctx, "9", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,11 +88,11 @@ func ExampleGlobalClient_GetSubscriptionOperationWithAsyncResponse() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewGlobalClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.GetSubscriptionOperationWithAsyncResponse(ctx, "West US", "34adfa4f-cedf-4dc0-ba29-b6d1a69ab5d5", nil)
+	_, err = clientFactory.NewGlobalClient().GetSubscriptionOperationWithAsyncResponse(ctx, "West US", "34adfa4f-cedf-4dc0-ba29-b6d1a69ab5d5", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

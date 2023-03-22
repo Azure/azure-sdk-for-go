@@ -24,11 +24,11 @@ func ExampleCertificateOrdersDiagnosticsClient_NewListAppServiceCertificateOrder
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersDiagnosticsClient("5700fc96-77b4-4f8d-afce-c353d8c443bd", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAppServiceCertificateOrderDetectorResponsePager("Sample-WestUSResourceGroup", "SampleCertificateOrderName", nil)
+	pager := clientFactory.NewCertificateOrdersDiagnosticsClient().NewListAppServiceCertificateOrderDetectorResponsePager("Sample-WestUSResourceGroup", "SampleCertificateOrderName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -69,11 +69,11 @@ func ExampleCertificateOrdersDiagnosticsClient_GetAppServiceCertificateOrderDete
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersDiagnosticsClient("5700fc96-77b4-4f8d-afce-c353d8c443bd", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAppServiceCertificateOrderDetectorResponse(ctx, "Sample-WestUSResourceGroup", "SampleCertificateOrderName", "AutoRenewStatus", &armappservice.CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions{StartTime: nil,
+	res, err := clientFactory.NewCertificateOrdersDiagnosticsClient().GetAppServiceCertificateOrderDetectorResponse(ctx, "Sample-WestUSResourceGroup", "SampleCertificateOrderName", "AutoRenewStatus", &armappservice.CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions{StartTime: nil,
 		EndTime:   nil,
 		TimeGrain: nil,
 	})

@@ -24,11 +24,11 @@ func ExampleWorkflowRunActionScopeRepetitionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowRunActionScopeRepetitionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("testResourceGroup", "test-name", "testFlow", "08586776228332053161046300351", "for_each", nil)
+	pager := clientFactory.NewWorkflowRunActionScopeRepetitionsClient().NewListPager("testResourceGroup", "test-name", "testFlow", "08586776228332053161046300351", "for_each", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -92,11 +92,11 @@ func ExampleWorkflowRunActionScopeRepetitionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowRunActionScopeRepetitionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testResourceGroup", "test-name", "testFlow", "08586776228332053161046300351", "for_each", "000000", nil)
+	res, err := clientFactory.NewWorkflowRunActionScopeRepetitionsClient().Get(ctx, "testResourceGroup", "test-name", "testFlow", "08586776228332053161046300351", "for_each", "000000", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

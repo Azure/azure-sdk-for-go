@@ -24,11 +24,11 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowRunActionRepetitionsRequestHistoriesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("test-resource-group", "test-name", "test-workflow", "08586776228332053161046300351", "HTTP_Webhook", "000001", nil)
+	pager := clientFactory.NewWorkflowRunActionRepetitionsRequestHistoriesClient().NewListPager("test-resource-group", "test-name", "test-workflow", "08586776228332053161046300351", "HTTP_Webhook", "000001", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -105,11 +105,11 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowRunActionRepetitionsRequestHistoriesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "test-resource-group", "test-name", "test-workflow", "08586776228332053161046300351", "HTTP_Webhook", "000001", "08586611142732800686", nil)
+	res, err := clientFactory.NewWorkflowRunActionRepetitionsRequestHistoriesClient().Get(ctx, "test-resource-group", "test-name", "test-workflow", "08586776228332053161046300351", "HTTP_Webhook", "000001", "08586611142732800686", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -25,11 +25,11 @@ func ExampleTopLevelDomainsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewTopLevelDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewTopLevelDomainsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -125,11 +125,11 @@ func ExampleTopLevelDomainsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewTopLevelDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "com", nil)
+	res, err := clientFactory.NewTopLevelDomainsClient().Get(ctx, "com", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -153,11 +153,11 @@ func ExampleTopLevelDomainsClient_NewListAgreementsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewTopLevelDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAgreementsPager("in", armappservice.TopLevelDomainAgreementOption{
+	pager := clientFactory.NewTopLevelDomainsClient().NewListAgreementsPager("in", armappservice.TopLevelDomainAgreementOption{
 		ForTransfer:    to.Ptr(false),
 		IncludePrivacy: to.Ptr(true),
 	}, nil)

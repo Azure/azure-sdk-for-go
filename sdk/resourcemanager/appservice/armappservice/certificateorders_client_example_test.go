@@ -25,11 +25,11 @@ func ExampleCertificateOrdersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewCertificateOrdersClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -125,11 +125,11 @@ func ExampleCertificateOrdersClient_ValidatePurchaseInformation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.ValidatePurchaseInformation(ctx, armappservice.CertificateOrder{
+	_, err = clientFactory.NewCertificateOrdersClient().ValidatePurchaseInformation(ctx, armappservice.CertificateOrder{
 		Location: to.Ptr("Global"),
 		Properties: &armappservice.CertificateOrderProperties{
 			AutoRenew: to.Ptr(true),
@@ -161,11 +161,11 @@ func ExampleCertificateOrdersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("testrg123", nil)
+	pager := clientFactory.NewCertificateOrdersClient().NewListByResourceGroupPager("testrg123", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -261,11 +261,11 @@ func ExampleCertificateOrdersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testrg123", "SampleCertificateOrderName", nil)
+	res, err := clientFactory.NewCertificateOrdersClient().Get(ctx, "testrg123", "SampleCertificateOrderName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -353,11 +353,11 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "testrg123", "SampleCertificateOrderName", armappservice.CertificateOrder{
+	poller, err := clientFactory.NewCertificateOrdersClient().BeginCreateOrUpdate(ctx, "testrg123", "SampleCertificateOrderName", armappservice.CertificateOrder{
 		Location: to.Ptr("Global"),
 		Properties: &armappservice.CertificateOrderProperties{
 			AutoRenew: to.Ptr(true),
@@ -468,11 +468,11 @@ func ExampleCertificateOrdersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "testrg123", "SampleCertificateOrderName", nil)
+	_, err = clientFactory.NewCertificateOrdersClient().Delete(ctx, "testrg123", "SampleCertificateOrderName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -485,11 +485,11 @@ func ExampleCertificateOrdersClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "testrg123", "SampleCertificateOrderName", armappservice.CertificateOrderPatchResource{
+	res, err := clientFactory.NewCertificateOrdersClient().Update(ctx, "testrg123", "SampleCertificateOrderName", armappservice.CertificateOrderPatchResource{
 		Properties: &armappservice.CertificateOrderPatchResourceProperties{
 			AutoRenew: to.Ptr(true),
 			Certificates: map[string]*armappservice.Certificate{
@@ -595,11 +595,11 @@ func ExampleCertificateOrdersClient_NewListCertificatesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCertificatesPager("testrg123", "SampleCertificateOrderName", nil)
+	pager := clientFactory.NewCertificateOrdersClient().NewListCertificatesPager("testrg123", "SampleCertificateOrderName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -645,11 +645,11 @@ func ExampleCertificateOrdersClient_GetCertificate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCertificate(ctx, "testrg123", "SampleCertificateOrderName", "SampleCertName1", nil)
+	res, err := clientFactory.NewCertificateOrdersClient().GetCertificate(ctx, "testrg123", "SampleCertificateOrderName", "SampleCertName1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -676,11 +676,11 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdateCertificate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdateCertificate(ctx, "testrg123", "SampleCertificateOrderName", "SampleCertName1", armappservice.CertificateResource{
+	poller, err := clientFactory.NewCertificateOrdersClient().BeginCreateOrUpdateCertificate(ctx, "testrg123", "SampleCertificateOrderName", "SampleCertName1", armappservice.CertificateResource{
 		Location: to.Ptr("Global"),
 		Properties: &armappservice.Certificate{
 			KeyVaultID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
@@ -717,11 +717,11 @@ func ExampleCertificateOrdersClient_DeleteCertificate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.DeleteCertificate(ctx, "testrg123", "SampleCertificateOrderName", "SampleCertName1", nil)
+	_, err = clientFactory.NewCertificateOrdersClient().DeleteCertificate(ctx, "testrg123", "SampleCertificateOrderName", "SampleCertName1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -734,11 +734,11 @@ func ExampleCertificateOrdersClient_UpdateCertificate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateCertificate(ctx, "testrg123", "SampleCertificateOrderName", "SampleCertName1", armappservice.CertificatePatchResource{
+	res, err := clientFactory.NewCertificateOrdersClient().UpdateCertificate(ctx, "testrg123", "SampleCertificateOrderName", "SampleCertName1", armappservice.CertificatePatchResource{
 		Properties: &armappservice.Certificate{
 			KeyVaultID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
 			KeyVaultSecretName: to.Ptr("SampleSecretName1"),
@@ -770,11 +770,11 @@ func ExampleCertificateOrdersClient_Reissue() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Reissue(ctx, "testrg123", "SampleCertificateOrderName", armappservice.ReissueCertificateOrderRequest{
+	_, err = clientFactory.NewCertificateOrdersClient().Reissue(ctx, "testrg123", "SampleCertificateOrderName", armappservice.ReissueCertificateOrderRequest{
 		Properties: &armappservice.ReissueCertificateOrderRequestProperties{
 			Csr:                        to.Ptr("CSR1223238Value"),
 			DelayExistingRevokeInHours: to.Ptr[int32](2),
@@ -794,11 +794,11 @@ func ExampleCertificateOrdersClient_Renew() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Renew(ctx, "testrg123", "SampleCertificateOrderName", armappservice.RenewCertificateOrderRequest{
+	_, err = clientFactory.NewCertificateOrdersClient().Renew(ctx, "testrg123", "SampleCertificateOrderName", armappservice.RenewCertificateOrderRequest{
 		Properties: &armappservice.RenewCertificateOrderRequestProperties{
 			Csr:                  to.Ptr("CSR1223238Value"),
 			IsPrivateKeyExternal: to.Ptr(false),
@@ -817,11 +817,11 @@ func ExampleCertificateOrdersClient_ResendEmail() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.ResendEmail(ctx, "testrg123", "SampleCertificateOrderName", nil)
+	_, err = clientFactory.NewCertificateOrdersClient().ResendEmail(ctx, "testrg123", "SampleCertificateOrderName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -834,11 +834,11 @@ func ExampleCertificateOrdersClient_ResendRequestEmails() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.ResendRequestEmails(ctx, "testrg123", "SampleCertificateOrderName", armappservice.NameIdentifier{
+	_, err = clientFactory.NewCertificateOrdersClient().ResendRequestEmails(ctx, "testrg123", "SampleCertificateOrderName", armappservice.NameIdentifier{
 		Name: to.Ptr("Domain name"),
 	}, nil)
 	if err != nil {
@@ -853,11 +853,11 @@ func ExampleCertificateOrdersClient_RetrieveSiteSeal() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RetrieveSiteSeal(ctx, "testrg123", "SampleCertOrder", armappservice.SiteSealRequest{
+	res, err := clientFactory.NewCertificateOrdersClient().RetrieveSiteSeal(ctx, "testrg123", "SampleCertOrder", armappservice.SiteSealRequest{
 		LightTheme: to.Ptr(true),
 		Locale:     to.Ptr("en-us"),
 	}, nil)
@@ -879,11 +879,11 @@ func ExampleCertificateOrdersClient_VerifyDomainOwnership() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.VerifyDomainOwnership(ctx, "testrg123", "SampleCertificateOrderName", nil)
+	_, err = clientFactory.NewCertificateOrdersClient().VerifyDomainOwnership(ctx, "testrg123", "SampleCertificateOrderName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -896,11 +896,11 @@ func ExampleCertificateOrdersClient_RetrieveCertificateActions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RetrieveCertificateActions(ctx, "testrg123", "SampleCertOrder", nil)
+	res, err := clientFactory.NewCertificateOrdersClient().RetrieveCertificateActions(ctx, "testrg123", "SampleCertOrder", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -929,11 +929,11 @@ func ExampleCertificateOrdersClient_RetrieveCertificateEmailHistory() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RetrieveCertificateEmailHistory(ctx, "testrg123", "SampleCertOrder", nil)
+	res, err := clientFactory.NewCertificateOrdersClient().RetrieveCertificateEmailHistory(ctx, "testrg123", "SampleCertOrder", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

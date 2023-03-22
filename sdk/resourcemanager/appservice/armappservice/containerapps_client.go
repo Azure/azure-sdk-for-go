@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ContainerAppsClient contains the methods for the ContainerApps group.
 // Don't use this type directly, use NewContainerAppsClient() instead.
 type ContainerAppsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewContainerAppsClient creates a new instance of ContainerAppsClient with the specified values.
@@ -36,21 +33,13 @@ type ContainerAppsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainerAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ContainerAppsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ContainerAppsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,9 +58,9 @@ func (client *ContainerAppsClient) BeginCreateOrUpdate(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ContainerAppsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ContainerAppsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ContainerAppsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ContainerAppsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -84,7 +73,7 @@ func (client *ContainerAppsClient) createOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +98,7 @@ func (client *ContainerAppsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,9 +123,9 @@ func (client *ContainerAppsClient) BeginDelete(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ContainerAppsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ContainerAppsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ContainerAppsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ContainerAppsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -149,7 +138,7 @@ func (client *ContainerAppsClient) deleteOperation(ctx context.Context, resource
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +163,7 @@ func (client *ContainerAppsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -197,7 +186,7 @@ func (client *ContainerAppsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ContainerAppsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsClientGetResponse{}, err
 	}
@@ -222,7 +211,7 @@ func (client *ContainerAppsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -264,7 +253,7 @@ func (client *ContainerAppsClient) NewListByResourceGroupPager(resourceGroupName
 			if err != nil {
 				return ContainerAppsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ContainerAppsClientListByResourceGroupResponse{}, err
 			}
@@ -287,7 +276,7 @@ func (client *ContainerAppsClient) listByResourceGroupCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -328,7 +317,7 @@ func (client *ContainerAppsClient) NewListBySubscriptionPager(options *Container
 			if err != nil {
 				return ContainerAppsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ContainerAppsClientListBySubscriptionResponse{}, err
 			}
@@ -347,7 +336,7 @@ func (client *ContainerAppsClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -379,7 +368,7 @@ func (client *ContainerAppsClient) ListSecrets(ctx context.Context, name string,
 	if err != nil {
 		return ContainerAppsClientListSecretsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsClientListSecretsResponse{}, err
 	}
@@ -400,7 +389,7 @@ func (client *ContainerAppsClient) listSecretsCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

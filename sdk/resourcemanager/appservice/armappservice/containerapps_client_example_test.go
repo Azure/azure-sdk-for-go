@@ -25,11 +25,11 @@ func ExampleContainerAppsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewContainerAppsClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -101,11 +101,11 @@ func ExampleContainerAppsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg", nil)
+	pager := clientFactory.NewContainerAppsClient().NewListByResourceGroupPager("rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -177,11 +177,11 @@ func ExampleContainerAppsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg", "testcontainerApp0", nil)
+	res, err := clientFactory.NewContainerAppsClient().Get(ctx, "rg", "testcontainerApp0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -245,11 +245,11 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg", "testcontainerApp0", armappservice.ContainerApp{
+	poller, err := clientFactory.NewContainerAppsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerApp0", armappservice.ContainerApp{
 		Kind:     to.Ptr("containerApp"),
 		Location: to.Ptr("East US"),
 		Properties: &armappservice.ContainerAppProperties{
@@ -354,11 +354,11 @@ func ExampleContainerAppsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg", "testWorkerApp0", nil)
+	poller, err := clientFactory.NewContainerAppsClient().BeginDelete(ctx, "rg", "testWorkerApp0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -375,11 +375,11 @@ func ExampleContainerAppsClient_ListSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListSecrets(ctx, "testcontainerApp0", nil)
+	res, err := clientFactory.NewContainerAppsClient().ListSecrets(ctx, "testcontainerApp0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

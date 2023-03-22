@@ -24,11 +24,11 @@ func ExampleDomainRegistrationProviderClient_NewListOperationsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainRegistrationProviderClient(cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOperationsPager(nil)
+	pager := clientFactory.NewDomainRegistrationProviderClient().NewListOperationsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

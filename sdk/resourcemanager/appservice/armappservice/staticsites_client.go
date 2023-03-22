@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // StaticSitesClient contains the methods for the StaticSites group.
 // Don't use this type directly, use NewStaticSitesClient() instead.
 type StaticSitesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewStaticSitesClient creates a new instance of StaticSitesClient with the specified values.
@@ -37,21 +34,13 @@ type StaticSitesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewStaticSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StaticSitesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".StaticSitesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &StaticSitesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -72,9 +61,9 @@ func (client *StaticSitesClient) BeginApproveOrRejectPrivateEndpointConnection(c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -87,7 +76,7 @@ func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnection(ctx co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +105,7 @@ func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnectionCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +131,7 @@ func (client *StaticSitesClient) CreateOrUpdateBasicAuth(ctx context.Context, re
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateBasicAuthResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateBasicAuthResponse{}, err
 	}
@@ -171,7 +160,7 @@ func (client *StaticSitesClient) createOrUpdateBasicAuthCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +196,7 @@ func (client *StaticSitesClient) CreateOrUpdateBuildDatabaseConnection(ctx conte
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateBuildDatabaseConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateBuildDatabaseConnectionResponse{}, err
 	}
@@ -240,7 +229,7 @@ func (client *StaticSitesClient) createOrUpdateBuildDatabaseConnectionCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -275,7 +264,7 @@ func (client *StaticSitesClient) CreateOrUpdateDatabaseConnection(ctx context.Co
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateDatabaseConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateDatabaseConnectionResponse{}, err
 	}
@@ -304,7 +293,7 @@ func (client *StaticSitesClient) createOrUpdateDatabaseConnectionCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -340,9 +329,9 @@ func (client *StaticSitesClient) BeginCreateOrUpdateStaticSite(ctx context.Conte
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientCreateOrUpdateStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientCreateOrUpdateStaticSiteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateOrUpdateStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateOrUpdateStaticSiteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -356,7 +345,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSite(ctx context.Context, r
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -381,7 +370,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -406,7 +395,7 @@ func (client *StaticSitesClient) CreateOrUpdateStaticSiteAppSettings(ctx context
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse{}, err
 	}
@@ -431,7 +420,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -466,7 +455,7 @@ func (client *StaticSitesClient) CreateOrUpdateStaticSiteBuildAppSettings(ctx co
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, err
 	}
@@ -495,7 +484,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -531,7 +520,7 @@ func (client *StaticSitesClient) CreateOrUpdateStaticSiteBuildFunctionAppSetting
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
@@ -560,7 +549,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSetting
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -598,9 +587,9 @@ func (client *StaticSitesClient) BeginCreateOrUpdateStaticSiteCustomDomain(ctx c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -614,7 +603,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomain(ctx contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -643,7 +632,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomainCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -669,7 +658,7 @@ func (client *StaticSitesClient) CreateOrUpdateStaticSiteFunctionAppSettings(ctx
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, err
 	}
@@ -694,7 +683,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -727,7 +716,7 @@ func (client *StaticSitesClient) CreateUserRolesInvitationLink(ctx context.Conte
 	if err != nil {
 		return StaticSitesClientCreateUserRolesInvitationLinkResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientCreateUserRolesInvitationLinkResponse{}, err
 	}
@@ -752,7 +741,7 @@ func (client *StaticSitesClient) createUserRolesInvitationLinkCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -787,9 +776,9 @@ func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSite(ctx conte
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientCreateZipDeploymentForStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientCreateZipDeploymentForStaticSiteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateZipDeploymentForStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateZipDeploymentForStaticSiteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -802,7 +791,7 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSite(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -827,7 +816,7 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -855,9 +844,9 @@ func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSiteBuild(ctx 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -870,7 +859,7 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuild(ctx conte
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -899,7 +888,7 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuildCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -925,7 +914,7 @@ func (client *StaticSitesClient) DeleteBuildDatabaseConnection(ctx context.Conte
 	if err != nil {
 		return StaticSitesClientDeleteBuildDatabaseConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientDeleteBuildDatabaseConnectionResponse{}, err
 	}
@@ -958,7 +947,7 @@ func (client *StaticSitesClient) deleteBuildDatabaseConnectionCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -983,7 +972,7 @@ func (client *StaticSitesClient) DeleteDatabaseConnection(ctx context.Context, r
 	if err != nil {
 		return StaticSitesClientDeleteDatabaseConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientDeleteDatabaseConnectionResponse{}, err
 	}
@@ -1012,7 +1001,7 @@ func (client *StaticSitesClient) deleteDatabaseConnectionCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1038,9 +1027,9 @@ func (client *StaticSitesClient) BeginDeletePrivateEndpointConnection(ctx contex
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientDeletePrivateEndpointConnectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientDeletePrivateEndpointConnectionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1053,7 +1042,7 @@ func (client *StaticSitesClient) deletePrivateEndpointConnection(ctx context.Con
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1082,7 +1071,7 @@ func (client *StaticSitesClient) deletePrivateEndpointConnectionCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1107,9 +1096,9 @@ func (client *StaticSitesClient) BeginDeleteStaticSite(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientDeleteStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientDeleteStaticSiteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1122,7 +1111,7 @@ func (client *StaticSitesClient) deleteStaticSite(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1147,7 +1136,7 @@ func (client *StaticSitesClient) deleteStaticSiteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1173,9 +1162,9 @@ func (client *StaticSitesClient) BeginDeleteStaticSiteBuild(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientDeleteStaticSiteBuildResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientDeleteStaticSiteBuildResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteBuildResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteBuildResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1188,7 +1177,7 @@ func (client *StaticSitesClient) deleteStaticSiteBuild(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1217,7 +1206,7 @@ func (client *StaticSitesClient) deleteStaticSiteBuildCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1243,9 +1232,9 @@ func (client *StaticSitesClient) BeginDeleteStaticSiteCustomDomain(ctx context.C
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientDeleteStaticSiteCustomDomainResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientDeleteStaticSiteCustomDomainResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteCustomDomainResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteCustomDomainResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1258,7 +1247,7 @@ func (client *StaticSitesClient) deleteStaticSiteCustomDomain(ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1287,7 +1276,7 @@ func (client *StaticSitesClient) deleteStaticSiteCustomDomainCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1313,7 +1302,7 @@ func (client *StaticSitesClient) DeleteStaticSiteUser(ctx context.Context, resou
 	if err != nil {
 		return StaticSitesClientDeleteStaticSiteUserResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientDeleteStaticSiteUserResponse{}, err
 	}
@@ -1346,7 +1335,7 @@ func (client *StaticSitesClient) deleteStaticSiteUserCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1371,9 +1360,9 @@ func (client *StaticSitesClient) BeginDetachStaticSite(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientDetachStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientDetachStaticSiteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientDetachStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientDetachStaticSiteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1386,7 +1375,7 @@ func (client *StaticSitesClient) detachStaticSite(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1411,7 +1400,7 @@ func (client *StaticSitesClient) detachStaticSiteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1436,7 +1425,7 @@ func (client *StaticSitesClient) DetachUserProvidedFunctionAppFromStaticSite(ctx
 	if err != nil {
 		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse{}, err
 	}
@@ -1465,7 +1454,7 @@ func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1492,7 +1481,7 @@ func (client *StaticSitesClient) DetachUserProvidedFunctionAppFromStaticSiteBuil
 	if err != nil {
 		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, err
 	}
@@ -1525,7 +1514,7 @@ func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteBuil
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1550,7 +1539,7 @@ func (client *StaticSitesClient) GetBasicAuth(ctx context.Context, resourceGroup
 	if err != nil {
 		return StaticSitesClientGetBasicAuthResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetBasicAuthResponse{}, err
 	}
@@ -1579,7 +1568,7 @@ func (client *StaticSitesClient) getBasicAuthCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1614,7 +1603,7 @@ func (client *StaticSitesClient) GetBuildDatabaseConnection(ctx context.Context,
 	if err != nil {
 		return StaticSitesClientGetBuildDatabaseConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetBuildDatabaseConnectionResponse{}, err
 	}
@@ -1647,7 +1636,7 @@ func (client *StaticSitesClient) getBuildDatabaseConnectionCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1682,7 +1671,7 @@ func (client *StaticSitesClient) GetBuildDatabaseConnectionWithDetails(ctx conte
 	if err != nil {
 		return StaticSitesClientGetBuildDatabaseConnectionWithDetailsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetBuildDatabaseConnectionWithDetailsResponse{}, err
 	}
@@ -1715,7 +1704,7 @@ func (client *StaticSitesClient) getBuildDatabaseConnectionWithDetailsCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1759,7 +1748,7 @@ func (client *StaticSitesClient) NewGetBuildDatabaseConnectionsPager(resourceGro
 			if err != nil {
 				return StaticSitesClientGetBuildDatabaseConnectionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetBuildDatabaseConnectionsResponse{}, err
 			}
@@ -1790,7 +1779,7 @@ func (client *StaticSitesClient) getBuildDatabaseConnectionsCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1834,7 +1823,7 @@ func (client *StaticSitesClient) NewGetBuildDatabaseConnectionsWithDetailsPager(
 			if err != nil {
 				return StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse{}, err
 			}
@@ -1865,7 +1854,7 @@ func (client *StaticSitesClient) getBuildDatabaseConnectionsWithDetailsCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1899,7 +1888,7 @@ func (client *StaticSitesClient) GetDatabaseConnection(ctx context.Context, reso
 	if err != nil {
 		return StaticSitesClientGetDatabaseConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetDatabaseConnectionResponse{}, err
 	}
@@ -1928,7 +1917,7 @@ func (client *StaticSitesClient) getDatabaseConnectionCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1962,7 +1951,7 @@ func (client *StaticSitesClient) GetDatabaseConnectionWithDetails(ctx context.Co
 	if err != nil {
 		return StaticSitesClientGetDatabaseConnectionWithDetailsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetDatabaseConnectionWithDetailsResponse{}, err
 	}
@@ -1991,7 +1980,7 @@ func (client *StaticSitesClient) getDatabaseConnectionWithDetailsCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2034,7 +2023,7 @@ func (client *StaticSitesClient) NewGetDatabaseConnectionsPager(resourceGroupNam
 			if err != nil {
 				return StaticSitesClientGetDatabaseConnectionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetDatabaseConnectionsResponse{}, err
 			}
@@ -2061,7 +2050,7 @@ func (client *StaticSitesClient) getDatabaseConnectionsCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2104,7 +2093,7 @@ func (client *StaticSitesClient) NewGetDatabaseConnectionsWithDetailsPager(resou
 			if err != nil {
 				return StaticSitesClientGetDatabaseConnectionsWithDetailsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetDatabaseConnectionsWithDetailsResponse{}, err
 			}
@@ -2131,7 +2120,7 @@ func (client *StaticSitesClient) getDatabaseConnectionsWithDetailsCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2165,7 +2154,7 @@ func (client *StaticSitesClient) GetLinkedBackend(ctx context.Context, resourceG
 	if err != nil {
 		return StaticSitesClientGetLinkedBackendResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetLinkedBackendResponse{}, err
 	}
@@ -2194,7 +2183,7 @@ func (client *StaticSitesClient) getLinkedBackendCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2229,7 +2218,7 @@ func (client *StaticSitesClient) GetLinkedBackendForBuild(ctx context.Context, r
 	if err != nil {
 		return StaticSitesClientGetLinkedBackendForBuildResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetLinkedBackendForBuildResponse{}, err
 	}
@@ -2262,7 +2251,7 @@ func (client *StaticSitesClient) getLinkedBackendForBuildCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2305,7 +2294,7 @@ func (client *StaticSitesClient) NewGetLinkedBackendsPager(resourceGroupName str
 			if err != nil {
 				return StaticSitesClientGetLinkedBackendsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetLinkedBackendsResponse{}, err
 			}
@@ -2332,7 +2321,7 @@ func (client *StaticSitesClient) getLinkedBackendsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2376,7 +2365,7 @@ func (client *StaticSitesClient) NewGetLinkedBackendsForBuildPager(resourceGroup
 			if err != nil {
 				return StaticSitesClientGetLinkedBackendsForBuildResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetLinkedBackendsForBuildResponse{}, err
 			}
@@ -2407,7 +2396,7 @@ func (client *StaticSitesClient) getLinkedBackendsForBuildCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2441,7 +2430,7 @@ func (client *StaticSitesClient) GetPrivateEndpointConnection(ctx context.Contex
 	if err != nil {
 		return StaticSitesClientGetPrivateEndpointConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetPrivateEndpointConnectionResponse{}, err
 	}
@@ -2470,7 +2459,7 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2514,7 +2503,7 @@ func (client *StaticSitesClient) NewGetPrivateEndpointConnectionListPager(resour
 			if err != nil {
 				return StaticSitesClientGetPrivateEndpointConnectionListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetPrivateEndpointConnectionListResponse{}, err
 			}
@@ -2541,7 +2530,7 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionListCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2574,7 +2563,7 @@ func (client *StaticSitesClient) GetPrivateLinkResources(ctx context.Context, re
 	if err != nil {
 		return StaticSitesClientGetPrivateLinkResourcesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetPrivateLinkResourcesResponse{}, err
 	}
@@ -2599,7 +2588,7 @@ func (client *StaticSitesClient) getPrivateLinkResourcesCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2632,7 +2621,7 @@ func (client *StaticSitesClient) GetStaticSite(ctx context.Context, resourceGrou
 	if err != nil {
 		return StaticSitesClientGetStaticSiteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetStaticSiteResponse{}, err
 	}
@@ -2657,7 +2646,7 @@ func (client *StaticSitesClient) getStaticSiteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2691,7 +2680,7 @@ func (client *StaticSitesClient) GetStaticSiteBuild(ctx context.Context, resourc
 	if err != nil {
 		return StaticSitesClientGetStaticSiteBuildResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetStaticSiteBuildResponse{}, err
 	}
@@ -2720,7 +2709,7 @@ func (client *StaticSitesClient) getStaticSiteBuildCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2763,7 +2752,7 @@ func (client *StaticSitesClient) NewGetStaticSiteBuildsPager(resourceGroupName s
 			if err != nil {
 				return StaticSitesClientGetStaticSiteBuildsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetStaticSiteBuildsResponse{}, err
 			}
@@ -2790,7 +2779,7 @@ func (client *StaticSitesClient) getStaticSiteBuildsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2824,7 +2813,7 @@ func (client *StaticSitesClient) GetStaticSiteCustomDomain(ctx context.Context, 
 	if err != nil {
 		return StaticSitesClientGetStaticSiteCustomDomainResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetStaticSiteCustomDomainResponse{}, err
 	}
@@ -2853,7 +2842,7 @@ func (client *StaticSitesClient) getStaticSiteCustomDomainCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2895,7 +2884,7 @@ func (client *StaticSitesClient) NewGetStaticSitesByResourceGroupPager(resourceG
 			if err != nil {
 				return StaticSitesClientGetStaticSitesByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetStaticSitesByResourceGroupResponse{}, err
 			}
@@ -2918,7 +2907,7 @@ func (client *StaticSitesClient) getStaticSitesByResourceGroupCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2953,7 +2942,7 @@ func (client *StaticSitesClient) GetUserProvidedFunctionAppForStaticSite(ctx con
 	if err != nil {
 		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse{}, err
 	}
@@ -2982,7 +2971,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3018,7 +3007,7 @@ func (client *StaticSitesClient) GetUserProvidedFunctionAppForStaticSiteBuild(ct
 	if err != nil {
 		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, err
 	}
@@ -3051,7 +3040,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildCre
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3095,7 +3084,7 @@ func (client *StaticSitesClient) NewGetUserProvidedFunctionAppsForStaticSitePage
 			if err != nil {
 				return StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse{}, err
 			}
@@ -3122,7 +3111,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3167,7 +3156,7 @@ func (client *StaticSitesClient) NewGetUserProvidedFunctionAppsForStaticSiteBuil
 			if err != nil {
 				return StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse{}, err
 			}
@@ -3198,7 +3187,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildCr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3234,9 +3223,9 @@ func (client *StaticSitesClient) BeginLinkBackend(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientLinkBackendResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientLinkBackendResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientLinkBackendResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientLinkBackendResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -3249,7 +3238,7 @@ func (client *StaticSitesClient) linkBackend(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -3278,7 +3267,7 @@ func (client *StaticSitesClient) linkBackendCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3306,9 +3295,9 @@ func (client *StaticSitesClient) BeginLinkBackendToBuild(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientLinkBackendToBuildResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientLinkBackendToBuildResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientLinkBackendToBuildResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientLinkBackendToBuildResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -3321,7 +3310,7 @@ func (client *StaticSitesClient) linkBackendToBuild(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -3354,7 +3343,7 @@ func (client *StaticSitesClient) linkBackendToBuildCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3385,7 +3374,7 @@ func (client *StaticSitesClient) NewListPager(options *StaticSitesClientListOpti
 			if err != nil {
 				return StaticSitesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientListResponse{}, err
 			}
@@ -3404,7 +3393,7 @@ func (client *StaticSitesClient) listCreateRequest(ctx context.Context, options 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3447,7 +3436,7 @@ func (client *StaticSitesClient) NewListBasicAuthPager(resourceGroupName string,
 			if err != nil {
 				return StaticSitesClientListBasicAuthResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientListBasicAuthResponse{}, err
 			}
@@ -3474,7 +3463,7 @@ func (client *StaticSitesClient) listBasicAuthCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3507,7 +3496,7 @@ func (client *StaticSitesClient) ListStaticSiteAppSettings(ctx context.Context, 
 	if err != nil {
 		return StaticSitesClientListStaticSiteAppSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientListStaticSiteAppSettingsResponse{}, err
 	}
@@ -3532,7 +3521,7 @@ func (client *StaticSitesClient) listStaticSiteAppSettingsCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3566,7 +3555,7 @@ func (client *StaticSitesClient) ListStaticSiteBuildAppSettings(ctx context.Cont
 	if err != nil {
 		return StaticSitesClientListStaticSiteBuildAppSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientListStaticSiteBuildAppSettingsResponse{}, err
 	}
@@ -3595,7 +3584,7 @@ func (client *StaticSitesClient) listStaticSiteBuildAppSettingsCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3629,7 +3618,7 @@ func (client *StaticSitesClient) ListStaticSiteBuildFunctionAppSettings(ctx cont
 	if err != nil {
 		return StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
@@ -3658,7 +3647,7 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3702,7 +3691,7 @@ func (client *StaticSitesClient) NewListStaticSiteBuildFunctionsPager(resourceGr
 			if err != nil {
 				return StaticSitesClientListStaticSiteBuildFunctionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientListStaticSiteBuildFunctionsResponse{}, err
 			}
@@ -3733,7 +3722,7 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionsCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3766,7 +3755,7 @@ func (client *StaticSitesClient) ListStaticSiteConfiguredRoles(ctx context.Conte
 	if err != nil {
 		return StaticSitesClientListStaticSiteConfiguredRolesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientListStaticSiteConfiguredRolesResponse{}, err
 	}
@@ -3791,7 +3780,7 @@ func (client *StaticSitesClient) listStaticSiteConfiguredRolesCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3834,7 +3823,7 @@ func (client *StaticSitesClient) NewListStaticSiteCustomDomainsPager(resourceGro
 			if err != nil {
 				return StaticSitesClientListStaticSiteCustomDomainsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientListStaticSiteCustomDomainsResponse{}, err
 			}
@@ -3861,7 +3850,7 @@ func (client *StaticSitesClient) listStaticSiteCustomDomainsCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3894,7 +3883,7 @@ func (client *StaticSitesClient) ListStaticSiteFunctionAppSettings(ctx context.C
 	if err != nil {
 		return StaticSitesClientListStaticSiteFunctionAppSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientListStaticSiteFunctionAppSettingsResponse{}, err
 	}
@@ -3919,7 +3908,7 @@ func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3962,7 +3951,7 @@ func (client *StaticSitesClient) NewListStaticSiteFunctionsPager(resourceGroupNa
 			if err != nil {
 				return StaticSitesClientListStaticSiteFunctionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientListStaticSiteFunctionsResponse{}, err
 			}
@@ -3989,7 +3978,7 @@ func (client *StaticSitesClient) listStaticSiteFunctionsCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4022,7 +4011,7 @@ func (client *StaticSitesClient) ListStaticSiteSecrets(ctx context.Context, reso
 	if err != nil {
 		return StaticSitesClientListStaticSiteSecretsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientListStaticSiteSecretsResponse{}, err
 	}
@@ -4047,7 +4036,7 @@ func (client *StaticSitesClient) listStaticSiteSecretsCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4091,7 +4080,7 @@ func (client *StaticSitesClient) NewListStaticSiteUsersPager(resourceGroupName s
 			if err != nil {
 				return StaticSitesClientListStaticSiteUsersResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticSitesClientListStaticSiteUsersResponse{}, err
 			}
@@ -4122,7 +4111,7 @@ func (client *StaticSitesClient) listStaticSiteUsersCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4155,7 +4144,7 @@ func (client *StaticSitesClient) PreviewWorkflow(ctx context.Context, location s
 	if err != nil {
 		return StaticSitesClientPreviewWorkflowResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientPreviewWorkflowResponse{}, err
 	}
@@ -4176,7 +4165,7 @@ func (client *StaticSitesClient) previewWorkflowCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4213,9 +4202,9 @@ func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticS
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -4228,7 +4217,7 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSite(c
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -4257,7 +4246,7 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteCr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4289,9 +4278,9 @@ func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticS
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -4305,7 +4294,7 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBu
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -4338,7 +4327,7 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBu
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4365,7 +4354,7 @@ func (client *StaticSitesClient) ResetStaticSiteAPIKey(ctx context.Context, reso
 	if err != nil {
 		return StaticSitesClientResetStaticSiteAPIKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientResetStaticSiteAPIKeyResponse{}, err
 	}
@@ -4390,7 +4379,7 @@ func (client *StaticSitesClient) resetStaticSiteAPIKeyCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4415,7 +4404,7 @@ func (client *StaticSitesClient) UnlinkBackend(ctx context.Context, resourceGrou
 	if err != nil {
 		return StaticSitesClientUnlinkBackendResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientUnlinkBackendResponse{}, err
 	}
@@ -4444,7 +4433,7 @@ func (client *StaticSitesClient) unlinkBackendCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4473,7 +4462,7 @@ func (client *StaticSitesClient) UnlinkBackendFromBuild(ctx context.Context, res
 	if err != nil {
 		return StaticSitesClientUnlinkBackendFromBuildResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientUnlinkBackendFromBuildResponse{}, err
 	}
@@ -4506,7 +4495,7 @@ func (client *StaticSitesClient) unlinkBackendFromBuildCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4536,7 +4525,7 @@ func (client *StaticSitesClient) UpdateBuildDatabaseConnection(ctx context.Conte
 	if err != nil {
 		return StaticSitesClientUpdateBuildDatabaseConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientUpdateBuildDatabaseConnectionResponse{}, err
 	}
@@ -4569,7 +4558,7 @@ func (client *StaticSitesClient) updateBuildDatabaseConnectionCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4604,7 +4593,7 @@ func (client *StaticSitesClient) UpdateDatabaseConnection(ctx context.Context, r
 	if err != nil {
 		return StaticSitesClientUpdateDatabaseConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientUpdateDatabaseConnectionResponse{}, err
 	}
@@ -4633,7 +4622,7 @@ func (client *StaticSitesClient) updateDatabaseConnectionCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4668,7 +4657,7 @@ func (client *StaticSitesClient) UpdateStaticSite(ctx context.Context, resourceG
 	if err != nil {
 		return StaticSitesClientUpdateStaticSiteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientUpdateStaticSiteResponse{}, err
 	}
@@ -4693,7 +4682,7 @@ func (client *StaticSitesClient) updateStaticSiteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4729,7 +4718,7 @@ func (client *StaticSitesClient) UpdateStaticSiteUser(ctx context.Context, resou
 	if err != nil {
 		return StaticSitesClientUpdateStaticSiteUserResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticSitesClientUpdateStaticSiteUserResponse{}, err
 	}
@@ -4762,7 +4751,7 @@ func (client *StaticSitesClient) updateStaticSiteUserCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4798,9 +4787,9 @@ func (client *StaticSitesClient) BeginValidateBackend(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientValidateBackendResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientValidateBackendResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientValidateBackendResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientValidateBackendResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -4813,7 +4802,7 @@ func (client *StaticSitesClient) validateBackend(ctx context.Context, resourceGr
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -4842,7 +4831,7 @@ func (client *StaticSitesClient) validateBackendCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4870,9 +4859,9 @@ func (client *StaticSitesClient) BeginValidateBackendForBuild(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientValidateBackendForBuildResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientValidateBackendForBuildResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientValidateBackendForBuildResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientValidateBackendForBuildResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -4885,7 +4874,7 @@ func (client *StaticSitesClient) validateBackendForBuild(ctx context.Context, re
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -4918,7 +4907,7 @@ func (client *StaticSitesClient) validateBackendForBuildCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4947,9 +4936,9 @@ func (client *StaticSitesClient) BeginValidateCustomDomainCanBeAddedToStaticSite
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -4963,7 +4952,7 @@ func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSite(ctx 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -4992,7 +4981,7 @@ func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSiteCreat
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

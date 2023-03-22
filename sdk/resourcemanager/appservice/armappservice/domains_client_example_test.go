@@ -27,11 +27,11 @@ func ExampleDomainsClient_CheckAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckAvailability(ctx, armappservice.NameIdentifier{
+	res, err := clientFactory.NewDomainsClient().CheckAvailability(ctx, armappservice.NameIdentifier{
 		Name: to.Ptr("abcd.com"),
 	}, nil)
 	if err != nil {
@@ -54,11 +54,11 @@ func ExampleDomainsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewDomainsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -182,11 +182,11 @@ func ExampleDomainsClient_GetControlCenterSsoRequest() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetControlCenterSsoRequest(ctx, nil)
+	res, err := clientFactory.NewDomainsClient().GetControlCenterSsoRequest(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -207,11 +207,11 @@ func ExampleDomainsClient_NewListRecommendationsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListRecommendationsPager(armappservice.DomainRecommendationSearchParameters{
+	pager := clientFactory.NewDomainsClient().NewListRecommendationsPager(armappservice.DomainRecommendationSearchParameters{
 		Keywords:                 to.Ptr("example1"),
 		MaxDomainRecommendations: to.Ptr[int32](10),
 	}, nil)
@@ -247,11 +247,11 @@ func ExampleDomainsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("testrg123", nil)
+	pager := clientFactory.NewDomainsClient().NewListByResourceGroupPager("testrg123", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -375,11 +375,11 @@ func ExampleDomainsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testrg123", "example.com", nil)
+	res, err := clientFactory.NewDomainsClient().Get(ctx, "testrg123", "example.com", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -495,11 +495,11 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "testrg123", "example.com", armappservice.Domain{
+	poller, err := clientFactory.NewDomainsClient().BeginCreateOrUpdate(ctx, "testrg123", "example.com", armappservice.Domain{
 		Location: to.Ptr("global"),
 		Tags:     map[string]*string{},
 		Properties: &armappservice.DomainProperties{
@@ -702,11 +702,11 @@ func ExampleDomainsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "testrg123", "example.com", &armappservice.DomainsClientDeleteOptions{ForceHardDeleteDomain: to.Ptr(true)})
+	_, err = clientFactory.NewDomainsClient().Delete(ctx, "testrg123", "example.com", &armappservice.DomainsClientDeleteOptions{ForceHardDeleteDomain: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -719,11 +719,11 @@ func ExampleDomainsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "testrg123", "example.com", armappservice.DomainPatchResource{
+	res, err := clientFactory.NewDomainsClient().Update(ctx, "testrg123", "example.com", armappservice.DomainPatchResource{
 		Properties: &armappservice.DomainPatchResourceProperties{
 			AuthCode:  to.Ptr("exampleAuthCode"),
 			AutoRenew: to.Ptr(true),
@@ -920,11 +920,11 @@ func ExampleDomainsClient_NewListOwnershipIdentifiersPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOwnershipIdentifiersPager("testrg123", "example.com", nil)
+	pager := clientFactory.NewDomainsClient().NewListOwnershipIdentifiersPager("testrg123", "example.com", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -956,11 +956,11 @@ func ExampleDomainsClient_GetOwnershipIdentifier() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetOwnershipIdentifier(ctx, "testrg123", "example.com", "SampleOwnershipId", nil)
+	res, err := clientFactory.NewDomainsClient().GetOwnershipIdentifier(ctx, "testrg123", "example.com", "SampleOwnershipId", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -984,11 +984,11 @@ func ExampleDomainsClient_CreateOrUpdateOwnershipIdentifier() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateOwnershipIdentifier(ctx, "testrg123", "example.com", "SampleOwnershipId", armappservice.DomainOwnershipIdentifier{
+	res, err := clientFactory.NewDomainsClient().CreateOrUpdateOwnershipIdentifier(ctx, "testrg123", "example.com", "SampleOwnershipId", armappservice.DomainOwnershipIdentifier{
 		Properties: &armappservice.DomainOwnershipIdentifierProperties{
 			OwnershipID: to.Ptr("SampleOwnershipId"),
 		},
@@ -1016,11 +1016,11 @@ func ExampleDomainsClient_DeleteOwnershipIdentifier() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.DeleteOwnershipIdentifier(ctx, "testrg123", "example.com", "ownershipIdentifier", nil)
+	_, err = clientFactory.NewDomainsClient().DeleteOwnershipIdentifier(ctx, "testrg123", "example.com", "ownershipIdentifier", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1033,11 +1033,11 @@ func ExampleDomainsClient_UpdateOwnershipIdentifier() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateOwnershipIdentifier(ctx, "testrg123", "example.com", "SampleOwnershipId", armappservice.DomainOwnershipIdentifier{
+	res, err := clientFactory.NewDomainsClient().UpdateOwnershipIdentifier(ctx, "testrg123", "example.com", "SampleOwnershipId", armappservice.DomainOwnershipIdentifier{
 		Properties: &armappservice.DomainOwnershipIdentifierProperties{
 			OwnershipID: to.Ptr("SampleOwnershipId"),
 		},
@@ -1065,11 +1065,11 @@ func ExampleDomainsClient_Renew() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("3dddfa4f-cedf-4dc0-ba29-b6d1a69ab545", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Renew(ctx, "RG", "example.com", nil)
+	_, err = clientFactory.NewDomainsClient().Renew(ctx, "RG", "example.com", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1082,11 +1082,11 @@ func ExampleDomainsClient_TransferOut() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.TransferOut(ctx, "testrg123", "example.com", nil)
+	res, err := clientFactory.NewDomainsClient().TransferOut(ctx, "testrg123", "example.com", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

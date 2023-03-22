@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // CertificateOrdersDiagnosticsClient contains the methods for the CertificateOrdersDiagnostics group.
 // Don't use this type directly, use NewCertificateOrdersDiagnosticsClient() instead.
 type CertificateOrdersDiagnosticsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCertificateOrdersDiagnosticsClient creates a new instance of CertificateOrdersDiagnosticsClient with the specified values.
@@ -37,21 +34,13 @@ type CertificateOrdersDiagnosticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCertificateOrdersDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificateOrdersDiagnosticsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CertificateOrdersDiagnosticsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CertificateOrdersDiagnosticsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,7 +60,7 @@ func (client *CertificateOrdersDiagnosticsClient) GetAppServiceCertificateOrderD
 	if err != nil {
 		return CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
@@ -100,7 +89,7 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +142,7 @@ func (client *CertificateOrdersDiagnosticsClient) NewListAppServiceCertificateOr
 			if err != nil {
 				return CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse{}, err
 			}
@@ -180,7 +169,7 @@ func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrder
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

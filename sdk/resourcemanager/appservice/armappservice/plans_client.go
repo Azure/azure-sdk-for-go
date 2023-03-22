@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // PlansClient contains the methods for the AppServicePlans group.
 // Don't use this type directly, use NewPlansClient() instead.
 type PlansClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPlansClient creates a new instance of PlansClient with the specified values.
@@ -37,21 +34,13 @@ type PlansClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PlansClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PlansClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PlansClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *PlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[PlansClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PlansClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[PlansClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PlansClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *PlansClient) createOrUpdate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +100,7 @@ func (client *PlansClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +127,7 @@ func (client *PlansClient) CreateOrUpdateVnetRoute(ctx context.Context, resource
 	if err != nil {
 		return PlansClientCreateOrUpdateVnetRouteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientCreateOrUpdateVnetRouteResponse{}, err
 	}
@@ -171,7 +160,7 @@ func (client *PlansClient) createOrUpdateVnetRouteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -203,7 +192,7 @@ func (client *PlansClient) Delete(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return PlansClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientDeleteResponse{}, err
 	}
@@ -228,7 +217,7 @@ func (client *PlansClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -254,7 +243,7 @@ func (client *PlansClient) DeleteHybridConnection(ctx context.Context, resourceG
 	if err != nil {
 		return PlansClientDeleteHybridConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientDeleteHybridConnectionResponse{}, err
 	}
@@ -287,7 +276,7 @@ func (client *PlansClient) deleteHybridConnectionCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,7 +301,7 @@ func (client *PlansClient) DeleteVnetRoute(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PlansClientDeleteVnetRouteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientDeleteVnetRouteResponse{}, err
 	}
@@ -345,7 +334,7 @@ func (client *PlansClient) deleteVnetRouteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -368,7 +357,7 @@ func (client *PlansClient) Get(ctx context.Context, resourceGroupName string, na
 	if err != nil {
 		return PlansClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientGetResponse{}, err
 	}
@@ -393,7 +382,7 @@ func (client *PlansClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -428,7 +417,7 @@ func (client *PlansClient) GetHybridConnection(ctx context.Context, resourceGrou
 	if err != nil {
 		return PlansClientGetHybridConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientGetHybridConnectionResponse{}, err
 	}
@@ -461,7 +450,7 @@ func (client *PlansClient) getHybridConnectionCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -494,7 +483,7 @@ func (client *PlansClient) GetHybridConnectionPlanLimit(ctx context.Context, res
 	if err != nil {
 		return PlansClientGetHybridConnectionPlanLimitResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientGetHybridConnectionPlanLimitResponse{}, err
 	}
@@ -519,7 +508,7 @@ func (client *PlansClient) getHybridConnectionPlanLimitCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -553,7 +542,7 @@ func (client *PlansClient) GetRouteForVnet(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PlansClientGetRouteForVnetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientGetRouteForVnetResponse{}, err
 	}
@@ -586,7 +575,7 @@ func (client *PlansClient) getRouteForVnetCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -618,7 +607,7 @@ func (client *PlansClient) GetServerFarmSKUs(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PlansClientGetServerFarmSKUsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientGetServerFarmSKUsResponse{}, err
 	}
@@ -643,7 +632,7 @@ func (client *PlansClient) getServerFarmSKUsCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -677,7 +666,7 @@ func (client *PlansClient) GetVnetFromServerFarm(ctx context.Context, resourceGr
 	if err != nil {
 		return PlansClientGetVnetFromServerFarmResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientGetVnetFromServerFarmResponse{}, err
 	}
@@ -706,7 +695,7 @@ func (client *PlansClient) getVnetFromServerFarmCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -740,7 +729,7 @@ func (client *PlansClient) GetVnetGateway(ctx context.Context, resourceGroupName
 	if err != nil {
 		return PlansClientGetVnetGatewayResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientGetVnetGatewayResponse{}, err
 	}
@@ -773,7 +762,7 @@ func (client *PlansClient) getVnetGatewayCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -813,7 +802,7 @@ func (client *PlansClient) NewListPager(options *PlansClientListOptions) *runtim
 			if err != nil {
 				return PlansClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PlansClientListResponse{}, err
 			}
@@ -832,7 +821,7 @@ func (client *PlansClient) listCreateRequest(ctx context.Context, options *Plans
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -877,7 +866,7 @@ func (client *PlansClient) NewListByResourceGroupPager(resourceGroupName string,
 			if err != nil {
 				return PlansClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PlansClientListByResourceGroupResponse{}, err
 			}
@@ -900,7 +889,7 @@ func (client *PlansClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -932,7 +921,7 @@ func (client *PlansClient) ListCapabilities(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return PlansClientListCapabilitiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientListCapabilitiesResponse{}, err
 	}
@@ -957,7 +946,7 @@ func (client *PlansClient) listCapabilitiesCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -992,7 +981,7 @@ func (client *PlansClient) ListHybridConnectionKeys(ctx context.Context, resourc
 	if err != nil {
 		return PlansClientListHybridConnectionKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientListHybridConnectionKeysResponse{}, err
 	}
@@ -1025,7 +1014,7 @@ func (client *PlansClient) listHybridConnectionKeysCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1068,7 +1057,7 @@ func (client *PlansClient) NewListHybridConnectionsPager(resourceGroupName strin
 			if err != nil {
 				return PlansClientListHybridConnectionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PlansClientListHybridConnectionsResponse{}, err
 			}
@@ -1095,7 +1084,7 @@ func (client *PlansClient) listHybridConnectionsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1128,7 +1117,7 @@ func (client *PlansClient) ListRoutesForVnet(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PlansClientListRoutesForVnetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientListRoutesForVnetResponse{}, err
 	}
@@ -1157,7 +1146,7 @@ func (client *PlansClient) listRoutesForVnetCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1199,7 +1188,7 @@ func (client *PlansClient) NewListUsagesPager(resourceGroupName string, name str
 			if err != nil {
 				return PlansClientListUsagesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PlansClientListUsagesResponse{}, err
 			}
@@ -1226,7 +1215,7 @@ func (client *PlansClient) listUsagesCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1263,7 +1252,7 @@ func (client *PlansClient) ListVnets(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return PlansClientListVnetsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientListVnetsResponse{}, err
 	}
@@ -1288,7 +1277,7 @@ func (client *PlansClient) listVnetsCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1330,7 +1319,7 @@ func (client *PlansClient) NewListWebAppsPager(resourceGroupName string, name st
 			if err != nil {
 				return PlansClientListWebAppsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PlansClientListWebAppsResponse{}, err
 			}
@@ -1357,7 +1346,7 @@ func (client *PlansClient) listWebAppsCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1413,7 +1402,7 @@ func (client *PlansClient) NewListWebAppsByHybridConnectionPager(resourceGroupNa
 			if err != nil {
 				return PlansClientListWebAppsByHybridConnectionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PlansClientListWebAppsByHybridConnectionResponse{}, err
 			}
@@ -1448,7 +1437,7 @@ func (client *PlansClient) listWebAppsByHybridConnectionCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1481,7 +1470,7 @@ func (client *PlansClient) RebootWorker(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return PlansClientRebootWorkerResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientRebootWorkerResponse{}, err
 	}
@@ -1510,7 +1499,7 @@ func (client *PlansClient) rebootWorkerCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1533,7 +1522,7 @@ func (client *PlansClient) RestartWebApps(ctx context.Context, resourceGroupName
 	if err != nil {
 		return PlansClientRestartWebAppsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientRestartWebAppsResponse{}, err
 	}
@@ -1558,7 +1547,7 @@ func (client *PlansClient) restartWebAppsCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1585,7 +1574,7 @@ func (client *PlansClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return PlansClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientUpdateResponse{}, err
 	}
@@ -1610,7 +1599,7 @@ func (client *PlansClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1645,7 +1634,7 @@ func (client *PlansClient) UpdateVnetGateway(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PlansClientUpdateVnetGatewayResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientUpdateVnetGatewayResponse{}, err
 	}
@@ -1678,7 +1667,7 @@ func (client *PlansClient) updateVnetGatewayCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1713,7 +1702,7 @@ func (client *PlansClient) UpdateVnetRoute(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PlansClientUpdateVnetRouteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlansClientUpdateVnetRouteResponse{}, err
 	}
@@ -1746,7 +1735,7 @@ func (client *PlansClient) updateVnetRouteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

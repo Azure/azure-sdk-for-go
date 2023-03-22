@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // EnvironmentsClient contains the methods for the AppServiceEnvironments group.
 // Don't use this type directly, use NewEnvironmentsClient() instead.
 type EnvironmentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewEnvironmentsClient creates a new instance of EnvironmentsClient with the specified values.
@@ -37,21 +34,13 @@ type EnvironmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnvironmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EnvironmentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EnvironmentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,9 +59,9 @@ func (client *EnvironmentsClient) BeginApproveOrRejectPrivateEndpointConnection(
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -85,7 +74,7 @@ func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnection(ctx c
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +103,7 @@ func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnectionCreate
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -143,7 +132,7 @@ func (client *EnvironmentsClient) BeginChangeVnet(ctx context.Context, resourceG
 			if err != nil {
 				return EnvironmentsClientChangeVnetResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientChangeVnetResponse{}, err
 			}
@@ -158,11 +147,11 @@ func (client *EnvironmentsClient) BeginChangeVnet(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientChangeVnetResponse]]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientChangeVnetResponse]]{
 			Response: &pager,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientChangeVnetResponse]]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientChangeVnetResponse]]{
 			Response: &pager,
 		})
 	}
@@ -176,7 +165,7 @@ func (client *EnvironmentsClient) changeVnet(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +190,7 @@ func (client *EnvironmentsClient) changeVnetCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -236,9 +225,9 @@ func (client *EnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[EnvironmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -251,7 +240,7 @@ func (client *EnvironmentsClient) createOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -276,7 +265,7 @@ func (client *EnvironmentsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -302,9 +291,9 @@ func (client *EnvironmentsClient) BeginCreateOrUpdateMultiRolePool(ctx context.C
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -317,7 +306,7 @@ func (client *EnvironmentsClient) createOrUpdateMultiRolePool(ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -342,7 +331,7 @@ func (client *EnvironmentsClient) createOrUpdateMultiRolePoolCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -369,9 +358,9 @@ func (client *EnvironmentsClient) BeginCreateOrUpdateWorkerPool(ctx context.Cont
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[EnvironmentsClientCreateOrUpdateWorkerPoolResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientCreateOrUpdateWorkerPoolResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateWorkerPoolResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateWorkerPoolResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -384,7 +373,7 @@ func (client *EnvironmentsClient) createOrUpdateWorkerPool(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -413,7 +402,7 @@ func (client *EnvironmentsClient) createOrUpdateWorkerPoolCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -438,9 +427,9 @@ func (client *EnvironmentsClient) BeginDelete(ctx context.Context, resourceGroup
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[EnvironmentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[EnvironmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -453,7 +442,7 @@ func (client *EnvironmentsClient) deleteOperation(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -478,7 +467,7 @@ func (client *EnvironmentsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -505,7 +494,7 @@ func (client *EnvironmentsClient) DeleteAseCustomDNSSuffixConfiguration(ctx cont
 	if err != nil {
 		return EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse{}, err
 	}
@@ -530,7 +519,7 @@ func (client *EnvironmentsClient) deleteAseCustomDNSSuffixConfigurationCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -564,9 +553,9 @@ func (client *EnvironmentsClient) BeginDeletePrivateEndpointConnection(ctx conte
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[EnvironmentsClientDeletePrivateEndpointConnectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientDeletePrivateEndpointConnectionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[EnvironmentsClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -579,7 +568,7 @@ func (client *EnvironmentsClient) deletePrivateEndpointConnection(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -608,7 +597,7 @@ func (client *EnvironmentsClient) deletePrivateEndpointConnectionCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -631,7 +620,7 @@ func (client *EnvironmentsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return EnvironmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientGetResponse{}, err
 	}
@@ -656,7 +645,7 @@ func (client *EnvironmentsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -689,7 +678,7 @@ func (client *EnvironmentsClient) GetAseCustomDNSSuffixConfiguration(ctx context
 	if err != nil {
 		return EnvironmentsClientGetAseCustomDNSSuffixConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientGetAseCustomDNSSuffixConfigurationResponse{}, err
 	}
@@ -714,7 +703,7 @@ func (client *EnvironmentsClient) getAseCustomDNSSuffixConfigurationCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -747,7 +736,7 @@ func (client *EnvironmentsClient) GetAseV3NetworkingConfiguration(ctx context.Co
 	if err != nil {
 		return EnvironmentsClientGetAseV3NetworkingConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientGetAseV3NetworkingConfigurationResponse{}, err
 	}
@@ -772,7 +761,7 @@ func (client *EnvironmentsClient) getAseV3NetworkingConfigurationCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -806,7 +795,7 @@ func (client *EnvironmentsClient) GetDiagnosticsItem(ctx context.Context, resour
 	if err != nil {
 		return EnvironmentsClientGetDiagnosticsItemResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientGetDiagnosticsItemResponse{}, err
 	}
@@ -835,7 +824,7 @@ func (client *EnvironmentsClient) getDiagnosticsItemCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -879,7 +868,7 @@ func (client *EnvironmentsClient) NewGetInboundNetworkDependenciesEndpointsPager
 			if err != nil {
 				return EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse{}, err
 			}
@@ -906,7 +895,7 @@ func (client *EnvironmentsClient) getInboundNetworkDependenciesEndpointsCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -939,7 +928,7 @@ func (client *EnvironmentsClient) GetMultiRolePool(ctx context.Context, resource
 	if err != nil {
 		return EnvironmentsClientGetMultiRolePoolResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientGetMultiRolePoolResponse{}, err
 	}
@@ -964,7 +953,7 @@ func (client *EnvironmentsClient) getMultiRolePoolCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1008,7 +997,7 @@ func (client *EnvironmentsClient) NewGetOutboundNetworkDependenciesEndpointsPage
 			if err != nil {
 				return EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
 			}
@@ -1035,7 +1024,7 @@ func (client *EnvironmentsClient) getOutboundNetworkDependenciesEndpointsCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1069,7 +1058,7 @@ func (client *EnvironmentsClient) GetPrivateEndpointConnection(ctx context.Conte
 	if err != nil {
 		return EnvironmentsClientGetPrivateEndpointConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientGetPrivateEndpointConnectionResponse{}, err
 	}
@@ -1098,7 +1087,7 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1142,7 +1131,7 @@ func (client *EnvironmentsClient) NewGetPrivateEndpointConnectionListPager(resou
 			if err != nil {
 				return EnvironmentsClientGetPrivateEndpointConnectionListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientGetPrivateEndpointConnectionListResponse{}, err
 			}
@@ -1169,7 +1158,7 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionListCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1202,7 +1191,7 @@ func (client *EnvironmentsClient) GetPrivateLinkResources(ctx context.Context, r
 	if err != nil {
 		return EnvironmentsClientGetPrivateLinkResourcesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientGetPrivateLinkResourcesResponse{}, err
 	}
@@ -1227,7 +1216,7 @@ func (client *EnvironmentsClient) getPrivateLinkResourcesCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1259,7 +1248,7 @@ func (client *EnvironmentsClient) GetVipInfo(ctx context.Context, resourceGroupN
 	if err != nil {
 		return EnvironmentsClientGetVipInfoResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientGetVipInfoResponse{}, err
 	}
@@ -1284,7 +1273,7 @@ func (client *EnvironmentsClient) getVipInfoCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1318,7 +1307,7 @@ func (client *EnvironmentsClient) GetWorkerPool(ctx context.Context, resourceGro
 	if err != nil {
 		return EnvironmentsClientGetWorkerPoolResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientGetWorkerPoolResponse{}, err
 	}
@@ -1347,7 +1336,7 @@ func (client *EnvironmentsClient) getWorkerPoolCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1387,7 +1376,7 @@ func (client *EnvironmentsClient) NewListPager(options *EnvironmentsClientListOp
 			if err != nil {
 				return EnvironmentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListResponse{}, err
 			}
@@ -1406,7 +1395,7 @@ func (client *EnvironmentsClient) listCreateRequest(ctx context.Context, options
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1449,7 +1438,7 @@ func (client *EnvironmentsClient) NewListAppServicePlansPager(resourceGroupName 
 			if err != nil {
 				return EnvironmentsClientListAppServicePlansResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListAppServicePlansResponse{}, err
 			}
@@ -1476,7 +1465,7 @@ func (client *EnvironmentsClient) listAppServicePlansCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1518,7 +1507,7 @@ func (client *EnvironmentsClient) NewListByResourceGroupPager(resourceGroupName 
 			if err != nil {
 				return EnvironmentsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListByResourceGroupResponse{}, err
 			}
@@ -1541,7 +1530,7 @@ func (client *EnvironmentsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1584,7 +1573,7 @@ func (client *EnvironmentsClient) NewListCapacitiesPager(resourceGroupName strin
 			if err != nil {
 				return EnvironmentsClientListCapacitiesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListCapacitiesResponse{}, err
 			}
@@ -1611,7 +1600,7 @@ func (client *EnvironmentsClient) listCapacitiesCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1644,7 +1633,7 @@ func (client *EnvironmentsClient) ListDiagnostics(ctx context.Context, resourceG
 	if err != nil {
 		return EnvironmentsClientListDiagnosticsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientListDiagnosticsResponse{}, err
 	}
@@ -1669,7 +1658,7 @@ func (client *EnvironmentsClient) listDiagnosticsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1713,7 +1702,7 @@ func (client *EnvironmentsClient) NewListMultiRoleMetricDefinitionsPager(resourc
 			if err != nil {
 				return EnvironmentsClientListMultiRoleMetricDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListMultiRoleMetricDefinitionsResponse{}, err
 			}
@@ -1740,7 +1729,7 @@ func (client *EnvironmentsClient) listMultiRoleMetricDefinitionsCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1785,7 +1774,7 @@ func (client *EnvironmentsClient) NewListMultiRolePoolInstanceMetricDefinitionsP
 			if err != nil {
 				return EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse{}, err
 			}
@@ -1816,7 +1805,7 @@ func (client *EnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1859,7 +1848,7 @@ func (client *EnvironmentsClient) NewListMultiRolePoolSKUsPager(resourceGroupNam
 			if err != nil {
 				return EnvironmentsClientListMultiRolePoolSKUsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListMultiRolePoolSKUsResponse{}, err
 			}
@@ -1886,7 +1875,7 @@ func (client *EnvironmentsClient) listMultiRolePoolSKUsCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1929,7 +1918,7 @@ func (client *EnvironmentsClient) NewListMultiRolePoolsPager(resourceGroupName s
 			if err != nil {
 				return EnvironmentsClientListMultiRolePoolsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListMultiRolePoolsResponse{}, err
 			}
@@ -1956,7 +1945,7 @@ func (client *EnvironmentsClient) listMultiRolePoolsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1999,7 +1988,7 @@ func (client *EnvironmentsClient) NewListMultiRoleUsagesPager(resourceGroupName 
 			if err != nil {
 				return EnvironmentsClientListMultiRoleUsagesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListMultiRoleUsagesResponse{}, err
 			}
@@ -2026,7 +2015,7 @@ func (client *EnvironmentsClient) listMultiRoleUsagesCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2059,7 +2048,7 @@ func (client *EnvironmentsClient) ListOperations(ctx context.Context, resourceGr
 	if err != nil {
 		return EnvironmentsClientListOperationsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientListOperationsResponse{}, err
 	}
@@ -2084,7 +2073,7 @@ func (client *EnvironmentsClient) listOperationsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2127,7 +2116,7 @@ func (client *EnvironmentsClient) NewListUsagesPager(resourceGroupName string, n
 			if err != nil {
 				return EnvironmentsClientListUsagesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListUsagesResponse{}, err
 			}
@@ -2154,7 +2143,7 @@ func (client *EnvironmentsClient) listUsagesCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2202,7 +2191,7 @@ func (client *EnvironmentsClient) NewListWebAppsPager(resourceGroupName string, 
 			if err != nil {
 				return EnvironmentsClientListWebAppsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListWebAppsResponse{}, err
 			}
@@ -2229,7 +2218,7 @@ func (client *EnvironmentsClient) listWebAppsCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2276,7 +2265,7 @@ func (client *EnvironmentsClient) NewListWebWorkerMetricDefinitionsPager(resourc
 			if err != nil {
 				return EnvironmentsClientListWebWorkerMetricDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListWebWorkerMetricDefinitionsResponse{}, err
 			}
@@ -2307,7 +2296,7 @@ func (client *EnvironmentsClient) listWebWorkerMetricDefinitionsCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2351,7 +2340,7 @@ func (client *EnvironmentsClient) NewListWebWorkerUsagesPager(resourceGroupName 
 			if err != nil {
 				return EnvironmentsClientListWebWorkerUsagesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListWebWorkerUsagesResponse{}, err
 			}
@@ -2382,7 +2371,7 @@ func (client *EnvironmentsClient) listWebWorkerUsagesCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2428,7 +2417,7 @@ func (client *EnvironmentsClient) NewListWorkerPoolInstanceMetricDefinitionsPage
 			if err != nil {
 				return EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse{}, err
 			}
@@ -2463,7 +2452,7 @@ func (client *EnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2507,7 +2496,7 @@ func (client *EnvironmentsClient) NewListWorkerPoolSKUsPager(resourceGroupName s
 			if err != nil {
 				return EnvironmentsClientListWorkerPoolSKUsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListWorkerPoolSKUsResponse{}, err
 			}
@@ -2538,7 +2527,7 @@ func (client *EnvironmentsClient) listWorkerPoolSKUsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2581,7 +2570,7 @@ func (client *EnvironmentsClient) NewListWorkerPoolsPager(resourceGroupName stri
 			if err != nil {
 				return EnvironmentsClientListWorkerPoolsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientListWorkerPoolsResponse{}, err
 			}
@@ -2608,7 +2597,7 @@ func (client *EnvironmentsClient) listWorkerPoolsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2640,7 +2629,7 @@ func (client *EnvironmentsClient) Reboot(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return EnvironmentsClientRebootResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientRebootResponse{}, err
 	}
@@ -2665,7 +2654,7 @@ func (client *EnvironmentsClient) rebootCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2693,7 +2682,7 @@ func (client *EnvironmentsClient) BeginResume(ctx context.Context, resourceGroup
 			if err != nil {
 				return EnvironmentsClientResumeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientResumeResponse{}, err
 			}
@@ -2708,11 +2697,11 @@ func (client *EnvironmentsClient) BeginResume(ctx context.Context, resourceGroup
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
 			Response: &pager,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
 			Response: &pager,
 		})
 	}
@@ -2726,7 +2715,7 @@ func (client *EnvironmentsClient) resume(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2751,7 +2740,7 @@ func (client *EnvironmentsClient) resumeCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2788,7 +2777,7 @@ func (client *EnvironmentsClient) BeginSuspend(ctx context.Context, resourceGrou
 			if err != nil {
 				return EnvironmentsClientSuspendResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentsClientSuspendResponse{}, err
 			}
@@ -2803,11 +2792,11 @@ func (client *EnvironmentsClient) BeginSuspend(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
 			Response: &pager,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
 			Response: &pager,
 		})
 	}
@@ -2821,7 +2810,7 @@ func (client *EnvironmentsClient) suspend(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2846,7 +2835,7 @@ func (client *EnvironmentsClient) suspendCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2879,7 +2868,7 @@ func (client *EnvironmentsClient) TestUpgradeAvailableNotification(ctx context.C
 	if err != nil {
 		return EnvironmentsClientTestUpgradeAvailableNotificationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientTestUpgradeAvailableNotificationResponse{}, err
 	}
@@ -2904,7 +2893,7 @@ func (client *EnvironmentsClient) testUpgradeAvailableNotificationCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2928,7 +2917,7 @@ func (client *EnvironmentsClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return EnvironmentsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientUpdateResponse{}, err
 	}
@@ -2953,7 +2942,7 @@ func (client *EnvironmentsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2986,7 +2975,7 @@ func (client *EnvironmentsClient) UpdateAseCustomDNSSuffixConfiguration(ctx cont
 	if err != nil {
 		return EnvironmentsClientUpdateAseCustomDNSSuffixConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientUpdateAseCustomDNSSuffixConfigurationResponse{}, err
 	}
@@ -3011,7 +3000,7 @@ func (client *EnvironmentsClient) updateAseCustomDNSSuffixConfigurationCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3044,7 +3033,7 @@ func (client *EnvironmentsClient) UpdateAseNetworkingConfiguration(ctx context.C
 	if err != nil {
 		return EnvironmentsClientUpdateAseNetworkingConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientUpdateAseNetworkingConfigurationResponse{}, err
 	}
@@ -3069,7 +3058,7 @@ func (client *EnvironmentsClient) updateAseNetworkingConfigurationCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3103,7 +3092,7 @@ func (client *EnvironmentsClient) UpdateMultiRolePool(ctx context.Context, resou
 	if err != nil {
 		return EnvironmentsClientUpdateMultiRolePoolResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientUpdateMultiRolePoolResponse{}, err
 	}
@@ -3128,7 +3117,7 @@ func (client *EnvironmentsClient) updateMultiRolePoolCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3163,7 +3152,7 @@ func (client *EnvironmentsClient) UpdateWorkerPool(ctx context.Context, resource
 	if err != nil {
 		return EnvironmentsClientUpdateWorkerPoolResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentsClientUpdateWorkerPoolResponse{}, err
 	}
@@ -3192,7 +3181,7 @@ func (client *EnvironmentsClient) updateWorkerPoolCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3226,9 +3215,9 @@ func (client *EnvironmentsClient) BeginUpgrade(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[EnvironmentsClientUpgradeResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientUpgradeResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[EnvironmentsClientUpgradeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientUpgradeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -3241,7 +3230,7 @@ func (client *EnvironmentsClient) upgrade(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -3266,7 +3255,7 @@ func (client *EnvironmentsClient) upgradeCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

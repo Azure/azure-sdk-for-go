@@ -24,11 +24,11 @@ func ExampleWorkflowTriggerHistoriesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowTriggerHistoriesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("testResourceGroup", "test-name", "testWorkflowName", "testTriggerName", &armappservice.WorkflowTriggerHistoriesClientListOptions{Top: nil,
+	pager := clientFactory.NewWorkflowTriggerHistoriesClient().NewListPager("testResourceGroup", "test-name", "testWorkflowName", "testTriggerName", &armappservice.WorkflowTriggerHistoriesClientListOptions{Top: nil,
 		Filter: nil,
 	})
 	for pager.More() {
@@ -75,11 +75,11 @@ func ExampleWorkflowTriggerHistoriesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowTriggerHistoriesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testResourceGroup", "test-name", "testWorkflowName", "testTriggerName", "08586676746934337772206998657CU22", nil)
+	res, err := clientFactory.NewWorkflowTriggerHistoriesClient().Get(ctx, "testResourceGroup", "test-name", "testWorkflowName", "testTriggerName", "08586676746934337772206998657CU22", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -116,11 +116,11 @@ func ExampleWorkflowTriggerHistoriesClient_BeginResubmit() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowTriggerHistoriesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResubmit(ctx, "testResourceGroup", "test-name", "testWorkflowName", "testTriggerName", "testHistoryName", nil)
+	poller, err := clientFactory.NewWorkflowTriggerHistoriesClient().BeginResubmit(ctx, "testResourceGroup", "test-name", "testWorkflowName", "testTriggerName", "testHistoryName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

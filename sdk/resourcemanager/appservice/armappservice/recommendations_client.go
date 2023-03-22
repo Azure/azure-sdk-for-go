@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // RecommendationsClient contains the methods for the Recommendations group.
 // Don't use this type directly, use NewRecommendationsClient() instead.
 type RecommendationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRecommendationsClient creates a new instance of RecommendationsClient with the specified values.
@@ -37,21 +34,13 @@ type RecommendationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RecommendationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RecommendationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *RecommendationsClient) DisableAllForHostingEnvironment(ctx context
 	if err != nil {
 		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, err
 	}
@@ -94,7 +83,7 @@ func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +108,7 @@ func (client *RecommendationsClient) DisableAllForWebApp(ctx context.Context, re
 	if err != nil {
 		return RecommendationsClientDisableAllForWebAppResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientDisableAllForWebAppResponse{}, err
 	}
@@ -144,7 +133,7 @@ func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +158,7 @@ func (client *RecommendationsClient) DisableRecommendationForHostingEnvironment(
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
@@ -198,7 +187,7 @@ func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentC
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -224,7 +213,7 @@ func (client *RecommendationsClient) DisableRecommendationForSite(ctx context.Co
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForSiteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForSiteResponse{}, err
 	}
@@ -253,7 +242,7 @@ func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -277,7 +266,7 @@ func (client *RecommendationsClient) DisableRecommendationForSubscription(ctx co
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, err
 	}
@@ -298,7 +287,7 @@ func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -323,7 +312,7 @@ func (client *RecommendationsClient) GetRuleDetailsByHostingEnvironment(ctx cont
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
@@ -352,7 +341,7 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -392,7 +381,7 @@ func (client *RecommendationsClient) GetRuleDetailsByWebApp(ctx context.Context,
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByWebAppResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByWebAppResponse{}, err
 	}
@@ -421,7 +410,7 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -468,7 +457,7 @@ func (client *RecommendationsClient) NewListPager(options *RecommendationsClient
 			if err != nil {
 				return RecommendationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecommendationsClientListResponse{}, err
 			}
@@ -487,7 +476,7 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, opti
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -539,7 +528,7 @@ func (client *RecommendationsClient) NewListHistoryForHostingEnvironmentPager(re
 			if err != nil {
 				return RecommendationsClientListHistoryForHostingEnvironmentResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecommendationsClientListHistoryForHostingEnvironmentResponse{}, err
 			}
@@ -566,7 +555,7 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -617,7 +606,7 @@ func (client *RecommendationsClient) NewListHistoryForWebAppPager(resourceGroupN
 			if err != nil {
 				return RecommendationsClientListHistoryForWebAppResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecommendationsClientListHistoryForWebAppResponse{}, err
 			}
@@ -644,7 +633,7 @@ func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -695,7 +684,7 @@ func (client *RecommendationsClient) NewListRecommendedRulesForHostingEnvironmen
 			if err != nil {
 				return RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse{}, err
 			}
@@ -722,7 +711,7 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -773,7 +762,7 @@ func (client *RecommendationsClient) NewListRecommendedRulesForWebAppPager(resou
 			if err != nil {
 				return RecommendationsClientListRecommendedRulesForWebAppResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecommendationsClientListRecommendedRulesForWebAppResponse{}, err
 			}
@@ -800,7 +789,7 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -839,7 +828,7 @@ func (client *RecommendationsClient) ResetAllFilters(ctx context.Context, option
 	if err != nil {
 		return RecommendationsClientResetAllFiltersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientResetAllFiltersResponse{}, err
 	}
@@ -856,7 +845,7 @@ func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -880,7 +869,7 @@ func (client *RecommendationsClient) ResetAllFiltersForHostingEnvironment(ctx co
 	if err != nil {
 		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
@@ -905,7 +894,7 @@ func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -930,7 +919,7 @@ func (client *RecommendationsClient) ResetAllFiltersForWebApp(ctx context.Contex
 	if err != nil {
 		return RecommendationsClientResetAllFiltersForWebAppResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientResetAllFiltersForWebAppResponse{}, err
 	}
@@ -955,7 +944,7 @@ func (client *RecommendationsClient) resetAllFiltersForWebAppCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

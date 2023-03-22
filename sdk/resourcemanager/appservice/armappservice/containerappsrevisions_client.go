@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ContainerAppsRevisionsClient contains the methods for the ContainerAppsRevisions group.
 // Don't use this type directly, use NewContainerAppsRevisionsClient() instead.
 type ContainerAppsRevisionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewContainerAppsRevisionsClient creates a new instance of ContainerAppsRevisionsClient with the specified values.
@@ -36,21 +33,13 @@ type ContainerAppsRevisionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainerAppsRevisionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsRevisionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ContainerAppsRevisionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ContainerAppsRevisionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *ContainerAppsRevisionsClient) ActivateRevision(ctx context.Context
 	if err != nil {
 		return ContainerAppsRevisionsClientActivateRevisionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsRevisionsClientActivateRevisionResponse{}, err
 	}
@@ -98,7 +87,7 @@ func (client *ContainerAppsRevisionsClient) activateRevisionCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +112,7 @@ func (client *ContainerAppsRevisionsClient) DeactivateRevision(ctx context.Conte
 	if err != nil {
 		return ContainerAppsRevisionsClientDeactivateRevisionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsRevisionsClientDeactivateRevisionResponse{}, err
 	}
@@ -152,7 +141,7 @@ func (client *ContainerAppsRevisionsClient) deactivateRevisionCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +166,7 @@ func (client *ContainerAppsRevisionsClient) GetRevision(ctx context.Context, res
 	if err != nil {
 		return ContainerAppsRevisionsClientGetRevisionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsRevisionsClientGetRevisionResponse{}, err
 	}
@@ -206,7 +195,7 @@ func (client *ContainerAppsRevisionsClient) getRevisionCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +238,7 @@ func (client *ContainerAppsRevisionsClient) NewListRevisionsPager(resourceGroupN
 			if err != nil {
 				return ContainerAppsRevisionsClientListRevisionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ContainerAppsRevisionsClientListRevisionsResponse{}, err
 			}
@@ -276,7 +265,7 @@ func (client *ContainerAppsRevisionsClient) listRevisionsCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,7 +299,7 @@ func (client *ContainerAppsRevisionsClient) RestartRevision(ctx context.Context,
 	if err != nil {
 		return ContainerAppsRevisionsClientRestartRevisionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsRevisionsClientRestartRevisionResponse{}, err
 	}
@@ -339,7 +328,7 @@ func (client *ContainerAppsRevisionsClient) restartRevisionCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

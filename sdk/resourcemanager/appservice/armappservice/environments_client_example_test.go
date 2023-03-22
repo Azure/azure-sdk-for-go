@@ -25,11 +25,11 @@ func ExampleEnvironmentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -100,11 +100,11 @@ func ExampleEnvironmentsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("test-rg", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListByResourceGroupPager("test-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -175,11 +175,11 @@ func ExampleEnvironmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "test-rg", "test-ase", nil)
+	res, err := clientFactory.NewEnvironmentsClient().Get(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -242,11 +242,11 @@ func ExampleEnvironmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "test-rg", "test-ase", armappservice.EnvironmentResource{
+	poller, err := clientFactory.NewEnvironmentsClient().BeginCreateOrUpdate(ctx, "test-rg", "test-ase", armappservice.EnvironmentResource{
 		Kind:     to.Ptr("Asev3"),
 		Location: to.Ptr("South Central US"),
 		Properties: &armappservice.Environment{
@@ -321,11 +321,11 @@ func ExampleEnvironmentsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "test-rg", "test-ase", &armappservice.EnvironmentsClientBeginDeleteOptions{ForceDelete: nil})
+	poller, err := clientFactory.NewEnvironmentsClient().BeginDelete(ctx, "test-rg", "test-ase", &armappservice.EnvironmentsClientBeginDeleteOptions{ForceDelete: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -342,11 +342,11 @@ func ExampleEnvironmentsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "test-rg", "test-ase", armappservice.EnvironmentPatchResource{
+	res, err := clientFactory.NewEnvironmentsClient().Update(ctx, "test-rg", "test-ase", armappservice.EnvironmentPatchResource{
 		Properties: &armappservice.Environment{
 			FrontEndScaleFactor: to.Ptr[int32](20),
 			VirtualNetwork: &armappservice.VirtualNetworkProfile{
@@ -416,11 +416,11 @@ func ExampleEnvironmentsClient_NewListCapacitiesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCapacitiesPager("test-rg", "test-ase", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListCapacitiesPager("test-rg", "test-ase", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -471,11 +471,11 @@ func ExampleEnvironmentsClient_GetVipInfo() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetVipInfo(ctx, "test-rg", "test-ase", nil)
+	res, err := clientFactory.NewEnvironmentsClient().GetVipInfo(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -514,11 +514,11 @@ func ExampleEnvironmentsClient_BeginChangeVnet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginChangeVnet(ctx, "test-rg", "test-ase", armappservice.VirtualNetworkProfile{
+	poller, err := clientFactory.NewEnvironmentsClient().BeginChangeVnet(ctx, "test-rg", "test-ase", armappservice.VirtualNetworkProfile{
 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"),
 	}, nil)
 	if err != nil {
@@ -552,11 +552,11 @@ func ExampleEnvironmentsClient_GetAseCustomDNSSuffixConfiguration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAseCustomDNSSuffixConfiguration(ctx, "test-rg", "test-ase", nil)
+	res, err := clientFactory.NewEnvironmentsClient().GetAseCustomDNSSuffixConfiguration(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -583,11 +583,11 @@ func ExampleEnvironmentsClient_UpdateAseCustomDNSSuffixConfiguration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateAseCustomDNSSuffixConfiguration(ctx, "test-rg", "test-ase", armappservice.CustomDNSSuffixConfiguration{
+	res, err := clientFactory.NewEnvironmentsClient().UpdateAseCustomDNSSuffixConfiguration(ctx, "test-rg", "test-ase", armappservice.CustomDNSSuffixConfiguration{
 		Properties: &armappservice.CustomDNSSuffixConfigurationProperties{
 			CertificateURL:            to.Ptr("https://test-kv.vault.azure.net/secrets/contosocert"),
 			DNSSuffix:                 to.Ptr("contoso.com"),
@@ -620,11 +620,11 @@ func ExampleEnvironmentsClient_DeleteAseCustomDNSSuffixConfiguration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.DeleteAseCustomDNSSuffixConfiguration(ctx, "test-rg", "test-ase", nil)
+	res, err := clientFactory.NewEnvironmentsClient().DeleteAseCustomDNSSuffixConfiguration(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -642,11 +642,11 @@ func ExampleEnvironmentsClient_GetAseV3NetworkingConfiguration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAseV3NetworkingConfiguration(ctx, "test-rg", "test-ase", nil)
+	res, err := clientFactory.NewEnvironmentsClient().GetAseV3NetworkingConfiguration(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -682,11 +682,11 @@ func ExampleEnvironmentsClient_UpdateAseNetworkingConfiguration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateAseNetworkingConfiguration(ctx, "test-rg", "test-ase", armappservice.AseV3NetworkingConfiguration{
+	res, err := clientFactory.NewEnvironmentsClient().UpdateAseNetworkingConfiguration(ctx, "test-rg", "test-ase", armappservice.AseV3NetworkingConfiguration{
 		Properties: &armappservice.AseV3NetworkingConfigurationProperties{
 			FtpEnabled:         to.Ptr(true),
 			RemoteDebugEnabled: to.Ptr(true),
@@ -727,11 +727,11 @@ func ExampleEnvironmentsClient_ListDiagnostics() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListDiagnostics(ctx, "test-rg", "test-ase", nil)
+	res, err := clientFactory.NewEnvironmentsClient().ListDiagnostics(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -748,11 +748,11 @@ func ExampleEnvironmentsClient_GetDiagnosticsItem() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDiagnosticsItem(ctx, "test-rg", "test-ase", "test-diagnostic", nil)
+	res, err := clientFactory.NewEnvironmentsClient().GetDiagnosticsItem(ctx, "test-rg", "test-ase", "test-diagnostic", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -771,11 +771,11 @@ func ExampleEnvironmentsClient_NewGetInboundNetworkDependenciesEndpointsPager() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetInboundNetworkDependenciesEndpointsPager("Sample-WestUSResourceGroup", "SampleAse", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewGetInboundNetworkDependenciesEndpointsPager("Sample-WestUSResourceGroup", "SampleAse", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -855,11 +855,11 @@ func ExampleEnvironmentsClient_NewListMultiRolePoolsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMultiRolePoolsPager("test-rg", "test-ase", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListMultiRolePoolsPager("test-rg", "test-ase", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -902,11 +902,11 @@ func ExampleEnvironmentsClient_GetMultiRolePool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMultiRolePool(ctx, "test-rg", "test-ase", nil)
+	res, err := clientFactory.NewEnvironmentsClient().GetMultiRolePool(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -941,11 +941,11 @@ func ExampleEnvironmentsClient_BeginCreateOrUpdateMultiRolePool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdateMultiRolePool(ctx, "test-rg", "test-ase", armappservice.WorkerPoolResource{
+	poller, err := clientFactory.NewEnvironmentsClient().BeginCreateOrUpdateMultiRolePool(ctx, "test-rg", "test-ase", armappservice.WorkerPoolResource{
 		Properties: &armappservice.WorkerPool{
 			WorkerCount: to.Ptr[int32](3),
 			WorkerSize:  to.Ptr("Medium"),
@@ -972,11 +972,11 @@ func ExampleEnvironmentsClient_NewListMultiRolePoolInstanceMetricDefinitionsPage
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMultiRolePoolInstanceMetricDefinitionsPager("test-rg", "test-ase", "10.7.1.8", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListMultiRolePoolInstanceMetricDefinitionsPager("test-rg", "test-ase", "10.7.1.8", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1024,11 +1024,11 @@ func ExampleEnvironmentsClient_NewListMultiRoleMetricDefinitionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMultiRoleMetricDefinitionsPager("test-rg", "test-ase", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListMultiRoleMetricDefinitionsPager("test-rg", "test-ase", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1076,11 +1076,11 @@ func ExampleEnvironmentsClient_NewListMultiRolePoolSKUsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMultiRolePoolSKUsPager("test-rg", "test-ase", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListMultiRolePoolSKUsPager("test-rg", "test-ase", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1234,11 +1234,11 @@ func ExampleEnvironmentsClient_TestUpgradeAvailableNotification() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.TestUpgradeAvailableNotification(ctx, "rg", "SampleHostingEnvironment", nil)
+	_, err = clientFactory.NewEnvironmentsClient().TestUpgradeAvailableNotification(ctx, "rg", "SampleHostingEnvironment", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1251,11 +1251,11 @@ func ExampleEnvironmentsClient_BeginUpgrade() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpgrade(ctx, "rg", "SampleHostingEnvironment", nil)
+	poller, err := clientFactory.NewEnvironmentsClient().BeginUpgrade(ctx, "rg", "SampleHostingEnvironment", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1272,11 +1272,11 @@ func ExampleEnvironmentsClient_NewListMultiRoleUsagesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMultiRoleUsagesPager("test-rg", "test-ase", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListMultiRoleUsagesPager("test-rg", "test-ase", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1301,11 +1301,11 @@ func ExampleEnvironmentsClient_ListOperations() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListOperations(ctx, "test-rg", "test-ase", nil)
+	res, err := clientFactory.NewEnvironmentsClient().ListOperations(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1323,11 +1323,11 @@ func ExampleEnvironmentsClient_NewGetOutboundNetworkDependenciesEndpointsPager()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetOutboundNetworkDependenciesEndpointsPager("Sample-WestUSResourceGroup", "SampleAse", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewGetOutboundNetworkDependenciesEndpointsPager("Sample-WestUSResourceGroup", "SampleAse", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2087,11 +2087,11 @@ func ExampleEnvironmentsClient_NewGetPrivateEndpointConnectionListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetPrivateEndpointConnectionListPager("test-rg", "test-ase", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewGetPrivateEndpointConnectionListPager("test-rg", "test-ase", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2133,11 +2133,11 @@ func ExampleEnvironmentsClient_GetPrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetPrivateEndpointConnection(ctx, "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", nil)
+	res, err := clientFactory.NewEnvironmentsClient().GetPrivateEndpointConnection(ctx, "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2171,11 +2171,11 @@ func ExampleEnvironmentsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginApproveOrRejectPrivateEndpointConnection(ctx, "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", armappservice.PrivateLinkConnectionApprovalRequestResource{
+	poller, err := clientFactory.NewEnvironmentsClient().BeginApproveOrRejectPrivateEndpointConnection(ctx, "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", armappservice.PrivateLinkConnectionApprovalRequestResource{
 		Properties: &armappservice.PrivateLinkConnectionApprovalRequest{
 			PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
 				Description: to.Ptr("Approved by johndoe@company.com"),
@@ -2220,11 +2220,11 @@ func ExampleEnvironmentsClient_BeginDeletePrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeletePrivateEndpointConnection(ctx, "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", nil)
+	poller, err := clientFactory.NewEnvironmentsClient().BeginDeletePrivateEndpointConnection(ctx, "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2246,11 +2246,11 @@ func ExampleEnvironmentsClient_GetPrivateLinkResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetPrivateLinkResources(ctx, "test-rg", "test-ase", nil)
+	res, err := clientFactory.NewEnvironmentsClient().GetPrivateLinkResources(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2270,11 +2270,11 @@ func ExampleEnvironmentsClient_Reboot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Reboot(ctx, "test-rg", "test-ase", nil)
+	_, err = clientFactory.NewEnvironmentsClient().Reboot(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2287,11 +2287,11 @@ func ExampleEnvironmentsClient_BeginResume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResume(ctx, "test-rg", "test-ase", nil)
+	poller, err := clientFactory.NewEnvironmentsClient().BeginResume(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2323,11 +2323,11 @@ func ExampleEnvironmentsClient_NewListAppServicePlansPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAppServicePlansPager("test-rg", "test-ase", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListAppServicePlansPager("test-rg", "test-ase", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2391,11 +2391,11 @@ func ExampleEnvironmentsClient_NewListWebAppsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListWebAppsPager("test-rg", "test-ase", &armappservice.EnvironmentsClientListWebAppsOptions{PropertiesToInclude: nil})
+	pager := clientFactory.NewEnvironmentsClient().NewListWebAppsPager("test-rg", "test-ase", &armappservice.EnvironmentsClientListWebAppsOptions{PropertiesToInclude: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2480,11 +2480,11 @@ func ExampleEnvironmentsClient_BeginSuspend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginSuspend(ctx, "test-rg", "test-ase", nil)
+	poller, err := clientFactory.NewEnvironmentsClient().BeginSuspend(ctx, "test-rg", "test-ase", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2516,11 +2516,11 @@ func ExampleEnvironmentsClient_NewListUsagesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListUsagesPager("test-rg", "test-ase", &armappservice.EnvironmentsClientListUsagesOptions{Filter: nil})
+	pager := clientFactory.NewEnvironmentsClient().NewListUsagesPager("test-rg", "test-ase", &armappservice.EnvironmentsClientListUsagesOptions{Filter: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2554,11 +2554,11 @@ func ExampleEnvironmentsClient_NewListWorkerPoolsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListWorkerPoolsPager("test-rg", "test-ase", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListWorkerPoolsPager("test-rg", "test-ase", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2621,11 +2621,11 @@ func ExampleEnvironmentsClient_GetWorkerPool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetWorkerPool(ctx, "test-rg", "test-ase", "workerPool1", nil)
+	res, err := clientFactory.NewEnvironmentsClient().GetWorkerPool(ctx, "test-rg", "test-ase", "workerPool1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2654,11 +2654,11 @@ func ExampleEnvironmentsClient_BeginCreateOrUpdateWorkerPool() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdateWorkerPool(ctx, "test-rg", "test-ase", "0", armappservice.WorkerPoolResource{
+	poller, err := clientFactory.NewEnvironmentsClient().BeginCreateOrUpdateWorkerPool(ctx, "test-rg", "test-ase", "0", armappservice.WorkerPoolResource{
 		Properties: &armappservice.WorkerPool{
 			WorkerCount: to.Ptr[int32](3),
 			WorkerSize:  to.Ptr("Small"),
@@ -2685,11 +2685,11 @@ func ExampleEnvironmentsClient_NewListWorkerPoolInstanceMetricDefinitionsPager()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListWorkerPoolInstanceMetricDefinitionsPager("test-rg", "test-ase", "0", "10.8.0.7", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListWorkerPoolInstanceMetricDefinitionsPager("test-rg", "test-ase", "0", "10.8.0.7", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2729,11 +2729,11 @@ func ExampleEnvironmentsClient_NewListWebWorkerMetricDefinitionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListWebWorkerMetricDefinitionsPager("test-rg", "test-ase", "0", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListWebWorkerMetricDefinitionsPager("test-rg", "test-ase", "0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2773,11 +2773,11 @@ func ExampleEnvironmentsClient_NewListWorkerPoolSKUsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListWorkerPoolSKUsPager("test-rg", "test-ase", "workerPool1", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListWorkerPoolSKUsPager("test-rg", "test-ase", "workerPool1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2866,11 +2866,11 @@ func ExampleEnvironmentsClient_NewListWebWorkerUsagesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListWebWorkerUsagesPager("test-rg", "test-ase", "0", nil)
+	pager := clientFactory.NewEnvironmentsClient().NewListWebWorkerUsagesPager("test-rg", "test-ase", "0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

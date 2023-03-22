@@ -25,11 +25,11 @@ func ExampleStaticSitesClient_PreviewWorkflow() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.PreviewWorkflow(ctx, "West US 2", armappservice.StaticSitesWorkflowPreviewRequest{
+	res, err := clientFactory.NewStaticSitesClient().PreviewWorkflow(ctx, "West US 2", armappservice.StaticSitesWorkflowPreviewRequest{
 		Properties: &armappservice.StaticSitesWorkflowPreviewRequestProperties{
 			Branch: to.Ptr("master"),
 			BuildProperties: &armappservice.StaticSiteBuildProperties{
@@ -61,11 +61,11 @@ func ExampleStaticSitesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewStaticSitesClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -114,11 +114,11 @@ func ExampleStaticSitesClient_NewGetStaticSitesByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetStaticSitesByResourceGroupPager("rg", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetStaticSitesByResourceGroupPager("rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -167,11 +167,11 @@ func ExampleStaticSitesClient_GetStaticSite() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetStaticSite(ctx, "rg", "testStaticSite0", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetStaticSite(ctx, "rg", "testStaticSite0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -216,11 +216,11 @@ func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSite() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdateStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSiteARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginCreateOrUpdateStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSiteARMResource{
 		Location: to.Ptr("West US 2"),
 		Properties: &armappservice.StaticSite{
 			Branch: to.Ptr("master"),
@@ -281,11 +281,11 @@ func ExampleStaticSitesClient_BeginDeleteStaticSite() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteStaticSite(ctx, "rg", "testStaticSite0", nil)
+	poller, err := clientFactory.NewStaticSitesClient().BeginDeleteStaticSite(ctx, "rg", "testStaticSite0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -302,11 +302,11 @@ func ExampleStaticSitesClient_UpdateStaticSite() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSitePatchResource{
+	res, err := clientFactory.NewStaticSitesClient().UpdateStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSitePatchResource{
 		Properties: &armappservice.StaticSite{},
 	}, nil)
 	if err != nil {
@@ -349,11 +349,11 @@ func ExampleStaticSitesClient_NewListStaticSiteUsersPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListStaticSiteUsersPager("rg", "testStaticSite0", "all", nil)
+	pager := clientFactory.NewStaticSitesClient().NewListStaticSiteUsersPager("rg", "testStaticSite0", "all", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -386,11 +386,11 @@ func ExampleStaticSitesClient_DeleteStaticSiteUser() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.DeleteStaticSiteUser(ctx, "rg", "testStaticSite0", "aad", "1234", nil)
+	_, err = clientFactory.NewStaticSitesClient().DeleteStaticSiteUser(ctx, "rg", "testStaticSite0", "aad", "1234", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -403,11 +403,11 @@ func ExampleStaticSitesClient_UpdateStaticSiteUser() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateStaticSiteUser(ctx, "rg", "testStaticSite0", "aad", "1234", armappservice.StaticSiteUserARMResource{
+	res, err := clientFactory.NewStaticSitesClient().UpdateStaticSiteUser(ctx, "rg", "testStaticSite0", "aad", "1234", armappservice.StaticSiteUserARMResource{
 		Properties: &armappservice.StaticSiteUserARMResourceProperties{
 			Roles: to.Ptr("contributor"),
 		},
@@ -435,11 +435,11 @@ func ExampleStaticSitesClient_NewGetStaticSiteBuildsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetStaticSiteBuildsPager("rg", "testStaticSite0", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetStaticSiteBuildsPager("rg", "testStaticSite0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -494,11 +494,11 @@ func ExampleStaticSitesClient_GetStaticSiteBuild() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -532,11 +532,11 @@ func ExampleStaticSitesClient_BeginDeleteStaticSiteBuild() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", nil)
+	poller, err := clientFactory.NewStaticSitesClient().BeginDeleteStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -553,11 +553,11 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteBuildAppSettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateStaticSiteBuildAppSettings(ctx, "rg", "testStaticSite0", "12", armappservice.StringDictionary{
+	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateStaticSiteBuildAppSettings(ctx, "rg", "testStaticSite0", "12", armappservice.StringDictionary{
 		Properties: map[string]*string{
 			"setting1": to.Ptr("someval"),
 			"setting2": to.Ptr("someval2"),
@@ -585,11 +585,11 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteBuildFunctionAppSettings()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateStaticSiteBuildFunctionAppSettings(ctx, "rg", "testStaticSite0", "12", armappservice.StringDictionary{
+	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateStaticSiteBuildFunctionAppSettings(ctx, "rg", "testStaticSite0", "12", armappservice.StringDictionary{
 		Properties: map[string]*string{
 			"setting1": to.Ptr("someval"),
 			"setting2": to.Ptr("someval2"),
@@ -617,11 +617,11 @@ func ExampleStaticSitesClient_NewGetBuildDatabaseConnectionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetBuildDatabaseConnectionsPager("rg", "testStaticSite0", "default", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetBuildDatabaseConnectionsPager("rg", "testStaticSite0", "default", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -655,11 +655,11 @@ func ExampleStaticSitesClient_GetBuildDatabaseConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetBuildDatabaseConnection(ctx, "rg", "testStaticSite0", "default", "default", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetBuildDatabaseConnection(ctx, "rg", "testStaticSite0", "default", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -685,11 +685,11 @@ func ExampleStaticSitesClient_CreateOrUpdateBuildDatabaseConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateBuildDatabaseConnection(ctx, "rg", "testStaticSite0", "default", "default", armappservice.DatabaseConnection{
+	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateBuildDatabaseConnection(ctx, "rg", "testStaticSite0", "default", "default", armappservice.DatabaseConnection{
 		Properties: &armappservice.DatabaseConnectionProperties{
 			ConnectionIdentity: to.Ptr("SystemAssigned"),
 			ConnectionString:   to.Ptr("AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;"),
@@ -722,11 +722,11 @@ func ExampleStaticSitesClient_DeleteBuildDatabaseConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.DeleteBuildDatabaseConnection(ctx, "rg", "testStaticSite0", "default", "default", nil)
+	_, err = clientFactory.NewStaticSitesClient().DeleteBuildDatabaseConnection(ctx, "rg", "testStaticSite0", "default", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -739,11 +739,11 @@ func ExampleStaticSitesClient_UpdateBuildDatabaseConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateBuildDatabaseConnection(ctx, "rg", "testStaticSite0", "default", "default", armappservice.DatabaseConnectionPatchRequest{
+	res, err := clientFactory.NewStaticSitesClient().UpdateBuildDatabaseConnection(ctx, "rg", "testStaticSite0", "default", "default", armappservice.DatabaseConnectionPatchRequest{
 		Properties: &armappservice.DatabaseConnectionPatchRequestProperties{},
 	}, nil)
 	if err != nil {
@@ -771,11 +771,11 @@ func ExampleStaticSitesClient_GetBuildDatabaseConnectionWithDetails() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetBuildDatabaseConnectionWithDetails(ctx, "rg", "testStaticSite0", "default", "default", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetBuildDatabaseConnectionWithDetails(ctx, "rg", "testStaticSite0", "default", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -813,11 +813,11 @@ func ExampleStaticSitesClient_NewListStaticSiteBuildFunctionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListStaticSiteBuildFunctionsPager("rg", "testStaticSite0", "default", nil)
+	pager := clientFactory.NewStaticSitesClient().NewListStaticSiteBuildFunctionsPager("rg", "testStaticSite0", "default", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -848,11 +848,11 @@ func ExampleStaticSitesClient_ListStaticSiteBuildAppSettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListStaticSiteBuildAppSettings(ctx, "rg", "testStaticSite0", "12", nil)
+	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteBuildAppSettings(ctx, "rg", "testStaticSite0", "12", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -874,11 +874,11 @@ func ExampleStaticSitesClient_ListStaticSiteBuildFunctionAppSettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListStaticSiteBuildFunctionAppSettings(ctx, "rg", "testStaticSite0", "12", nil)
+	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteBuildFunctionAppSettings(ctx, "rg", "testStaticSite0", "12", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -900,11 +900,11 @@ func ExampleStaticSitesClient_NewGetBuildDatabaseConnectionsWithDetailsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetBuildDatabaseConnectionsWithDetailsPager("rg", "testStaticSite0", "default", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetBuildDatabaseConnectionsWithDetailsPager("rg", "testStaticSite0", "default", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -950,11 +950,11 @@ func ExampleStaticSitesClient_NewGetUserProvidedFunctionAppsForStaticSiteBuildPa
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager("rg", "testStaticSite0", "default", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetUserProvidedFunctionAppsForStaticSiteBuildPager("rg", "testStaticSite0", "default", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -988,11 +988,11 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppForStaticSiteBuild() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetUserProvidedFunctionAppForStaticSiteBuild(ctx, "rg", "testStaticSite0", "default", "testFunctionApp", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetUserProvidedFunctionAppForStaticSiteBuild(ctx, "rg", "testStaticSite0", "default", "testFunctionApp", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1018,11 +1018,11 @@ func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(ctx, "rg", "testStaticSite0", "default", "testFunctionApp", armappservice.StaticSiteUserProvidedFunctionAppARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(ctx, "rg", "testStaticSite0", "default", "testFunctionApp", armappservice.StaticSiteUserProvidedFunctionAppARMResource{
 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
 			FunctionAppRegion:     to.Ptr("West US 2"),
 			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
@@ -1057,11 +1057,11 @@ func ExampleStaticSitesClient_DetachUserProvidedFunctionAppFromStaticSiteBuild()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.DetachUserProvidedFunctionAppFromStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", "testFunctionApp", nil)
+	_, err = clientFactory.NewStaticSitesClient().DetachUserProvidedFunctionAppFromStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", "testFunctionApp", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1074,11 +1074,11 @@ func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSiteBuild() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateZipDeploymentForStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", armappservice.StaticSiteZipDeploymentARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginCreateZipDeploymentForStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", armappservice.StaticSiteZipDeploymentARMResource{
 		Properties: &armappservice.StaticSiteZipDeployment{
 			APIZipURL:        to.Ptr("https://teststorageaccount.net/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip"),
 			AppZipURL:        to.Ptr("https://teststorageaccount.net/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip"),
@@ -1103,11 +1103,11 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteAppSettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateStaticSiteAppSettings(ctx, "rg", "testStaticSite0", armappservice.StringDictionary{
+	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateStaticSiteAppSettings(ctx, "rg", "testStaticSite0", armappservice.StringDictionary{
 		Properties: map[string]*string{
 			"setting1": to.Ptr("someval"),
 			"setting2": to.Ptr("someval2"),
@@ -1135,11 +1135,11 @@ func ExampleStaticSitesClient_NewListBasicAuthPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBasicAuthPager("rg", "testStaticSite0", nil)
+	pager := clientFactory.NewStaticSitesClient().NewListBasicAuthPager("rg", "testStaticSite0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1171,11 +1171,11 @@ func ExampleStaticSitesClient_GetBasicAuth() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetBasicAuth(ctx, "rg", "testStaticSite0", armappservice.BasicAuthNameDefault, nil)
+	res, err := clientFactory.NewStaticSitesClient().GetBasicAuth(ctx, "rg", "testStaticSite0", armappservice.BasicAuthNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1199,11 +1199,11 @@ func ExampleStaticSitesClient_CreateOrUpdateBasicAuth() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateBasicAuth(ctx, "rg", "testStaticSite0", armappservice.BasicAuthNameDefault, armappservice.StaticSiteBasicAuthPropertiesARMResource{
+	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateBasicAuth(ctx, "rg", "testStaticSite0", armappservice.BasicAuthNameDefault, armappservice.StaticSiteBasicAuthPropertiesARMResource{
 		Properties: &armappservice.StaticSiteBasicAuthPropertiesARMResourceProperties{
 			ApplicableEnvironmentsMode: to.Ptr("AllEnvironments"),
 			Password:                   to.Ptr("**********************"),
@@ -1231,11 +1231,11 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteFunctionAppSettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateStaticSiteFunctionAppSettings(ctx, "rg", "testStaticSite0", armappservice.StringDictionary{
+	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateStaticSiteFunctionAppSettings(ctx, "rg", "testStaticSite0", armappservice.StringDictionary{
 		Properties: map[string]*string{
 			"setting1": to.Ptr("someval"),
 			"setting2": to.Ptr("someval2"),
@@ -1263,11 +1263,11 @@ func ExampleStaticSitesClient_CreateUserRolesInvitationLink() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateUserRolesInvitationLink(ctx, "rg", "testStaticSite0", armappservice.StaticSiteUserInvitationRequestResource{
+	res, err := clientFactory.NewStaticSitesClient().CreateUserRolesInvitationLink(ctx, "rg", "testStaticSite0", armappservice.StaticSiteUserInvitationRequestResource{
 		Properties: &armappservice.StaticSiteUserInvitationRequestResourceProperties{
 			Domain:               to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
 			NumHoursToExpiration: to.Ptr[int32](1),
@@ -1297,11 +1297,11 @@ func ExampleStaticSitesClient_NewListStaticSiteCustomDomainsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListStaticSiteCustomDomainsPager("rg", "testStaticSite0", nil)
+	pager := clientFactory.NewStaticSitesClient().NewListStaticSiteCustomDomainsPager("rg", "testStaticSite0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1332,11 +1332,11 @@ func ExampleStaticSitesClient_GetStaticSiteCustomDomain() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetStaticSiteCustomDomain(ctx, "rg", "testStaticSite0", "custom.domain.net", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetStaticSiteCustomDomain(ctx, "rg", "testStaticSite0", "custom.domain.net", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1359,11 +1359,11 @@ func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSiteCustomDomain() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdateStaticSiteCustomDomain(ctx, "rg", "testStaticSite0", "custom.domain.net", armappservice.StaticSiteCustomDomainRequestPropertiesARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginCreateOrUpdateStaticSiteCustomDomain(ctx, "rg", "testStaticSite0", "custom.domain.net", armappservice.StaticSiteCustomDomainRequestPropertiesARMResource{
 		Properties: &armappservice.StaticSiteCustomDomainRequestPropertiesARMResourceProperties{},
 	}, nil)
 	if err != nil {
@@ -1392,11 +1392,11 @@ func ExampleStaticSitesClient_BeginDeleteStaticSiteCustomDomain() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteStaticSiteCustomDomain(ctx, "rg", "testStaticSite0", "custom.domain.net", nil)
+	poller, err := clientFactory.NewStaticSitesClient().BeginDeleteStaticSiteCustomDomain(ctx, "rg", "testStaticSite0", "custom.domain.net", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1413,11 +1413,11 @@ func ExampleStaticSitesClient_BeginValidateCustomDomainCanBeAddedToStaticSite() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginValidateCustomDomainCanBeAddedToStaticSite(ctx, "rg", "testStaticSite0", "custom.domain.net", armappservice.StaticSiteCustomDomainRequestPropertiesARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginValidateCustomDomainCanBeAddedToStaticSite(ctx, "rg", "testStaticSite0", "custom.domain.net", armappservice.StaticSiteCustomDomainRequestPropertiesARMResource{
 		Properties: &armappservice.StaticSiteCustomDomainRequestPropertiesARMResourceProperties{},
 	}, nil)
 	if err != nil {
@@ -1436,11 +1436,11 @@ func ExampleStaticSitesClient_NewGetDatabaseConnectionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetDatabaseConnectionsPager("rg", "testStaticSite0", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetDatabaseConnectionsPager("rg", "testStaticSite0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1474,11 +1474,11 @@ func ExampleStaticSitesClient_GetDatabaseConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDatabaseConnection(ctx, "rg", "testStaticSite0", "default", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetDatabaseConnection(ctx, "rg", "testStaticSite0", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1504,11 +1504,11 @@ func ExampleStaticSitesClient_CreateOrUpdateDatabaseConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateDatabaseConnection(ctx, "rg", "testStaticSite0", "default", armappservice.DatabaseConnection{
+	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateDatabaseConnection(ctx, "rg", "testStaticSite0", "default", armappservice.DatabaseConnection{
 		Properties: &armappservice.DatabaseConnectionProperties{
 			ConnectionIdentity: to.Ptr("SystemAssigned"),
 			ConnectionString:   to.Ptr("AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;"),
@@ -1541,11 +1541,11 @@ func ExampleStaticSitesClient_DeleteDatabaseConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.DeleteDatabaseConnection(ctx, "rg", "testStaticSite0", "default", nil)
+	_, err = clientFactory.NewStaticSitesClient().DeleteDatabaseConnection(ctx, "rg", "testStaticSite0", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1558,11 +1558,11 @@ func ExampleStaticSitesClient_UpdateDatabaseConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateDatabaseConnection(ctx, "rg", "testStaticSite0", "default", armappservice.DatabaseConnectionPatchRequest{
+	res, err := clientFactory.NewStaticSitesClient().UpdateDatabaseConnection(ctx, "rg", "testStaticSite0", "default", armappservice.DatabaseConnectionPatchRequest{
 		Properties: &armappservice.DatabaseConnectionPatchRequestProperties{},
 	}, nil)
 	if err != nil {
@@ -1590,11 +1590,11 @@ func ExampleStaticSitesClient_GetDatabaseConnectionWithDetails() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDatabaseConnectionWithDetails(ctx, "rg", "testStaticSite0", "default", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetDatabaseConnectionWithDetails(ctx, "rg", "testStaticSite0", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1632,11 +1632,11 @@ func ExampleStaticSitesClient_BeginDetachStaticSite() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDetachStaticSite(ctx, "rg", "testStaticSite0", nil)
+	poller, err := clientFactory.NewStaticSitesClient().BeginDetachStaticSite(ctx, "rg", "testStaticSite0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1653,11 +1653,11 @@ func ExampleStaticSitesClient_NewListStaticSiteFunctionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListStaticSiteFunctionsPager("rg", "testStaticSite0", nil)
+	pager := clientFactory.NewStaticSitesClient().NewListStaticSiteFunctionsPager("rg", "testStaticSite0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1688,11 +1688,11 @@ func ExampleStaticSitesClient_ListStaticSiteAppSettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListStaticSiteAppSettings(ctx, "rg", "testStaticSite0", nil)
+	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteAppSettings(ctx, "rg", "testStaticSite0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1714,11 +1714,11 @@ func ExampleStaticSitesClient_ListStaticSiteConfiguredRoles() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListStaticSiteConfiguredRoles(ctx, "rg", "testStaticSite0", nil)
+	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteConfiguredRoles(ctx, "rg", "testStaticSite0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1740,11 +1740,11 @@ func ExampleStaticSitesClient_ListStaticSiteFunctionAppSettings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListStaticSiteFunctionAppSettings(ctx, "rg", "testStaticSite0", nil)
+	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteFunctionAppSettings(ctx, "rg", "testStaticSite0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1766,11 +1766,11 @@ func ExampleStaticSitesClient_ListStaticSiteSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListStaticSiteSecrets(ctx, "rg", "testStaticSite0", nil)
+	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteSecrets(ctx, "rg", "testStaticSite0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1791,11 +1791,11 @@ func ExampleStaticSitesClient_NewGetPrivateEndpointConnectionListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetPrivateEndpointConnectionListPager("rg", "testStaticSite0", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetPrivateEndpointConnectionListPager("rg", "testStaticSite0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1833,11 +1833,11 @@ func ExampleStaticSitesClient_GetPrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetPrivateEndpointConnection(ctx, "rg", "testSite", "connection", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetPrivateEndpointConnection(ctx, "rg", "testSite", "connection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1867,11 +1867,11 @@ func ExampleStaticSitesClient_BeginApproveOrRejectPrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginApproveOrRejectPrivateEndpointConnection(ctx, "rg", "testSite", "connection", armappservice.PrivateLinkConnectionApprovalRequestResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginApproveOrRejectPrivateEndpointConnection(ctx, "rg", "testSite", "connection", armappservice.PrivateLinkConnectionApprovalRequestResource{
 		Properties: &armappservice.PrivateLinkConnectionApprovalRequest{
 			PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
 				Description:     to.Ptr("Approved by admin."),
@@ -1913,11 +1913,11 @@ func ExampleStaticSitesClient_BeginDeletePrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeletePrivateEndpointConnection(ctx, "rg", "testSite", "connection", nil)
+	poller, err := clientFactory.NewStaticSitesClient().BeginDeletePrivateEndpointConnection(ctx, "rg", "testSite", "connection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1939,11 +1939,11 @@ func ExampleStaticSitesClient_GetPrivateLinkResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetPrivateLinkResources(ctx, "rg", "testSite", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetPrivateLinkResources(ctx, "rg", "testSite", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1974,11 +1974,11 @@ func ExampleStaticSitesClient_ResetStaticSiteAPIKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.ResetStaticSiteAPIKey(ctx, "rg", "testStaticSite0", armappservice.StaticSiteResetPropertiesARMResource{
+	_, err = clientFactory.NewStaticSitesClient().ResetStaticSiteAPIKey(ctx, "rg", "testStaticSite0", armappservice.StaticSiteResetPropertiesARMResource{
 		Properties: &armappservice.StaticSiteResetPropertiesARMResourceProperties{
 			RepositoryToken:        to.Ptr("repoToken123"),
 			ShouldUpdateRepository: to.Ptr(true),
@@ -1996,11 +1996,11 @@ func ExampleStaticSitesClient_NewGetDatabaseConnectionsWithDetailsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetDatabaseConnectionsWithDetailsPager("rg", "testStaticSite0", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetDatabaseConnectionsWithDetailsPager("rg", "testStaticSite0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2046,11 +2046,11 @@ func ExampleStaticSitesClient_NewGetUserProvidedFunctionAppsForStaticSitePager()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetUserProvidedFunctionAppsForStaticSitePager("rg", "testStaticSite0", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetUserProvidedFunctionAppsForStaticSitePager("rg", "testStaticSite0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2084,11 +2084,11 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppForStaticSite() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetUserProvidedFunctionAppForStaticSite(ctx, "rg", "testStaticSite0", "testFunctionApp", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetUserProvidedFunctionAppForStaticSite(ctx, "rg", "testStaticSite0", "testFunctionApp", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2114,11 +2114,11 @@ func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRegisterUserProvidedFunctionAppWithStaticSite(ctx, "rg", "testStaticSite0", "testFunctionApp", armappservice.StaticSiteUserProvidedFunctionAppARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginRegisterUserProvidedFunctionAppWithStaticSite(ctx, "rg", "testStaticSite0", "testFunctionApp", armappservice.StaticSiteUserProvidedFunctionAppARMResource{
 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
 			FunctionAppRegion:     to.Ptr("West US 2"),
 			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
@@ -2153,11 +2153,11 @@ func ExampleStaticSitesClient_DetachUserProvidedFunctionAppFromStaticSite() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.DetachUserProvidedFunctionAppFromStaticSite(ctx, "rg", "testStaticSite0", "testFunctionApp", nil)
+	_, err = clientFactory.NewStaticSitesClient().DetachUserProvidedFunctionAppFromStaticSite(ctx, "rg", "testStaticSite0", "testFunctionApp", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2170,11 +2170,11 @@ func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSite() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateZipDeploymentForStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSiteZipDeploymentARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginCreateZipDeploymentForStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSiteZipDeploymentARMResource{
 		Properties: &armappservice.StaticSiteZipDeployment{
 			APIZipURL:        to.Ptr("https://teststorageaccount.net/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip"),
 			AppZipURL:        to.Ptr("https://teststorageaccount.net/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip"),
@@ -2199,11 +2199,11 @@ func ExampleStaticSitesClient_BeginValidateBackend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginValidateBackend(ctx, "rg", "testStaticSite0", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginValidateBackend(ctx, "rg", "testStaticSite0", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
 			Region:            to.Ptr("West US 2"),
@@ -2225,11 +2225,11 @@ func ExampleStaticSitesClient_BeginValidateBackendForBuild() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginValidateBackendForBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginValidateBackendForBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
 			Region:            to.Ptr("West US 2"),
@@ -2251,11 +2251,11 @@ func ExampleStaticSitesClient_NewGetLinkedBackendsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetLinkedBackendsPager("rg", "testStaticSite0", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetLinkedBackendsPager("rg", "testStaticSite0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2290,11 +2290,11 @@ func ExampleStaticSitesClient_NewGetLinkedBackendsForBuildPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetLinkedBackendsForBuildPager("rg", "testStaticSite0", "default", nil)
+	pager := clientFactory.NewStaticSitesClient().NewGetLinkedBackendsForBuildPager("rg", "testStaticSite0", "default", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2329,11 +2329,11 @@ func ExampleStaticSitesClient_GetLinkedBackend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetLinkedBackend(ctx, "rg", "testStaticSite0", "testBackend", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetLinkedBackend(ctx, "rg", "testStaticSite0", "testBackend", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2360,11 +2360,11 @@ func ExampleStaticSitesClient_BeginLinkBackend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginLinkBackend(ctx, "rg", "testStaticSite0", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginLinkBackend(ctx, "rg", "testStaticSite0", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
 			Region:            to.Ptr("West US 2"),
@@ -2400,11 +2400,11 @@ func ExampleStaticSitesClient_UnlinkBackend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.UnlinkBackend(ctx, "rg", "testStaticSite0", "testBackend", &armappservice.StaticSitesClientUnlinkBackendOptions{IsCleaningAuthConfig: nil})
+	_, err = clientFactory.NewStaticSitesClient().UnlinkBackend(ctx, "rg", "testStaticSite0", "testBackend", &armappservice.StaticSitesClientUnlinkBackendOptions{IsCleaningAuthConfig: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2417,11 +2417,11 @@ func ExampleStaticSitesClient_GetLinkedBackendForBuild() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetLinkedBackendForBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", nil)
+	res, err := clientFactory.NewStaticSitesClient().GetLinkedBackendForBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2448,11 +2448,11 @@ func ExampleStaticSitesClient_BeginLinkBackendToBuild() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginLinkBackendToBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
+	poller, err := clientFactory.NewStaticSitesClient().BeginLinkBackendToBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
 			Region:            to.Ptr("West US 2"),
@@ -2488,11 +2488,11 @@ func ExampleStaticSitesClient_UnlinkBackendFromBuild() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewStaticSitesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.UnlinkBackendFromBuild(ctx, "rg", "testStaticSite0", "12", "testBackend", &armappservice.StaticSitesClientUnlinkBackendFromBuildOptions{IsCleaningAuthConfig: nil})
+	_, err = clientFactory.NewStaticSitesClient().UnlinkBackendFromBuild(ctx, "rg", "testStaticSite0", "12", "testBackend", &armappservice.StaticSitesClientUnlinkBackendFromBuildOptions{IsCleaningAuthConfig: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

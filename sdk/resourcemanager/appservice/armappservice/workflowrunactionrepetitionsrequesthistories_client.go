@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // WorkflowRunActionRepetitionsRequestHistoriesClient contains the methods for the WorkflowRunActionRepetitionsRequestHistories group.
 // Don't use this type directly, use NewWorkflowRunActionRepetitionsRequestHistoriesClient() instead.
 type WorkflowRunActionRepetitionsRequestHistoriesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkflowRunActionRepetitionsRequestHistoriesClient creates a new instance of WorkflowRunActionRepetitionsRequestHistoriesClient with the specified values.
@@ -36,21 +33,13 @@ type WorkflowRunActionRepetitionsRequestHistoriesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowRunActionRepetitionsRequestHistoriesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkflowRunActionRepetitionsRequestHistoriesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkflowRunActionRepetitionsRequestHistoriesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -73,7 +62,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) Get(ctx contex
 	if err != nil {
 		return WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse{}, err
 	}
@@ -118,7 +107,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getCreateReque
 		return nil, errors.New("parameter requestHistoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{requestHistoryName}", url.PathEscape(requestHistoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +154,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) NewListPager(r
 			if err != nil {
 				return WorkflowRunActionRepetitionsRequestHistoriesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkflowRunActionRepetitionsRequestHistoriesClientListResponse{}, err
 			}
@@ -208,7 +197,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) listCreateRequ
 		return nil, errors.New("parameter repetitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{repetitionName}", url.PathEscape(repetitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -24,11 +24,11 @@ func ExampleProviderClient_NewGetFunctionAppStacksPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewProviderClient("<subscription-id>", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetFunctionAppStacksPager(&armappservice.ProviderClientGetFunctionAppStacksOptions{StackOsType: nil})
+	pager := clientFactory.NewProviderClient().NewGetFunctionAppStacksPager(&armappservice.ProviderClientGetFunctionAppStacksOptions{StackOsType: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -774,11 +774,11 @@ func ExampleProviderClient_NewGetFunctionAppStacksForLocationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewProviderClient("<subscription-id>", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetFunctionAppStacksForLocationPager("westus", &armappservice.ProviderClientGetFunctionAppStacksForLocationOptions{StackOsType: nil})
+	pager := clientFactory.NewProviderClient().NewGetFunctionAppStacksForLocationPager("westus", &armappservice.ProviderClientGetFunctionAppStacksForLocationOptions{StackOsType: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1530,11 +1530,11 @@ func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewProviderClient("<subscription-id>", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetWebAppStacksForLocationPager("westus", &armappservice.ProviderClientGetWebAppStacksForLocationOptions{StackOsType: nil})
+	pager := clientFactory.NewProviderClient().NewGetWebAppStacksForLocationPager("westus", &armappservice.ProviderClientGetWebAppStacksForLocationOptions{StackOsType: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -4427,11 +4427,11 @@ func ExampleProviderClient_NewListOperationsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewProviderClient("<subscription-id>", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOperationsPager(nil)
+	pager := clientFactory.NewProviderClient().NewListOperationsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -10130,11 +10130,11 @@ func ExampleProviderClient_NewGetWebAppStacksPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewProviderClient("<subscription-id>", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetWebAppStacksPager(&armappservice.ProviderClientGetWebAppStacksOptions{StackOsType: nil})
+	pager := clientFactory.NewProviderClient().NewGetWebAppStacksPager(&armappservice.ProviderClientGetWebAppStacksOptions{StackOsType: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

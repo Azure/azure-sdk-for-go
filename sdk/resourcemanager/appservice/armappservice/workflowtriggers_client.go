@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // WorkflowTriggersClient contains the methods for the WorkflowTriggers group.
 // Don't use this type directly, use NewWorkflowTriggersClient() instead.
 type WorkflowTriggersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkflowTriggersClient creates a new instance of WorkflowTriggersClient with the specified values.
@@ -37,21 +34,13 @@ type WorkflowTriggersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWorkflowTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowTriggersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkflowTriggersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkflowTriggersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *WorkflowTriggersClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkflowTriggersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkflowTriggersClientGetResponse{}, err
 	}
@@ -103,7 +92,7 @@ func (client *WorkflowTriggersClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +127,7 @@ func (client *WorkflowTriggersClient) GetSchemaJSON(ctx context.Context, resourc
 	if err != nil {
 		return WorkflowTriggersClientGetSchemaJSONResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkflowTriggersClientGetSchemaJSONResponse{}, err
 	}
@@ -171,7 +160,7 @@ func (client *WorkflowTriggersClient) getSchemaJSONCreateRequest(ctx context.Con
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -215,7 +204,7 @@ func (client *WorkflowTriggersClient) NewListPager(resourceGroupName string, nam
 			if err != nil {
 				return WorkflowTriggersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkflowTriggersClientListResponse{}, err
 			}
@@ -246,7 +235,7 @@ func (client *WorkflowTriggersClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter workflowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,7 +276,7 @@ func (client *WorkflowTriggersClient) ListCallbackURL(ctx context.Context, resou
 	if err != nil {
 		return WorkflowTriggersClientListCallbackURLResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkflowTriggersClientListCallbackURLResponse{}, err
 	}
@@ -320,7 +309,7 @@ func (client *WorkflowTriggersClient) listCallbackURLCreateRequest(ctx context.C
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -356,9 +345,9 @@ func (client *WorkflowTriggersClient) BeginRun(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkflowTriggersClientRunResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkflowTriggersClientRunResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkflowTriggersClientRunResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkflowTriggersClientRunResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -371,7 +360,7 @@ func (client *WorkflowTriggersClient) run(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -404,7 +393,7 @@ func (client *WorkflowTriggersClient) runCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

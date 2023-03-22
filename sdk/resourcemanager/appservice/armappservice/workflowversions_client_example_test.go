@@ -24,11 +24,11 @@ func ExampleWorkflowVersionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowVersionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("test-resource-group", "test-name", "test-workflow", &armappservice.WorkflowVersionsClientListOptions{Top: nil})
+	pager := clientFactory.NewWorkflowVersionsClient().NewListPager("test-resource-group", "test-name", "test-workflow", &armappservice.WorkflowVersionsClientListOptions{Top: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -88,11 +88,11 @@ func ExampleWorkflowVersionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWorkflowVersionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "test-resource-group", "test-name", "test-workflow", "08586676824806722526", nil)
+	res, err := clientFactory.NewWorkflowVersionsClient().Get(ctx, "test-resource-group", "test-name", "test-workflow", "08586676824806722526", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

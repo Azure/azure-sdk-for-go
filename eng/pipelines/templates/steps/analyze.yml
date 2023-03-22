@@ -125,7 +125,11 @@ steps:
   - ${{if eq(parameters.NonShipping, 'false')}}:
     - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
       parameters:
-        PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+        ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+          PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
+        ${{ else }}:
+          PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
         ForRelease: false
 
   - task: PowerShell@2

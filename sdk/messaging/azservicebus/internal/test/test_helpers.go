@@ -42,27 +42,27 @@ func RandomString(prefix string, length int) string {
 }
 
 func GetConnectionString(t *testing.T) string {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
-
-	if cs == "" {
-		t.Skip()
-	}
-
-	return cs
+	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING")
 }
 
 func GetConnectionStringForPremiumSB(t *testing.T) string {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_PREMIUM")
-
-	if cs == "" {
-		t.Skip()
-	}
-
-	return cs
+	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_PREMIUM")
 }
 
 func GetConnectionStringWithoutManagePerms(t *testing.T) string {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_NO_MANAGE")
+	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_NO_MANAGE")
+}
+
+func GetConnectionStringSendOnly(t *testing.T) string {
+	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_SEND_ONLY")
+}
+
+func GetConnectionStringListenOnly(t *testing.T) string {
+	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_LISTEN_ONLY")
+}
+
+func getEnvOrSkipTest(t *testing.T, name string) string {
+	cs := os.Getenv(name)
 
 	if cs == "" {
 		t.Skip()

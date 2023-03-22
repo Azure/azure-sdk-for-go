@@ -48,10 +48,9 @@ kind: Schedule
 apiVersion: chaos-mesh.org/v1alpha1
 spec:
   schedule: "*/5 * * * *"
-  startingDeadlineSeconds: null
-  concurrencyPolicy: Forbid
-  historyLimit: 1
   type: NetworkChaos
+  historyLimit: 10
+  concurrencyPolicy: Allow
   networkChaos:
     selector:
       namespaces:

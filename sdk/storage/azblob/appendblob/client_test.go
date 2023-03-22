@@ -11,6 +11,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -687,6 +688,8 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
+
 	abName := testcommon.GenerateBlobName(testName)
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
@@ -723,6 +726,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	abName := testcommon.GenerateBlobName(testName)
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
@@ -755,6 +759,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetLegalHold() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	abName := testcommon.GenerateBlobName(testName)
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
@@ -2380,4 +2385,580 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataNil() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = abClient.SetMetadata(context.Background(), map[string]*string{"not": to.Ptr("nil")}, nil)
+	_require.Nil(err)
+
+	_, err = abClient.SetMetadata(context.Background(), nil, nil)
+	_require.Nil(err)
+
+	blobGetResp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(blobGetResp.Metadata, 0)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataEmpty() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = abClient.SetMetadata(context.Background(), map[string]*string{"not": to.Ptr("nil")}, nil)
+	_require.Nil(err)
+
+	_, err = abClient.SetMetadata(context.Background(), map[string]*string{}, nil)
+	_require.Nil(err)
+
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.Metadata, 0)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataInvalidField() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = abClient.SetMetadata(context.Background(), map[string]*string{"Invalid field!": to.Ptr("value")}, nil)
+	_require.NotNil(err)
+	_require.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring)
+}
+
+func validateMetadataSet(_require *require.Assertions, abClient *appendblob.Client) {
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
+
+	setBlobMetadataOptions := blob.SetMetadataOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		},
+	}
+	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
+	_require.Nil(err)
+
+	validateMetadataSet(_require, abClient)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
+
+	setBlobMetadataOptions := blob.SetMetadataOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		},
+	}
+	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfUnmodifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
+
+	setBlobMetadataOptions := blob.SetMetadataOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		},
+	}
+	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
+	_require.Nil(err)
+
+	validateMetadataSet(_require, abClient)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfUnmodifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
+	setBlobMetadataOptions := blob.SetMetadataOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: to.Ptr(currentTime)},
+		},
+	}
+	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfMatchTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	setBlobMetadataOptions := blob.SetMetadataOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: resp.ETag},
+		},
+	}
+	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
+	_require.Nil(err)
+
+	validateMetadataSet(_require, abClient)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	setBlobMetadataOptions := blob.SetMetadataOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr(azcore.ETag("garbage"))},
+		},
+	}
+	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfNoneMatchTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	setBlobMetadataOptions := blob.SetMetadataOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETag("garbage"))},
+		},
+	}
+	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
+	_require.Nil(err)
+
+	validateMetadataSet(_require, abClient)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfNoneMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	setBlobMetadataOptions := blob.SetMetadataOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: resp.ETag},
+		},
+	}
+	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func validatePropertiesSet(_require *require.Assertions, abClient *appendblob.Client, disposition string) {
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(*resp.ContentDisposition, disposition)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
+
+	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
+		&blob.SetHTTPHeadersOptions{
+			AccessConditions: &blob.AccessConditions{
+				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime},
+			},
+		})
+	_require.Nil(err)
+
+	validatePropertiesSet(_require, abClient, "my_disposition")
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
+
+	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
+		&blob.SetHTTPHeadersOptions{
+			AccessConditions: &blob.AccessConditions{
+				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime},
+			}})
+	_require.NotNil(err)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfUnmodifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
+
+	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		}})
+	_require.Nil(err)
+
+	validatePropertiesSet(_require, abClient, "my_disposition")
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfUnmodifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
+
+	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		}})
+	_require.NotNil(err)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfMatchTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: resp.ETag},
+		}})
+	_require.Nil(err)
+
+	validatePropertiesSet(_require, abClient, "my_disposition")
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr(azcore.ETag("garbage"))},
+		}})
+	_require.NotNil(err)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfNoneMatchTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETag("garbage"))},
+		}})
+	_require.Nil(err)
+
+	validatePropertiesSet(_require, abClient, "my_disposition")
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfNoneMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
+		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: resp.ETag},
+		}})
+	_require.NotNil(err)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetBlobTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	var tagsMap = map[string]string{
+		"azure": "blob",
+	}
+
+	_, err = abClient.SetTags(context.Background(), tagsMap, nil)
+	_require.Nil(err)
+	time.Sleep(10 * time.Second)
+
+	blobGetTagsResponse, err := abClient.GetTags(context.Background(), nil)
+	_require.Nil(err)
+
+	blobTagsSet := blobGetTagsResponse.BlobTagSet
+	_require.NotNil(blobTagsSet)
+	_require.Len(blobTagsSet, 1)
+	for _, blobTag := range blobTagsSet {
+		_require.Equal(tagsMap[*blobTag.Key], *blobTag.Value)
+	}
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	blobLeaseClient, err := lease.NewBlobClient(abClient, &lease.BlobClientOptions{
+		LeaseID: to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
+	})
+	_require.NoError(err)
+	ctx := context.Background()
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, int32(60), nil)
+	_require.Nil(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.LeaseID())
+
+	_, err = abClient.SetTags(ctx, testcommon.BasicBlobTagsMap, nil)
+	_require.NotNil(err)
+	time.Sleep(10 * time.Second)
+
+	// add lease conditions
+	_, err = abClient.SetTags(ctx, testcommon.BasicBlobTagsMap, &blob.SetTagsOptions{AccessConditions: &blob.AccessConditions{
+		LeaseAccessConditions: &blob.LeaseAccessConditions{LeaseID: blobLeaseClient.LeaseID()}}})
+	_require.Nil(err)
+
+	_, err = abClient.GetTags(ctx, nil)
+	_require.NoError(err)
+
+	blobGetTagsResponse, err := abClient.GetTags(ctx, &blob.GetTagsOptions{BlobAccessConditions: &blob.AccessConditions{
+		LeaseAccessConditions: &blob.LeaseAccessConditions{LeaseID: blobLeaseClient.LeaseID()}}})
+	_require.NoError(err)
+
+	blobTagsSet := blobGetTagsResponse.BlobTagSet
+	_require.NotNil(blobTagsSet)
+	_require.Len(blobTagsSet, 3)
+	for _, blobTag := range blobTagsSet {
+		_require.Equal(testcommon.BasicBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
 }

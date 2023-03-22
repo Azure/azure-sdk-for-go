@@ -18,11 +18,18 @@ stages:
             name: Verify
             inputs:
               filePath: ./eng/scripts/Verify-NeedToRelease.ps1
-              arguments: >
-                -PackageName 'sdk/${{ parameters.ServiceDirectory }}'
-                -ServiceDirectory '${{ parameters.ServiceDirectory }}'
-                -repoId Azure/azure-sdk-for-go
-                -workingDirectory $(System.DefaultWorkingDirectory)
+              ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+                arguments: >
+                  -PackageName "${{replace(parameters.ServiceDirectory, '../', '')}}"
+                  -ServiceDirectory '${{ parameters.ServiceDirectory }}'
+                  -repoId Azure/azure-sdk-for-go
+                  -workingDirectory $(System.DefaultWorkingDirectory)
+              ${{ else }}:
+                arguments: >
+                  -PackageName 'sdk/${{ parameters.ServiceDirectory }}'
+                  -ServiceDirectory '${{ parameters.ServiceDirectory }}'
+                  -repoId Azure/azure-sdk-for-go
+                  -workingDirectory $(System.DefaultWorkingDirectory)
               pwsh: true
             env:
               GH_TOKEN: $(azuresdk-github-pat)
@@ -48,7 +55,10 @@ stages:
                 - template: /eng/common/pipelines/templates/steps/retain-run.yml
                 - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
                   parameters:
-                    PackageName: 'sdk/${{ parameters.ServiceDirectory }}'
+                    ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+                      PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
+                    ${{ else }}:
+                      PackageName: 'sdk/${{parameters.ServiceDirectory}}'
                     ForRelease: true
                 - task: PowerShell@2
                   displayName: 'Verify no replace directives in go.mod file'

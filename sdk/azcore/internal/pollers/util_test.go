@@ -20,10 +20,12 @@ import (
 )
 
 func TestIsTerminalState(t *testing.T) {
-	require.False(t, IsTerminalState("Updating"), "Updating is not a terminal state")
-	require.True(t, IsTerminalState("Succeeded"), "Succeeded is a terminal state")
-	require.True(t, IsTerminalState("failed"), "failed is a terminal state")
-	require.True(t, IsTerminalState("canceled"), "canceled is a terminal state")
+	require.False(t, IsTerminalState("upDAting"), "Updating is not a terminal state")
+	require.True(t, IsTerminalState("SuccEEded"), "Succeeded is a terminal state")
+	require.True(t, IsTerminalState("completEd"), "Completed is a terminal state")
+	require.True(t, IsTerminalState("faIled"), "failed is a terminal state")
+	require.True(t, IsTerminalState("canCeled"), "canceled is a terminal state")
+	require.True(t, IsTerminalState("canceLLed"), "cancelled is a terminal state")
 }
 
 func TestStatusCodeValid(t *testing.T) {
@@ -88,9 +90,10 @@ func TestIsValidURL(t *testing.T) {
 }
 
 func TestFailed(t *testing.T) {
-	require.False(t, Failed("Succeeded"))
-	require.False(t, Failed("Updating"))
-	require.True(t, Failed("failed"))
+	require.False(t, Failed("sUcceeded"))
+	require.False(t, Failed("ppdATing"))
+	require.True(t, Failed("fAilEd"))
+	require.True(t, Failed("caNcElled"))
 }
 
 func TestGetJSON(t *testing.T) {

@@ -30,7 +30,7 @@ const defaultMaxCreditSize = uint32(5000)
 // StartPosition indicates the position to start receiving events within a partition.
 // The default position is Latest.
 //
-// You can set this in the options for ConsumerClient.
+// You can set this in the options for [ConsumerClient.NewPartitionClient].
 type StartPosition struct {
 	// Offset will start the consumer after the specified offset. Can be exclusive
 	// or inclusive, based on the Inclusive property.

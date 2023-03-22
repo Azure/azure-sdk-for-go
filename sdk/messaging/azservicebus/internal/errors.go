@@ -71,6 +71,19 @@ func TransformError(err error) error {
 		return exported.NewError(exported.CodeTimeout, err)
 	}
 
+	// there are a few errors that all boil down to "bad creds or unauthorized"
+	var amqpErr *amqp.Error
+
+	if errors.As(err, &amqpErr) && amqpErr.Condition == amqp.ErrorUnauthorizedAccess {
+		return exported.NewError(exported.CodeUnauthorizedAccess, err)
+	}
+
+	var rpcErr RPCError
+
+	if errors.As(err, &rpcErr) && rpcErr.Resp.Code == http.StatusUnauthorized {
+		return exported.NewError(exported.CodeUnauthorizedAccess, err)
+	}
+
 	rk := GetRecoveryKind(err)
 
 	switch rk {
@@ -100,6 +113,13 @@ func isMicrosoftTimeoutError(err error) bool {
 func IsDetachError(err error) bool {
 	var de *amqp.DetachError
 	return errors.As(err, &de)
+}
+
+func IsNotAllowedError(err error) bool {
+	var e *amqp.Error
+
+	return errors.As(err, &e) &&
+		e.Condition == amqp.ErrorNotAllowed
 }
 
 func IsCancelError(err error) bool {
@@ -185,6 +205,16 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
+	// azidentity returns errors that match this for auth failures.
+	var errNonRetriableMarker interface {
+		NonRetriable()
+		error
+	}
+
+	if errors.As(err, &errNonRetriableMarker) {
+		return RecoveryKindFatal
+	}
+
 	// check the "special" AMQP errors that aren't condition-based.
 	if errors.Is(err, amqp.ErrLinkClosed) ||
 		IsDetachError(err) {
@@ -226,14 +256,10 @@ func GetRecoveryKind(err error) RecoveryKind {
 		// RFC2616 is the specification for HTTP.
 		code := rpcErr.RPCCode()
 
-		if code == http.StatusNotFound || code == RPCResponseCodeLockLost {
+		if code == http.StatusNotFound ||
+			code == RPCResponseCodeLockLost ||
+			code == http.StatusUnauthorized {
 			return RecoveryKindFatal
-		}
-
-		// this can happen when we're recovering the link - the client gets closed and the old link is still being
-		// used by this instance of the client. It needs to recover and attempt it again.
-		if code == http.StatusUnauthorized {
-			return RecoveryKindLink
 		}
 
 		// simple timeouts

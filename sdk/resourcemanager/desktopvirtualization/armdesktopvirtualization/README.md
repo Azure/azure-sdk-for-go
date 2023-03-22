@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Compute modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure Virtual Desktop modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armdesktopvirtualization.NewClientFactory(<subscription ID>, cred, nil)

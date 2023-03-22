@@ -4,9 +4,13 @@
 
 ### Features Added
 
+- Authentication errors are indicated with an `azeventhubs.Error`, with a `Code` of `azeventhubs.ErrorCodeUnauthorizedAccess`. (PR#20450)
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Authentication errors could cause unnecessary retries, making calls taking longer to fail. (PR#20450)
 
 ### Other Changes
 

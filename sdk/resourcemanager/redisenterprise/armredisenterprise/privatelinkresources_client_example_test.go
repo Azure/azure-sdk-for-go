@@ -24,11 +24,11 @@ func ExamplePrivateLinkResourcesClient_NewListByClusterPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewPrivateLinkResourcesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByClusterPager("rg1", "cache1", nil)
+	pager := clientFactory.NewPrivateLinkResourcesClient().NewListByClusterPager("rg1", "cache1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

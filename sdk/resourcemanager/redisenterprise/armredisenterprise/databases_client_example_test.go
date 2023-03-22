@@ -25,11 +25,11 @@ func ExampleDatabasesClient_NewListByClusterPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByClusterPager("rg1", "cache1", nil)
+	pager := clientFactory.NewDatabasesClient().NewListByClusterPager("rg1", "cache1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -76,11 +76,11 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "rg1", "cache1", "default", armredisenterprise.Database{
+	poller, err := clientFactory.NewDatabasesClient().BeginCreate(ctx, "rg1", "cache1", "default", armredisenterprise.Database{
 		Properties: &armredisenterprise.DatabaseProperties{
 			ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
@@ -156,11 +156,11 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid1", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "rg1", "cache1", "default", armredisenterprise.Database{
+	poller, err := clientFactory.NewDatabasesClient().BeginCreate(ctx, "rg1", "cache1", "default", armredisenterprise.Database{
 		Properties: &armredisenterprise.DatabaseProperties{
 			ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
@@ -222,11 +222,11 @@ func ExampleDatabasesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "rg1", "cache1", "default", armredisenterprise.DatabaseUpdate{
+	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "rg1", "cache1", "default", armredisenterprise.DatabaseUpdate{
 		Properties: &armredisenterprise.DatabaseProperties{
 			ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
@@ -278,11 +278,11 @@ func ExampleDatabasesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "cache1", "default", nil)
+	res, err := clientFactory.NewDatabasesClient().Get(ctx, "rg1", "cache1", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -321,11 +321,11 @@ func ExampleDatabasesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "cache1", "db1", nil)
+	poller, err := clientFactory.NewDatabasesClient().BeginDelete(ctx, "rg1", "cache1", "db1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -342,11 +342,11 @@ func ExampleDatabasesClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListKeys(ctx, "rg1", "cache1", "default", nil)
+	res, err := clientFactory.NewDatabasesClient().ListKeys(ctx, "rg1", "cache1", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -366,11 +366,11 @@ func ExampleDatabasesClient_BeginRegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRegenerateKey(ctx, "rg1", "cache1", "default", armredisenterprise.RegenerateKeyParameters{
+	poller, err := clientFactory.NewDatabasesClient().BeginRegenerateKey(ctx, "rg1", "cache1", "default", armredisenterprise.RegenerateKeyParameters{
 		KeyType: to.Ptr(armredisenterprise.AccessKeyTypePrimary),
 	}, nil)
 	if err != nil {
@@ -396,11 +396,11 @@ func ExampleDatabasesClient_BeginImport() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginImport(ctx, "rg1", "cache1", "default", armredisenterprise.ImportClusterParameters{
+	poller, err := clientFactory.NewDatabasesClient().BeginImport(ctx, "rg1", "cache1", "default", armredisenterprise.ImportClusterParameters{
 		SasUris: []*string{
 			to.Ptr("https://contosostorage.blob.core.window.net/urltoBlobFile1?sasKeyParameters"),
 			to.Ptr("https://contosostorage.blob.core.window.net/urltoBlobFile2?sasKeyParameters")},
@@ -421,11 +421,11 @@ func ExampleDatabasesClient_BeginExport() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginExport(ctx, "rg1", "cache1", "default", armredisenterprise.ExportClusterParameters{
+	poller, err := clientFactory.NewDatabasesClient().BeginExport(ctx, "rg1", "cache1", "default", armredisenterprise.ExportClusterParameters{
 		SasURI: to.Ptr("https://contosostorage.blob.core.window.net/urlToBlobContainer?sasKeyParameters"),
 	}, nil)
 	if err != nil {
@@ -444,11 +444,11 @@ func ExampleDatabasesClient_BeginForceUnlink() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginForceUnlink(ctx, "rg1", "cache1", "default", armredisenterprise.ForceUnlinkParameters{
+	poller, err := clientFactory.NewDatabasesClient().BeginForceUnlink(ctx, "rg1", "cache1", "default", armredisenterprise.ForceUnlinkParameters{
 		IDs: []*string{
 			to.Ptr("/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")},
 	}, nil)
@@ -468,11 +468,11 @@ func ExampleDatabasesClient_BeginFlush() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginFlush(ctx, "rg1", "cache1", "default", armredisenterprise.FlushParameters{
+	poller, err := clientFactory.NewDatabasesClient().BeginFlush(ctx, "rg1", "cache1", "default", armredisenterprise.FlushParameters{
 		IDs: []*string{
 			to.Ptr("/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")},
 	}, nil)

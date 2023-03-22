@@ -25,11 +25,11 @@ func ExampleClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "rg1", "cache1", armredisenterprise.Cluster{
+	poller, err := clientFactory.NewClient().BeginCreate(ctx, "rg1", "cache1", armredisenterprise.Cluster{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -113,11 +113,11 @@ func ExampleClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "rg1", "cache1", armredisenterprise.ClusterUpdate{
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "rg1", "cache1", armredisenterprise.ClusterUpdate{
 		Properties: &armredisenterprise.ClusterProperties{
 			MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
 		},
@@ -177,11 +177,11 @@ func ExampleClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "cache1", nil)
+	poller, err := clientFactory.NewClient().BeginDelete(ctx, "rg1", "cache1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -198,11 +198,11 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "cache1", nil)
+	res, err := clientFactory.NewClient().Get(ctx, "rg1", "cache1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -273,11 +273,11 @@ func ExampleClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -324,11 +324,11 @@ func ExampleClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewClient("subid", cred, nil)
+	clientFactory, err := armredisenterprise.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -364,3 +364,136 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	blobURLParts, _ = blob.ParseURL(serviceClient.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 }
+
+// ExampleServiceBatchDelete shows blob batch operations for delete and set tier.
+func Example_service_BatchDelete() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	// create shared key credential
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	// create service batch client
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	svcBatchClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	handleError(err)
+
+	// create new batch builder
+	bb, err := svcBatchClient.NewBatchBuilder()
+	handleError(err)
+
+	// add operations to the batch builder
+	err = bb.Delete("cnt1", "testBlob0", nil)
+	handleError(err)
+
+	err = bb.Delete("cnt1", "testBlob1", &service.BatchDeleteOptions{
+		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"), // version id for deletion
+	})
+	handleError(err)
+
+	err = bb.Delete("cnt2", "testBlob2", &service.BatchDeleteOptions{
+		Snapshot: to.Ptr("2023-01-03T11:57:25.6515618Z"), // snapshot for deletion
+	})
+	handleError(err)
+
+	err = bb.Delete("cnt2", "testBlob3", &service.BatchDeleteOptions{
+		DeleteOptions: blob.DeleteOptions{
+			DeleteSnapshots: to.Ptr(blob.DeleteSnapshotsOptionTypeOnly),
+			BlobDeleteType:  to.Ptr(blob.DeleteTypeNone),
+		},
+	})
+	handleError(err)
+
+	resp, err := svcBatchClient.SubmitBatch(context.TODO(), bb, nil)
+	handleError(err)
+
+	// get response for individual sub-requests
+	for _, resp := range resp.Responses {
+		if resp.ContainerName != nil && resp.BlobName != nil {
+			fmt.Println("Container: " + *resp.ContainerName)
+			fmt.Println("Blob: " + *resp.BlobName)
+		}
+		if resp.Error == nil {
+			fmt.Println("Successful sub-request")
+		} else {
+			fmt.Println("Error: " + resp.Error.Error())
+		}
+	}
+}
+
+// ExampleServiceBatchSetTier shows blob batch operations for delete and set tier.
+func Example_service_BatchSetTier() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_TENANT_ID could not be found")
+	}
+	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_ID could not be found")
+	}
+	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
+	}
+
+	// create client secret credential
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	handleError(err)
+
+	// create service batch client
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	svcBatchClient, err := service.NewClient(serviceURL, cred, nil)
+	handleError(err)
+
+	// create new batch builder
+	bb, err := svcBatchClient.NewBatchBuilder()
+	handleError(err)
+
+	// add operations to the batch builder
+	err = bb.SetTier("cnt1", "testBlob4", blob.AccessTierHot, nil)
+	handleError(err)
+
+	err = bb.SetTier("cnt1", "testBlob5", blob.AccessTierCool, &service.BatchSetTierOptions{
+		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"),
+	})
+	handleError(err)
+
+	err = bb.SetTier("cnt2", "testBlob5", blob.AccessTierCool, &service.BatchSetTierOptions{
+		Snapshot: to.Ptr("2023-01-03T11:57:25.6515618Z"),
+	})
+	handleError(err)
+
+	err = bb.SetTier("cnt2", "testBlob4", blob.AccessTierCool, &service.BatchSetTierOptions{
+		SetTierOptions: blob.SetTierOptions{
+			RehydratePriority: to.Ptr(blob.RehydratePriorityStandard),
+		},
+	})
+	handleError(err)
+
+	resp, err := svcBatchClient.SubmitBatch(context.TODO(), bb, nil)
+	handleError(err)
+
+	// get response for individual sub-requests
+	for _, resp := range resp.Responses {
+		if resp.ContainerName != nil && resp.BlobName != nil {
+			fmt.Println("Container: " + *resp.ContainerName)
+			fmt.Println("Blob: " + *resp.BlobName)
+		}
+		if resp.Error == nil {
+			fmt.Println("Successful sub-request")
+		} else {
+			fmt.Println("Error: " + resp.Error.Error())
+		}
+	}
+}

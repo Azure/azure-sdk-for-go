@@ -3439,6 +3439,7 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
@@ -3460,6 +3461,7 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 
 	_, err = bbClient.Delete(context.Background(), nil)
 	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobImmutableDueToPolicy)
 
 	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
 	_require.Nil(err)
@@ -3476,6 +3478,7 @@ func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
@@ -3508,6 +3511,7 @@ func (s *BlobRecordedTestsSuite) TestSetLegalHold() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)

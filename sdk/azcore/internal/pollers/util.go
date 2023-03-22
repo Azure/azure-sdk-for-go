@@ -29,19 +29,26 @@ const (
 	StatusInProgress = "InProgress"
 )
 
+// these are non-conformant states that we've seen in the wild.
+// we support them for back-compat.
+const (
+	StatusCancelled = "Cancelled"
+	StatusCompleted = "Completed"
+)
+
 // IsTerminalState returns true if the LRO's state is terminal.
 func IsTerminalState(s string) bool {
-	return strings.EqualFold(s, StatusSucceeded) || strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled)
+	return Failed(s) || Succeeded(s)
 }
 
 // Failed returns true if the LRO's state is terminal failure.
 func Failed(s string) bool {
-	return strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled)
+	return strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled) || strings.EqualFold(s, StatusCancelled)
 }
 
 // Succeeded returns true if the LRO's state is terminal success.
 func Succeeded(s string) bool {
-	return strings.EqualFold(s, StatusSucceeded)
+	return strings.EqualFold(s, StatusSucceeded) || strings.EqualFold(s, StatusCompleted)
 }
 
 // returns true if the LRO response contains a valid HTTP status code

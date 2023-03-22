@@ -32,10 +32,10 @@ type ServiceTagsClient struct {
 }
 
 // NewServiceTagsClient creates a new instance of ServiceTagsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewServiceTagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceTagsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,11 +58,12 @@ func NewServiceTagsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // List - Gets a list of service tag information resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// location - The location that will be used as a reference for version (not as a filter based on location, you will get the
-// list of service tags with prefix details across all regions but limited to the cloud that
-// your subscription belongs to).
-// options - ServiceTagsClientListOptions contains the optional parameters for the ServiceTagsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - location - The location that will be used as a reference for version (not as a filter based on location, you will get the
+//     list of service tags with prefix details across all regions but limited to the cloud that
+//     your subscription belongs to).
+//   - options - ServiceTagsClientListOptions contains the optional parameters for the ServiceTagsClient.List method.
 func (client *ServiceTagsClient) List(ctx context.Context, location string, options *ServiceTagsClientListOptions) (ServiceTagsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, options)
 	if err != nil {
@@ -94,7 +95,7 @@ func (client *ServiceTagsClient) listCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

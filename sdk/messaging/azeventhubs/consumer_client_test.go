@@ -5,6 +5,7 @@ package azeventhubs_test
 import (
 	"context"
 	"fmt"
+	"net"
 	"strings"
 	"sync"
 	"testing"
@@ -17,7 +18,81 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"github.com/stretchr/testify/require"
+	"nhooyr.io/websocket"
 )
+
+func TestConsumerClient_UsingWebSockets(t *testing.T) {
+	// NOTE: This error is coming from the `nhooyr.io/websocket` package. There's an
+	// open discussion here:
+	//   https://github.com/nhooyr/websocket/discussions/380
+	//
+	// The frame it's waiting for (at this point) is the other half of the websocket CLOSE handshake.
+	// I wireshark'd this and confirmed that the frame does arrive, it's just not read by the local
+	// package. In this context, since the connection has already shut down, this is harmless.
+	var expectedWSErr = "failed to close WebSocket: failed to read frame header: EOF"
+
+	newWebSocketConnFn := func(ctx context.Context, args azeventhubs.WebSocketConnParams) (net.Conn, error) {
+		opts := &websocket.DialOptions{
+			Subprotocols: []string{"amqp"},
+		}
+		wssConn, _, err := websocket.Dial(ctx, args.Host, opts)
+
+		if err != nil {
+			return nil, err
+		}
+
+		return websocket.NetConn(ctx, wssConn, websocket.MessageBinary), nil
+	}
+
+	testParams := test.GetConnectionParamsForTest(t)
+
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, &azeventhubs.ProducerClientOptions{
+		NewWebSocketConn: newWebSocketConnFn,
+	})
+	require.NoError(t, err)
+
+	defer func() {
+		err := producerClient.Close(context.Background())
+		require.EqualError(t, err, expectedWSErr)
+	}()
+
+	partProps, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
+	require.NoError(t, err)
+
+	batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
+		PartitionID: to.Ptr("0"),
+	})
+	require.NoError(t, err)
+
+	err = batch.AddEventData(&azeventhubs.EventData{
+		Body: []byte("hello world"),
+	}, nil)
+	require.NoError(t, err)
+
+	err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
+	require.NoError(t, err)
+
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+		NewWebSocketConn: newWebSocketConnFn,
+	})
+	require.NoError(t, err)
+
+	defer func() {
+		err := consumerClient.Close(context.Background())
+		require.EqualError(t, err, expectedWSErr)
+	}()
+
+	partClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
+		StartPosition: getStartPosition(partProps),
+	})
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, partClient)
+
+	events, err := partClient.ReceiveEvents(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"hello world"}, getSortedBodies(events))
+}
 
 func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)

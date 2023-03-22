@@ -3,6 +3,7 @@
 ## 1.5.0 (Unreleased)
 
 ### Features Added
+* Added `ShouldRetry` to `policy.RetryOptions` for finer-grained control over when to retry.
 
 ### Breaking Changes
 

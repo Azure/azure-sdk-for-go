@@ -27,11 +27,11 @@ func ExampleMSIXPackagesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewMSIXPackagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "hostpool1", "packagefullname", nil)
+	res, err := clientFactory.NewMSIXPackagesClient().Get(ctx, "resourceGroup1", "hostpool1", "packagefullname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -87,11 +87,11 @@ func ExampleMSIXPackagesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewMSIXPackagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "resourceGroup1", "hostpool1", "msixpackagefullname", armdesktopvirtualization.MSIXPackage{
+	res, err := clientFactory.NewMSIXPackagesClient().CreateOrUpdate(ctx, "resourceGroup1", "hostpool1", "msixpackagefullname", armdesktopvirtualization.MSIXPackage{
 		Properties: &armdesktopvirtualization.MSIXPackageProperties{
 			DisplayName:           to.Ptr("displayname"),
 			ImagePath:             to.Ptr("imagepath"),
@@ -175,11 +175,11 @@ func ExampleMSIXPackagesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewMSIXPackagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "resourceGroup1", "hostpool1", "packagefullname", nil)
+	_, err = clientFactory.NewMSIXPackagesClient().Delete(ctx, "resourceGroup1", "hostpool1", "packagefullname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -192,11 +192,11 @@ func ExampleMSIXPackagesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewMSIXPackagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "resourceGroup1", "hostpool1", "msixpackagefullname", &armdesktopvirtualization.MSIXPackagesClientUpdateOptions{MsixPackage: &armdesktopvirtualization.MSIXPackagePatch{
+	res, err := clientFactory.NewMSIXPackagesClient().Update(ctx, "resourceGroup1", "hostpool1", "msixpackagefullname", &armdesktopvirtualization.MSIXPackagesClientUpdateOptions{MsixPackage: &armdesktopvirtualization.MSIXPackagePatch{
 		Properties: &armdesktopvirtualization.MSIXPackagePatchProperties{
 			DisplayName:           to.Ptr("displayname"),
 			IsActive:              to.Ptr(true),
@@ -259,11 +259,11 @@ func ExampleMSIXPackagesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewMSIXPackagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroup1", "hostpool1", &armdesktopvirtualization.MSIXPackagesClientListOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewMSIXPackagesClient().NewListPager("resourceGroup1", "hostpool1", &armdesktopvirtualization.MSIXPackagesClientListOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})

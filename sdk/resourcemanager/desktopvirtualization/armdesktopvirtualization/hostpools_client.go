@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // HostPoolsClient contains the methods for the HostPools group.
 // Don't use this type directly, use NewHostPoolsClient() instead.
 type HostPoolsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewHostPoolsClient creates a new instance of HostPoolsClient with the specified values.
@@ -37,21 +34,13 @@ type HostPoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHostPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HostPoolsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".HostPoolsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &HostPoolsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *HostPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return HostPoolsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HostPoolsClientCreateOrUpdateResponse{}, err
 	}
@@ -95,7 +84,7 @@ func (client *HostPoolsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +116,7 @@ func (client *HostPoolsClient) Delete(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return HostPoolsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HostPoolsClientDeleteResponse{}, err
 	}
@@ -152,7 +141,7 @@ func (client *HostPoolsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +167,7 @@ func (client *HostPoolsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return HostPoolsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HostPoolsClientGetResponse{}, err
 	}
@@ -203,7 +192,7 @@ func (client *HostPoolsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +232,7 @@ func (client *HostPoolsClient) NewListPager(options *HostPoolsClientListOptions)
 			if err != nil {
 				return HostPoolsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return HostPoolsClientListResponse{}, err
 			}
@@ -262,7 +251,7 @@ func (client *HostPoolsClient) listCreateRequest(ctx context.Context, options *H
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -313,7 +302,7 @@ func (client *HostPoolsClient) NewListByResourceGroupPager(resourceGroupName str
 			if err != nil {
 				return HostPoolsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return HostPoolsClientListByResourceGroupResponse{}, err
 			}
@@ -336,7 +325,7 @@ func (client *HostPoolsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -378,7 +367,7 @@ func (client *HostPoolsClient) RetrieveRegistrationToken(ctx context.Context, re
 	if err != nil {
 		return HostPoolsClientRetrieveRegistrationTokenResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HostPoolsClientRetrieveRegistrationTokenResponse{}, err
 	}
@@ -403,7 +392,7 @@ func (client *HostPoolsClient) retrieveRegistrationTokenCreateRequest(ctx contex
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -435,7 +424,7 @@ func (client *HostPoolsClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return HostPoolsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HostPoolsClientUpdateResponse{}, err
 	}
@@ -460,7 +449,7 @@ func (client *HostPoolsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

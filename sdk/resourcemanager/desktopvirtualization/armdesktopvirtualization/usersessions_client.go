@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // UserSessionsClient contains the methods for the UserSessions group.
 // Don't use this type directly, use NewUserSessionsClient() instead.
 type UserSessionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewUserSessionsClient creates a new instance of UserSessionsClient with the specified values.
@@ -37,21 +34,13 @@ type UserSessionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUserSessionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UserSessionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".UserSessionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &UserSessionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *UserSessionsClient) Delete(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return UserSessionsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UserSessionsClientDeleteResponse{}, err
 	}
@@ -103,7 +92,7 @@ func (client *UserSessionsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter userSessionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userSessionId}", url.PathEscape(userSessionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +120,7 @@ func (client *UserSessionsClient) Disconnect(ctx context.Context, resourceGroupN
 	if err != nil {
 		return UserSessionsClientDisconnectResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UserSessionsClientDisconnectResponse{}, err
 	}
@@ -164,7 +153,7 @@ func (client *UserSessionsClient) disconnectCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter userSessionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userSessionId}", url.PathEscape(userSessionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,7 +178,7 @@ func (client *UserSessionsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return UserSessionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UserSessionsClientGetResponse{}, err
 	}
@@ -222,7 +211,7 @@ func (client *UserSessionsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter userSessionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userSessionId}", url.PathEscape(userSessionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -265,7 +254,7 @@ func (client *UserSessionsClient) NewListPager(resourceGroupName string, hostPoo
 			if err != nil {
 				return UserSessionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return UserSessionsClientListResponse{}, err
 			}
@@ -296,7 +285,7 @@ func (client *UserSessionsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter sessionHostName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sessionHostName}", url.PathEscape(sessionHostName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -348,7 +337,7 @@ func (client *UserSessionsClient) NewListByHostPoolPager(resourceGroupName strin
 			if err != nil {
 				return UserSessionsClientListByHostPoolResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return UserSessionsClientListByHostPoolResponse{}, err
 			}
@@ -375,7 +364,7 @@ func (client *UserSessionsClient) listByHostPoolCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -422,7 +411,7 @@ func (client *UserSessionsClient) SendMessage(ctx context.Context, resourceGroup
 	if err != nil {
 		return UserSessionsClientSendMessageResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UserSessionsClientSendMessageResponse{}, err
 	}
@@ -455,7 +444,7 @@ func (client *UserSessionsClient) sendMessageCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter userSessionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userSessionId}", url.PathEscape(userSessionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

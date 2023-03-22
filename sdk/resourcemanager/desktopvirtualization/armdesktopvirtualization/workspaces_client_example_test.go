@@ -25,11 +25,11 @@ func ExampleWorkspacesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "workspace1", nil)
+	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "resourceGroup1", "workspace1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -69,11 +69,11 @@ func ExampleWorkspacesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "resourceGroup1", "workspace1", armdesktopvirtualization.Workspace{
+	res, err := clientFactory.NewWorkspacesClient().CreateOrUpdate(ctx, "resourceGroup1", "workspace1", armdesktopvirtualization.Workspace{
 		Location: to.Ptr("centralus"),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -123,11 +123,11 @@ func ExampleWorkspacesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "resourceGroup1", "workspace1", nil)
+	_, err = clientFactory.NewWorkspacesClient().Delete(ctx, "resourceGroup1", "workspace1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -140,11 +140,11 @@ func ExampleWorkspacesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "resourceGroup1", "workspace1", &armdesktopvirtualization.WorkspacesClientUpdateOptions{Workspace: &armdesktopvirtualization.WorkspacePatch{
+	res, err := clientFactory.NewWorkspacesClient().Update(ctx, "resourceGroup1", "workspace1", &armdesktopvirtualization.WorkspacesClientUpdateOptions{Workspace: &armdesktopvirtualization.WorkspacePatch{
 		Properties: &armdesktopvirtualization.WorkspacePatchProperties{
 			Description:  to.Ptr("des1"),
 			FriendlyName: to.Ptr("friendly"),
@@ -194,11 +194,11 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("resourceGroup1", &armdesktopvirtualization.WorkspacesClientListByResourceGroupOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewWorkspacesClient().NewListByResourceGroupPager("resourceGroup1", &armdesktopvirtualization.WorkspacesClientListByResourceGroupOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})
@@ -273,11 +273,11 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewWorkspacesClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // ScalingPlansClient contains the methods for the ScalingPlans group.
 // Don't use this type directly, use NewScalingPlansClient() instead.
 type ScalingPlansClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewScalingPlansClient creates a new instance of ScalingPlansClient with the specified values.
@@ -37,21 +34,13 @@ type ScalingPlansClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewScalingPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScalingPlansClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ScalingPlansClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ScalingPlansClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *ScalingPlansClient) Create(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ScalingPlansClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ScalingPlansClientCreateResponse{}, err
 	}
@@ -94,7 +83,7 @@ func (client *ScalingPlansClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter scalingPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scalingPlanName}", url.PathEscape(scalingPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +115,7 @@ func (client *ScalingPlansClient) Delete(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ScalingPlansClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ScalingPlansClientDeleteResponse{}, err
 	}
@@ -151,7 +140,7 @@ func (client *ScalingPlansClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter scalingPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scalingPlanName}", url.PathEscape(scalingPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +163,7 @@ func (client *ScalingPlansClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ScalingPlansClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ScalingPlansClientGetResponse{}, err
 	}
@@ -199,7 +188,7 @@ func (client *ScalingPlansClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter scalingPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scalingPlanName}", url.PathEscape(scalingPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,7 +231,7 @@ func (client *ScalingPlansClient) NewListByHostPoolPager(resourceGroupName strin
 			if err != nil {
 				return ScalingPlansClientListByHostPoolResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ScalingPlansClientListByHostPoolResponse{}, err
 			}
@@ -269,7 +258,7 @@ func (client *ScalingPlansClient) listByHostPoolCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -320,7 +309,7 @@ func (client *ScalingPlansClient) NewListByResourceGroupPager(resourceGroupName 
 			if err != nil {
 				return ScalingPlansClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ScalingPlansClientListByResourceGroupResponse{}, err
 			}
@@ -343,7 +332,7 @@ func (client *ScalingPlansClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -393,7 +382,7 @@ func (client *ScalingPlansClient) NewListBySubscriptionPager(options *ScalingPla
 			if err != nil {
 				return ScalingPlansClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ScalingPlansClientListBySubscriptionResponse{}, err
 			}
@@ -412,7 +401,7 @@ func (client *ScalingPlansClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -453,7 +442,7 @@ func (client *ScalingPlansClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ScalingPlansClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ScalingPlansClientUpdateResponse{}, err
 	}
@@ -478,7 +467,7 @@ func (client *ScalingPlansClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter scalingPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scalingPlanName}", url.PathEscape(scalingPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

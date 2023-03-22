@@ -25,11 +25,11 @@ func ExampleDesktopsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewDesktopsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "applicationGroup1", "SessionDesktop", nil)
+	res, err := clientFactory.NewDesktopsClient().Get(ctx, "resourceGroup1", "applicationGroup1", "SessionDesktop", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -65,11 +65,11 @@ func ExampleDesktopsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewDesktopsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "resourceGroup1", "applicationGroup1", "SessionDesktop", &armdesktopvirtualization.DesktopsClientUpdateOptions{Desktop: &armdesktopvirtualization.DesktopPatch{
+	res, err := clientFactory.NewDesktopsClient().Update(ctx, "resourceGroup1", "applicationGroup1", "SessionDesktop", &armdesktopvirtualization.DesktopsClientUpdateOptions{Desktop: &armdesktopvirtualization.DesktopPatch{
 		Properties: &armdesktopvirtualization.DesktopPatchProperties{
 			Description:  to.Ptr("des1"),
 			FriendlyName: to.Ptr("friendly"),
@@ -111,11 +111,11 @@ func ExampleDesktopsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewDesktopsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroup1", "applicationGroup1", &armdesktopvirtualization.DesktopsClientListOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewDesktopsClient().NewListPager("resourceGroup1", "applicationGroup1", &armdesktopvirtualization.DesktopsClientListOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})

@@ -25,11 +25,11 @@ func ExampleUserSessionsClient_NewListByHostPoolPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewUserSessionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByHostPoolPager("resourceGroup1", "hostPool1", &armdesktopvirtualization.UserSessionsClientListByHostPoolOptions{Filter: to.Ptr("userPrincipalName eq 'user1@microsoft.com' and state eq 'active'"),
+	pager := clientFactory.NewUserSessionsClient().NewListByHostPoolPager("resourceGroup1", "hostPool1", &armdesktopvirtualization.UserSessionsClientListByHostPoolOptions{Filter: to.Ptr("userPrincipalName eq 'user1@microsoft.com' and state eq 'active'"),
 		PageSize:     to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
@@ -99,11 +99,11 @@ func ExampleUserSessionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewUserSessionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", nil)
+	res, err := clientFactory.NewUserSessionsClient().Get(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -140,11 +140,11 @@ func ExampleUserSessionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewUserSessionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", &armdesktopvirtualization.UserSessionsClientDeleteOptions{Force: to.Ptr(true)})
+	_, err = clientFactory.NewUserSessionsClient().Delete(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", &armdesktopvirtualization.UserSessionsClientDeleteOptions{Force: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -157,11 +157,11 @@ func ExampleUserSessionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewUserSessionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", &armdesktopvirtualization.UserSessionsClientListOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewUserSessionsClient().NewListPager("resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", &armdesktopvirtualization.UserSessionsClientListOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})
@@ -230,11 +230,11 @@ func ExampleUserSessionsClient_Disconnect() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewUserSessionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Disconnect(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", nil)
+	_, err = clientFactory.NewUserSessionsClient().Disconnect(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -247,11 +247,11 @@ func ExampleUserSessionsClient_SendMessage() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewUserSessionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.SendMessage(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", &armdesktopvirtualization.UserSessionsClientSendMessageOptions{SendMessage: &armdesktopvirtualization.SendMessage{
+	_, err = clientFactory.NewUserSessionsClient().SendMessage(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", &armdesktopvirtualization.UserSessionsClientSendMessageOptions{SendMessage: &armdesktopvirtualization.SendMessage{
 		MessageBody:  to.Ptr("body"),
 		MessageTitle: to.Ptr("title"),
 	},

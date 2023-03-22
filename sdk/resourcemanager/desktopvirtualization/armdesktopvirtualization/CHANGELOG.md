@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2023-03-14)
+## 2.0.0 (2023-03-24)
 ### Breaking Changes
 
 - Type of `ScalingPlanProperties.HostPoolType` has been changed from `*HostPoolType` to `*ScalingHostPoolType`
@@ -11,7 +11,6 @@
 - Type alias `Operation` has been removed
 - Operation `*DesktopsClient.List` has supported pagination, use `*DesktopsClient.NewListPager` instead.
 - Operation `*OperationsClient.List` has supported pagination, use `*OperationsClient.NewListPager` instead.
-- Struct `CloudError` has been removed
 - Struct `MigrationRequestProperties` has been removed
 - Field `MigrationRequest` of struct `ApplicationGroupProperties` has been removed
 - Field `MigrationRequest` of struct `HostPoolProperties` has been removed
@@ -19,10 +18,11 @@
 
 ### Features Added
 
-- New type alias `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
-- New type alias `DayOfWeek` with values `DayOfWeekFriday`, `DayOfWeekMonday`, `DayOfWeekSaturday`, `DayOfWeekSunday`, `DayOfWeekThursday`, `DayOfWeekTuesday`, `DayOfWeekWednesday`
-- New type alias `ScalingHostPoolType` with values `ScalingHostPoolTypePooled`
-- New type alias `SessionHostComponentUpdateType` with values `SessionHostComponentUpdateTypeDefault`, `SessionHostComponentUpdateTypeScheduled`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `DayOfWeek` with values `DayOfWeekFriday`, `DayOfWeekMonday`, `DayOfWeekSaturday`, `DayOfWeekSunday`, `DayOfWeekThursday`, `DayOfWeekTuesday`, `DayOfWeekWednesday`
+- New enum type `ScalingHostPoolType` with values `ScalingHostPoolTypePooled`
+- New enum type `SessionHostComponentUpdateType` with values `SessionHostComponentUpdateTypeDefault`, `SessionHostComponentUpdateTypeScheduled`
 - New function `NewScalingPlanPooledSchedulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ScalingPlanPooledSchedulesClient, error)`
 - New function `*ScalingPlanPooledSchedulesClient.Create(context.Context, string, string, string, ScalingPlanPooledSchedule, *ScalingPlanPooledSchedulesClientCreateOptions) (ScalingPlanPooledSchedulesClientCreateResponse, error)`
 - New function `*ScalingPlanPooledSchedulesClient.Delete(context.Context, string, string, string, *ScalingPlanPooledSchedulesClientDeleteOptions) (ScalingPlanPooledSchedulesClientDeleteResponse, error)`
@@ -37,7 +37,6 @@
 - New struct `ScalingPlanPooledScheduleList`
 - New struct `ScalingPlanPooledSchedulePatch`
 - New struct `ScalingPlanPooledScheduleProperties`
-- New struct `ScalingPlanPooledSchedulesClient`
 - New struct `SystemData`
 - New struct `Time`
 - New field `SystemData` in struct `Application`

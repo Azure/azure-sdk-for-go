@@ -25,11 +25,11 @@ func ExampleApplicationGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "applicationGroup1", nil)
+	res, err := clientFactory.NewApplicationGroupsClient().Get(ctx, "resourceGroup1", "applicationGroup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -72,11 +72,11 @@ func ExampleApplicationGroupsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "resourceGroup1", "applicationGroup1", armdesktopvirtualization.ApplicationGroup{
+	res, err := clientFactory.NewApplicationGroupsClient().CreateOrUpdate(ctx, "resourceGroup1", "applicationGroup1", armdesktopvirtualization.ApplicationGroup{
 		Location: to.Ptr("centralus"),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -131,11 +131,11 @@ func ExampleApplicationGroupsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "resourceGroup1", "applicationGroup1", nil)
+	_, err = clientFactory.NewApplicationGroupsClient().Delete(ctx, "resourceGroup1", "applicationGroup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -148,11 +148,11 @@ func ExampleApplicationGroupsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "resourceGroup1", "applicationGroup1", &armdesktopvirtualization.ApplicationGroupsClientUpdateOptions{ApplicationGroup: &armdesktopvirtualization.ApplicationGroupPatch{
+	res, err := clientFactory.NewApplicationGroupsClient().Update(ctx, "resourceGroup1", "applicationGroup1", &armdesktopvirtualization.ApplicationGroupsClientUpdateOptions{ApplicationGroup: &armdesktopvirtualization.ApplicationGroupPatch{
 		Properties: &armdesktopvirtualization.ApplicationGroupPatchProperties{
 			Description:  to.Ptr("des1"),
 			FriendlyName: to.Ptr("friendly"),
@@ -205,11 +205,11 @@ func ExampleApplicationGroupsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("resourceGroup1", &armdesktopvirtualization.ApplicationGroupsClientListByResourceGroupOptions{Filter: to.Ptr("applicationGroupType eq 'RailApplication'"),
+	pager := clientFactory.NewApplicationGroupsClient().NewListByResourceGroupPager("resourceGroup1", &armdesktopvirtualization.ApplicationGroupsClientListByResourceGroupOptions{Filter: to.Ptr("applicationGroupType eq 'RailApplication'"),
 		PageSize:     to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
@@ -291,11 +291,11 @@ func ExampleApplicationGroupsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(&armdesktopvirtualization.ApplicationGroupsClientListBySubscriptionOptions{Filter: to.Ptr("applicationGroupType eq 'RailApplication'")})
+	pager := clientFactory.NewApplicationGroupsClient().NewListBySubscriptionPager(&armdesktopvirtualization.ApplicationGroupsClientListBySubscriptionOptions{Filter: to.Ptr("applicationGroupType eq 'RailApplication'")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

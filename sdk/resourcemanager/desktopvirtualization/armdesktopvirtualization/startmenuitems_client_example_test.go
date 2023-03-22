@@ -24,11 +24,11 @@ func ExampleStartMenuItemsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewStartMenuItemsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroup1", "applicationGroup1", &armdesktopvirtualization.StartMenuItemsClientListOptions{PageSize: nil,
+	pager := clientFactory.NewStartMenuItemsClient().NewListPager("resourceGroup1", "applicationGroup1", &armdesktopvirtualization.StartMenuItemsClientListOptions{PageSize: nil,
 		IsDescending: nil,
 		InitialSkip:  nil,
 	})

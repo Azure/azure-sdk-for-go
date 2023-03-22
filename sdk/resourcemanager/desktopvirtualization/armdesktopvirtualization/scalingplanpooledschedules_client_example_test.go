@@ -25,11 +25,11 @@ func ExampleScalingPlanPooledSchedulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlanPooledSchedulesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "scalingPlan1", "scalingPlanScheduleWeekdays1", nil)
+	res, err := clientFactory.NewScalingPlanPooledSchedulesClient().Get(ctx, "resourceGroup1", "scalingPlan1", "scalingPlanScheduleWeekdays1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -93,11 +93,11 @@ func ExampleScalingPlanPooledSchedulesClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlanPooledSchedulesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Create(ctx, "resourceGroup1", "scalingPlan1", "scalingPlanScheduleWeekdays1", armdesktopvirtualization.ScalingPlanPooledSchedule{
+	res, err := clientFactory.NewScalingPlanPooledSchedulesClient().Create(ctx, "resourceGroup1", "scalingPlan1", "scalingPlanScheduleWeekdays1", armdesktopvirtualization.ScalingPlanPooledSchedule{
 		Properties: &armdesktopvirtualization.ScalingPlanPooledScheduleProperties{
 			DaysOfWeek: []*armdesktopvirtualization.DayOfWeek{
 				to.Ptr(armdesktopvirtualization.DayOfWeekMonday),
@@ -197,11 +197,11 @@ func ExampleScalingPlanPooledSchedulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlanPooledSchedulesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "resourceGroup1", "scalingPlan1", "scalingPlanScheduleWeekdays1", nil)
+	_, err = clientFactory.NewScalingPlanPooledSchedulesClient().Delete(ctx, "resourceGroup1", "scalingPlan1", "scalingPlanScheduleWeekdays1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -214,11 +214,11 @@ func ExampleScalingPlanPooledSchedulesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlanPooledSchedulesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "resourceGroup1", "scalingPlan1", "scalingPlanScheduleWeekdays1", &armdesktopvirtualization.ScalingPlanPooledSchedulesClientUpdateOptions{ScalingPlanSchedule: &armdesktopvirtualization.ScalingPlanPooledSchedulePatch{
+	res, err := clientFactory.NewScalingPlanPooledSchedulesClient().Update(ctx, "resourceGroup1", "scalingPlan1", "scalingPlanScheduleWeekdays1", &armdesktopvirtualization.ScalingPlanPooledSchedulesClientUpdateOptions{ScalingPlanSchedule: &armdesktopvirtualization.ScalingPlanPooledSchedulePatch{
 		Properties: &armdesktopvirtualization.ScalingPlanPooledScheduleProperties{
 			DaysOfWeek: []*armdesktopvirtualization.DayOfWeek{
 				to.Ptr(armdesktopvirtualization.DayOfWeekMonday),
@@ -301,11 +301,11 @@ func ExampleScalingPlanPooledSchedulesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlanPooledSchedulesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroup1", "scalingPlan1", &armdesktopvirtualization.ScalingPlanPooledSchedulesClientListOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewScalingPlanPooledSchedulesClient().NewListPager("resourceGroup1", "scalingPlan1", &armdesktopvirtualization.ScalingPlanPooledSchedulesClientListOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})

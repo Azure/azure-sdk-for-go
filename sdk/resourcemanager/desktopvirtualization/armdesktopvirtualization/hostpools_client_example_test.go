@@ -27,11 +27,11 @@ func ExampleHostPoolsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewHostPoolsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "hostPool1", nil)
+	res, err := clientFactory.NewHostPoolsClient().Get(ctx, "resourceGroup1", "hostPool1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -101,11 +101,11 @@ func ExampleHostPoolsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewHostPoolsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "resourceGroup1", "hostPool1", armdesktopvirtualization.HostPool{
+	res, err := clientFactory.NewHostPoolsClient().CreateOrUpdate(ctx, "resourceGroup1", "hostPool1", armdesktopvirtualization.HostPool{
 		Location: to.Ptr("centralus"),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -214,11 +214,11 @@ func ExampleHostPoolsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewHostPoolsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "resourceGroup1", "hostPool1", &armdesktopvirtualization.HostPoolsClientDeleteOptions{Force: to.Ptr(true)})
+	_, err = clientFactory.NewHostPoolsClient().Delete(ctx, "resourceGroup1", "hostPool1", &armdesktopvirtualization.HostPoolsClientDeleteOptions{Force: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -231,11 +231,11 @@ func ExampleHostPoolsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewHostPoolsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "resourceGroup1", "hostPool1", &armdesktopvirtualization.HostPoolsClientUpdateOptions{HostPool: &armdesktopvirtualization.HostPoolPatch{
+	res, err := clientFactory.NewHostPoolsClient().Update(ctx, "resourceGroup1", "hostPool1", &armdesktopvirtualization.HostPoolsClientUpdateOptions{HostPool: &armdesktopvirtualization.HostPoolPatch{
 		Properties: &armdesktopvirtualization.HostPoolPatchProperties{
 			Description: to.Ptr("des1"),
 			AgentUpdate: &armdesktopvirtualization.AgentUpdatePatchProperties{
@@ -342,11 +342,11 @@ func ExampleHostPoolsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewHostPoolsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("resourceGroup1", &armdesktopvirtualization.HostPoolsClientListByResourceGroupOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewHostPoolsClient().NewListByResourceGroupPager("resourceGroup1", &armdesktopvirtualization.HostPoolsClientListByResourceGroupOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})
@@ -481,11 +481,11 @@ func ExampleHostPoolsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewHostPoolsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(&armdesktopvirtualization.HostPoolsClientListOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewHostPoolsClient().NewListPager(&armdesktopvirtualization.HostPoolsClientListOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})
@@ -620,11 +620,11 @@ func ExampleHostPoolsClient_RetrieveRegistrationToken() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewHostPoolsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RetrieveRegistrationToken(ctx, "resourceGroup1", "hostPool1", nil)
+	res, err := clientFactory.NewHostPoolsClient().RetrieveRegistrationToken(ctx, "resourceGroup1", "hostPool1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

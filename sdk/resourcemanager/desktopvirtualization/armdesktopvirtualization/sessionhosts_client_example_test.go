@@ -25,11 +25,11 @@ func ExampleSessionHostsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewSessionHostsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", nil)
+	res, err := clientFactory.NewSessionHostsClient().Get(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -86,11 +86,11 @@ func ExampleSessionHostsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewSessionHostsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", &armdesktopvirtualization.SessionHostsClientDeleteOptions{Force: to.Ptr(true)})
+	_, err = clientFactory.NewSessionHostsClient().Delete(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", &armdesktopvirtualization.SessionHostsClientDeleteOptions{Force: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -103,11 +103,11 @@ func ExampleSessionHostsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewSessionHostsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", &armdesktopvirtualization.SessionHostsClientUpdateOptions{Force: to.Ptr(true),
+	res, err := clientFactory.NewSessionHostsClient().Update(ctx, "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", &armdesktopvirtualization.SessionHostsClientUpdateOptions{Force: to.Ptr(true),
 		SessionHost: &armdesktopvirtualization.SessionHostPatch{
 			Properties: &armdesktopvirtualization.SessionHostPatchProperties{
 				AllowNewSession: to.Ptr(true),
@@ -172,11 +172,11 @@ func ExampleSessionHostsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewSessionHostsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroup1", "hostPool1", &armdesktopvirtualization.SessionHostsClientListOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewSessionHostsClient().NewListPager("resourceGroup1", "hostPool1", &armdesktopvirtualization.SessionHostsClientListOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})

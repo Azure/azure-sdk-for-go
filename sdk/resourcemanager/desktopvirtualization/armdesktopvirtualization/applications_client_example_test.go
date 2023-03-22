@@ -25,11 +25,11 @@ func ExampleApplicationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "applicationGroup1", "application1", nil)
+	res, err := clientFactory.NewApplicationsClient().Get(ctx, "resourceGroup1", "applicationGroup1", "application1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -72,11 +72,11 @@ func ExampleApplicationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "resourceGroup1", "applicationGroup1", "application1", armdesktopvirtualization.Application{
+	res, err := clientFactory.NewApplicationsClient().CreateOrUpdate(ctx, "resourceGroup1", "applicationGroup1", "application1", armdesktopvirtualization.Application{
 		Properties: &armdesktopvirtualization.ApplicationProperties{
 			Description:          to.Ptr("des1"),
 			CommandLineArguments: to.Ptr("arguments"),
@@ -130,11 +130,11 @@ func ExampleApplicationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "resourceGroup1", "applicationGroup1", "application1", nil)
+	_, err = clientFactory.NewApplicationsClient().Delete(ctx, "resourceGroup1", "applicationGroup1", "application1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -147,11 +147,11 @@ func ExampleApplicationsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "resourceGroup1", "applicationGroup1", "application1", &armdesktopvirtualization.ApplicationsClientUpdateOptions{Application: &armdesktopvirtualization.ApplicationPatch{
+	res, err := clientFactory.NewApplicationsClient().Update(ctx, "resourceGroup1", "applicationGroup1", "application1", &armdesktopvirtualization.ApplicationsClientUpdateOptions{Application: &armdesktopvirtualization.ApplicationPatch{
 		Properties: &armdesktopvirtualization.ApplicationPatchProperties{
 			Description:          to.Ptr("des1"),
 			ApplicationType:      to.Ptr(armdesktopvirtualization.RemoteApplicationTypeInBuilt),
@@ -207,11 +207,11 @@ func ExampleApplicationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroup1", "applicationGroup1", &armdesktopvirtualization.ApplicationsClientListOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewApplicationsClient().NewListPager("resourceGroup1", "applicationGroup1", &armdesktopvirtualization.ApplicationsClientListOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})

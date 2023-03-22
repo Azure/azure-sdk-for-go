@@ -25,11 +25,11 @@ func ExampleScalingPlansClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "scalingPlan1", nil)
+	res, err := clientFactory.NewScalingPlansClient().Get(ctx, "resourceGroup1", "scalingPlan1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -113,11 +113,11 @@ func ExampleScalingPlansClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Create(ctx, "resourceGroup1", "scalingPlan1", armdesktopvirtualization.ScalingPlan{
+	res, err := clientFactory.NewScalingPlansClient().Create(ctx, "resourceGroup1", "scalingPlan1", armdesktopvirtualization.ScalingPlan{
 		Location: to.Ptr("centralus"),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -256,11 +256,11 @@ func ExampleScalingPlansClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "resourceGroup1", "scalingPlan1", nil)
+	_, err = clientFactory.NewScalingPlansClient().Delete(ctx, "resourceGroup1", "scalingPlan1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -273,11 +273,11 @@ func ExampleScalingPlansClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "resourceGroup1", "scalingPlan1", &armdesktopvirtualization.ScalingPlansClientUpdateOptions{ScalingPlan: nil})
+	res, err := clientFactory.NewScalingPlansClient().Update(ctx, "resourceGroup1", "scalingPlan1", &armdesktopvirtualization.ScalingPlansClientUpdateOptions{ScalingPlan: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -361,11 +361,11 @@ func ExampleScalingPlansClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("resourceGroup1", &armdesktopvirtualization.ScalingPlansClientListByResourceGroupOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewScalingPlansClient().NewListByResourceGroupPager("resourceGroup1", &armdesktopvirtualization.ScalingPlansClientListByResourceGroupOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})
@@ -527,11 +527,11 @@ func ExampleScalingPlansClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(&armdesktopvirtualization.ScalingPlansClientListBySubscriptionOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewScalingPlansClient().NewListBySubscriptionPager(&armdesktopvirtualization.ScalingPlansClientListBySubscriptionOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})
@@ -693,11 +693,11 @@ func ExampleScalingPlansClient_NewListByHostPoolPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByHostPoolPager("resourceGroup1", "hostPool1", &armdesktopvirtualization.ScalingPlansClientListByHostPoolOptions{PageSize: to.Ptr[int32](10),
+	pager := clientFactory.NewScalingPlansClient().NewListByHostPoolPager("resourceGroup1", "hostPool1", &armdesktopvirtualization.ScalingPlansClientListByHostPoolOptions{PageSize: to.Ptr[int32](10),
 		IsDescending: to.Ptr(true),
 		InitialSkip:  to.Ptr[int32](0),
 	})

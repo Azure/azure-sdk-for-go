@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // MSIXPackagesClient contains the methods for the MSIXPackages group.
 // Don't use this type directly, use NewMSIXPackagesClient() instead.
 type MSIXPackagesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewMSIXPackagesClient creates a new instance of MSIXPackagesClient with the specified values.
@@ -37,21 +34,13 @@ type MSIXPackagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMSIXPackagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MSIXPackagesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MSIXPackagesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MSIXPackagesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,7 +60,7 @@ func (client *MSIXPackagesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return MSIXPackagesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MSIXPackagesClientCreateOrUpdateResponse{}, err
 	}
@@ -100,7 +89,7 @@ func (client *MSIXPackagesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter msixPackageFullName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{msixPackageFullName}", url.PathEscape(msixPackageFullName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +122,7 @@ func (client *MSIXPackagesClient) Delete(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return MSIXPackagesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MSIXPackagesClientDeleteResponse{}, err
 	}
@@ -162,7 +151,7 @@ func (client *MSIXPackagesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter msixPackageFullName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{msixPackageFullName}", url.PathEscape(msixPackageFullName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,7 +175,7 @@ func (client *MSIXPackagesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return MSIXPackagesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MSIXPackagesClientGetResponse{}, err
 	}
@@ -215,7 +204,7 @@ func (client *MSIXPackagesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter msixPackageFullName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{msixPackageFullName}", url.PathEscape(msixPackageFullName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -257,7 +246,7 @@ func (client *MSIXPackagesClient) NewListPager(resourceGroupName string, hostPoo
 			if err != nil {
 				return MSIXPackagesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MSIXPackagesClientListResponse{}, err
 			}
@@ -284,7 +273,7 @@ func (client *MSIXPackagesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -326,7 +315,7 @@ func (client *MSIXPackagesClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return MSIXPackagesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MSIXPackagesClientUpdateResponse{}, err
 	}
@@ -355,7 +344,7 @@ func (client *MSIXPackagesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter msixPackageFullName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{msixPackageFullName}", url.PathEscape(msixPackageFullName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

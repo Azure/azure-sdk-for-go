@@ -25,11 +25,11 @@ func ExampleMsixImagesClient_NewExpandPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewMsixImagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	clientFactory, err := armdesktopvirtualization.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewExpandPager("resourceGroup1", "hostpool1", armdesktopvirtualization.MSIXImageURI{
+	pager := clientFactory.NewMsixImagesClient().NewExpandPager("resourceGroup1", "hostpool1", armdesktopvirtualization.MSIXImageURI{
 		URI: to.Ptr("imagepath"),
 	}, nil)
 	for pager.More() {

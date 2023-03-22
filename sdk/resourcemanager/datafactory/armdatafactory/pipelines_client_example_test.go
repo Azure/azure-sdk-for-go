@@ -25,11 +25,11 @@ func ExamplePipelinesClient_NewListByFactoryPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
+	pager := clientFactory.NewPipelinesClient().NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -114,11 +114,11 @@ func ExamplePipelinesClient_CreateOrUpdate_pipelinesCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", armdatafactory.PipelineResource{
+	res, err := clientFactory.NewPipelinesClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", armdatafactory.PipelineResource{
 		Properties: &armdatafactory.Pipeline{
 			Activities: []armdatafactory.ActivityClassification{
 				&armdatafactory.ForEachActivity{
@@ -282,11 +282,11 @@ func ExamplePipelinesClient_CreateOrUpdate_pipelinesUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", armdatafactory.PipelineResource{
+	res, err := clientFactory.NewPipelinesClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", armdatafactory.PipelineResource{
 		Properties: &armdatafactory.Pipeline{
 			Description: to.Ptr("Example description"),
 			Activities: []armdatafactory.ActivityClassification{
@@ -424,11 +424,11 @@ func ExamplePipelinesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", &armdatafactory.PipelinesClientGetOptions{IfNoneMatch: nil})
+	res, err := clientFactory.NewPipelinesClient().Get(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", &armdatafactory.PipelinesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -515,11 +515,11 @@ func ExamplePipelinesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", nil)
+	_, err = clientFactory.NewPipelinesClient().Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -532,11 +532,11 @@ func ExamplePipelinesClient_CreateRun() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateRun(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", &armdatafactory.PipelinesClientCreateRunOptions{ReferencePipelineRunID: nil,
+	res, err := clientFactory.NewPipelinesClient().CreateRun(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", &armdatafactory.PipelinesClientCreateRunOptions{ReferencePipelineRunID: nil,
 		IsRecovery:        nil,
 		StartActivityName: nil,
 		StartFromFailure:  nil,

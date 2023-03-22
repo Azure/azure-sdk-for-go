@@ -25,11 +25,11 @@ func ExampleDataFlowDebugSessionClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDataFlowDebugSessionClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.CreateDataFlowDebugSessionRequest{
+	poller, err := clientFactory.NewDataFlowDebugSessionClient().BeginCreate(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.CreateDataFlowDebugSessionRequest{
 		IntegrationRuntime: &armdatafactory.IntegrationRuntimeDebugResource{
 			Name: to.Ptr("ir1"),
 			Properties: &armdatafactory.ManagedIntegrationRuntime{
@@ -71,11 +71,11 @@ func ExampleDataFlowDebugSessionClient_NewQueryByFactoryPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDataFlowDebugSessionClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewQueryByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
+	pager := clientFactory.NewDataFlowDebugSessionClient().NewQueryByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -111,11 +111,11 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDataFlowDebugSessionClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.AddDataFlow(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DataFlowDebugPackage{
+	res, err := clientFactory.NewDataFlowDebugSessionClient().AddDataFlow(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DataFlowDebugPackage{
 		DataFlow: &armdatafactory.DataFlowDebugResource{
 			Name: to.Ptr("dataflow1"),
 			Properties: &armdatafactory.MappingDataFlow{
@@ -217,11 +217,11 @@ func ExampleDataFlowDebugSessionClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDataFlowDebugSessionClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DeleteDataFlowDebugSessionRequest{
+	_, err = clientFactory.NewDataFlowDebugSessionClient().Delete(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DeleteDataFlowDebugSessionRequest{
 		SessionID: to.Ptr("91fb57e0-8292-47be-89ff-c8f2d2bb2a7e"),
 	}, nil)
 	if err != nil {
@@ -236,11 +236,11 @@ func ExampleDataFlowDebugSessionClient_BeginExecuteCommand() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDataFlowDebugSessionClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginExecuteCommand(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DataFlowDebugCommandRequest{
+	poller, err := clientFactory.NewDataFlowDebugSessionClient().BeginExecuteCommand(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DataFlowDebugCommandRequest{
 		Command: to.Ptr(armdatafactory.DataFlowDebugCommandTypeExecutePreviewQuery),
 		CommandPayload: &armdatafactory.DataFlowDebugCommandPayload{
 			RowLimits:  to.Ptr[int32](100),

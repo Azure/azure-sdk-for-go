@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // FactoriesClient contains the methods for the Factories group.
 // Don't use this type directly, use NewFactoriesClient() instead.
 type FactoriesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewFactoriesClient creates a new instance of FactoriesClient with the specified values.
@@ -36,21 +33,13 @@ type FactoriesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFactoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FactoriesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".FactoriesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &FactoriesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -68,7 +57,7 @@ func (client *FactoriesClient) ConfigureFactoryRepo(ctx context.Context, locatio
 	if err != nil {
 		return FactoriesClientConfigureFactoryRepoResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientConfigureFactoryRepoResponse{}, err
 	}
@@ -89,7 +78,7 @@ func (client *FactoriesClient) configureFactoryRepoCreateRequest(ctx context.Con
 		return nil, errors.New("parameter locationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationId}", url.PathEscape(locationID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +112,7 @@ func (client *FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return FactoriesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientCreateOrUpdateResponse{}, err
 	}
@@ -148,7 +137,7 @@ func (client *FactoriesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +172,7 @@ func (client *FactoriesClient) Delete(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FactoriesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientDeleteResponse{}, err
 	}
@@ -208,7 +197,7 @@ func (client *FactoriesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +220,7 @@ func (client *FactoriesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FactoriesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientGetResponse{}, err
 	}
@@ -256,7 +245,7 @@ func (client *FactoriesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -293,7 +282,7 @@ func (client *FactoriesClient) GetDataPlaneAccess(ctx context.Context, resourceG
 	if err != nil {
 		return FactoriesClientGetDataPlaneAccessResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientGetDataPlaneAccessResponse{}, err
 	}
@@ -318,7 +307,7 @@ func (client *FactoriesClient) getDataPlaneAccessCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -352,7 +341,7 @@ func (client *FactoriesClient) GetGitHubAccessToken(ctx context.Context, resourc
 	if err != nil {
 		return FactoriesClientGetGitHubAccessTokenResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientGetGitHubAccessTokenResponse{}, err
 	}
@@ -377,7 +366,7 @@ func (client *FactoriesClient) getGitHubAccessTokenCreateRequest(ctx context.Con
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -417,7 +406,7 @@ func (client *FactoriesClient) NewListPager(options *FactoriesClientListOptions)
 			if err != nil {
 				return FactoriesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FactoriesClientListResponse{}, err
 			}
@@ -436,7 +425,7 @@ func (client *FactoriesClient) listCreateRequest(ctx context.Context, options *F
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -478,7 +467,7 @@ func (client *FactoriesClient) NewListByResourceGroupPager(resourceGroupName str
 			if err != nil {
 				return FactoriesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FactoriesClientListByResourceGroupResponse{}, err
 			}
@@ -501,7 +490,7 @@ func (client *FactoriesClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -534,7 +523,7 @@ func (client *FactoriesClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FactoriesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientUpdateResponse{}, err
 	}
@@ -559,7 +548,7 @@ func (client *FactoriesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

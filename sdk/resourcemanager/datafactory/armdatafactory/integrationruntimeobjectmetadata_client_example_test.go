@@ -25,11 +25,11 @@ func ExampleIntegrationRuntimeObjectMetadataClient_BeginRefresh() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimeObjectMetadataClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRefresh(ctx, "exampleResourceGroup", "exampleFactoryName", "testactivityv2", nil)
+	poller, err := clientFactory.NewIntegrationRuntimeObjectMetadataClient().BeginRefresh(ctx, "exampleResourceGroup", "exampleFactoryName", "testactivityv2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -53,11 +53,11 @@ func ExampleIntegrationRuntimeObjectMetadataClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimeObjectMetadataClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "testactivityv2", &armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions{GetMetadataRequest: &armdatafactory.GetSsisObjectMetadataRequest{
+	res, err := clientFactory.NewIntegrationRuntimeObjectMetadataClient().Get(ctx, "exampleResourceGroup", "exampleFactoryName", "testactivityv2", &armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions{GetMetadataRequest: &armdatafactory.GetSsisObjectMetadataRequest{
 		MetadataPath: to.Ptr("ssisFolders"),
 	},
 	})

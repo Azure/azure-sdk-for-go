@@ -3,7 +3,8 @@
 ## 3.2.0 (2023-03-24)
 ### Features Added
 
-- New type alias `AzureStorageAuthenticationType` with values `AzureStorageAuthenticationTypeAccountKey`, `AzureStorageAuthenticationTypeAnonymous`, `AzureStorageAuthenticationTypeMsi`, `AzureStorageAuthenticationTypeSasURI`, `AzureStorageAuthenticationTypeServicePrincipal`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `AzureStorageAuthenticationType` with values `AzureStorageAuthenticationTypeAccountKey`, `AzureStorageAuthenticationTypeAnonymous`, `AzureStorageAuthenticationTypeMsi`, `AzureStorageAuthenticationTypeSasURI`, `AzureStorageAuthenticationTypeServicePrincipal`
 - New struct `CopyComputeScaleProperties`
 - New struct `PipelineExternalComputeScaleProperties`
 - New field `SasToken` in struct `AzureBlobFSLinkedServiceTypeProperties`

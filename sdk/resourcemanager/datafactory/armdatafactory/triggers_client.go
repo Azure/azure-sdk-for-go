@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // TriggersClient contains the methods for the Triggers group.
 // Don't use this type directly, use NewTriggersClient() instead.
 type TriggersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTriggersClient creates a new instance of TriggersClient with the specified values.
@@ -36,21 +33,13 @@ type TriggersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TriggersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TriggersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *TriggersClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return TriggersClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TriggersClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +87,7 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +123,7 @@ func (client *TriggersClient) Delete(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return TriggersClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TriggersClientDeleteResponse{}, err
 	}
@@ -163,7 +152,7 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,7 +176,7 @@ func (client *TriggersClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TriggersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TriggersClientGetResponse{}, err
 	}
@@ -216,7 +205,7 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -253,7 +242,7 @@ func (client *TriggersClient) GetEventSubscriptionStatus(ctx context.Context, re
 	if err != nil {
 		return TriggersClientGetEventSubscriptionStatusResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TriggersClientGetEventSubscriptionStatusResponse{}, err
 	}
@@ -282,7 +271,7 @@ func (client *TriggersClient) getEventSubscriptionStatusCreateRequest(ctx contex
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -325,7 +314,7 @@ func (client *TriggersClient) NewListByFactoryPager(resourceGroupName string, fa
 			if err != nil {
 				return TriggersClientListByFactoryResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TriggersClientListByFactoryResponse{}, err
 			}
@@ -352,7 +341,7 @@ func (client *TriggersClient) listByFactoryCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -385,7 +374,7 @@ func (client *TriggersClient) QueryByFactory(ctx context.Context, resourceGroupN
 	if err != nil {
 		return TriggersClientQueryByFactoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TriggersClientQueryByFactoryResponse{}, err
 	}
@@ -410,7 +399,7 @@ func (client *TriggersClient) queryByFactoryCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -444,9 +433,9 @@ func (client *TriggersClient) BeginStart(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[TriggersClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TriggersClientStartResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[TriggersClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TriggersClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -459,7 +448,7 @@ func (client *TriggersClient) start(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -488,7 +477,7 @@ func (client *TriggersClient) startCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -513,9 +502,9 @@ func (client *TriggersClient) BeginStop(ctx context.Context, resourceGroupName s
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[TriggersClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TriggersClientStopResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[TriggersClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TriggersClientStopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -528,7 +517,7 @@ func (client *TriggersClient) stop(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -557,7 +546,7 @@ func (client *TriggersClient) stopCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -583,9 +572,9 @@ func (client *TriggersClient) BeginSubscribeToEvents(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[TriggersClientSubscribeToEventsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TriggersClientSubscribeToEventsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[TriggersClientSubscribeToEventsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TriggersClientSubscribeToEventsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -598,7 +587,7 @@ func (client *TriggersClient) subscribeToEvents(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -627,7 +616,7 @@ func (client *TriggersClient) subscribeToEventsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -653,9 +642,9 @@ func (client *TriggersClient) BeginUnsubscribeFromEvents(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[TriggersClientUnsubscribeFromEventsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TriggersClientUnsubscribeFromEventsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[TriggersClientUnsubscribeFromEventsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TriggersClientUnsubscribeFromEventsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -668,7 +657,7 @@ func (client *TriggersClient) unsubscribeFromEvents(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -697,7 +686,7 @@ func (client *TriggersClient) unsubscribeFromEventsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

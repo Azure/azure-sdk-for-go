@@ -25,11 +25,11 @@ func ExampleLinkedServicesClient_NewListByFactoryPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewLinkedServicesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
+	pager := clientFactory.NewLinkedServicesClient().NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -70,11 +70,11 @@ func ExampleLinkedServicesClient_CreateOrUpdate_linkedServicesCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewLinkedServicesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", armdatafactory.LinkedServiceResource{
+	res, err := clientFactory.NewLinkedServicesClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", armdatafactory.LinkedServiceResource{
 		Properties: &armdatafactory.AzureStorageLinkedService{
 			Type: to.Ptr("AzureStorage"),
 			TypeProperties: &armdatafactory.AzureStorageLinkedServiceTypeProperties{
@@ -116,11 +116,11 @@ func ExampleLinkedServicesClient_CreateOrUpdate_linkedServicesUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewLinkedServicesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", armdatafactory.LinkedServiceResource{
+	res, err := clientFactory.NewLinkedServicesClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", armdatafactory.LinkedServiceResource{
 		Properties: &armdatafactory.AzureStorageLinkedService{
 			Type:        to.Ptr("AzureStorage"),
 			Description: to.Ptr("Example description"),
@@ -164,11 +164,11 @@ func ExampleLinkedServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewLinkedServicesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", &armdatafactory.LinkedServicesClientGetOptions{IfNoneMatch: nil})
+	res, err := clientFactory.NewLinkedServicesClient().Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", &armdatafactory.LinkedServicesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -201,11 +201,11 @@ func ExampleLinkedServicesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewLinkedServicesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", nil)
+	_, err = clientFactory.NewLinkedServicesClient().Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

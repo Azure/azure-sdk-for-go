@@ -25,11 +25,11 @@ func ExampleCredentialOperationsClient_NewListByFactoryPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewCredentialOperationsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
+	pager := clientFactory.NewCredentialOperationsClient().NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,11 +66,11 @@ func ExampleCredentialOperationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewCredentialOperationsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", armdatafactory.ManagedIdentityCredentialResource{
+	res, err := clientFactory.NewCredentialOperationsClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", armdatafactory.ManagedIdentityCredentialResource{
 		Properties: &armdatafactory.ManagedIdentityCredential{
 			Type: to.Ptr("ManagedIdentity"),
 			TypeProperties: &armdatafactory.ManagedIdentityTypeProperties{
@@ -105,11 +105,11 @@ func ExampleCredentialOperationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewCredentialOperationsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", &armdatafactory.CredentialOperationsClientGetOptions{IfNoneMatch: nil})
+	res, err := clientFactory.NewCredentialOperationsClient().Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", &armdatafactory.CredentialOperationsClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -138,11 +138,11 @@ func ExampleCredentialOperationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewCredentialOperationsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", nil)
+	_, err = clientFactory.NewCredentialOperationsClient().Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -24,11 +24,11 @@ func ExamplePrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPrivateLinkResourcesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", nil)
+	res, err := clientFactory.NewPrivateLinkResourcesClient().Get(ctx, "exampleResourceGroup", "exampleFactoryName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

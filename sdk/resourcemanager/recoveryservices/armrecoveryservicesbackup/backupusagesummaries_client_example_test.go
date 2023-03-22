@@ -25,11 +25,11 @@ func ExampleBackupUsageSummariesClient_NewListPager_getProtectedContainersUsages
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupUsageSummariesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("testVault", "testRG", &armrecoveryservicesbackup.BackupUsageSummariesClientListOptions{Filter: to.Ptr("type eq 'BackupProtectionContainerCountSummary'"),
+	pager := clientFactory.NewBackupUsageSummariesClient().NewListPager("testVault", "testRG", &armrecoveryservicesbackup.BackupUsageSummariesClientListOptions{Filter: to.Ptr("type eq 'BackupProtectionContainerCountSummary'"),
 		SkipToken: nil,
 	})
 	for pager.More() {
@@ -82,11 +82,11 @@ func ExampleBackupUsageSummariesClient_NewListPager_getProtectedItemsUsagesSumma
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupUsageSummariesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("testVault", "testRG", &armrecoveryservicesbackup.BackupUsageSummariesClientListOptions{Filter: to.Ptr("type eq 'BackupProtectedItemCountSummary'"),
+	pager := clientFactory.NewBackupUsageSummariesClient().NewListPager("testVault", "testRG", &armrecoveryservicesbackup.BackupUsageSummariesClientListOptions{Filter: to.Ptr("type eq 'BackupProtectedItemCountSummary'"),
 		SkipToken: nil,
 	})
 	for pager.More() {

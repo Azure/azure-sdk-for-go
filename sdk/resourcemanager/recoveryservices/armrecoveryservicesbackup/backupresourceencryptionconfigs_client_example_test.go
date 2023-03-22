@@ -25,11 +25,11 @@ func ExampleBackupResourceEncryptionConfigsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceEncryptionConfigsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rishTestVault", "rishgrp", nil)
+	res, err := clientFactory.NewBackupResourceEncryptionConfigsClient().Get(ctx, "rishTestVault", "rishgrp", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -59,11 +59,11 @@ func ExampleBackupResourceEncryptionConfigsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceEncryptionConfigsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Update(ctx, "source-rsv", "test-rg", armrecoveryservicesbackup.BackupResourceEncryptionConfigResource{
+	_, err = clientFactory.NewBackupResourceEncryptionConfigsClient().Update(ctx, "source-rsv", "test-rg", armrecoveryservicesbackup.BackupResourceEncryptionConfigResource{
 		Properties: &armrecoveryservicesbackup.BackupResourceEncryptionConfig{
 			EncryptionAtRestType:          to.Ptr(armrecoveryservicesbackup.EncryptionAtRestTypeCustomerManaged),
 			InfrastructureEncryptionState: to.Ptr(armrecoveryservicesbackup.InfrastructureEncryptionState("true")),

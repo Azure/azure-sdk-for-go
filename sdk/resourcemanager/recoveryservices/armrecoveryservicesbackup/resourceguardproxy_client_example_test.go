@@ -25,11 +25,11 @@ func ExampleResourceGuardProxyClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewResourceGuardProxyClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", nil)
+	res, err := clientFactory.NewResourceGuardProxyClient().Get(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -64,11 +64,11 @@ func ExampleResourceGuardProxyClient_Put() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewResourceGuardProxyClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Put(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", armrecoveryservicesbackup.ResourceGuardProxyBaseResource{
+	res, err := clientFactory.NewResourceGuardProxyClient().Put(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", armrecoveryservicesbackup.ResourceGuardProxyBaseResource{
 		Properties: &armrecoveryservicesbackup.ResourceGuardProxyBase{
 			ResourceGuardResourceID: to.Ptr("/subscriptions/c999d45b-944f-418c-a0d8-c3fcfd1802c8/resourceGroups/vaultguardRGNew/providers/Microsoft.DataProtection/resourceGuards/VaultGuardTestNew"),
 		},
@@ -107,11 +107,11 @@ func ExampleResourceGuardProxyClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewResourceGuardProxyClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", nil)
+	_, err = clientFactory.NewResourceGuardProxyClient().Delete(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -124,11 +124,11 @@ func ExampleResourceGuardProxyClient_UnlockDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewResourceGuardProxyClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UnlockDelete(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", armrecoveryservicesbackup.UnlockDeleteRequest{
+	res, err := clientFactory.NewResourceGuardProxyClient().UnlockDelete(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", armrecoveryservicesbackup.UnlockDeleteRequest{
 		ResourceGuardOperationRequests: []*string{
 			to.Ptr("/subscriptions/c999d45b-944f-418c-a0d8-c3fcfd1802c8/resourceGroups/vaultguardRGNew/providers/Microsoft.DataProtection/resourceGuards/VaultGuardTestNew/deleteProtectedItemRequests/default")},
 		ResourceToBeDeleted: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/gaallarg/providers/Microsoft.RecoveryServices/vaults/MercuryCrrVault/backupFabrics/Azure/protectionContainers/VMAppContainer;compute;crrtestrg;crrtestvm/protectedItems/SQLDataBase;mssqlserver;testdb"),

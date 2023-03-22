@@ -27,11 +27,11 @@ func ExampleProtectionPoliciesClient_Get_getAzureIaasVmEnhancedProtectionPolicyD
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", nil)
+	res, err := clientFactory.NewProtectionPoliciesClient().Get(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -78,11 +78,11 @@ func ExampleProtectionPoliciesClient_Get_getAzureIaasVmProtectionPolicyDetails()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", nil)
+	res, err := clientFactory.NewProtectionPoliciesClient().Get(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -126,11 +126,11 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateDailyAzureStor
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "swaggertestvault", "SwaggerTestRg", "dailyPolicy2", armrecoveryservicesbackup.ProtectionPolicyResource{
+	res, err := clientFactory.NewProtectionPoliciesClient().CreateOrUpdate(ctx, "swaggertestvault", "SwaggerTestRg", "dailyPolicy2", armrecoveryservicesbackup.ProtectionPolicyResource{
 		Properties: &armrecoveryservicesbackup.AzureFileShareProtectionPolicy{
 			BackupManagementType: to.Ptr("AzureStorage"),
 			RetentionPolicy: &armrecoveryservicesbackup.LongTermRetentionPolicy{
@@ -281,11 +281,11 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureV
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", armrecoveryservicesbackup.ProtectionPolicyResource{
+	res, err := clientFactory.NewProtectionPoliciesClient().CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", armrecoveryservicesbackup.ProtectionPolicyResource{
 		Properties: &armrecoveryservicesbackup.AzureIaaSVMProtectionPolicy{
 			BackupManagementType:          to.Ptr("AzureIaasVM"),
 			InstantRpRetentionRangeInDays: to.Ptr[int32](30),
@@ -444,11 +444,11 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureV
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", armrecoveryservicesbackup.ProtectionPolicyResource{
+	res, err := clientFactory.NewProtectionPoliciesClient().CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", armrecoveryservicesbackup.ProtectionPolicyResource{
 		Properties: &armrecoveryservicesbackup.AzureIaaSVMProtectionPolicy{
 			BackupManagementType:          to.Ptr("AzureIaasVM"),
 			InstantRpRetentionRangeInDays: to.Ptr[int32](30),
@@ -605,11 +605,11 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateFullAzureVmPro
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", armrecoveryservicesbackup.ProtectionPolicyResource{
+	res, err := clientFactory.NewProtectionPoliciesClient().CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", armrecoveryservicesbackup.ProtectionPolicyResource{
 		Properties: &armrecoveryservicesbackup.AzureIaaSVMProtectionPolicy{
 			BackupManagementType: to.Ptr("AzureIaasVM"),
 			RetentionPolicy: &armrecoveryservicesbackup.LongTermRetentionPolicy{
@@ -763,11 +763,11 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateFullAzureWorkl
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", armrecoveryservicesbackup.ProtectionPolicyResource{
+	res, err := clientFactory.NewProtectionPoliciesClient().CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", armrecoveryservicesbackup.ProtectionPolicyResource{
 		Properties: &armrecoveryservicesbackup.AzureVMWorkloadProtectionPolicy{
 			BackupManagementType: to.Ptr("AzureWorkload"),
 			Settings: &armrecoveryservicesbackup.Settings{
@@ -994,11 +994,11 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateHourlyAzureSto
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "swaggertestvault", "SwaggerTestRg", "newPolicy2", armrecoveryservicesbackup.ProtectionPolicyResource{
+	res, err := clientFactory.NewProtectionPoliciesClient().CreateOrUpdate(ctx, "swaggertestvault", "SwaggerTestRg", "newPolicy2", armrecoveryservicesbackup.ProtectionPolicyResource{
 		Properties: &armrecoveryservicesbackup.AzureFileShareProtectionPolicy{
 			BackupManagementType: to.Ptr("AzureStorage"),
 			RetentionPolicy: &armrecoveryservicesbackup.LongTermRetentionPolicy{
@@ -1147,11 +1147,11 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateSimpleAzureVmP
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", armrecoveryservicesbackup.ProtectionPolicyResource{
+	res, err := clientFactory.NewProtectionPoliciesClient().CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", armrecoveryservicesbackup.ProtectionPolicyResource{
 		Properties: &armrecoveryservicesbackup.AzureIaaSVMProtectionPolicy{
 			BackupManagementType: to.Ptr("AzureIaasVM"),
 			RetentionPolicy: &armrecoveryservicesbackup.LongTermRetentionPolicy{
@@ -1217,11 +1217,11 @@ func ExampleProtectionPoliciesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", nil)
+	poller, err := clientFactory.NewProtectionPoliciesClient().BeginDelete(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

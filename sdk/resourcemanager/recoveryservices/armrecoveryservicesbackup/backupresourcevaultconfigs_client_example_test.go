@@ -25,11 +25,11 @@ func ExampleBackupResourceVaultConfigsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceVaultConfigsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "SwaggerTest", "SwaggerTestRg", nil)
+	res, err := clientFactory.NewBackupResourceVaultConfigsClient().Get(ctx, "SwaggerTest", "SwaggerTestRg", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -53,11 +53,11 @@ func ExampleBackupResourceVaultConfigsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceVaultConfigsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "SwaggerTest", "SwaggerTestRg", armrecoveryservicesbackup.BackupResourceVaultConfigResource{
+	res, err := clientFactory.NewBackupResourceVaultConfigsClient().Update(ctx, "SwaggerTest", "SwaggerTestRg", armrecoveryservicesbackup.BackupResourceVaultConfigResource{
 		Properties: &armrecoveryservicesbackup.BackupResourceVaultConfig{
 			EnhancedSecurityState: to.Ptr(armrecoveryservicesbackup.EnhancedSecurityStateEnabled),
 		},
@@ -85,11 +85,11 @@ func ExampleBackupResourceVaultConfigsClient_Put() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceVaultConfigsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Put(ctx, "SwaggerTest", "SwaggerTestRg", armrecoveryservicesbackup.BackupResourceVaultConfigResource{
+	res, err := clientFactory.NewBackupResourceVaultConfigsClient().Put(ctx, "SwaggerTest", "SwaggerTestRg", armrecoveryservicesbackup.BackupResourceVaultConfigResource{
 		Properties: &armrecoveryservicesbackup.BackupResourceVaultConfig{
 			EnhancedSecurityState:  to.Ptr(armrecoveryservicesbackup.EnhancedSecurityStateEnabled),
 			SoftDeleteFeatureState: to.Ptr(armrecoveryservicesbackup.SoftDeleteFeatureStateEnabled),

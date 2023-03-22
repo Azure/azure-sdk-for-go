@@ -25,11 +25,11 @@ func ExampleProtectedItemsClient_Get_getProtectedClassicVirtualMachineDetails() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectedItemsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure", "iaasvmcontainer;iaasvmcontainer;iaasvm-rg;iaasvm-1", "vm;iaasvmcontainer;iaasvm-rg;iaasvm-1", &armrecoveryservicesbackup.ProtectedItemsClientGetOptions{Filter: nil})
+	res, err := clientFactory.NewProtectedItemsClient().Get(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure", "iaasvmcontainer;iaasvmcontainer;iaasvm-rg;iaasvm-1", "vm;iaasvmcontainer;iaasvm-rg;iaasvm-1", &armrecoveryservicesbackup.ProtectedItemsClientGetOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -67,11 +67,11 @@ func ExampleProtectedItemsClient_Get_getProtectedVirtualMachineDetails() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectedItemsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure", "iaasvmcontainer;iaasvmcontainerv2;iaasvm-rg;iaasvm-1", "vm;iaasvmcontainerv2;iaasvm-rg;iaasvm-1", &armrecoveryservicesbackup.ProtectedItemsClientGetOptions{Filter: nil})
+	res, err := clientFactory.NewProtectedItemsClient().Get(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure", "iaasvmcontainer;iaasvmcontainerv2;iaasvm-rg;iaasvm-1", "vm;iaasvmcontainerv2;iaasvm-rg;iaasvm-1", &armrecoveryservicesbackup.ProtectedItemsClientGetOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -109,11 +109,11 @@ func ExampleProtectedItemsClient_CreateOrUpdate_enableProtectionOnAzureIaasVm() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectedItemsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", armrecoveryservicesbackup.ProtectedItemResource{
+	res, err := clientFactory.NewProtectedItemsClient().CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", armrecoveryservicesbackup.ProtectedItemResource{
 		Properties: &armrecoveryservicesbackup.AzureIaaSComputeVMProtectedItem{
 			PolicyID:          to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupPolicies/DefaultPolicy"),
 			ProtectedItemType: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -156,11 +156,11 @@ func ExampleProtectedItemsClient_CreateOrUpdate_stopProtectionWithRetainDataOnAz
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectedItemsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", armrecoveryservicesbackup.ProtectedItemResource{
+	res, err := clientFactory.NewProtectedItemsClient().CreateOrUpdate(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", armrecoveryservicesbackup.ProtectedItemResource{
 		Properties: &armrecoveryservicesbackup.AzureIaaSComputeVMProtectedItem{
 			ProtectedItemType: to.Ptr("Microsoft.Compute/virtualMachines"),
 			SourceResourceID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1"),
@@ -203,11 +203,11 @@ func ExampleProtectedItemsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectedItemsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure", "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", nil)
+	_, err = clientFactory.NewProtectedItemsClient().Delete(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure", "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

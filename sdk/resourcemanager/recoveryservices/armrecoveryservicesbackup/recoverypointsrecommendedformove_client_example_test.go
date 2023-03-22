@@ -25,11 +25,11 @@ func ExampleRecoveryPointsRecommendedForMoveClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewRecoveryPointsRecommendedForMoveClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rshvault", "rshhtestmdvmrg", "Azure", "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall", "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall", armrecoveryservicesbackup.ListRecoveryPointsRecommendedForMoveRequest{
+	pager := clientFactory.NewRecoveryPointsRecommendedForMoveClient().NewListPager("rshvault", "rshhtestmdvmrg", "Azure", "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall", "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall", armrecoveryservicesbackup.ListRecoveryPointsRecommendedForMoveRequest{
 		ExcludedRPList: []*string{
 			to.Ptr("348916168024334"),
 			to.Ptr("348916168024335")},

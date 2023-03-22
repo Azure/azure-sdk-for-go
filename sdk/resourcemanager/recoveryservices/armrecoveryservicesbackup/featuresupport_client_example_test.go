@@ -25,11 +25,11 @@ func ExampleFeatureSupportClient_Validate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewFeatureSupportClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Validate(ctx, "southeastasia", &armrecoveryservicesbackup.AzureVMResourceFeatureSupportRequest{
+	res, err := clientFactory.NewFeatureSupportClient().Validate(ctx, "southeastasia", &armrecoveryservicesbackup.AzureVMResourceFeatureSupportRequest{
 		FeatureType: to.Ptr("AzureVMResourceBackup"),
 		VMSize:      to.Ptr("Basic_A0"),
 		VMSKU:       to.Ptr("Premium"),

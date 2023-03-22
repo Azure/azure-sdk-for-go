@@ -25,11 +25,11 @@ func ExampleProtectionContainersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testVault", "testRg", "Azure", "VMAppContainer;Compute;testRG;testSQL", nil)
+	res, err := clientFactory.NewProtectionContainersClient().Get(ctx, "testVault", "testRg", "Azure", "VMAppContainer;Compute;testRG;testSQL", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -84,11 +84,11 @@ func ExampleProtectionContainersClient_Register() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Register(ctx, "swaggertestvault", "SwaggerTestRg", "Azure", "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", armrecoveryservicesbackup.ProtectionContainerResource{
+	res, err := clientFactory.NewProtectionContainersClient().Register(ctx, "swaggertestvault", "SwaggerTestRg", "Azure", "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", armrecoveryservicesbackup.ProtectionContainerResource{
 		Properties: &armrecoveryservicesbackup.AzureStorageContainer{
 			BackupManagementType:      to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureStorage),
 			ContainerType:             to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeStorageContainer),
@@ -126,11 +126,11 @@ func ExampleProtectionContainersClient_Unregister() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Unregister(ctx, "testVault", "testRg", "Azure", "storagecontainer;Storage;test-rg;teststorage", nil)
+	_, err = clientFactory.NewProtectionContainersClient().Unregister(ctx, "testVault", "testRg", "Azure", "storagecontainer;Storage;test-rg;teststorage", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -143,11 +143,11 @@ func ExampleProtectionContainersClient_Inquire() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Inquire(ctx, "testvault", "test-rg", "Azure", "storagecontainer;Storage;test-rg;teststorage", &armrecoveryservicesbackup.ProtectionContainersClientInquireOptions{Filter: nil})
+	_, err = clientFactory.NewProtectionContainersClient().Inquire(ctx, "testvault", "test-rg", "Azure", "storagecontainer;Storage;test-rg;teststorage", &armrecoveryservicesbackup.ProtectionContainersClientInquireOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -160,11 +160,11 @@ func ExampleProtectionContainersClient_Refresh() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Refresh(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", &armrecoveryservicesbackup.ProtectionContainersClientRefreshOptions{Filter: nil})
+	_, err = clientFactory.NewProtectionContainersClient().Refresh(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", &armrecoveryservicesbackup.ProtectionContainersClientRefreshOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

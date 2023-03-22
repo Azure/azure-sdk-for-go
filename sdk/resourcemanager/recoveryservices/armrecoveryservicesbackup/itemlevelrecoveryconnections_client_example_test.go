@@ -25,11 +25,11 @@ func ExampleItemLevelRecoveryConnectionsClient_Provision() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewItemLevelRecoveryConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Provision(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure", "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "1", armrecoveryservicesbackup.ILRRequestResource{
+	_, err = clientFactory.NewItemLevelRecoveryConnectionsClient().Provision(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure", "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "1", armrecoveryservicesbackup.ILRRequestResource{
 		Properties: &armrecoveryservicesbackup.IaasVMILRRegistrationRequest{
 			ObjectType:                to.Ptr("IaasVMILRRegistrationRequest"),
 			InitiatorName:             to.Ptr("Hello World"),
@@ -50,11 +50,11 @@ func ExampleItemLevelRecoveryConnectionsClient_Revoke() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewItemLevelRecoveryConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Revoke(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure", "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "1", nil)
+	_, err = clientFactory.NewItemLevelRecoveryConnectionsClient().Revoke(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure", "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

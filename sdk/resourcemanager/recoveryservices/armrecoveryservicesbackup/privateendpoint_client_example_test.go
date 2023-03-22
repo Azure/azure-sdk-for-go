@@ -24,11 +24,11 @@ func ExamplePrivateEndpointClient_GetOperationStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewPrivateEndpointClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetOperationStatus(ctx, "gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", "0f48183b-0a44-4dca-aec1-bba5daab888a", nil)
+	res, err := clientFactory.NewPrivateEndpointClient().GetOperationStatus(ctx, "gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", "0f48183b-0a44-4dca-aec1-bba5daab888a", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

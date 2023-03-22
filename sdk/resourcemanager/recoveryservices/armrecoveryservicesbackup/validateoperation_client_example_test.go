@@ -25,11 +25,11 @@ func ExampleValidateOperationClient_BeginTrigger() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewValidateOperationClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginTrigger(ctx, "testVault", "testRG", &armrecoveryservicesbackup.ValidateIaasVMRestoreOperationRequest{
+	poller, err := clientFactory.NewValidateOperationClient().BeginTrigger(ctx, "testVault", "testRG", &armrecoveryservicesbackup.ValidateIaasVMRestoreOperationRequest{
 		ObjectType: to.Ptr("ValidateIaasVMRestoreOperationRequest"),
 		RestoreRequest: &armrecoveryservicesbackup.IaasVMRestoreRequest{
 			ObjectType:            to.Ptr("IaasVMRestoreRequest"),

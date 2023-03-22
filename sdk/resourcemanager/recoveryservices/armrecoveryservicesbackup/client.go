@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // Client contains the methods for the RecoveryServicesBackupClient group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewClient creates a new instance of Client with the specified values.
@@ -36,21 +33,13 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,9 +59,9 @@ func (client *Client) BeginBMSPrepareDataMove(ctx context.Context, vaultName str
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientBMSPrepareDataMoveResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientBMSPrepareDataMoveResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientBMSPrepareDataMoveResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientBMSPrepareDataMoveResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -85,7 +74,7 @@ func (client *Client) bMSPrepareDataMove(ctx context.Context, vaultName string, 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +99,7 @@ func (client *Client) bmsPrepareDataMoveCreateRequest(ctx context.Context, vault
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,9 +125,9 @@ func (client *Client) BeginBMSTriggerDataMove(ctx context.Context, vaultName str
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientBMSTriggerDataMoveResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientBMSTriggerDataMoveResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientBMSTriggerDataMoveResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientBMSTriggerDataMoveResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -151,7 +140,7 @@ func (client *Client) bMSTriggerDataMove(ctx context.Context, vaultName string, 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +165,7 @@ func (client *Client) bmsTriggerDataMoveCreateRequest(ctx context.Context, vault
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -199,7 +188,7 @@ func (client *Client) GetOperationStatus(ctx context.Context, vaultName string, 
 	if err != nil {
 		return ClientGetOperationStatusResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientGetOperationStatusResponse{}, err
 	}
@@ -228,7 +217,7 @@ func (client *Client) getOperationStatusCreateRequest(ctx context.Context, vault
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,9 +251,9 @@ func (client *Client) BeginMoveRecoveryPoint(ctx context.Context, vaultName stri
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientMoveRecoveryPointResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientMoveRecoveryPointResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientMoveRecoveryPointResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientMoveRecoveryPointResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -277,7 +266,7 @@ func (client *Client) moveRecoveryPoint(ctx context.Context, vaultName string, r
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -318,7 +307,7 @@ func (client *Client) moveRecoveryPointCreateRequest(ctx context.Context, vaultN
 		return nil, errors.New("parameter recoveryPointID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recoveryPointId}", url.PathEscape(recoveryPointID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

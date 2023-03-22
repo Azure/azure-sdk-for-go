@@ -24,11 +24,11 @@ func ExampleBackupEnginesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupEnginesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("testVault", "testRG", &armrecoveryservicesbackup.BackupEnginesClientListOptions{Filter: nil,
+	pager := clientFactory.NewBackupEnginesClient().NewListPager("testVault", "testRG", &armrecoveryservicesbackup.BackupEnginesClientListOptions{Filter: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {
@@ -98,11 +98,11 @@ func ExampleBackupEnginesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupEnginesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testVault", "testRG", "testServer", &armrecoveryservicesbackup.BackupEnginesClientGetOptions{Filter: nil,
+	res, err := clientFactory.NewBackupEnginesClient().Get(ctx, "testVault", "testRG", "testServer", &armrecoveryservicesbackup.BackupEnginesClientGetOptions{Filter: nil,
 		SkipToken: nil,
 	})
 	if err != nil {

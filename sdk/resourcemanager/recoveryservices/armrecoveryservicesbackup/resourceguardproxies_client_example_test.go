@@ -24,11 +24,11 @@ func ExampleResourceGuardProxiesClient_NewGetPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewResourceGuardProxiesClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetPager("sampleVault", "SampleResourceGroup", nil)
+	pager := clientFactory.NewResourceGuardProxiesClient().NewGetPager("sampleVault", "SampleResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

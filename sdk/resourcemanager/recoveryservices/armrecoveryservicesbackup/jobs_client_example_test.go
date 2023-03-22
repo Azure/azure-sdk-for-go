@@ -24,11 +24,11 @@ func ExampleJobsClient_Export() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Export(ctx, "NetSDKTestRsVault", "SwaggerTestRg", &armrecoveryservicesbackup.JobsClientExportOptions{Filter: nil})
+	_, err = clientFactory.NewJobsClient().Export(ctx, "NetSDKTestRsVault", "SwaggerTestRg", &armrecoveryservicesbackup.JobsClientExportOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

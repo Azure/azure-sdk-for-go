@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ProtectionPoliciesClient contains the methods for the ProtectionPolicies group.
 // Don't use this type directly, use NewProtectionPoliciesClient() instead.
 type ProtectionPoliciesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewProtectionPoliciesClient creates a new instance of ProtectionPoliciesClient with the specified values.
@@ -36,21 +33,13 @@ type ProtectionPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionPoliciesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ProtectionPoliciesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProtectionPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,7 +60,7 @@ func (client *ProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, vaul
 	if err != nil {
 		return ProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -100,7 +89,7 @@ func (client *ProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter policyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,9 +125,9 @@ func (client *ProtectionPoliciesClient) BeginDelete(ctx context.Context, vaultNa
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ProtectionPoliciesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ProtectionPoliciesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ProtectionPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ProtectionPoliciesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -152,7 +141,7 @@ func (client *ProtectionPoliciesClient) deleteOperation(ctx context.Context, vau
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -181,7 +170,7 @@ func (client *ProtectionPoliciesClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter policyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -206,7 +195,7 @@ func (client *ProtectionPoliciesClient) Get(ctx context.Context, vaultName strin
 	if err != nil {
 		return ProtectionPoliciesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProtectionPoliciesClientGetResponse{}, err
 	}
@@ -235,7 +224,7 @@ func (client *ProtectionPoliciesClient) getCreateRequest(ctx context.Context, va
 		return nil, errors.New("parameter policyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

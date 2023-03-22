@@ -3,7 +3,8 @@
 ## 2.1.0 (2023-03-24)
 ### Features Added
 
-- New type alias `TargetDiskNetworkAccessOption` with values `TargetDiskNetworkAccessOptionEnablePrivateAccessForAllDisks`, `TargetDiskNetworkAccessOptionEnablePublicAccessForAllDisks`, `TargetDiskNetworkAccessOptionSameAsOnSourceDisks`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `TargetDiskNetworkAccessOption` with values `TargetDiskNetworkAccessOptionEnablePrivateAccessForAllDisks`, `TargetDiskNetworkAccessOptionEnablePublicAccessForAllDisks`, `TargetDiskNetworkAccessOptionSameAsOnSourceDisks`
 - New struct `ExtendedLocation`
 - New struct `SecuredVMDetails`
 - New struct `TargetDiskNetworkAccessSettings`

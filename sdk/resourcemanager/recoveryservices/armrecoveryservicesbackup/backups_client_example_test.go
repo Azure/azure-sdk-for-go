@@ -25,11 +25,11 @@ func ExampleBackupsClient_Trigger() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Trigger(ctx, "linuxRsVault", "linuxRsVaultRG", "Azure", "IaasVMContainer;iaasvmcontainerv2;testrg;v1win2012r", "VM;iaasvmcontainerv2;testrg;v1win2012r", armrecoveryservicesbackup.BackupRequestResource{
+	_, err = clientFactory.NewBackupsClient().Trigger(ctx, "linuxRsVault", "linuxRsVaultRG", "Azure", "IaasVMContainer;iaasvmcontainerv2;testrg;v1win2012r", "VM;iaasvmcontainerv2;testrg;v1win2012r", armrecoveryservicesbackup.BackupRequestResource{
 		Properties: &armrecoveryservicesbackup.IaasVMBackupRequest{
 			ObjectType: to.Ptr("IaasVMBackupRequest"),
 		},

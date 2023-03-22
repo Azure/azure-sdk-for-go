@@ -25,11 +25,11 @@ func ExampleProtectionIntentClient_Validate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionIntentClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Validate(ctx, "southeastasia", armrecoveryservicesbackup.PreValidateEnableBackupRequest{
+	res, err := clientFactory.NewProtectionIntentClient().Validate(ctx, "southeastasia", armrecoveryservicesbackup.PreValidateEnableBackupRequest{
 		Properties:   to.Ptr(""),
 		ResourceID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/arunaupgrade/providers/Microsoft.Compute/VirtualMachines/upgrade1"),
 		ResourceType: to.Ptr(armrecoveryservicesbackup.DataSourceTypeVM),
@@ -58,11 +58,11 @@ func ExampleProtectionIntentClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionIntentClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E", nil)
+	res, err := clientFactory.NewProtectionIntentClient().Get(ctx, "myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -89,11 +89,11 @@ func ExampleProtectionIntentClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionIntentClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "myVault", "myRG", "Azure", "vm;iaasvmcontainerv2;chamsrgtest;chamscandel", armrecoveryservicesbackup.ProtectionIntentResource{
+	res, err := clientFactory.NewProtectionIntentClient().CreateOrUpdate(ctx, "myVault", "myRG", "Azure", "vm;iaasvmcontainerv2;chamsrgtest;chamscandel", armrecoveryservicesbackup.ProtectionIntentResource{
 		Properties: &armrecoveryservicesbackup.AzureResourceProtectionIntent{
 			PolicyID:                 to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.RecoveryServices/vaults/myVault/backupPolicies/myPolicy"),
 			ProtectionIntentItemType: to.Ptr(armrecoveryservicesbackup.ProtectionIntentItemTypeAzureResourceItem),
@@ -126,11 +126,11 @@ func ExampleProtectionIntentClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionIntentClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E", nil)
+	_, err = clientFactory.NewProtectionIntentClient().Delete(ctx, "myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

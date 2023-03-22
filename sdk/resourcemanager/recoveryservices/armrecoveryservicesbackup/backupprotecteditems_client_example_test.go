@@ -25,11 +25,11 @@ func ExampleBackupProtectedItemsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupProtectedItemsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("NetSDKTestRsVault", "SwaggerTestRg", &armrecoveryservicesbackup.BackupProtectedItemsClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureIaasVM' and itemType eq 'VM'"),
+	pager := clientFactory.NewBackupProtectedItemsClient().NewListPager("NetSDKTestRsVault", "SwaggerTestRg", &armrecoveryservicesbackup.BackupProtectedItemsClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureIaasVM' and itemType eq 'VM'"),
 		SkipToken: nil,
 	})
 	for pager.More() {

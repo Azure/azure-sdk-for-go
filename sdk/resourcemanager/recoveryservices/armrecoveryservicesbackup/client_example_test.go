@@ -25,11 +25,11 @@ func ExampleClient_GetOperationStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetOperationStatus(ctx, "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", nil)
+	res, err := clientFactory.NewClient().GetOperationStatus(ctx, "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -52,11 +52,11 @@ func ExampleClient_BeginBMSPrepareDataMove() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginBMSPrepareDataMove(ctx, "source-rsv", "sourceRG", armrecoveryservicesbackup.PrepareDataMoveRequest{
+	poller, err := clientFactory.NewClient().BeginBMSPrepareDataMove(ctx, "source-rsv", "sourceRG", armrecoveryservicesbackup.PrepareDataMoveRequest{
 		DataMoveLevel:    to.Ptr(armrecoveryservicesbackup.DataMoveLevelVault),
 		TargetRegion:     to.Ptr("USGov Virginia"),
 		TargetResourceID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/targetRG/providers/Microsoft.RecoveryServices/vaults/target-rsv"),
@@ -77,11 +77,11 @@ func ExampleClient_BeginBMSTriggerDataMove() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginBMSTriggerDataMove(ctx, "target-rsv", "targetRG", armrecoveryservicesbackup.TriggerDataMoveRequest{
+	poller, err := clientFactory.NewClient().BeginBMSTriggerDataMove(ctx, "target-rsv", "targetRG", armrecoveryservicesbackup.TriggerDataMoveRequest{
 		CorrelationID:    to.Ptr("MTg2OTcyMzM4NzYyMjc1NDY3Nzs1YmUzYmVmNi04YjJiLTRhOTItOTllYi01NTM0MDllYjk2NjE="),
 		DataMoveLevel:    to.Ptr(armrecoveryservicesbackup.DataMoveLevelVault),
 		SourceRegion:     to.Ptr("USGov Iowa"),
@@ -103,11 +103,11 @@ func ExampleClient_BeginMoveRecoveryPoint() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMoveRecoveryPoint(ctx, "testVault", "netsdktestrg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334", armrecoveryservicesbackup.MoveRPAcrossTiersRequest{
+	poller, err := clientFactory.NewClient().BeginMoveRecoveryPoint(ctx, "testVault", "netsdktestrg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334", armrecoveryservicesbackup.MoveRPAcrossTiersRequest{
 		ObjectType:     to.Ptr("MoveRPAcrossTiersRequest"),
 		SourceTierType: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierTypeHardenedRP),
 		TargetTierType: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierTypeArchivedRP),

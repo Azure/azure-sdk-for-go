@@ -25,11 +25,11 @@ func ExampleBackupWorkloadItemsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupWorkloadItemsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("suchandr-seacan-rsv", "testRg", "Azure", "VMAppContainer;Compute;bvtdtestag;sqlserver-1", &armrecoveryservicesbackup.BackupWorkloadItemsClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureWorkload'"),
+	pager := clientFactory.NewBackupWorkloadItemsClient().NewListPager("suchandr-seacan-rsv", "testRg", "Azure", "VMAppContainer;Compute;bvtdtestag;sqlserver-1", &armrecoveryservicesbackup.BackupWorkloadItemsClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureWorkload'"),
 		SkipToken: nil,
 	})
 	for pager.More() {

@@ -25,11 +25,11 @@ func ExampleBackupPoliciesClient_NewListPager_listProtectionPoliciesWithBackupMa
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("NetSDKTestRsVault", "SwaggerTestRg", &armrecoveryservicesbackup.BackupPoliciesClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureIaasVM'")})
+	pager := clientFactory.NewBackupPoliciesClient().NewListPager("NetSDKTestRsVault", "SwaggerTestRg", &armrecoveryservicesbackup.BackupPoliciesClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureIaasVM'")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -108,11 +108,11 @@ func ExampleBackupPoliciesClient_NewListPager_listProtectionPoliciesWithBackupMa
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("NetSDKTestRsVault", "SwaggerTestRg", &armrecoveryservicesbackup.BackupPoliciesClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureIaasVM'")})
+	pager := clientFactory.NewBackupPoliciesClient().NewListPager("NetSDKTestRsVault", "SwaggerTestRg", &armrecoveryservicesbackup.BackupPoliciesClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureIaasVM'")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -220,11 +220,11 @@ func ExampleBackupPoliciesClient_NewListPager_listProtectionPoliciesWithBackupMa
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("NetSDKTestRsVault", "SwaggerTestRg", &armrecoveryservicesbackup.BackupPoliciesClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureWorkload'")})
+	pager := clientFactory.NewBackupPoliciesClient().NewListPager("NetSDKTestRsVault", "SwaggerTestRg", &armrecoveryservicesbackup.BackupPoliciesClientListOptions{Filter: to.Ptr("backupManagementType eq 'AzureWorkload'")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

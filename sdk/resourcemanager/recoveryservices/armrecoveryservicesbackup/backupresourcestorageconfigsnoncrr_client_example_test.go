@@ -25,11 +25,11 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceStorageConfigsNonCRRClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", nil)
+	res, err := clientFactory.NewBackupResourceStorageConfigsNonCRRClient().Get(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -55,11 +55,11 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceStorageConfigsNonCRRClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", armrecoveryservicesbackup.BackupResourceConfigResource{
+	res, err := clientFactory.NewBackupResourceStorageConfigsNonCRRClient().Update(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", armrecoveryservicesbackup.BackupResourceConfigResource{
 		Properties: &armrecoveryservicesbackup.BackupResourceConfig{
 			StorageType:      to.Ptr(armrecoveryservicesbackup.StorageTypeLocallyRedundant),
 			StorageTypeState: to.Ptr(armrecoveryservicesbackup.StorageTypeStateUnlocked),
@@ -90,11 +90,11 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Patch() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceStorageConfigsNonCRRClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Patch(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", armrecoveryservicesbackup.BackupResourceConfigResource{
+	_, err = clientFactory.NewBackupResourceStorageConfigsNonCRRClient().Patch(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", armrecoveryservicesbackup.BackupResourceConfigResource{
 		Properties: &armrecoveryservicesbackup.BackupResourceConfig{
 			StorageType:      to.Ptr(armrecoveryservicesbackup.StorageTypeLocallyRedundant),
 			StorageTypeState: to.Ptr(armrecoveryservicesbackup.StorageTypeStateUnlocked),

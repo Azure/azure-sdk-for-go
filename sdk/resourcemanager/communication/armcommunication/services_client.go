@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ServicesClient contains the methods for the CommunicationServices group.
 // Don't use this type directly, use NewServicesClient() instead.
 type ServicesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewServicesClient creates a new instance of ServicesClient with the specified values.
@@ -36,21 +33,13 @@ type ServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServicesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ServicesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ServicesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -67,7 +56,7 @@ func (client *ServicesClient) CheckNameAvailability(ctx context.Context, nameAva
 	if err != nil {
 		return ServicesClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServicesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -81,7 +70,7 @@ func (client *ServicesClient) CheckNameAvailability(ctx context.Context, nameAva
 func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Context, nameAvailabilityParameters NameAvailabilityParameters, options *ServicesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Communication/checkNameAvailability"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,11 +105,11 @@ func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ServicesClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServicesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServicesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -133,7 +122,7 @@ func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +144,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter communicationServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationServiceName}", url.PathEscape(communicationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -179,11 +168,11 @@ func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ServicesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServicesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServicesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -196,7 +185,7 @@ func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -218,7 +207,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter communicationServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationServiceName}", url.PathEscape(communicationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -241,7 +230,7 @@ func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ServicesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServicesClientGetResponse{}, err
 	}
@@ -263,7 +252,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter communicationServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationServiceName}", url.PathEscape(communicationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,7 +285,7 @@ func (client *ServicesClient) LinkNotificationHub(ctx context.Context, resourceG
 	if err != nil {
 		return ServicesClientLinkNotificationHubResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServicesClientLinkNotificationHubResponse{}, err
 	}
@@ -318,7 +307,7 @@ func (client *ServicesClient) linkNotificationHubCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter communicationServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationServiceName}", url.PathEscape(communicationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -363,7 +352,7 @@ func (client *ServicesClient) NewListByResourceGroupPager(resourceGroupName stri
 			if err != nil {
 				return ServicesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ServicesClientListByResourceGroupResponse{}, err
 			}
@@ -383,7 +372,7 @@ func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -424,7 +413,7 @@ func (client *ServicesClient) NewListBySubscriptionPager(options *ServicesClient
 			if err != nil {
 				return ServicesClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ServicesClientListBySubscriptionResponse{}, err
 			}
@@ -440,7 +429,7 @@ func (client *ServicesClient) NewListBySubscriptionPager(options *ServicesClient
 func (client *ServicesClient) listBySubscriptionCreateRequest(ctx context.Context, options *ServicesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Communication/communicationServices"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -472,7 +461,7 @@ func (client *ServicesClient) ListKeys(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ServicesClientListKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServicesClientListKeysResponse{}, err
 	}
@@ -494,7 +483,7 @@ func (client *ServicesClient) listKeysCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter communicationServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationServiceName}", url.PathEscape(communicationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -528,7 +517,7 @@ func (client *ServicesClient) RegenerateKey(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ServicesClientRegenerateKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServicesClientRegenerateKeyResponse{}, err
 	}
@@ -550,7 +539,7 @@ func (client *ServicesClient) regenerateKeyCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter communicationServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationServiceName}", url.PathEscape(communicationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -583,7 +572,7 @@ func (client *ServicesClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ServicesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServicesClientUpdateResponse{}, err
 	}
@@ -605,7 +594,7 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter communicationServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationServiceName}", url.PathEscape(communicationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

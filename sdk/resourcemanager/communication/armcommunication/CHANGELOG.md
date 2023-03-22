@@ -10,6 +10,7 @@
 
 ### Features Added
 
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 - New enum type `ProvisioningState` with values `ProvisioningStateCanceled`, `ProvisioningStateCreating`, `ProvisioningStateDeleting`, `ProvisioningStateFailed`, `ProvisioningStateMoving`, `ProvisioningStateRunning`, `ProvisioningStateSucceeded`, `ProvisioningStateUnknown`, `ProvisioningStateUpdating`
 - New function `NewSenderUsernamesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SenderUsernamesClient, error)`
 - New function `*SenderUsernamesClient.CreateOrUpdate(context.Context, string, string, string, string, SenderUsernameResource, *SenderUsernamesClientCreateOrUpdateOptions) (SenderUsernamesClientCreateOrUpdateResponse, error)`
@@ -20,7 +21,6 @@
 - New struct `SenderUsernameProperties`
 - New struct `SenderUsernameResource`
 - New struct `SenderUsernameResourceCollection`
-- New struct `SenderUsernamesClient`
 
 
 ## 2.0.0-beta.2 (2022-08-14)

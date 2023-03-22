@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // DomainsClient contains the methods for the Domains group.
 // Don't use this type directly, use NewDomainsClient() instead.
 type DomainsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDomainsClient creates a new instance of DomainsClient with the specified values.
@@ -36,21 +33,13 @@ type DomainsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DomainsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DomainsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DomainsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,11 +60,11 @@ func (client *DomainsClient) BeginCancelVerification(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DomainsClientCancelVerificationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientCancelVerificationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[DomainsClientCancelVerificationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DomainsClientCancelVerificationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -88,7 +77,7 @@ func (client *DomainsClient) cancelVerification(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +103,7 @@ func (client *DomainsClient) cancelVerificationCreateRequest(ctx context.Context
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -141,11 +130,11 @@ func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DomainsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[DomainsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DomainsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -158,7 +147,7 @@ func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -184,7 +173,7 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -209,11 +198,11 @@ func (client *DomainsClient) BeginDelete(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DomainsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[DomainsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DomainsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -226,7 +215,7 @@ func (client *DomainsClient) deleteOperation(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -252,7 +241,7 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -276,7 +265,7 @@ func (client *DomainsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return DomainsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainsClientGetResponse{}, err
 	}
@@ -302,7 +291,7 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -338,11 +327,11 @@ func (client *DomainsClient) BeginInitiateVerification(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DomainsClientInitiateVerificationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientInitiateVerificationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[DomainsClientInitiateVerificationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DomainsClientInitiateVerificationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -355,7 +344,7 @@ func (client *DomainsClient) initiateVerification(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -381,7 +370,7 @@ func (client *DomainsClient) initiateVerificationCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -415,7 +404,7 @@ func (client *DomainsClient) NewListByEmailServiceResourcePager(resourceGroupNam
 			if err != nil {
 				return DomainsClientListByEmailServiceResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DomainsClientListByEmailServiceResourceResponse{}, err
 			}
@@ -439,7 +428,7 @@ func (client *DomainsClient) listByEmailServiceResourceCreateRequest(ctx context
 		return nil, errors.New("parameter emailServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{emailServiceName}", url.PathEscape(emailServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -474,11 +463,11 @@ func (client *DomainsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DomainsClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[DomainsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DomainsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -491,7 +480,7 @@ func (client *DomainsClient) update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -517,7 +506,7 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -25,11 +25,11 @@ func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityAvailable(
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, armcommunication.NameAvailabilityParameters{
+	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, armcommunication.NameAvailabilityParameters{
 		Name: to.Ptr("MyCommunicationService"),
 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	}, nil)
@@ -53,11 +53,11 @@ func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityUnavailabl
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, armcommunication.NameAvailabilityParameters{
+	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, armcommunication.NameAvailabilityParameters{
 		Name: to.Ptr("MyCommunicationService"),
 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	}, nil)
@@ -81,11 +81,11 @@ func ExampleServicesClient_LinkNotificationHub() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.LinkNotificationHub(ctx, "MyResourceGroup", "MyCommunicationResource", &armcommunication.ServicesClientLinkNotificationHubOptions{LinkNotificationHubParameters: &armcommunication.LinkNotificationHubParameters{
+	res, err := clientFactory.NewServicesClient().LinkNotificationHub(ctx, "MyResourceGroup", "MyCommunicationResource", &armcommunication.ServicesClientLinkNotificationHubOptions{LinkNotificationHubParameters: &armcommunication.LinkNotificationHubParameters{
 		ConnectionString: to.Ptr("Endpoint=sb://MyNamespace.servicebus.windows.net/;SharedAccessKey=abcd1234"),
 		ResourceID:       to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyOtherResourceGroup/providers/Microsoft.NotificationHubs/namespaces/MyNamespace/notificationHubs/MyHub"),
 	},
@@ -108,11 +108,11 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewServicesClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -148,11 +148,11 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("MyResourceGroup", nil)
+	pager := clientFactory.NewServicesClient().NewListByResourceGroupPager("MyResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -188,11 +188,11 @@ func ExampleServicesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "MyResourceGroup", "MyCommunicationResource", armcommunication.ServiceResourceUpdate{
+	res, err := clientFactory.NewServicesClient().Update(ctx, "MyResourceGroup", "MyCommunicationResource", armcommunication.ServiceResourceUpdate{
 		Tags: map[string]*string{
 			"newTag": to.Ptr("newVal"),
 		},
@@ -227,11 +227,11 @@ func ExampleServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "MyResourceGroup", "MyCommunicationResource", nil)
+	res, err := clientFactory.NewServicesClient().Get(ctx, "MyResourceGroup", "MyCommunicationResource", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -259,11 +259,11 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "MyResourceGroup", "MyCommunicationResource", armcommunication.ServiceResource{
+	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "MyResourceGroup", "MyCommunicationResource", armcommunication.ServiceResource{
 		Location: to.Ptr("Global"),
 		Properties: &armcommunication.ServiceProperties{
 			DataLocation: to.Ptr("United States"),
@@ -299,11 +299,11 @@ func ExampleServicesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "MyResourceGroup", "MyCommunicationResource", nil)
+	poller, err := clientFactory.NewServicesClient().BeginDelete(ctx, "MyResourceGroup", "MyCommunicationResource", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -320,11 +320,11 @@ func ExampleServicesClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListKeys(ctx, "MyResourceGroup", "MyCommunicationResource", nil)
+	res, err := clientFactory.NewServicesClient().ListKeys(ctx, "MyResourceGroup", "MyCommunicationResource", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -344,11 +344,11 @@ func ExampleServicesClient_RegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RegenerateKey(ctx, "MyResourceGroup", "MyCommunicationResource", armcommunication.RegenerateKeyParameters{
+	res, err := clientFactory.NewServicesClient().RegenerateKey(ctx, "MyResourceGroup", "MyCommunicationResource", armcommunication.RegenerateKeyParameters{
 		KeyType: to.Ptr(armcommunication.KeyTypePrimary),
 	}, nil)
 	if err != nil {

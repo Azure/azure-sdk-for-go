@@ -25,11 +25,11 @@ func ExampleDomainsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewDomainsClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", nil)
+	res, err := clientFactory.NewDomainsClient().Get(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -73,11 +73,11 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewDomainsClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.DomainResource{
+	poller, err := clientFactory.NewDomainsClient().BeginCreateOrUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.DomainResource{
 		Location: to.Ptr("Global"),
 		Properties: &armcommunication.DomainProperties{
 			DomainManagement: to.Ptr(armcommunication.DomainManagementCustomerManaged),
@@ -130,11 +130,11 @@ func ExampleDomainsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewDomainsClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", nil)
+	poller, err := clientFactory.NewDomainsClient().BeginDelete(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -151,11 +151,11 @@ func ExampleDomainsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewDomainsClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.UpdateDomainRequestParameters{
+	poller, err := clientFactory.NewDomainsClient().BeginUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.UpdateDomainRequestParameters{
 		Properties: &armcommunication.UpdateDomainProperties{
 			UserEngagementTracking: to.Ptr(armcommunication.UserEngagementTrackingEnabled),
 		},
@@ -217,11 +217,11 @@ func ExampleDomainsClient_NewListByEmailServiceResourcePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewDomainsClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByEmailServiceResourcePager("MyResourceGroup", "MyEmailServiceResource", nil)
+	pager := clientFactory.NewDomainsClient().NewListByEmailServiceResourcePager("MyResourceGroup", "MyEmailServiceResource", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -282,11 +282,11 @@ func ExampleDomainsClient_BeginInitiateVerification() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewDomainsClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginInitiateVerification(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.VerificationParameter{
+	poller, err := clientFactory.NewDomainsClient().BeginInitiateVerification(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.VerificationParameter{
 		VerificationType: to.Ptr(armcommunication.VerificationTypeSPF),
 	}, nil)
 	if err != nil {
@@ -305,11 +305,11 @@ func ExampleDomainsClient_BeginCancelVerification() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewDomainsClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCancelVerification(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.VerificationParameter{
+	poller, err := clientFactory.NewDomainsClient().BeginCancelVerification(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", armcommunication.VerificationParameter{
 		VerificationType: to.Ptr(armcommunication.VerificationTypeSPF),
 	}, nil)
 	if err != nil {

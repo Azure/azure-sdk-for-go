@@ -25,11 +25,11 @@ func ExampleEmailServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewEmailServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "MyResourceGroup", "MyEmailServiceResource", nil)
+	res, err := clientFactory.NewEmailServicesClient().Get(ctx, "MyResourceGroup", "MyEmailServiceResource", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -55,11 +55,11 @@ func ExampleEmailServicesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewEmailServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", armcommunication.EmailServiceResource{
+	poller, err := clientFactory.NewEmailServicesClient().BeginCreateOrUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", armcommunication.EmailServiceResource{
 		Location: to.Ptr("Global"),
 		Properties: &armcommunication.EmailServiceProperties{
 			DataLocation: to.Ptr("United States"),
@@ -94,11 +94,11 @@ func ExampleEmailServicesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewEmailServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "MyResourceGroup", "MyEmailServiceResource", nil)
+	poller, err := clientFactory.NewEmailServicesClient().BeginDelete(ctx, "MyResourceGroup", "MyEmailServiceResource", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -115,11 +115,11 @@ func ExampleEmailServicesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewEmailServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", armcommunication.EmailServiceResourceUpdate{
+	poller, err := clientFactory.NewEmailServicesClient().BeginUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", armcommunication.EmailServiceResourceUpdate{
 		Tags: map[string]*string{
 			"newTag": to.Ptr("newVal"),
 		},
@@ -156,11 +156,11 @@ func ExampleEmailServicesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewEmailServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewEmailServicesClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -194,11 +194,11 @@ func ExampleEmailServicesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewEmailServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("MyResourceGroup", nil)
+	pager := clientFactory.NewEmailServicesClient().NewListByResourceGroupPager("MyResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -232,11 +232,11 @@ func ExampleEmailServicesClient_ListVerifiedExchangeOnlineDomains() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewEmailServicesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListVerifiedExchangeOnlineDomains(ctx, nil)
+	res, err := clientFactory.NewEmailServicesClient().ListVerifiedExchangeOnlineDomains(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -25,11 +25,11 @@ func ExampleSenderUsernamesClient_NewListByDomainsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewSenderUsernamesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDomainsPager("contosoResourceGroup", "contosoEmailService", "contoso.com", nil)
+	pager := clientFactory.NewSenderUsernamesClient().NewListByDomainsPager("contosoResourceGroup", "contosoEmailService", "contoso.com", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -73,11 +73,11 @@ func ExampleSenderUsernamesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewSenderUsernamesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "contosoResourceGroup", "contosoEmailService", "contoso.com", "contosoNewsAlerts", nil)
+	res, err := clientFactory.NewSenderUsernamesClient().Get(ctx, "contosoResourceGroup", "contosoEmailService", "contoso.com", "contosoNewsAlerts", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -103,11 +103,11 @@ func ExampleSenderUsernamesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewSenderUsernamesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "contosoResourceGroup", "contosoEmailService", "contoso.com", "contosoNewsAlerts", armcommunication.SenderUsernameResource{
+	res, err := clientFactory.NewSenderUsernamesClient().CreateOrUpdate(ctx, "contosoResourceGroup", "contosoEmailService", "contoso.com", "contosoNewsAlerts", armcommunication.SenderUsernameResource{
 		Properties: &armcommunication.SenderUsernameProperties{
 			DisplayName: to.Ptr("Contoso News Alerts"),
 			Username:    to.Ptr("contosoNewsAlerts"),
@@ -138,11 +138,11 @@ func ExampleSenderUsernamesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewSenderUsernamesClient("11112222-3333-4444-5555-666677778888", cred, nil)
+	clientFactory, err := armcommunication.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", "contosoNewsAlerts", nil)
+	_, err = clientFactory.NewSenderUsernamesClient().Delete(ctx, "MyResourceGroup", "MyEmailServiceResource", "mydomain.com", "contosoNewsAlerts", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

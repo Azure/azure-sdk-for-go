@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/graphservices/armgraphservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Get.json
 func ExampleAccountClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armgraphservices.NewAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armgraphservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", nil)
+	res, err := clientFactory.NewAccountClient().Get(ctx, "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -51,18 +51,18 @@ func ExampleAccountClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Create.json
 func ExampleAccountClient_BeginCreateAndUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armgraphservices.NewAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armgraphservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateAndUpdate(ctx, "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-1111111111111", armgraphservices.AccountResource{
+	poller, err := clientFactory.NewAccountClient().BeginCreateAndUpdate(ctx, "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-1111111111111", armgraphservices.AccountResource{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -97,18 +97,18 @@ func ExampleAccountClient_BeginCreateAndUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Update.json
 func ExampleAccountClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armgraphservices.NewAccountClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armgraphservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", armgraphservices.AccountPatchResource{
+	res, err := clientFactory.NewAccountClient().Update(ctx, "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", armgraphservices.AccountPatchResource{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -136,18 +136,18 @@ func ExampleAccountClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Delete.json
 func ExampleAccountClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armgraphservices.NewAccountClient("11111111-aaaa-1111-bbbb-111111111111", cred, nil)
+	clientFactory, err := armgraphservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", nil)
+	_, err = clientFactory.NewAccountClient().Delete(ctx, "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // Client contains the methods for the WebPubSub group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewClient creates a new instance of Client with the specified values.
@@ -37,21 +34,13 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -68,7 +57,7 @@ func (client *Client) CheckNameAvailability(ctx context.Context, location string
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
 	}
@@ -89,7 +78,7 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, lo
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,9 +113,9 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -139,7 +128,7 @@ func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +153,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,11 +178,11 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -206,7 +195,7 @@ func (client *Client) deleteOperation(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +220,7 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -255,7 +244,7 @@ func (client *Client) Get(ctx context.Context, resourceGroupName string, resourc
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -280,7 +269,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -323,7 +312,7 @@ func (client *Client) NewListByResourceGroupPager(resourceGroupName string, opti
 			if err != nil {
 				return ClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClientListByResourceGroupResponse{}, err
 			}
@@ -346,7 +335,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -386,7 +375,7 @@ func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscripti
 			if err != nil {
 				return ClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClientListBySubscriptionResponse{}, err
 			}
@@ -405,7 +394,7 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, optio
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -438,7 +427,7 @@ func (client *Client) ListKeys(ctx context.Context, resourceGroupName string, re
 	if err != nil {
 		return ClientListKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientListKeysResponse{}, err
 	}
@@ -463,7 +452,7 @@ func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -496,7 +485,7 @@ func (client *Client) ListSKUs(ctx context.Context, resourceGroupName string, re
 	if err != nil {
 		return ClientListSKUsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientListSKUsResponse{}, err
 	}
@@ -521,7 +510,7 @@ func (client *Client) listSKUsCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -557,11 +546,11 @@ func (client *Client) BeginRegenerateKey(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientRegenerateKeyResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientRegenerateKeyResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientRegenerateKeyResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientRegenerateKeyResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -575,7 +564,7 @@ func (client *Client) regenerateKey(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -600,7 +589,7 @@ func (client *Client) regenerateKeyCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -625,11 +614,11 @@ func (client *Client) BeginRestart(ctx context.Context, resourceGroupName string
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientRestartResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientRestartResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientRestartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientRestartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -642,7 +631,7 @@ func (client *Client) restart(ctx context.Context, resourceGroupName string, res
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -667,7 +656,7 @@ func (client *Client) restartCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -693,9 +682,9 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -708,7 +697,7 @@ func (client *Client) update(ctx context.Context, resourceGroupName string, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -733,7 +722,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

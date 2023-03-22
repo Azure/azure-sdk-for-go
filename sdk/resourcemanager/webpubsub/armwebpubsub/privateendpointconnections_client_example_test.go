@@ -25,11 +25,11 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup", "myWebPubSubService", nil)
+	pager := clientFactory.NewPrivateEndpointConnectionsClient().NewListPager("myResourceGroup", "myWebPubSubService", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -78,11 +78,11 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e", "myResourceGroup", "myWebPubSubService", nil)
+	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e", "myResourceGroup", "myWebPubSubService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -123,11 +123,11 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e", "myResourceGroup", "myWebPubSubService", armwebpubsub.PrivateEndpointConnection{
+	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Update(ctx, "mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e", "myResourceGroup", "myWebPubSubService", armwebpubsub.PrivateEndpointConnection{
 		Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
 			PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
@@ -178,11 +178,11 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e", "myResourceGroup", "myWebPubSubService", nil)
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginDelete(ctx, "mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e", "myResourceGroup", "myWebPubSubService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

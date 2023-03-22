@@ -25,11 +25,11 @@ func ExampleCustomCertificatesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewCustomCertificatesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup", "myWebPubSubService", nil)
+	pager := clientFactory.NewCustomCertificatesClient().NewListPager("myResourceGroup", "myWebPubSubService", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -64,11 +64,11 @@ func ExampleCustomCertificatesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewCustomCertificatesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "myWebPubSubService", "myCert", nil)
+	res, err := clientFactory.NewCustomCertificatesClient().Get(ctx, "myResourceGroup", "myWebPubSubService", "myCert", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -95,11 +95,11 @@ func ExampleCustomCertificatesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewCustomCertificatesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myWebPubSubService", "myCert", armwebpubsub.CustomCertificate{
+	poller, err := clientFactory.NewCustomCertificatesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myWebPubSubService", "myCert", armwebpubsub.CustomCertificate{
 		Properties: &armwebpubsub.CustomCertificateProperties{
 			KeyVaultBaseURI:       to.Ptr("https://myvault.keyvault.azure.net/"),
 			KeyVaultSecretName:    to.Ptr("mycert"),
@@ -136,11 +136,11 @@ func ExampleCustomCertificatesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewCustomCertificatesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "myResourceGroup", "myWebPubSubService", "myCert", nil)
+	_, err = clientFactory.NewCustomCertificatesClient().Delete(ctx, "myResourceGroup", "myWebPubSubService", "myCert", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

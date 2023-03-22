@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // SharedPrivateLinkResourcesClient contains the methods for the WebPubSubSharedPrivateLinkResources group.
 // Don't use this type directly, use NewSharedPrivateLinkResourcesClient() instead.
 type SharedPrivateLinkResourcesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSharedPrivateLinkResourcesClient creates a new instance of SharedPrivateLinkResourcesClient with the specified values.
@@ -37,21 +34,13 @@ type SharedPrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSharedPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharedPrivateLinkResourcesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SharedPrivateLinkResourcesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SharedPrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -73,9 +62,9 @@ func (client *SharedPrivateLinkResourcesClient) BeginCreateOrUpdate(ctx context.
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[SharedPrivateLinkResourcesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SharedPrivateLinkResourcesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -88,7 +77,7 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +106,7 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,11 +133,11 @@ func (client *SharedPrivateLinkResourcesClient) BeginDelete(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SharedPrivateLinkResourcesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SharedPrivateLinkResourcesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SharedPrivateLinkResourcesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SharedPrivateLinkResourcesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -161,7 +150,7 @@ func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -190,7 +179,7 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -216,7 +205,7 @@ func (client *SharedPrivateLinkResourcesClient) Get(ctx context.Context, sharedP
 	if err != nil {
 		return SharedPrivateLinkResourcesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SharedPrivateLinkResourcesClientGetResponse{}, err
 	}
@@ -245,7 +234,7 @@ func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -289,7 +278,7 @@ func (client *SharedPrivateLinkResourcesClient) NewListPager(resourceGroupName s
 			if err != nil {
 				return SharedPrivateLinkResourcesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SharedPrivateLinkResourcesClientListResponse{}, err
 			}
@@ -316,7 +305,7 @@ func (client *SharedPrivateLinkResourcesClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

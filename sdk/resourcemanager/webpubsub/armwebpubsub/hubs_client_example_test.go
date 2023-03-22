@@ -25,11 +25,11 @@ func ExampleHubsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewHubsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup", "myWebPubSubService", nil)
+	pager := clientFactory.NewHubsClient().NewListPager("myResourceGroup", "myWebPubSubService", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -90,11 +90,11 @@ func ExampleHubsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewHubsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleHub", "myResourceGroup", "myWebPubSubService", nil)
+	res, err := clientFactory.NewHubsClient().Get(ctx, "exampleHub", "myResourceGroup", "myWebPubSubService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -147,11 +147,11 @@ func ExampleHubsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewHubsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "exampleHub", "myResourceGroup", "myWebPubSubService", armwebpubsub.Hub{
+	poller, err := clientFactory.NewHubsClient().BeginCreateOrUpdate(ctx, "exampleHub", "myResourceGroup", "myWebPubSubService", armwebpubsub.Hub{
 		Properties: &armwebpubsub.HubProperties{
 			AnonymousConnectPolicy: to.Ptr("allow"),
 			EventHandlers: []*armwebpubsub.EventHandler{
@@ -241,11 +241,11 @@ func ExampleHubsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewHubsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "exampleHub", "myResourceGroup", "myWebPubSubService", nil)
+	poller, err := clientFactory.NewHubsClient().BeginDelete(ctx, "exampleHub", "myResourceGroup", "myWebPubSubService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

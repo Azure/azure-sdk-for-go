@@ -3,8 +3,9 @@
 ## 1.1.0 (2023-03-24)
 ### Features Added
 
-- New type alias `EventListenerEndpointDiscriminator` with values `EventListenerEndpointDiscriminatorEventHub`
-- New type alias `EventListenerFilterDiscriminator` with values `EventListenerFilterDiscriminatorEventName`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `EventListenerEndpointDiscriminator` with values `EventListenerEndpointDiscriminatorEventHub`
+- New enum type `EventListenerFilterDiscriminator` with values `EventListenerFilterDiscriminatorEventName`
 - New function `NewCustomCertificatesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CustomCertificatesClient, error)`
 - New function `*CustomCertificatesClient.BeginCreateOrUpdate(context.Context, string, string, string, CustomCertificate, *CustomCertificatesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomCertificatesClientCreateOrUpdateResponse], error)`
 - New function `*CustomCertificatesClient.Delete(context.Context, string, string, string, *CustomCertificatesClientDeleteOptions) (CustomCertificatesClientDeleteResponse, error)`
@@ -22,11 +23,9 @@
 - New struct `CustomCertificate`
 - New struct `CustomCertificateList`
 - New struct `CustomCertificateProperties`
-- New struct `CustomCertificatesClient`
 - New struct `CustomDomain`
 - New struct `CustomDomainList`
 - New struct `CustomDomainProperties`
-- New struct `CustomDomainsClient`
 - New struct `EventHubEndpoint`
 - New struct `EventListener`
 - New struct `EventNameFilter`

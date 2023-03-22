@@ -25,11 +25,11 @@ func ExampleCustomDomainsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewCustomDomainsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup", "myWebPubSubService", nil)
+	pager := clientFactory.NewCustomDomainsClient().NewListPager("myResourceGroup", "myWebPubSubService", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -64,11 +64,11 @@ func ExampleCustomDomainsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewCustomDomainsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "myWebPubSubService", "example", nil)
+	res, err := clientFactory.NewCustomDomainsClient().Get(ctx, "myResourceGroup", "myWebPubSubService", "example", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -95,11 +95,11 @@ func ExampleCustomDomainsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewCustomDomainsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myWebPubSubService", "myDomain", armwebpubsub.CustomDomain{
+	poller, err := clientFactory.NewCustomDomainsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myWebPubSubService", "myDomain", armwebpubsub.CustomDomain{
 		Properties: &armwebpubsub.CustomDomainProperties{
 			CustomCertificate: &armwebpubsub.ResourceReference{
 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customCertificates/myCert"),
@@ -123,11 +123,11 @@ func ExampleCustomDomainsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewCustomDomainsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myResourceGroup", "myWebPubSubService", "example", nil)
+	poller, err := clientFactory.NewCustomDomainsClient().BeginDelete(ctx, "myResourceGroup", "myWebPubSubService", "example", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

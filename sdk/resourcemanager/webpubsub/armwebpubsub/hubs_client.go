@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // HubsClient contains the methods for the WebPubSubHubs group.
 // Don't use this type directly, use NewHubsClient() instead.
 type HubsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewHubsClient creates a new instance of HubsClient with the specified values.
@@ -37,21 +34,13 @@ type HubsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HubsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".HubsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &HubsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -73,9 +62,9 @@ func (client *HubsClient) BeginCreateOrUpdate(ctx context.Context, hubName strin
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[HubsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[HubsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[HubsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[HubsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -88,7 +77,7 @@ func (client *HubsClient) createOrUpdate(ctx context.Context, hubName string, re
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +106,7 @@ func (client *HubsClient) createOrUpdateCreateRequest(ctx context.Context, hubNa
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -143,11 +132,11 @@ func (client *HubsClient) BeginDelete(ctx context.Context, hubName string, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[HubsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HubsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[HubsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[HubsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -160,7 +149,7 @@ func (client *HubsClient) deleteOperation(ctx context.Context, hubName string, r
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -189,7 +178,7 @@ func (client *HubsClient) deleteCreateRequest(ctx context.Context, hubName strin
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -214,7 +203,7 @@ func (client *HubsClient) Get(ctx context.Context, hubName string, resourceGroup
 	if err != nil {
 		return HubsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HubsClientGetResponse{}, err
 	}
@@ -243,7 +232,7 @@ func (client *HubsClient) getCreateRequest(ctx context.Context, hubName string, 
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -286,7 +275,7 @@ func (client *HubsClient) NewListPager(resourceGroupName string, resourceName st
 			if err != nil {
 				return HubsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return HubsClientListResponse{}, err
 			}
@@ -313,7 +302,7 @@ func (client *HubsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

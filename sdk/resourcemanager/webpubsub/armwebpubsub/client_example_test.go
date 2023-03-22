@@ -25,11 +25,11 @@ func ExampleClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "eastus", armwebpubsub.NameAvailabilityParameters{
+	res, err := clientFactory.NewClient().CheckNameAvailability(ctx, "eastus", armwebpubsub.NameAvailabilityParameters{
 		Name: to.Ptr("myWebPubSubService"),
 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 	}, nil)
@@ -53,11 +53,11 @@ func ExampleClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -175,11 +175,11 @@ func ExampleClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("myResourceGroup", nil)
+	pager := clientFactory.NewClient().NewListByResourceGroupPager("myResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -297,11 +297,11 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "myWebPubSubService", nil)
+	res, err := clientFactory.NewClient().Get(ctx, "myResourceGroup", "myWebPubSubService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -411,11 +411,11 @@ func ExampleClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myWebPubSubService", armwebpubsub.ResourceInfo{
+	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myWebPubSubService", armwebpubsub.ResourceInfo{
 		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -571,11 +571,11 @@ func ExampleClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myResourceGroup", "myWebPubSubService", nil)
+	poller, err := clientFactory.NewClient().BeginDelete(ctx, "myResourceGroup", "myWebPubSubService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -592,11 +592,11 @@ func ExampleClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myWebPubSubService", armwebpubsub.ResourceInfo{
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "myResourceGroup", "myWebPubSubService", armwebpubsub.ResourceInfo{
 		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -752,11 +752,11 @@ func ExampleClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListKeys(ctx, "myResourceGroup", "myWebPubSubService", nil)
+	res, err := clientFactory.NewClient().ListKeys(ctx, "myResourceGroup", "myWebPubSubService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -774,11 +774,11 @@ func ExampleClient_BeginRegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRegenerateKey(ctx, "myResourceGroup", "myWebPubSubService", armwebpubsub.RegenerateKeyParameters{
+	poller, err := clientFactory.NewClient().BeginRegenerateKey(ctx, "myResourceGroup", "myWebPubSubService", armwebpubsub.RegenerateKeyParameters{
 		KeyType: to.Ptr(armwebpubsub.KeyTypePrimary),
 	}, nil)
 	if err != nil {
@@ -797,11 +797,11 @@ func ExampleClient_BeginRestart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRestart(ctx, "myResourceGroup", "myWebPubSubService", nil)
+	poller, err := clientFactory.NewClient().BeginRestart(ctx, "myResourceGroup", "myWebPubSubService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -818,11 +818,11 @@ func ExampleClient_ListSKUs() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armwebpubsub.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListSKUs(ctx, "myResourceGroup", "myWebPubSubService", nil)
+	res, err := clientFactory.NewClient().ListSKUs(ctx, "myResourceGroup", "myWebPubSubService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

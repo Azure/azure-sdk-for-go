@@ -20,7 +20,7 @@ var ErrEventDataTooLarge = errors.New("the EventData could not be added because 
 type (
 	// EventDataBatch is used to efficiently pack up EventData before sending it to Event Hubs.
 	//
-	// EventDataBatch's are not meant to be created directly. Use [azeventhubs.ProducerClient.NewEventDataBatch],
+	// EventDataBatch's are not meant to be created directly. Use [ProducerClient.NewEventDataBatch],
 	// which will create them with the proper size limit for your Event Hub.
 	EventDataBatch struct {
 		mu sync.RWMutex
@@ -49,7 +49,7 @@ type AddEventDataOptions struct {
 // cause the EventDataBatch to be too large to send.
 //
 // This size limit was set when the EventDataBatch was created, in options to
-// [azeventhubs.ProducerClient.NewEventDataBatch], or (by default) from Event
+// [ProducerClient.NewEventDataBatch], or (by default) from Event
 // Hubs itself.
 //
 // Returns ErrMessageTooLarge if the event cannot fit, or a non-nil error for
@@ -62,7 +62,7 @@ func (b *EventDataBatch) AddEventData(ed *EventData, options *AddEventDataOption
 // if the AMQPAnnotatedMessage would cause the EventDataBatch to be too large to send.
 //
 // This size limit was set when the EventDataBatch was created, in options to
-// [azeventhubs.ProducerClient.NewEventDataBatch], or (by default) from Event
+// [ProducerClient.NewEventDataBatch], or (by default) from Event
 // Hubs itself.
 //
 // Returns ErrMessageTooLarge if the message cannot fit, or a non-nil error for

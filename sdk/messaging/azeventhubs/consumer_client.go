@@ -76,7 +76,7 @@ type ConsumerClient struct {
 }
 
 // NewConsumerClient creates a ConsumerClient which uses an azcore.TokenCredential for authentication. You
-// MUST call [azeventhubs.ConsumerClient.Close] on this client to avoid leaking resources.
+// MUST call [ConsumerClient.Close] on this client to avoid leaking resources.
 //
 // The fullyQualifiedNamespace is the Event Hubs namespace name (ex: myeventhub.servicebus.windows.net)
 // The credential is one of the credentials in the [azidentity] package.
@@ -92,7 +92,7 @@ func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, consumer
 }
 
 // NewConsumerClientFromConnectionString creates a ConsumerClient from a connection string. You
-// MUST call [azeventhubs.ConsumerClient.Close] on this client to avoid leaking resources.
+// MUST call [ConsumerClient.Close] on this client to avoid leaking resources.
 //
 // connectionString can be one of two formats - with or without an EntityPath key.
 //
@@ -123,6 +123,12 @@ type PartitionClientOptions struct {
 	// StartPosition is the position we will start receiving events from,
 	// either an offset (inclusive) with Offset, or receiving events received
 	// after a specific time using EnqueuedTime.
+	//
+	// NOTE: you can also use the [Processor], which will automatically manage the start
+	// value using a [CheckpointStore]. See [example_consuming_with_checkpoints_test.go] for an
+	// example.
+	//
+	// [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
 	StartPosition StartPosition
 
 	// OwnerLevel is the priority for this partition client, also known as the 'epoch' level.

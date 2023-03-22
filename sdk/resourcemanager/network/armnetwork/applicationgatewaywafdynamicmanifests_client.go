@@ -32,10 +32,10 @@ type ApplicationGatewayWafDynamicManifestsClient struct {
 }
 
 // NewApplicationGatewayWafDynamicManifestsClient creates a new instance of ApplicationGatewayWafDynamicManifestsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationGatewayWafDynamicManifestsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,10 +57,11 @@ func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string, crede
 }
 
 // NewGetPager - Gets the regional application gateway waf manifest.
-// Generated from API version 2022-07-01
-// location - The region where the nrp are located at.
-// options - ApplicationGatewayWafDynamicManifestsClientGetOptions contains the optional parameters for the ApplicationGatewayWafDynamicManifestsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - The region where the nrp are located at.
+//   - options - ApplicationGatewayWafDynamicManifestsClientGetOptions contains the optional parameters for the ApplicationGatewayWafDynamicManifestsClient.NewGetPager
+//     method.
 func (client *ApplicationGatewayWafDynamicManifestsClient) NewGetPager(location string, options *ApplicationGatewayWafDynamicManifestsClientGetOptions) *runtime.Pager[ApplicationGatewayWafDynamicManifestsClientGetResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewayWafDynamicManifestsClientGetResponse]{
 		More: func(page ApplicationGatewayWafDynamicManifestsClientGetResponse) bool {
@@ -105,7 +106,7 @@ func (client *ApplicationGatewayWafDynamicManifestsClient) getCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

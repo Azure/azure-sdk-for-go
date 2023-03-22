@@ -32,10 +32,10 @@ type AvailablePrivateEndpointTypesClient struct {
 }
 
 // NewAvailablePrivateEndpointTypesClient creates a new instance of AvailablePrivateEndpointTypesClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailablePrivateEndpointTypesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,10 +58,11 @@ func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential az
 
 // NewListPager - Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this
 // region.
-// Generated from API version 2022-07-01
-// location - The location of the domain name.
-// options - AvailablePrivateEndpointTypesClientListOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - The location of the domain name.
+//   - options - AvailablePrivateEndpointTypesClientListOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.NewListPager
+//     method.
 func (client *AvailablePrivateEndpointTypesClient) NewListPager(location string, options *AvailablePrivateEndpointTypesClientListOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AvailablePrivateEndpointTypesClientListResponse]{
 		More: func(page AvailablePrivateEndpointTypesClientListResponse) bool {
@@ -106,7 +107,7 @@ func (client *AvailablePrivateEndpointTypesClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -123,11 +124,12 @@ func (client *AvailablePrivateEndpointTypesClient) listHandleResponse(resp *http
 
 // NewListByResourceGroupPager - Returns all of the resource types that can be linked to a Private Endpoint in this subscription
 // in this region.
-// Generated from API version 2022-07-01
-// location - The location of the domain name.
-// resourceGroupName - The name of the resource group.
-// options - AvailablePrivateEndpointTypesClientListByResourceGroupOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.ListByResourceGroup
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - The location of the domain name.
+//   - resourceGroupName - The name of the resource group.
+//   - options - AvailablePrivateEndpointTypesClientListByResourceGroupOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager
+//     method.
 func (client *AvailablePrivateEndpointTypesClient) NewListByResourceGroupPager(location string, resourceGroupName string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AvailablePrivateEndpointTypesClientListByResourceGroupResponse]{
 		More: func(page AvailablePrivateEndpointTypesClientListByResourceGroupResponse) bool {
@@ -176,7 +178,7 @@ func (client *AvailablePrivateEndpointTypesClient) listByResourceGroupCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

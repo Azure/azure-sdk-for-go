@@ -32,10 +32,10 @@ type ExpressRoutePortAuthorizationsClient struct {
 }
 
 // NewExpressRoutePortAuthorizationsClient creates a new instance of ExpressRoutePortAuthorizationsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewExpressRoutePortAuthorizationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRoutePortAuthorizationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewExpressRoutePortAuthorizationsClient(subscriptionID string, credential a
 
 // BeginCreateOrUpdate - Creates or updates an authorization in the specified express route port.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// expressRoutePortName - The name of the express route port.
-// authorizationName - The name of the authorization.
-// authorizationParameters - Parameters supplied to the create or update express route port authorization operation.
-// options - ExpressRoutePortAuthorizationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - expressRoutePortName - The name of the express route port.
+//   - authorizationName - The name of the authorization.
+//   - authorizationParameters - Parameters supplied to the create or update express route port authorization operation.
+//   - options - ExpressRoutePortAuthorizationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.BeginCreateOrUpdate
+//     method.
 func (client *ExpressRoutePortAuthorizationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, authorizationParameters ExpressRoutePortAuthorization, options *ExpressRoutePortAuthorizationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExpressRoutePortAuthorizationsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, expressRoutePortName, authorizationName, authorizationParameters, options)
@@ -81,7 +82,8 @@ func (client *ExpressRoutePortAuthorizationsClient) BeginCreateOrUpdate(ctx cont
 
 // CreateOrUpdate - Creates or updates an authorization in the specified express route port.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *ExpressRoutePortAuthorizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, authorizationParameters ExpressRoutePortAuthorization, options *ExpressRoutePortAuthorizationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, expressRoutePortName, authorizationName, authorizationParameters, options)
 	if err != nil {
@@ -121,7 +123,7 @@ func (client *ExpressRoutePortAuthorizationsClient) createOrUpdateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, authorizationParameters)
@@ -129,12 +131,13 @@ func (client *ExpressRoutePortAuthorizationsClient) createOrUpdateCreateRequest(
 
 // BeginDelete - Deletes the specified authorization from the specified express route port.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// expressRoutePortName - The name of the express route port.
-// authorizationName - The name of the authorization.
-// options - ExpressRoutePortAuthorizationsClientBeginDeleteOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - expressRoutePortName - The name of the express route port.
+//   - authorizationName - The name of the authorization.
+//   - options - ExpressRoutePortAuthorizationsClientBeginDeleteOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.BeginDelete
+//     method.
 func (client *ExpressRoutePortAuthorizationsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, options *ExpressRoutePortAuthorizationsClientBeginDeleteOptions) (*runtime.Poller[ExpressRoutePortAuthorizationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRoutePortName, authorizationName, options)
@@ -151,7 +154,8 @@ func (client *ExpressRoutePortAuthorizationsClient) BeginDelete(ctx context.Cont
 
 // Delete - Deletes the specified authorization from the specified express route port.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *ExpressRoutePortAuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, options *ExpressRoutePortAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, expressRoutePortName, authorizationName, options)
 	if err != nil {
@@ -191,7 +195,7 @@ func (client *ExpressRoutePortAuthorizationsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,12 +203,13 @@ func (client *ExpressRoutePortAuthorizationsClient) deleteCreateRequest(ctx cont
 
 // Get - Gets the specified authorization from the specified express route port.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// expressRoutePortName - The name of the express route port.
-// authorizationName - The name of the authorization.
-// options - ExpressRoutePortAuthorizationsClientGetOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - expressRoutePortName - The name of the express route port.
+//   - authorizationName - The name of the authorization.
+//   - options - ExpressRoutePortAuthorizationsClientGetOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.Get
+//     method.
 func (client *ExpressRoutePortAuthorizationsClient) Get(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, options *ExpressRoutePortAuthorizationsClientGetOptions) (ExpressRoutePortAuthorizationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, expressRoutePortName, authorizationName, options)
 	if err != nil {
@@ -244,7 +249,7 @@ func (client *ExpressRoutePortAuthorizationsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,11 +265,12 @@ func (client *ExpressRoutePortAuthorizationsClient) getHandleResponse(resp *http
 }
 
 // NewListPager - Gets all authorizations in an express route port.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// expressRoutePortName - The name of the express route port.
-// options - ExpressRoutePortAuthorizationsClientListOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - expressRoutePortName - The name of the express route port.
+//   - options - ExpressRoutePortAuthorizationsClientListOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.NewListPager
+//     method.
 func (client *ExpressRoutePortAuthorizationsClient) NewListPager(resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortAuthorizationsClientListOptions) *runtime.Pager[ExpressRoutePortAuthorizationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRoutePortAuthorizationsClientListResponse]{
 		More: func(page ExpressRoutePortAuthorizationsClientListResponse) bool {
@@ -313,7 +319,7 @@ func (client *ExpressRoutePortAuthorizationsClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -1,6 +1,6 @@
 # Azure Blob Storage SDK for Go
 
-> Server Version: 2020-10-02
+> Service Version: 2020-10-02
 
 Azure Blob storage is Microsoft's object storage solution for the cloud. Blob
 storage is optimized for storing massive amounts of unstructured data.

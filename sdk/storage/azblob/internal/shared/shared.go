@@ -38,6 +38,8 @@ const (
 	HeaderIfNoneMatch       = "If-None-Match"
 	HeaderIfUnmodifiedSince = "If-Unmodified-Since"
 	HeaderRange             = "Range"
+	HeaderXmsVersion        = "x-ms-version"
+	HeaderXmsRequestID      = "x-ms-request-id"
 )
 
 const crc64Polynomial uint64 = 0x9A6C9329AC4BC9B5

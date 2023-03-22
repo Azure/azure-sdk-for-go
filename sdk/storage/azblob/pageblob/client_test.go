@@ -3288,6 +3288,8 @@ func (s *PageBlobRecordedTestsSuite) TestPageSetImmutabilityPolicy() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
+
 	blobName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
@@ -3324,6 +3326,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageDeleteImmutabilityPolicy() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	blobName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
@@ -3356,6 +3359,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageSetLegalHold() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	blobName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)

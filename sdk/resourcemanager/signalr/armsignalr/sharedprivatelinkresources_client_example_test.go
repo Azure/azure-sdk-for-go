@@ -25,11 +25,11 @@ func ExampleSharedPrivateLinkResourcesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewSharedPrivateLinkResourcesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armsignalr.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup", "mySignalRService", nil)
+	pager := clientFactory.NewSharedPrivateLinkResourcesClient().NewListPager("myResourceGroup", "mySignalRService", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -65,11 +65,11 @@ func ExampleSharedPrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewSharedPrivateLinkResourcesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armsignalr.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "upstream", "myResourceGroup", "mySignalRService", nil)
+	res, err := clientFactory.NewSharedPrivateLinkResourcesClient().Get(ctx, "upstream", "myResourceGroup", "mySignalRService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -97,11 +97,11 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewSharedPrivateLinkResourcesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armsignalr.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "upstream", "myResourceGroup", "mySignalRService", armsignalr.SharedPrivateLinkResource{
+	poller, err := clientFactory.NewSharedPrivateLinkResourcesClient().BeginCreateOrUpdate(ctx, "upstream", "myResourceGroup", "mySignalRService", armsignalr.SharedPrivateLinkResource{
 		Properties: &armsignalr.SharedPrivateLinkResourceProperties{
 			GroupID:               to.Ptr("sites"),
 			PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Web/sites/myWebApp"),
@@ -139,11 +139,11 @@ func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewSharedPrivateLinkResourcesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armsignalr.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "upstream", "myResourceGroup", "mySignalRService", nil)
+	poller, err := clientFactory.NewSharedPrivateLinkResourcesClient().BeginDelete(ctx, "upstream", "myResourceGroup", "mySignalRService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // CustomCertificatesClient contains the methods for the SignalRCustomCertificates group.
 // Don't use this type directly, use NewCustomCertificatesClient() instead.
 type CustomCertificatesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCustomCertificatesClient creates a new instance of CustomCertificatesClient with the specified values.
@@ -37,21 +34,13 @@ type CustomCertificatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCustomCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomCertificatesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CustomCertificatesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CustomCertificatesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -72,9 +61,9 @@ func (client *CustomCertificatesClient) BeginCreateOrUpdate(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CustomCertificatesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CustomCertificatesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CustomCertificatesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomCertificatesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -87,7 +76,7 @@ func (client *CustomCertificatesClient) createOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +105,7 @@ func (client *CustomCertificatesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +131,7 @@ func (client *CustomCertificatesClient) Delete(ctx context.Context, resourceGrou
 	if err != nil {
 		return CustomCertificatesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CustomCertificatesClientDeleteResponse{}, err
 	}
@@ -171,7 +160,7 @@ func (client *CustomCertificatesClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -196,7 +185,7 @@ func (client *CustomCertificatesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return CustomCertificatesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CustomCertificatesClientGetResponse{}, err
 	}
@@ -225,7 +214,7 @@ func (client *CustomCertificatesClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,7 +258,7 @@ func (client *CustomCertificatesClient) NewListPager(resourceGroupName string, r
 			if err != nil {
 				return CustomCertificatesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CustomCertificatesClientListResponse{}, err
 			}
@@ -296,7 +285,7 @@ func (client *CustomCertificatesClient) listCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

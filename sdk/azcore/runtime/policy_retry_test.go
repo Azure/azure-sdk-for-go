@@ -697,9 +697,11 @@ func TestRetryPolicyWithShouldRetryRetry(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
 	srv.AppendResponse()
 
+	shouldRetryCalled := false
 	pl := exported.NewPipeline(srv, NewRetryPolicy(&policy.RetryOptions{
 		RetryDelay: time.Millisecond,
 		ShouldRetry: func(r *http.Response, err error) bool {
+			shouldRetryCalled = true
 			return r.StatusCode == http.StatusRequestTimeout
 		},
 	}))
@@ -707,6 +709,7 @@ func TestRetryPolicyWithShouldRetryRetry(t *testing.T) {
 	require.NoError(t, err)
 	resp, err := pl.Do(req)
 	require.NoError(t, err)
+	require.True(t, shouldRetryCalled)
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
 	require.EqualValues(t, 2, srv.Requests())
 }

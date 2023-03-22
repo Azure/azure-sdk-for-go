@@ -162,10 +162,10 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 		}
 
 		if options.ShouldRetry != nil {
-			// a non-nil Predicate overrides our HTTP status code check
+			// a non-nil ShouldRetry overrides our HTTP status code check
 			if !options.ShouldRetry(resp, err) {
 				// predicate says we shouldn't retry
-				log.Write(log.EventRetryPolicy, "exit due to Predicate")
+				log.Write(log.EventRetryPolicy, "exit due to ShouldRetry")
 				return
 			}
 		} else if err == nil && !HasStatusCode(resp, options.StatusCodes...) {

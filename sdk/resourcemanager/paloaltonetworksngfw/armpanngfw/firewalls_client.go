@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // FirewallsClient contains the methods for the Firewalls group.
 // Don't use this type directly, use NewFirewallsClient() instead.
 type FirewallsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewFirewallsClient creates a new instance of FirewallsClient with the specified values.
@@ -36,21 +33,13 @@ type FirewallsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFirewallsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FirewallsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".FirewallsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &FirewallsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,11 +59,11 @@ func (client *FirewallsClient) BeginCreateOrUpdate(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FirewallsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FirewallsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[FirewallsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FirewallsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -87,7 +76,7 @@ func (client *FirewallsClient) createOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +101,7 @@ func (client *FirewallsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter firewallName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallName}", url.PathEscape(firewallName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,11 +125,11 @@ func (client *FirewallsClient) BeginDelete(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FirewallsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FirewallsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[FirewallsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FirewallsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -153,7 +142,7 @@ func (client *FirewallsClient) deleteOperation(ctx context.Context, resourceGrou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +167,7 @@ func (client *FirewallsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter firewallName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallName}", url.PathEscape(firewallName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +190,7 @@ func (client *FirewallsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FirewallsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FirewallsClientGetResponse{}, err
 	}
@@ -226,7 +215,7 @@ func (client *FirewallsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter firewallName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallName}", url.PathEscape(firewallName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -259,7 +248,7 @@ func (client *FirewallsClient) GetGlobalRulestack(ctx context.Context, resourceG
 	if err != nil {
 		return FirewallsClientGetGlobalRulestackResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FirewallsClientGetGlobalRulestackResponse{}, err
 	}
@@ -284,7 +273,7 @@ func (client *FirewallsClient) getGlobalRulestackCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter firewallName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallName}", url.PathEscape(firewallName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -316,7 +305,7 @@ func (client *FirewallsClient) GetLogProfile(ctx context.Context, resourceGroupN
 	if err != nil {
 		return FirewallsClientGetLogProfileResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FirewallsClientGetLogProfileResponse{}, err
 	}
@@ -341,7 +330,7 @@ func (client *FirewallsClient) getLogProfileCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter firewallName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallName}", url.PathEscape(firewallName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -374,7 +363,7 @@ func (client *FirewallsClient) GetSupportInfo(ctx context.Context, resourceGroup
 	if err != nil {
 		return FirewallsClientGetSupportInfoResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FirewallsClientGetSupportInfoResponse{}, err
 	}
@@ -399,7 +388,7 @@ func (client *FirewallsClient) getSupportInfoCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter firewallName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallName}", url.PathEscape(firewallName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -444,7 +433,7 @@ func (client *FirewallsClient) NewListByResourceGroupPager(resourceGroupName str
 			if err != nil {
 				return FirewallsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FirewallsClientListByResourceGroupResponse{}, err
 			}
@@ -467,7 +456,7 @@ func (client *FirewallsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -508,7 +497,7 @@ func (client *FirewallsClient) NewListBySubscriptionPager(options *FirewallsClie
 			if err != nil {
 				return FirewallsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FirewallsClientListBySubscriptionResponse{}, err
 			}
@@ -527,7 +516,7 @@ func (client *FirewallsClient) listBySubscriptionCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -560,7 +549,7 @@ func (client *FirewallsClient) SaveLogProfile(ctx context.Context, resourceGroup
 	if err != nil {
 		return FirewallsClientSaveLogProfileResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FirewallsClientSaveLogProfileResponse{}, err
 	}
@@ -585,7 +574,7 @@ func (client *FirewallsClient) saveLogProfileCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter firewallName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallName}", url.PathEscape(firewallName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -612,7 +601,7 @@ func (client *FirewallsClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FirewallsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FirewallsClientUpdateResponse{}, err
 	}
@@ -637,7 +626,7 @@ func (client *FirewallsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter firewallName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{firewallName}", url.PathEscape(firewallName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

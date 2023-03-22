@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/paloaltonetworksngfw/armpanngfw"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_List_MaximumSet_Gen.json
 func ExamplePostRulesClient_NewListPager_postRulesListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("lrs1", nil)
+	pager := clientFactory.NewPostRulesClient().NewListPager("lrs1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -112,18 +112,18 @@ func ExamplePostRulesClient_NewListPager_postRulesListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_List_MinimumSet_Gen.json
 func ExamplePostRulesClient_NewListPager_postRulesListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("lrs1", nil)
+	pager := clientFactory.NewPostRulesClient().NewListPager("lrs1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -146,18 +146,18 @@ func ExamplePostRulesClient_NewListPager_postRulesListMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_Get_MaximumSet_Gen.json
 func ExamplePostRulesClient_Get_postRulesGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "lrs1", "1", nil)
+	res, err := clientFactory.NewPostRulesClient().Get(ctx, "lrs1", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -232,18 +232,18 @@ func ExamplePostRulesClient_Get_postRulesGetMaximumSetGen() {
 	// 													}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_Get_MinimumSet_Gen.json
 func ExamplePostRulesClient_Get_postRulesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "lrs1", "1", nil)
+	res, err := clientFactory.NewPostRulesClient().Get(ctx, "lrs1", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -258,18 +258,18 @@ func ExamplePostRulesClient_Get_postRulesGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_CreateOrUpdate_MaximumSet_Gen.json
 func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "lrs1", "1", armpanngfw.PostRulesResource{
+	poller, err := clientFactory.NewPostRulesClient().BeginCreateOrUpdate(ctx, "lrs1", "1", armpanngfw.PostRulesResource{
 		Properties: &armpanngfw.RuleEntry{
 			Description: to.Ptr("description of post rule"),
 			ActionType:  to.Ptr(armpanngfw.ActionEnumAllow),
@@ -401,18 +401,18 @@ func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMaximumSe
 	// 													}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_CreateOrUpdate_MinimumSet_Gen.json
 func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "lrs1", "1", armpanngfw.PostRulesResource{
+	poller, err := clientFactory.NewPostRulesClient().BeginCreateOrUpdate(ctx, "lrs1", "1", armpanngfw.PostRulesResource{
 		Properties: &armpanngfw.RuleEntry{
 			RuleName: to.Ptr("postRule1"),
 		},
@@ -435,18 +435,18 @@ func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMinimumSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_Delete_MaximumSet_Gen.json
 func ExamplePostRulesClient_BeginDelete_postRulesDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "lrs1", "1", nil)
+	poller, err := clientFactory.NewPostRulesClient().BeginDelete(ctx, "lrs1", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -456,18 +456,18 @@ func ExamplePostRulesClient_BeginDelete_postRulesDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_Delete_MinimumSet_Gen.json
 func ExamplePostRulesClient_BeginDelete_postRulesDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "lrs1", "1", nil)
+	poller, err := clientFactory.NewPostRulesClient().BeginDelete(ctx, "lrs1", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -477,18 +477,18 @@ func ExamplePostRulesClient_BeginDelete_postRulesDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_getCounters_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_getCounters_MaximumSet_Gen.json
 func ExamplePostRulesClient_GetCounters_postRulesGetCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientGetCountersOptions{FirewallName: to.Ptr("firewall1")})
+	res, err := clientFactory.NewPostRulesClient().GetCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientGetCountersOptions{FirewallName: to.Ptr("firewall1")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -521,18 +521,18 @@ func ExamplePostRulesClient_GetCounters_postRulesGetCountersMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_getCounters_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_getCounters_MinimumSet_Gen.json
 func ExamplePostRulesClient_GetCounters_postRulesGetCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientGetCountersOptions{FirewallName: nil})
+	res, err := clientFactory.NewPostRulesClient().GetCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientGetCountersOptions{FirewallName: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -545,52 +545,52 @@ func ExamplePostRulesClient_GetCounters_postRulesGetCountersMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_refreshCounters_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_refreshCounters_MaximumSet_Gen.json
 func ExamplePostRulesClient_RefreshCounters_postRulesRefreshCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.RefreshCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientRefreshCountersOptions{FirewallName: to.Ptr("firewall1")})
+	_, err = clientFactory.NewPostRulesClient().RefreshCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientRefreshCountersOptions{FirewallName: to.Ptr("firewall1")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_refreshCounters_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_refreshCounters_MinimumSet_Gen.json
 func ExamplePostRulesClient_RefreshCounters_postRulesRefreshCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.RefreshCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientRefreshCountersOptions{FirewallName: nil})
+	_, err = clientFactory.NewPostRulesClient().RefreshCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientRefreshCountersOptions{FirewallName: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_resetCounters_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_resetCounters_MaximumSet_Gen.json
 func ExamplePostRulesClient_ResetCounters_postRulesResetCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ResetCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientResetCountersOptions{FirewallName: to.Ptr("firewall1")})
+	res, err := clientFactory.NewPostRulesClient().ResetCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientResetCountersOptions{FirewallName: to.Ptr("firewall1")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -606,18 +606,18 @@ func ExamplePostRulesClient_ResetCounters_postRulesResetCountersMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_resetCounters_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_resetCounters_MinimumSet_Gen.json
 func ExamplePostRulesClient_ResetCounters_postRulesResetCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewPostRulesClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ResetCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientResetCountersOptions{FirewallName: nil})
+	res, err := clientFactory.NewPostRulesClient().ResetCounters(ctx, "lrs1", "1", &armpanngfw.PostRulesClientResetCountersOptions{FirewallName: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

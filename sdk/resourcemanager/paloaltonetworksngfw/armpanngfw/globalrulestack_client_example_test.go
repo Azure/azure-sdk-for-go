@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/paloaltonetworksngfw/armpanngfw"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_List_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_NewListPager_globalRulestackListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewGlobalRulestackClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -92,18 +92,18 @@ func ExampleGlobalRulestackClient_NewListPager_globalRulestackListMaximumSetGen(
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_List_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_NewListPager_globalRulestackListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewGlobalRulestackClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -126,18 +126,18 @@ func ExampleGlobalRulestackClient_NewListPager_globalRulestackListMinimumSetGen(
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Get_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_Get_globalRulestackGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "praval", nil)
+	res, err := clientFactory.NewGlobalRulestackClient().Get(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -192,18 +192,18 @@ func ExampleGlobalRulestackClient_Get_globalRulestackGetMaximumSetGen() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Get_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_Get_globalRulestackGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "praval", nil)
+	res, err := clientFactory.NewGlobalRulestackClient().Get(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -218,18 +218,18 @@ func ExampleGlobalRulestackClient_Get_globalRulestackGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "praval", armpanngfw.GlobalRulestackResource{
+	poller, err := clientFactory.NewGlobalRulestackClient().BeginCreateOrUpdate(ctx, "praval", armpanngfw.GlobalRulestackResource{
 		Identity: &armpanngfw.AzureResourceManagerManagedIdentityProperties{
 			Type: to.Ptr(armpanngfw.ManagedIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armpanngfw.AzureResourceManagerUserAssignedIdentity{
@@ -320,18 +320,18 @@ func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpd
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "praval", armpanngfw.GlobalRulestackResource{
+	poller, err := clientFactory.NewGlobalRulestackClient().BeginCreateOrUpdate(ctx, "praval", armpanngfw.GlobalRulestackResource{
 		Location:   to.Ptr("eastus"),
 		Properties: &armpanngfw.RulestackProperties{},
 	}, nil)
@@ -353,18 +353,18 @@ func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpd
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Update_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_Update_globalRulestackUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "praval", armpanngfw.GlobalRulestackResourceUpdate{
+	res, err := clientFactory.NewGlobalRulestackClient().Update(ctx, "praval", armpanngfw.GlobalRulestackResourceUpdate{
 		Identity: &armpanngfw.AzureResourceManagerManagedIdentityProperties{
 			Type: to.Ptr(armpanngfw.ManagedIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armpanngfw.AzureResourceManagerUserAssignedIdentity{
@@ -450,18 +450,18 @@ func ExampleGlobalRulestackClient_Update_globalRulestackUpdateMaximumSetGen() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Update_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_Update_globalRulestackUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "praval", armpanngfw.GlobalRulestackResourceUpdate{}, nil)
+	res, err := clientFactory.NewGlobalRulestackClient().Update(ctx, "praval", armpanngfw.GlobalRulestackResourceUpdate{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -475,18 +475,18 @@ func ExampleGlobalRulestackClient_Update_globalRulestackUpdateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Delete_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginDelete_globalRulestackDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "praval", nil)
+	poller, err := clientFactory.NewGlobalRulestackClient().BeginDelete(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -496,18 +496,18 @@ func ExampleGlobalRulestackClient_BeginDelete_globalRulestackDeleteMaximumSetGen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_Delete_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginDelete_globalRulestackDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "praval", nil)
+	poller, err := clientFactory.NewGlobalRulestackClient().BeginDelete(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -517,18 +517,18 @@ func ExampleGlobalRulestackClient_BeginDelete_globalRulestackDeleteMinimumSetGen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_commit_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_commit_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginCommit_globalRulestackCommitMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCommit(ctx, "praval", nil)
+	poller, err := clientFactory.NewGlobalRulestackClient().BeginCommit(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -538,18 +538,18 @@ func ExampleGlobalRulestackClient_BeginCommit_globalRulestackCommitMaximumSetGen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_commit_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_commit_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginCommit_globalRulestackCommitMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCommit(ctx, "praval", nil)
+	poller, err := clientFactory.NewGlobalRulestackClient().BeginCommit(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -559,18 +559,18 @@ func ExampleGlobalRulestackClient_BeginCommit_globalRulestackCommitMinimumSetGen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_getChangeLog_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_getChangeLog_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetChangeLog(ctx, "praval", nil)
+	res, err := clientFactory.NewGlobalRulestackClient().GetChangeLog(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -585,18 +585,18 @@ func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMaximu
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_getChangeLog_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_getChangeLog_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetChangeLog(ctx, "praval", nil)
+	res, err := clientFactory.NewGlobalRulestackClient().GetChangeLog(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -609,18 +609,18 @@ func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMinimu
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listAdvancedSecurityObjects_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listAdvancedSecurityObjects_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListAdvancedSecurityObjects_globalRulestackListAdvancedSecurityObjectsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAdvancedSecurityObjects(ctx, "praval", armpanngfw.AdvSecurityObjectTypeEnum("globalRulestacks"), &armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsOptions{Skip: to.Ptr("a6a321"),
+	res, err := clientFactory.NewGlobalRulestackClient().ListAdvancedSecurityObjects(ctx, "praval", armpanngfw.AdvSecurityObjectTypeEnum("globalRulestacks"), &armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsOptions{Skip: to.Ptr("a6a321"),
 		Top: to.Ptr[int32](20),
 	})
 	if err != nil {
@@ -641,18 +641,18 @@ func ExampleGlobalRulestackClient_ListAdvancedSecurityObjects_globalRulestackLis
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listAdvancedSecurityObjects_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listAdvancedSecurityObjects_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListAdvancedSecurityObjects_globalRulestackListAdvancedSecurityObjectsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAdvancedSecurityObjects(ctx, "praval", armpanngfw.AdvSecurityObjectTypeEnum("globalRulestacks"), &armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsOptions{Skip: nil,
+	res, err := clientFactory.NewGlobalRulestackClient().ListAdvancedSecurityObjects(ctx, "praval", armpanngfw.AdvSecurityObjectTypeEnum("globalRulestacks"), &armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsOptions{Skip: nil,
 		Top: nil,
 	})
 	if err != nil {
@@ -671,18 +671,18 @@ func ExampleGlobalRulestackClient_ListAdvancedSecurityObjects_globalRulestackLis
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listAppIds_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listAppIds_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAppIDs(ctx, "praval", &armpanngfw.GlobalRulestackClientListAppIDsOptions{AppIDVersion: to.Ptr("8543"),
+	res, err := clientFactory.NewGlobalRulestackClient().ListAppIDs(ctx, "praval", &armpanngfw.GlobalRulestackClientListAppIDsOptions{AppIDVersion: to.Ptr("8543"),
 		AppPrefix: to.Ptr("pref"),
 		Skip:      to.Ptr("a6a321"),
 		Top:       to.Ptr[int32](20),
@@ -699,18 +699,18 @@ func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMaximumSet
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listAppIds_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listAppIds_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAppIDs(ctx, "praval", &armpanngfw.GlobalRulestackClientListAppIDsOptions{AppIDVersion: nil,
+	res, err := clientFactory.NewGlobalRulestackClient().ListAppIDs(ctx, "praval", &armpanngfw.GlobalRulestackClientListAppIDsOptions{AppIDVersion: nil,
 		AppPrefix: nil,
 		Skip:      nil,
 		Top:       nil,
@@ -727,18 +727,18 @@ func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMinimumSet
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listCountries_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listCountries_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListCountries(ctx, "praval", &armpanngfw.GlobalRulestackClientListCountriesOptions{Skip: to.Ptr("a6a321"),
+	res, err := clientFactory.NewGlobalRulestackClient().ListCountries(ctx, "praval", &armpanngfw.GlobalRulestackClientListCountriesOptions{Skip: to.Ptr("a6a321"),
 		Top: to.Ptr[int32](20),
 	})
 	if err != nil {
@@ -756,18 +756,18 @@ func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMaxi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listCountries_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listCountries_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListCountries(ctx, "praval", &armpanngfw.GlobalRulestackClientListCountriesOptions{Skip: nil,
+	res, err := clientFactory.NewGlobalRulestackClient().ListCountries(ctx, "praval", &armpanngfw.GlobalRulestackClientListCountriesOptions{Skip: nil,
 		Top: nil,
 	})
 	if err != nil {
@@ -784,18 +784,18 @@ func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMini
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listFirewalls_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listFirewalls_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListFirewalls_globalRulestackListFirewallsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListFirewalls(ctx, "praval", nil)
+	res, err := clientFactory.NewGlobalRulestackClient().ListFirewalls(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -808,18 +808,18 @@ func ExampleGlobalRulestackClient_ListFirewalls_globalRulestackListFirewallsMaxi
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listFirewalls_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listFirewalls_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListFirewalls_globalRulestackListFirewallsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListFirewalls(ctx, "praval", nil)
+	res, err := clientFactory.NewGlobalRulestackClient().ListFirewalls(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -832,18 +832,18 @@ func ExampleGlobalRulestackClient_ListFirewalls_globalRulestackListFirewallsMini
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listPredefinedUrlCategories_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listPredefinedUrlCategories_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackListPredefinedUrlCategoriesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListPredefinedURLCategories(ctx, "praval", &armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesOptions{Skip: to.Ptr("a6a321"),
+	res, err := clientFactory.NewGlobalRulestackClient().ListPredefinedURLCategories(ctx, "praval", &armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesOptions{Skip: to.Ptr("a6a321"),
 		Top: to.Ptr[int32](20),
 	})
 	if err != nil {
@@ -861,18 +861,18 @@ func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackLis
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listPredefinedUrlCategories_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listPredefinedUrlCategories_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackListPredefinedUrlCategoriesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListPredefinedURLCategories(ctx, "praval", &armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesOptions{Skip: nil,
+	res, err := clientFactory.NewGlobalRulestackClient().ListPredefinedURLCategories(ctx, "praval", &armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesOptions{Skip: nil,
 		Top: nil,
 	})
 	if err != nil {
@@ -890,18 +890,18 @@ func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackLis
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listSecurityServices_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listSecurityServices_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListSecurityServices_globalRulestackListSecurityServicesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListSecurityServices(ctx, "praval", armpanngfw.SecurityServicesTypeEnum("globalRulestacks"), &armpanngfw.GlobalRulestackClientListSecurityServicesOptions{Skip: to.Ptr("a6a321"),
+	res, err := clientFactory.NewGlobalRulestackClient().ListSecurityServices(ctx, "praval", armpanngfw.SecurityServicesTypeEnum("globalRulestacks"), &armpanngfw.GlobalRulestackClientListSecurityServicesOptions{Skip: to.Ptr("a6a321"),
 		Top: to.Ptr[int32](20),
 	})
 	if err != nil {
@@ -922,18 +922,18 @@ func ExampleGlobalRulestackClient_ListSecurityServices_globalRulestackListSecuri
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listSecurityServices_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listSecurityServices_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListSecurityServices_globalRulestackListSecurityServicesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListSecurityServices(ctx, "praval", armpanngfw.SecurityServicesTypeEnum("globalRulestacks"), &armpanngfw.GlobalRulestackClientListSecurityServicesOptions{Skip: nil,
+	res, err := clientFactory.NewGlobalRulestackClient().ListSecurityServices(ctx, "praval", armpanngfw.SecurityServicesTypeEnum("globalRulestacks"), &armpanngfw.GlobalRulestackClientListSecurityServicesOptions{Skip: nil,
 		Top: nil,
 	})
 	if err != nil {
@@ -952,35 +952,35 @@ func ExampleGlobalRulestackClient_ListSecurityServices_globalRulestackListSecuri
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_revert_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_revert_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_Revert_globalRulestackRevertMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Revert(ctx, "praval", nil)
+	_, err = clientFactory.NewGlobalRulestackClient().Revert(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_revert_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_revert_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_Revert_globalRulestackRevertMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewGlobalRulestackClient(cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Revert(ctx, "praval", nil)
+	_, err = clientFactory.NewGlobalRulestackClient().Revert(ctx, "praval", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

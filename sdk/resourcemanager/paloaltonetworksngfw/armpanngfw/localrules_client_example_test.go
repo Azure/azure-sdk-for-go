@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/paloaltonetworksngfw/armpanngfw"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_ListByLocalRulestacks_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_ListByLocalRulestacks_MaximumSet_Gen.json
 func ExampleLocalRulesClient_NewListByLocalRulestacksPager_localRulesListByLocalRulestacksMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLocalRulestacksPager("firewall-rg", "lrs1", nil)
+	pager := clientFactory.NewLocalRulesClient().NewListByLocalRulestacksPager("firewall-rg", "lrs1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -112,18 +112,18 @@ func ExampleLocalRulesClient_NewListByLocalRulestacksPager_localRulesListByLocal
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_ListByLocalRulestacks_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_ListByLocalRulestacks_MinimumSet_Gen.json
 func ExampleLocalRulesClient_NewListByLocalRulestacksPager_localRulesListByLocalRulestacksMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLocalRulestacksPager("firewall-rg", "lrs1", nil)
+	pager := clientFactory.NewLocalRulesClient().NewListByLocalRulestacksPager("firewall-rg", "lrs1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -146,18 +146,18 @@ func ExampleLocalRulesClient_NewListByLocalRulestacksPager_localRulesListByLocal
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_Get_MaximumSet_Gen.json
 func ExampleLocalRulesClient_Get_localRulesGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "firewall-rg", "lrs1", "1", nil)
+	res, err := clientFactory.NewLocalRulesClient().Get(ctx, "firewall-rg", "lrs1", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -232,18 +232,18 @@ func ExampleLocalRulesClient_Get_localRulesGetMaximumSetGen() {
 	// 													}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_Get_MinimumSet_Gen.json
 func ExampleLocalRulesClient_Get_localRulesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "firewall-rg", "lrs1", "1", nil)
+	res, err := clientFactory.NewLocalRulesClient().Get(ctx, "firewall-rg", "lrs1", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -258,18 +258,18 @@ func ExampleLocalRulesClient_Get_localRulesGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleLocalRulesClient_BeginCreateOrUpdate_localRulesCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "firewall-rg", "lrs1", "1", armpanngfw.LocalRulesResource{
+	poller, err := clientFactory.NewLocalRulesClient().BeginCreateOrUpdate(ctx, "firewall-rg", "lrs1", "1", armpanngfw.LocalRulesResource{
 		Properties: &armpanngfw.RuleEntry{
 			Description: to.Ptr("description of local rule"),
 			ActionType:  to.Ptr(armpanngfw.ActionEnumAllow),
@@ -401,18 +401,18 @@ func ExampleLocalRulesClient_BeginCreateOrUpdate_localRulesCreateOrUpdateMaximum
 	// 													}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleLocalRulesClient_BeginCreateOrUpdate_localRulesCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "firewall-rg", "lrs1", "1", armpanngfw.LocalRulesResource{
+	poller, err := clientFactory.NewLocalRulesClient().BeginCreateOrUpdate(ctx, "firewall-rg", "lrs1", "1", armpanngfw.LocalRulesResource{
 		Properties: &armpanngfw.RuleEntry{
 			RuleName: to.Ptr("localRule1"),
 		},
@@ -435,18 +435,18 @@ func ExampleLocalRulesClient_BeginCreateOrUpdate_localRulesCreateOrUpdateMinimum
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_Delete_MaximumSet_Gen.json
 func ExampleLocalRulesClient_BeginDelete_localRulesDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "firewall-rg", "lrs1", "1", nil)
+	poller, err := clientFactory.NewLocalRulesClient().BeginDelete(ctx, "firewall-rg", "lrs1", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -456,18 +456,18 @@ func ExampleLocalRulesClient_BeginDelete_localRulesDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_Delete_MinimumSet_Gen.json
 func ExampleLocalRulesClient_BeginDelete_localRulesDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "firewall-rg", "lrs1", "1", nil)
+	poller, err := clientFactory.NewLocalRulesClient().BeginDelete(ctx, "firewall-rg", "lrs1", "1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -477,18 +477,18 @@ func ExampleLocalRulesClient_BeginDelete_localRulesDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_getCounters_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_getCounters_MaximumSet_Gen.json
 func ExampleLocalRulesClient_GetCounters_localRulesGetCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientGetCountersOptions{FirewallName: to.Ptr("firewall1")})
+	res, err := clientFactory.NewLocalRulesClient().GetCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientGetCountersOptions{FirewallName: to.Ptr("firewall1")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -521,18 +521,18 @@ func ExampleLocalRulesClient_GetCounters_localRulesGetCountersMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_getCounters_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_getCounters_MinimumSet_Gen.json
 func ExampleLocalRulesClient_GetCounters_localRulesGetCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientGetCountersOptions{FirewallName: nil})
+	res, err := clientFactory.NewLocalRulesClient().GetCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientGetCountersOptions{FirewallName: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -545,52 +545,52 @@ func ExampleLocalRulesClient_GetCounters_localRulesGetCountersMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_refreshCounters_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_refreshCounters_MaximumSet_Gen.json
 func ExampleLocalRulesClient_RefreshCounters_localRulesRefreshCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.RefreshCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientRefreshCountersOptions{FirewallName: to.Ptr("firewall1")})
+	_, err = clientFactory.NewLocalRulesClient().RefreshCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientRefreshCountersOptions{FirewallName: to.Ptr("firewall1")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_refreshCounters_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_refreshCounters_MinimumSet_Gen.json
 func ExampleLocalRulesClient_RefreshCounters_localRulesRefreshCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.RefreshCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientRefreshCountersOptions{FirewallName: nil})
+	_, err = clientFactory.NewLocalRulesClient().RefreshCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientRefreshCountersOptions{FirewallName: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_resetCounters_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_resetCounters_MaximumSet_Gen.json
 func ExampleLocalRulesClient_ResetCounters_localRulesResetCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ResetCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientResetCountersOptions{FirewallName: to.Ptr("firewall1")})
+	res, err := clientFactory.NewLocalRulesClient().ResetCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientResetCountersOptions{FirewallName: to.Ptr("firewall1")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -606,18 +606,18 @@ func ExampleLocalRulesClient_ResetCounters_localRulesResetCountersMaximumSetGen(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/85fb4ac6f8bfefd179e6c2632976a154b5c9ff04/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_resetCounters_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRules_resetCounters_MinimumSet_Gen.json
 func ExampleLocalRulesClient_ResetCounters_localRulesResetCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpanngfw.NewLocalRulesClient("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	clientFactory, err := armpanngfw.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ResetCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientResetCountersOptions{FirewallName: nil})
+	res, err := clientFactory.NewLocalRulesClient().ResetCounters(ctx, "firewall-rg", "lrs1", "1", &armpanngfw.LocalRulesClientResetCountersOptions{FirewallName: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

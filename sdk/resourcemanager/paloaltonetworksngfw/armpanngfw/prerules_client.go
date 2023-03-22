@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,28 +24,19 @@ import (
 // PreRulesClient contains the methods for the PreRules group.
 // Don't use this type directly, use NewPreRulesClient() instead.
 type PreRulesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewPreRulesClient creates a new instance of PreRulesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPreRulesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PreRulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PreRulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PreRulesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -67,11 +56,11 @@ func (client *PreRulesClient) BeginCreateOrUpdate(ctx context.Context, globalRul
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PreRulesClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PreRulesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[PreRulesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PreRulesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -84,7 +73,7 @@ func (client *PreRulesClient) createOrUpdate(ctx context.Context, globalRulestac
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +94,7 @@ func (client *PreRulesClient) createOrUpdateCreateRequest(ctx context.Context, g
 		return nil, errors.New("parameter priority cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{priority}", url.PathEscape(priority))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -129,11 +118,11 @@ func (client *PreRulesClient) BeginDelete(ctx context.Context, globalRulestackNa
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PreRulesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PreRulesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[PreRulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PreRulesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -146,7 +135,7 @@ func (client *PreRulesClient) deleteOperation(ctx context.Context, globalRulesta
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +156,7 @@ func (client *PreRulesClient) deleteCreateRequest(ctx context.Context, globalRul
 		return nil, errors.New("parameter priority cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{priority}", url.PathEscape(priority))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -190,7 +179,7 @@ func (client *PreRulesClient) Get(ctx context.Context, globalRulestackName strin
 	if err != nil {
 		return PreRulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PreRulesClientGetResponse{}, err
 	}
@@ -211,7 +200,7 @@ func (client *PreRulesClient) getCreateRequest(ctx context.Context, globalRulest
 		return nil, errors.New("parameter priority cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{priority}", url.PathEscape(priority))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +232,7 @@ func (client *PreRulesClient) GetCounters(ctx context.Context, globalRulestackNa
 	if err != nil {
 		return PreRulesClientGetCountersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PreRulesClientGetCountersResponse{}, err
 	}
@@ -264,7 +253,7 @@ func (client *PreRulesClient) getCountersCreateRequest(ctx context.Context, glob
 		return nil, errors.New("parameter priority cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{priority}", url.PathEscape(priority))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,7 +297,7 @@ func (client *PreRulesClient) NewListPager(globalRulestackName string, options *
 			if err != nil {
 				return PreRulesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PreRulesClientListResponse{}, err
 			}
@@ -327,7 +316,7 @@ func (client *PreRulesClient) listCreateRequest(ctx context.Context, globalRules
 		return nil, errors.New("parameter globalRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,7 +349,7 @@ func (client *PreRulesClient) RefreshCounters(ctx context.Context, globalRulesta
 	if err != nil {
 		return PreRulesClientRefreshCountersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PreRulesClientRefreshCountersResponse{}, err
 	}
@@ -381,7 +370,7 @@ func (client *PreRulesClient) refreshCountersCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter priority cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{priority}", url.PathEscape(priority))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -407,7 +396,7 @@ func (client *PreRulesClient) ResetCounters(ctx context.Context, globalRulestack
 	if err != nil {
 		return PreRulesClientResetCountersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PreRulesClientResetCountersResponse{}, err
 	}
@@ -428,7 +417,7 @@ func (client *PreRulesClient) resetCountersCreateRequest(ctx context.Context, gl
 		return nil, errors.New("parameter priority cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{priority}", url.PathEscape(priority))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

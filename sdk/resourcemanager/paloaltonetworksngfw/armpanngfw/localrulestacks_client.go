@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // LocalRulestacksClient contains the methods for the LocalRulestacks group.
 // Don't use this type directly, use NewLocalRulestacksClient() instead.
 type LocalRulestacksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewLocalRulestacksClient creates a new instance of LocalRulestacksClient with the specified values.
@@ -37,21 +34,13 @@ type LocalRulestacksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLocalRulestacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocalRulestacksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".LocalRulestacksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &LocalRulestacksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,11 +59,11 @@ func (client *LocalRulestacksClient) BeginCommit(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LocalRulestacksClientCommitResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LocalRulestacksClientCommitResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[LocalRulestacksClientCommitResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LocalRulestacksClientCommitResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -87,7 +76,7 @@ func (client *LocalRulestacksClient) commit(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +101,7 @@ func (client *LocalRulestacksClient) commitCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -138,11 +127,11 @@ func (client *LocalRulestacksClient) BeginCreateOrUpdate(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LocalRulestacksClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LocalRulestacksClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[LocalRulestacksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LocalRulestacksClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -155,7 +144,7 @@ func (client *LocalRulestacksClient) createOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +169,7 @@ func (client *LocalRulestacksClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -205,11 +194,11 @@ func (client *LocalRulestacksClient) BeginDelete(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LocalRulestacksClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LocalRulestacksClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[LocalRulestacksClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LocalRulestacksClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -222,7 +211,7 @@ func (client *LocalRulestacksClient) deleteOperation(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -247,7 +236,7 @@ func (client *LocalRulestacksClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -270,7 +259,7 @@ func (client *LocalRulestacksClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return LocalRulestacksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientGetResponse{}, err
 	}
@@ -295,7 +284,7 @@ func (client *LocalRulestacksClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -328,7 +317,7 @@ func (client *LocalRulestacksClient) GetChangeLog(ctx context.Context, resourceG
 	if err != nil {
 		return LocalRulestacksClientGetChangeLogResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientGetChangeLogResponse{}, err
 	}
@@ -353,7 +342,7 @@ func (client *LocalRulestacksClient) getChangeLogCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -386,7 +375,7 @@ func (client *LocalRulestacksClient) GetSupportInfo(ctx context.Context, resourc
 	if err != nil {
 		return LocalRulestacksClientGetSupportInfoResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientGetSupportInfoResponse{}, err
 	}
@@ -411,7 +400,7 @@ func (client *LocalRulestacksClient) getSupportInfoCreateRequest(ctx context.Con
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -447,7 +436,7 @@ func (client *LocalRulestacksClient) ListAdvancedSecurityObjects(ctx context.Con
 	if err != nil {
 		return LocalRulestacksClientListAdvancedSecurityObjectsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientListAdvancedSecurityObjectsResponse{}, err
 	}
@@ -472,7 +461,7 @@ func (client *LocalRulestacksClient) listAdvancedSecurityObjectsCreateRequest(ct
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -512,7 +501,7 @@ func (client *LocalRulestacksClient) ListAppIDs(ctx context.Context, resourceGro
 	if err != nil {
 		return LocalRulestacksClientListAppIDsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientListAppIDsResponse{}, err
 	}
@@ -537,7 +526,7 @@ func (client *LocalRulestacksClient) listAppIDsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -591,7 +580,7 @@ func (client *LocalRulestacksClient) NewListByResourceGroupPager(resourceGroupNa
 			if err != nil {
 				return LocalRulestacksClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LocalRulestacksClientListByResourceGroupResponse{}, err
 			}
@@ -614,7 +603,7 @@ func (client *LocalRulestacksClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -655,7 +644,7 @@ func (client *LocalRulestacksClient) NewListBySubscriptionPager(options *LocalRu
 			if err != nil {
 				return LocalRulestacksClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LocalRulestacksClientListBySubscriptionResponse{}, err
 			}
@@ -674,7 +663,7 @@ func (client *LocalRulestacksClient) listBySubscriptionCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -707,7 +696,7 @@ func (client *LocalRulestacksClient) ListCountries(ctx context.Context, resource
 	if err != nil {
 		return LocalRulestacksClientListCountriesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientListCountriesResponse{}, err
 	}
@@ -732,7 +721,7 @@ func (client *LocalRulestacksClient) listCountriesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -771,7 +760,7 @@ func (client *LocalRulestacksClient) ListFirewalls(ctx context.Context, resource
 	if err != nil {
 		return LocalRulestacksClientListFirewallsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientListFirewallsResponse{}, err
 	}
@@ -796,7 +785,7 @@ func (client *LocalRulestacksClient) listFirewallsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -829,7 +818,7 @@ func (client *LocalRulestacksClient) ListPredefinedURLCategories(ctx context.Con
 	if err != nil {
 		return LocalRulestacksClientListPredefinedURLCategoriesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientListPredefinedURLCategoriesResponse{}, err
 	}
@@ -854,7 +843,7 @@ func (client *LocalRulestacksClient) listPredefinedURLCategoriesCreateRequest(ct
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -893,7 +882,7 @@ func (client *LocalRulestacksClient) ListSecurityServices(ctx context.Context, r
 	if err != nil {
 		return LocalRulestacksClientListSecurityServicesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientListSecurityServicesResponse{}, err
 	}
@@ -918,7 +907,7 @@ func (client *LocalRulestacksClient) listSecurityServicesCreateRequest(ctx conte
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -957,7 +946,7 @@ func (client *LocalRulestacksClient) Revert(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return LocalRulestacksClientRevertResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientRevertResponse{}, err
 	}
@@ -982,7 +971,7 @@ func (client *LocalRulestacksClient) revertCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1006,7 +995,7 @@ func (client *LocalRulestacksClient) Update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return LocalRulestacksClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocalRulestacksClientUpdateResponse{}, err
 	}
@@ -1031,7 +1020,7 @@ func (client *LocalRulestacksClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter localRulestackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

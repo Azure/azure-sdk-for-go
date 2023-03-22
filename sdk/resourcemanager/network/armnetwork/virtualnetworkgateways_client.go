@@ -32,10 +32,10 @@ type VirtualNetworkGatewaysClient struct {
 }
 
 // NewVirtualNetworkGatewaysClient creates a new instance of VirtualNetworkGatewaysClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVirtualNetworkGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworkGatewaysClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewVirtualNetworkGatewaysClient(subscriptionID string, credential azcore.To
 
 // BeginCreateOrUpdate - Creates or updates a virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// parameters - Parameters supplied to create or update virtual network gateway operation.
-// options - VirtualNetworkGatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - parameters - Parameters supplied to create or update virtual network gateway operation.
+//   - options - VirtualNetworkGatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginCreateOrUpdate
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VirtualNetworkGateway, options *VirtualNetworkGatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualNetworkGatewaysClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualNetworkGatewayName, parameters, options)
@@ -80,7 +81,8 @@ func (client *VirtualNetworkGatewaysClient) BeginCreateOrUpdate(ctx context.Cont
 
 // CreateOrUpdate - Creates or updates a virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VirtualNetworkGateway, options *VirtualNetworkGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, parameters, options)
 	if err != nil {
@@ -116,7 +118,7 @@ func (client *VirtualNetworkGatewaysClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -124,11 +126,12 @@ func (client *VirtualNetworkGatewaysClient) createOrUpdateCreateRequest(ctx cont
 
 // BeginDelete - Deletes the specified virtual network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginDelete
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginDeleteOptions) (*runtime.Poller[VirtualNetworkGatewaysClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkGatewayName, options)
@@ -145,7 +148,8 @@ func (client *VirtualNetworkGatewaysClient) BeginDelete(ctx context.Context, res
 
 // Delete - Deletes the specified virtual network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -181,7 +185,7 @@ func (client *VirtualNetworkGatewaysClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -190,12 +194,13 @@ func (client *VirtualNetworkGatewaysClient) deleteCreateRequest(ctx context.Cont
 // BeginDisconnectVirtualNetworkGatewayVPNConnections - Disconnect vpn connections of virtual network gateway in the specified
 // resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// request - The parameters are supplied to disconnect vpn connections.
-// options - VirtualNetworkGatewaysClientBeginDisconnectVirtualNetworkGatewayVPNConnectionsOptions contains the optional parameters
-// for the VirtualNetworkGatewaysClient.BeginDisconnectVirtualNetworkGatewayVPNConnections method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - request - The parameters are supplied to disconnect vpn connections.
+//   - options - VirtualNetworkGatewaysClientBeginDisconnectVirtualNetworkGatewayVPNConnectionsOptions contains the optional parameters
+//     for the VirtualNetworkGatewaysClient.BeginDisconnectVirtualNetworkGatewayVPNConnections method.
 func (client *VirtualNetworkGatewaysClient) BeginDisconnectVirtualNetworkGatewayVPNConnections(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, request P2SVPNConnectionRequest, options *VirtualNetworkGatewaysClientBeginDisconnectVirtualNetworkGatewayVPNConnectionsOptions) (*runtime.Poller[VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.disconnectVirtualNetworkGatewayVPNConnections(ctx, resourceGroupName, virtualNetworkGatewayName, request, options)
@@ -213,7 +218,8 @@ func (client *VirtualNetworkGatewaysClient) BeginDisconnectVirtualNetworkGateway
 // DisconnectVirtualNetworkGatewayVPNConnections - Disconnect vpn connections of virtual network gateway in the specified
 // resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) disconnectVirtualNetworkGatewayVPNConnections(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, request P2SVPNConnectionRequest, options *VirtualNetworkGatewaysClientBeginDisconnectVirtualNetworkGatewayVPNConnectionsOptions) (*http.Response, error) {
 	req, err := client.disconnectVirtualNetworkGatewayVPNConnectionsCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, request, options)
 	if err != nil {
@@ -249,7 +255,7 @@ func (client *VirtualNetworkGatewaysClient) disconnectVirtualNetworkGatewayVPNCo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, request)
@@ -258,12 +264,13 @@ func (client *VirtualNetworkGatewaysClient) disconnectVirtualNetworkGatewayVPNCo
 // BeginGenerateVPNProfile - Generates VPN profile for P2S client of the virtual network gateway in the specified resource
 // group. Used for IKEV2 and radius based authentication.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// parameters - Parameters supplied to the generate virtual network gateway VPN client package operation.
-// options - VirtualNetworkGatewaysClientBeginGenerateVPNProfileOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGenerateVPNProfile
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - parameters - Parameters supplied to the generate virtual network gateway VPN client package operation.
+//   - options - VirtualNetworkGatewaysClientBeginGenerateVPNProfileOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGenerateVPNProfile
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginGenerateVPNProfile(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VPNClientParameters, options *VirtualNetworkGatewaysClientBeginGenerateVPNProfileOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGenerateVPNProfileResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.generateVPNProfile(ctx, resourceGroupName, virtualNetworkGatewayName, parameters, options)
@@ -281,7 +288,8 @@ func (client *VirtualNetworkGatewaysClient) BeginGenerateVPNProfile(ctx context.
 // GenerateVPNProfile - Generates VPN profile for P2S client of the virtual network gateway in the specified resource group.
 // Used for IKEV2 and radius based authentication.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) generateVPNProfile(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VPNClientParameters, options *VirtualNetworkGatewaysClientBeginGenerateVPNProfileOptions) (*http.Response, error) {
 	req, err := client.generateVPNProfileCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, parameters, options)
 	if err != nil {
@@ -317,7 +325,7 @@ func (client *VirtualNetworkGatewaysClient) generateVPNProfileCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -326,12 +334,13 @@ func (client *VirtualNetworkGatewaysClient) generateVPNProfileCreateRequest(ctx 
 // BeginGeneratevpnclientpackage - Generates VPN client package for P2S client of the virtual network gateway in the specified
 // resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// parameters - Parameters supplied to the generate virtual network gateway VPN client package operation.
-// options - VirtualNetworkGatewaysClientBeginGeneratevpnclientpackageOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGeneratevpnclientpackage
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - parameters - Parameters supplied to the generate virtual network gateway VPN client package operation.
+//   - options - VirtualNetworkGatewaysClientBeginGeneratevpnclientpackageOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGeneratevpnclientpackage
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginGeneratevpnclientpackage(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VPNClientParameters, options *VirtualNetworkGatewaysClientBeginGeneratevpnclientpackageOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.generatevpnclientpackage(ctx, resourceGroupName, virtualNetworkGatewayName, parameters, options)
@@ -349,7 +358,8 @@ func (client *VirtualNetworkGatewaysClient) BeginGeneratevpnclientpackage(ctx co
 // Generatevpnclientpackage - Generates VPN client package for P2S client of the virtual network gateway in the specified
 // resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) generatevpnclientpackage(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VPNClientParameters, options *VirtualNetworkGatewaysClientBeginGeneratevpnclientpackageOptions) (*http.Response, error) {
 	req, err := client.generatevpnclientpackageCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, parameters, options)
 	if err != nil {
@@ -385,7 +395,7 @@ func (client *VirtualNetworkGatewaysClient) generatevpnclientpackageCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -393,11 +403,12 @@ func (client *VirtualNetworkGatewaysClient) generatevpnclientpackageCreateReques
 
 // Get - Gets the specified virtual network gateway by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientGetOptions contains the optional parameters for the VirtualNetworkGatewaysClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientGetOptions contains the optional parameters for the VirtualNetworkGatewaysClient.Get
+//     method.
 func (client *VirtualNetworkGatewaysClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientGetOptions) (VirtualNetworkGatewaysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -433,7 +444,7 @@ func (client *VirtualNetworkGatewaysClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -451,12 +462,13 @@ func (client *VirtualNetworkGatewaysClient) getHandleResponse(resp *http.Respons
 // BeginGetAdvertisedRoutes - This operation retrieves a list of routes the virtual network gateway is advertising to the
 // specified peer.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// peer - The IP address of the peer.
-// options - VirtualNetworkGatewaysClientBeginGetAdvertisedRoutesOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetAdvertisedRoutes
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - peer - The IP address of the peer.
+//   - options - VirtualNetworkGatewaysClientBeginGetAdvertisedRoutesOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetAdvertisedRoutes
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginGetAdvertisedRoutes(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peer string, options *VirtualNetworkGatewaysClientBeginGetAdvertisedRoutesOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getAdvertisedRoutes(ctx, resourceGroupName, virtualNetworkGatewayName, peer, options)
@@ -474,7 +486,8 @@ func (client *VirtualNetworkGatewaysClient) BeginGetAdvertisedRoutes(ctx context
 // GetAdvertisedRoutes - This operation retrieves a list of routes the virtual network gateway is advertising to the specified
 // peer.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) getAdvertisedRoutes(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peer string, options *VirtualNetworkGatewaysClientBeginGetAdvertisedRoutesOptions) (*http.Response, error) {
 	req, err := client.getAdvertisedRoutesCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, peer, options)
 	if err != nil {
@@ -511,7 +524,7 @@ func (client *VirtualNetworkGatewaysClient) getAdvertisedRoutesCreateRequest(ctx
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("peer", peer)
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -519,11 +532,12 @@ func (client *VirtualNetworkGatewaysClient) getAdvertisedRoutesCreateRequest(ctx
 
 // BeginGetBgpPeerStatus - The GetBgpPeerStatus operation retrieves the status of all BGP peers.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginGetBgpPeerStatus(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getBgpPeerStatus(ctx, resourceGroupName, virtualNetworkGatewayName, options)
@@ -540,7 +554,8 @@ func (client *VirtualNetworkGatewaysClient) BeginGetBgpPeerStatus(ctx context.Co
 
 // GetBgpPeerStatus - The GetBgpPeerStatus operation retrieves the status of all BGP peers.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) getBgpPeerStatus(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions) (*http.Response, error) {
 	req, err := client.getBgpPeerStatusCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -579,7 +594,7 @@ func (client *VirtualNetworkGatewaysClient) getBgpPeerStatusCreateRequest(ctx co
 	if options != nil && options.Peer != nil {
 		reqQP.Set("peer", *options.Peer)
 	}
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -588,11 +603,12 @@ func (client *VirtualNetworkGatewaysClient) getBgpPeerStatusCreateRequest(ctx co
 // BeginGetLearnedRoutes - This operation retrieves a list of routes the virtual network gateway has learned, including routes
 // learned from BGP peers.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientBeginGetLearnedRoutesOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetLearnedRoutes
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientBeginGetLearnedRoutesOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetLearnedRoutes
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginGetLearnedRoutes(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetLearnedRoutesOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetLearnedRoutesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getLearnedRoutes(ctx, resourceGroupName, virtualNetworkGatewayName, options)
@@ -610,7 +626,8 @@ func (client *VirtualNetworkGatewaysClient) BeginGetLearnedRoutes(ctx context.Co
 // GetLearnedRoutes - This operation retrieves a list of routes the virtual network gateway has learned, including routes
 // learned from BGP peers.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) getLearnedRoutes(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetLearnedRoutesOptions) (*http.Response, error) {
 	req, err := client.getLearnedRoutesCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -646,7 +663,7 @@ func (client *VirtualNetworkGatewaysClient) getLearnedRoutesCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -655,11 +672,12 @@ func (client *VirtualNetworkGatewaysClient) getLearnedRoutesCreateRequest(ctx co
 // BeginGetVPNProfilePackageURL - Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified
 // resource group. The profile needs to be generated first using generateVpnProfile.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientBeginGetVPNProfilePackageURLOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetVPNProfilePackageURL
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientBeginGetVPNProfilePackageURLOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetVPNProfilePackageURL
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginGetVPNProfilePackageURL(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetVPNProfilePackageURLOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getVPNProfilePackageURL(ctx, resourceGroupName, virtualNetworkGatewayName, options)
@@ -677,7 +695,8 @@ func (client *VirtualNetworkGatewaysClient) BeginGetVPNProfilePackageURL(ctx con
 // GetVPNProfilePackageURL - Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified
 // resource group. The profile needs to be generated first using generateVpnProfile.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) getVPNProfilePackageURL(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetVPNProfilePackageURLOptions) (*http.Response, error) {
 	req, err := client.getVPNProfilePackageURLCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -713,7 +732,7 @@ func (client *VirtualNetworkGatewaysClient) getVPNProfilePackageURLCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -722,11 +741,12 @@ func (client *VirtualNetworkGatewaysClient) getVPNProfilePackageURLCreateRequest
 // BeginGetVpnclientConnectionHealth - Get VPN client connection health detail per P2S client connection of the virtual network
 // gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientBeginGetVpnclientConnectionHealthOptions contains the optional parameters for the
-// VirtualNetworkGatewaysClient.BeginGetVpnclientConnectionHealth method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientBeginGetVpnclientConnectionHealthOptions contains the optional parameters for the
+//     VirtualNetworkGatewaysClient.BeginGetVpnclientConnectionHealth method.
 func (client *VirtualNetworkGatewaysClient) BeginGetVpnclientConnectionHealth(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetVpnclientConnectionHealthOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getVpnclientConnectionHealth(ctx, resourceGroupName, virtualNetworkGatewayName, options)
@@ -744,7 +764,8 @@ func (client *VirtualNetworkGatewaysClient) BeginGetVpnclientConnectionHealth(ct
 // GetVpnclientConnectionHealth - Get VPN client connection health detail per P2S client connection of the virtual network
 // gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) getVpnclientConnectionHealth(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetVpnclientConnectionHealthOptions) (*http.Response, error) {
 	req, err := client.getVpnclientConnectionHealthCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -780,7 +801,7 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientConnectionHealthCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -790,11 +811,12 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientConnectionHealthCreateRe
 // ipsec policy for P2S client of virtual network gateway in the specified resource group through Network resource
 // provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The virtual network gateway name.
-// options - VirtualNetworkGatewaysClientBeginGetVpnclientIPSecParametersOptions contains the optional parameters for the
-// VirtualNetworkGatewaysClient.BeginGetVpnclientIPSecParameters method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The virtual network gateway name.
+//   - options - VirtualNetworkGatewaysClientBeginGetVpnclientIPSecParametersOptions contains the optional parameters for the
+//     VirtualNetworkGatewaysClient.BeginGetVpnclientIPSecParameters method.
 func (client *VirtualNetworkGatewaysClient) BeginGetVpnclientIPSecParameters(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetVpnclientIPSecParametersOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getVpnclientIPSecParameters(ctx, resourceGroupName, virtualNetworkGatewayName, options)
@@ -813,7 +835,8 @@ func (client *VirtualNetworkGatewaysClient) BeginGetVpnclientIPSecParameters(ctx
 // policy for P2S client of virtual network gateway in the specified resource group through Network resource
 // provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) getVpnclientIPSecParameters(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetVpnclientIPSecParametersOptions) (*http.Response, error) {
 	req, err := client.getVpnclientIPSecParametersCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -849,17 +872,18 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientIPSecParametersCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListPager - Gets all virtual network gateways by resource group.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// options - VirtualNetworkGatewaysClientListOptions contains the optional parameters for the VirtualNetworkGatewaysClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - options - VirtualNetworkGatewaysClientListOptions contains the optional parameters for the VirtualNetworkGatewaysClient.NewListPager
+//     method.
 func (client *VirtualNetworkGatewaysClient) NewListPager(resourceGroupName string, options *VirtualNetworkGatewaysClientListOptions) *runtime.Pager[VirtualNetworkGatewaysClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkGatewaysClientListResponse]{
 		More: func(page VirtualNetworkGatewaysClientListResponse) bool {
@@ -904,7 +928,7 @@ func (client *VirtualNetworkGatewaysClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -920,11 +944,12 @@ func (client *VirtualNetworkGatewaysClient) listHandleResponse(resp *http.Respon
 }
 
 // NewListConnectionsPager - Gets all the connections in a virtual network gateway.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientListConnectionsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.ListConnections
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientListConnectionsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.NewListConnectionsPager
+//     method.
 func (client *VirtualNetworkGatewaysClient) NewListConnectionsPager(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientListConnectionsOptions) *runtime.Pager[VirtualNetworkGatewaysClientListConnectionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkGatewaysClientListConnectionsResponse]{
 		More: func(page VirtualNetworkGatewaysClientListConnectionsResponse) bool {
@@ -973,7 +998,7 @@ func (client *VirtualNetworkGatewaysClient) listConnectionsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -990,11 +1015,12 @@ func (client *VirtualNetworkGatewaysClient) listConnectionsHandleResponse(resp *
 
 // BeginReset - Resets the primary of the virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientBeginResetOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginReset
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientBeginResetOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginReset
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginReset(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginResetOptions) (*runtime.Poller[VirtualNetworkGatewaysClientResetResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.reset(ctx, resourceGroupName, virtualNetworkGatewayName, options)
@@ -1011,7 +1037,8 @@ func (client *VirtualNetworkGatewaysClient) BeginReset(ctx context.Context, reso
 
 // Reset - Resets the primary of the virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) reset(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginResetOptions) (*http.Response, error) {
 	req, err := client.resetCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -1050,7 +1077,7 @@ func (client *VirtualNetworkGatewaysClient) resetCreateRequest(ctx context.Conte
 	if options != nil && options.GatewayVip != nil {
 		reqQP.Set("gatewayVip", *options.GatewayVip)
 	}
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1059,11 +1086,12 @@ func (client *VirtualNetworkGatewaysClient) resetCreateRequest(ctx context.Conte
 // BeginResetVPNClientSharedKey - Resets the VPN client shared key of the virtual network gateway in the specified resource
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientBeginResetVPNClientSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginResetVPNClientSharedKey
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientBeginResetVPNClientSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginResetVPNClientSharedKey
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginResetVPNClientSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginResetVPNClientSharedKeyOptions) (*runtime.Poller[VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.resetVPNClientSharedKey(ctx, resourceGroupName, virtualNetworkGatewayName, options)
@@ -1080,7 +1108,8 @@ func (client *VirtualNetworkGatewaysClient) BeginResetVPNClientSharedKey(ctx con
 
 // ResetVPNClientSharedKey - Resets the VPN client shared key of the virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) resetVPNClientSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginResetVPNClientSharedKeyOptions) (*http.Response, error) {
 	req, err := client.resetVPNClientSharedKeyCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -1116,7 +1145,7 @@ func (client *VirtualNetworkGatewaysClient) resetVPNClientSharedKeyCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1125,13 +1154,14 @@ func (client *VirtualNetworkGatewaysClient) resetVPNClientSharedKeyCreateRequest
 // BeginSetVpnclientIPSecParameters - The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client
 // of virtual network gateway in the specified resource group through Network resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// vpnclientIPSecParams - Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network Gateway P2S client
-// operation through Network resource provider.
-// options - VirtualNetworkGatewaysClientBeginSetVpnclientIPSecParametersOptions contains the optional parameters for the
-// VirtualNetworkGatewaysClient.BeginSetVpnclientIPSecParameters method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - vpnclientIPSecParams - Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network Gateway P2S client
+//     operation through Network resource provider.
+//   - options - VirtualNetworkGatewaysClientBeginSetVpnclientIPSecParametersOptions contains the optional parameters for the
+//     VirtualNetworkGatewaysClient.BeginSetVpnclientIPSecParameters method.
 func (client *VirtualNetworkGatewaysClient) BeginSetVpnclientIPSecParameters(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, vpnclientIPSecParams VPNClientIPsecParameters, options *VirtualNetworkGatewaysClientBeginSetVpnclientIPSecParametersOptions) (*runtime.Poller[VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.setVpnclientIPSecParameters(ctx, resourceGroupName, virtualNetworkGatewayName, vpnclientIPSecParams, options)
@@ -1149,7 +1179,8 @@ func (client *VirtualNetworkGatewaysClient) BeginSetVpnclientIPSecParameters(ctx
 // SetVpnclientIPSecParameters - The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client
 // of virtual network gateway in the specified resource group through Network resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) setVpnclientIPSecParameters(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, vpnclientIPSecParams VPNClientIPsecParameters, options *VirtualNetworkGatewaysClientBeginSetVpnclientIPSecParametersOptions) (*http.Response, error) {
 	req, err := client.setVpnclientIPSecParametersCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, vpnclientIPSecParams, options)
 	if err != nil {
@@ -1185,7 +1216,7 @@ func (client *VirtualNetworkGatewaysClient) setVpnclientIPSecParametersCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, vpnclientIPSecParams)
@@ -1193,11 +1224,12 @@ func (client *VirtualNetworkGatewaysClient) setVpnclientIPSecParametersCreateReq
 
 // BeginStartPacketCapture - Starts packet capture on virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginStartPacketCapture
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginStartPacketCapture
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions) (*runtime.Poller[VirtualNetworkGatewaysClientStartPacketCaptureResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.startPacketCapture(ctx, resourceGroupName, virtualNetworkGatewayName, options)
@@ -1214,7 +1246,8 @@ func (client *VirtualNetworkGatewaysClient) BeginStartPacketCapture(ctx context.
 
 // StartPacketCapture - Starts packet capture on virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) startPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions) (*http.Response, error) {
 	req, err := client.startPacketCaptureCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -1250,7 +1283,7 @@ func (client *VirtualNetworkGatewaysClient) startPacketCaptureCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -1261,12 +1294,13 @@ func (client *VirtualNetworkGatewaysClient) startPacketCaptureCreateRequest(ctx 
 
 // BeginStopPacketCapture - Stops packet capture on virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// parameters - Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
-// options - VirtualNetworkGatewaysClientBeginStopPacketCaptureOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginStopPacketCapture
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - parameters - Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
+//   - options - VirtualNetworkGatewaysClientBeginStopPacketCaptureOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginStopPacketCapture
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewaysClientBeginStopPacketCaptureOptions) (*runtime.Poller[VirtualNetworkGatewaysClientStopPacketCaptureResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stopPacketCapture(ctx, resourceGroupName, virtualNetworkGatewayName, parameters, options)
@@ -1283,7 +1317,8 @@ func (client *VirtualNetworkGatewaysClient) BeginStopPacketCapture(ctx context.C
 
 // StopPacketCapture - Stops packet capture on virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) stopPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewaysClientBeginStopPacketCaptureOptions) (*http.Response, error) {
 	req, err := client.stopPacketCaptureCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, parameters, options)
 	if err != nil {
@@ -1319,7 +1354,7 @@ func (client *VirtualNetworkGatewaysClient) stopPacketCaptureCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1327,11 +1362,12 @@ func (client *VirtualNetworkGatewaysClient) stopPacketCaptureCreateRequest(ctx c
 
 // SupportedVPNDevices - Gets a xml format representation for supported vpn devices.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// options - VirtualNetworkGatewaysClientSupportedVPNDevicesOptions contains the optional parameters for the VirtualNetworkGatewaysClient.SupportedVPNDevices
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - options - VirtualNetworkGatewaysClientSupportedVPNDevicesOptions contains the optional parameters for the VirtualNetworkGatewaysClient.SupportedVPNDevices
+//     method.
 func (client *VirtualNetworkGatewaysClient) SupportedVPNDevices(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientSupportedVPNDevicesOptions) (VirtualNetworkGatewaysClientSupportedVPNDevicesResponse, error) {
 	req, err := client.supportedVPNDevicesCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 	if err != nil {
@@ -1367,7 +1403,7 @@ func (client *VirtualNetworkGatewaysClient) supportedVPNDevicesCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1384,12 +1420,13 @@ func (client *VirtualNetworkGatewaysClient) supportedVPNDevicesHandleResponse(re
 
 // BeginUpdateTags - Updates a virtual network gateway tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayName - The name of the virtual network gateway.
-// parameters - Parameters supplied to update virtual network gateway tags.
-// options - VirtualNetworkGatewaysClientBeginUpdateTagsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginUpdateTags
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayName - The name of the virtual network gateway.
+//   - parameters - Parameters supplied to update virtual network gateway tags.
+//   - options - VirtualNetworkGatewaysClientBeginUpdateTagsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginUpdateTags
+//     method.
 func (client *VirtualNetworkGatewaysClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters TagsObject, options *VirtualNetworkGatewaysClientBeginUpdateTagsOptions) (*runtime.Poller[VirtualNetworkGatewaysClientUpdateTagsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateTags(ctx, resourceGroupName, virtualNetworkGatewayName, parameters, options)
@@ -1406,7 +1443,8 @@ func (client *VirtualNetworkGatewaysClient) BeginUpdateTags(ctx context.Context,
 
 // UpdateTags - Updates a virtual network gateway tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkGatewaysClient) updateTags(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters TagsObject, options *VirtualNetworkGatewaysClientBeginUpdateTagsOptions) (*http.Response, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, parameters, options)
 	if err != nil {
@@ -1442,7 +1480,7 @@ func (client *VirtualNetworkGatewaysClient) updateTagsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1450,13 +1488,14 @@ func (client *VirtualNetworkGatewaysClient) updateTagsCreateRequest(ctx context.
 
 // VPNDeviceConfigurationScript - Gets a xml format representation for vpn device configuration script.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkGatewayConnectionName - The name of the virtual network gateway connection for which the configuration script
-// is generated.
-// parameters - Parameters supplied to the generate vpn device script operation.
-// options - VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptOptions contains the optional parameters for the VirtualNetworkGatewaysClient.VPNDeviceConfigurationScript
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkGatewayConnectionName - The name of the virtual network gateway connection for which the configuration script
+//     is generated.
+//   - parameters - Parameters supplied to the generate vpn device script operation.
+//   - options - VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptOptions contains the optional parameters for the VirtualNetworkGatewaysClient.VPNDeviceConfigurationScript
+//     method.
 func (client *VirtualNetworkGatewaysClient) VPNDeviceConfigurationScript(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VPNDeviceScriptParameters, options *VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptOptions) (VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptResponse, error) {
 	req, err := client.vpnDeviceConfigurationScriptCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
@@ -1492,7 +1531,7 @@ func (client *VirtualNetworkGatewaysClient) vpnDeviceConfigurationScriptCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

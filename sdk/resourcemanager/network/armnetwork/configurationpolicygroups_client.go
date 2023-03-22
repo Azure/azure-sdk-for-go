@@ -32,10 +32,10 @@ type ConfigurationPolicyGroupsClient struct {
 }
 
 // NewConfigurationPolicyGroupsClient creates a new instance of ConfigurationPolicyGroupsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewConfigurationPolicyGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationPolicyGroupsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewConfigurationPolicyGroupsClient(subscriptionID string, credential azcore
 
 // BeginCreateOrUpdate - Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the ConfigurationPolicyGroup.
-// vpnServerConfigurationName - The name of the VpnServerConfiguration.
-// configurationPolicyGroupName - The name of the ConfigurationPolicyGroup.
-// vpnServerConfigurationPolicyGroupParameters - Parameters supplied to create or update a VpnServerConfiguration PolicyGroup.
-// options - ConfigurationPolicyGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the ConfigurationPolicyGroup.
+//   - vpnServerConfigurationName - The name of the VpnServerConfiguration.
+//   - configurationPolicyGroupName - The name of the ConfigurationPolicyGroup.
+//   - vpnServerConfigurationPolicyGroupParameters - Parameters supplied to create or update a VpnServerConfiguration PolicyGroup.
+//   - options - ConfigurationPolicyGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.BeginCreateOrUpdate
+//     method.
 func (client *ConfigurationPolicyGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, vpnServerConfigurationPolicyGroupParameters VPNServerConfigurationPolicyGroup, options *ConfigurationPolicyGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ConfigurationPolicyGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName, vpnServerConfigurationPolicyGroupParameters, options)
@@ -81,7 +82,8 @@ func (client *ConfigurationPolicyGroupsClient) BeginCreateOrUpdate(ctx context.C
 
 // CreateOrUpdate - Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *ConfigurationPolicyGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, vpnServerConfigurationPolicyGroupParameters VPNServerConfigurationPolicyGroup, options *ConfigurationPolicyGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName, vpnServerConfigurationPolicyGroupParameters, options)
 	if err != nil {
@@ -121,7 +123,7 @@ func (client *ConfigurationPolicyGroupsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, vpnServerConfigurationPolicyGroupParameters)
@@ -129,12 +131,13 @@ func (client *ConfigurationPolicyGroupsClient) createOrUpdateCreateRequest(ctx c
 
 // BeginDelete - Deletes a ConfigurationPolicyGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the ConfigurationPolicyGroup.
-// vpnServerConfigurationName - The name of the VpnServerConfiguration.
-// configurationPolicyGroupName - The name of the ConfigurationPolicyGroup.
-// options - ConfigurationPolicyGroupsClientBeginDeleteOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the ConfigurationPolicyGroup.
+//   - vpnServerConfigurationName - The name of the VpnServerConfiguration.
+//   - configurationPolicyGroupName - The name of the ConfigurationPolicyGroup.
+//   - options - ConfigurationPolicyGroupsClientBeginDeleteOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.BeginDelete
+//     method.
 func (client *ConfigurationPolicyGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, options *ConfigurationPolicyGroupsClientBeginDeleteOptions) (*runtime.Poller[ConfigurationPolicyGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName, options)
@@ -151,7 +154,8 @@ func (client *ConfigurationPolicyGroupsClient) BeginDelete(ctx context.Context, 
 
 // Delete - Deletes a ConfigurationPolicyGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *ConfigurationPolicyGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, options *ConfigurationPolicyGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName, options)
 	if err != nil {
@@ -191,7 +195,7 @@ func (client *ConfigurationPolicyGroupsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,12 +203,13 @@ func (client *ConfigurationPolicyGroupsClient) deleteCreateRequest(ctx context.C
 
 // Get - Retrieves the details of a ConfigurationPolicyGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VpnServerConfiguration.
-// vpnServerConfigurationName - The name of the VpnServerConfiguration.
-// configurationPolicyGroupName - The name of the ConfigurationPolicyGroup being retrieved.
-// options - ConfigurationPolicyGroupsClientGetOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VpnServerConfiguration.
+//   - vpnServerConfigurationName - The name of the VpnServerConfiguration.
+//   - configurationPolicyGroupName - The name of the ConfigurationPolicyGroup being retrieved.
+//   - options - ConfigurationPolicyGroupsClientGetOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.Get
+//     method.
 func (client *ConfigurationPolicyGroupsClient) Get(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, options *ConfigurationPolicyGroupsClientGetOptions) (ConfigurationPolicyGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName, options)
 	if err != nil {
@@ -244,7 +249,7 @@ func (client *ConfigurationPolicyGroupsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,11 +265,12 @@ func (client *ConfigurationPolicyGroupsClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListByVPNServerConfigurationPager - Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VpnServerConfiguration.
-// vpnServerConfigurationName - The name of the VpnServerConfiguration.
-// options - ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.ListByVPNServerConfiguration
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VpnServerConfiguration.
+//   - vpnServerConfigurationName - The name of the VpnServerConfiguration.
+//   - options - ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.NewListByVPNServerConfigurationPager
+//     method.
 func (client *ConfigurationPolicyGroupsClient) NewListByVPNServerConfigurationPager(resourceGroupName string, vpnServerConfigurationName string, options *ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions) *runtime.Pager[ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse]{
 		More: func(page ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse) bool {
@@ -313,7 +319,7 @@ func (client *ConfigurationPolicyGroupsClient) listByVPNServerConfigurationCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

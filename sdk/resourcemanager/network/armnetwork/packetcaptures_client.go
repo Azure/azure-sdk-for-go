@@ -32,10 +32,10 @@ type PacketCapturesClient struct {
 }
 
 // NewPacketCapturesClient creates a new instance of PacketCapturesClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPacketCapturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PacketCapturesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewPacketCapturesClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreate - Create and start a packet capture on the specified VM.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkWatcherName - The name of the network watcher.
-// packetCaptureName - The name of the packet capture session.
-// parameters - Parameters that define the create packet capture operation.
-// options - PacketCapturesClientBeginCreateOptions contains the optional parameters for the PacketCapturesClient.BeginCreate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkWatcherName - The name of the network watcher.
+//   - packetCaptureName - The name of the packet capture session.
+//   - parameters - Parameters that define the create packet capture operation.
+//   - options - PacketCapturesClientBeginCreateOptions contains the optional parameters for the PacketCapturesClient.BeginCreate
+//     method.
 func (client *PacketCapturesClient) BeginCreate(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture, options *PacketCapturesClientBeginCreateOptions) (*runtime.Poller[PacketCapturesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, networkWatcherName, packetCaptureName, parameters, options)
@@ -81,7 +82,8 @@ func (client *PacketCapturesClient) BeginCreate(ctx context.Context, resourceGro
 
 // Create - Create and start a packet capture on the specified VM.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *PacketCapturesClient) create(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture, options *PacketCapturesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, parameters, options)
 	if err != nil {
@@ -121,7 +123,7 @@ func (client *PacketCapturesClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -129,12 +131,13 @@ func (client *PacketCapturesClient) createCreateRequest(ctx context.Context, res
 
 // BeginDelete - Deletes the specified packet capture session.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkWatcherName - The name of the network watcher.
-// packetCaptureName - The name of the packet capture session.
-// options - PacketCapturesClientBeginDeleteOptions contains the optional parameters for the PacketCapturesClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkWatcherName - The name of the network watcher.
+//   - packetCaptureName - The name of the packet capture session.
+//   - options - PacketCapturesClientBeginDeleteOptions contains the optional parameters for the PacketCapturesClient.BeginDelete
+//     method.
 func (client *PacketCapturesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginDeleteOptions) (*runtime.Poller[PacketCapturesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
@@ -151,7 +154,8 @@ func (client *PacketCapturesClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Deletes the specified packet capture session.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *PacketCapturesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
@@ -191,7 +195,7 @@ func (client *PacketCapturesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,11 +203,12 @@ func (client *PacketCapturesClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets a packet capture session by name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkWatcherName - The name of the network watcher.
-// packetCaptureName - The name of the packet capture session.
-// options - PacketCapturesClientGetOptions contains the optional parameters for the PacketCapturesClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkWatcherName - The name of the network watcher.
+//   - packetCaptureName - The name of the packet capture session.
+//   - options - PacketCapturesClientGetOptions contains the optional parameters for the PacketCapturesClient.Get method.
 func (client *PacketCapturesClient) Get(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientGetOptions) (PacketCapturesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
@@ -243,7 +248,7 @@ func (client *PacketCapturesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,12 +265,13 @@ func (client *PacketCapturesClient) getHandleResponse(resp *http.Response) (Pack
 
 // BeginGetStatus - Query the status of a running packet capture session.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkWatcherName - The name of the Network Watcher resource.
-// packetCaptureName - The name given to the packet capture session.
-// options - PacketCapturesClientBeginGetStatusOptions contains the optional parameters for the PacketCapturesClient.BeginGetStatus
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkWatcherName - The name of the Network Watcher resource.
+//   - packetCaptureName - The name given to the packet capture session.
+//   - options - PacketCapturesClientBeginGetStatusOptions contains the optional parameters for the PacketCapturesClient.BeginGetStatus
+//     method.
 func (client *PacketCapturesClient) BeginGetStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginGetStatusOptions) (*runtime.Poller[PacketCapturesClientGetStatusResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getStatus(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
@@ -282,7 +288,8 @@ func (client *PacketCapturesClient) BeginGetStatus(ctx context.Context, resource
 
 // GetStatus - Query the status of a running packet capture session.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *PacketCapturesClient) getStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginGetStatusOptions) (*http.Response, error) {
 	req, err := client.getStatusCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
@@ -322,17 +329,18 @@ func (client *PacketCapturesClient) getStatusCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListPager - Lists all packet capture sessions within the specified resource group.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkWatcherName - The name of the Network Watcher resource.
-// options - PacketCapturesClientListOptions contains the optional parameters for the PacketCapturesClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkWatcherName - The name of the Network Watcher resource.
+//   - options - PacketCapturesClientListOptions contains the optional parameters for the PacketCapturesClient.NewListPager method.
 func (client *PacketCapturesClient) NewListPager(resourceGroupName string, networkWatcherName string, options *PacketCapturesClientListOptions) *runtime.Pager[PacketCapturesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PacketCapturesClientListResponse]{
 		More: func(page PacketCapturesClientListResponse) bool {
@@ -375,7 +383,7 @@ func (client *PacketCapturesClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -392,12 +400,13 @@ func (client *PacketCapturesClient) listHandleResponse(resp *http.Response) (Pac
 
 // BeginStop - Stops a specified packet capture session.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkWatcherName - The name of the network watcher.
-// packetCaptureName - The name of the packet capture session.
-// options - PacketCapturesClientBeginStopOptions contains the optional parameters for the PacketCapturesClient.BeginStop
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkWatcherName - The name of the network watcher.
+//   - packetCaptureName - The name of the packet capture session.
+//   - options - PacketCapturesClientBeginStopOptions contains the optional parameters for the PacketCapturesClient.BeginStop
+//     method.
 func (client *PacketCapturesClient) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginStopOptions) (*runtime.Poller[PacketCapturesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
@@ -414,7 +423,8 @@ func (client *PacketCapturesClient) BeginStop(ctx context.Context, resourceGroup
 
 // Stop - Stops a specified packet capture session.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *PacketCapturesClient) stop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
@@ -454,7 +464,7 @@ func (client *PacketCapturesClient) stopCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

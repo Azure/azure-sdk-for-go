@@ -32,10 +32,10 @@ type InboundSecurityRuleClient struct {
 }
 
 // NewInboundSecurityRuleClient creates a new instance of InboundSecurityRuleClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewInboundSecurityRuleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InboundSecurityRuleClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewInboundSecurityRuleClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkVirtualApplianceName - The name of the Network Virtual Appliance.
-// ruleCollectionName - The name of security rule collection.
-// parameters - Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules operation.
-// options - InboundSecurityRuleClientBeginCreateOrUpdateOptions contains the optional parameters for the InboundSecurityRuleClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
+//   - ruleCollectionName - The name of security rule collection.
+//   - parameters - Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules operation.
+//   - options - InboundSecurityRuleClientBeginCreateOrUpdateOptions contains the optional parameters for the InboundSecurityRuleClient.BeginCreateOrUpdate
+//     method.
 func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleClientBeginCreateOrUpdateOptions) (*runtime.Poller[InboundSecurityRuleClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters, options)
@@ -81,7 +82,8 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 
 // CreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *InboundSecurityRuleClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters, options)
 	if err != nil {
@@ -121,7 +123,7 @@ func (client *InboundSecurityRuleClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

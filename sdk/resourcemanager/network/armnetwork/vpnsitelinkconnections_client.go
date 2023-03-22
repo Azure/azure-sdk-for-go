@@ -32,10 +32,10 @@ type VPNSiteLinkConnectionsClient struct {
 }
 
 // NewVPNSiteLinkConnectionsClient creates a new instance of VPNSiteLinkConnectionsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVPNSiteLinkConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VPNSiteLinkConnectionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewVPNSiteLinkConnectionsClient(subscriptionID string, credential azcore.To
 
 // Get - Retrieves the details of a vpn site link connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VpnGateway.
-// gatewayName - The name of the gateway.
-// connectionName - The name of the vpn connection.
-// linkConnectionName - The name of the vpn connection.
-// options - VPNSiteLinkConnectionsClientGetOptions contains the optional parameters for the VPNSiteLinkConnectionsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VpnGateway.
+//   - gatewayName - The name of the gateway.
+//   - connectionName - The name of the vpn connection.
+//   - linkConnectionName - The name of the vpn connection.
+//   - options - VPNSiteLinkConnectionsClientGetOptions contains the optional parameters for the VPNSiteLinkConnectionsClient.Get
+//     method.
 func (client *VPNSiteLinkConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNSiteLinkConnectionsClientGetOptions) (VPNSiteLinkConnectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
 	if err != nil {
@@ -108,7 +109,7 @@ func (client *VPNSiteLinkConnectionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -32,10 +32,10 @@ type ExpressRouteCircuitConnectionsClient struct {
 }
 
 // NewExpressRouteCircuitConnectionsClient creates a new instance of ExpressRouteCircuitConnectionsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewExpressRouteCircuitConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRouteCircuitConnectionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,15 +58,16 @@ func NewExpressRouteCircuitConnectionsClient(subscriptionID string, credential a
 
 // BeginCreateOrUpdate - Creates or updates a Express Route Circuit Connection in the specified express route circuits.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// circuitName - The name of the express route circuit.
-// peeringName - The name of the peering.
-// connectionName - The name of the express route circuit connection.
-// expressRouteCircuitConnectionParameters - Parameters supplied to the create or update express route circuit connection
-// operation.
-// options - ExpressRouteCircuitConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - circuitName - The name of the express route circuit.
+//   - peeringName - The name of the peering.
+//   - connectionName - The name of the express route circuit connection.
+//   - expressRouteCircuitConnectionParameters - Parameters supplied to the create or update express route circuit connection
+//     operation.
+//   - options - ExpressRouteCircuitConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.BeginCreateOrUpdate
+//     method.
 func (client *ExpressRouteCircuitConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, expressRouteCircuitConnectionParameters ExpressRouteCircuitConnection, options *ExpressRouteCircuitConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExpressRouteCircuitConnectionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters, options)
@@ -83,7 +84,8 @@ func (client *ExpressRouteCircuitConnectionsClient) BeginCreateOrUpdate(ctx cont
 
 // CreateOrUpdate - Creates or updates a Express Route Circuit Connection in the specified express route circuits.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *ExpressRouteCircuitConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, expressRouteCircuitConnectionParameters ExpressRouteCircuitConnection, options *ExpressRouteCircuitConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters, options)
 	if err != nil {
@@ -127,7 +129,7 @@ func (client *ExpressRouteCircuitConnectionsClient) createOrUpdateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, expressRouteCircuitConnectionParameters)
@@ -135,13 +137,14 @@ func (client *ExpressRouteCircuitConnectionsClient) createOrUpdateCreateRequest(
 
 // BeginDelete - Deletes the specified Express Route Circuit Connection from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// circuitName - The name of the express route circuit.
-// peeringName - The name of the peering.
-// connectionName - The name of the express route circuit connection.
-// options - ExpressRouteCircuitConnectionsClientBeginDeleteOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - circuitName - The name of the express route circuit.
+//   - peeringName - The name of the peering.
+//   - connectionName - The name of the express route circuit connection.
+//   - options - ExpressRouteCircuitConnectionsClientBeginDeleteOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.BeginDelete
+//     method.
 func (client *ExpressRouteCircuitConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *ExpressRouteCircuitConnectionsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteCircuitConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, circuitName, peeringName, connectionName, options)
@@ -158,7 +161,8 @@ func (client *ExpressRouteCircuitConnectionsClient) BeginDelete(ctx context.Cont
 
 // Delete - Deletes the specified Express Route Circuit Connection from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *ExpressRouteCircuitConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *ExpressRouteCircuitConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName, options)
 	if err != nil {
@@ -202,7 +206,7 @@ func (client *ExpressRouteCircuitConnectionsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,13 +214,14 @@ func (client *ExpressRouteCircuitConnectionsClient) deleteCreateRequest(ctx cont
 
 // Get - Gets the specified Express Route Circuit Connection from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// circuitName - The name of the express route circuit.
-// peeringName - The name of the peering.
-// connectionName - The name of the express route circuit connection.
-// options - ExpressRouteCircuitConnectionsClientGetOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - circuitName - The name of the express route circuit.
+//   - peeringName - The name of the peering.
+//   - connectionName - The name of the express route circuit connection.
+//   - options - ExpressRouteCircuitConnectionsClientGetOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.Get
+//     method.
 func (client *ExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *ExpressRouteCircuitConnectionsClientGetOptions) (ExpressRouteCircuitConnectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName, options)
 	if err != nil {
@@ -260,7 +265,7 @@ func (client *ExpressRouteCircuitConnectionsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,12 +281,13 @@ func (client *ExpressRouteCircuitConnectionsClient) getHandleResponse(resp *http
 }
 
 // NewListPager - Gets all global reach connections associated with a private peering in an express route circuit.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// circuitName - The name of the circuit.
-// peeringName - The name of the peering.
-// options - ExpressRouteCircuitConnectionsClientListOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - circuitName - The name of the circuit.
+//   - peeringName - The name of the peering.
+//   - options - ExpressRouteCircuitConnectionsClientListOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.NewListPager
+//     method.
 func (client *ExpressRouteCircuitConnectionsClient) NewListPager(resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitConnectionsClientListOptions) *runtime.Pager[ExpressRouteCircuitConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteCircuitConnectionsClientListResponse]{
 		More: func(page ExpressRouteCircuitConnectionsClientListResponse) bool {
@@ -334,7 +340,7 @@ func (client *ExpressRouteCircuitConnectionsClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

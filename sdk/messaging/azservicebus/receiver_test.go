@@ -6,14 +6,17 @@ package azservicebus
 import (
 	"context"
 	"fmt"
+	"os"
 	"sort"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
@@ -765,6 +768,107 @@ func TestReceiverMessageLockExpires(t *testing.T) {
 	var asSBError *Error
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
+}
+
+func TestReceiverUnauthorizedCreds(t *testing.T) {
+	allPowerfulCS := test.GetConnectionString(t)
+	queueName := "testqueue"
+
+	t.Run("ListenOnly with Sender", func(t *testing.T) {
+		cs := test.GetConnectionStringListenOnly(t)
+
+		client, err := NewClientFromConnectionString(cs, nil)
+		require.NoError(t, err)
+
+		defer test.RequireClose(t, client)
+
+		sender, err := client.NewSender(queueName, nil)
+		require.NoError(t, err)
+
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte("hello world"),
+		}, nil)
+
+		var sbErr *Error
+		require.ErrorAs(t, err, &sbErr)
+		require.Equal(t, CodeUnauthorizedAccess, sbErr.Code)
+		require.Contains(t, err.Error(), "Description: Unauthorized access. 'Send' claim(s) are required to perform this operation")
+	})
+
+	t.Run("SenderOnly with Receiver", func(t *testing.T) {
+		cs := test.GetConnectionStringSendOnly(t)
+
+		client, err := NewClientFromConnectionString(cs, nil)
+		require.NoError(t, err)
+
+		defer test.RequireClose(t, client)
+
+		receiver, err := client.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+
+		messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.Empty(t, messages)
+
+		var sbErr *Error
+		require.ErrorAs(t, err, &sbErr)
+		require.Equal(t, CodeUnauthorizedAccess, sbErr.Code)
+		require.Contains(t, err.Error(), "Description: Unauthorized access. 'Listen' claim(s) are required to perform this operation")
+	})
+
+	t.Run("Expired SAS", func(t *testing.T) {
+		expiredCS, err := sas.CreateConnectionStringWithSASUsingExpiry(allPowerfulCS, time.Now().Add(-10*time.Minute))
+		require.NoError(t, err)
+
+		client, err := NewClientFromConnectionString(expiredCS, nil)
+		require.NoError(t, err)
+
+		defer test.RequireClose(t, client)
+
+		sender, err := client.NewSender(queueName, nil)
+		require.NoError(t, err)
+
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte("hello world"),
+		}, nil)
+
+		var sbErr *Error
+		require.ErrorAs(t, err, &sbErr)
+		require.Equal(t, CodeUnauthorizedAccess, sbErr.Code)
+		require.Contains(t, err.Error(), "rpc: failed, status code 401 and description: ExpiredToken: The token is expired. Expiration time:")
+
+		receiver, err := client.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+
+		messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.Empty(t, messages)
+
+		sbErr = nil
+		require.ErrorAs(t, err, &sbErr)
+		require.Equal(t, CodeUnauthorizedAccess, sbErr.Code)
+		require.Contains(t, err.Error(), "rpc: failed, status code 401 and description: ExpiredToken: The token is expired. Expiration time:")
+	})
+
+	t.Run("invalid identity creds", func(t *testing.T) {
+		tenantID := os.Getenv("AZURE_TENANT_ID")
+		clientID := os.Getenv("AZURE_CLIENT_ID")
+		endpoint := os.Getenv("SERVICEBUS_ENDPOINT")
+
+		cliCred, err := azidentity.NewClientSecretCredential(tenantID, clientID, "bogus-client-secret", nil)
+		require.NoError(t, err)
+
+		client, err := NewClient(endpoint, cliCred, nil)
+		require.NoError(t, err)
+
+		defer test.RequireClose(t, client)
+
+		receiver, err := client.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+
+		messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		var authFailedErr *azidentity.AuthenticationFailedError
+		require.ErrorAs(t, err, &authFailedErr)
+		require.Empty(t, messages)
+	})
 }
 
 type receivedMessageSlice []*ReceivedMessage

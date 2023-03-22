@@ -32,10 +32,10 @@ type SubnetsClient struct {
 }
 
 // NewSubnetsClient creates a new instance of SubnetsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSubnetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubnetsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewSubnetsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginCreateOrUpdate - Creates or updates a subnet in the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// subnetName - The name of the subnet.
-// subnetParameters - Parameters supplied to the create or update subnet operation.
-// options - SubnetsClientBeginCreateOrUpdateOptions contains the optional parameters for the SubnetsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - subnetName - The name of the subnet.
+//   - subnetParameters - Parameters supplied to the create or update subnet operation.
+//   - options - SubnetsClientBeginCreateOrUpdateOptions contains the optional parameters for the SubnetsClient.BeginCreateOrUpdate
+//     method.
 func (client *SubnetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet, options *SubnetsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SubnetsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualNetworkName, subnetName, subnetParameters, options)
@@ -81,7 +82,8 @@ func (client *SubnetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 
 // CreateOrUpdate - Creates or updates a subnet in the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *SubnetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet, options *SubnetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, subnetParameters, options)
 	if err != nil {
@@ -121,7 +123,7 @@ func (client *SubnetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, subnetParameters)
@@ -129,11 +131,12 @@ func (client *SubnetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // BeginDelete - Deletes the specified subnet.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// subnetName - The name of the subnet.
-// options - SubnetsClientBeginDeleteOptions contains the optional parameters for the SubnetsClient.BeginDelete method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - subnetName - The name of the subnet.
+//   - options - SubnetsClientBeginDeleteOptions contains the optional parameters for the SubnetsClient.BeginDelete method.
 func (client *SubnetsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetsClientBeginDeleteOptions) (*runtime.Poller[SubnetsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
@@ -150,7 +153,8 @@ func (client *SubnetsClient) BeginDelete(ctx context.Context, resourceGroupName 
 
 // Delete - Deletes the specified subnet.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *SubnetsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 	if err != nil {
@@ -190,7 +194,7 @@ func (client *SubnetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,11 +202,12 @@ func (client *SubnetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // Get - Gets the specified subnet by virtual network and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// subnetName - The name of the subnet.
-// options - SubnetsClientGetOptions contains the optional parameters for the SubnetsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - subnetName - The name of the subnet.
+//   - options - SubnetsClientGetOptions contains the optional parameters for the SubnetsClient.Get method.
 func (client *SubnetsClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetsClientGetOptions) (SubnetsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 	if err != nil {
@@ -242,7 +247,7 @@ func (client *SubnetsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -261,10 +266,11 @@ func (client *SubnetsClient) getHandleResponse(resp *http.Response) (SubnetsClie
 }
 
 // NewListPager - Gets all subnets in a virtual network.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// options - SubnetsClientListOptions contains the optional parameters for the SubnetsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - options - SubnetsClientListOptions contains the optional parameters for the SubnetsClient.NewListPager method.
 func (client *SubnetsClient) NewListPager(resourceGroupName string, virtualNetworkName string, options *SubnetsClientListOptions) *runtime.Pager[SubnetsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SubnetsClientListResponse]{
 		More: func(page SubnetsClientListResponse) bool {
@@ -313,7 +319,7 @@ func (client *SubnetsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,13 +336,14 @@ func (client *SubnetsClient) listHandleResponse(resp *http.Response) (SubnetsCli
 
 // BeginPrepareNetworkPolicies - Prepares a subnet by applying network intent policies.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// subnetName - The name of the subnet.
-// prepareNetworkPoliciesRequestParameters - Parameters supplied to prepare subnet by applying network intent policies.
-// options - SubnetsClientBeginPrepareNetworkPoliciesOptions contains the optional parameters for the SubnetsClient.BeginPrepareNetworkPolicies
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - subnetName - The name of the subnet.
+//   - prepareNetworkPoliciesRequestParameters - Parameters supplied to prepare subnet by applying network intent policies.
+//   - options - SubnetsClientBeginPrepareNetworkPoliciesOptions contains the optional parameters for the SubnetsClient.BeginPrepareNetworkPolicies
+//     method.
 func (client *SubnetsClient) BeginPrepareNetworkPolicies(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, prepareNetworkPoliciesRequestParameters PrepareNetworkPoliciesRequest, options *SubnetsClientBeginPrepareNetworkPoliciesOptions) (*runtime.Poller[SubnetsClientPrepareNetworkPoliciesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.prepareNetworkPolicies(ctx, resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, options)
@@ -353,7 +360,8 @@ func (client *SubnetsClient) BeginPrepareNetworkPolicies(ctx context.Context, re
 
 // PrepareNetworkPolicies - Prepares a subnet by applying network intent policies.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *SubnetsClient) prepareNetworkPolicies(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, prepareNetworkPoliciesRequestParameters PrepareNetworkPoliciesRequest, options *SubnetsClientBeginPrepareNetworkPoliciesOptions) (*http.Response, error) {
 	req, err := client.prepareNetworkPoliciesCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, options)
 	if err != nil {
@@ -393,7 +401,7 @@ func (client *SubnetsClient) prepareNetworkPoliciesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, prepareNetworkPoliciesRequestParameters)
@@ -401,13 +409,14 @@ func (client *SubnetsClient) prepareNetworkPoliciesCreateRequest(ctx context.Con
 
 // BeginUnprepareNetworkPolicies - Unprepares a subnet by removing network intent policies.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// subnetName - The name of the subnet.
-// unprepareNetworkPoliciesRequestParameters - Parameters supplied to unprepare subnet to remove network intent policies.
-// options - SubnetsClientBeginUnprepareNetworkPoliciesOptions contains the optional parameters for the SubnetsClient.BeginUnprepareNetworkPolicies
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - subnetName - The name of the subnet.
+//   - unprepareNetworkPoliciesRequestParameters - Parameters supplied to unprepare subnet to remove network intent policies.
+//   - options - SubnetsClientBeginUnprepareNetworkPoliciesOptions contains the optional parameters for the SubnetsClient.BeginUnprepareNetworkPolicies
+//     method.
 func (client *SubnetsClient) BeginUnprepareNetworkPolicies(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, unprepareNetworkPoliciesRequestParameters UnprepareNetworkPoliciesRequest, options *SubnetsClientBeginUnprepareNetworkPoliciesOptions) (*runtime.Poller[SubnetsClientUnprepareNetworkPoliciesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.unprepareNetworkPolicies(ctx, resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, options)
@@ -424,7 +433,8 @@ func (client *SubnetsClient) BeginUnprepareNetworkPolicies(ctx context.Context, 
 
 // UnprepareNetworkPolicies - Unprepares a subnet by removing network intent policies.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *SubnetsClient) unprepareNetworkPolicies(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, unprepareNetworkPoliciesRequestParameters UnprepareNetworkPoliciesRequest, options *SubnetsClientBeginUnprepareNetworkPoliciesOptions) (*http.Response, error) {
 	req, err := client.unprepareNetworkPoliciesCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, options)
 	if err != nil {
@@ -464,7 +474,7 @@ func (client *SubnetsClient) unprepareNetworkPoliciesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, unprepareNetworkPoliciesRequestParameters)

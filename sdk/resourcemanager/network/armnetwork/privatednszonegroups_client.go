@@ -32,10 +32,10 @@ type PrivateDNSZoneGroupsClient struct {
 }
 
 // NewPrivateDNSZoneGroupsClient creates a new instance of PrivateDNSZoneGroupsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPrivateDNSZoneGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateDNSZoneGroupsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewPrivateDNSZoneGroupsClient(subscriptionID string, credential azcore.Toke
 
 // BeginCreateOrUpdate - Creates or updates a private dns zone group in the specified private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// privateEndpointName - The name of the private endpoint.
-// privateDNSZoneGroupName - The name of the private dns zone group.
-// parameters - Parameters supplied to the create or update private dns zone group operation.
-// options - PrivateDNSZoneGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - privateEndpointName - The name of the private endpoint.
+//   - privateDNSZoneGroupName - The name of the private dns zone group.
+//   - parameters - Parameters supplied to the create or update private dns zone group operation.
+//   - options - PrivateDNSZoneGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.BeginCreateOrUpdate
+//     method.
 func (client *PrivateDNSZoneGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDNSZoneGroupName string, parameters PrivateDNSZoneGroup, options *PrivateDNSZoneGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateDNSZoneGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, privateEndpointName, privateDNSZoneGroupName, parameters, options)
@@ -81,7 +82,8 @@ func (client *PrivateDNSZoneGroupsClient) BeginCreateOrUpdate(ctx context.Contex
 
 // CreateOrUpdate - Creates or updates a private dns zone group in the specified private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *PrivateDNSZoneGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDNSZoneGroupName string, parameters PrivateDNSZoneGroup, options *PrivateDNSZoneGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateEndpointName, privateDNSZoneGroupName, parameters, options)
 	if err != nil {
@@ -121,7 +123,7 @@ func (client *PrivateDNSZoneGroupsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -129,12 +131,13 @@ func (client *PrivateDNSZoneGroupsClient) createOrUpdateCreateRequest(ctx contex
 
 // BeginDelete - Deletes the specified private dns zone group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// privateEndpointName - The name of the private endpoint.
-// privateDNSZoneGroupName - The name of the private dns zone group.
-// options - PrivateDNSZoneGroupsClientBeginDeleteOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - privateEndpointName - The name of the private endpoint.
+//   - privateDNSZoneGroupName - The name of the private dns zone group.
+//   - options - PrivateDNSZoneGroupsClientBeginDeleteOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.BeginDelete
+//     method.
 func (client *PrivateDNSZoneGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDNSZoneGroupName string, options *PrivateDNSZoneGroupsClientBeginDeleteOptions) (*runtime.Poller[PrivateDNSZoneGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, privateEndpointName, privateDNSZoneGroupName, options)
@@ -151,7 +154,8 @@ func (client *PrivateDNSZoneGroupsClient) BeginDelete(ctx context.Context, resou
 
 // Delete - Deletes the specified private dns zone group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *PrivateDNSZoneGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDNSZoneGroupName string, options *PrivateDNSZoneGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateEndpointName, privateDNSZoneGroupName, options)
 	if err != nil {
@@ -191,7 +195,7 @@ func (client *PrivateDNSZoneGroupsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,12 +203,13 @@ func (client *PrivateDNSZoneGroupsClient) deleteCreateRequest(ctx context.Contex
 
 // Get - Gets the private dns zone group resource by specified private dns zone group name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// privateEndpointName - The name of the private endpoint.
-// privateDNSZoneGroupName - The name of the private dns zone group.
-// options - PrivateDNSZoneGroupsClientGetOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - privateEndpointName - The name of the private endpoint.
+//   - privateDNSZoneGroupName - The name of the private dns zone group.
+//   - options - PrivateDNSZoneGroupsClientGetOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.Get
+//     method.
 func (client *PrivateDNSZoneGroupsClient) Get(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDNSZoneGroupName string, options *PrivateDNSZoneGroupsClientGetOptions) (PrivateDNSZoneGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateEndpointName, privateDNSZoneGroupName, options)
 	if err != nil {
@@ -244,7 +249,7 @@ func (client *PrivateDNSZoneGroupsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,11 +265,12 @@ func (client *PrivateDNSZoneGroupsClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - Gets all private dns zone groups in a private endpoint.
-// Generated from API version 2022-07-01
-// privateEndpointName - The name of the private endpoint.
-// resourceGroupName - The name of the resource group.
-// options - PrivateDNSZoneGroupsClientListOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - privateEndpointName - The name of the private endpoint.
+//   - resourceGroupName - The name of the resource group.
+//   - options - PrivateDNSZoneGroupsClientListOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.NewListPager
+//     method.
 func (client *PrivateDNSZoneGroupsClient) NewListPager(privateEndpointName string, resourceGroupName string, options *PrivateDNSZoneGroupsClientListOptions) *runtime.Pager[PrivateDNSZoneGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateDNSZoneGroupsClientListResponse]{
 		More: func(page PrivateDNSZoneGroupsClientListResponse) bool {
@@ -313,7 +319,7 @@ func (client *PrivateDNSZoneGroupsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

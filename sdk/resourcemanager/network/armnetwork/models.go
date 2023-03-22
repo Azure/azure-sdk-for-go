@@ -360,7 +360,8 @@ type AdminRuleCollectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AdminRuleCollectionsClientListOptions contains the optional parameters for the AdminRuleCollectionsClient.List method.
+// AdminRuleCollectionsClientListOptions contains the optional parameters for the AdminRuleCollectionsClient.NewListPager
+// method.
 type AdminRuleCollectionsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
 	// the value of the nextLink element will include a skipToken parameter that
@@ -398,7 +399,7 @@ type AdminRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AdminRulesClientListOptions contains the optional parameters for the AdminRulesClient.List method.
+// AdminRulesClientListOptions contains the optional parameters for the AdminRulesClient.NewListPager method.
 type AdminRulesClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
 	// the value of the nextLink element will include a skipToken parameter that
@@ -742,12 +743,12 @@ type ApplicationGatewayConnectionDraining struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// ApplicationGatewayCustomError - Customer error of an application gateway.
+// ApplicationGatewayCustomError - Custom error of an application gateway.
 type ApplicationGatewayCustomError struct {
-	// Error page URL of the application gateway customer error.
+	// Error page URL of the application gateway custom error.
 	CustomErrorPageURL *string `json:"customErrorPageUrl,omitempty"`
 
-	// Status code of the application gateway customer error.
+	// Status code of the application gateway custom error.
 	StatusCode *ApplicationGatewayCustomErrorStatusCode `json:"statusCode,omitempty"`
 }
 
@@ -1267,7 +1268,7 @@ type ApplicationGatewayPrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationGatewayPrivateEndpointConnectionsClientListOptions contains the optional parameters for the ApplicationGatewayPrivateEndpointConnectionsClient.List
+// ApplicationGatewayPrivateEndpointConnectionsClientListOptions contains the optional parameters for the ApplicationGatewayPrivateEndpointConnectionsClient.NewListPager
 // method.
 type ApplicationGatewayPrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1376,7 +1377,7 @@ type ApplicationGatewayPrivateLinkResourceProperties struct {
 	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
 }
 
-// ApplicationGatewayPrivateLinkResourcesClientListOptions contains the optional parameters for the ApplicationGatewayPrivateLinkResourcesClient.List
+// ApplicationGatewayPrivateLinkResourcesClientListOptions contains the optional parameters for the ApplicationGatewayPrivateLinkResourcesClient.NewListPager
 // method.
 type ApplicationGatewayPrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2042,7 +2043,7 @@ type ApplicationGatewayWafDynamicManifestResultList struct {
 	Value []*ApplicationGatewayWafDynamicManifestResult `json:"value,omitempty"`
 }
 
-// ApplicationGatewayWafDynamicManifestsClientGetOptions contains the optional parameters for the ApplicationGatewayWafDynamicManifestsClient.Get
+// ApplicationGatewayWafDynamicManifestsClientGetOptions contains the optional parameters for the ApplicationGatewayWafDynamicManifestsClient.NewGetPager
 // method.
 type ApplicationGatewayWafDynamicManifestsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -2144,7 +2145,8 @@ type ApplicationGatewaysClientGetSSLPredefinedPolicyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationGatewaysClientListAllOptions contains the optional parameters for the ApplicationGatewaysClient.ListAll method.
+// ApplicationGatewaysClientListAllOptions contains the optional parameters for the ApplicationGatewaysClient.NewListAllPager
+// method.
 type ApplicationGatewaysClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2167,7 +2169,7 @@ type ApplicationGatewaysClientListAvailableSSLOptionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions contains the optional parameters for the ApplicationGatewaysClient.ListAvailableSSLPredefinedPolicies
+// ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions contains the optional parameters for the ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager
 // method.
 type ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions struct {
 	// placeholder for future optional parameters
@@ -2185,7 +2187,7 @@ type ApplicationGatewaysClientListAvailableWafRuleSetsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationGatewaysClientListOptions contains the optional parameters for the ApplicationGatewaysClient.List method.
+// ApplicationGatewaysClientListOptions contains the optional parameters for the ApplicationGatewaysClient.NewListPager method.
 type ApplicationGatewaysClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2308,13 +2310,13 @@ type ApplicationSecurityGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationSecurityGroupsClientListAllOptions contains the optional parameters for the ApplicationSecurityGroupsClient.ListAll
+// ApplicationSecurityGroupsClientListAllOptions contains the optional parameters for the ApplicationSecurityGroupsClient.NewListAllPager
 // method.
 type ApplicationSecurityGroupsClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationSecurityGroupsClientListOptions contains the optional parameters for the ApplicationSecurityGroupsClient.List
+// ApplicationSecurityGroupsClientListOptions contains the optional parameters for the ApplicationSecurityGroupsClient.NewListPager
 // method.
 type ApplicationSecurityGroupsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2394,7 +2396,8 @@ type AvailableDelegation struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// AvailableDelegationsClientListOptions contains the optional parameters for the AvailableDelegationsClient.List method.
+// AvailableDelegationsClientListOptions contains the optional parameters for the AvailableDelegationsClient.NewListPager
+// method.
 type AvailableDelegationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2408,7 +2411,7 @@ type AvailableDelegationsResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// AvailableEndpointServicesClientListOptions contains the optional parameters for the AvailableEndpointServicesClient.List
+// AvailableEndpointServicesClientListOptions contains the optional parameters for the AvailableEndpointServicesClient.NewListPager
 // method.
 type AvailableEndpointServicesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2432,13 +2435,13 @@ type AvailablePrivateEndpointType struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// AvailablePrivateEndpointTypesClientListByResourceGroupOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.ListByResourceGroup
+// AvailablePrivateEndpointTypesClientListByResourceGroupOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager
 // method.
 type AvailablePrivateEndpointTypesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AvailablePrivateEndpointTypesClientListOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.List
+// AvailablePrivateEndpointTypesClientListOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.NewListPager
 // method.
 type AvailablePrivateEndpointTypesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2507,7 +2510,7 @@ type AvailableProvidersListState struct {
 	StateName *string `json:"stateName,omitempty"`
 }
 
-// AvailableResourceGroupDelegationsClientListOptions contains the optional parameters for the AvailableResourceGroupDelegationsClient.List
+// AvailableResourceGroupDelegationsClientListOptions contains the optional parameters for the AvailableResourceGroupDelegationsClient.NewListPager
 // method.
 type AvailableResourceGroupDelegationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2528,13 +2531,14 @@ type AvailableServiceAlias struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// AvailableServiceAliasesClientListByResourceGroupOptions contains the optional parameters for the AvailableServiceAliasesClient.ListByResourceGroup
+// AvailableServiceAliasesClientListByResourceGroupOptions contains the optional parameters for the AvailableServiceAliasesClient.NewListByResourceGroupPager
 // method.
 type AvailableServiceAliasesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AvailableServiceAliasesClientListOptions contains the optional parameters for the AvailableServiceAliasesClient.List method.
+// AvailableServiceAliasesClientListOptions contains the optional parameters for the AvailableServiceAliasesClient.NewListPager
+// method.
 type AvailableServiceAliasesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2694,7 +2698,7 @@ type AzureFirewallFqdnTagPropertiesFormat struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// AzureFirewallFqdnTagsClientListAllOptions contains the optional parameters for the AzureFirewallFqdnTagsClient.ListAll
+// AzureFirewallFqdnTagsClientListAllOptions contains the optional parameters for the AzureFirewallFqdnTagsClient.NewListAllPager
 // method.
 type AzureFirewallFqdnTagsClientListAllOptions struct {
 	// placeholder for future optional parameters
@@ -2975,12 +2979,12 @@ type AzureFirewallsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureFirewallsClientListAllOptions contains the optional parameters for the AzureFirewallsClient.ListAll method.
+// AzureFirewallsClientListAllOptions contains the optional parameters for the AzureFirewallsClient.NewListAllPager method.
 type AzureFirewallsClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureFirewallsClientListOptions contains the optional parameters for the AzureFirewallsClient.List method.
+// AzureFirewallsClientListOptions contains the optional parameters for the AzureFirewallsClient.NewListPager method.
 type AzureFirewallsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3211,7 +3215,7 @@ type BastionActiveSession struct {
 	SessionID *string `json:"sessionId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the session started.
-	StartTime interface{} `json:"startTime,omitempty" azure:"ro"`
+	StartTime any `json:"startTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; The host name of the target.
 	TargetHostName *string `json:"targetHostName,omitempty" azure:"ro"`
@@ -3364,13 +3368,13 @@ type BastionHostsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BastionHostsClientListByResourceGroupOptions contains the optional parameters for the BastionHostsClient.ListByResourceGroup
+// BastionHostsClientListByResourceGroupOptions contains the optional parameters for the BastionHostsClient.NewListByResourceGroupPager
 // method.
 type BastionHostsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BastionHostsClientListOptions contains the optional parameters for the BastionHostsClient.List method.
+// BastionHostsClientListOptions contains the optional parameters for the BastionHostsClient.NewListPager method.
 type BastionHostsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3495,7 +3499,8 @@ type BgpPeerStatusListResult struct {
 	Value []*BgpPeerStatus `json:"value,omitempty"`
 }
 
-// BgpServiceCommunitiesClientListOptions contains the optional parameters for the BgpServiceCommunitiesClient.List method.
+// BgpServiceCommunitiesClientListOptions contains the optional parameters for the BgpServiceCommunitiesClient.NewListPager
+// method.
 type BgpServiceCommunitiesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3670,7 +3675,7 @@ type ConfigurationPolicyGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.ListByVPNServerConfiguration
+// ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.NewListByVPNServerConfigurationPager
 // method.
 type ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions struct {
 	// placeholder for future optional parameters
@@ -4027,7 +4032,7 @@ type ConnectionMonitorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectionMonitorsClientListOptions contains the optional parameters for the ConnectionMonitorsClient.List method.
+// ConnectionMonitorsClientListOptions contains the optional parameters for the ConnectionMonitorsClient.NewListPager method.
 type ConnectionMonitorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4163,7 +4168,7 @@ type ConnectivityConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectivityConfigurationsClientListOptions contains the optional parameters for the ConnectivityConfigurationsClient.List
+// ConnectivityConfigurationsClientListOptions contains the optional parameters for the ConnectivityConfigurationsClient.NewListPager
 // method.
 type ConnectivityConfigurationsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
@@ -4529,12 +4534,12 @@ type CustomIPPrefixesClientGetOptions struct {
 	Expand *string
 }
 
-// CustomIPPrefixesClientListAllOptions contains the optional parameters for the CustomIPPrefixesClient.ListAll method.
+// CustomIPPrefixesClientListAllOptions contains the optional parameters for the CustomIPPrefixesClient.NewListAllPager method.
 type CustomIPPrefixesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomIPPrefixesClientListOptions contains the optional parameters for the CustomIPPrefixesClient.List method.
+// CustomIPPrefixesClientListOptions contains the optional parameters for the CustomIPPrefixesClient.NewListPager method.
 type CustomIPPrefixesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4689,13 +4694,13 @@ type DdosProtectionPlansClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DdosProtectionPlansClientListByResourceGroupOptions contains the optional parameters for the DdosProtectionPlansClient.ListByResourceGroup
+// DdosProtectionPlansClientListByResourceGroupOptions contains the optional parameters for the DdosProtectionPlansClient.NewListByResourceGroupPager
 // method.
 type DdosProtectionPlansClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DdosProtectionPlansClientListOptions contains the optional parameters for the DdosProtectionPlansClient.List method.
+// DdosProtectionPlansClientListOptions contains the optional parameters for the DdosProtectionPlansClient.NewListPager method.
 type DdosProtectionPlansClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4802,7 +4807,8 @@ type DefaultSecurityRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DefaultSecurityRulesClientListOptions contains the optional parameters for the DefaultSecurityRulesClient.List method.
+// DefaultSecurityRulesClientListOptions contains the optional parameters for the DefaultSecurityRulesClient.NewListPager
+// method.
 type DefaultSecurityRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4908,12 +4914,13 @@ type DscpConfigurationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscpConfigurationClientListAllOptions contains the optional parameters for the DscpConfigurationClient.ListAll method.
+// DscpConfigurationClientListAllOptions contains the optional parameters for the DscpConfigurationClient.NewListAllPager
+// method.
 type DscpConfigurationClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscpConfigurationClientListOptions contains the optional parameters for the DscpConfigurationClient.List method.
+// DscpConfigurationClientListOptions contains the optional parameters for the DscpConfigurationClient.NewListPager method.
 type DscpConfigurationClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -5425,7 +5432,7 @@ type ExpressRouteCircuitAuthorizationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCircuitAuthorizationsClientListOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.List
+// ExpressRouteCircuitAuthorizationsClientListOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.NewListPager
 // method.
 type ExpressRouteCircuitAuthorizationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -5503,7 +5510,7 @@ type ExpressRouteCircuitConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCircuitConnectionsClientListOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.List
+// ExpressRouteCircuitConnectionsClientListOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.NewListPager
 // method.
 type ExpressRouteCircuitConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -5656,7 +5663,7 @@ type ExpressRouteCircuitPeeringsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCircuitPeeringsClientListOptions contains the optional parameters for the ExpressRouteCircuitPeeringsClient.List
+// ExpressRouteCircuitPeeringsClientListOptions contains the optional parameters for the ExpressRouteCircuitPeeringsClient.NewListPager
 // method.
 type ExpressRouteCircuitPeeringsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -5702,6 +5709,9 @@ type ExpressRouteCircuitPropertiesFormat struct {
 
 	// The ServiceProviderProvisioningState state of the resource.
 	ServiceProviderProvisioningState *ServiceProviderProvisioningState `json:"serviceProviderProvisioningState,omitempty"`
+
+	// READ-ONLY; The authorization status of the Circuit.
+	AuthorizationStatus *string `json:"authorizationStatus,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the express route circuit resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -5853,12 +5863,14 @@ type ExpressRouteCircuitsClientGetStatsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCircuitsClientListAllOptions contains the optional parameters for the ExpressRouteCircuitsClient.ListAll method.
+// ExpressRouteCircuitsClientListAllOptions contains the optional parameters for the ExpressRouteCircuitsClient.NewListAllPager
+// method.
 type ExpressRouteCircuitsClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCircuitsClientListOptions contains the optional parameters for the ExpressRouteCircuitsClient.List method.
+// ExpressRouteCircuitsClientListOptions contains the optional parameters for the ExpressRouteCircuitsClient.NewListPager
+// method.
 type ExpressRouteCircuitsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -6090,7 +6102,7 @@ type ExpressRouteCrossConnectionPeeringsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCrossConnectionPeeringsClientListOptions contains the optional parameters for the ExpressRouteCrossConnectionPeeringsClient.List
+// ExpressRouteCrossConnectionPeeringsClientListOptions contains the optional parameters for the ExpressRouteCrossConnectionPeeringsClient.NewListPager
 // method.
 type ExpressRouteCrossConnectionPeeringsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -6179,13 +6191,13 @@ type ExpressRouteCrossConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCrossConnectionsClientListByResourceGroupOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.ListByResourceGroup
+// ExpressRouteCrossConnectionsClientListByResourceGroupOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.NewListByResourceGroupPager
 // method.
 type ExpressRouteCrossConnectionsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteCrossConnectionsClientListOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.List
+// ExpressRouteCrossConnectionsClientListOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.NewListPager
 // method.
 type ExpressRouteCrossConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -6382,7 +6394,7 @@ type ExpressRouteLinksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRouteLinksClientListOptions contains the optional parameters for the ExpressRouteLinksClient.List method.
+// ExpressRouteLinksClientListOptions contains the optional parameters for the ExpressRouteLinksClient.NewListPager method.
 type ExpressRouteLinksClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -6476,7 +6488,7 @@ type ExpressRoutePortAuthorizationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRoutePortAuthorizationsClientListOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.List
+// ExpressRoutePortAuthorizationsClientListOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.NewListPager
 // method.
 type ExpressRoutePortAuthorizationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -6555,13 +6567,13 @@ type ExpressRoutePortsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRoutePortsClientListByResourceGroupOptions contains the optional parameters for the ExpressRoutePortsClient.ListByResourceGroup
+// ExpressRoutePortsClientListByResourceGroupOptions contains the optional parameters for the ExpressRoutePortsClient.NewListByResourceGroupPager
 // method.
 type ExpressRoutePortsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRoutePortsClientListOptions contains the optional parameters for the ExpressRoutePortsClient.List method.
+// ExpressRoutePortsClientListOptions contains the optional parameters for the ExpressRoutePortsClient.NewListPager method.
 type ExpressRoutePortsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -6631,7 +6643,7 @@ type ExpressRoutePortsLocationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExpressRoutePortsLocationsClientListOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.List
+// ExpressRoutePortsLocationsClientListOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.NewListPager
 // method.
 type ExpressRoutePortsLocationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -6755,7 +6767,7 @@ type ExpressRouteServiceProviderPropertiesFormat struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// ExpressRouteServiceProvidersClientListOptions contains the optional parameters for the ExpressRouteServiceProvidersClient.List
+// ExpressRouteServiceProvidersClientListOptions contains the optional parameters for the ExpressRouteServiceProvidersClient.NewListPager
 // method.
 type ExpressRouteServiceProvidersClientListOptions struct {
 	// placeholder for future optional parameters
@@ -6798,12 +6810,12 @@ type FirewallPoliciesClientGetOptions struct {
 	Expand *string
 }
 
-// FirewallPoliciesClientListAllOptions contains the optional parameters for the FirewallPoliciesClient.ListAll method.
+// FirewallPoliciesClientListAllOptions contains the optional parameters for the FirewallPoliciesClient.NewListAllPager method.
 type FirewallPoliciesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallPoliciesClientListOptions contains the optional parameters for the FirewallPoliciesClient.List method.
+// FirewallPoliciesClientListOptions contains the optional parameters for the FirewallPoliciesClient.NewListPager method.
 type FirewallPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -7215,7 +7227,7 @@ type FirewallPolicyRuleCollectionGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallPolicyRuleCollectionGroupsClientListOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupsClient.List
+// FirewallPolicyRuleCollectionGroupsClientListOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupsClient.NewListPager
 // method.
 type FirewallPolicyRuleCollectionGroupsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -7376,7 +7388,7 @@ type FlowLogsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FlowLogsClientListOptions contains the optional parameters for the FlowLogsClient.List method.
+// FlowLogsClientListOptions contains the optional parameters for the FlowLogsClient.NewListPager method.
 type FlowLogsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -7603,7 +7615,7 @@ type GroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GroupsClientListOptions contains the optional parameters for the GroupsClient.List method.
+// GroupsClientListOptions contains the optional parameters for the GroupsClient.NewListPager method.
 type GroupsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
 	// the value of the nextLink element will include a skipToken parameter that
@@ -7802,7 +7814,7 @@ type HubRouteTablesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HubRouteTablesClientListOptions contains the optional parameters for the HubRouteTablesClient.List method.
+// HubRouteTablesClientListOptions contains the optional parameters for the HubRouteTablesClient.NewListPager method.
 type HubRouteTablesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -7863,7 +7875,7 @@ type HubVirtualNetworkConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HubVirtualNetworkConnectionsClientListOptions contains the optional parameters for the HubVirtualNetworkConnectionsClient.List
+// HubVirtualNetworkConnectionsClientListOptions contains the optional parameters for the HubVirtualNetworkConnectionsClient.NewListPager
 // method.
 type HubVirtualNetworkConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -7978,13 +7990,13 @@ type IPAllocationsClientGetOptions struct {
 	Expand *string
 }
 
-// IPAllocationsClientListByResourceGroupOptions contains the optional parameters for the IPAllocationsClient.ListByResourceGroup
+// IPAllocationsClientListByResourceGroupOptions contains the optional parameters for the IPAllocationsClient.NewListByResourceGroupPager
 // method.
 type IPAllocationsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IPAllocationsClientListOptions contains the optional parameters for the IPAllocationsClient.List method.
+// IPAllocationsClientListOptions contains the optional parameters for the IPAllocationsClient.NewListPager method.
 type IPAllocationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -8135,12 +8147,13 @@ type IPGroupsClientGetOptions struct {
 	Expand *string
 }
 
-// IPGroupsClientListByResourceGroupOptions contains the optional parameters for the IPGroupsClient.ListByResourceGroup method.
+// IPGroupsClientListByResourceGroupOptions contains the optional parameters for the IPGroupsClient.NewListByResourceGroupPager
+// method.
 type IPGroupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IPGroupsClientListOptions contains the optional parameters for the IPGroupsClient.List method.
+// IPGroupsClientListOptions contains the optional parameters for the IPGroupsClient.NewListPager method.
 type IPGroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -8387,7 +8400,7 @@ type InboundNatRulesClientGetOptions struct {
 	Expand *string
 }
 
-// InboundNatRulesClientListOptions contains the optional parameters for the InboundNatRulesClient.List method.
+// InboundNatRulesClientListOptions contains the optional parameters for the InboundNatRulesClient.NewListPager method.
 type InboundNatRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -8618,7 +8631,7 @@ type InterfaceIPConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InterfaceIPConfigurationsClientListOptions contains the optional parameters for the InterfaceIPConfigurationsClient.List
+// InterfaceIPConfigurationsClientListOptions contains the optional parameters for the InterfaceIPConfigurationsClient.NewListPager
 // method.
 type InterfaceIPConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -8642,7 +8655,8 @@ type InterfaceLoadBalancerListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// InterfaceLoadBalancersClientListOptions contains the optional parameters for the InterfaceLoadBalancersClient.List method.
+// InterfaceLoadBalancersClientListOptions contains the optional parameters for the InterfaceLoadBalancersClient.NewListPager
+// method.
 type InterfaceLoadBalancersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -8770,7 +8784,7 @@ type InterfaceTapConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InterfaceTapConfigurationsClientListOptions contains the optional parameters for the InterfaceTapConfigurationsClient.List
+// InterfaceTapConfigurationsClientListOptions contains the optional parameters for the InterfaceTapConfigurationsClient.NewListPager
 // method.
 type InterfaceTapConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -8830,42 +8844,42 @@ type InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions struct {
 	Expand *string
 }
 
-// InterfacesClientListAllOptions contains the optional parameters for the InterfacesClient.ListAll method.
+// InterfacesClientListAllOptions contains the optional parameters for the InterfacesClient.NewListAllPager method.
 type InterfacesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InterfacesClientListCloudServiceNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.ListCloudServiceNetworkInterfaces
+// InterfacesClientListCloudServiceNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.NewListCloudServiceNetworkInterfacesPager
 // method.
 type InterfacesClientListCloudServiceNetworkInterfacesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.ListCloudServiceRoleInstanceNetworkInterfaces
+// InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.NewListCloudServiceRoleInstanceNetworkInterfacesPager
 // method.
 type InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InterfacesClientListOptions contains the optional parameters for the InterfacesClient.List method.
+// InterfacesClientListOptions contains the optional parameters for the InterfacesClient.NewListPager method.
 type InterfacesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions contains the optional parameters for the InterfacesClient.ListVirtualMachineScaleSetIPConfigurations
+// InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions contains the optional parameters for the InterfacesClient.NewListVirtualMachineScaleSetIPConfigurationsPager
 // method.
 type InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions struct {
 	// Expands referenced resources.
 	Expand *string
 }
 
-// InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.ListVirtualMachineScaleSetNetworkInterfaces
+// InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.NewListVirtualMachineScaleSetNetworkInterfacesPager
 // method.
 type InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.ListVirtualMachineScaleSetVMNetworkInterfaces
+// InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager
 // method.
 type InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions struct {
 	// placeholder for future optional parameters
@@ -9128,7 +9142,7 @@ type LoadBalancerBackendAddressPoolsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadBalancerBackendAddressPoolsClientListOptions contains the optional parameters for the LoadBalancerBackendAddressPoolsClient.List
+// LoadBalancerBackendAddressPoolsClientListOptions contains the optional parameters for the LoadBalancerBackendAddressPoolsClient.NewListPager
 // method.
 type LoadBalancerBackendAddressPoolsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -9174,7 +9188,7 @@ type LoadBalancerFrontendIPConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadBalancerFrontendIPConfigurationsClientListOptions contains the optional parameters for the LoadBalancerFrontendIPConfigurationsClient.List
+// LoadBalancerFrontendIPConfigurationsClientListOptions contains the optional parameters for the LoadBalancerFrontendIPConfigurationsClient.NewListPager
 // method.
 type LoadBalancerFrontendIPConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -9204,13 +9218,13 @@ type LoadBalancerLoadBalancingRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadBalancerLoadBalancingRulesClientListOptions contains the optional parameters for the LoadBalancerLoadBalancingRulesClient.List
+// LoadBalancerLoadBalancingRulesClientListOptions contains the optional parameters for the LoadBalancerLoadBalancingRulesClient.NewListPager
 // method.
 type LoadBalancerLoadBalancingRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadBalancerNetworkInterfacesClientListOptions contains the optional parameters for the LoadBalancerNetworkInterfacesClient.List
+// LoadBalancerNetworkInterfacesClientListOptions contains the optional parameters for the LoadBalancerNetworkInterfacesClient.NewListPager
 // method.
 type LoadBalancerNetworkInterfacesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -9231,7 +9245,7 @@ type LoadBalancerOutboundRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadBalancerOutboundRulesClientListOptions contains the optional parameters for the LoadBalancerOutboundRulesClient.List
+// LoadBalancerOutboundRulesClientListOptions contains the optional parameters for the LoadBalancerOutboundRulesClient.NewListPager
 // method.
 type LoadBalancerOutboundRulesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -9251,7 +9265,7 @@ type LoadBalancerProbesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadBalancerProbesClientListOptions contains the optional parameters for the LoadBalancerProbesClient.List method.
+// LoadBalancerProbesClientListOptions contains the optional parameters for the LoadBalancerProbesClient.NewListPager method.
 type LoadBalancerProbesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -9358,12 +9372,12 @@ type LoadBalancersClientGetOptions struct {
 	Expand *string
 }
 
-// LoadBalancersClientListAllOptions contains the optional parameters for the LoadBalancersClient.ListAll method.
+// LoadBalancersClientListAllOptions contains the optional parameters for the LoadBalancersClient.NewListAllPager method.
 type LoadBalancersClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadBalancersClientListOptions contains the optional parameters for the LoadBalancersClient.List method.
+// LoadBalancersClientListOptions contains the optional parameters for the LoadBalancersClient.NewListPager method.
 type LoadBalancersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -9514,7 +9528,8 @@ type LocalNetworkGatewaysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocalNetworkGatewaysClientListOptions contains the optional parameters for the LocalNetworkGatewaysClient.List method.
+// LocalNetworkGatewaysClientListOptions contains the optional parameters for the LocalNetworkGatewaysClient.NewListPager
+// method.
 type LocalNetworkGatewaysClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -9633,7 +9648,7 @@ type ManagementClientCheckDNSNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementClientDisconnectActiveSessionsOptions contains the optional parameters for the ManagementClient.DisconnectActiveSessions
+// ManagementClientDisconnectActiveSessionsOptions contains the optional parameters for the ManagementClient.NewDisconnectActiveSessionsPager
 // method.
 type ManagementClientDisconnectActiveSessionsOptions struct {
 	// placeholder for future optional parameters
@@ -9645,7 +9660,7 @@ type ManagementClientExpressRouteProviderPortOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementClientGetBastionShareableLinkOptions contains the optional parameters for the ManagementClient.GetBastionShareableLink
+// ManagementClientGetBastionShareableLinkOptions contains the optional parameters for the ManagementClient.NewGetBastionShareableLinkPager
 // method.
 type ManagementClientGetBastionShareableLinkOptions struct {
 	// placeholder for future optional parameters
@@ -9703,7 +9718,7 @@ type ManagementGroupNetworkManagerConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementGroupNetworkManagerConnectionsClientListOptions contains the optional parameters for the ManagementGroupNetworkManagerConnectionsClient.List
+// ManagementGroupNetworkManagerConnectionsClientListOptions contains the optional parameters for the ManagementGroupNetworkManagerConnectionsClient.NewListPager
 // method.
 type ManagementGroupNetworkManagerConnectionsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
@@ -9937,7 +9952,8 @@ type ManagersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagersClientListBySubscriptionOptions contains the optional parameters for the ManagersClient.ListBySubscription method.
+// ManagersClientListBySubscriptionOptions contains the optional parameters for the ManagersClient.NewListBySubscriptionPager
+// method.
 type ManagersClientListBySubscriptionOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
 	// the value of the nextLink element will include a skipToken parameter that
@@ -9947,7 +9963,7 @@ type ManagersClientListBySubscriptionOptions struct {
 	Top *int32
 }
 
-// ManagersClientListOptions contains the optional parameters for the ManagersClient.List method.
+// ManagersClientListOptions contains the optional parameters for the ManagersClient.NewListPager method.
 type ManagersClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
 	// the value of the nextLink element will include a skipToken parameter that
@@ -10128,12 +10144,12 @@ type NatGatewaysClientGetOptions struct {
 	Expand *string
 }
 
-// NatGatewaysClientListAllOptions contains the optional parameters for the NatGatewaysClient.ListAll method.
+// NatGatewaysClientListAllOptions contains the optional parameters for the NatGatewaysClient.NewListAllPager method.
 type NatGatewaysClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NatGatewaysClientListOptions contains the optional parameters for the NatGatewaysClient.List method.
+// NatGatewaysClientListOptions contains the optional parameters for the NatGatewaysClient.NewListPager method.
 type NatGatewaysClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -10217,7 +10233,8 @@ type NatRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NatRulesClientListByVPNGatewayOptions contains the optional parameters for the NatRulesClient.ListByVPNGateway method.
+// NatRulesClientListByVPNGatewayOptions contains the optional parameters for the NatRulesClient.NewListByVPNGatewayPager
+// method.
 type NatRulesClientListByVPNGatewayOptions struct {
 	// placeholder for future optional parameters
 }
@@ -10331,7 +10348,7 @@ type OperationPropertiesFormatServiceSpecification struct {
 	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -10573,13 +10590,13 @@ type P2SVPNGatewaysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// P2SVPNGatewaysClientListByResourceGroupOptions contains the optional parameters for the P2SVPNGatewaysClient.ListByResourceGroup
+// P2SVPNGatewaysClientListByResourceGroupOptions contains the optional parameters for the P2SVPNGatewaysClient.NewListByResourceGroupPager
 // method.
 type P2SVPNGatewaysClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// P2SVPNGatewaysClientListOptions contains the optional parameters for the P2SVPNGatewaysClient.List method.
+// P2SVPNGatewaysClientListOptions contains the optional parameters for the P2SVPNGatewaysClient.NewListPager method.
 type P2SVPNGatewaysClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -10778,7 +10795,7 @@ type PacketCapturesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PacketCapturesClientListOptions contains the optional parameters for the PacketCapturesClient.List method.
+// PacketCapturesClientListOptions contains the optional parameters for the PacketCapturesClient.NewListPager method.
 type PacketCapturesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -10907,7 +10924,7 @@ type PeerExpressRouteCircuitConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeerExpressRouteCircuitConnectionsClientListOptions contains the optional parameters for the PeerExpressRouteCircuitConnectionsClient.List
+// PeerExpressRouteCircuitConnectionsClientListOptions contains the optional parameters for the PeerExpressRouteCircuitConnectionsClient.NewListPager
 // method.
 type PeerExpressRouteCircuitConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -11037,7 +11054,8 @@ type PrivateDNSZoneGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateDNSZoneGroupsClientListOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.List method.
+// PrivateDNSZoneGroupsClientListOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.NewListPager
+// method.
 type PrivateDNSZoneGroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -11206,13 +11224,13 @@ type PrivateEndpointsClientGetOptions struct {
 	Expand *string
 }
 
-// PrivateEndpointsClientListBySubscriptionOptions contains the optional parameters for the PrivateEndpointsClient.ListBySubscription
+// PrivateEndpointsClientListBySubscriptionOptions contains the optional parameters for the PrivateEndpointsClient.NewListBySubscriptionPager
 // method.
 type PrivateEndpointsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointsClientListOptions contains the optional parameters for the PrivateEndpointsClient.List method.
+// PrivateEndpointsClientListOptions contains the optional parameters for the PrivateEndpointsClient.NewListPager method.
 type PrivateEndpointsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -11441,29 +11459,29 @@ type PrivateLinkServicesClientGetPrivateEndpointConnectionOptions struct {
 }
 
 // PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions contains the optional parameters for
-// the PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServicesByResourceGroup method.
+// the PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager method.
 type PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions contains the optional parameters for the PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServices
+// PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions contains the optional parameters for the PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesPager
 // method.
 type PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesClientListBySubscriptionOptions contains the optional parameters for the PrivateLinkServicesClient.ListBySubscription
+// PrivateLinkServicesClientListBySubscriptionOptions contains the optional parameters for the PrivateLinkServicesClient.NewListBySubscriptionPager
 // method.
 type PrivateLinkServicesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesClientListOptions contains the optional parameters for the PrivateLinkServicesClient.List method.
+// PrivateLinkServicesClientListOptions contains the optional parameters for the PrivateLinkServicesClient.NewListPager method.
 type PrivateLinkServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesClientListPrivateEndpointConnectionsOptions contains the optional parameters for the PrivateLinkServicesClient.ListPrivateEndpointConnections
+// PrivateLinkServicesClientListPrivateEndpointConnectionsOptions contains the optional parameters for the PrivateLinkServicesClient.NewListPrivateEndpointConnectionsPager
 // method.
 type PrivateLinkServicesClientListPrivateEndpointConnectionsOptions struct {
 	// placeholder for future optional parameters
@@ -11596,12 +11614,12 @@ type ProfilesClientGetOptions struct {
 	Expand *string
 }
 
-// ProfilesClientListAllOptions contains the optional parameters for the ProfilesClient.ListAll method.
+// ProfilesClientListAllOptions contains the optional parameters for the ProfilesClient.NewListAllPager method.
 type ProfilesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProfilesClientListOptions contains the optional parameters for the ProfilesClient.List method.
+// ProfilesClientListOptions contains the optional parameters for the ProfilesClient.NewListPager method.
 type ProfilesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -11786,35 +11804,36 @@ type PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressOptions stru
 	Expand *string
 }
 
-// PublicIPAddressesClientListAllOptions contains the optional parameters for the PublicIPAddressesClient.ListAll method.
+// PublicIPAddressesClientListAllOptions contains the optional parameters for the PublicIPAddressesClient.NewListAllPager
+// method.
 type PublicIPAddressesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicIPAddressesClientListCloudServicePublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.ListCloudServicePublicIPAddresses
+// PublicIPAddressesClientListCloudServicePublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.NewListCloudServicePublicIPAddressesPager
 // method.
 type PublicIPAddressesClientListCloudServicePublicIPAddressesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.ListCloudServiceRoleInstancePublicIPAddresses
+// PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.NewListCloudServiceRoleInstancePublicIPAddressesPager
 // method.
 type PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicIPAddressesClientListOptions contains the optional parameters for the PublicIPAddressesClient.List method.
+// PublicIPAddressesClientListOptions contains the optional parameters for the PublicIPAddressesClient.NewListPager method.
 type PublicIPAddressesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.ListVirtualMachineScaleSetPublicIPAddresses
+// PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.NewListVirtualMachineScaleSetPublicIPAddressesPager
 // method.
 type PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.ListVirtualMachineScaleSetVMPublicIPAddresses
+// PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager
 // method.
 type PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions struct {
 	// placeholder for future optional parameters
@@ -11943,12 +11962,12 @@ type PublicIPPrefixesClientGetOptions struct {
 	Expand *string
 }
 
-// PublicIPPrefixesClientListAllOptions contains the optional parameters for the PublicIPPrefixesClient.ListAll method.
+// PublicIPPrefixesClientListAllOptions contains the optional parameters for the PublicIPPrefixesClient.NewListAllPager method.
 type PublicIPPrefixesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicIPPrefixesClientListOptions contains the optional parameters for the PublicIPPrefixesClient.List method.
+// PublicIPPrefixesClientListOptions contains the optional parameters for the PublicIPPrefixesClient.NewListPager method.
 type PublicIPPrefixesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -12271,7 +12290,7 @@ type RouteFilterRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RouteFilterRulesClientListByRouteFilterOptions contains the optional parameters for the RouteFilterRulesClient.ListByRouteFilter
+// RouteFilterRulesClientListByRouteFilterOptions contains the optional parameters for the RouteFilterRulesClient.NewListByRouteFilterPager
 // method.
 type RouteFilterRulesClientListByRouteFilterOptions struct {
 	// placeholder for future optional parameters
@@ -12296,13 +12315,13 @@ type RouteFiltersClientGetOptions struct {
 	Expand *string
 }
 
-// RouteFiltersClientListByResourceGroupOptions contains the optional parameters for the RouteFiltersClient.ListByResourceGroup
+// RouteFiltersClientListByResourceGroupOptions contains the optional parameters for the RouteFiltersClient.NewListByResourceGroupPager
 // method.
 type RouteFiltersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RouteFiltersClientListOptions contains the optional parameters for the RouteFiltersClient.List method.
+// RouteFiltersClientListOptions contains the optional parameters for the RouteFiltersClient.NewListPager method.
 type RouteFiltersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -12387,7 +12406,7 @@ type RouteMapsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RouteMapsClientListOptions contains the optional parameters for the RouteMapsClient.List method.
+// RouteMapsClientListOptions contains the optional parameters for the RouteMapsClient.NewListPager method.
 type RouteMapsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -12480,12 +12499,12 @@ type RouteTablesClientGetOptions struct {
 	Expand *string
 }
 
-// RouteTablesClientListAllOptions contains the optional parameters for the RouteTablesClient.ListAll method.
+// RouteTablesClientListAllOptions contains the optional parameters for the RouteTablesClient.NewListAllPager method.
 type RouteTablesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RouteTablesClientListOptions contains the optional parameters for the RouteTablesClient.List method.
+// RouteTablesClientListOptions contains the optional parameters for the RouteTablesClient.NewListPager method.
 type RouteTablesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -12512,7 +12531,7 @@ type RoutesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoutesClientListOptions contains the optional parameters for the RoutesClient.List method.
+// RoutesClientListOptions contains the optional parameters for the RoutesClient.NewListPager method.
 type RoutesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -12571,7 +12590,7 @@ type RoutingIntentClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoutingIntentClientListOptions contains the optional parameters for the RoutingIntentClient.List method.
+// RoutingIntentClientListOptions contains the optional parameters for the RoutingIntentClient.NewListPager method.
 type RoutingIntentClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -12706,7 +12725,7 @@ type ScopeConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScopeConnectionsClientListOptions contains the optional parameters for the ScopeConnectionsClient.List method.
+// ScopeConnectionsClientListOptions contains the optional parameters for the ScopeConnectionsClient.NewListPager method.
 type ScopeConnectionsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
 	// the value of the nextLink element will include a skipToken parameter that
@@ -12780,7 +12799,7 @@ type SecurityAdminConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SecurityAdminConfigurationsClientListOptions contains the optional parameters for the SecurityAdminConfigurationsClient.List
+// SecurityAdminConfigurationsClientListOptions contains the optional parameters for the SecurityAdminConfigurationsClient.NewListPager
 // method.
 type SecurityAdminConfigurationsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
@@ -12901,12 +12920,12 @@ type SecurityGroupsClientGetOptions struct {
 	Expand *string
 }
 
-// SecurityGroupsClientListAllOptions contains the optional parameters for the SecurityGroupsClient.ListAll method.
+// SecurityGroupsClientListAllOptions contains the optional parameters for the SecurityGroupsClient.NewListAllPager method.
 type SecurityGroupsClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SecurityGroupsClientListOptions contains the optional parameters for the SecurityGroupsClient.List method.
+// SecurityGroupsClientListOptions contains the optional parameters for the SecurityGroupsClient.NewListPager method.
 type SecurityGroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -12983,13 +13002,13 @@ type SecurityPartnerProvidersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SecurityPartnerProvidersClientListByResourceGroupOptions contains the optional parameters for the SecurityPartnerProvidersClient.ListByResourceGroup
+// SecurityPartnerProvidersClientListByResourceGroupOptions contains the optional parameters for the SecurityPartnerProvidersClient.NewListByResourceGroupPager
 // method.
 type SecurityPartnerProvidersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SecurityPartnerProvidersClientListOptions contains the optional parameters for the SecurityPartnerProvidersClient.List
+// SecurityPartnerProvidersClientListOptions contains the optional parameters for the SecurityPartnerProvidersClient.NewListPager
 // method.
 type SecurityPartnerProvidersClientListOptions struct {
 	// placeholder for future optional parameters
@@ -13118,7 +13137,7 @@ type SecurityRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SecurityRulesClientListOptions contains the optional parameters for the SecurityRulesClient.List method.
+// SecurityRulesClientListOptions contains the optional parameters for the SecurityRulesClient.NewListPager method.
 type SecurityRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -13226,13 +13245,14 @@ type ServiceEndpointPoliciesClientGetOptions struct {
 	Expand *string
 }
 
-// ServiceEndpointPoliciesClientListByResourceGroupOptions contains the optional parameters for the ServiceEndpointPoliciesClient.ListByResourceGroup
+// ServiceEndpointPoliciesClientListByResourceGroupOptions contains the optional parameters for the ServiceEndpointPoliciesClient.NewListByResourceGroupPager
 // method.
 type ServiceEndpointPoliciesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceEndpointPoliciesClientListOptions contains the optional parameters for the ServiceEndpointPoliciesClient.List method.
+// ServiceEndpointPoliciesClientListOptions contains the optional parameters for the ServiceEndpointPoliciesClient.NewListPager
+// method.
 type ServiceEndpointPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -13333,7 +13353,7 @@ type ServiceEndpointPolicyDefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ServiceEndpointPolicyDefinitionsClient.ListByResourceGroup
+// ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ServiceEndpointPolicyDefinitionsClient.NewListByResourceGroupPager
 // method.
 type ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
@@ -13396,7 +13416,8 @@ type ServiceTagInformation struct {
 	ServiceTagChangeNumber *string `json:"serviceTagChangeNumber,omitempty" azure:"ro"`
 }
 
-// ServiceTagInformationClientListOptions contains the optional parameters for the ServiceTagInformationClient.List method.
+// ServiceTagInformationClientListOptions contains the optional parameters for the ServiceTagInformationClient.NewListPager
+// method.
 type ServiceTagInformationClientListOptions struct {
 	// Do not return address prefixes for the tag(s).
 	NoAddressPrefixes *bool
@@ -13599,7 +13620,7 @@ type StaticMembersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticMembersClientListOptions contains the optional parameters for the StaticMembersClient.List method.
+// StaticMembersClientListOptions contains the optional parameters for the StaticMembersClient.NewListPager method.
 type StaticMembersClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
 	// the value of the nextLink element will include a skipToken parameter that
@@ -13766,7 +13787,7 @@ type SubnetsClientGetOptions struct {
 	Expand *string
 }
 
-// SubnetsClientListOptions contains the optional parameters for the SubnetsClient.List method.
+// SubnetsClientListOptions contains the optional parameters for the SubnetsClient.NewListPager method.
 type SubnetsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -13789,7 +13810,7 @@ type SubscriptionNetworkManagerConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubscriptionNetworkManagerConnectionsClientListOptions contains the optional parameters for the SubscriptionNetworkManagerConnectionsClient.List
+// SubscriptionNetworkManagerConnectionsClientListOptions contains the optional parameters for the SubscriptionNetworkManagerConnectionsClient.NewListPager
 // method.
 type SubscriptionNetworkManagerConnectionsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
@@ -14057,7 +14078,7 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
+// UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 type UsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -14415,7 +14436,7 @@ type VPNConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VPNConnectionsClientListByVPNGatewayOptions contains the optional parameters for the VPNConnectionsClient.ListByVPNGateway
+// VPNConnectionsClientListByVPNGatewayOptions contains the optional parameters for the VPNConnectionsClient.NewListByVPNGatewayPager
 // method.
 type VPNConnectionsClientListByVPNGatewayOptions struct {
 	// placeholder for future optional parameters
@@ -14571,6 +14592,8 @@ type VPNGatewaysClientBeginDeleteOptions struct {
 
 // VPNGatewaysClientBeginResetOptions contains the optional parameters for the VPNGatewaysClient.BeginReset method.
 type VPNGatewaysClientBeginResetOptions struct {
+	// VpnGateway ipConfigurationId to specify the gateway instance.
+	IPConfigurationID *string
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -14604,13 +14627,13 @@ type VPNGatewaysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VPNGatewaysClientListByResourceGroupOptions contains the optional parameters for the VPNGatewaysClient.ListByResourceGroup
+// VPNGatewaysClientListByResourceGroupOptions contains the optional parameters for the VPNGatewaysClient.NewListByResourceGroupPager
 // method.
 type VPNGatewaysClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VPNGatewaysClientListOptions contains the optional parameters for the VPNGatewaysClient.List method.
+// VPNGatewaysClientListOptions contains the optional parameters for the VPNGatewaysClient.NewListPager method.
 type VPNGatewaysClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -14638,7 +14661,7 @@ type VPNLinkConnectionsClientBeginResetConnectionOptions struct {
 	ResumeToken string
 }
 
-// VPNLinkConnectionsClientListByVPNConnectionOptions contains the optional parameters for the VPNLinkConnectionsClient.ListByVPNConnection
+// VPNLinkConnectionsClientListByVPNConnectionOptions contains the optional parameters for the VPNLinkConnectionsClient.NewListByVPNConnectionPager
 // method.
 type VPNLinkConnectionsClientListByVPNConnectionOptions struct {
 	// placeholder for future optional parameters
@@ -14866,13 +14889,14 @@ type VPNServerConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VPNServerConfigurationsClientListByResourceGroupOptions contains the optional parameters for the VPNServerConfigurationsClient.ListByResourceGroup
+// VPNServerConfigurationsClientListByResourceGroupOptions contains the optional parameters for the VPNServerConfigurationsClient.NewListByResourceGroupPager
 // method.
 type VPNServerConfigurationsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VPNServerConfigurationsClientListOptions contains the optional parameters for the VPNServerConfigurationsClient.List method.
+// VPNServerConfigurationsClientListOptions contains the optional parameters for the VPNServerConfigurationsClient.NewListPager
+// method.
 type VPNServerConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -15040,7 +15064,8 @@ type VPNSiteLinksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VPNSiteLinksClientListByVPNSiteOptions contains the optional parameters for the VPNSiteLinksClient.ListByVPNSite method.
+// VPNSiteLinksClientListByVPNSiteOptions contains the optional parameters for the VPNSiteLinksClient.NewListByVPNSitePager
+// method.
 type VPNSiteLinksClientListByVPNSiteOptions struct {
 	// placeholder for future optional parameters
 }
@@ -15095,12 +15120,13 @@ type VPNSitesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VPNSitesClientListByResourceGroupOptions contains the optional parameters for the VPNSitesClient.ListByResourceGroup method.
+// VPNSitesClientListByResourceGroupOptions contains the optional parameters for the VPNSitesClient.NewListByResourceGroupPager
+// method.
 type VPNSitesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VPNSitesClientListOptions contains the optional parameters for the VPNSitesClient.List method.
+// VPNSitesClientListOptions contains the optional parameters for the VPNSitesClient.NewListPager method.
 type VPNSitesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -15339,7 +15365,8 @@ type VirtualApplianceSKUsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualApplianceSKUsClientListOptions contains the optional parameters for the VirtualApplianceSKUsClient.List method.
+// VirtualApplianceSKUsClientListOptions contains the optional parameters for the VirtualApplianceSKUsClient.NewListPager
+// method.
 type VirtualApplianceSKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -15402,7 +15429,8 @@ type VirtualApplianceSitesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualApplianceSitesClientListOptions contains the optional parameters for the VirtualApplianceSitesClient.List method.
+// VirtualApplianceSitesClientListOptions contains the optional parameters for the VirtualApplianceSitesClient.NewListPager
+// method.
 type VirtualApplianceSitesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -15427,13 +15455,13 @@ type VirtualAppliancesClientGetOptions struct {
 	Expand *string
 }
 
-// VirtualAppliancesClientListByResourceGroupOptions contains the optional parameters for the VirtualAppliancesClient.ListByResourceGroup
+// VirtualAppliancesClientListByResourceGroupOptions contains the optional parameters for the VirtualAppliancesClient.NewListByResourceGroupPager
 // method.
 type VirtualAppliancesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualAppliancesClientListOptions contains the optional parameters for the VirtualAppliancesClient.List method.
+// VirtualAppliancesClientListOptions contains the optional parameters for the VirtualAppliancesClient.NewListPager method.
 type VirtualAppliancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -15503,7 +15531,7 @@ type VirtualHubBgpConnectionsClientBeginListLearnedRoutesOptions struct {
 	ResumeToken string
 }
 
-// VirtualHubBgpConnectionsClientListOptions contains the optional parameters for the VirtualHubBgpConnectionsClient.List
+// VirtualHubBgpConnectionsClientListOptions contains the optional parameters for the VirtualHubBgpConnectionsClient.NewListPager
 // method.
 type VirtualHubBgpConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -15560,7 +15588,7 @@ type VirtualHubIPConfigurationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubIPConfigurationClientListOptions contains the optional parameters for the VirtualHubIPConfigurationClient.List
+// VirtualHubIPConfigurationClientListOptions contains the optional parameters for the VirtualHubIPConfigurationClient.NewListPager
 // method.
 type VirtualHubIPConfigurationClientListOptions struct {
 	// placeholder for future optional parameters
@@ -15696,7 +15724,8 @@ type VirtualHubRouteTableV2SClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubRouteTableV2SClientListOptions contains the optional parameters for the VirtualHubRouteTableV2SClient.List method.
+// VirtualHubRouteTableV2SClientListOptions contains the optional parameters for the VirtualHubRouteTableV2SClient.NewListPager
+// method.
 type VirtualHubRouteTableV2SClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -15757,13 +15786,13 @@ type VirtualHubsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubsClientListByResourceGroupOptions contains the optional parameters for the VirtualHubsClient.ListByResourceGroup
+// VirtualHubsClientListByResourceGroupOptions contains the optional parameters for the VirtualHubsClient.NewListByResourceGroupPager
 // method.
 type VirtualHubsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualHubsClientListOptions contains the optional parameters for the VirtualHubsClient.List method.
+// VirtualHubsClientListOptions contains the optional parameters for the VirtualHubsClient.NewListPager method.
 type VirtualHubsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -16154,7 +16183,7 @@ type VirtualNetworkGatewayConnectionsClientGetSharedKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewayConnectionsClientListOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.List
+// VirtualNetworkGatewayConnectionsClientListOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.NewListPager
 // method.
 type VirtualNetworkGatewayConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -16270,7 +16299,7 @@ type VirtualNetworkGatewayNatRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions contains the optional parameters for the VirtualNetworkGatewayNatRulesClient.ListByVirtualNetworkGateway
+// VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions contains the optional parameters for the VirtualNetworkGatewayNatRulesClient.NewListByVirtualNetworkGatewayPager
 // method.
 type VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions struct {
 	// placeholder for future optional parameters
@@ -16539,13 +16568,14 @@ type VirtualNetworkGatewaysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewaysClientListConnectionsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.ListConnections
+// VirtualNetworkGatewaysClientListConnectionsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.NewListConnectionsPager
 // method.
 type VirtualNetworkGatewaysClientListConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkGatewaysClientListOptions contains the optional parameters for the VirtualNetworkGatewaysClient.List method.
+// VirtualNetworkGatewaysClientListOptions contains the optional parameters for the VirtualNetworkGatewaysClient.NewListPager
+// method.
 type VirtualNetworkGatewaysClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -16679,7 +16709,8 @@ type VirtualNetworkPeeringsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkPeeringsClientListOptions contains the optional parameters for the VirtualNetworkPeeringsClient.List method.
+// VirtualNetworkPeeringsClientListOptions contains the optional parameters for the VirtualNetworkPeeringsClient.NewListPager
+// method.
 type VirtualNetworkPeeringsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -16719,6 +16750,9 @@ type VirtualNetworkPropertiesFormat struct {
 
 	// A list of peerings in a Virtual Network.
 	VirtualNetworkPeerings []*VirtualNetworkPeering `json:"virtualNetworkPeerings,omitempty"`
+
+	// READ-ONLY; A collection of references to flow log resources.
+	FlowLogs []*FlowLog `json:"flowLogs,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the virtual network resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -16800,12 +16834,13 @@ type VirtualNetworkTapsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkTapsClientListAllOptions contains the optional parameters for the VirtualNetworkTapsClient.ListAll method.
+// VirtualNetworkTapsClientListAllOptions contains the optional parameters for the VirtualNetworkTapsClient.NewListAllPager
+// method.
 type VirtualNetworkTapsClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkTapsClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworkTapsClient.ListByResourceGroup
+// VirtualNetworkTapsClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworkTapsClient.NewListByResourceGroupPager
 // method.
 type VirtualNetworkTapsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
@@ -16880,17 +16915,18 @@ type VirtualNetworksClientGetOptions struct {
 	Expand *string
 }
 
-// VirtualNetworksClientListAllOptions contains the optional parameters for the VirtualNetworksClient.ListAll method.
+// VirtualNetworksClientListAllOptions contains the optional parameters for the VirtualNetworksClient.NewListAllPager method.
 type VirtualNetworksClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworksClientListOptions contains the optional parameters for the VirtualNetworksClient.List method.
+// VirtualNetworksClientListOptions contains the optional parameters for the VirtualNetworksClient.NewListPager method.
 type VirtualNetworksClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworksClientListUsageOptions contains the optional parameters for the VirtualNetworksClient.ListUsage method.
+// VirtualNetworksClientListUsageOptions contains the optional parameters for the VirtualNetworksClient.NewListUsagePager
+// method.
 type VirtualNetworksClientListUsageOptions struct {
 	// placeholder for future optional parameters
 }
@@ -16997,7 +17033,8 @@ type VirtualRouterPeeringsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualRouterPeeringsClientListOptions contains the optional parameters for the VirtualRouterPeeringsClient.List method.
+// VirtualRouterPeeringsClientListOptions contains the optional parameters for the VirtualRouterPeeringsClient.NewListPager
+// method.
 type VirtualRouterPeeringsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -17042,13 +17079,13 @@ type VirtualRoutersClientGetOptions struct {
 	Expand *string
 }
 
-// VirtualRoutersClientListByResourceGroupOptions contains the optional parameters for the VirtualRoutersClient.ListByResourceGroup
+// VirtualRoutersClientListByResourceGroupOptions contains the optional parameters for the VirtualRoutersClient.NewListByResourceGroupPager
 // method.
 type VirtualRoutersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualRoutersClientListOptions contains the optional parameters for the VirtualRoutersClient.List method.
+// VirtualRoutersClientListOptions contains the optional parameters for the VirtualRoutersClient.NewListPager method.
 type VirtualRoutersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -17149,13 +17186,13 @@ type VirtualWansClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualWansClientListByResourceGroupOptions contains the optional parameters for the VirtualWansClient.ListByResourceGroup
+// VirtualWansClientListByResourceGroupOptions contains the optional parameters for the VirtualWansClient.NewListByResourceGroupPager
 // method.
 type VirtualWansClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualWansClientListOptions contains the optional parameters for the VirtualWansClient.List method.
+// VirtualWansClientListOptions contains the optional parameters for the VirtualWansClient.NewListPager method.
 type VirtualWansClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -17336,12 +17373,12 @@ type WatchersClientGetTopologyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WatchersClientListAllOptions contains the optional parameters for the WatchersClient.ListAll method.
+// WatchersClientListAllOptions contains the optional parameters for the WatchersClient.NewListAllPager method.
 type WatchersClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WatchersClientListOptions contains the optional parameters for the WatchersClient.List method.
+// WatchersClientListOptions contains the optional parameters for the WatchersClient.NewListPager method.
 type WatchersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -17368,6 +17405,9 @@ type WebApplicationFirewallCustomRule struct {
 	// The name of the resource that is unique within a policy. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 
+	// Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
+	State *WebApplicationFirewallState `json:"state,omitempty"`
+
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
@@ -17391,13 +17431,13 @@ type WebApplicationFirewallPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebApplicationFirewallPoliciesClientListAllOptions contains the optional parameters for the WebApplicationFirewallPoliciesClient.ListAll
+// WebApplicationFirewallPoliciesClientListAllOptions contains the optional parameters for the WebApplicationFirewallPoliciesClient.NewListAllPager
 // method.
 type WebApplicationFirewallPoliciesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebApplicationFirewallPoliciesClientListOptions contains the optional parameters for the WebApplicationFirewallPoliciesClient.List
+// WebApplicationFirewallPoliciesClientListOptions contains the optional parameters for the WebApplicationFirewallPoliciesClient.NewListPager
 // method.
 type WebApplicationFirewallPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -17470,7 +17510,7 @@ type WebCategoriesClientGetOptions struct {
 	Expand *string
 }
 
-// WebCategoriesClientListBySubscriptionOptions contains the optional parameters for the WebCategoriesClient.ListBySubscription
+// WebCategoriesClientListBySubscriptionOptions contains the optional parameters for the WebCategoriesClient.NewListBySubscriptionPager
 // method.
 type WebCategoriesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters

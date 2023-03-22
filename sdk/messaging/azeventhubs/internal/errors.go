@@ -64,6 +64,18 @@ func TransformError(err error) error {
 		return exported.NewError(exported.ErrorCodeOwnershipLost, err)
 	}
 
+	// there are a few errors that all boil down to "bad creds or unauthorized"
+	var amqpErr *amqp.Error
+
+	if errors.As(err, &amqpErr) && amqpErr.Condition == amqp.ErrorUnauthorizedAccess {
+		return exported.NewError(exported.ErrorCodeUnauthorizedAccess, err)
+	}
+
+	var rpcErr RPCError
+	if errors.As(err, &rpcErr) && rpcErr.Resp.Code == http.StatusUnauthorized {
+		return exported.NewError(exported.ErrorCodeUnauthorizedAccess, err)
+	}
+
 	rk := GetRecoveryKind(err)
 
 	switch rk {
@@ -136,17 +148,6 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]RecoveryKind{
 	errorConditionLockLost:                                        RecoveryKindFatal,
 }
 
-// GetRecoveryKindForSession determines the recovery type for session-based links.
-func GetRecoveryKindForSession(err error) RecoveryKind {
-	// when a session is detached there's a delay before we can reacquire the
-	// lock. So a lock lost on a session _is_ retryable.
-	if isLockLostError(err) {
-		return RecoveryKindLink
-	}
-
-	return GetRecoveryKind(err)
-}
-
 // GetRecoveryKind determines the recovery type for non-session based links.
 func GetRecoveryKind(err error) RecoveryKind {
 	if err == nil {
@@ -173,6 +174,16 @@ func GetRecoveryKind(err error) RecoveryKind {
 	var errNonRetriable errNonRetriable
 
 	if errors.As(err, &errNonRetriable) {
+		return RecoveryKindFatal
+	}
+
+	// azidentity returns errors that match this for auth failures.
+	var errNonRetriableMarker interface {
+		NonRetriable()
+		error
+	}
+
+	if errors.As(err, &errNonRetriableMarker) {
 		return RecoveryKindFatal
 	}
 
@@ -220,14 +231,9 @@ func GetRecoveryKind(err error) RecoveryKind {
 		// RFC2616 is the specification for HTTP.
 		code := rpcErr.RPCCode()
 
-		if code == http.StatusNotFound || code == RPCResponseCodeLockLost {
+		if code == http.StatusNotFound ||
+			code == http.StatusUnauthorized {
 			return RecoveryKindFatal
-		}
-
-		// this can happen when we're recovering the link - the client gets closed and the old link is still being
-		// used by this instance of the client. It needs to recover and attempt it again.
-		if code == http.StatusUnauthorized {
-			return RecoveryKindLink
 		}
 
 		// simple timeouts
@@ -332,26 +338,6 @@ func IsNotAllowedError(err error) bool {
 
 func (e ErrConnectionClosed) Error() string {
 	return fmt.Sprintf("the connection has been closed: %s", string(e))
-}
-
-func isLockLostError(err error) bool {
-	var rpcErr RPCError
-
-	// this is the error you get if you settle on the management$ link
-	// with an expired locktoken.
-	if errors.As(err, &rpcErr) && rpcErr.Resp.Code == RPCResponseCodeLockLost {
-		return true
-	}
-
-	var amqpErr *amqp.Error
-
-	// this is the error you get if you settle on the actual receiver link you
-	// got the message on with an expired locktoken.
-	if errors.As(err, &amqpErr) && amqpErr.Condition == errorConditionLockLost {
-		return true
-	}
-
-	return false
 }
 
 func IsOwnershipLostError(err error) bool {

@@ -7,7 +7,11 @@
 package service
 
 import (
+	"bytes"
 	"context"
+	"errors"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"net/http"
 	"strings"
@@ -43,7 +47,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
+	return (*Client)(base.NewServiceClient(serviceURL, pl, &cred)), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
@@ -115,6 +119,15 @@ func (s *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.ServiceClient])(s))
 }
 
+func (s *Client) credential() any {
+	return base.Credential((*base.Client[generated.ServiceClient])(s))
+}
+
+// helper method to return the generated.BlobClient which is used for creating the sub-requests
+func getGeneratedBlobClient(b *blob.Client) *generated.BlobClient {
+	return base.InnerClient((*base.Client[generated.BlobClient])(b))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (s *Client) URL() string {
 	return s.generated().Endpoint()
@@ -124,7 +137,7 @@ func (s *Client) URL() string {
 // this Client's URL. The new container.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewContainerClient(containerName string) *container.Client {
 	containerURL := runtime.JoinPaths(s.generated().Endpoint(), containerName)
-	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().Pipeline(), s.sharedKey()))
+	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().Pipeline(), s.credential()))
 }
 
 // CreateContainer is a lifecycle method to creates a new container under the specified account.
@@ -279,4 +292,69 @@ func (s *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOp
 	serviceFilterBlobsOptions := o.format()
 	resp, err := s.generated().FilterBlobs(ctx, where, serviceFilterBlobsOptions)
 	return resp, err
+}
+
+// NewBatchBuilder creates an instance of BatchBuilder using the same auth policy as the client.
+// BatchBuilder is used to build the batch consisting of either delete or set tier sub-requests.
+// All sub-requests in the batch must be of the same type, either delete or set tier.
+// NOTE: Service level Blob Batch operation is supported only when the Client was created using SharedKeyCredential and Account SAS.
+func (s *Client) NewBatchBuilder() (*BatchBuilder, error) {
+	var authPolicy policy.Policy
+
+	switch cred := s.credential().(type) {
+	case *azcore.TokenCredential:
+		authPolicy = runtime.NewBearerTokenPolicy(*cred, []string{shared.TokenScope}, nil)
+	case *SharedKeyCredential:
+		authPolicy = exported.NewSharedKeyCredPolicy(cred)
+	case nil:
+		// for authentication using SAS
+		authPolicy = nil
+	default:
+		return nil, fmt.Errorf("unrecognised authentication type %T", cred)
+	}
+
+	return &BatchBuilder{
+		endpoint:   s.URL(),
+		authPolicy: authPolicy,
+	}, nil
+}
+
+// SubmitBatch operation allows multiple API calls to be embedded into a single HTTP request.
+// It builds the request body using the BatchBuilder object passed.
+// BatchBuilder contains the list of operations to be submitted. It supports up to 256 sub-requests in a single batch.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/blob-batch.
+func (s *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *SubmitBatchOptions) (SubmitBatchResponse, error) {
+	if bb == nil || len(bb.subRequests) == 0 {
+		return SubmitBatchResponse{}, errors.New("batch builder is empty")
+	}
+
+	// create the request body
+	batchReq, batchID, err := exported.CreateBatchRequest(&exported.BlobBatchBuilder{
+		AuthPolicy:  bb.authPolicy,
+		SubRequests: bb.subRequests,
+	})
+	if err != nil {
+		return SubmitBatchResponse{}, err
+	}
+
+	reader := bytes.NewReader(batchReq)
+	rsc := streaming.NopCloser(reader)
+	multipartContentType := "multipart/mixed; boundary=" + batchID
+
+	resp, err := s.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, options.format())
+	if err != nil {
+		return SubmitBatchResponse{}, err
+	}
+
+	batchResponses, err := exported.ParseBlobBatchResponse(resp.Body, resp.ContentType, bb.subRequests)
+	if err != nil {
+		return SubmitBatchResponse{}, err
+	}
+
+	return SubmitBatchResponse{
+		Responses:   batchResponses,
+		ContentType: resp.ContentType,
+		RequestID:   resp.RequestID,
+		Version:     resp.Version,
+	}, nil
 }

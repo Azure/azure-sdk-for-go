@@ -32,10 +32,10 @@ type DscpConfigurationClient struct {
 }
 
 // NewDscpConfigurationClient creates a new instance of DscpConfigurationClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDscpConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DscpConfigurationClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewDscpConfigurationClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrUpdate - Creates or updates a DSCP Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// dscpConfigurationName - The name of the resource.
-// parameters - Parameters supplied to the create or update dscp configuration operation.
-// options - DscpConfigurationClientBeginCreateOrUpdateOptions contains the optional parameters for the DscpConfigurationClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - dscpConfigurationName - The name of the resource.
+//   - parameters - Parameters supplied to the create or update dscp configuration operation.
+//   - options - DscpConfigurationClientBeginCreateOrUpdateOptions contains the optional parameters for the DscpConfigurationClient.BeginCreateOrUpdate
+//     method.
 func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationClientBeginCreateOrUpdateOptions) (*runtime.Poller[DscpConfigurationClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, dscpConfigurationName, parameters, options)
@@ -80,7 +81,8 @@ func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, 
 
 // CreateOrUpdate - Creates or updates a DSCP Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *DscpConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dscpConfigurationName, parameters, options)
 	if err != nil {
@@ -116,7 +118,7 @@ func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -124,11 +126,12 @@ func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.C
 
 // BeginDelete - Deletes a DSCP Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// dscpConfigurationName - The name of the resource.
-// options - DscpConfigurationClientBeginDeleteOptions contains the optional parameters for the DscpConfigurationClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - dscpConfigurationName - The name of the resource.
+//   - options - DscpConfigurationClientBeginDeleteOptions contains the optional parameters for the DscpConfigurationClient.BeginDelete
+//     method.
 func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientBeginDeleteOptions) (*runtime.Poller[DscpConfigurationClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, dscpConfigurationName, options)
@@ -145,7 +148,8 @@ func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resource
 
 // Delete - Deletes a DSCP Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *DscpConfigurationClient) deleteOperation(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
@@ -181,7 +185,7 @@ func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,10 +193,11 @@ func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Gets a DSCP Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// dscpConfigurationName - The name of the resource.
-// options - DscpConfigurationClientGetOptions contains the optional parameters for the DscpConfigurationClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - dscpConfigurationName - The name of the resource.
+//   - options - DscpConfigurationClientGetOptions contains the optional parameters for the DscpConfigurationClient.Get method.
 func (client *DscpConfigurationClient) Get(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientGetOptions) (DscpConfigurationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
@@ -228,7 +233,7 @@ func (client *DscpConfigurationClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -244,9 +249,11 @@ func (client *DscpConfigurationClient) getHandleResponse(resp *http.Response) (D
 }
 
 // NewListPager - Gets a DSCP Configuration.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// options - DscpConfigurationClientListOptions contains the optional parameters for the DscpConfigurationClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - options - DscpConfigurationClientListOptions contains the optional parameters for the DscpConfigurationClient.NewListPager
+//     method.
 func (client *DscpConfigurationClient) NewListPager(resourceGroupName string, options *DscpConfigurationClientListOptions) *runtime.Pager[DscpConfigurationClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DscpConfigurationClientListResponse]{
 		More: func(page DscpConfigurationClientListResponse) bool {
@@ -291,7 +298,7 @@ func (client *DscpConfigurationClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -307,9 +314,10 @@ func (client *DscpConfigurationClient) listHandleResponse(resp *http.Response) (
 }
 
 // NewListAllPager - Gets all dscp configurations in a subscription.
-// Generated from API version 2022-07-01
-// options - DscpConfigurationClientListAllOptions contains the optional parameters for the DscpConfigurationClient.ListAll
-// method.
+//
+// Generated from API version 2022-09-01
+//   - options - DscpConfigurationClientListAllOptions contains the optional parameters for the DscpConfigurationClient.NewListAllPager
+//     method.
 func (client *DscpConfigurationClient) NewListAllPager(options *DscpConfigurationClientListAllOptions) *runtime.Pager[DscpConfigurationClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DscpConfigurationClientListAllResponse]{
 		More: func(page DscpConfigurationClientListAllResponse) bool {
@@ -350,7 +358,7 @@ func (client *DscpConfigurationClient) listAllCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

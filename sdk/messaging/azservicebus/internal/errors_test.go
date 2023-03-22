@@ -12,6 +12,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
@@ -260,6 +261,15 @@ func Test_TransformError(t *testing.T) {
 	err = TransformError(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusUnauthorized}})
 	require.ErrorAs(t, err, &asExportedErr)
 	require.Equal(t, exported.CodeUnauthorizedAccess, asExportedErr.Code)
+
+	err = TransformError(&amqp.Error{Condition: amqp.ErrorUnauthorizedAccess})
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeUnauthorizedAccess, asExportedErr.Code)
+
+	// make sure we don't translate errors that are already usable, like Azure Identity failures.
+	err = TransformError(&azidentity.AuthenticationFailedError{})
+	afe := &azidentity.AuthenticationFailedError{}
+	require.ErrorAs(t, err, &afe)
 
 	// sanity check, an RPCError but it's not a azservicebus.Code type error.
 	err = TransformError(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusNotFound}})

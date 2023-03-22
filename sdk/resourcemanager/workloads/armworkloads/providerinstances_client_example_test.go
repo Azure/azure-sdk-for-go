@@ -25,11 +25,11 @@ func ExampleProviderInstancesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup", "mySapMonitor", nil)
+	pager := clientFactory.NewProviderInstancesClient().NewListPager("myResourceGroup", "mySapMonitor", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -164,11 +164,11 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfADb2Provider() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -211,11 +211,11 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfAMsSqlServerProvider() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -257,11 +257,11 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfAOsProvider() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -300,11 +300,11 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfAPrometheusHaClusterProvi
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -345,11 +345,11 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfASapMonitorHanaProvider()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -394,11 +394,11 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfASapMonitorNetWeaverProvi
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -444,11 +444,11 @@ func ExampleProviderInstancesClient_BeginCreate_createADb2Provider() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.DB2ProviderInstanceProperties{
 				ProviderType:      to.Ptr("Db2"),
@@ -510,11 +510,11 @@ func ExampleProviderInstancesClient_BeginCreate_createADb2ProviderWithRootCertif
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.DB2ProviderInstanceProperties{
 				ProviderType:  to.Ptr("Db2"),
@@ -574,11 +574,11 @@ func ExampleProviderInstancesClient_BeginCreate_createAMsSqlServerProvider() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.MsSQLServerProviderInstanceProperties{
 				ProviderType:      to.Ptr("MsSqlServer"),
@@ -637,11 +637,11 @@ func ExampleProviderInstancesClient_BeginCreate_createAMsSqlServerProviderWithRo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.MsSQLServerProviderInstanceProperties{
 				ProviderType:  to.Ptr("MsSqlServer"),
@@ -698,11 +698,11 @@ func ExampleProviderInstancesClient_BeginCreate_createAOsProvider() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.PrometheusOSProviderInstanceProperties{
 				ProviderType:      to.Ptr("PrometheusOS"),
@@ -755,11 +755,11 @@ func ExampleProviderInstancesClient_BeginCreate_createAOsProviderWithRootCertifi
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.PrometheusOSProviderInstanceProperties{
 				ProviderType:  to.Ptr("PrometheusOS"),
@@ -810,11 +810,11 @@ func ExampleProviderInstancesClient_BeginCreate_createAPrometheusHaClusterProvid
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.PrometheusHaClusterProviderInstanceProperties{
 				ProviderType:      to.Ptr("PrometheusHaCluster"),
@@ -871,11 +871,11 @@ func ExampleProviderInstancesClient_BeginCreate_createAPrometheusHaClusterProvid
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.PrometheusHaClusterProviderInstanceProperties{
 				ProviderType:  to.Ptr("PrometheusHaCluster"),
@@ -930,11 +930,11 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorHanaProvider() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.HanaDbProviderInstanceProperties{
 				ProviderType:             to.Ptr("SapHana"),
@@ -1000,11 +1000,11 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorHanaProviderWit
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.HanaDbProviderInstanceProperties{
 				ProviderType:             to.Ptr("SapHana"),
@@ -1068,11 +1068,11 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorNetWeaverProvid
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.SapNetWeaverProviderInstanceProperties{
 				ProviderType: to.Ptr("SapNetWeaver"),
@@ -1140,11 +1140,11 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorNetWeaverProvid
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.SapNetWeaverProviderInstanceProperties{
 				ProviderType: to.Ptr("SapNetWeaver"),
@@ -1210,11 +1210,11 @@ func ExampleProviderInstancesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	poller, err := clientFactory.NewProviderInstancesClient().BeginDelete(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

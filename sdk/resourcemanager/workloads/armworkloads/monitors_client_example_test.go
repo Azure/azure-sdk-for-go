@@ -25,11 +25,11 @@ func ExampleMonitorsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewMonitorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewMonitorsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -100,11 +100,11 @@ func ExampleMonitorsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewMonitorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("example-rg", nil)
+	pager := clientFactory.NewMonitorsClient().NewListByResourceGroupPager("example-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -175,11 +175,11 @@ func ExampleMonitorsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewMonitorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", nil)
+	res, err := clientFactory.NewMonitorsClient().Get(ctx, "myResourceGroup", "mySapMonitor", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -227,11 +227,11 @@ func ExampleMonitorsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewMonitorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", armworkloads.Monitor{
+	poller, err := clientFactory.NewMonitorsClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", armworkloads.Monitor{
 		Location: to.Ptr("westus"),
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
@@ -297,11 +297,11 @@ func ExampleMonitorsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewMonitorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myResourceGroup", "mySapMonitor", nil)
+	poller, err := clientFactory.NewMonitorsClient().BeginDelete(ctx, "myResourceGroup", "mySapMonitor", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -328,11 +328,11 @@ func ExampleMonitorsClient_Update_deleteTagsFieldOfASapMonitor() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewMonitorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "myResourceGroup", "mySapMonitor", armworkloads.UpdateMonitorRequest{
+	res, err := clientFactory.NewMonitorsClient().Update(ctx, "myResourceGroup", "mySapMonitor", armworkloads.UpdateMonitorRequest{
 		Identity: &armworkloads.UserAssignedServiceIdentity{
 			Type: to.Ptr(armworkloads.ManagedServiceIdentityTypeNone),
 		},
@@ -388,11 +388,11 @@ func ExampleMonitorsClient_Update_updateTagsFieldOfASapMonitor() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewMonitorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "myResourceGroup", "mySapMonitor", armworkloads.UpdateMonitorRequest{
+	res, err := clientFactory.NewMonitorsClient().Update(ctx, "myResourceGroup", "mySapMonitor", armworkloads.UpdateMonitorRequest{
 		Identity: &armworkloads.UserAssignedServiceIdentity{
 			Type: to.Ptr(armworkloads.ManagedServiceIdentityTypeNone),
 		},

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // SapLandscapeMonitorClient contains the methods for the SapLandscapeMonitor group.
 // Don't use this type directly, use NewSapLandscapeMonitorClient() instead.
 type SapLandscapeMonitorClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSapLandscapeMonitorClient creates a new instance of SapLandscapeMonitorClient with the specified values.
@@ -36,21 +33,13 @@ type SapLandscapeMonitorClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSapLandscapeMonitorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SapLandscapeMonitorClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SapLandscapeMonitorClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SapLandscapeMonitorClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *SapLandscapeMonitorClient) Create(ctx context.Context, resourceGro
 	if err != nil {
 		return SapLandscapeMonitorClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SapLandscapeMonitorClientCreateResponse{}, err
 	}
@@ -94,7 +83,7 @@ func (client *SapLandscapeMonitorClient) createCreateRequest(ctx context.Context
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +116,7 @@ func (client *SapLandscapeMonitorClient) Delete(ctx context.Context, resourceGro
 	if err != nil {
 		return SapLandscapeMonitorClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SapLandscapeMonitorClientDeleteResponse{}, err
 	}
@@ -152,7 +141,7 @@ func (client *SapLandscapeMonitorClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +165,7 @@ func (client *SapLandscapeMonitorClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return SapLandscapeMonitorClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SapLandscapeMonitorClientGetResponse{}, err
 	}
@@ -201,7 +190,7 @@ func (client *SapLandscapeMonitorClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -235,7 +224,7 @@ func (client *SapLandscapeMonitorClient) List(ctx context.Context, resourceGroup
 	if err != nil {
 		return SapLandscapeMonitorClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SapLandscapeMonitorClientListResponse{}, err
 	}
@@ -260,7 +249,7 @@ func (client *SapLandscapeMonitorClient) listCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -294,7 +283,7 @@ func (client *SapLandscapeMonitorClient) Update(ctx context.Context, resourceGro
 	if err != nil {
 		return SapLandscapeMonitorClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SapLandscapeMonitorClientUpdateResponse{}, err
 	}
@@ -319,7 +308,7 @@ func (client *SapLandscapeMonitorClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

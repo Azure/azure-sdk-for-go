@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // MonitorsClient contains the methods for the Monitors group.
 // Don't use this type directly, use NewMonitorsClient() instead.
 type MonitorsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewMonitorsClient creates a new instance of MonitorsClient with the specified values.
@@ -36,21 +33,13 @@ type MonitorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MonitorsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MonitorsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,11 +58,11 @@ func (client *MonitorsClient) BeginCreate(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MonitorsClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitorsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MonitorsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *MonitorsClient) create(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +100,7 @@ func (client *MonitorsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,11 +124,11 @@ func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MonitorsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MonitorsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -152,7 +141,7 @@ func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +166,7 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -200,7 +189,7 @@ func (client *MonitorsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return MonitorsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MonitorsClientGetResponse{}, err
 	}
@@ -225,7 +214,7 @@ func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -266,7 +255,7 @@ func (client *MonitorsClient) NewListPager(options *MonitorsClientListOptions) *
 			if err != nil {
 				return MonitorsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MonitorsClientListResponse{}, err
 			}
@@ -285,7 +274,7 @@ func (client *MonitorsClient) listCreateRequest(ctx context.Context, options *Mo
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -327,7 +316,7 @@ func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName stri
 			if err != nil {
 				return MonitorsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MonitorsClientListByResourceGroupResponse{}, err
 			}
@@ -350,7 +339,7 @@ func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -383,7 +372,7 @@ func (client *MonitorsClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return MonitorsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MonitorsClientUpdateResponse{}, err
 	}
@@ -408,7 +397,7 @@ func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

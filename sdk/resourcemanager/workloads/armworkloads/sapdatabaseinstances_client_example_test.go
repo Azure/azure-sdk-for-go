@@ -25,11 +25,11 @@ func ExampleSAPDatabaseInstancesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPDatabaseInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "test-rg", "X00", "databaseServer", nil)
+	res, err := clientFactory.NewSAPDatabaseInstancesClient().Get(ctx, "test-rg", "X00", "databaseServer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -65,11 +65,11 @@ func ExampleSAPDatabaseInstancesClient_BeginCreate_createSapDatabaseInstancesFor
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPDatabaseInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "test-rg", "X00", "databaseServer", armworkloads.SAPDatabaseInstance{
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginCreate(ctx, "test-rg", "X00", "databaseServer", armworkloads.SAPDatabaseInstance{
 		Location:   to.Ptr("westcentralus"),
 		Tags:       map[string]*string{},
 		Properties: &armworkloads.SAPDatabaseProperties{},
@@ -128,11 +128,11 @@ func ExampleSAPDatabaseInstancesClient_BeginCreate_sapDatabaseInstancesCreate() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPDatabaseInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "test-rg", "X00", "databaseServer", armworkloads.SAPDatabaseInstance{
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginCreate(ctx, "test-rg", "X00", "databaseServer", armworkloads.SAPDatabaseInstance{
 		Location:   to.Ptr("westcentralus"),
 		Tags:       map[string]*string{},
 		Properties: &armworkloads.SAPDatabaseProperties{},
@@ -184,11 +184,11 @@ func ExampleSAPDatabaseInstancesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPDatabaseInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "test-rg", "X00", "databaseServer", armworkloads.UpdateSAPDatabaseInstanceRequest{
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginUpdate(ctx, "test-rg", "X00", "databaseServer", armworkloads.UpdateSAPDatabaseInstanceRequest{
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
@@ -240,11 +240,11 @@ func ExampleSAPDatabaseInstancesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPDatabaseInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "test-rg", "X00", "databaseServer", nil)
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginDelete(ctx, "test-rg", "X00", "databaseServer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -271,11 +271,11 @@ func ExampleSAPDatabaseInstancesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPDatabaseInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("test-rg", "X00", nil)
+	pager := clientFactory.NewSAPDatabaseInstancesClient().NewListPager("test-rg", "X00", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -327,11 +327,11 @@ func ExampleSAPDatabaseInstancesClient_BeginStartInstance() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPDatabaseInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStartInstance(ctx, "test-rg", "X00", "db0", nil)
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStartInstance(ctx, "test-rg", "X00", "db0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -358,11 +358,11 @@ func ExampleSAPDatabaseInstancesClient_BeginStopInstance() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPDatabaseInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStopInstance(ctx, "test-rg", "X00", "db0", &armworkloads.SAPDatabaseInstancesClientBeginStopInstanceOptions{Body: &armworkloads.StopRequest{
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStopInstance(ctx, "test-rg", "X00", "db0", &armworkloads.SAPDatabaseInstancesClientBeginStopInstanceOptions{Body: &armworkloads.StopRequest{
 		SoftStopTimeoutSeconds: to.Ptr[int64](0),
 	},
 	})

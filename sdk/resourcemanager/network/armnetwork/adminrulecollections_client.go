@@ -33,10 +33,10 @@ type AdminRuleCollectionsClient struct {
 }
 
 // NewAdminRuleCollectionsClient creates a new instance of AdminRuleCollectionsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAdminRuleCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdminRuleCollectionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -59,14 +59,15 @@ func NewAdminRuleCollectionsClient(subscriptionID string, credential azcore.Toke
 
 // CreateOrUpdate - Creates or updates an admin rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkManagerName - The name of the network manager.
-// configurationName - The name of the network manager Security Configuration.
-// ruleCollectionName - The name of the network manager security Configuration rule collection.
-// ruleCollection - The Rule Collection to create or update
-// options - AdminRuleCollectionsClientCreateOrUpdateOptions contains the optional parameters for the AdminRuleCollectionsClient.CreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkManagerName - The name of the network manager.
+//   - configurationName - The name of the network manager Security Configuration.
+//   - ruleCollectionName - The name of the network manager security Configuration rule collection.
+//   - ruleCollection - The Rule Collection to create or update
+//   - options - AdminRuleCollectionsClientCreateOrUpdateOptions contains the optional parameters for the AdminRuleCollectionsClient.CreateOrUpdate
+//     method.
 func (client *AdminRuleCollectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleCollection AdminRuleCollection, options *AdminRuleCollectionsClientCreateOrUpdateOptions) (AdminRuleCollectionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, ruleCollection, options)
 	if err != nil {
@@ -110,7 +111,7 @@ func (client *AdminRuleCollectionsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, ruleCollection)
@@ -127,13 +128,14 @@ func (client *AdminRuleCollectionsClient) createOrUpdateHandleResponse(resp *htt
 
 // BeginDelete - Deletes an admin rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkManagerName - The name of the network manager.
-// configurationName - The name of the network manager Security Configuration.
-// ruleCollectionName - The name of the network manager security Configuration rule collection.
-// options - AdminRuleCollectionsClientBeginDeleteOptions contains the optional parameters for the AdminRuleCollectionsClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkManagerName - The name of the network manager.
+//   - configurationName - The name of the network manager Security Configuration.
+//   - ruleCollectionName - The name of the network manager security Configuration rule collection.
+//   - options - AdminRuleCollectionsClientBeginDeleteOptions contains the optional parameters for the AdminRuleCollectionsClient.BeginDelete
+//     method.
 func (client *AdminRuleCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *AdminRuleCollectionsClientBeginDeleteOptions) (*runtime.Poller[AdminRuleCollectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, options)
@@ -150,7 +152,8 @@ func (client *AdminRuleCollectionsClient) BeginDelete(ctx context.Context, resou
 
 // Delete - Deletes an admin rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *AdminRuleCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *AdminRuleCollectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, options)
 	if err != nil {
@@ -194,7 +197,7 @@ func (client *AdminRuleCollectionsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -205,13 +208,14 @@ func (client *AdminRuleCollectionsClient) deleteCreateRequest(ctx context.Contex
 
 // Get - Gets a network manager security admin configuration rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkManagerName - The name of the network manager.
-// configurationName - The name of the network manager Security Configuration.
-// ruleCollectionName - The name of the network manager security Configuration rule collection.
-// options - AdminRuleCollectionsClientGetOptions contains the optional parameters for the AdminRuleCollectionsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkManagerName - The name of the network manager.
+//   - configurationName - The name of the network manager Security Configuration.
+//   - ruleCollectionName - The name of the network manager security Configuration rule collection.
+//   - options - AdminRuleCollectionsClientGetOptions contains the optional parameters for the AdminRuleCollectionsClient.Get
+//     method.
 func (client *AdminRuleCollectionsClient) Get(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *AdminRuleCollectionsClientGetOptions) (AdminRuleCollectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, options)
 	if err != nil {
@@ -255,7 +259,7 @@ func (client *AdminRuleCollectionsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -271,12 +275,13 @@ func (client *AdminRuleCollectionsClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - Lists all the rule collections in a security admin configuration, in a paginated format.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkManagerName - The name of the network manager.
-// configurationName - The name of the network manager Security Configuration.
-// options - AdminRuleCollectionsClientListOptions contains the optional parameters for the AdminRuleCollectionsClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkManagerName - The name of the network manager.
+//   - configurationName - The name of the network manager Security Configuration.
+//   - options - AdminRuleCollectionsClientListOptions contains the optional parameters for the AdminRuleCollectionsClient.NewListPager
+//     method.
 func (client *AdminRuleCollectionsClient) NewListPager(resourceGroupName string, networkManagerName string, configurationName string, options *AdminRuleCollectionsClientListOptions) *runtime.Pager[AdminRuleCollectionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AdminRuleCollectionsClientListResponse]{
 		More: func(page AdminRuleCollectionsClientListResponse) bool {
@@ -329,7 +334,7 @@ func (client *AdminRuleCollectionsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

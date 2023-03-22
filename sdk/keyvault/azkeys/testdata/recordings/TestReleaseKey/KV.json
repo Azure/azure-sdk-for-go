@@ -118,7 +118,7 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/keys/testreleasekey2353464635//release?api-version=7.3",
+      "RequestUri": "https://fakevault.local/keys/testreleasekey2353464635/release?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",

@@ -4,9 +4,13 @@
 
 ### Features Added
 
+- Authentication errors are indicated with an `azservicebus.Error`, with a `Code` of `azservicebus.CodeUnauthorizedAccess`. (PR#20447)
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Authentication errors could cause unnecessary retries, making calls taking longer to fail. (PR#20447)
 
 ### Other Changes
 

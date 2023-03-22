@@ -25,11 +25,11 @@ func ExampleNatGatewaysClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewNatGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "test-natGateway", nil)
+	poller, err := clientFactory.NewNatGatewaysClient().BeginDelete(ctx, "rg1", "test-natGateway", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleNatGatewaysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewNatGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "test-natGateway", &armnetwork.NatGatewaysClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewNatGatewaysClient().Get(ctx, "rg1", "test-natGateway", &armnetwork.NatGatewaysClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -91,11 +91,11 @@ func ExampleNatGatewaysClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewNatGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-natgateway", armnetwork.NatGateway{
+	poller, err := clientFactory.NewNatGatewaysClient().BeginCreateOrUpdate(ctx, "rg1", "test-natgateway", armnetwork.NatGateway{
 		Location: to.Ptr("westus"),
 		Properties: &armnetwork.NatGatewayPropertiesFormat{
 			PublicIPAddresses: []*armnetwork.SubResource{
@@ -155,11 +155,11 @@ func ExampleNatGatewaysClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewNatGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "test-natGateway", armnetwork.TagsObject{
+	res, err := clientFactory.NewNatGatewaysClient().UpdateTags(ctx, "rg1", "test-natGateway", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -209,11 +209,11 @@ func ExampleNatGatewaysClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewNatGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewNatGatewaysClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -287,11 +287,11 @@ func ExampleNatGatewaysClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewNatGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewNatGatewaysClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

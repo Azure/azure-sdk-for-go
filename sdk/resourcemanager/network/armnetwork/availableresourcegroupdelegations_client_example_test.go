@@ -24,11 +24,11 @@ func ExampleAvailableResourceGroupDelegationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAvailableResourceGroupDelegationsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("westcentralus", "rg1", nil)
+	pager := clientFactory.NewAvailableResourceGroupDelegationsClient().NewListPager("westcentralus", "rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

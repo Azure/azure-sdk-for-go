@@ -25,11 +25,11 @@ func ExampleHubRouteTablesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewHubRouteTablesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "virtualHub1", "hubRouteTable1", armnetwork.HubRouteTable{
+	poller, err := clientFactory.NewHubRouteTablesClient().BeginCreateOrUpdate(ctx, "rg1", "virtualHub1", "hubRouteTable1", armnetwork.HubRouteTable{
 		Properties: &armnetwork.HubRouteTableProperties{
 			Labels: []*string{
 				to.Ptr("label1"),
@@ -95,11 +95,11 @@ func ExampleHubRouteTablesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewHubRouteTablesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "virtualHub1", "hubRouteTable1", nil)
+	res, err := clientFactory.NewHubRouteTablesClient().Get(ctx, "rg1", "virtualHub1", "hubRouteTable1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -144,11 +144,11 @@ func ExampleHubRouteTablesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewHubRouteTablesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "virtualHub1", "hubRouteTable1", nil)
+	poller, err := clientFactory.NewHubRouteTablesClient().BeginDelete(ctx, "rg1", "virtualHub1", "hubRouteTable1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -165,11 +165,11 @@ func ExampleHubRouteTablesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewHubRouteTablesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "virtualHub1", nil)
+	pager := clientFactory.NewHubRouteTablesClient().NewListPager("rg1", "virtualHub1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

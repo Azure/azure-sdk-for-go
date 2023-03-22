@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // WatchersClient contains the methods for the NetworkWatchers group.
 // Don't use this type directly, use NewWatchersClient() instead.
 type WatchersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWatchersClient creates a new instance of WatchersClient with the specified values.
@@ -37,21 +34,13 @@ type WatchersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWatchersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WatchersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WatchersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WatchersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -72,11 +61,11 @@ func (client *WatchersClient) BeginCheckConnectivity(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientCheckConnectivityResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientCheckConnectivityResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientCheckConnectivityResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientCheckConnectivityResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -90,7 +79,7 @@ func (client *WatchersClient) checkConnectivity(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,7 @@ func (client *WatchersClient) checkConnectivityCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +128,7 @@ func (client *WatchersClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WatchersClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatchersClientCreateOrUpdateResponse{}, err
 	}
@@ -164,7 +153,7 @@ func (client *WatchersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -197,11 +186,11 @@ func (client *WatchersClient) BeginDelete(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -214,7 +203,7 @@ func (client *WatchersClient) deleteOperation(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -239,7 +228,7 @@ func (client *WatchersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,7 +251,7 @@ func (client *WatchersClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return WatchersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatchersClientGetResponse{}, err
 	}
@@ -287,7 +276,7 @@ func (client *WatchersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -323,11 +312,11 @@ func (client *WatchersClient) BeginGetAzureReachabilityReport(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientGetAzureReachabilityReportResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientGetAzureReachabilityReportResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientGetAzureReachabilityReportResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientGetAzureReachabilityReportResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -341,7 +330,7 @@ func (client *WatchersClient) getAzureReachabilityReport(ctx context.Context, re
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -366,7 +355,7 @@ func (client *WatchersClient) getAzureReachabilityReportCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -392,11 +381,11 @@ func (client *WatchersClient) BeginGetFlowLogStatus(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientGetFlowLogStatusResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientGetFlowLogStatusResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientGetFlowLogStatusResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientGetFlowLogStatusResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -409,7 +398,7 @@ func (client *WatchersClient) getFlowLogStatus(ctx context.Context, resourceGrou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -434,7 +423,7 @@ func (client *WatchersClient) getFlowLogStatusCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -464,11 +453,11 @@ func (client *WatchersClient) BeginGetNetworkConfigurationDiagnostic(ctx context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientGetNetworkConfigurationDiagnosticResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientGetNetworkConfigurationDiagnosticResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientGetNetworkConfigurationDiagnosticResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientGetNetworkConfigurationDiagnosticResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -485,7 +474,7 @@ func (client *WatchersClient) getNetworkConfigurationDiagnostic(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -510,7 +499,7 @@ func (client *WatchersClient) getNetworkConfigurationDiagnosticCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -536,11 +525,11 @@ func (client *WatchersClient) BeginGetNextHop(ctx context.Context, resourceGroup
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientGetNextHopResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientGetNextHopResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientGetNextHopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientGetNextHopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -553,7 +542,7 @@ func (client *WatchersClient) getNextHop(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -578,7 +567,7 @@ func (client *WatchersClient) getNextHopCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -602,7 +591,7 @@ func (client *WatchersClient) GetTopology(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WatchersClientGetTopologyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatchersClientGetTopologyResponse{}, err
 	}
@@ -627,7 +616,7 @@ func (client *WatchersClient) getTopologyCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -662,11 +651,11 @@ func (client *WatchersClient) BeginGetTroubleshooting(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientGetTroubleshootingResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientGetTroubleshootingResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientGetTroubleshootingResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientGetTroubleshootingResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -679,7 +668,7 @@ func (client *WatchersClient) getTroubleshooting(ctx context.Context, resourceGr
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -704,7 +693,7 @@ func (client *WatchersClient) getTroubleshootingCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -730,11 +719,11 @@ func (client *WatchersClient) BeginGetTroubleshootingResult(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientGetTroubleshootingResultResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientGetTroubleshootingResultResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientGetTroubleshootingResultResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientGetTroubleshootingResultResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -747,7 +736,7 @@ func (client *WatchersClient) getTroubleshootingResult(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -772,7 +761,7 @@ func (client *WatchersClient) getTroubleshootingResultCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -798,11 +787,11 @@ func (client *WatchersClient) BeginGetVMSecurityRules(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientGetVMSecurityRulesResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientGetVMSecurityRulesResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientGetVMSecurityRulesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientGetVMSecurityRulesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -815,7 +804,7 @@ func (client *WatchersClient) getVMSecurityRules(ctx context.Context, resourceGr
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -840,7 +829,7 @@ func (client *WatchersClient) getVMSecurityRulesCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -866,7 +855,7 @@ func (client *WatchersClient) NewListPager(resourceGroupName string, options *Wa
 			if err != nil {
 				return WatchersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WatchersClientListResponse{}, err
 			}
@@ -889,7 +878,7 @@ func (client *WatchersClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -923,7 +912,7 @@ func (client *WatchersClient) NewListAllPager(options *WatchersClientListAllOpti
 			if err != nil {
 				return WatchersClientListAllResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WatchersClientListAllResponse{}, err
 			}
@@ -942,7 +931,7 @@ func (client *WatchersClient) listAllCreateRequest(ctx context.Context, options 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -978,11 +967,11 @@ func (client *WatchersClient) BeginListAvailableProviders(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientListAvailableProvidersResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientListAvailableProvidersResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientListAvailableProvidersResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientListAvailableProvidersResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -996,7 +985,7 @@ func (client *WatchersClient) listAvailableProviders(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1021,7 +1010,7 @@ func (client *WatchersClient) listAvailableProvidersCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1047,11 +1036,11 @@ func (client *WatchersClient) BeginSetFlowLogConfiguration(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientSetFlowLogConfigurationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientSetFlowLogConfigurationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientSetFlowLogConfigurationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientSetFlowLogConfigurationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1064,7 +1053,7 @@ func (client *WatchersClient) setFlowLogConfiguration(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1089,7 +1078,7 @@ func (client *WatchersClient) setFlowLogConfigurationCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1113,7 +1102,7 @@ func (client *WatchersClient) UpdateTags(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WatchersClientUpdateTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatchersClientUpdateTagsResponse{}, err
 	}
@@ -1138,7 +1127,7 @@ func (client *WatchersClient) updateTagsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1173,11 +1162,11 @@ func (client *WatchersClient) BeginVerifyIPFlow(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WatchersClientVerifyIPFlowResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientVerifyIPFlowResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[WatchersClientVerifyIPFlowResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WatchersClientVerifyIPFlowResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1190,7 +1179,7 @@ func (client *WatchersClient) verifyIPFlow(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1215,7 +1204,7 @@ func (client *WatchersClient) verifyIPFlowCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

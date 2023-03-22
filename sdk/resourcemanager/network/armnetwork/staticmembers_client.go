@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // StaticMembersClient contains the methods for the StaticMembers group.
 // Don't use this type directly, use NewStaticMembersClient() instead.
 type StaticMembersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewStaticMembersClient creates a new instance of StaticMembersClient with the specified values.
@@ -38,21 +35,13 @@ type StaticMembersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewStaticMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StaticMembersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".StaticMembersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &StaticMembersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -73,7 +62,7 @@ func (client *StaticMembersClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return StaticMembersClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticMembersClientCreateOrUpdateResponse{}, err
 	}
@@ -106,7 +95,7 @@ func (client *StaticMembersClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter staticMemberName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{staticMemberName}", url.PathEscape(staticMemberName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +129,7 @@ func (client *StaticMembersClient) Delete(ctx context.Context, resourceGroupName
 	if err != nil {
 		return StaticMembersClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticMembersClientDeleteResponse{}, err
 	}
@@ -173,7 +162,7 @@ func (client *StaticMembersClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter staticMemberName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{staticMemberName}", url.PathEscape(staticMemberName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -198,7 +187,7 @@ func (client *StaticMembersClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return StaticMembersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StaticMembersClientGetResponse{}, err
 	}
@@ -231,7 +220,7 @@ func (client *StaticMembersClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter staticMemberName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{staticMemberName}", url.PathEscape(staticMemberName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -274,7 +263,7 @@ func (client *StaticMembersClient) NewListPager(resourceGroupName string, networ
 			if err != nil {
 				return StaticMembersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StaticMembersClientListResponse{}, err
 			}
@@ -305,7 +294,7 @@ func (client *StaticMembersClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter networkGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkGroupName}", url.PathEscape(networkGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -25,11 +25,11 @@ func ExampleSubnetsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSubnetsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "subnet-test", "vnetname", "subnet1", nil)
+	poller, err := clientFactory.NewSubnetsClient().BeginDelete(ctx, "subnet-test", "vnetname", "subnet1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleSubnetsClient_Get_getSubnet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSubnetsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "subnet-test", "vnetname", "subnet1", &armnetwork.SubnetsClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewSubnetsClient().Get(ctx, "subnet-test", "vnetname", "subnet1", &armnetwork.SubnetsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -74,11 +74,11 @@ func ExampleSubnetsClient_Get_getSubnetWithADelegation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSubnetsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "subnet-test", "vnetname", "subnet1", &armnetwork.SubnetsClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewSubnetsClient().Get(ctx, "subnet-test", "vnetname", "subnet1", &armnetwork.SubnetsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -114,11 +114,11 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSubnetsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "subnet-test", "vnetname", "subnet1", armnetwork.Subnet{
+	poller, err := clientFactory.NewSubnetsClient().BeginCreateOrUpdate(ctx, "subnet-test", "vnetname", "subnet1", armnetwork.Subnet{
 		Properties: &armnetwork.SubnetPropertiesFormat{
 			AddressPrefix: to.Ptr("10.0.0.0/16"),
 		},
@@ -150,11 +150,11 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithADelegation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSubnetsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "subnet-test", "vnetname", "subnet1", armnetwork.Subnet{
+	poller, err := clientFactory.NewSubnetsClient().BeginCreateOrUpdate(ctx, "subnet-test", "vnetname", "subnet1", armnetwork.Subnet{
 		Properties: &armnetwork.SubnetPropertiesFormat{
 			AddressPrefix: to.Ptr("10.0.0.0/16"),
 		},
@@ -198,11 +198,11 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceEndpoints()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSubnetsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "subnet-test", "vnetname", "subnet1", armnetwork.Subnet{
+	poller, err := clientFactory.NewSubnetsClient().BeginCreateOrUpdate(ctx, "subnet-test", "vnetname", "subnet1", armnetwork.Subnet{
 		Properties: &armnetwork.SubnetPropertiesFormat{
 			AddressPrefix: to.Ptr("10.0.0.0/16"),
 			ServiceEndpoints: []*armnetwork.ServiceEndpointPropertiesFormat{
@@ -246,11 +246,11 @@ func ExampleSubnetsClient_BeginPrepareNetworkPolicies() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSubnetsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPrepareNetworkPolicies(ctx, "rg1", "test-vnet", "subnet1", armnetwork.PrepareNetworkPoliciesRequest{
+	poller, err := clientFactory.NewSubnetsClient().BeginPrepareNetworkPolicies(ctx, "rg1", "test-vnet", "subnet1", armnetwork.PrepareNetworkPoliciesRequest{
 		ServiceName: to.Ptr("Microsoft.Sql/managedInstances"),
 	}, nil)
 	if err != nil {
@@ -269,11 +269,11 @@ func ExampleSubnetsClient_BeginUnprepareNetworkPolicies() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSubnetsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUnprepareNetworkPolicies(ctx, "rg1", "test-vnet", "subnet1", armnetwork.UnprepareNetworkPoliciesRequest{
+	poller, err := clientFactory.NewSubnetsClient().BeginUnprepareNetworkPolicies(ctx, "rg1", "test-vnet", "subnet1", armnetwork.UnprepareNetworkPoliciesRequest{
 		ServiceName: to.Ptr("Microsoft.Sql/managedInstances"),
 	}, nil)
 	if err != nil {
@@ -292,11 +292,11 @@ func ExampleSubnetsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSubnetsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("subnet-test", "vnetname", nil)
+	pager := clientFactory.NewSubnetsClient().NewListPager("subnet-test", "vnetname", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

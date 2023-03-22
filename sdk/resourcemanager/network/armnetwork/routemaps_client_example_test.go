@@ -25,11 +25,11 @@ func ExampleRouteMapsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRouteMapsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "virtualHub1", "routeMap1", nil)
+	res, err := clientFactory.NewRouteMapsClient().Get(ctx, "rg1", "virtualHub1", "routeMap1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -86,11 +86,11 @@ func ExampleRouteMapsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRouteMapsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "virtualHub1", "routeMap1", armnetwork.RouteMap{
+	poller, err := clientFactory.NewRouteMapsClient().BeginCreateOrUpdate(ctx, "rg1", "virtualHub1", "routeMap1", armnetwork.RouteMap{
 		Properties: &armnetwork.RouteMapProperties{
 			AssociatedInboundConnections: []*string{
 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRouteGateways/exrGateway1/expressRouteConnections/exrConn1")},
@@ -181,11 +181,11 @@ func ExampleRouteMapsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRouteMapsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "virtualHub1", "routeMap1", nil)
+	poller, err := clientFactory.NewRouteMapsClient().BeginDelete(ctx, "rg1", "virtualHub1", "routeMap1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -202,11 +202,11 @@ func ExampleRouteMapsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRouteMapsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "virtualHub1", nil)
+	pager := clientFactory.NewRouteMapsClient().NewListPager("rg1", "virtualHub1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

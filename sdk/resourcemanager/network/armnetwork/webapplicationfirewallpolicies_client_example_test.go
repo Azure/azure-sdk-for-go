@@ -25,11 +25,11 @@ func ExampleWebApplicationFirewallPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWebApplicationFirewallPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewWebApplicationFirewallPoliciesClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -134,11 +134,11 @@ func ExampleWebApplicationFirewallPoliciesClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWebApplicationFirewallPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewWebApplicationFirewallPoliciesClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -243,11 +243,11 @@ func ExampleWebApplicationFirewallPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWebApplicationFirewallPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "Policy1", nil)
+	res, err := clientFactory.NewWebApplicationFirewallPoliciesClient().Get(ctx, "rg1", "Policy1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -432,11 +432,11 @@ func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWebApplicationFirewallPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "Policy1", armnetwork.WebApplicationFirewallPolicy{
+	res, err := clientFactory.NewWebApplicationFirewallPoliciesClient().CreateOrUpdate(ctx, "rg1", "Policy1", armnetwork.WebApplicationFirewallPolicy{
 		Location: to.Ptr("WestUs"),
 		Properties: &armnetwork.WebApplicationFirewallPolicyPropertiesFormat{
 			CustomRules: []*armnetwork.WebApplicationFirewallCustomRule{
@@ -705,11 +705,11 @@ func ExampleWebApplicationFirewallPoliciesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWebApplicationFirewallPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "Policy1", nil)
+	poller, err := clientFactory.NewWebApplicationFirewallPoliciesClient().BeginDelete(ctx, "rg1", "Policy1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

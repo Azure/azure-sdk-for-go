@@ -25,11 +25,11 @@ func ExampleSecurityGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "testnsg", nil)
+	poller, err := clientFactory.NewSecurityGroupsClient().BeginDelete(ctx, "rg1", "testnsg", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleSecurityGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testnsg", &armnetwork.SecurityGroupsClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewSecurityGroupsClient().Get(ctx, "rg1", "testnsg", &armnetwork.SecurityGroupsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -188,11 +188,11 @@ func ExampleSecurityGroupsClient_BeginCreateOrUpdate_createNetworkSecurityGroup(
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testnsg", armnetwork.SecurityGroup{
+	poller, err := clientFactory.NewSecurityGroupsClient().BeginCreateOrUpdate(ctx, "rg1", "testnsg", armnetwork.SecurityGroup{
 		Location: to.Ptr("eastus"),
 	}, nil)
 	if err != nil {
@@ -323,11 +323,11 @@ func ExampleSecurityGroupsClient_BeginCreateOrUpdate_createNetworkSecurityGroupW
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testnsg", armnetwork.SecurityGroup{
+	poller, err := clientFactory.NewSecurityGroupsClient().BeginCreateOrUpdate(ctx, "rg1", "testnsg", armnetwork.SecurityGroup{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.SecurityGroupPropertiesFormat{
 			SecurityRules: []*armnetwork.SecurityRule{
@@ -487,11 +487,11 @@ func ExampleSecurityGroupsClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "testnsg", armnetwork.TagsObject{
+	res, err := clientFactory.NewSecurityGroupsClient().UpdateTags(ctx, "rg1", "testnsg", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -624,11 +624,11 @@ func ExampleSecurityGroupsClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewSecurityGroupsClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -868,11 +868,11 @@ func ExampleSecurityGroupsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewSecurityGroupsClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

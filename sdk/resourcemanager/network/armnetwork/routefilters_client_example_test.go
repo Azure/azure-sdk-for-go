@@ -25,11 +25,11 @@ func ExampleRouteFiltersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRouteFiltersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "filterName", nil)
+	poller, err := clientFactory.NewRouteFiltersClient().BeginDelete(ctx, "rg1", "filterName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleRouteFiltersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRouteFiltersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "filterName", &armnetwork.RouteFiltersClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewRouteFiltersClient().Get(ctx, "rg1", "filterName", &armnetwork.RouteFiltersClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -95,11 +95,11 @@ func ExampleRouteFiltersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRouteFiltersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "filterName", armnetwork.RouteFilter{
+	poller, err := clientFactory.NewRouteFiltersClient().BeginCreateOrUpdate(ctx, "rg1", "filterName", armnetwork.RouteFilter{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -166,11 +166,11 @@ func ExampleRouteFiltersClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRouteFiltersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "filterName", armnetwork.TagsObject{
+	res, err := clientFactory.NewRouteFiltersClient().UpdateTags(ctx, "rg1", "filterName", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
@@ -218,11 +218,11 @@ func ExampleRouteFiltersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRouteFiltersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewRouteFiltersClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -275,11 +275,11 @@ func ExampleRouteFiltersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRouteFiltersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewRouteFiltersClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

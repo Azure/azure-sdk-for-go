@@ -25,11 +25,11 @@ func ExampleInboundSecurityRuleClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInboundSecurityRuleClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "nva", "rule1", armnetwork.InboundSecurityRule{
+	poller, err := clientFactory.NewInboundSecurityRuleClient().BeginCreateOrUpdate(ctx, "rg1", "nva", "rule1", armnetwork.InboundSecurityRule{
 		Properties: &armnetwork.InboundSecurityRuleProperties{
 			Rules: []*armnetwork.InboundSecurityRules{
 				{

@@ -1,5 +1,150 @@
 # Release History
 
+## 2.2.0 (2023-03-24)
+### Features Added
+
+- New value `ApplicationGatewayCustomErrorStatusCodeHTTPStatus400`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus404`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus405`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus408`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus499`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus500`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus503`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus504` added to enum type `ApplicationGatewayCustomErrorStatusCode`
+- New enum type `WebApplicationFirewallState` with values `WebApplicationFirewallStateDisabled`, `WebApplicationFirewallStateEnabled`
+- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
+- New function `*ClientFactory.NewAdminRuleCollectionsClient() *AdminRuleCollectionsClient`
+- New function `*ClientFactory.NewAdminRulesClient() *AdminRulesClient`
+- New function `*ClientFactory.NewApplicationGatewayPrivateEndpointConnectionsClient() *ApplicationGatewayPrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewApplicationGatewayPrivateLinkResourcesClient() *ApplicationGatewayPrivateLinkResourcesClient`
+- New function `*ClientFactory.NewApplicationGatewayWafDynamicManifestsClient() *ApplicationGatewayWafDynamicManifestsClient`
+- New function `*ClientFactory.NewApplicationGatewayWafDynamicManifestsDefaultClient() *ApplicationGatewayWafDynamicManifestsDefaultClient`
+- New function `*ClientFactory.NewApplicationGatewaysClient() *ApplicationGatewaysClient`
+- New function `*ClientFactory.NewApplicationSecurityGroupsClient() *ApplicationSecurityGroupsClient`
+- New function `*ClientFactory.NewAvailableDelegationsClient() *AvailableDelegationsClient`
+- New function `*ClientFactory.NewAvailableEndpointServicesClient() *AvailableEndpointServicesClient`
+- New function `*ClientFactory.NewAvailablePrivateEndpointTypesClient() *AvailablePrivateEndpointTypesClient`
+- New function `*ClientFactory.NewAvailableResourceGroupDelegationsClient() *AvailableResourceGroupDelegationsClient`
+- New function `*ClientFactory.NewAvailableServiceAliasesClient() *AvailableServiceAliasesClient`
+- New function `*ClientFactory.NewAzureFirewallFqdnTagsClient() *AzureFirewallFqdnTagsClient`
+- New function `*ClientFactory.NewAzureFirewallsClient() *AzureFirewallsClient`
+- New function `*ClientFactory.NewBastionHostsClient() *BastionHostsClient`
+- New function `*ClientFactory.NewBgpServiceCommunitiesClient() *BgpServiceCommunitiesClient`
+- New function `*ClientFactory.NewConfigurationPolicyGroupsClient() *ConfigurationPolicyGroupsClient`
+- New function `*ClientFactory.NewConnectionMonitorsClient() *ConnectionMonitorsClient`
+- New function `*ClientFactory.NewConnectivityConfigurationsClient() *ConnectivityConfigurationsClient`
+- New function `*ClientFactory.NewCustomIPPrefixesClient() *CustomIPPrefixesClient`
+- New function `*ClientFactory.NewDdosCustomPoliciesClient() *DdosCustomPoliciesClient`
+- New function `*ClientFactory.NewDdosProtectionPlansClient() *DdosProtectionPlansClient`
+- New function `*ClientFactory.NewDefaultSecurityRulesClient() *DefaultSecurityRulesClient`
+- New function `*ClientFactory.NewDscpConfigurationClient() *DscpConfigurationClient`
+- New function `*ClientFactory.NewExpressRouteCircuitAuthorizationsClient() *ExpressRouteCircuitAuthorizationsClient`
+- New function `*ClientFactory.NewExpressRouteCircuitConnectionsClient() *ExpressRouteCircuitConnectionsClient`
+- New function `*ClientFactory.NewExpressRouteCircuitPeeringsClient() *ExpressRouteCircuitPeeringsClient`
+- New function `*ClientFactory.NewExpressRouteCircuitsClient() *ExpressRouteCircuitsClient`
+- New function `*ClientFactory.NewExpressRouteConnectionsClient() *ExpressRouteConnectionsClient`
+- New function `*ClientFactory.NewExpressRouteCrossConnectionPeeringsClient() *ExpressRouteCrossConnectionPeeringsClient`
+- New function `*ClientFactory.NewExpressRouteCrossConnectionsClient() *ExpressRouteCrossConnectionsClient`
+- New function `*ClientFactory.NewExpressRouteGatewaysClient() *ExpressRouteGatewaysClient`
+- New function `*ClientFactory.NewExpressRouteLinksClient() *ExpressRouteLinksClient`
+- New function `*ClientFactory.NewExpressRoutePortAuthorizationsClient() *ExpressRoutePortAuthorizationsClient`
+- New function `*ClientFactory.NewExpressRoutePortsClient() *ExpressRoutePortsClient`
+- New function `*ClientFactory.NewExpressRoutePortsLocationsClient() *ExpressRoutePortsLocationsClient`
+- New function `*ClientFactory.NewExpressRouteProviderPortsLocationClient() *ExpressRouteProviderPortsLocationClient`
+- New function `*ClientFactory.NewExpressRouteServiceProvidersClient() *ExpressRouteServiceProvidersClient`
+- New function `*ClientFactory.NewFirewallPoliciesClient() *FirewallPoliciesClient`
+- New function `*ClientFactory.NewFirewallPolicyIdpsSignaturesClient() *FirewallPolicyIdpsSignaturesClient`
+- New function `*ClientFactory.NewFirewallPolicyIdpsSignaturesFilterValuesClient() *FirewallPolicyIdpsSignaturesFilterValuesClient`
+- New function `*ClientFactory.NewFirewallPolicyIdpsSignaturesOverridesClient() *FirewallPolicyIdpsSignaturesOverridesClient`
+- New function `*ClientFactory.NewFirewallPolicyRuleCollectionGroupsClient() *FirewallPolicyRuleCollectionGroupsClient`
+- New function `*ClientFactory.NewFlowLogsClient() *FlowLogsClient`
+- New function `*ClientFactory.NewGroupsClient() *GroupsClient`
+- New function `*ClientFactory.NewHubRouteTablesClient() *HubRouteTablesClient`
+- New function `*ClientFactory.NewHubVirtualNetworkConnectionsClient() *HubVirtualNetworkConnectionsClient`
+- New function `*ClientFactory.NewIPAllocationsClient() *IPAllocationsClient`
+- New function `*ClientFactory.NewIPGroupsClient() *IPGroupsClient`
+- New function `*ClientFactory.NewInboundNatRulesClient() *InboundNatRulesClient`
+- New function `*ClientFactory.NewInboundSecurityRuleClient() *InboundSecurityRuleClient`
+- New function `*ClientFactory.NewInterfaceIPConfigurationsClient() *InterfaceIPConfigurationsClient`
+- New function `*ClientFactory.NewInterfaceLoadBalancersClient() *InterfaceLoadBalancersClient`
+- New function `*ClientFactory.NewInterfaceTapConfigurationsClient() *InterfaceTapConfigurationsClient`
+- New function `*ClientFactory.NewInterfacesClient() *InterfacesClient`
+- New function `*ClientFactory.NewLoadBalancerBackendAddressPoolsClient() *LoadBalancerBackendAddressPoolsClient`
+- New function `*ClientFactory.NewLoadBalancerFrontendIPConfigurationsClient() *LoadBalancerFrontendIPConfigurationsClient`
+- New function `*ClientFactory.NewLoadBalancerLoadBalancingRulesClient() *LoadBalancerLoadBalancingRulesClient`
+- New function `*ClientFactory.NewLoadBalancerNetworkInterfacesClient() *LoadBalancerNetworkInterfacesClient`
+- New function `*ClientFactory.NewLoadBalancerOutboundRulesClient() *LoadBalancerOutboundRulesClient`
+- New function `*ClientFactory.NewLoadBalancerProbesClient() *LoadBalancerProbesClient`
+- New function `*ClientFactory.NewLoadBalancersClient() *LoadBalancersClient`
+- New function `*ClientFactory.NewLocalNetworkGatewaysClient() *LocalNetworkGatewaysClient`
+- New function `*ClientFactory.NewManagementClient() *ManagementClient`
+- New function `*ClientFactory.NewManagementGroupNetworkManagerConnectionsClient() *ManagementGroupNetworkManagerConnectionsClient`
+- New function `*ClientFactory.NewManagerCommitsClient() *ManagerCommitsClient`
+- New function `*ClientFactory.NewManagerDeploymentStatusClient() *ManagerDeploymentStatusClient`
+- New function `*ClientFactory.NewManagersClient() *ManagersClient`
+- New function `*ClientFactory.NewNatGatewaysClient() *NatGatewaysClient`
+- New function `*ClientFactory.NewNatRulesClient() *NatRulesClient`
+- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
+- New function `*ClientFactory.NewP2SVPNGatewaysClient() *P2SVPNGatewaysClient`
+- New function `*ClientFactory.NewPacketCapturesClient() *PacketCapturesClient`
+- New function `*ClientFactory.NewPeerExpressRouteCircuitConnectionsClient() *PeerExpressRouteCircuitConnectionsClient`
+- New function `*ClientFactory.NewPrivateDNSZoneGroupsClient() *PrivateDNSZoneGroupsClient`
+- New function `*ClientFactory.NewPrivateEndpointsClient() *PrivateEndpointsClient`
+- New function `*ClientFactory.NewPrivateLinkServicesClient() *PrivateLinkServicesClient`
+- New function `*ClientFactory.NewProfilesClient() *ProfilesClient`
+- New function `*ClientFactory.NewPublicIPAddressesClient() *PublicIPAddressesClient`
+- New function `*ClientFactory.NewPublicIPPrefixesClient() *PublicIPPrefixesClient`
+- New function `*ClientFactory.NewResourceNavigationLinksClient() *ResourceNavigationLinksClient`
+- New function `*ClientFactory.NewRouteFilterRulesClient() *RouteFilterRulesClient`
+- New function `*ClientFactory.NewRouteFiltersClient() *RouteFiltersClient`
+- New function `*ClientFactory.NewRouteMapsClient() *RouteMapsClient`
+- New function `*ClientFactory.NewRouteTablesClient() *RouteTablesClient`
+- New function `*ClientFactory.NewRoutesClient() *RoutesClient`
+- New function `*ClientFactory.NewRoutingIntentClient() *RoutingIntentClient`
+- New function `*ClientFactory.NewScopeConnectionsClient() *ScopeConnectionsClient`
+- New function `*ClientFactory.NewSecurityAdminConfigurationsClient() *SecurityAdminConfigurationsClient`
+- New function `*ClientFactory.NewSecurityGroupsClient() *SecurityGroupsClient`
+- New function `*ClientFactory.NewSecurityPartnerProvidersClient() *SecurityPartnerProvidersClient`
+- New function `*ClientFactory.NewSecurityRulesClient() *SecurityRulesClient`
+- New function `*ClientFactory.NewServiceAssociationLinksClient() *ServiceAssociationLinksClient`
+- New function `*ClientFactory.NewServiceEndpointPoliciesClient() *ServiceEndpointPoliciesClient`
+- New function `*ClientFactory.NewServiceEndpointPolicyDefinitionsClient() *ServiceEndpointPolicyDefinitionsClient`
+- New function `*ClientFactory.NewServiceTagInformationClient() *ServiceTagInformationClient`
+- New function `*ClientFactory.NewServiceTagsClient() *ServiceTagsClient`
+- New function `*ClientFactory.NewStaticMembersClient() *StaticMembersClient`
+- New function `*ClientFactory.NewSubnetsClient() *SubnetsClient`
+- New function `*ClientFactory.NewSubscriptionNetworkManagerConnectionsClient() *SubscriptionNetworkManagerConnectionsClient`
+- New function `*ClientFactory.NewUsagesClient() *UsagesClient`
+- New function `*ClientFactory.NewVPNConnectionsClient() *VPNConnectionsClient`
+- New function `*ClientFactory.NewVPNGatewaysClient() *VPNGatewaysClient`
+- New function `*ClientFactory.NewVPNLinkConnectionsClient() *VPNLinkConnectionsClient`
+- New function `*ClientFactory.NewVPNServerConfigurationsAssociatedWithVirtualWanClient() *VPNServerConfigurationsAssociatedWithVirtualWanClient`
+- New function `*ClientFactory.NewVPNServerConfigurationsClient() *VPNServerConfigurationsClient`
+- New function `*ClientFactory.NewVPNSiteLinkConnectionsClient() *VPNSiteLinkConnectionsClient`
+- New function `*ClientFactory.NewVPNSiteLinksClient() *VPNSiteLinksClient`
+- New function `*ClientFactory.NewVPNSitesClient() *VPNSitesClient`
+- New function `*ClientFactory.NewVPNSitesConfigurationClient() *VPNSitesConfigurationClient`
+- New function `*ClientFactory.NewVipSwapClient() *VipSwapClient`
+- New function `*ClientFactory.NewVirtualApplianceSKUsClient() *VirtualApplianceSKUsClient`
+- New function `*ClientFactory.NewVirtualApplianceSitesClient() *VirtualApplianceSitesClient`
+- New function `*ClientFactory.NewVirtualAppliancesClient() *VirtualAppliancesClient`
+- New function `*ClientFactory.NewVirtualHubBgpConnectionClient() *VirtualHubBgpConnectionClient`
+- New function `*ClientFactory.NewVirtualHubBgpConnectionsClient() *VirtualHubBgpConnectionsClient`
+- New function `*ClientFactory.NewVirtualHubIPConfigurationClient() *VirtualHubIPConfigurationClient`
+- New function `*ClientFactory.NewVirtualHubRouteTableV2SClient() *VirtualHubRouteTableV2SClient`
+- New function `*ClientFactory.NewVirtualHubsClient() *VirtualHubsClient`
+- New function `*ClientFactory.NewVirtualNetworkGatewayConnectionsClient() *VirtualNetworkGatewayConnectionsClient`
+- New function `*ClientFactory.NewVirtualNetworkGatewayNatRulesClient() *VirtualNetworkGatewayNatRulesClient`
+- New function `*ClientFactory.NewVirtualNetworkGatewaysClient() *VirtualNetworkGatewaysClient`
+- New function `*ClientFactory.NewVirtualNetworkPeeringsClient() *VirtualNetworkPeeringsClient`
+- New function `*ClientFactory.NewVirtualNetworkTapsClient() *VirtualNetworkTapsClient`
+- New function `*ClientFactory.NewVirtualNetworksClient() *VirtualNetworksClient`
+- New function `*ClientFactory.NewVirtualRouterPeeringsClient() *VirtualRouterPeeringsClient`
+- New function `*ClientFactory.NewVirtualRoutersClient() *VirtualRoutersClient`
+- New function `*ClientFactory.NewVirtualWansClient() *VirtualWansClient`
+- New function `*ClientFactory.NewWatchersClient() *WatchersClient`
+- New function `*ClientFactory.NewWebApplicationFirewallPoliciesClient() *WebApplicationFirewallPoliciesClient`
+- New function `*ClientFactory.NewWebCategoriesClient() *WebCategoriesClient`
+- New struct `ClientFactory`
+- New field `AuthorizationStatus` in struct `ExpressRouteCircuitPropertiesFormat`
+- New field `IPConfigurationID` in struct `VPNGatewaysClientBeginResetOptions`
+- New field `FlowLogs` in struct `VirtualNetworkPropertiesFormat`
+- New field `State` in struct `WebApplicationFirewallCustomRule`
+
+
 ## 2.2.0 (2023-03-21)
 ### Features Added
 

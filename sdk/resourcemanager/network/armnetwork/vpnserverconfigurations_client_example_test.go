@@ -25,11 +25,11 @@ func ExampleVPNServerConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNServerConfigurationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "vpnServerConfiguration1", nil)
+	res, err := clientFactory.NewVPNServerConfigurationsClient().Get(ctx, "rg1", "vpnServerConfiguration1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -135,11 +135,11 @@ func ExampleVPNServerConfigurationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNServerConfigurationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "vpnServerConfiguration1", armnetwork.VPNServerConfiguration{
+	poller, err := clientFactory.NewVPNServerConfigurationsClient().BeginCreateOrUpdate(ctx, "rg1", "vpnServerConfiguration1", armnetwork.VPNServerConfiguration{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -324,11 +324,11 @@ func ExampleVPNServerConfigurationsClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNServerConfigurationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "vpnServerConfiguration1", armnetwork.TagsObject{
+	res, err := clientFactory.NewVPNServerConfigurationsClient().UpdateTags(ctx, "rg1", "vpnServerConfiguration1", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 			"key2": to.Ptr("value2"),
@@ -433,11 +433,11 @@ func ExampleVPNServerConfigurationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNServerConfigurationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "vpnServerConfiguration1", nil)
+	poller, err := clientFactory.NewVPNServerConfigurationsClient().BeginDelete(ctx, "rg1", "vpnServerConfiguration1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -454,11 +454,11 @@ func ExampleVPNServerConfigurationsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNServerConfigurationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewVPNServerConfigurationsClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -656,11 +656,11 @@ func ExampleVPNServerConfigurationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNServerConfigurationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewVPNServerConfigurationsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

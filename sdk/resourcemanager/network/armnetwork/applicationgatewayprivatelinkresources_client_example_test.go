@@ -24,11 +24,11 @@ func ExampleApplicationGatewayPrivateLinkResourcesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewayPrivateLinkResourcesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "appgw", nil)
+	pager := clientFactory.NewApplicationGatewayPrivateLinkResourcesClient().NewListPager("rg1", "appgw", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

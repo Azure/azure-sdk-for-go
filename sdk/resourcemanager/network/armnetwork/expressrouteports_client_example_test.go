@@ -25,11 +25,11 @@ func ExampleExpressRoutePortsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRoutePortsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "portName", nil)
+	poller, err := clientFactory.NewExpressRoutePortsClient().BeginDelete(ctx, "rg1", "portName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleExpressRoutePortsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRoutePortsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "portName", nil)
+	res, err := clientFactory.NewExpressRoutePortsClient().Get(ctx, "rg1", "portName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -114,11 +114,11 @@ func ExampleExpressRoutePortsClient_BeginCreateOrUpdate_expressRoutePortCreate()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRoutePortsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "portName", armnetwork.ExpressRoutePort{
+	poller, err := clientFactory.NewExpressRoutePortsClient().BeginCreateOrUpdate(ctx, "rg1", "portName", armnetwork.ExpressRoutePort{
 		Location: to.Ptr("westus"),
 		Properties: &armnetwork.ExpressRoutePortPropertiesFormat{
 			BandwidthInGbps: to.Ptr[int32](100),
@@ -192,11 +192,11 @@ func ExampleExpressRoutePortsClient_BeginCreateOrUpdate_expressRoutePortUpdateLi
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRoutePortsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "portName", armnetwork.ExpressRoutePort{
+	poller, err := clientFactory.NewExpressRoutePortsClient().BeginCreateOrUpdate(ctx, "rg1", "portName", armnetwork.ExpressRoutePort{
 		Location: to.Ptr("westus"),
 		Properties: &armnetwork.ExpressRoutePortPropertiesFormat{
 			BandwidthInGbps: to.Ptr[int32](100),
@@ -277,11 +277,11 @@ func ExampleExpressRoutePortsClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRoutePortsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "portName", armnetwork.TagsObject{
+	res, err := clientFactory.NewExpressRoutePortsClient().UpdateTags(ctx, "rg1", "portName", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -348,11 +348,11 @@ func ExampleExpressRoutePortsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRoutePortsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewExpressRoutePortsClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -424,11 +424,11 @@ func ExampleExpressRoutePortsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRoutePortsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewExpressRoutePortsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -500,11 +500,11 @@ func ExampleExpressRoutePortsClient_GenerateLOA() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRoutePortsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GenerateLOA(ctx, "rg1", "portName", armnetwork.GenerateExpressRoutePortsLOARequest{
+	res, err := clientFactory.NewExpressRoutePortsClient().GenerateLOA(ctx, "rg1", "portName", armnetwork.GenerateExpressRoutePortsLOARequest{
 		CustomerName: to.Ptr("customerName"),
 	}, nil)
 	if err != nil {

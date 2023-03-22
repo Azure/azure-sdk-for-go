@@ -25,11 +25,11 @@ func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceTagInformationClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("westeurope", &armnetwork.ServiceTagInformationClientListOptions{NoAddressPrefixes: nil,
+	pager := clientFactory.NewServiceTagInformationClient().NewListPager("westeurope", &armnetwork.ServiceTagInformationClientListOptions{NoAddressPrefixes: nil,
 		TagName: nil,
 	})
 	for pager.More() {
@@ -80,11 +80,11 @@ func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTagsWithNoA
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceTagInformationClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("westeurope", &armnetwork.ServiceTagInformationClientListOptions{NoAddressPrefixes: to.Ptr(true),
+	pager := clientFactory.NewServiceTagInformationClient().NewListPager("westeurope", &armnetwork.ServiceTagInformationClientListOptions{NoAddressPrefixes: to.Ptr(true),
 		TagName: nil,
 	})
 	for pager.More() {
@@ -132,11 +132,11 @@ func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTagsWithTag
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceTagInformationClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("westeurope", &armnetwork.ServiceTagInformationClientListOptions{NoAddressPrefixes: nil,
+	pager := clientFactory.NewServiceTagInformationClient().NewListPager("westeurope", &armnetwork.ServiceTagInformationClientListOptions{NoAddressPrefixes: nil,
 		TagName: to.Ptr("ApiManagement"),
 	})
 	for pager.More() {

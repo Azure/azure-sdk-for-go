@@ -25,11 +25,11 @@ func ExampleExpressRouteConnectionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "resourceGroupName", "gateway-2", "connectionName", armnetwork.ExpressRouteConnection{
+	poller, err := clientFactory.NewExpressRouteConnectionsClient().BeginCreateOrUpdate(ctx, "resourceGroupName", "gateway-2", "connectionName", armnetwork.ExpressRouteConnection{
 		ID:   to.Ptr("/subscriptions/subid/resourceGroups/resourceGroupName/providers/Microsoft.Network/expressRouteGateways/gateway-2/expressRouteConnections/connectionName"),
 		Name: to.Ptr("connectionName"),
 		Properties: &armnetwork.ExpressRouteConnectionProperties{
@@ -126,11 +126,11 @@ func ExampleExpressRouteConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroupName", "expressRouteGatewayName", "connectionName", nil)
+	res, err := clientFactory.NewExpressRouteConnectionsClient().Get(ctx, "resourceGroupName", "expressRouteGatewayName", "connectionName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -187,11 +187,11 @@ func ExampleExpressRouteConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resourceGroupName", "expressRouteGatewayName", "connectionName", nil)
+	poller, err := clientFactory.NewExpressRouteConnectionsClient().BeginDelete(ctx, "resourceGroupName", "expressRouteGatewayName", "connectionName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -208,11 +208,11 @@ func ExampleExpressRouteConnectionsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "resourceGroupName", "expressRouteGatewayName", nil)
+	res, err := clientFactory.NewExpressRouteConnectionsClient().List(ctx, "resourceGroupName", "expressRouteGatewayName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

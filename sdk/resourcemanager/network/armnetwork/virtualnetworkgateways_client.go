@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // VirtualNetworkGatewaysClient contains the methods for the VirtualNetworkGateways group.
 // Don't use this type directly, use NewVirtualNetworkGatewaysClient() instead.
 type VirtualNetworkGatewaysClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewVirtualNetworkGatewaysClient creates a new instance of VirtualNetworkGatewaysClient with the specified values.
@@ -37,21 +34,13 @@ type VirtualNetworkGatewaysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualNetworkGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworkGatewaysClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".VirtualNetworkGatewaysClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &VirtualNetworkGatewaysClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,11 +60,11 @@ func (client *VirtualNetworkGatewaysClient) BeginCreateOrUpdate(ctx context.Cont
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -88,7 +77,7 @@ func (client *VirtualNetworkGatewaysClient) createOrUpdate(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +102,7 @@ func (client *VirtualNetworkGatewaysClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -138,11 +127,11 @@ func (client *VirtualNetworkGatewaysClient) BeginDelete(ctx context.Context, res
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -155,7 +144,7 @@ func (client *VirtualNetworkGatewaysClient) deleteOperation(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +169,7 @@ func (client *VirtualNetworkGatewaysClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,11 +196,11 @@ func (client *VirtualNetworkGatewaysClient) BeginDisconnectVirtualNetworkGateway
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -225,7 +214,7 @@ func (client *VirtualNetworkGatewaysClient) disconnectVirtualNetworkGatewayVPNCo
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -250,7 +239,7 @@ func (client *VirtualNetworkGatewaysClient) disconnectVirtualNetworkGatewayVPNCo
 		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -277,11 +266,11 @@ func (client *VirtualNetworkGatewaysClient) BeginGenerateVPNProfile(ctx context.
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGenerateVPNProfileResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGenerateVPNProfileResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGenerateVPNProfileResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGenerateVPNProfileResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -295,7 +284,7 @@ func (client *VirtualNetworkGatewaysClient) generateVPNProfile(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -320,7 +309,7 @@ func (client *VirtualNetworkGatewaysClient) generateVPNProfileCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -347,11 +336,11 @@ func (client *VirtualNetworkGatewaysClient) BeginGeneratevpnclientpackage(ctx co
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -365,7 +354,7 @@ func (client *VirtualNetworkGatewaysClient) generatevpnclientpackage(ctx context
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -390,7 +379,7 @@ func (client *VirtualNetworkGatewaysClient) generatevpnclientpackageCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -414,7 +403,7 @@ func (client *VirtualNetworkGatewaysClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return VirtualNetworkGatewaysClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualNetworkGatewaysClientGetResponse{}, err
 	}
@@ -439,7 +428,7 @@ func (client *VirtualNetworkGatewaysClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -475,11 +464,11 @@ func (client *VirtualNetworkGatewaysClient) BeginGetAdvertisedRoutes(ctx context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -493,7 +482,7 @@ func (client *VirtualNetworkGatewaysClient) getAdvertisedRoutes(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -518,7 +507,7 @@ func (client *VirtualNetworkGatewaysClient) getAdvertisedRoutesCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -544,11 +533,11 @@ func (client *VirtualNetworkGatewaysClient) BeginGetBgpPeerStatus(ctx context.Co
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -561,7 +550,7 @@ func (client *VirtualNetworkGatewaysClient) getBgpPeerStatus(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -586,7 +575,7 @@ func (client *VirtualNetworkGatewaysClient) getBgpPeerStatusCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -615,11 +604,11 @@ func (client *VirtualNetworkGatewaysClient) BeginGetLearnedRoutes(ctx context.Co
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetLearnedRoutesResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetLearnedRoutesResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetLearnedRoutesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetLearnedRoutesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -633,7 +622,7 @@ func (client *VirtualNetworkGatewaysClient) getLearnedRoutes(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -658,7 +647,7 @@ func (client *VirtualNetworkGatewaysClient) getLearnedRoutesCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -684,11 +673,11 @@ func (client *VirtualNetworkGatewaysClient) BeginGetVPNProfilePackageURL(ctx con
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -702,7 +691,7 @@ func (client *VirtualNetworkGatewaysClient) getVPNProfilePackageURL(ctx context.
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -727,7 +716,7 @@ func (client *VirtualNetworkGatewaysClient) getVPNProfilePackageURLCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -753,11 +742,11 @@ func (client *VirtualNetworkGatewaysClient) BeginGetVpnclientConnectionHealth(ct
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -771,7 +760,7 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientConnectionHealth(ctx con
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -796,7 +785,7 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientConnectionHealthCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -823,11 +812,11 @@ func (client *VirtualNetworkGatewaysClient) BeginGetVpnclientIPSecParameters(ctx
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -842,7 +831,7 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientIPSecParameters(ctx cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -867,7 +856,7 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientIPSecParametersCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -900,7 +889,7 @@ func (client *VirtualNetworkGatewaysClient) NewListPager(resourceGroupName strin
 			if err != nil {
 				return VirtualNetworkGatewaysClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return VirtualNetworkGatewaysClientListResponse{}, err
 			}
@@ -923,7 +912,7 @@ func (client *VirtualNetworkGatewaysClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -966,7 +955,7 @@ func (client *VirtualNetworkGatewaysClient) NewListConnectionsPager(resourceGrou
 			if err != nil {
 				return VirtualNetworkGatewaysClientListConnectionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return VirtualNetworkGatewaysClientListConnectionsResponse{}, err
 			}
@@ -993,7 +982,7 @@ func (client *VirtualNetworkGatewaysClient) listConnectionsCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1027,11 +1016,11 @@ func (client *VirtualNetworkGatewaysClient) BeginReset(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientResetResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientResetResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientResetResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientResetResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1044,7 +1033,7 @@ func (client *VirtualNetworkGatewaysClient) reset(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1069,7 +1058,7 @@ func (client *VirtualNetworkGatewaysClient) resetCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1098,11 +1087,11 @@ func (client *VirtualNetworkGatewaysClient) BeginResetVPNClientSharedKey(ctx con
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1115,7 +1104,7 @@ func (client *VirtualNetworkGatewaysClient) resetVPNClientSharedKey(ctx context.
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1140,7 +1129,7 @@ func (client *VirtualNetworkGatewaysClient) resetVPNClientSharedKeyCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1168,11 +1157,11 @@ func (client *VirtualNetworkGatewaysClient) BeginSetVpnclientIPSecParameters(ctx
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1186,7 +1175,7 @@ func (client *VirtualNetworkGatewaysClient) setVpnclientIPSecParameters(ctx cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1211,7 +1200,7 @@ func (client *VirtualNetworkGatewaysClient) setVpnclientIPSecParametersCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1236,11 +1225,11 @@ func (client *VirtualNetworkGatewaysClient) BeginStartPacketCapture(ctx context.
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientStartPacketCaptureResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientStartPacketCaptureResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientStartPacketCaptureResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientStartPacketCaptureResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1253,7 +1242,7 @@ func (client *VirtualNetworkGatewaysClient) startPacketCapture(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1278,7 +1267,7 @@ func (client *VirtualNetworkGatewaysClient) startPacketCaptureCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1307,11 +1296,11 @@ func (client *VirtualNetworkGatewaysClient) BeginStopPacketCapture(ctx context.C
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientStopPacketCaptureResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientStopPacketCaptureResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientStopPacketCaptureResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientStopPacketCaptureResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1324,7 +1313,7 @@ func (client *VirtualNetworkGatewaysClient) stopPacketCapture(ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1349,7 +1338,7 @@ func (client *VirtualNetworkGatewaysClient) stopPacketCaptureCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1373,7 +1362,7 @@ func (client *VirtualNetworkGatewaysClient) SupportedVPNDevices(ctx context.Cont
 	if err != nil {
 		return VirtualNetworkGatewaysClientSupportedVPNDevicesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualNetworkGatewaysClientSupportedVPNDevicesResponse{}, err
 	}
@@ -1398,7 +1387,7 @@ func (client *VirtualNetworkGatewaysClient) supportedVPNDevicesCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1433,11 +1422,11 @@ func (client *VirtualNetworkGatewaysClient) BeginUpdateTags(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkGatewaysClientUpdateTagsResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientUpdateTagsResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientUpdateTagsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewaysClientUpdateTagsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1450,7 +1439,7 @@ func (client *VirtualNetworkGatewaysClient) updateTags(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1475,7 +1464,7 @@ func (client *VirtualNetworkGatewaysClient) updateTagsCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1501,7 +1490,7 @@ func (client *VirtualNetworkGatewaysClient) VPNDeviceConfigurationScript(ctx con
 	if err != nil {
 		return VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptResponse{}, err
 	}
@@ -1526,7 +1515,7 @@ func (client *VirtualNetworkGatewaysClient) vpnDeviceConfigurationScriptCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

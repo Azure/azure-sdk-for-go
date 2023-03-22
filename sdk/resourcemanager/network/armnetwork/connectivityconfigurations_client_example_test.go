@@ -25,11 +25,11 @@ func ExampleConnectivityConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewConnectivityConfigurationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "testNetworkManager", "myTestConnectivityConfig", nil)
+	res, err := clientFactory.NewConnectivityConfigurationsClient().Get(ctx, "myResourceGroup", "testNetworkManager", "myTestConnectivityConfig", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -77,11 +77,11 @@ func ExampleConnectivityConfigurationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewConnectivityConfigurationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "myResourceGroup", "testNetworkManager", "myTestConnectivityConfig", armnetwork.ConnectivityConfiguration{
+	res, err := clientFactory.NewConnectivityConfigurationsClient().CreateOrUpdate(ctx, "myResourceGroup", "testNetworkManager", "myTestConnectivityConfig", armnetwork.ConnectivityConfiguration{
 		Properties: &armnetwork.ConnectivityConfigurationProperties{
 			Description: to.Ptr("Sample Configuration"),
 			AppliesToGroups: []*armnetwork.ConnectivityGroupItem{
@@ -148,11 +148,11 @@ func ExampleConnectivityConfigurationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewConnectivityConfigurationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myResourceGroup", "testNetworkManager", "myTestConnectivityConfig", &armnetwork.ConnectivityConfigurationsClientBeginDeleteOptions{Force: to.Ptr(false)})
+	poller, err := clientFactory.NewConnectivityConfigurationsClient().BeginDelete(ctx, "myResourceGroup", "testNetworkManager", "myTestConnectivityConfig", &armnetwork.ConnectivityConfigurationsClientBeginDeleteOptions{Force: to.Ptr(false)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -169,11 +169,11 @@ func ExampleConnectivityConfigurationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewConnectivityConfigurationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup", "testNetworkManager", &armnetwork.ConnectivityConfigurationsClientListOptions{Top: nil,
+	pager := clientFactory.NewConnectivityConfigurationsClient().NewListPager("myResourceGroup", "testNetworkManager", &armnetwork.ConnectivityConfigurationsClientListOptions{Top: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {

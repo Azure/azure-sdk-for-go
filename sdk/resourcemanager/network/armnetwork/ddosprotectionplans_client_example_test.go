@@ -25,11 +25,11 @@ func ExampleDdosProtectionPlansClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewDdosProtectionPlansClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "test-plan", nil)
+	poller, err := clientFactory.NewDdosProtectionPlansClient().BeginDelete(ctx, "rg1", "test-plan", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleDdosProtectionPlansClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewDdosProtectionPlansClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "test-plan", nil)
+	res, err := clientFactory.NewDdosProtectionPlansClient().Get(ctx, "rg1", "test-plan", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -84,11 +84,11 @@ func ExampleDdosProtectionPlansClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewDdosProtectionPlansClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-plan", armnetwork.DdosProtectionPlan{
+	poller, err := clientFactory.NewDdosProtectionPlansClient().BeginCreateOrUpdate(ctx, "rg1", "test-plan", armnetwork.DdosProtectionPlan{
 		Location:   to.Ptr("westus"),
 		Properties: &armnetwork.DdosProtectionPlanPropertiesFormat{},
 	}, nil)
@@ -125,11 +125,11 @@ func ExampleDdosProtectionPlansClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewDdosProtectionPlansClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "test-plan", armnetwork.TagsObject{
+	res, err := clientFactory.NewDdosProtectionPlansClient().UpdateTags(ctx, "rg1", "test-plan", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -168,11 +168,11 @@ func ExampleDdosProtectionPlansClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewDdosProtectionPlansClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewDdosProtectionPlansClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -238,11 +238,11 @@ func ExampleDdosProtectionPlansClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewDdosProtectionPlansClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewDdosProtectionPlansClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

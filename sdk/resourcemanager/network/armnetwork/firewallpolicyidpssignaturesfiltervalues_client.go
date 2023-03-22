@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // FirewallPolicyIdpsSignaturesFilterValuesClient contains the methods for the FirewallPolicyIdpsSignaturesFilterValues group.
 // Don't use this type directly, use NewFirewallPolicyIdpsSignaturesFilterValuesClient() instead.
 type FirewallPolicyIdpsSignaturesFilterValuesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewFirewallPolicyIdpsSignaturesFilterValuesClient creates a new instance of FirewallPolicyIdpsSignaturesFilterValuesClient with the specified values.
@@ -37,21 +34,13 @@ type FirewallPolicyIdpsSignaturesFilterValuesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFirewallPolicyIdpsSignaturesFilterValuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FirewallPolicyIdpsSignaturesFilterValuesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".FirewallPolicyIdpsSignaturesFilterValuesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &FirewallPolicyIdpsSignaturesFilterValuesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) List(ctx context.C
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
 	}
@@ -94,7 +83,7 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -25,11 +25,11 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeGroupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByNetAppAccountPager("myRG", "account1", nil)
+	pager := clientFactory.NewVolumeGroupsClient().NewListByNetAppAccountPager("myRG", "account1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -68,11 +68,11 @@ func ExampleVolumeGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeGroupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myRG", "account1", "group1", nil)
+	res, err := clientFactory.NewVolumeGroupsClient().Get(ctx, "myRG", "account1", "group1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -179,11 +179,11 @@ func ExampleVolumeGroupsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeGroupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myRG", "account1", "group1", armnetapp.VolumeGroupDetails{
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginCreate(ctx, "myRG", "account1", "group1", armnetapp.VolumeGroupDetails{
 		Location: to.Ptr("westus"),
 		Properties: &armnetapp.VolumeGroupProperties{
 			GroupMetaData: &armnetapp.VolumeGroupMetaData{
@@ -250,11 +250,11 @@ func ExampleVolumeGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeGroupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myRG", "account1", "group1", nil)
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginDelete(ctx, "myRG", "account1", "group1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

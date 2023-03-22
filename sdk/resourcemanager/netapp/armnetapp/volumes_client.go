@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // VolumesClient contains the methods for the Volumes group.
 // Don't use this type directly, use NewVolumesClient() instead.
 type VolumesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewVolumesClient creates a new instance of VolumesClient with the specified values.
@@ -37,21 +34,13 @@ type VolumesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VolumesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".VolumesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &VolumesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -73,11 +62,11 @@ func (client *VolumesClient) BeginAuthorizeReplication(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientAuthorizeReplicationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientAuthorizeReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientAuthorizeReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientAuthorizeReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -90,7 +79,7 @@ func (client *VolumesClient) authorizeReplication(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +112,7 @@ func (client *VolumesClient) authorizeReplicationCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -149,11 +138,11 @@ func (client *VolumesClient) BeginBreakFileLocks(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientBreakFileLocksResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientBreakFileLocksResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientBreakFileLocksResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientBreakFileLocksResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -166,7 +155,7 @@ func (client *VolumesClient) breakFileLocks(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -199,7 +188,7 @@ func (client *VolumesClient) breakFileLocksCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -228,11 +217,11 @@ func (client *VolumesClient) BeginBreakReplication(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientBreakReplicationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientBreakReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientBreakReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientBreakReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -245,7 +234,7 @@ func (client *VolumesClient) breakReplication(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -278,7 +267,7 @@ func (client *VolumesClient) breakReplicationCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,11 +297,11 @@ func (client *VolumesClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -325,7 +314,7 @@ func (client *VolumesClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -358,7 +347,7 @@ func (client *VolumesClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -384,11 +373,11 @@ func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -401,7 +390,7 @@ func (client *VolumesClient) deleteOperation(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -434,7 +423,7 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -463,11 +452,11 @@ func (client *VolumesClient) BeginDeleteReplication(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientDeleteReplicationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientDeleteReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientDeleteReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientDeleteReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -480,7 +469,7 @@ func (client *VolumesClient) deleteReplication(ctx context.Context, resourceGrou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -513,7 +502,7 @@ func (client *VolumesClient) deleteReplicationCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -539,9 +528,9 @@ func (client *VolumesClient) BeginFinalizeRelocation(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[VolumesClientFinalizeRelocationResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VolumesClientFinalizeRelocationResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientFinalizeRelocationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientFinalizeRelocationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -554,7 +543,7 @@ func (client *VolumesClient) finalizeRelocation(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -587,7 +576,7 @@ func (client *VolumesClient) finalizeRelocationCreateRequest(ctx context.Context
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -611,7 +600,7 @@ func (client *VolumesClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return VolumesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VolumesClientGetResponse{}, err
 	}
@@ -644,7 +633,7 @@ func (client *VolumesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -687,7 +676,7 @@ func (client *VolumesClient) NewListPager(resourceGroupName string, accountName 
 			if err != nil {
 				return VolumesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return VolumesClientListResponse{}, err
 			}
@@ -718,7 +707,7 @@ func (client *VolumesClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter poolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -757,7 +746,7 @@ func (client *VolumesClient) NewListReplicationsPager(resourceGroupName string, 
 			if err != nil {
 				return VolumesClientListReplicationsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return VolumesClientListReplicationsResponse{}, err
 			}
@@ -792,7 +781,7 @@ func (client *VolumesClient) listReplicationsCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -828,11 +817,11 @@ func (client *VolumesClient) BeginPoolChange(ctx context.Context, resourceGroupN
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientPoolChangeResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPoolChangeResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientPoolChangeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientPoolChangeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -845,7 +834,7 @@ func (client *VolumesClient) poolChange(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -878,7 +867,7 @@ func (client *VolumesClient) poolChangeCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -904,11 +893,11 @@ func (client *VolumesClient) BeginReInitializeReplication(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientReInitializeReplicationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientReInitializeReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientReInitializeReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientReInitializeReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -921,7 +910,7 @@ func (client *VolumesClient) reInitializeReplication(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -954,7 +943,7 @@ func (client *VolumesClient) reInitializeReplicationCreateRequest(ctx context.Co
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -982,11 +971,11 @@ func (client *VolumesClient) BeginReestablishReplication(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientReestablishReplicationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientReestablishReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientReestablishReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientReestablishReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1000,7 +989,7 @@ func (client *VolumesClient) reestablishReplication(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1033,7 +1022,7 @@ func (client *VolumesClient) reestablishReplicationCreateRequest(ctx context.Con
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1058,9 +1047,9 @@ func (client *VolumesClient) BeginRelocate(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[VolumesClientRelocateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VolumesClientRelocateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientRelocateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientRelocateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1073,7 +1062,7 @@ func (client *VolumesClient) relocate(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1106,7 +1095,7 @@ func (client *VolumesClient) relocateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1134,7 +1123,7 @@ func (client *VolumesClient) ReplicationStatus(ctx context.Context, resourceGrou
 	if err != nil {
 		return VolumesClientReplicationStatusResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VolumesClientReplicationStatusResponse{}, err
 	}
@@ -1167,7 +1156,7 @@ func (client *VolumesClient) replicationStatusCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1203,9 +1192,9 @@ func (client *VolumesClient) BeginResetCifsPassword(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[VolumesClientResetCifsPasswordResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VolumesClientResetCifsPasswordResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientResetCifsPasswordResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientResetCifsPasswordResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1218,7 +1207,7 @@ func (client *VolumesClient) resetCifsPassword(ctx context.Context, resourceGrou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1251,7 +1240,7 @@ func (client *VolumesClient) resetCifsPasswordCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1278,11 +1267,11 @@ func (client *VolumesClient) BeginResyncReplication(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientResyncReplicationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientResyncReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientResyncReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientResyncReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1296,7 +1285,7 @@ func (client *VolumesClient) resyncReplication(ctx context.Context, resourceGrou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1329,7 +1318,7 @@ func (client *VolumesClient) resyncReplicationCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1355,11 +1344,11 @@ func (client *VolumesClient) BeginRevert(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientRevertResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientRevertResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientRevertResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientRevertResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1372,7 +1361,7 @@ func (client *VolumesClient) revert(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1405,7 +1394,7 @@ func (client *VolumesClient) revertCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1432,9 +1421,9 @@ func (client *VolumesClient) BeginRevertRelocation(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[VolumesClientRevertRelocationResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VolumesClientRevertRelocationResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientRevertRelocationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientRevertRelocationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1448,7 +1437,7 @@ func (client *VolumesClient) revertRelocation(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1481,7 +1470,7 @@ func (client *VolumesClient) revertRelocationCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1507,11 +1496,11 @@ func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1524,7 +1513,7 @@ func (client *VolumesClient) update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1557,7 +1546,7 @@ func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

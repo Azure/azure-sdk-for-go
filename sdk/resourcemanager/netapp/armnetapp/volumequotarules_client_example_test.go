@@ -25,11 +25,11 @@ func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeQuotaRulesClient("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByVolumePager("myRG", "account-9957", "pool-5210", "volume-6387", nil)
+	pager := clientFactory.NewVolumeQuotaRulesClient().NewListByVolumePager("myRG", "account-9957", "pool-5210", "volume-6387", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -65,11 +65,11 @@ func ExampleVolumeQuotaRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeQuotaRulesClient("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", nil)
+	res, err := clientFactory.NewVolumeQuotaRulesClient().Get(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -97,11 +97,11 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeQuotaRulesClient("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", armnetapp.VolumeQuotaRule{
+	poller, err := clientFactory.NewVolumeQuotaRulesClient().BeginCreate(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", armnetapp.VolumeQuotaRule{
 		Location: to.Ptr("westus"),
 		Properties: &armnetapp.VolumeQuotaRulesProperties{
 			QuotaSizeInKiBs: to.Ptr[int64](100005),
@@ -140,11 +140,11 @@ func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeQuotaRulesClient("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", armnetapp.VolumeQuotaRulePatch{
+	poller, err := clientFactory.NewVolumeQuotaRulesClient().BeginUpdate(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", armnetapp.VolumeQuotaRulePatch{
 		Properties: &armnetapp.VolumeQuotaRulesProperties{
 			QuotaSizeInKiBs: to.Ptr[int64](100009),
 		},
@@ -180,11 +180,11 @@ func ExampleVolumeQuotaRulesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeQuotaRulesClient("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", nil)
+	poller, err := clientFactory.NewVolumeQuotaRulesClient().BeginDelete(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

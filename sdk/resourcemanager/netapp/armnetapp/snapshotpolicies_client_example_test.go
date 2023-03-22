@@ -25,11 +25,11 @@ func ExampleSnapshotPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSnapshotPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myRG", "account1", nil)
+	pager := clientFactory.NewSnapshotPoliciesClient().NewListPager("myRG", "account1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -84,11 +84,11 @@ func ExampleSnapshotPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSnapshotPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myRG", "account1", "snapshotPolicyName", nil)
+	res, err := clientFactory.NewSnapshotPoliciesClient().Get(ctx, "myRG", "account1", "snapshotPolicyName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -135,11 +135,11 @@ func ExampleSnapshotPoliciesClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSnapshotPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Create(ctx, "myRG", "account1", "snapshotPolicyName", armnetapp.SnapshotPolicy{
+	res, err := clientFactory.NewSnapshotPoliciesClient().Create(ctx, "myRG", "account1", "snapshotPolicyName", armnetapp.SnapshotPolicy{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetapp.SnapshotPolicyProperties{
 			DailySchedule: &armnetapp.DailySchedule{
@@ -212,11 +212,11 @@ func ExampleSnapshotPoliciesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSnapshotPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "snapshotPolicyName", armnetapp.SnapshotPolicyPatch{
+	poller, err := clientFactory.NewSnapshotPoliciesClient().BeginUpdate(ctx, "myRG", "account1", "snapshotPolicyName", armnetapp.SnapshotPolicyPatch{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetapp.SnapshotPolicyProperties{
 			DailySchedule: &armnetapp.DailySchedule{
@@ -293,11 +293,11 @@ func ExampleSnapshotPoliciesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSnapshotPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resourceGroup", "accountName", "snapshotPolicyName", nil)
+	poller, err := clientFactory.NewSnapshotPoliciesClient().BeginDelete(ctx, "resourceGroup", "accountName", "snapshotPolicyName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -314,11 +314,11 @@ func ExampleSnapshotPoliciesClient_ListVolumes() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSnapshotPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListVolumes(ctx, "myRG", "account1", "snapshotPolicyName", nil)
+	res, err := clientFactory.NewSnapshotPoliciesClient().ListVolumes(ctx, "myRG", "account1", "snapshotPolicyName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -25,11 +25,11 @@ func ExampleSubvolumesClient_NewListByVolumePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSubvolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByVolumePager("myRG", "account1", "pool1", "volume1", nil)
+	pager := clientFactory.NewSubvolumesClient().NewListByVolumePager("myRG", "account1", "pool1", "volume1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -61,11 +61,11 @@ func ExampleSubvolumesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSubvolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
+	res, err := clientFactory.NewSubvolumesClient().Get(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -89,11 +89,11 @@ func ExampleSubvolumesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSubvolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", armnetapp.SubvolumeInfo{
+	poller, err := clientFactory.NewSubvolumesClient().BeginCreate(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", armnetapp.SubvolumeInfo{
 		Properties: &armnetapp.SubvolumeProperties{
 			Path: to.Ptr("/subvolumePath"),
 		},
@@ -126,11 +126,11 @@ func ExampleSubvolumesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSubvolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", armnetapp.SubvolumePatchRequest{
+	poller, err := clientFactory.NewSubvolumesClient().BeginUpdate(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", armnetapp.SubvolumePatchRequest{
 		Properties: &armnetapp.SubvolumePatchParams{
 			Path: to.Ptr("/subvolumePath"),
 		},
@@ -162,11 +162,11 @@ func ExampleSubvolumesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSubvolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
+	poller, err := clientFactory.NewSubvolumesClient().BeginDelete(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -183,11 +183,11 @@ func ExampleSubvolumesClient_BeginGetMetadata() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewSubvolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetMetadata(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
+	poller, err := clientFactory.NewSubvolumesClient().BeginGetMetadata(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

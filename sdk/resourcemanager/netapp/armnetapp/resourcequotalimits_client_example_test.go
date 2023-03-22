@@ -24,11 +24,11 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewResourceQuotaLimitsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("eastus", nil)
+	pager := clientFactory.NewResourceQuotaLimitsClient().NewListPager("eastus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -124,11 +124,11 @@ func ExampleResourceQuotaLimitsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewResourceQuotaLimitsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "eastus", "totalCoolAccessVolumesPerSubscription", nil)
+	res, err := clientFactory.NewResourceQuotaLimitsClient().Get(ctx, "eastus", "totalCoolAccessVolumesPerSubscription", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

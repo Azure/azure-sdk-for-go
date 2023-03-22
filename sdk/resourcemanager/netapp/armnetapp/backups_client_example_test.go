@@ -25,11 +25,11 @@ func ExampleBackupsClient_GetStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetStatus(ctx, "myRG", "account1", "pool1", "volume1", nil)
+	res, err := clientFactory.NewBackupsClient().GetStatus(ctx, "myRG", "account1", "pool1", "volume1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -55,11 +55,11 @@ func ExampleBackupsClient_GetVolumeRestoreStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetVolumeRestoreStatus(ctx, "myRG", "account1", "pool1", "volume1", nil)
+	res, err := clientFactory.NewBackupsClient().GetVolumeRestoreStatus(ctx, "myRG", "account1", "pool1", "volume1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -83,11 +83,11 @@ func ExampleBackupsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myRG", "account1", "pool1", "volume1", nil)
+	pager := clientFactory.NewBackupsClient().NewListPager("myRG", "account1", "pool1", "volume1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -124,11 +124,11 @@ func ExampleBackupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myRG", "account1", "pool1", "volume1", "backup1", nil)
+	res, err := clientFactory.NewBackupsClient().Get(ctx, "myRG", "account1", "pool1", "volume1", "backup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -157,11 +157,11 @@ func ExampleBackupsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myRG", "account1", "pool1", "volume1", "backup1", armnetapp.Backup{
+	poller, err := clientFactory.NewBackupsClient().BeginCreate(ctx, "myRG", "account1", "pool1", "volume1", "backup1", armnetapp.Backup{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetapp.BackupProperties{
 			Label: to.Ptr("myLabel"),
@@ -199,11 +199,11 @@ func ExampleBackupsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "pool1", "volume1", "backup1", armnetapp.BackupPatch{}, nil)
+	poller, err := clientFactory.NewBackupsClient().BeginUpdate(ctx, "myRG", "account1", "pool1", "volume1", "backup1", armnetapp.BackupPatch{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -236,11 +236,11 @@ func ExampleBackupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resourceGroup", "accountName", "poolName", "volumeName", "backupName", nil)
+	poller, err := clientFactory.NewBackupsClient().BeginDelete(ctx, "resourceGroup", "accountName", "poolName", "volumeName", "backupName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -257,11 +257,11 @@ func ExampleBackupsClient_BeginRestoreFiles() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRestoreFiles(ctx, "myRG", "account1", "pool1", "volume1", "backup1", armnetapp.BackupRestoreFiles{
+	poller, err := clientFactory.NewBackupsClient().BeginRestoreFiles(ctx, "myRG", "account1", "pool1", "volume1", "backup1", armnetapp.BackupRestoreFiles{
 		DestinationVolumeID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 		FileList: []*string{
 			to.Ptr("/dir1/customer1.db"),

@@ -25,11 +25,11 @@ func ExampleBackupPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myRG", "account1", nil)
+	pager := clientFactory.NewBackupPoliciesClient().NewListPager("myRG", "account1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,11 +66,11 @@ func ExampleBackupPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myRG", "account1", "backupPolicyName", nil)
+	res, err := clientFactory.NewBackupPoliciesClient().Get(ctx, "myRG", "account1", "backupPolicyName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -105,11 +105,11 @@ func ExampleBackupPoliciesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myRG", "account1", "backupPolicyName", armnetapp.BackupPolicy{
+	poller, err := clientFactory.NewBackupPoliciesClient().BeginCreate(ctx, "myRG", "account1", "backupPolicyName", armnetapp.BackupPolicy{
 		Location: to.Ptr("westus"),
 		Properties: &armnetapp.BackupPolicyProperties{
 			DailyBackupsToKeep:   to.Ptr[int32](10),
@@ -150,11 +150,11 @@ func ExampleBackupPoliciesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "backupPolicyName", armnetapp.BackupPolicyPatch{
+	poller, err := clientFactory.NewBackupPoliciesClient().BeginUpdate(ctx, "myRG", "account1", "backupPolicyName", armnetapp.BackupPolicyPatch{
 		Location: to.Ptr("westus"),
 		Properties: &armnetapp.BackupPolicyProperties{
 			DailyBackupsToKeep:   to.Ptr[int32](5),
@@ -202,11 +202,11 @@ func ExampleBackupPoliciesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resourceGroup", "accountName", "backupPolicyName", nil)
+	poller, err := clientFactory.NewBackupPoliciesClient().BeginDelete(ctx, "resourceGroup", "accountName", "backupPolicyName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

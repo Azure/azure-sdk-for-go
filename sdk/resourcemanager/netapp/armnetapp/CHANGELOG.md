@@ -16,8 +16,9 @@
 
 ### Features Added
 
-- New type alias `FileAccessLogs` with values `FileAccessLogsDisabled`, `FileAccessLogsEnabled`
-- New type alias `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `FileAccessLogs` with values `FileAccessLogsDisabled`, `FileAccessLogsEnabled`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
 - New function `*BackupsClient.BeginRestoreFiles(context.Context, string, string, string, string, string, BackupRestoreFiles, *BackupsClientBeginRestoreFilesOptions) (*runtime.Poller[BackupsClientRestoreFilesResponse], error)`
 - New function `*VolumesClient.BeginBreakFileLocks(context.Context, string, string, string, string, *VolumesClientBeginBreakFileLocksOptions) (*runtime.Poller[VolumesClientBreakFileLocksResponse], error)`
 - New struct `BackupRestoreFiles`

@@ -25,11 +25,11 @@ func ExamplePoolsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewPoolsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myRG", "account1", nil)
+	pager := clientFactory.NewPoolsClient().NewListPager("myRG", "account1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -67,11 +67,11 @@ func ExamplePoolsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewPoolsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myRG", "account1", "pool1", nil)
+	res, err := clientFactory.NewPoolsClient().Get(ctx, "myRG", "account1", "pool1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,11 +102,11 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewPoolsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "myRG", "account1", "pool1", armnetapp.CapacityPool{
+	poller, err := clientFactory.NewPoolsClient().BeginCreateOrUpdate(ctx, "myRG", "account1", "pool1", armnetapp.CapacityPool{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetapp.PoolProperties{
 			QosType:      to.Ptr(armnetapp.QosTypeAuto),
@@ -147,11 +147,11 @@ func ExamplePoolsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewPoolsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "pool1", armnetapp.CapacityPoolPatch{}, nil)
+	poller, err := clientFactory.NewPoolsClient().BeginUpdate(ctx, "myRG", "account1", "pool1", armnetapp.CapacityPoolPatch{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -186,11 +186,11 @@ func ExamplePoolsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewPoolsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myRG", "account1", "pool1", nil)
+	poller, err := clientFactory.NewPoolsClient().BeginDelete(ctx, "myRG", "account1", "pool1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

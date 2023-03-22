@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // SnapshotPoliciesClient contains the methods for the SnapshotPolicies group.
 // Don't use this type directly, use NewSnapshotPoliciesClient() instead.
 type SnapshotPoliciesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSnapshotPoliciesClient creates a new instance of SnapshotPoliciesClient with the specified values.
@@ -36,21 +33,13 @@ type SnapshotPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSnapshotPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SnapshotPoliciesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SnapshotPoliciesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SnapshotPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *SnapshotPoliciesClient) Create(ctx context.Context, resourceGroupN
 	if err != nil {
 		return SnapshotPoliciesClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SnapshotPoliciesClientCreateResponse{}, err
 	}
@@ -98,7 +87,7 @@ func (client *SnapshotPoliciesClient) createCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter snapshotPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotPolicyName}", url.PathEscape(snapshotPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -133,11 +122,11 @@ func (client *SnapshotPoliciesClient) BeginDelete(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SnapshotPoliciesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SnapshotPoliciesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SnapshotPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SnapshotPoliciesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -150,7 +139,7 @@ func (client *SnapshotPoliciesClient) deleteOperation(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +168,7 @@ func (client *SnapshotPoliciesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter snapshotPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotPolicyName}", url.PathEscape(snapshotPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,7 +191,7 @@ func (client *SnapshotPoliciesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SnapshotPoliciesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SnapshotPoliciesClientGetResponse{}, err
 	}
@@ -231,7 +220,7 @@ func (client *SnapshotPoliciesClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter snapshotPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotPolicyName}", url.PathEscape(snapshotPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,7 +257,7 @@ func (client *SnapshotPoliciesClient) NewListPager(resourceGroupName string, acc
 			if err != nil {
 				return SnapshotPoliciesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SnapshotPoliciesClientListResponse{}, err
 			}
@@ -295,7 +284,7 @@ func (client *SnapshotPoliciesClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -329,7 +318,7 @@ func (client *SnapshotPoliciesClient) ListVolumes(ctx context.Context, resourceG
 	if err != nil {
 		return SnapshotPoliciesClientListVolumesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SnapshotPoliciesClientListVolumesResponse{}, err
 	}
@@ -358,7 +347,7 @@ func (client *SnapshotPoliciesClient) listVolumesCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter snapshotPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotPolicyName}", url.PathEscape(snapshotPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -394,11 +383,11 @@ func (client *SnapshotPoliciesClient) BeginUpdate(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SnapshotPoliciesClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SnapshotPoliciesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SnapshotPoliciesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SnapshotPoliciesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -411,7 +400,7 @@ func (client *SnapshotPoliciesClient) update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -440,7 +429,7 @@ func (client *SnapshotPoliciesClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter snapshotPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotPolicyName}", url.PathEscape(snapshotPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

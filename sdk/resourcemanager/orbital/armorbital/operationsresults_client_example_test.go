@@ -24,11 +24,11 @@ func ExampleOperationsResultsClient_BeginGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewOperationsResultsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGet(ctx, "eastus2", "30972f1b-b61d-4fd8-bd34-3dcfa24670f3", nil)
+	poller, err := clientFactory.NewOperationsResultsClient().BeginGet(ctx, "eastus2", "30972f1b-b61d-4fd8-bd34-3dcfa24670f3", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

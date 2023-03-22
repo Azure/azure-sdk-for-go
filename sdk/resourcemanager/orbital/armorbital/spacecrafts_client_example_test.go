@@ -27,11 +27,11 @@ func ExampleSpacecraftsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(&armorbital.SpacecraftsClientListBySubscriptionOptions{Skiptoken: nil})
+	pager := clientFactory.NewSpacecraftsClient().NewListBySubscriptionPager(&armorbital.SpacecraftsClientListBySubscriptionOptions{Skiptoken: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -93,11 +93,11 @@ func ExampleSpacecraftsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("contoso-Rgp", &armorbital.SpacecraftsClientListOptions{Skiptoken: nil})
+	pager := clientFactory.NewSpacecraftsClient().NewListPager("contoso-Rgp", &armorbital.SpacecraftsClientListOptions{Skiptoken: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -159,11 +159,11 @@ func ExampleSpacecraftsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "contoso-Rgp", "CONTOSO_SAT", nil)
+	res, err := clientFactory.NewSpacecraftsClient().Get(ctx, "contoso-Rgp", "CONTOSO_SAT", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -217,11 +217,11 @@ func ExampleSpacecraftsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "contoso-Rgp", "CONTOSO_SAT", armorbital.Spacecraft{
+	poller, err := clientFactory.NewSpacecraftsClient().BeginCreateOrUpdate(ctx, "contoso-Rgp", "CONTOSO_SAT", armorbital.Spacecraft{
 		Location: to.Ptr("eastus2"),
 		Properties: &armorbital.SpacecraftsProperties{
 			Links: []*armorbital.SpacecraftLink{
@@ -302,11 +302,11 @@ func ExampleSpacecraftsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "contoso-Rgp", "CONTOSO_SAT", nil)
+	poller, err := clientFactory.NewSpacecraftsClient().BeginDelete(ctx, "contoso-Rgp", "CONTOSO_SAT", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -323,11 +323,11 @@ func ExampleSpacecraftsClient_BeginUpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateTags(ctx, "contoso-Rgp", "CONTOSO_SAT", armorbital.TagsObject{
+	poller, err := clientFactory.NewSpacecraftsClient().BeginUpdateTags(ctx, "contoso-Rgp", "CONTOSO_SAT", armorbital.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -394,11 +394,11 @@ func ExampleSpacecraftsClient_BeginListAvailableContacts() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewSpacecraftsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListAvailableContacts(ctx, "contoso-Rgp", "CONTOSO_SAT", armorbital.ContactParameters{
+	poller, err := clientFactory.NewSpacecraftsClient().BeginListAvailableContacts(ctx, "contoso-Rgp", "CONTOSO_SAT", armorbital.ContactParameters{
 		ContactProfile: &armorbital.ContactParametersContactProfile{
 			ID: to.Ptr("/subscriptions/c1be1141-a7c9-4aac-9608-3c2e2f1152c3/resourceGroups/contoso-Rgp/providers/Microsoft.Orbital/contactProfiles/CONTOSO-CP"),
 		},

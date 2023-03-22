@@ -5,14 +5,13 @@
 
 - Type alias `APIVersionParameter` has been removed
 - Function `*AvailableGroundStationsClient.Get` has been removed
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
 - Field `Etag` of struct `Contact` has been removed
 - Field `Etag` of struct `ContactProfile` has been removed
 - Field `Etag` of struct `Spacecraft` has been removed
 
 ### Features Added
 
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 - New struct `ContactProfileThirdPartyConfiguration`
 - New struct `ErrorAdditionalInfo`
 - New struct `ErrorDetail`

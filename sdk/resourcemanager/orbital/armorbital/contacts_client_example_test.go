@@ -27,11 +27,11 @@ func ExampleContactsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewContactsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("contoso-Rgp", "CONTOSO_SAT", &armorbital.ContactsClientListOptions{Skiptoken: nil})
+	pager := clientFactory.NewContactsClient().NewListPager("contoso-Rgp", "CONTOSO_SAT", &armorbital.ContactsClientListOptions{Skiptoken: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -115,11 +115,11 @@ func ExampleContactsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewContactsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "contoso-Rgp", "CONTOSO_SAT", "contact1", nil)
+	res, err := clientFactory.NewContactsClient().Get(ctx, "contoso-Rgp", "CONTOSO_SAT", "contact1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -165,11 +165,11 @@ func ExampleContactsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewContactsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "contoso-Rgp", "CONTOSO_SAT", "contact1", armorbital.Contact{
+	poller, err := clientFactory.NewContactsClient().BeginCreate(ctx, "contoso-Rgp", "CONTOSO_SAT", "contact1", armorbital.Contact{
 		Properties: &armorbital.ContactsProperties{
 			ContactProfile: &armorbital.ContactsPropertiesContactProfile{
 				ID: to.Ptr("/subscriptions/c1be1141-a7c9-4aac-9608-3c2e2f1152c3/resourceGroups/contoso-Rgp/providers/Microsoft.Orbital/contactProfiles/CONTOSO-CP"),
@@ -221,11 +221,11 @@ func ExampleContactsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewContactsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "contoso-Rgp", "CONTOSO_SAT", "contact1", nil)
+	poller, err := clientFactory.NewContactsClient().BeginDelete(ctx, "contoso-Rgp", "CONTOSO_SAT", "contact1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

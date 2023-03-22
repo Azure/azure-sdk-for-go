@@ -25,11 +25,11 @@ func ExampleContactProfilesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewContactProfilesClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "contoso-Rgp", "CONTOSO-CP", nil)
+	res, err := clientFactory.NewContactProfilesClient().Get(ctx, "contoso-Rgp", "CONTOSO-CP", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -109,11 +109,11 @@ func ExampleContactProfilesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewContactProfilesClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "contoso-Rgp", "CONTOSO-CP", armorbital.ContactProfile{
+	poller, err := clientFactory.NewContactProfilesClient().BeginCreateOrUpdate(ctx, "contoso-Rgp", "CONTOSO-CP", armorbital.ContactProfile{
 		Location: to.Ptr("eastus2"),
 		Properties: &armorbital.ContactProfileProperties{
 			AutoTrackingConfiguration: to.Ptr(armorbital.AutoTrackingConfigurationDisabled),
@@ -256,11 +256,11 @@ func ExampleContactProfilesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewContactProfilesClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "contoso-Rgp", "CONTOSO-CP", nil)
+	poller, err := clientFactory.NewContactProfilesClient().BeginDelete(ctx, "contoso-Rgp", "CONTOSO-CP", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -277,11 +277,11 @@ func ExampleContactProfilesClient_BeginUpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewContactProfilesClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateTags(ctx, "contoso-Rgp", "CONTOSO-CP", armorbital.TagsObject{
+	poller, err := clientFactory.NewContactProfilesClient().BeginUpdateTags(ctx, "contoso-Rgp", "CONTOSO-CP", armorbital.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -374,11 +374,11 @@ func ExampleContactProfilesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewContactProfilesClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(&armorbital.ContactProfilesClientListBySubscriptionOptions{Skiptoken: nil})
+	pager := clientFactory.NewContactProfilesClient().NewListBySubscriptionPager(&armorbital.ContactProfilesClientListBySubscriptionOptions{Skiptoken: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -466,11 +466,11 @@ func ExampleContactProfilesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewContactProfilesClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("contoso-Rgp", &armorbital.ContactProfilesClientListOptions{Skiptoken: nil})
+	pager := clientFactory.NewContactProfilesClient().NewListPager("contoso-Rgp", &armorbital.ContactProfilesClientListOptions{Skiptoken: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

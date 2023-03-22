@@ -24,11 +24,11 @@ func ExampleAvailableGroundStationsClient_NewListByCapabilityPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewAvailableGroundStationsClient("c1be1141-a7c9-4aac-9608-3c2e2f1152c3", cred, nil)
+	clientFactory, err := armorbital.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByCapabilityPager(armorbital.CapabilityParameterEarthObservation, nil)
+	pager := clientFactory.NewAvailableGroundStationsClient().NewListByCapabilityPager(armorbital.CapabilityParameterEarthObservation, nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

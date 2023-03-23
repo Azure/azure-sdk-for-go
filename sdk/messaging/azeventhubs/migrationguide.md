@@ -53,7 +53,7 @@ The `Hub` type has been replaced by two types:
 * Consuming events, using the `azeventhubs.ConsumerClient`: [docs](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#ConsumerClient) | [example](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_events_test.go)
 * Sending events, use the `azeventhubs.ProducerClient`: [docs](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#ProducerClient) | [example](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_producing_events_test.go)
 
-`EventProcessorHost` has been replaced by the `azeventhubs.Processor` type: [docs](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#Processor) | [example](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go)
+`EventProcessorHost` has been replaced by the `azeventhubs.Processor` type: [docs](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#Processor) | [example](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go)
 
 ## Authentication
 

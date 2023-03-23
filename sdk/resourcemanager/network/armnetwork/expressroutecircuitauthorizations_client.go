@@ -32,10 +32,10 @@ type ExpressRouteCircuitAuthorizationsClient struct {
 }
 
 // NewExpressRouteCircuitAuthorizationsClient creates a new instance of ExpressRouteCircuitAuthorizationsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRouteCircuitAuthorizationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string, credentia
 
 // BeginCreateOrUpdate - Creates or updates an authorization in the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// circuitName - The name of the express route circuit.
-// authorizationName - The name of the authorization.
-// authorizationParameters - Parameters supplied to the create or update express route circuit authorization operation.
-// options - ExpressRouteCircuitAuthorizationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - circuitName - The name of the express route circuit.
+//   - authorizationName - The name of the authorization.
+//   - authorizationParameters - Parameters supplied to the create or update express route circuit authorization operation.
+//   - options - ExpressRouteCircuitAuthorizationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.BeginCreateOrUpdate
+//     method.
 func (client *ExpressRouteCircuitAuthorizationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, options *ExpressRouteCircuitAuthorizationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ExpressRouteCircuitAuthorizationsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, circuitName, authorizationName, authorizationParameters, options)
@@ -81,7 +82,8 @@ func (client *ExpressRouteCircuitAuthorizationsClient) BeginCreateOrUpdate(ctx c
 
 // CreateOrUpdate - Creates or updates an authorization in the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, options *ExpressRouteCircuitAuthorizationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, circuitName, authorizationName, authorizationParameters, options)
 	if err != nil {
@@ -121,7 +123,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, authorizationParameters)
@@ -129,12 +131,13 @@ func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdateCreateReque
 
 // BeginDelete - Deletes the specified authorization from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// circuitName - The name of the express route circuit.
-// authorizationName - The name of the authorization.
-// options - ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - circuitName - The name of the express route circuit.
+//   - authorizationName - The name of the authorization.
+//   - options - ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.BeginDelete
+//     method.
 func (client *ExpressRouteCircuitAuthorizationsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteCircuitAuthorizationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, circuitName, authorizationName, options)
@@ -151,7 +154,8 @@ func (client *ExpressRouteCircuitAuthorizationsClient) BeginDelete(ctx context.C
 
 // Delete - Deletes the specified authorization from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *ExpressRouteCircuitAuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, circuitName, authorizationName, options)
 	if err != nil {
@@ -191,7 +195,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) deleteCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,12 +203,13 @@ func (client *ExpressRouteCircuitAuthorizationsClient) deleteCreateRequest(ctx c
 
 // Get - Gets the specified authorization from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// circuitName - The name of the express route circuit.
-// authorizationName - The name of the authorization.
-// options - ExpressRouteCircuitAuthorizationsClientGetOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - circuitName - The name of the express route circuit.
+//   - authorizationName - The name of the authorization.
+//   - options - ExpressRouteCircuitAuthorizationsClientGetOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.Get
+//     method.
 func (client *ExpressRouteCircuitAuthorizationsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientGetOptions) (ExpressRouteCircuitAuthorizationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, circuitName, authorizationName, options)
 	if err != nil {
@@ -244,7 +249,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) getCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,11 +265,12 @@ func (client *ExpressRouteCircuitAuthorizationsClient) getHandleResponse(resp *h
 }
 
 // NewListPager - Gets all authorizations in an express route circuit.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// circuitName - The name of the circuit.
-// options - ExpressRouteCircuitAuthorizationsClientListOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - circuitName - The name of the circuit.
+//   - options - ExpressRouteCircuitAuthorizationsClientListOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.NewListPager
+//     method.
 func (client *ExpressRouteCircuitAuthorizationsClient) NewListPager(resourceGroupName string, circuitName string, options *ExpressRouteCircuitAuthorizationsClientListOptions) *runtime.Pager[ExpressRouteCircuitAuthorizationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteCircuitAuthorizationsClientListResponse]{
 		More: func(page ExpressRouteCircuitAuthorizationsClientListResponse) bool {
@@ -313,7 +319,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) listCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

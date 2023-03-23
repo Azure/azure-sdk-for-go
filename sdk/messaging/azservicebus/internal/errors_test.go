@@ -12,6 +12,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
@@ -214,9 +215,6 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 		&amqp.DetachError{},
 		&amqp.Error{Condition: amqp.ErrorDetachForced},
 		&amqp.Error{Condition: amqp.ErrorTransferLimitExceeded},
-		// this can happen when we're recovering the link - the client gets closed and the old link is still being
-		// used by this instance of the client. It needs to recover and attempt it again.
-		RPCError{Resp: &amqpwrap.RPCResponse{Code: 401}},
 	}
 
 	for i, err := range linkErrors {
@@ -243,6 +241,7 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 
 	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusNotFound}}))
 	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: RPCResponseCodeLockLost}}))
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusUnauthorized}}))
 }
 
 func Test_IsLockLostError(t *testing.T) {
@@ -258,6 +257,19 @@ func Test_TransformError(t *testing.T) {
 	err := TransformError(RPCError{Resp: &amqpwrap.RPCResponse{Code: RPCResponseCodeLockLost}})
 	require.ErrorAs(t, err, &asExportedErr)
 	require.Equal(t, exported.CodeLockLost, asExportedErr.Code)
+
+	err = TransformError(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusUnauthorized}})
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeUnauthorizedAccess, asExportedErr.Code)
+
+	err = TransformError(&amqp.Error{Condition: amqp.ErrorUnauthorizedAccess})
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeUnauthorizedAccess, asExportedErr.Code)
+
+	// make sure we don't translate errors that are already usable, like Azure Identity failures.
+	err = TransformError(&azidentity.AuthenticationFailedError{})
+	afe := &azidentity.AuthenticationFailedError{}
+	require.ErrorAs(t, err, &afe)
 
 	// sanity check, an RPCError but it's not a azservicebus.Code type error.
 	err = TransformError(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusNotFound}})

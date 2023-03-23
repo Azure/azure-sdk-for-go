@@ -49,7 +49,7 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-client, err := armdatafactory.NewClientFactory(<subscription ID>, cred, &options)
+clientFactory, err := armdatafactory.NewClientFactory(<subscription ID>, cred, &options)
 ```
 
 ## Clients

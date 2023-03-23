@@ -49,7 +49,7 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-client, err := armnewrelicobservability.NewClientFactory(<subscription ID>, cred, &options)
+clientFactory, err := armnewrelicobservability.NewClientFactory(<subscription ID>, cred, &options)
 ```
 
 ## Clients

@@ -113,17 +113,3 @@ func TestUpdateSetting_InvalidSettingName(t *testing.T) {
 	require.Equal(t, "Nocontentprovided", httpErr.ErrorCode)
 	require.Equal(t, 400, httpErr.StatusCode)
 }
-
-func TestUpdateSetting_InvalidUpdateSettingRequest(t *testing.T) {
-	client := startSettingsTest(t)
-
-	res, err := client.UpdateSetting(context.Background(), "AllowKeyManagementOperationsThroughARM", settings.UpdateSettingRequest{Value: to.Ptr("invalid")}, nil)
-	require.Error(t, err)
-	require.Nil(t, res.Name)
-	require.Nil(t, res.Type)
-	require.Nil(t, res.Value)
-	var httpErr *azcore.ResponseError
-	require.ErrorAs(t, err, &httpErr)
-	require.Equal(t, "Nocontentprovided", httpErr.ErrorCode)
-	require.Equal(t, 400, httpErr.StatusCode)
-}

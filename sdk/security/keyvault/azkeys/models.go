@@ -67,19 +67,19 @@ type ImportKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListDeletedKeysOptions contains the optional parameters for the Client.ListDeletedKeys method.
+// ListDeletedKeysOptions contains the optional parameters for the Client.NewListDeletedKeysPager method.
 type ListDeletedKeysOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// ListKeyVersionsOptions contains the optional parameters for the Client.ListKeyVersions method.
+// ListKeyVersionsOptions contains the optional parameters for the Client.NewListKeyVersionsPager method.
 type ListKeyVersionsOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// ListKeysOptions contains the optional parameters for the Client.ListKeys method.
+// ListKeysOptions contains the optional parameters for the Client.NewListKeysPager method.
 type ListKeysOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32

@@ -19,7 +19,7 @@ import (
 
 // MarshalJSON implements the json.Marshaller interface for type BackupKeyResult.
 func (b BackupKeyResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateByteArray(objectMap, "value", b.Value, runtime.Base64URLFormat)
 	return json.Marshal(objectMap)
 }
@@ -46,7 +46,7 @@ func (b *BackupKeyResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CreateKeyParameters.
 func (c CreateKeyParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "crv", c.Curve)
 	populate(objectMap, "attributes", c.KeyAttributes)
 	populate(objectMap, "key_ops", c.KeyOps)
@@ -101,7 +101,7 @@ func (c *CreateKeyParameters) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DeletedKeyBundle.
 func (d DeletedKeyBundle) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "attributes", d.Attributes)
 	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
 	populate(objectMap, "key", d.Key)
@@ -156,7 +156,7 @@ func (d *DeletedKeyBundle) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DeletedKeyItem.
 func (d DeletedKeyItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "attributes", d.Attributes)
 	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
 	populate(objectMap, "kid", d.KID)
@@ -207,7 +207,7 @@ func (d *DeletedKeyItem) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DeletedKeyListResult.
 func (d DeletedKeyListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", d.NextLink)
 	populate(objectMap, "value", d.Value)
 	return json.Marshal(objectMap)
@@ -238,7 +238,7 @@ func (d *DeletedKeyListResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type GetRandomBytesRequest.
 func (g GetRandomBytesRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "count", g.Count)
 	return json.Marshal(objectMap)
 }
@@ -265,7 +265,7 @@ func (g *GetRandomBytesRequest) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ImportKeyParameters.
 func (i ImportKeyParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "Hsm", i.HSM)
 	populate(objectMap, "key", i.Key)
 	populate(objectMap, "attributes", i.KeyAttributes)
@@ -308,7 +308,7 @@ func (i *ImportKeyParameters) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type JSONWebKey.
 func (j JSONWebKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "crv", j.Crv)
 	populateByteArray(objectMap, "d", j.D, runtime.Base64URLFormat)
 	populateByteArray(objectMap, "dp", j.DP, runtime.Base64URLFormat)
@@ -395,7 +395,7 @@ func (j *JSONWebKey) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyAttributes.
 func (k KeyAttributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeUnix(objectMap, "created", k.Created)
 	populate(objectMap, "enabled", k.Enabled)
 	populateTimeUnix(objectMap, "exp", k.Expires)
@@ -450,7 +450,7 @@ func (k *KeyAttributes) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyBundle.
 func (k KeyBundle) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "attributes", k.Attributes)
 	populate(objectMap, "key", k.Key)
 	populate(objectMap, "managed", k.Managed)
@@ -493,7 +493,7 @@ func (k *KeyBundle) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyItem.
 func (k KeyItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "attributes", k.Attributes)
 	populate(objectMap, "kid", k.KID)
 	populate(objectMap, "managed", k.Managed)
@@ -532,7 +532,7 @@ func (k *KeyItem) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyListResult.
 func (k KeyListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", k.NextLink)
 	populate(objectMap, "value", k.Value)
 	return json.Marshal(objectMap)
@@ -563,7 +563,7 @@ func (k *KeyListResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyOperationResult.
 func (k KeyOperationResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateByteArray(objectMap, "aad", k.AdditionalAuthenticatedData, runtime.Base64URLFormat)
 	populateByteArray(objectMap, "tag", k.AuthenticationTag, runtime.Base64URLFormat)
 	populateByteArray(objectMap, "iv", k.IV, runtime.Base64URLFormat)
@@ -606,7 +606,7 @@ func (k *KeyOperationResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyOperationsParameters.
 func (k KeyOperationsParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateByteArray(objectMap, "aad", k.AAD, runtime.Base64URLFormat)
 	populate(objectMap, "alg", k.Algorithm)
 	populateByteArray(objectMap, "iv", k.IV, runtime.Base64URLFormat)
@@ -649,7 +649,7 @@ func (k *KeyOperationsParameters) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyReleasePolicy.
 func (k KeyReleasePolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "contentType", k.ContentType)
 	populateByteArray(objectMap, "data", k.EncodedPolicy, runtime.Base64URLFormat)
 	populate(objectMap, "immutable", k.Immutable)
@@ -684,7 +684,7 @@ func (k *KeyReleasePolicy) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyReleaseResult.
 func (k KeyReleaseResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "value", k.Value)
 	return json.Marshal(objectMap)
 }
@@ -711,7 +711,7 @@ func (k *KeyReleaseResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyRotationPolicy.
 func (k KeyRotationPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "attributes", k.Attributes)
 	populate(objectMap, "id", k.ID)
 	populate(objectMap, "lifetimeActions", k.LifetimeActions)
@@ -746,7 +746,7 @@ func (k *KeyRotationPolicy) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyRotationPolicyAttributes.
 func (k KeyRotationPolicyAttributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeUnix(objectMap, "created", k.Created)
 	populate(objectMap, "expiryTime", k.ExpiryTime)
 	populateTimeUnix(objectMap, "updated", k.Updated)
@@ -781,7 +781,7 @@ func (k *KeyRotationPolicyAttributes) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyVerifyResult.
 func (k KeyVerifyResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "value", k.Value)
 	return json.Marshal(objectMap)
 }
@@ -808,7 +808,7 @@ func (k *KeyVerifyResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type LifetimeActions.
 func (l LifetimeActions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "action", l.Action)
 	populate(objectMap, "trigger", l.Trigger)
 	return json.Marshal(objectMap)
@@ -839,7 +839,7 @@ func (l *LifetimeActions) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type LifetimeActionsTrigger.
 func (l LifetimeActionsTrigger) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "timeAfterCreate", l.TimeAfterCreate)
 	populate(objectMap, "timeBeforeExpiry", l.TimeBeforeExpiry)
 	return json.Marshal(objectMap)
@@ -870,7 +870,7 @@ func (l *LifetimeActionsTrigger) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type LifetimeActionsType.
 func (l LifetimeActionsType) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "type", l.Type)
 	return json.Marshal(objectMap)
 }
@@ -897,7 +897,7 @@ func (l *LifetimeActionsType) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RandomBytes.
 func (r RandomBytes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateByteArray(objectMap, "value", r.Value, runtime.Base64URLFormat)
 	return json.Marshal(objectMap)
 }
@@ -924,7 +924,7 @@ func (r *RandomBytes) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReleaseParameters.
 func (r ReleaseParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "enc", r.Enc)
 	populate(objectMap, "nonce", r.Nonce)
 	populate(objectMap, "target", r.TargetAttestationToken)
@@ -959,7 +959,7 @@ func (r *ReleaseParameters) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RestoreKeyParameters.
 func (r RestoreKeyParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateByteArray(objectMap, "value", r.KeyBundleBackup, runtime.Base64URLFormat)
 	return json.Marshal(objectMap)
 }
@@ -986,7 +986,7 @@ func (r *RestoreKeyParameters) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SignParameters.
 func (s SignParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "alg", s.Algorithm)
 	populateByteArray(objectMap, "value", s.Value, runtime.Base64URLFormat)
 	return json.Marshal(objectMap)
@@ -1017,7 +1017,7 @@ func (s *SignParameters) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateKeyParameters.
 func (u UpdateKeyParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "attributes", u.KeyAttributes)
 	populate(objectMap, "key_ops", u.KeyOps)
 	populate(objectMap, "release_policy", u.ReleasePolicy)
@@ -1056,7 +1056,7 @@ func (u *UpdateKeyParameters) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VerifyParameters.
 func (v VerifyParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "alg", v.Algorithm)
 	populateByteArray(objectMap, "digest", v.Digest, runtime.Base64URLFormat)
 	populateByteArray(objectMap, "value", v.Signature, runtime.Base64URLFormat)
@@ -1089,7 +1089,7 @@ func (v *VerifyParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
+func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
 	} else if azcore.IsNullValue(v) {
@@ -1099,7 +1099,7 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
+func populateByteArray(m map[string]any, k string, b []byte, f runtime.Base64Encoding) {
 	if azcore.IsNullValue(b) {
 		m[k] = nil
 	} else if len(b) == 0 {
@@ -1109,7 +1109,7 @@ func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.B
 	}
 }
 
-func unpopulate(data json.RawMessage, fn string, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil {
 		return nil
 	}

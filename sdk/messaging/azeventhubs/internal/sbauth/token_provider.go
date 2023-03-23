@@ -118,7 +118,6 @@ func (tpa *TokenProvider) getSASToken(uri string) (*auth.Token, time.Time, error
 	}
 
 	return authToken,
-		// expiration is hardcoded for SAS tokens
-		time.Now().Add(time.Minute * 15),
+		time.Time{},
 		nil
 }

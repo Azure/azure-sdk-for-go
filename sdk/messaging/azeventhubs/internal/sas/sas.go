@@ -10,7 +10,6 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"net/url"
 	"strconv"
@@ -140,26 +139,22 @@ func (s *Signer) SignWithExpiry(uri, expiry string) (string, error) {
 // CreateConnectionStringWithSharedAccessSignature generates a new connection string with
 // an embedded SharedAccessSignature and expiration.
 // Ex: Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"
-func CreateConnectionStringWithSAS(connectionString string, duration time.Duration) (string, error) {
-	props, err := exported.ParseConnectionString(connectionString)
+func CreateConnectionStringWithSASUsingExpiry(connectionString string, expiry time.Time) (string, error) {
+	parsed, err := exported.ParseConnectionString(connectionString)
 
 	if err != nil {
 		return "", err
 	}
 
-	if props.SharedAccessKeyName == nil || props.SharedAccessKey == nil {
-		return "", errors.New("Missing SharedAccessKeyName/SharedAccessKey")
-	}
+	signer := NewSigner(*parsed.SharedAccessKeyName, *parsed.SharedAccessKey)
 
-	signer := NewSigner(*props.SharedAccessKeyName, *props.SharedAccessKey)
-
-	sig, _, err := signer.SignWithDuration(props.FullyQualifiedNamespace, duration)
+	sig, err := signer.SignWithExpiry(parsed.FullyQualifiedNamespace, fmt.Sprintf("%d", expiry.Unix()))
 
 	if err != nil {
 		return "", err
 	}
 
-	return fmt.Sprintf("Endpoint=sb://%s;SharedAccessSignature=%s", props.FullyQualifiedNamespace, sig), nil
+	return fmt.Sprintf("Endpoint=sb://%s;SharedAccessSignature=%s", parsed.FullyQualifiedNamespace, sig), nil
 }
 
 func signatureExpiry(from time.Time, interval time.Duration) string {

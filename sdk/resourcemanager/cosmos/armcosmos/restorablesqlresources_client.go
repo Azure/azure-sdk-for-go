@@ -32,9 +32,9 @@ type RestorableSQLResourcesClient struct {
 }
 
 // NewRestorableSQLResourcesClient creates a new instance of RestorableSQLResourcesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRestorableSQLResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableSQLResourcesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,11 +58,12 @@ func NewRestorableSQLResourcesClient(subscriptionID string, credential azcore.To
 // NewListPager - Return a list of database and container combo that exist on the account at the given timestamp and location.
 // This helps in scenarios to validate what resources exist at given timestamp and location.
 // This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission.
-// Generated from API version 2022-08-15-preview
-// location - Cosmos DB region, with spaces between words and each word capitalized.
-// instanceID - The instanceId GUID of a restorable database account.
-// options - RestorableSQLResourcesClientListOptions contains the optional parameters for the RestorableSQLResourcesClient.List
-// method.
+//
+// Generated from API version 2022-11-15
+//   - location - Cosmos DB region, with spaces between words and each word capitalized.
+//   - instanceID - The instanceId GUID of a restorable database account.
+//   - options - RestorableSQLResourcesClientListOptions contains the optional parameters for the RestorableSQLResourcesClient.NewListPager
+//     method.
 func (client *RestorableSQLResourcesClient) NewListPager(location string, instanceID string, options *RestorableSQLResourcesClientListOptions) *runtime.Pager[RestorableSQLResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RestorableSQLResourcesClientListResponse]{
 		More: func(page RestorableSQLResourcesClientListResponse) bool {
@@ -105,7 +106,7 @@ func (client *RestorableSQLResourcesClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	if options != nil && options.RestoreLocation != nil {
 		reqQP.Set("restoreLocation", *options.RestoreLocation)
 	}

@@ -9,12 +9,12 @@
 
 package armcognitiveservices
 
-// AccountsClientCreateResponse contains the response from method AccountsClient.Create.
+// AccountsClientCreateResponse contains the response from method AccountsClient.BeginCreate.
 type AccountsClientCreateResponse struct {
 	Account
 }
 
-// AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
+// AccountsClientDeleteResponse contains the response from method AccountsClient.BeginDelete.
 type AccountsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,7 +24,7 @@ type AccountsClientGetResponse struct {
 	Account
 }
 
-// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.ListByResourceGroup.
+// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.NewListByResourceGroupPager.
 type AccountsClientListByResourceGroupResponse struct {
 	AccountListResult
 }
@@ -34,12 +34,12 @@ type AccountsClientListKeysResponse struct {
 	APIKeys
 }
 
-// AccountsClientListModelsResponse contains the response from method AccountsClient.ListModels.
+// AccountsClientListModelsResponse contains the response from method AccountsClient.NewListModelsPager.
 type AccountsClientListModelsResponse struct {
 	AccountModelListResult
 }
 
-// AccountsClientListResponse contains the response from method AccountsClient.List.
+// AccountsClientListResponse contains the response from method AccountsClient.NewListPager.
 type AccountsClientListResponse struct {
 	AccountListResult
 }
@@ -59,9 +59,19 @@ type AccountsClientRegenerateKeyResponse struct {
 	APIKeys
 }
 
-// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+// AccountsClientUpdateResponse contains the response from method AccountsClient.BeginUpdate.
 type AccountsClientUpdateResponse struct {
 	Account
+}
+
+// CommitmentPlansClientCreateOrUpdateAssociationResponse contains the response from method CommitmentPlansClient.BeginCreateOrUpdateAssociation.
+type CommitmentPlansClientCreateOrUpdateAssociationResponse struct {
+	CommitmentPlanAccountAssociation
+}
+
+// CommitmentPlansClientCreateOrUpdatePlanResponse contains the response from method CommitmentPlansClient.BeginCreateOrUpdatePlan.
+type CommitmentPlansClientCreateOrUpdatePlanResponse struct {
+	CommitmentPlan
 }
 
 // CommitmentPlansClientCreateOrUpdateResponse contains the response from method CommitmentPlansClient.CreateOrUpdate.
@@ -69,9 +79,29 @@ type CommitmentPlansClientCreateOrUpdateResponse struct {
 	CommitmentPlan
 }
 
-// CommitmentPlansClientDeleteResponse contains the response from method CommitmentPlansClient.Delete.
+// CommitmentPlansClientDeleteAssociationResponse contains the response from method CommitmentPlansClient.BeginDeleteAssociation.
+type CommitmentPlansClientDeleteAssociationResponse struct {
+	// placeholder for future response values
+}
+
+// CommitmentPlansClientDeletePlanResponse contains the response from method CommitmentPlansClient.BeginDeletePlan.
+type CommitmentPlansClientDeletePlanResponse struct {
+	// placeholder for future response values
+}
+
+// CommitmentPlansClientDeleteResponse contains the response from method CommitmentPlansClient.BeginDelete.
 type CommitmentPlansClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// CommitmentPlansClientGetAssociationResponse contains the response from method CommitmentPlansClient.GetAssociation.
+type CommitmentPlansClientGetAssociationResponse struct {
+	CommitmentPlanAccountAssociation
+}
+
+// CommitmentPlansClientGetPlanResponse contains the response from method CommitmentPlansClient.GetPlan.
+type CommitmentPlansClientGetPlanResponse struct {
+	CommitmentPlan
 }
 
 // CommitmentPlansClientGetResponse contains the response from method CommitmentPlansClient.Get.
@@ -79,12 +109,32 @@ type CommitmentPlansClientGetResponse struct {
 	CommitmentPlan
 }
 
-// CommitmentPlansClientListResponse contains the response from method CommitmentPlansClient.List.
+// CommitmentPlansClientListAssociationsResponse contains the response from method CommitmentPlansClient.NewListAssociationsPager.
+type CommitmentPlansClientListAssociationsResponse struct {
+	CommitmentPlanAccountAssociationListResult
+}
+
+// CommitmentPlansClientListPlansByResourceGroupResponse contains the response from method CommitmentPlansClient.NewListPlansByResourceGroupPager.
+type CommitmentPlansClientListPlansByResourceGroupResponse struct {
+	CommitmentPlanListResult
+}
+
+// CommitmentPlansClientListPlansBySubscriptionResponse contains the response from method CommitmentPlansClient.NewListPlansBySubscriptionPager.
+type CommitmentPlansClientListPlansBySubscriptionResponse struct {
+	CommitmentPlanListResult
+}
+
+// CommitmentPlansClientListResponse contains the response from method CommitmentPlansClient.NewListPager.
 type CommitmentPlansClientListResponse struct {
 	CommitmentPlanListResult
 }
 
-// CommitmentTiersClientListResponse contains the response from method CommitmentTiersClient.List.
+// CommitmentPlansClientUpdatePlanResponse contains the response from method CommitmentPlansClient.BeginUpdatePlan.
+type CommitmentPlansClientUpdatePlanResponse struct {
+	CommitmentPlan
+}
+
+// CommitmentTiersClientListResponse contains the response from method CommitmentTiersClient.NewListPager.
 type CommitmentTiersClientListResponse struct {
 	CommitmentTierListResult
 }
@@ -94,22 +144,22 @@ type DeletedAccountsClientGetResponse struct {
 	Account
 }
 
-// DeletedAccountsClientListResponse contains the response from method DeletedAccountsClient.List.
+// DeletedAccountsClientListResponse contains the response from method DeletedAccountsClient.NewListPager.
 type DeletedAccountsClientListResponse struct {
 	AccountListResult
 }
 
-// DeletedAccountsClientPurgeResponse contains the response from method DeletedAccountsClient.Purge.
+// DeletedAccountsClientPurgeResponse contains the response from method DeletedAccountsClient.BeginPurge.
 type DeletedAccountsClientPurgeResponse struct {
 	// placeholder for future response values
 }
 
-// DeploymentsClientCreateOrUpdateResponse contains the response from method DeploymentsClient.CreateOrUpdate.
+// DeploymentsClientCreateOrUpdateResponse contains the response from method DeploymentsClient.BeginCreateOrUpdate.
 type DeploymentsClientCreateOrUpdateResponse struct {
 	Deployment
 }
 
-// DeploymentsClientDeleteResponse contains the response from method DeploymentsClient.Delete.
+// DeploymentsClientDeleteResponse contains the response from method DeploymentsClient.BeginDelete.
 type DeploymentsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -119,7 +169,7 @@ type DeploymentsClientGetResponse struct {
 	Deployment
 }
 
-// DeploymentsClientListResponse contains the response from method DeploymentsClient.List.
+// DeploymentsClientListResponse contains the response from method DeploymentsClient.NewListPager.
 type DeploymentsClientListResponse struct {
 	DeploymentListResult
 }
@@ -134,17 +184,17 @@ type ManagementClientCheckSKUAvailabilityResponse struct {
 	SKUAvailabilityListResult
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.
 type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -164,7 +214,7 @@ type PrivateLinkResourcesClientListResponse struct {
 	PrivateLinkResourceListResult
 }
 
-// ResourceSKUsClientListResponse contains the response from method ResourceSKUsClient.List.
+// ResourceSKUsClientListResponse contains the response from method ResourceSKUsClient.NewListPager.
 type ResourceSKUsClientListResponse struct {
 	ResourceSKUListResult
 }

@@ -32,9 +32,9 @@ type CollectionRegionClient struct {
 }
 
 // NewCollectionRegionClient creates a new instance of CollectionRegionClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCollectionRegionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CollectionRegionClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,17 +57,18 @@ func NewCollectionRegionClient(subscriptionID string, credential azcore.TokenCre
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account, collection and
 // region.
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// region - Cosmos DB region, with spaces between words and each word capitalized.
-// databaseRid - Cosmos DB database rid.
-// collectionRid - Cosmos DB collection rid.
-// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
-// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
-// and timeGrain. The supported operator is eq.
-// options - CollectionRegionClientListMetricsOptions contains the optional parameters for the CollectionRegionClient.ListMetrics
-// method.
+//
+// Generated from API version 2022-11-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - region - Cosmos DB region, with spaces between words and each word capitalized.
+//   - databaseRid - Cosmos DB database rid.
+//   - collectionRid - Cosmos DB collection rid.
+//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//     name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+//     and timeGrain. The supported operator is eq.
+//   - options - CollectionRegionClientListMetricsOptions contains the optional parameters for the CollectionRegionClient.NewListMetricsPager
+//     method.
 func (client *CollectionRegionClient) NewListMetricsPager(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionRegionClientListMetricsOptions) *runtime.Pager[CollectionRegionClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CollectionRegionClientListMetricsResponse]{
 		More: func(page CollectionRegionClientListMetricsResponse) bool {
@@ -122,7 +123,7 @@ func (client *CollectionRegionClient) listMetricsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

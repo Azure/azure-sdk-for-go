@@ -32,9 +32,9 @@ type PrivateEndPointConnectionsClient struct {
 }
 
 // NewPrivateEndPointConnectionsClient creates a new instance of PrivateEndPointConnectionsClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPrivateEndPointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndPointConnectionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -56,11 +56,12 @@ func NewPrivateEndPointConnectionsClient(subscriptionID string, credential azcor
 }
 
 // NewListByFactoryPager - Lists Private endpoint connections
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - PrivateEndPointConnectionsClientListByFactoryOptions contains the optional parameters for the PrivateEndPointConnectionsClient.ListByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - PrivateEndPointConnectionsClientListByFactoryOptions contains the optional parameters for the PrivateEndPointConnectionsClient.NewListByFactoryPager
+//     method.
 func (client *PrivateEndPointConnectionsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *PrivateEndPointConnectionsClientListByFactoryOptions) *runtime.Pager[PrivateEndPointConnectionsClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateEndPointConnectionsClientListByFactoryResponse]{
 		More: func(page PrivateEndPointConnectionsClientListByFactoryResponse) bool {

@@ -95,7 +95,7 @@ func TestNegotiateClaimWithAuthFailure(t *testing.T) {
 	err := NegotiateClaim(context.Background(), "audience", client, tp, mock.NewContextWithTimeoutForTests)
 
 	require.EqualError(t, err, "rpc: failed, status code 401 and description: InvalidSignature: The token has an invalid signature.")
-	require.Equal(t, GetRecoveryKind(err), RecoveryKindLink)
+	require.Equal(t, GetRecoveryKind(err), RecoveryKindFatal)
 }
 
 func TestNegotiateClaimSuccess(t *testing.T) {

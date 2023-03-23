@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"sort"
 	"strings"
 	"sync"
@@ -13,6 +14,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
@@ -20,8 +22,10 @@ import (
 )
 
 func TestProducerClient_SAS(t *testing.T) {
+	getLogsFn := test.CaptureLogsForTest()
+
 	testParams := test.GetConnectionParamsForTest(t)
-	sasCS, err := sas.CreateConnectionStringWithSAS(testParams.ConnectionString, time.Hour)
+	sasCS, err := sas.CreateConnectionStringWithSASUsingExpiry(testParams.ConnectionString, time.Now().UTC().Add(time.Hour))
 	require.NoError(t, err)
 
 	// sanity check - we did actually generate a connection string with an embedded SharedAccessSignature
@@ -63,6 +67,105 @@ func TestProducerClient_SAS(t *testing.T) {
 	events, err := partClient.ReceiveEvents(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, events)
+
+	logs := getLogsFn()
+	require.Contains(t, logs, "[azeh.Auth] Token does not have an expiration date, no background renewal needed.")
+}
+
+func TestClientsUnauthorizedCreds(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+
+	t.Run("ListenOnly with Producer", func(t *testing.T) {
+		pc, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionStringListenOnly, testParams.EventHubName, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, pc)
+
+		batch, err := pc.NewEventDataBatch(context.Background(), nil)
+
+		var ehErr *azeventhubs.Error
+		require.ErrorAs(t, err, &ehErr)
+		require.Equal(t, azeventhubs.ErrorCodeUnauthorizedAccess, ehErr.Code)
+		require.Contains(t, err.Error(), "Description: Unauthorized access. 'Send' claim(s) are required to perform this operation")
+		require.Nil(t, batch)
+	})
+
+	t.Run("SendOnly with Consumer", func(t *testing.T) {
+		client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionStringSendOnly, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, client)
+
+		pc, err := client.NewPartitionClient("0", nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, pc)
+
+		events, err := pc.ReceiveEvents(context.Background(), 1, nil)
+
+		var ehErr *azeventhubs.Error
+		require.ErrorAs(t, err, &ehErr)
+		require.Equal(t, azeventhubs.ErrorCodeUnauthorizedAccess, ehErr.Code)
+		require.Contains(t, err.Error(), "Description: Unauthorized access. 'Listen' claim(s) are required to perform this operation")
+		require.Empty(t, events)
+	})
+
+	t.Run("Expired SAS", func(t *testing.T) {
+		expiredCS, err := sas.CreateConnectionStringWithSASUsingExpiry(testParams.ConnectionString, time.Now().Add(-10*time.Minute))
+		require.NoError(t, err)
+
+		cc, err := azeventhubs.NewConsumerClientFromConnectionString(expiredCS, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, cc)
+
+		pc, err := cc.NewPartitionClient("0", nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, pc)
+
+		events, err := pc.ReceiveEvents(context.Background(), 1, nil)
+
+		var ehErr *azeventhubs.Error
+		require.ErrorAs(t, err, &ehErr)
+		require.Equal(t, azeventhubs.ErrorCodeUnauthorizedAccess, ehErr.Code)
+		require.Contains(t, err.Error(), "rpc: failed, status code 401 and description: ExpiredToken: The token is expired. Expiration time:")
+		require.Empty(t, events)
+
+		prodClient, err := azeventhubs.NewProducerClientFromConnectionString(expiredCS, testParams.EventHubName, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, prodClient)
+
+		batch, err := prodClient.NewEventDataBatch(context.Background(), nil)
+		require.ErrorAs(t, err, &ehErr)
+		require.Equal(t, azeventhubs.ErrorCodeUnauthorizedAccess, ehErr.Code)
+		require.Contains(t, err.Error(), "rpc: failed, status code 401 and description: ExpiredToken: The token is expired. Expiration time:")
+		require.Nil(t, batch)
+	})
+
+	t.Run("invalid identity creds", func(t *testing.T) {
+		tenantID := os.Getenv("AZEVENTHUBS_TENANT_ID")
+		clientID := os.Getenv("AZEVENTHUBS_CLIENT_ID")
+
+		cliCred, err := azidentity.NewClientSecretCredential(tenantID, clientID, "bogus-client-secret", nil)
+		require.NoError(t, err)
+
+		prodClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, cliCred, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, prodClient)
+
+		batch, err := prodClient.NewEventDataBatch(context.Background(), nil)
+		var authFailedErr *azidentity.AuthenticationFailedError
+		require.ErrorAs(t, err, &authFailedErr)
+		require.Nil(t, batch)
+
+		cc, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, cliCred, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, cc)
+
+		partClient, err := cc.NewPartitionClient("0", nil)
+		require.NoError(t, err)
+
+		events, err := partClient.ReceiveEvents(context.Background(), 1, nil)
+		require.ErrorAs(t, err, &authFailedErr)
+		require.Nil(t, batch)
+		require.Empty(t, events)
+	})
 }
 
 func TestProducerClient_GetHubAndPartitionProperties(t *testing.T) {
@@ -130,73 +233,105 @@ func TestProducerClient_SendToAny(t *testing.T) {
 	//    be placed into the same partition but let the overall distribution of the partition keys
 	//    happen through Event Hubs.
 
-	fn := func(t *testing.T, partitionKey *string) {
-		testParams := test.GetConnectionParamsForTest(t)
+	t.Run("no partition key, no client instanceID", func(t *testing.T) {
+		testSendAny(t, struct {
+			instanceID   string
+			partitionKey *string
+		}{})
+	})
 
-		producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
-		require.NoError(t, err)
-
-		defer test.RequireClose(t, producer)
-
-		batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
-			PartitionKey: partitionKey,
+	t.Run("no partition key, with client instanceID", func(t *testing.T) {
+		testSendAny(t, struct {
+			instanceID   string
+			partitionKey *string
+		}{
+			instanceID: "client ID",
 		})
-		require.NoError(t, err)
+	})
 
-		err = batch.AddEventData(&azeventhubs.EventData{
-			Body:          []byte("hello world"),
-			ContentType:   to.Ptr("content type"),
-			CorrelationID: "correlation id",
-			MessageID:     to.Ptr("message id"),
-			Properties: map[string]any{
-				"hello": "world",
-			},
-		}, nil)
-		require.NoError(t, err)
+	t.Run("actual partition key, no client instanceID", func(t *testing.T) {
+		testSendAny(t, struct {
+			instanceID   string
+			partitionKey *string
+		}{
+			partitionKey: to.Ptr("my special partition key"),
+		})
+	})
 
-		partitionsBeforeSend := getAllPartitionProperties(t, producer)
+	t.Run("actual partition key, with client instanceID", func(t *testing.T) {
+		testSendAny(t, struct {
+			instanceID   string
+			partitionKey *string
+		}{
+			instanceID:   "client ID",
+			partitionKey: to.Ptr("my special partition key"),
+		})
+	})
+}
 
-		err = producer.SendEventDataBatch(context.Background(), batch, nil)
-		require.NoError(t, err)
+func testSendAny(t *testing.T, args struct {
+	instanceID   string
+	partitionKey *string
+}) {
+	testParams := test.GetConnectionParamsForTest(t)
 
-		consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
-		require.NoError(t, err)
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
 
-		defer test.RequireClose(t, consumer)
+	defer test.RequireClose(t, producer)
 
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
-		defer cancel()
+	batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
+		PartitionKey: args.partitionKey,
+	})
+	require.NoError(t, err)
 
-		receivedEvent := receiveEventFromAnyPartition(ctx, t, consumer, partitionsBeforeSend)
+	err = batch.AddEventData(&azeventhubs.EventData{
+		Body:          []byte("hello world"),
+		ContentType:   to.Ptr("content type"),
+		CorrelationID: "correlation id",
+		MessageID:     to.Ptr("message id"),
+		Properties: map[string]any{
+			"hello": "world",
+		},
+	}, nil)
+	require.NoError(t, err)
 
-		require.Equal(t, azeventhubs.EventData{
-			Body:          []byte("hello world"),
-			ContentType:   to.Ptr("content type"),
-			CorrelationID: "correlation id",
-			MessageID:     to.Ptr("message id"),
-			Properties: map[string]any{
-				"hello": "world",
-			}}, receivedEvent.EventData)
+	partitionsBeforeSend := getAllPartitionProperties(t, producer)
 
-		require.GreaterOrEqual(t, receivedEvent.SequenceNumber, int64(0))
-		require.NotNil(t, receivedEvent.Offset)
-		require.NotZero(t, receivedEvent.EnqueuedTime)
+	err = producer.SendEventDataBatch(context.Background(), batch, nil)
+	require.NoError(t, err)
 
-		if partitionKey == nil {
-			require.Nil(t, receivedEvent.PartitionKey)
-		} else {
-			require.NotNil(t, receivedEvent.PartitionKey)
-			require.Equal(t, *partitionKey, *receivedEvent.PartitionKey)
-		}
+	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+		InstanceID: args.instanceID,
+	})
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, consumer)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+	defer cancel()
+
+	receivedEvent := receiveEventFromAnyPartition(ctx, t, consumer, partitionsBeforeSend)
+
+	require.Equal(t, azeventhubs.EventData{
+		Body:          []byte("hello world"),
+		ContentType:   to.Ptr("content type"),
+		CorrelationID: "correlation id",
+		MessageID:     to.Ptr("message id"),
+		Properties: map[string]any{
+			"hello": "world",
+		}}, receivedEvent.EventData)
+
+	require.GreaterOrEqual(t, receivedEvent.SequenceNumber, int64(0))
+	require.NotNil(t, receivedEvent.Offset)
+	require.NotZero(t, receivedEvent.EnqueuedTime)
+
+	if args.partitionKey == nil {
+		require.Nil(t, receivedEvent.PartitionKey)
+	} else {
+		require.NotNil(t, receivedEvent.PartitionKey)
+		require.Equal(t, *args.partitionKey, *receivedEvent.PartitionKey)
 	}
-
-	t.Run("nil", func(t *testing.T) {
-		fn(t, nil)
-	})
-
-	t.Run("actual partition key", func(t *testing.T) {
-		fn(t, to.Ptr("my special partition key"))
-	})
 }
 
 func TestProducerClient_AMQPAnnotatedMessages(t *testing.T) {
@@ -498,6 +633,9 @@ func receiveEventFromAnyPartition(ctx context.Context, t *testing.T, consumer *a
 				eventCh <- events[0]
 				cancelPartitionReceiving()
 			}
+
+			t.Logf("No error returned and no events received")
+			eventCh <- nil
 		}(partitionClientContext, partProps)
 	}
 

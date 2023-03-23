@@ -32,9 +32,9 @@ type DatabaseClient struct {
 }
 
 // NewDatabaseClient creates a new instance of DatabaseClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -56,12 +56,13 @@ func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential,
 }
 
 // NewListMetricDefinitionsPager - Retrieves metric definitions for the given database.
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// databaseRid - Cosmos DB database rid.
-// options - DatabaseClientListMetricDefinitionsOptions contains the optional parameters for the DatabaseClient.ListMetricDefinitions
-// method.
+//
+// Generated from API version 2022-11-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - databaseRid - Cosmos DB database rid.
+//   - options - DatabaseClientListMetricDefinitionsOptions contains the optional parameters for the DatabaseClient.NewListMetricDefinitionsPager
+//     method.
 func (client *DatabaseClient) NewListMetricDefinitionsPager(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListMetricDefinitionsOptions) *runtime.Pager[DatabaseClientListMetricDefinitionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseClientListMetricDefinitionsResponse]{
 		More: func(page DatabaseClientListMetricDefinitionsResponse) bool {
@@ -108,7 +109,7 @@ func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -124,14 +125,16 @@ func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Res
 }
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and database.
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// databaseRid - Cosmos DB database rid.
-// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
-// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
-// and timeGrain. The supported operator is eq.
-// options - DatabaseClientListMetricsOptions contains the optional parameters for the DatabaseClient.ListMetrics method.
+//
+// Generated from API version 2022-11-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - databaseRid - Cosmos DB database rid.
+//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//     name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+//     and timeGrain. The supported operator is eq.
+//   - options - DatabaseClientListMetricsOptions contains the optional parameters for the DatabaseClient.NewListMetricsPager
+//     method.
 func (client *DatabaseClient) NewListMetricsPager(resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseClientListMetricsOptions) *runtime.Pager[DatabaseClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseClientListMetricsResponse]{
 		More: func(page DatabaseClientListMetricsResponse) bool {
@@ -178,7 +181,7 @@ func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -195,11 +198,12 @@ func (client *DatabaseClient) listMetricsHandleResponse(resp *http.Response) (Da
 }
 
 // NewListUsagesPager - Retrieves the usages (most recent data) for the given database.
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// databaseRid - Cosmos DB database rid.
-// options - DatabaseClientListUsagesOptions contains the optional parameters for the DatabaseClient.ListUsages method.
+//
+// Generated from API version 2022-11-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - databaseRid - Cosmos DB database rid.
+//   - options - DatabaseClientListUsagesOptions contains the optional parameters for the DatabaseClient.NewListUsagesPager method.
 func (client *DatabaseClient) NewListUsagesPager(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListUsagesOptions) *runtime.Pager[DatabaseClientListUsagesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseClientListUsagesResponse]{
 		More: func(page DatabaseClientListUsagesResponse) bool {
@@ -246,7 +250,7 @@ func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

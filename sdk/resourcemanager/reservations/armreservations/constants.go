@@ -11,22 +11,38 @@ package armreservations
 
 const (
 	moduleName    = "armreservations"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v2.0.0"
 )
 
 // AppliedScopeType - Type of the Applied Scope.
 type AppliedScopeType string
 
 const (
-	AppliedScopeTypeShared AppliedScopeType = "Shared"
-	AppliedScopeTypeSingle AppliedScopeType = "Single"
+	AppliedScopeTypeManagementGroup AppliedScopeType = "ManagementGroup"
+	AppliedScopeTypeShared          AppliedScopeType = "Shared"
+	AppliedScopeTypeSingle          AppliedScopeType = "Single"
 )
 
 // PossibleAppliedScopeTypeValues returns the possible values for the AppliedScopeType const type.
 func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 	return []AppliedScopeType{
+		AppliedScopeTypeManagementGroup,
 		AppliedScopeTypeShared,
 		AppliedScopeTypeSingle,
+	}
+}
+
+// BillingPlan - Represents the billing plan in ISO 8601 format. Required only for monthly billing plans.
+type BillingPlan string
+
+const (
+	BillingPlanP1M BillingPlan = "P1M"
+)
+
+// PossibleBillingPlanValues returns the possible values for the BillingPlan const type.
+func PossibleBillingPlanValues() []BillingPlan {
+	return []BillingPlan{
+		BillingPlanP1M,
 	}
 }
 
@@ -50,6 +66,20 @@ func PossibleCalculateExchangeOperationResultStatusValues() []CalculateExchangeO
 	}
 }
 
+// CommitmentGrain - Commitment grain.
+type CommitmentGrain string
+
+const (
+	CommitmentGrainHourly CommitmentGrain = "Hourly"
+)
+
+// PossibleCommitmentGrainValues returns the possible values for the CommitmentGrain const type.
+func PossibleCommitmentGrainValues() []CommitmentGrain {
+	return []CommitmentGrain{
+		CommitmentGrainHourly,
+	}
+}
+
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -70,7 +100,7 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DisplayProvisioningState - Represent the current display state of the Reservation.
+// DisplayProvisioningState - Represent the current display state of the reservation.
 type DisplayProvisioningState string
 
 const (
@@ -78,9 +108,11 @@ const (
 	DisplayProvisioningStateExpired    DisplayProvisioningState = "Expired"
 	DisplayProvisioningStateExpiring   DisplayProvisioningState = "Expiring"
 	DisplayProvisioningStateFailed     DisplayProvisioningState = "Failed"
+	DisplayProvisioningStateNoBenefit  DisplayProvisioningState = "NoBenefit"
 	DisplayProvisioningStatePending    DisplayProvisioningState = "Pending"
 	DisplayProvisioningStateProcessing DisplayProvisioningState = "Processing"
 	DisplayProvisioningStateSucceeded  DisplayProvisioningState = "Succeeded"
+	DisplayProvisioningStateWarning    DisplayProvisioningState = "Warning"
 )
 
 // PossibleDisplayProvisioningStateValues returns the possible values for the DisplayProvisioningState const type.
@@ -90,12 +122,15 @@ func PossibleDisplayProvisioningStateValues() []DisplayProvisioningState {
 		DisplayProvisioningStateExpired,
 		DisplayProvisioningStateExpiring,
 		DisplayProvisioningStateFailed,
+		DisplayProvisioningStateNoBenefit,
 		DisplayProvisioningStatePending,
 		DisplayProvisioningStateProcessing,
 		DisplayProvisioningStateSucceeded,
+		DisplayProvisioningStateWarning,
 	}
 }
 
+// ErrorResponseCode - Error code describing the reason that service is not able to process the incoming request
 type ErrorResponseCode string
 
 const (
@@ -469,7 +504,7 @@ func PossibleReservationStatusCodeValues() []ReservationStatusCode {
 	}
 }
 
-// ReservationTerm - Represent the term of Reservation.
+// ReservationTerm - Represent the term of reservation.
 type ReservationTerm string
 
 const (
@@ -570,6 +605,22 @@ func PossibleResourceTypeValues() []ResourceType {
 		ResourceTypeServiceSpecific,
 		ResourceTypeShared,
 		ResourceTypeStandard,
+	}
+}
+
+// SavingsPlanTerm - Represent savings plan term in ISO 8601 format.
+type SavingsPlanTerm string
+
+const (
+	SavingsPlanTermP1Y SavingsPlanTerm = "P1Y"
+	SavingsPlanTermP3Y SavingsPlanTerm = "P3Y"
+)
+
+// PossibleSavingsPlanTermValues returns the possible values for the SavingsPlanTerm const type.
+func PossibleSavingsPlanTermValues() []SavingsPlanTerm {
+	return []SavingsPlanTerm{
+		SavingsPlanTermP1Y,
+		SavingsPlanTermP3Y,
 	}
 }
 

@@ -11,6 +11,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"strings"
 	"testing"
 	"time"
@@ -45,6 +48,8 @@ const (
 	AccountNameEnvVar           = "AZURE_STORAGE_ACCOUNT_NAME"
 	AccountKeyEnvVar            = "AZURE_STORAGE_ACCOUNT_KEY"
 	DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
+	SubscriptionID              = "SUBSCRIPTION_ID"
+	ResourceGroupName           = "RESOURCE_GROUP_NAME"
 )
 
 const (
@@ -299,4 +304,97 @@ func ListBlobsCount(ctx context.Context, _require *require.Assertions, listPager
 		found = append(found, resp.Segment.BlobItems...)
 	}
 	_require.Len(found, ctr)
+}
+
+func GetServiceSAS(containerName string, permissions sas.BlobPermissions) (string, error) {
+	credential, err := GetGenericSharedKeyCredential(TestAccountDefault)
+	if err != nil {
+		return "", err
+	}
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC(),
+		ExpiryTime:    time.Now().UTC().Add(2 * time.Hour),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+	}.SignWithSharedKey(credential)
+	if err != nil {
+		return "", err
+	}
+
+	return sasQueryParams.Encode(), nil
+}
+
+func GetUserDelegationSAS(svcClient *service.Client, containerName string, permissions sas.BlobPermissions) (string, error) {
+	// Set current and past time and create key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	if err != nil {
+		return "", err
+	}
+
+	// Create Blob Signature Values with desired permissions and sign with user delegation credential
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+	}.SignWithUserDelegation(udc)
+	if err != nil {
+		return "", err
+	}
+
+	return sasQueryParams.Encode(), nil
+}
+
+func GetAccountSAS(permissions sas.AccountPermissions, resourceTypes sas.AccountResourceTypes) (string, error) {
+	credential, err := GetGenericSharedKeyCredential(TestAccountDefault)
+	if err != nil {
+		return "", err
+	}
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC(),
+		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+		Permissions:   permissions.String(),
+		ResourceTypes: resourceTypes.String(),
+	}.SignWithSharedKey(credential)
+	if err != nil {
+		return "", err
+	}
+
+	return sasQueryParams.Encode(), nil
+}
+
+func DeleteContainerUsingManagementClient(_require *require.Assertions, accountType TestAccountType, containerName string) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return
+	}
+
+	accountName, err := GetRequiredEnv(string(accountType) + AccountNameEnvVar)
+	_require.NoError(err)
+
+	subscriptionID, err := GetRequiredEnv(SubscriptionID)
+	_require.NoError(err)
+
+	resourceGroupName, err := GetRequiredEnv(ResourceGroupName)
+	_require.NoError(err)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	managementClient, err := armstorage.NewBlobContainersClient(subscriptionID, cred, nil)
+	_require.NoError(err)
+
+	_, err = managementClient.Delete(context.Background(), resourceGroupName, accountName, containerName, nil)
+	_require.NoError(err)
 }

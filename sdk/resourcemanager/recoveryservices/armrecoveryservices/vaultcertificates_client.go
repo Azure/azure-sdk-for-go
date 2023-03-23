@@ -32,9 +32,9 @@ type VaultCertificatesClient struct {
 }
 
 // NewVaultCertificatesClient creates a new instance of VaultCertificatesClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVaultCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VaultCertificatesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,13 +57,14 @@ func NewVaultCertificatesClient(subscriptionID string, credential azcore.TokenCr
 
 // Create - Uploads a certificate for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01
-// resourceGroupName - The name of the resource group where the recovery services vault is present.
-// vaultName - The name of the recovery services vault.
-// certificateName - Certificate friendly name.
-// certificateRequest - Input parameters for uploading the vault certificate.
-// options - VaultCertificatesClientCreateOptions contains the optional parameters for the VaultCertificatesClient.Create
-// method.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the recovery services vault.
+//   - certificateName - Certificate friendly name.
+//   - certificateRequest - Input parameters for uploading the vault certificate.
+//   - options - VaultCertificatesClientCreateOptions contains the optional parameters for the VaultCertificatesClient.Create
+//     method.
 func (client *VaultCertificatesClient) Create(ctx context.Context, resourceGroupName string, vaultName string, certificateName string, certificateRequest CertificateRequest, options *VaultCertificatesClientCreateOptions) (VaultCertificatesClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, vaultName, certificateName, certificateRequest, options)
 	if err != nil {
@@ -103,7 +104,7 @@ func (client *VaultCertificatesClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, certificateRequest)

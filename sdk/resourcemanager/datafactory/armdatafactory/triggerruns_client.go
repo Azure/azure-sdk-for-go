@@ -32,9 +32,9 @@ type TriggerRunsClient struct {
 }
 
 // NewTriggerRunsClient creates a new instance of TriggerRunsClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTriggerRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggerRunsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewTriggerRunsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Cancel - Cancel a single trigger instance by runId.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// runID - The pipeline run identifier.
-// options - TriggerRunsClientCancelOptions contains the optional parameters for the TriggerRunsClient.Cancel method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - runID - The pipeline run identifier.
+//   - options - TriggerRunsClientCancelOptions contains the optional parameters for the TriggerRunsClient.Cancel method.
 func (client *TriggerRunsClient) Cancel(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsClientCancelOptions) (TriggerRunsClientCancelResponse, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, factoryName, triggerName, runID, options)
 	if err != nil {
@@ -114,12 +115,13 @@ func (client *TriggerRunsClient) cancelCreateRequest(ctx context.Context, resour
 
 // QueryByFactory - Query trigger runs.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// filterParameters - Parameters to filter the pipeline run.
-// options - TriggerRunsClientQueryByFactoryOptions contains the optional parameters for the TriggerRunsClient.QueryByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - filterParameters - Parameters to filter the pipeline run.
+//   - options - TriggerRunsClientQueryByFactoryOptions contains the optional parameters for the TriggerRunsClient.QueryByFactory
+//     method.
 func (client *TriggerRunsClient) QueryByFactory(ctx context.Context, resourceGroupName string, factoryName string, filterParameters RunFilterParameters, options *TriggerRunsClientQueryByFactoryOptions) (TriggerRunsClientQueryByFactoryResponse, error) {
 	req, err := client.queryByFactoryCreateRequest(ctx, resourceGroupName, factoryName, filterParameters, options)
 	if err != nil {
@@ -172,12 +174,13 @@ func (client *TriggerRunsClient) queryByFactoryHandleResponse(resp *http.Respons
 
 // Rerun - Rerun single trigger instance by runId.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// runID - The pipeline run identifier.
-// options - TriggerRunsClientRerunOptions contains the optional parameters for the TriggerRunsClient.Rerun method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - runID - The pipeline run identifier.
+//   - options - TriggerRunsClientRerunOptions contains the optional parameters for the TriggerRunsClient.Rerun method.
 func (client *TriggerRunsClient) Rerun(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsClientRerunOptions) (TriggerRunsClientRerunResponse, error) {
 	req, err := client.rerunCreateRequest(ctx, resourceGroupName, factoryName, triggerName, runID, options)
 	if err != nil {

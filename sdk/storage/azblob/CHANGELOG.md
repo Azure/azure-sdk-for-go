@@ -5,6 +5,8 @@
 ### Features Added
 * UploadBlobFromURL API. For more information view [here](https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url). 
 
+* Added [Blob Batch API](https://learn.microsoft.com/rest/api/storageservices/blob-batch).
+
 ### Breaking Changes
 
 ### Bugs Fixed

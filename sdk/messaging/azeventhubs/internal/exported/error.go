@@ -10,13 +10,20 @@ import "fmt"
 type ErrorCode string
 
 const (
+	// ErrorCodeUnauthorizedAccess means the credentials provided are not valid for use with
+	// a particular entity, or have expired.
+	ErrorCodeUnauthorizedAccess ErrorCode = "unauthorized"
+
 	// ErrorCodeConnectionLost means our connection was lost and all retry attempts failed.
 	// This typically reflects an extended outage or connection disruption and may
 	// require manual intervention.
 	ErrorCodeConnectionLost ErrorCode = "connlost"
 
 	// ErrorCodeOwnershipLost means that a partition that you were reading from was opened
-	// by another link with a higher epoch/owner level.
+	// by another link with an epoch/owner level greater or equal to your [PartitionClient].
+	//
+	// When using types like the [Processor], partition ownership will change as instances
+	// rebalance.
 	ErrorCodeOwnershipLost ErrorCode = "ownershiplost"
 )
 

@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Cosmos DB modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure Cosmos DB module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armcosmos.NewClientFactory(<subscription ID>, cred, nil)

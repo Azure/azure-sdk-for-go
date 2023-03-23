@@ -688,6 +688,92 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlWithCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBBClient, destBBClient, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	if err != nil {
+		s.T().Fatal("Couldn't fetch credential because " + err.Error())
+	}
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    expiryTime,
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBBClient.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	options := blockblob.UploadBlobFromURLOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	}
+
+	pbResp, err := destBBClient.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(pbResp)
+	_require.NoError(err)
+
+	getBlobPropertiesOptions := blob.GetPropertiesOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	}
+
+	getResp, err := destBBClient.GetProperties(context.Background(), &getBlobPropertiesOptions)
+	_require.Nil(err)
+	_require.EqualValues(getResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	encryptionScope := testcommon.GetCPKScopeInfo(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, _, destBBClient, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	srcBBClient := testcommon.CreateNewBlockBlobWithCPK(context.Background(), _require, bbName, containerClient, nil, &encryptionScope)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	if err != nil {
+		s.T().Fatal("Couldn't fetch credential because " + err.Error())
+	}
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    expiryTime,
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBBClient.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	options := blockblob.UploadBlobFromURLOptions{
+		CPKScopeInfo: &encryptionScope,
+	}
+
+	pbResp, err := destBBClient.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(pbResp)
+	_require.NoError(err)
+
+	getResp, err := destBBClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.EqualValues(*getResp.EncryptionScope, *encryptionScope.EncryptionScope)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

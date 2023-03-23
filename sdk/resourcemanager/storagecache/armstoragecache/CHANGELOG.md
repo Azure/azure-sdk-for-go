@@ -1,19 +1,15 @@
 # Release History
 
-## 4.0.0-beta.1 (2023-03-14)
-### Breaking Changes
-
-- Const `ProvisioningStateTypeCancelled` from type alias `ProvisioningStateType` has been removed
-
+## 3.1.0-beta.1 (2023-03-24)
 ### Features Added
 
-- New value `ProvisioningStateTypeCanceled` added to type alias `ProvisioningStateType`
-- New type alias `AmlFilesystemHealthStateType` with values `AmlFilesystemHealthStateTypeAvailable`, `AmlFilesystemHealthStateTypeDegraded`, `AmlFilesystemHealthStateTypeMaintenance`, `AmlFilesystemHealthStateTypeTransitioning`, `AmlFilesystemHealthStateTypeUnavailable`
-- New type alias `AmlFilesystemIdentityType` with values `AmlFilesystemIdentityTypeNone`, `AmlFilesystemIdentityTypeUserAssigned`
-- New type alias `AmlFilesystemProvisioningStateType` with values `AmlFilesystemProvisioningStateTypeCanceled`, `AmlFilesystemProvisioningStateTypeCreating`, `AmlFilesystemProvisioningStateTypeDeleting`, `AmlFilesystemProvisioningStateTypeFailed`, `AmlFilesystemProvisioningStateTypeSucceeded`, `AmlFilesystemProvisioningStateTypeUpdating`
-- New type alias `ArchiveStatusType` with values `ArchiveStatusTypeCanceled`, `ArchiveStatusTypeCancelling`, `ArchiveStatusTypeCompleted`, `ArchiveStatusTypeFSScanInProgress`, `ArchiveStatusTypeFailed`, `ArchiveStatusTypeIdle`, `ArchiveStatusTypeInProgress`, `ArchiveStatusTypeNotConfigured`
-- New type alias `FilesystemSubnetStatusType` with values `FilesystemSubnetStatusTypeInvalid`, `FilesystemSubnetStatusTypeOk`
-- New type alias `MaintenanceDayOfWeekType` with values `MaintenanceDayOfWeekTypeFriday`, `MaintenanceDayOfWeekTypeMonday`, `MaintenanceDayOfWeekTypeSaturday`, `MaintenanceDayOfWeekTypeSunday`, `MaintenanceDayOfWeekTypeThursday`, `MaintenanceDayOfWeekTypeTuesday`, `MaintenanceDayOfWeekTypeWednesday`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `AmlFilesystemHealthStateType` with values `AmlFilesystemHealthStateTypeAvailable`, `AmlFilesystemHealthStateTypeDegraded`, `AmlFilesystemHealthStateTypeMaintenance`, `AmlFilesystemHealthStateTypeTransitioning`, `AmlFilesystemHealthStateTypeUnavailable`
+- New enum type `AmlFilesystemIdentityType` with values `AmlFilesystemIdentityTypeNone`, `AmlFilesystemIdentityTypeUserAssigned`
+- New enum type `AmlFilesystemProvisioningStateType` with values `AmlFilesystemProvisioningStateTypeCanceled`, `AmlFilesystemProvisioningStateTypeCreating`, `AmlFilesystemProvisioningStateTypeDeleting`, `AmlFilesystemProvisioningStateTypeFailed`, `AmlFilesystemProvisioningStateTypeSucceeded`, `AmlFilesystemProvisioningStateTypeUpdating`
+- New enum type `ArchiveStatusType` with values `ArchiveStatusTypeCanceled`, `ArchiveStatusTypeCancelling`, `ArchiveStatusTypeCompleted`, `ArchiveStatusTypeFSScanInProgress`, `ArchiveStatusTypeFailed`, `ArchiveStatusTypeIdle`, `ArchiveStatusTypeInProgress`, `ArchiveStatusTypeNotConfigured`
+- New enum type `FilesystemSubnetStatusType` with values `FilesystemSubnetStatusTypeInvalid`, `FilesystemSubnetStatusTypeOk`
+- New enum type `MaintenanceDayOfWeekType` with values `MaintenanceDayOfWeekTypeFriday`, `MaintenanceDayOfWeekTypeMonday`, `MaintenanceDayOfWeekTypeSaturday`, `MaintenanceDayOfWeekTypeSunday`, `MaintenanceDayOfWeekTypeThursday`, `MaintenanceDayOfWeekTypeTuesday`, `MaintenanceDayOfWeekTypeWednesday`
 - New function `NewAmlFilesystemsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AmlFilesystemsClient, error)`
 - New function `*AmlFilesystemsClient.Archive(context.Context, string, string, *AmlFilesystemsClientArchiveOptions) (AmlFilesystemsClientArchiveResponse, error)`
 - New function `*AmlFilesystemsClient.CancelArchive(context.Context, string, string, *AmlFilesystemsClientCancelArchiveOptions) (AmlFilesystemsClientCancelArchiveResponse, error)`
@@ -43,9 +39,7 @@
 - New struct `AmlFilesystemUpdate`
 - New struct `AmlFilesystemUpdateProperties`
 - New struct `AmlFilesystemUpdatePropertiesMaintenanceWindow`
-- New struct `AmlFilesystemsClient`
 - New struct `AmlFilesystemsListResult`
-- New struct `ManagementClient`
 - New struct `RequiredAmlFilesystemSubnetsSize`
 - New struct `RequiredAmlFilesystemSubnetsSizeInfo`
 - New struct `Resource`

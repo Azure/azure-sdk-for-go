@@ -15,21 +15,21 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/checkAmlFSSubnets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/checkAmlFSSubnets.json
 func ExampleManagementClient_CheckAmlFSSubnets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewManagementClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.CheckAmlFSSubnets(ctx, &armstoragecache.ManagementClientCheckAmlFSSubnetsOptions{AmlFilesystemSubnetInfo: &armstoragecache.AmlFilesystemSubnetInfo{
+	_, err = clientFactory.NewManagementClient().CheckAmlFSSubnets(ctx, &armstoragecache.ManagementClientCheckAmlFSSubnetsOptions{AmlFilesystemSubnetInfo: &armstoragecache.AmlFilesystemSubnetInfo{
 		FilesystemSubnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/fsSub"),
 		SKU: &armstoragecache.SKUName{
 			Name: to.Ptr("AMLFS-Durable-Premium-125"),
@@ -42,18 +42,18 @@ func ExampleManagementClient_CheckAmlFSSubnets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/getRequiredAmlFSSubnetsSize.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/getRequiredAmlFSSubnetsSize.json
 func ExampleManagementClient_GetRequiredAmlFSSubnetsSize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewManagementClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetRequiredAmlFSSubnetsSize(ctx, &armstoragecache.ManagementClientGetRequiredAmlFSSubnetsSizeOptions{RequiredAMLFilesystemSubnetsSizeInfo: nil})
+	res, err := clientFactory.NewManagementClient().GetRequiredAmlFSSubnetsSize(ctx, &armstoragecache.ManagementClientGetRequiredAmlFSSubnetsSizeOptions{RequiredAMLFilesystemSubnetsSizeInfo: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -11,7 +11,7 @@ package armstoragecache
 
 const (
 	moduleName    = "armstoragecache"
-	moduleVersion = "v4.0.0-beta.1"
+	moduleVersion = "v3.1.0-beta.1"
 )
 
 // AmlFilesystemHealthStateType - List of AML file system health states.
@@ -366,7 +366,7 @@ func PossiblePrimingJobStateValues() []PrimingJobState {
 type ProvisioningStateType string
 
 const (
-	ProvisioningStateTypeCanceled  ProvisioningStateType = "Canceled"
+	ProvisioningStateTypeCancelled ProvisioningStateType = "Cancelled"
 	ProvisioningStateTypeCreating  ProvisioningStateType = "Creating"
 	ProvisioningStateTypeDeleting  ProvisioningStateType = "Deleting"
 	ProvisioningStateTypeFailed    ProvisioningStateType = "Failed"
@@ -377,7 +377,7 @@ const (
 // PossibleProvisioningStateTypeValues returns the possible values for the ProvisioningStateType const type.
 func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
 	return []ProvisioningStateType{
-		ProvisioningStateTypeCanceled,
+		ProvisioningStateTypeCancelled,
 		ProvisioningStateTypeCreating,
 		ProvisioningStateTypeDeleting,
 		ProvisioningStateTypeFailed,

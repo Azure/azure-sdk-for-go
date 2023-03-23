@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // AmlFilesystemsClient contains the methods for the AmlFilesystems group.
 // Don't use this type directly, use NewAmlFilesystemsClient() instead.
 type AmlFilesystemsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAmlFilesystemsClient creates a new instance of AmlFilesystemsClient with the specified values.
@@ -36,21 +33,13 @@ type AmlFilesystemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAmlFilesystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AmlFilesystemsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AmlFilesystemsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AmlFilesystemsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -67,7 +56,7 @@ func (client *AmlFilesystemsClient) Archive(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AmlFilesystemsClientArchiveResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AmlFilesystemsClientArchiveResponse{}, err
 	}
@@ -92,7 +81,7 @@ func (client *AmlFilesystemsClient) archiveCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter amlFilesystemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +108,7 @@ func (client *AmlFilesystemsClient) CancelArchive(ctx context.Context, resourceG
 	if err != nil {
 		return AmlFilesystemsClientCancelArchiveResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AmlFilesystemsClientCancelArchiveResponse{}, err
 	}
@@ -144,7 +133,7 @@ func (client *AmlFilesystemsClient) cancelArchiveCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter amlFilesystemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,11 +160,11 @@ func (client *AmlFilesystemsClient) BeginCreateOrUpdate(ctx context.Context, res
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AmlFilesystemsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AmlFilesystemsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AmlFilesystemsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AmlFilesystemsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -188,7 +177,7 @@ func (client *AmlFilesystemsClient) createOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -213,7 +202,7 @@ func (client *AmlFilesystemsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter amlFilesystemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,11 +227,11 @@ func (client *AmlFilesystemsClient) BeginDelete(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AmlFilesystemsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AmlFilesystemsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AmlFilesystemsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AmlFilesystemsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -255,7 +244,7 @@ func (client *AmlFilesystemsClient) deleteOperation(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -280,7 +269,7 @@ func (client *AmlFilesystemsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -303,7 +292,7 @@ func (client *AmlFilesystemsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AmlFilesystemsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AmlFilesystemsClientGetResponse{}, err
 	}
@@ -328,7 +317,7 @@ func (client *AmlFilesystemsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -368,7 +357,7 @@ func (client *AmlFilesystemsClient) NewListPager(options *AmlFilesystemsClientLi
 			if err != nil {
 				return AmlFilesystemsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AmlFilesystemsClientListResponse{}, err
 			}
@@ -387,7 +376,7 @@ func (client *AmlFilesystemsClient) listCreateRequest(ctx context.Context, optio
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -429,7 +418,7 @@ func (client *AmlFilesystemsClient) NewListByResourceGroupPager(resourceGroupNam
 			if err != nil {
 				return AmlFilesystemsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AmlFilesystemsClientListByResourceGroupResponse{}, err
 			}
@@ -452,7 +441,7 @@ func (client *AmlFilesystemsClient) listByResourceGroupCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -488,11 +477,11 @@ func (client *AmlFilesystemsClient) BeginUpdate(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AmlFilesystemsClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AmlFilesystemsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AmlFilesystemsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AmlFilesystemsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -505,7 +494,7 @@ func (client *AmlFilesystemsClient) update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -530,7 +519,7 @@ func (client *AmlFilesystemsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter amlFilesystemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Web PubSub modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure Web PubSub module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armwebpubsub.NewClientFactory(<subscription ID>, cred, nil)

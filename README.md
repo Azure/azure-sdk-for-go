@@ -29,7 +29,7 @@ You can find the most up-to-date list of new modules on our [latest page](https:
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-beta modules.
 
 ### Management modules
-Similar to our client modules, the management modules follow the [Azure Go SDK guidelines](https://azure.github.io/azure-sdk/golang_introduction.html). All management modules are available at `sdk/resourcemanagement`. These modules provide a number of core capabilities that are shared amongst all Azure SDKs, including the intuitive Azure Identity module, an HTTP Pipeline with custom policies, error-handling, distributed tracing, and much more.
+Similar to our client modules, the management modules follow the [Azure Go SDK guidelines](https://azure.github.io/azure-sdk/golang_introduction.html). All management modules are available at `sdk/resourcemanager`. These modules provide a number of core capabilities that are shared amongst all Azure SDKs, including the intuitive Azure Identity module, an HTTP Pipeline with custom policies, error-handling, distributed tracing, and much more.
 
 To get started, please follow the [quickstart guide here](https://aka.ms/azsdk/go/mgmt). To see the benefits of migrating and how to migrate to the new modules, please visit the [migration guide](https://aka.ms/azsdk/go/mgmt/migration).
 

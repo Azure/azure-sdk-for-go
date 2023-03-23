@@ -74,22 +74,22 @@ type ImportCertificateResponse struct {
 	CertificateBundle
 }
 
-// ListCertificateIssuersResponse contains the response from method Client.ListCertificateIssuers.
+// ListCertificateIssuersResponse contains the response from method Client.NewListCertificateIssuersPager.
 type ListCertificateIssuersResponse struct {
 	CertificateIssuerListResult
 }
 
-// ListCertificateVersionsResponse contains the response from method Client.ListCertificateVersions.
+// ListCertificateVersionsResponse contains the response from method Client.NewListCertificateVersionsPager.
 type ListCertificateVersionsResponse struct {
 	CertificateListResult
 }
 
-// ListCertificatesResponse contains the response from method Client.ListCertificates.
+// ListCertificatesResponse contains the response from method Client.NewListCertificatesPager.
 type ListCertificatesResponse struct {
 	CertificateListResult
 }
 
-// ListDeletedCertificatesResponse contains the response from method Client.ListDeletedCertificates.
+// ListDeletedCertificatesResponse contains the response from method Client.NewListDeletedCertificatesPager.
 type ListDeletedCertificatesResponse struct {
 	DeletedCertificateListResult
 }

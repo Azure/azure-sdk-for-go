@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure NetApp Files modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure NetApp Files module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armnetapp.NewClientFactory(<subscription ID>, cred, nil)

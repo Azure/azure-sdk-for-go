@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Recovery Services Backup modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure Recovery Services Backup module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armrecoveryservicesbackup.NewClientFactory(<subscription ID>, cred, nil)

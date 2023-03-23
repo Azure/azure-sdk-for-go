@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure PaloAltoNetworks modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure PaloAltoNetworks module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armpanngfw.NewClientFactory(<subscription ID>, cred, nil)

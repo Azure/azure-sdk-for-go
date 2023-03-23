@@ -138,7 +138,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [client_docs]: https://aka.ms/azsdk/go/azcertificates
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-certificates/docs
-[certificates_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azcertificates
+[certificates_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/security/keyvault/azcertificates
 [certificates_samples]: https://aka.ms/azsdk/go/keyvault-certificates/docs#pkg-examples
 [managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 

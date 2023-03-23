@@ -14,7 +14,7 @@ import "time"
 // Action - The action that will be executed.
 type Action struct {
 	// The type of the action.
-	ActionType *ActionType `json:"action_type,omitempty"`
+	ActionType *CertificatePolicyAction `json:"action_type,omitempty"`
 }
 
 // AdministratorDetails - Details of the organization administrator of the certificate issuer.
@@ -529,7 +529,8 @@ type KeyProperties struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
 	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
 
-	// Indicates if the private key can be exported.
+	// Indicates if the private key can be exported. Release policy must be provided when creating the first version of an exportable
+	// key.
 	Exportable *bool `json:"exportable,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -659,7 +660,7 @@ type X509CertificateProperties struct {
 	// The enhanced key usage.
 	EKUs []*string `json:"ekus,omitempty"`
 
-	// List of key usages.
+	// Defines how the certificate's key may be used.
 	KeyUsage []*KeyUsageType `json:"key_usage,omitempty"`
 
 	// The subject name. Should be a valid X509 distinguished Name.

@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Communication Services modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure Communication Services module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armcommunication.NewClientFactory(<subscription ID>, cred, nil)

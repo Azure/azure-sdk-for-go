@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure App Service modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure App Service module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armappservice.NewClientFactory(<subscription ID>, cred, nil)

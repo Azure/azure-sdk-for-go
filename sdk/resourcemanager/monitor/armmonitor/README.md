@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Monitor modules consist of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure Monitor module consists of one or more clients.  We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armmonitor.NewClientFactory(<subscription ID>, cred, nil)

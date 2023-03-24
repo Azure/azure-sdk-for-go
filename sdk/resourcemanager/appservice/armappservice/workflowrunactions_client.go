@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,50 +25,42 @@ import (
 // WorkflowRunActionsClient contains the methods for the WorkflowRunActions group.
 // Don't use this type directly, use NewWorkflowRunActionsClient() instead.
 type WorkflowRunActionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkflowRunActionsClient creates a new instance of WorkflowRunActionsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWorkflowRunActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowRunActionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkflowRunActionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkflowRunActionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets a workflow run action.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// runName - The workflow run name.
-// actionName - The workflow action name.
-// options - WorkflowRunActionsClientGetOptions contains the optional parameters for the WorkflowRunActionsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - actionName - The workflow action name.
+//   - options - WorkflowRunActionsClientGetOptions contains the optional parameters for the WorkflowRunActionsClient.Get method.
 func (client *WorkflowRunActionsClient) Get(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, actionName string, options *WorkflowRunActionsClientGetOptions) (WorkflowRunActionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, workflowName, runName, actionName, options)
 	if err != nil {
 		return WorkflowRunActionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkflowRunActionsClientGetResponse{}, err
 	}
@@ -107,12 +97,12 @@ func (client *WorkflowRunActionsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter actionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{actionName}", url.PathEscape(actionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -128,13 +118,14 @@ func (client *WorkflowRunActionsClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets a list of workflow run actions.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// runName - The workflow run name.
-// options - WorkflowRunActionsClientListOptions contains the optional parameters for the WorkflowRunActionsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - options - WorkflowRunActionsClientListOptions contains the optional parameters for the WorkflowRunActionsClient.NewListPager
+//     method.
 func (client *WorkflowRunActionsClient) NewListPager(resourceGroupName string, name string, workflowName string, runName string, options *WorkflowRunActionsClientListOptions) *runtime.Pager[WorkflowRunActionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionsClientListResponse]{
 		More: func(page WorkflowRunActionsClientListResponse) bool {
@@ -151,7 +142,7 @@ func (client *WorkflowRunActionsClient) NewListPager(resourceGroupName string, n
 			if err != nil {
 				return WorkflowRunActionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkflowRunActionsClientListResponse{}, err
 			}
@@ -186,12 +177,12 @@ func (client *WorkflowRunActionsClient) listCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter runName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -213,15 +204,15 @@ func (client *WorkflowRunActionsClient) listHandleResponse(resp *http.Response) 
 }
 
 // NewListExpressionTracesPager - Lists a workflow run expression trace.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// runName - The workflow run name.
-// actionName - The workflow action name.
-// options - WorkflowRunActionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionsClient.ListExpressionTraces
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - actionName - The workflow action name.
+//   - options - WorkflowRunActionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionsClient.NewListExpressionTracesPager
+//     method.
 func (client *WorkflowRunActionsClient) NewListExpressionTracesPager(resourceGroupName string, name string, workflowName string, runName string, actionName string, options *WorkflowRunActionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionsClientListExpressionTracesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionsClientListExpressionTracesResponse]{
 		More: func(page WorkflowRunActionsClientListExpressionTracesResponse) bool {
@@ -238,7 +229,7 @@ func (client *WorkflowRunActionsClient) NewListExpressionTracesPager(resourceGro
 			if err != nil {
 				return WorkflowRunActionsClientListExpressionTracesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkflowRunActionsClientListExpressionTracesResponse{}, err
 			}
@@ -277,12 +268,12 @@ func (client *WorkflowRunActionsClient) listExpressionTracesCreateRequest(ctx co
 		return nil, errors.New("parameter actionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{actionName}", url.PathEscape(actionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,50 +25,42 @@ import (
 // DiagnosticsClient contains the methods for the Diagnostics group.
 // Don't use this type directly, use NewDiagnosticsClient() instead.
 type DiagnosticsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDiagnosticsClient creates a new instance of DiagnosticsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DiagnosticsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DiagnosticsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // ExecuteSiteAnalysis - Description for Execute Analysis
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Category Name
-// analysisName - Analysis Resource Name
-// options - DiagnosticsClientExecuteSiteAnalysisOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteAnalysis
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Category Name
+//   - analysisName - Analysis Resource Name
+//   - options - DiagnosticsClientExecuteSiteAnalysisOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteAnalysis
+//     method.
 func (client *DiagnosticsClient) ExecuteSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsClientExecuteSiteAnalysisOptions) (DiagnosticsClientExecuteSiteAnalysisResponse, error) {
 	req, err := client.executeSiteAnalysisCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, options)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
@@ -103,7 +93,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +107,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -134,20 +124,21 @@ func (client *DiagnosticsClient) executeSiteAnalysisHandleResponse(resp *http.Re
 
 // ExecuteSiteAnalysisSlot - Description for Execute Analysis
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Category Name
-// analysisName - Analysis Resource Name
-// slot - Slot Name
-// options - DiagnosticsClientExecuteSiteAnalysisSlotOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteAnalysisSlot
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Category Name
+//   - analysisName - Analysis Resource Name
+//   - slot - Slot Name
+//   - options - DiagnosticsClientExecuteSiteAnalysisSlotOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteAnalysisSlot
+//     method.
 func (client *DiagnosticsClient) ExecuteSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsClientExecuteSiteAnalysisSlotOptions) (DiagnosticsClientExecuteSiteAnalysisSlotResponse, error) {
 	req, err := client.executeSiteAnalysisSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, slot, options)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
@@ -184,7 +175,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -198,7 +189,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -215,19 +206,20 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleResponse(resp *htt
 
 // ExecuteSiteDetector - Description for Execute Detector
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// detectorName - Detector Resource Name
-// diagnosticCategory - Category Name
-// options - DiagnosticsClientExecuteSiteDetectorOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteDetector
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - detectorName - Detector Resource Name
+//   - diagnosticCategory - Category Name
+//   - options - DiagnosticsClientExecuteSiteDetectorOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteDetector
+//     method.
 func (client *DiagnosticsClient) ExecuteSiteDetector(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, options *DiagnosticsClientExecuteSiteDetectorOptions) (DiagnosticsClientExecuteSiteDetectorResponse, error) {
 	req, err := client.executeSiteDetectorCreateRequest(ctx, resourceGroupName, siteName, detectorName, diagnosticCategory, options)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
@@ -260,7 +252,7 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -274,7 +266,7 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -291,20 +283,21 @@ func (client *DiagnosticsClient) executeSiteDetectorHandleResponse(resp *http.Re
 
 // ExecuteSiteDetectorSlot - Description for Execute Detector
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// detectorName - Detector Resource Name
-// diagnosticCategory - Category Name
-// slot - Slot Name
-// options - DiagnosticsClientExecuteSiteDetectorSlotOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteDetectorSlot
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - detectorName - Detector Resource Name
+//   - diagnosticCategory - Category Name
+//   - slot - Slot Name
+//   - options - DiagnosticsClientExecuteSiteDetectorSlotOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteDetectorSlot
+//     method.
 func (client *DiagnosticsClient) ExecuteSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, slot string, options *DiagnosticsClientExecuteSiteDetectorSlotOptions) (DiagnosticsClientExecuteSiteDetectorSlotResponse, error) {
 	req, err := client.executeSiteDetectorSlotCreateRequest(ctx, resourceGroupName, siteName, detectorName, diagnosticCategory, slot, options)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
@@ -341,7 +334,7 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -355,7 +348,7 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -372,18 +365,19 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotHandleResponse(resp *htt
 
 // GetHostingEnvironmentDetectorResponse - Description for Get Hosting Environment Detector Response
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - App Service Environment Name
-// detectorName - Detector Resource Name
-// options - DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions contains the optional parameters for the DiagnosticsClient.GetHostingEnvironmentDetectorResponse
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - App Service Environment Name
+//   - detectorName - Detector Resource Name
+//   - options - DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions contains the optional parameters for the DiagnosticsClient.GetHostingEnvironmentDetectorResponse
+//     method.
 func (client *DiagnosticsClient) GetHostingEnvironmentDetectorResponse(ctx context.Context, resourceGroupName string, name string, detectorName string, options *DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions) (DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse, error) {
 	req, err := client.getHostingEnvironmentDetectorResponseCreateRequest(ctx, resourceGroupName, name, detectorName, options)
 	if err != nil {
 		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
@@ -412,7 +406,7 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -426,7 +420,7 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -443,19 +437,20 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleResp
 
 // GetSiteAnalysis - Description for Get Site Analysis
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Diagnostic Category
-// analysisName - Analysis Name
-// options - DiagnosticsClientGetSiteAnalysisOptions contains the optional parameters for the DiagnosticsClient.GetSiteAnalysis
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Diagnostic Category
+//   - analysisName - Analysis Name
+//   - options - DiagnosticsClientGetSiteAnalysisOptions contains the optional parameters for the DiagnosticsClient.GetSiteAnalysis
+//     method.
 func (client *DiagnosticsClient) GetSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsClientGetSiteAnalysisOptions) (DiagnosticsClientGetSiteAnalysisResponse, error) {
 	req, err := client.getSiteAnalysisCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, options)
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
@@ -488,12 +483,12 @@ func (client *DiagnosticsClient) getSiteAnalysisCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -510,20 +505,21 @@ func (client *DiagnosticsClient) getSiteAnalysisHandleResponse(resp *http.Respon
 
 // GetSiteAnalysisSlot - Description for Get Site Analysis
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Diagnostic Category
-// analysisName - Analysis Name
-// slot - Slot - optional
-// options - DiagnosticsClientGetSiteAnalysisSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteAnalysisSlot
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Diagnostic Category
+//   - analysisName - Analysis Name
+//   - slot - Slot - optional
+//   - options - DiagnosticsClientGetSiteAnalysisSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteAnalysisSlot
+//     method.
 func (client *DiagnosticsClient) GetSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsClientGetSiteAnalysisSlotOptions) (DiagnosticsClientGetSiteAnalysisSlotResponse, error) {
 	req, err := client.getSiteAnalysisSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, slot, options)
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
@@ -560,12 +556,12 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -582,19 +578,20 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotHandleResponse(resp *http.Re
 
 // GetSiteDetector - Description for Get Detector
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Diagnostic Category
-// detectorName - Detector Name
-// options - DiagnosticsClientGetSiteDetectorOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetector
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Diagnostic Category
+//   - detectorName - Detector Name
+//   - options - DiagnosticsClientGetSiteDetectorOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetector
+//     method.
 func (client *DiagnosticsClient) GetSiteDetector(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, options *DiagnosticsClientGetSiteDetectorOptions) (DiagnosticsClientGetSiteDetectorResponse, error) {
 	req, err := client.getSiteDetectorCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, detectorName, options)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
@@ -627,12 +624,12 @@ func (client *DiagnosticsClient) getSiteDetectorCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -649,18 +646,19 @@ func (client *DiagnosticsClient) getSiteDetectorHandleResponse(resp *http.Respon
 
 // GetSiteDetectorResponse - Description for Get site detector response
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// detectorName - Detector Resource Name
-// options - DiagnosticsClientGetSiteDetectorResponseOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorResponse
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - detectorName - Detector Resource Name
+//   - options - DiagnosticsClientGetSiteDetectorResponseOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorResponse
+//     method.
 func (client *DiagnosticsClient) GetSiteDetectorResponse(ctx context.Context, resourceGroupName string, siteName string, detectorName string, options *DiagnosticsClientGetSiteDetectorResponseOptions) (DiagnosticsClientGetSiteDetectorResponseResponse, error) {
 	req, err := client.getSiteDetectorResponseCreateRequest(ctx, resourceGroupName, siteName, detectorName, options)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
@@ -689,7 +687,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -703,7 +701,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -720,19 +718,20 @@ func (client *DiagnosticsClient) getSiteDetectorResponseHandleResponse(resp *htt
 
 // GetSiteDetectorResponseSlot - Description for Get site detector response
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// detectorName - Detector Resource Name
-// slot - Slot Name
-// options - DiagnosticsClientGetSiteDetectorResponseSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorResponseSlot
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - detectorName - Detector Resource Name
+//   - slot - Slot Name
+//   - options - DiagnosticsClientGetSiteDetectorResponseSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorResponseSlot
+//     method.
 func (client *DiagnosticsClient) GetSiteDetectorResponseSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, slot string, options *DiagnosticsClientGetSiteDetectorResponseSlotOptions) (DiagnosticsClientGetSiteDetectorResponseSlotResponse, error) {
 	req, err := client.getSiteDetectorResponseSlotCreateRequest(ctx, resourceGroupName, siteName, detectorName, slot, options)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
@@ -765,7 +764,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -779,7 +778,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -796,20 +795,21 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleResponse(resp 
 
 // GetSiteDetectorSlot - Description for Get Detector
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Diagnostic Category
-// detectorName - Detector Name
-// slot - Slot Name
-// options - DiagnosticsClientGetSiteDetectorSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorSlot
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Diagnostic Category
+//   - detectorName - Detector Name
+//   - slot - Slot Name
+//   - options - DiagnosticsClientGetSiteDetectorSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorSlot
+//     method.
 func (client *DiagnosticsClient) GetSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, slot string, options *DiagnosticsClientGetSiteDetectorSlotOptions) (DiagnosticsClientGetSiteDetectorSlotResponse, error) {
 	req, err := client.getSiteDetectorSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, detectorName, slot, options)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
@@ -846,12 +846,12 @@ func (client *DiagnosticsClient) getSiteDetectorSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -868,18 +868,19 @@ func (client *DiagnosticsClient) getSiteDetectorSlotHandleResponse(resp *http.Re
 
 // GetSiteDiagnosticCategory - Description for Get Diagnostics Category
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Diagnostic Category
-// options - DiagnosticsClientGetSiteDiagnosticCategoryOptions contains the optional parameters for the DiagnosticsClient.GetSiteDiagnosticCategory
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Diagnostic Category
+//   - options - DiagnosticsClientGetSiteDiagnosticCategoryOptions contains the optional parameters for the DiagnosticsClient.GetSiteDiagnosticCategory
+//     method.
 func (client *DiagnosticsClient) GetSiteDiagnosticCategory(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientGetSiteDiagnosticCategoryOptions) (DiagnosticsClientGetSiteDiagnosticCategoryResponse, error) {
 	req, err := client.getSiteDiagnosticCategoryCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
@@ -908,12 +909,12 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -930,19 +931,20 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleResponse(resp *h
 
 // GetSiteDiagnosticCategorySlot - Description for Get Diagnostics Category
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Diagnostic Category
-// slot - Slot Name
-// options - DiagnosticsClientGetSiteDiagnosticCategorySlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDiagnosticCategorySlot
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Diagnostic Category
+//   - slot - Slot Name
+//   - options - DiagnosticsClientGetSiteDiagnosticCategorySlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDiagnosticCategorySlot
+//     method.
 func (client *DiagnosticsClient) GetSiteDiagnosticCategorySlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientGetSiteDiagnosticCategorySlotOptions) (DiagnosticsClientGetSiteDiagnosticCategorySlotResponse, error) {
 	req, err := client.getSiteDiagnosticCategorySlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
@@ -975,12 +977,12 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -996,12 +998,12 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(res
 }
 
 // NewListHostingEnvironmentDetectorResponsesPager - Description for List Hosting Environment Detector Responses
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site Name
-// options - DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListHostingEnvironmentDetectorResponses
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site Name
+//   - options - DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.NewListHostingEnvironmentDetectorResponsesPager
+//     method.
 func (client *DiagnosticsClient) NewListHostingEnvironmentDetectorResponsesPager(resourceGroupName string, name string, options *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse]{
 		More: func(page DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse) bool {
@@ -1018,7 +1020,7 @@ func (client *DiagnosticsClient) NewListHostingEnvironmentDetectorResponsesPager
 			if err != nil {
 				return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
 			}
@@ -1045,12 +1047,12 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1066,13 +1068,13 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleRe
 }
 
 // NewListSiteAnalysesPager - Description for Get Site Analyses
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Diagnostic Category
-// options - DiagnosticsClientListSiteAnalysesOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalyses
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Diagnostic Category
+//   - options - DiagnosticsClientListSiteAnalysesOptions contains the optional parameters for the DiagnosticsClient.NewListSiteAnalysesPager
+//     method.
 func (client *DiagnosticsClient) NewListSiteAnalysesPager(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteAnalysesOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteAnalysesResponse]{
 		More: func(page DiagnosticsClientListSiteAnalysesResponse) bool {
@@ -1089,7 +1091,7 @@ func (client *DiagnosticsClient) NewListSiteAnalysesPager(resourceGroupName stri
 			if err != nil {
 				return DiagnosticsClientListSiteAnalysesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteAnalysesResponse{}, err
 			}
@@ -1120,12 +1122,12 @@ func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1141,14 +1143,14 @@ func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Respo
 }
 
 // NewListSiteAnalysesSlotPager - Description for Get Site Analyses
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Diagnostic Category
-// slot - Slot Name
-// options - DiagnosticsClientListSiteAnalysesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalysesSlot
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Diagnostic Category
+//   - slot - Slot Name
+//   - options - DiagnosticsClientListSiteAnalysesSlotOptions contains the optional parameters for the DiagnosticsClient.NewListSiteAnalysesSlotPager
+//     method.
 func (client *DiagnosticsClient) NewListSiteAnalysesSlotPager(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteAnalysesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteAnalysesSlotResponse]{
 		More: func(page DiagnosticsClientListSiteAnalysesSlotResponse) bool {
@@ -1165,7 +1167,7 @@ func (client *DiagnosticsClient) NewListSiteAnalysesSlotPager(resourceGroupName 
 			if err != nil {
 				return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
 			}
@@ -1200,12 +1202,12 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1221,12 +1223,12 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *http.R
 }
 
 // NewListSiteDetectorResponsesPager - Description for List Site Detector Responses
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// options - DiagnosticsClientListSiteDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponses
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - options - DiagnosticsClientListSiteDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDetectorResponsesPager
+//     method.
 func (client *DiagnosticsClient) NewListSiteDetectorResponsesPager(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDetectorResponsesResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorResponsesResponse) bool {
@@ -1243,7 +1245,7 @@ func (client *DiagnosticsClient) NewListSiteDetectorResponsesPager(resourceGroup
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
 			}
@@ -1270,12 +1272,12 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1291,13 +1293,13 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *h
 }
 
 // NewListSiteDetectorResponsesSlotPager - Description for List Site Detector Responses
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// slot - Slot Name
-// options - DiagnosticsClientListSiteDetectorResponsesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponsesSlot
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - slot - Slot Name
+//   - options - DiagnosticsClientListSiteDetectorResponsesSlotOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDetectorResponsesSlotPager
+//     method.
 func (client *DiagnosticsClient) NewListSiteDetectorResponsesSlotPager(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDetectorResponsesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDetectorResponsesSlotResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorResponsesSlotResponse) bool {
@@ -1314,7 +1316,7 @@ func (client *DiagnosticsClient) NewListSiteDetectorResponsesSlotPager(resourceG
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
 			}
@@ -1345,12 +1347,12 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1366,13 +1368,13 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(res
 }
 
 // NewListSiteDetectorsPager - Description for Get Detectors
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Diagnostic Category
-// options - DiagnosticsClientListSiteDetectorsOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectors
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Diagnostic Category
+//   - options - DiagnosticsClientListSiteDetectorsOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDetectorsPager
+//     method.
 func (client *DiagnosticsClient) NewListSiteDetectorsPager(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteDetectorsOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDetectorsResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorsResponse) bool {
@@ -1389,7 +1391,7 @@ func (client *DiagnosticsClient) NewListSiteDetectorsPager(resourceGroupName str
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorsResponse{}, err
 			}
@@ -1420,12 +1422,12 @@ func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1441,14 +1443,14 @@ func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Resp
 }
 
 // NewListSiteDetectorsSlotPager - Description for Get Detectors
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// diagnosticCategory - Diagnostic Category
-// slot - Slot Name
-// options - DiagnosticsClientListSiteDetectorsSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorsSlot
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - diagnosticCategory - Diagnostic Category
+//   - slot - Slot Name
+//   - options - DiagnosticsClientListSiteDetectorsSlotOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDetectorsSlotPager
+//     method.
 func (client *DiagnosticsClient) NewListSiteDetectorsSlotPager(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteDetectorsSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDetectorsSlotResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorsSlotResponse) bool {
@@ -1465,7 +1467,7 @@ func (client *DiagnosticsClient) NewListSiteDetectorsSlotPager(resourceGroupName
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
 			}
@@ -1500,12 +1502,12 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1521,12 +1523,12 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *http.
 }
 
 // NewListSiteDiagnosticCategoriesPager - Description for Get Diagnostics Categories
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// options - DiagnosticsClientListSiteDiagnosticCategoriesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategories
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - options - DiagnosticsClientListSiteDiagnosticCategoriesOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDiagnosticCategoriesPager
+//     method.
 func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesPager(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDiagnosticCategoriesOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDiagnosticCategoriesResponse]{
 		More: func(page DiagnosticsClientListSiteDiagnosticCategoriesResponse) bool {
@@ -1543,7 +1545,7 @@ func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesPager(resourceGr
 			if err != nil {
 				return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
 			}
@@ -1570,12 +1572,12 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1591,13 +1593,13 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp
 }
 
 // NewListSiteDiagnosticCategoriesSlotPager - Description for Get Diagnostics Categories
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site Name
-// slot - Slot Name
-// options - DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategoriesSlot
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site Name
+//   - slot - Slot Name
+//   - options - DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDiagnosticCategoriesSlotPager
+//     method.
 func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesSlotPager(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse]{
 		More: func(page DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse) bool {
@@ -1614,7 +1616,7 @@ func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesSlotPager(resour
 			if err != nil {
 				return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
 			}
@@ -1645,12 +1647,12 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

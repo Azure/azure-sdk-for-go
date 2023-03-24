@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +24,38 @@ import (
 // TopLevelDomainsClient contains the methods for the TopLevelDomains group.
 // Don't use this type directly, use NewTopLevelDomainsClient() instead.
 type TopLevelDomainsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTopLevelDomainsClient creates a new instance of TopLevelDomainsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTopLevelDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TopLevelDomainsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TopLevelDomainsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TopLevelDomainsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Description for Get details of a top-level domain.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// name - Name of the top-level domain.
-// options - TopLevelDomainsClientGetOptions contains the optional parameters for the TopLevelDomainsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - name - Name of the top-level domain.
+//   - options - TopLevelDomainsClientGetOptions contains the optional parameters for the TopLevelDomainsClient.Get method.
 func (client *TopLevelDomainsClient) Get(ctx context.Context, name string, options *TopLevelDomainsClientGetOptions) (TopLevelDomainsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, name, options)
 	if err != nil {
 		return TopLevelDomainsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TopLevelDomainsClientGetResponse{}, err
 	}
@@ -86,12 +76,12 @@ func (client *TopLevelDomainsClient) getCreateRequest(ctx context.Context, name 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -107,9 +97,10 @@ func (client *TopLevelDomainsClient) getHandleResponse(resp *http.Response) (Top
 }
 
 // NewListPager - Description for Get all top-level domains supported for registration.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - TopLevelDomainsClientListOptions contains the optional parameters for the TopLevelDomainsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - options - TopLevelDomainsClientListOptions contains the optional parameters for the TopLevelDomainsClient.NewListPager
+//     method.
 func (client *TopLevelDomainsClient) NewListPager(options *TopLevelDomainsClientListOptions) *runtime.Pager[TopLevelDomainsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TopLevelDomainsClientListResponse]{
 		More: func(page TopLevelDomainsClientListResponse) bool {
@@ -126,7 +117,7 @@ func (client *TopLevelDomainsClient) NewListPager(options *TopLevelDomainsClient
 			if err != nil {
 				return TopLevelDomainsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TopLevelDomainsClientListResponse{}, err
 			}
@@ -145,12 +136,12 @@ func (client *TopLevelDomainsClient) listCreateRequest(ctx context.Context, opti
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -166,12 +157,12 @@ func (client *TopLevelDomainsClient) listHandleResponse(resp *http.Response) (To
 }
 
 // NewListAgreementsPager - Description for Gets all legal agreements that user needs to accept before purchasing a domain.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// name - Name of the top-level domain.
-// agreementOption - Domain agreement options.
-// options - TopLevelDomainsClientListAgreementsOptions contains the optional parameters for the TopLevelDomainsClient.ListAgreements
-// method.
+//
+// Generated from API version 2022-09-01
+//   - name - Name of the top-level domain.
+//   - agreementOption - Domain agreement options.
+//   - options - TopLevelDomainsClientListAgreementsOptions contains the optional parameters for the TopLevelDomainsClient.NewListAgreementsPager
+//     method.
 func (client *TopLevelDomainsClient) NewListAgreementsPager(name string, agreementOption TopLevelDomainAgreementOption, options *TopLevelDomainsClientListAgreementsOptions) *runtime.Pager[TopLevelDomainsClientListAgreementsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TopLevelDomainsClientListAgreementsResponse]{
 		More: func(page TopLevelDomainsClientListAgreementsResponse) bool {
@@ -188,7 +179,7 @@ func (client *TopLevelDomainsClient) NewListAgreementsPager(name string, agreeme
 			if err != nil {
 				return TopLevelDomainsClientListAgreementsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TopLevelDomainsClientListAgreementsResponse{}, err
 			}
@@ -211,12 +202,12 @@ func (client *TopLevelDomainsClient) listAgreementsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, agreementOption)

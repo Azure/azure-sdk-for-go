@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,43 +24,33 @@ import (
 // CachesClient contains the methods for the Caches group.
 // Don't use this type directly, use NewCachesClient() instead.
 type CachesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCachesClient creates a new instance of CachesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCachesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CachesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CachesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CachesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update a Cache.
+// BeginCreateOrUpdate - Create or update a cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
-//   - cache - Object containing the user-selectable properties of the new Cache. If read-only properties are included, they must
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+//   - cache - Object containing the user-selectable properties of the new cache. If read-only properties are included, they must
 //     match the existing values of those properties.
 //   - options - CachesClientBeginCreateOrUpdateOptions contains the optional parameters for the CachesClient.BeginCreateOrUpdate
 //     method.
@@ -72,22 +60,22 @@ func (client *CachesClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CachesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CachesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// CreateOrUpdate - Create or update a Cache.
+// CreateOrUpdate - Create or update a cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, cache Cache, options *CachesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cacheName, cache, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -112,23 +100,23 @@ func (client *CachesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, cache)
 }
 
-// BeginDebugInfo - Tells a Cache to write generate debug info for support to process.
+// BeginDebugInfo - Tells a cache to write generate debug info for support to process.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginDebugInfoOptions contains the optional parameters for the CachesClient.BeginDebugInfo method.
 func (client *CachesClient) BeginDebugInfo(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginDebugInfoOptions) (*runtime.Poller[CachesClientDebugInfoResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -136,24 +124,24 @@ func (client *CachesClient) BeginDebugInfo(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientDebugInfoResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientDebugInfoResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientDebugInfoResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientDebugInfoResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// DebugInfo - Tells a Cache to write generate debug info for support to process.
+// DebugInfo - Tells a cache to write generate debug info for support to process.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) debugInfo(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginDebugInfoOptions) (*http.Response, error) {
 	req, err := client.debugInfoCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -178,23 +166,23 @@ func (client *CachesClient) debugInfoCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginDelete - Schedules a Cache for deletion.
+// BeginDelete - Schedules a cache for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginDeleteOptions contains the optional parameters for the CachesClient.BeginDelete method.
 func (client *CachesClient) BeginDelete(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginDeleteOptions) (*runtime.Poller[CachesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -202,22 +190,22 @@ func (client *CachesClient) BeginDelete(ctx context.Context, resourceGroupName s
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CachesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CachesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// Delete - Schedules a Cache for deletion.
+// Delete - Schedules a cache for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -242,24 +230,24 @@ func (client *CachesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginFlush - Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
+// BeginFlush - Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
 // returned until the flush is complete.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginFlushOptions contains the optional parameters for the CachesClient.BeginFlush method.
 func (client *CachesClient) BeginFlush(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginFlushOptions) (*runtime.Poller[CachesClientFlushResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -267,25 +255,25 @@ func (client *CachesClient) BeginFlush(ctx context.Context, resourceGroupName st
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientFlushResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientFlushResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientFlushResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientFlushResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// Flush - Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors returned
+// Flush - Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors returned
 // until the flush is complete.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) flush(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginFlushOptions) (*http.Response, error) {
 	req, err := client.flushCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -310,30 +298,30 @@ func (client *CachesClient) flushCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Returns a Cache.
+// Get - Returns a cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientGetOptions contains the optional parameters for the CachesClient.Get method.
 func (client *CachesClient) Get(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientGetOptions) (CachesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return CachesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CachesClientGetResponse{}, err
 	}
@@ -358,12 +346,12 @@ func (client *CachesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,9 +366,9 @@ func (client *CachesClient) getHandleResponse(resp *http.Response) (CachesClient
 	return result, nil
 }
 
-// NewListPager - Returns all Caches the user has access to under a subscription.
+// NewListPager - Returns all caches the user has access to under a subscription.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 //   - options - CachesClientListOptions contains the optional parameters for the CachesClient.NewListPager method.
 func (client *CachesClient) NewListPager(options *CachesClientListOptions) *runtime.Pager[CachesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CachesClientListResponse]{
@@ -398,7 +386,7 @@ func (client *CachesClient) NewListPager(options *CachesClientListOptions) *runt
 			if err != nil {
 				return CachesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CachesClientListResponse{}, err
 			}
@@ -417,12 +405,12 @@ func (client *CachesClient) listCreateRequest(ctx context.Context, options *Cach
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -437,10 +425,10 @@ func (client *CachesClient) listHandleResponse(resp *http.Response) (CachesClien
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Returns all Caches the user has access to under a resource group.
+// NewListByResourceGroupPager - Returns all caches the user has access to under a resource group.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CachesClientListByResourceGroupOptions contains the optional parameters for the CachesClient.NewListByResourceGroupPager
 //     method.
 func (client *CachesClient) NewListByResourceGroupPager(resourceGroupName string, options *CachesClientListByResourceGroupOptions) *runtime.Pager[CachesClientListByResourceGroupResponse] {
@@ -459,7 +447,7 @@ func (client *CachesClient) NewListByResourceGroupPager(resourceGroupName string
 			if err != nil {
 				return CachesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CachesClientListByResourceGroupResponse{}, err
 			}
@@ -482,12 +470,12 @@ func (client *CachesClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -505,9 +493,9 @@ func (client *CachesClient) listByResourceGroupHandleResponse(resp *http.Respons
 // BeginPausePrimingJob - Schedule a priming job to be paused.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginPausePrimingJobOptions contains the optional parameters for the CachesClient.BeginPausePrimingJob
 //     method.
 func (client *CachesClient) BeginPausePrimingJob(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginPausePrimingJobOptions) (*runtime.Poller[CachesClientPausePrimingJobResponse], error) {
@@ -516,24 +504,24 @@ func (client *CachesClient) BeginPausePrimingJob(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientPausePrimingJobResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientPausePrimingJobResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientPausePrimingJobResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientPausePrimingJobResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // PausePrimingJob - Schedule a priming job to be paused.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) pausePrimingJob(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginPausePrimingJobOptions) (*http.Response, error) {
 	req, err := client.pausePrimingJobCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -558,12 +546,12 @@ func (client *CachesClient) pausePrimingJobCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.PrimingJobID != nil {
@@ -575,9 +563,9 @@ func (client *CachesClient) pausePrimingJobCreateRequest(ctx context.Context, re
 // BeginResumePrimingJob - Resumes a paused priming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginResumePrimingJobOptions contains the optional parameters for the CachesClient.BeginResumePrimingJob
 //     method.
 func (client *CachesClient) BeginResumePrimingJob(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginResumePrimingJobOptions) (*runtime.Poller[CachesClientResumePrimingJobResponse], error) {
@@ -586,24 +574,24 @@ func (client *CachesClient) BeginResumePrimingJob(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientResumePrimingJobResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientResumePrimingJobResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientResumePrimingJobResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientResumePrimingJobResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // ResumePrimingJob - Resumes a paused priming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) resumePrimingJob(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginResumePrimingJobOptions) (*http.Response, error) {
 	req, err := client.resumePrimingJobCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -628,12 +616,12 @@ func (client *CachesClient) resumePrimingJobCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.PrimingJobID != nil {
@@ -645,9 +633,9 @@ func (client *CachesClient) resumePrimingJobCreateRequest(ctx context.Context, r
 // BeginSpaceAllocation - Update cache space allocation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginSpaceAllocationOptions contains the optional parameters for the CachesClient.BeginSpaceAllocation
 //     method.
 func (client *CachesClient) BeginSpaceAllocation(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginSpaceAllocationOptions) (*runtime.Poller[CachesClientSpaceAllocationResponse], error) {
@@ -656,24 +644,24 @@ func (client *CachesClient) BeginSpaceAllocation(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientSpaceAllocationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientSpaceAllocationResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientSpaceAllocationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientSpaceAllocationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // SpaceAllocation - Update cache space allocation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) spaceAllocation(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginSpaceAllocationOptions) (*http.Response, error) {
 	req, err := client.spaceAllocationCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -698,12 +686,12 @@ func (client *CachesClient) spaceAllocationCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SpaceAllocation != nil {
@@ -712,12 +700,12 @@ func (client *CachesClient) spaceAllocationCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// BeginStart - Tells a Stopped state Cache to transition to Active state.
+// BeginStart - Tells a Stopped state cache to transition to Active state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginStartOptions contains the optional parameters for the CachesClient.BeginStart method.
 func (client *CachesClient) BeginStart(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStartOptions) (*runtime.Poller[CachesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -725,24 +713,24 @@ func (client *CachesClient) BeginStart(ctx context.Context, resourceGroupName st
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientStartResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientStartResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// Start - Tells a Stopped state Cache to transition to Active state.
+// Start - Tells a Stopped state cache to transition to Active state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) start(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -767,12 +755,12 @@ func (client *CachesClient) startCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -781,9 +769,9 @@ func (client *CachesClient) startCreateRequest(ctx context.Context, resourceGrou
 // BeginStartPrimingJob - Create a priming job. This operation is only allowed when the cache is healthy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginStartPrimingJobOptions contains the optional parameters for the CachesClient.BeginStartPrimingJob
 //     method.
 func (client *CachesClient) BeginStartPrimingJob(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStartPrimingJobOptions) (*runtime.Poller[CachesClientStartPrimingJobResponse], error) {
@@ -792,24 +780,24 @@ func (client *CachesClient) BeginStartPrimingJob(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientStartPrimingJobResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientStartPrimingJobResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientStartPrimingJobResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientStartPrimingJobResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // StartPrimingJob - Create a priming job. This operation is only allowed when the cache is healthy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) startPrimingJob(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStartPrimingJobOptions) (*http.Response, error) {
 	req, err := client.startPrimingJobCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -834,12 +822,12 @@ func (client *CachesClient) startPrimingJobCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Primingjob != nil {
@@ -848,12 +836,12 @@ func (client *CachesClient) startPrimingJobCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// BeginStop - Tells an Active Cache to transition to Stopped state.
+// BeginStop - Tells an Active cache to transition to Stopped state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginStopOptions contains the optional parameters for the CachesClient.BeginStop method.
 func (client *CachesClient) BeginStop(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStopOptions) (*runtime.Poller[CachesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -861,24 +849,24 @@ func (client *CachesClient) BeginStop(ctx context.Context, resourceGroupName str
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientStopResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientStopResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientStopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// Stop - Tells an Active Cache to transition to Stopped state.
+// Stop - Tells an Active cache to transition to Stopped state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) stop(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -903,12 +891,12 @@ func (client *CachesClient) stopCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -917,9 +905,9 @@ func (client *CachesClient) stopCreateRequest(ctx context.Context, resourceGroup
 // BeginStopPrimingJob - Schedule a priming job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginStopPrimingJobOptions contains the optional parameters for the CachesClient.BeginStopPrimingJob
 //     method.
 func (client *CachesClient) BeginStopPrimingJob(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStopPrimingJobOptions) (*runtime.Poller[CachesClientStopPrimingJobResponse], error) {
@@ -928,24 +916,24 @@ func (client *CachesClient) BeginStopPrimingJob(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientStopPrimingJobResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientStopPrimingJobResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientStopPrimingJobResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientStopPrimingJobResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // StopPrimingJob - Schedule a priming job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) stopPrimingJob(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStopPrimingJobOptions) (*http.Response, error) {
 	req, err := client.stopPrimingJobCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -970,12 +958,12 @@ func (client *CachesClient) stopPrimingJobCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.PrimingJobID != nil {
@@ -984,13 +972,13 @@ func (client *CachesClient) stopPrimingJobCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// BeginUpdate - Update a Cache instance.
+// BeginUpdate - Update a cache instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
-//   - cache - Object containing the user-selectable properties of the Cache. If read-only properties are included, they must
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+//   - cache - Object containing the user-selectable properties of the cache. If read-only properties are included, they must
 //     match the existing values of those properties.
 //   - options - CachesClientBeginUpdateOptions contains the optional parameters for the CachesClient.BeginUpdate method.
 func (client *CachesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cacheName string, cache Cache, options *CachesClientBeginUpdateOptions) (*runtime.Poller[CachesClientUpdateResponse], error) {
@@ -999,24 +987,24 @@ func (client *CachesClient) BeginUpdate(ctx context.Context, resourceGroupName s
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// Update - Update a Cache instance.
+// Update - Update a cache instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) update(ctx context.Context, resourceGroupName string, cacheName string, cache Cache, options *CachesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, cacheName, cache, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1041,23 +1029,23 @@ func (client *CachesClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, cache)
 }
 
-// BeginUpgradeFirmware - Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
+// BeginUpgradeFirmware - Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
-//   - resourceGroupName - Target resource group.
-//   - cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// Generated from API version 2023-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - CachesClientBeginUpgradeFirmwareOptions contains the optional parameters for the CachesClient.BeginUpgradeFirmware
 //     method.
 func (client *CachesClient) BeginUpgradeFirmware(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginUpgradeFirmwareOptions) (*runtime.Poller[CachesClientUpgradeFirmwareResponse], error) {
@@ -1066,24 +1054,24 @@ func (client *CachesClient) BeginUpgradeFirmware(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CachesClientUpgradeFirmwareResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CachesClientUpgradeFirmwareResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CachesClientUpgradeFirmwareResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CachesClientUpgradeFirmwareResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// UpgradeFirmware - Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
+// UpgradeFirmware - Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-03-01-preview
 func (client *CachesClient) upgradeFirmware(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginUpgradeFirmwareOptions) (*http.Response, error) {
 	req, err := client.upgradeFirmwareCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1108,12 +1096,12 @@ func (client *CachesClient) upgradeFirmwareCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,28 +24,19 @@ import (
 // CalculateRefundClient contains the methods for the CalculateRefund group.
 // Don't use this type directly, use NewCalculateRefundClient() instead.
 type CalculateRefundClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewCalculateRefundClient creates a new instance of CalculateRefundClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCalculateRefundClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CalculateRefundClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CalculateRefundClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CalculateRefundClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -64,7 +53,7 @@ func (client *CalculateRefundClient) Post(ctx context.Context, reservationOrderI
 	if err != nil {
 		return CalculateRefundClientPostResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CalculateRefundClientPostResponse{}, err
 	}
@@ -81,7 +70,7 @@ func (client *CalculateRefundClient) postCreateRequest(ctx context.Context, rese
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

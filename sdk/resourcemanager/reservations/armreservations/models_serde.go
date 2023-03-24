@@ -752,6 +752,8 @@ func (c *Catalog) UnmarshalJSON(data []byte) error {
 func (c CatalogMsrp) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "p1Y", c.P1Y)
+	populate(objectMap, "p3Y", c.P3Y)
+	populate(objectMap, "p5Y", c.P5Y)
 	return json.Marshal(objectMap)
 }
 
@@ -766,6 +768,12 @@ func (c *CatalogMsrp) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "p1Y":
 			err = unpopulate(val, "P1Y", &c.P1Y)
+			delete(rawMsg, key)
+		case "p3Y":
+			err = unpopulate(val, "P3Y", &c.P3Y)
+			delete(rawMsg, key)
+		case "p5Y":
+			err = unpopulate(val, "P5Y", &c.P5Y)
 			delete(rawMsg, key)
 		}
 		if err != nil {

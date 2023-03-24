@@ -9,7 +9,7 @@
 
 package armhybridcontainerservice
 
-// AgentPoolClientCreateOrUpdateResponse contains the response from method AgentPoolClient.CreateOrUpdate.
+// AgentPoolClientCreateOrUpdateResponse contains the response from method AgentPoolClient.BeginCreateOrUpdate.
 type AgentPoolClientCreateOrUpdateResponse struct {
 	AgentPool
 }
@@ -54,7 +54,7 @@ type HybridIdentityMetadataClientGetResponse struct {
 	HybridIdentityMetadata
 }
 
-// HybridIdentityMetadataClientListByClusterResponse contains the response from method HybridIdentityMetadataClient.ListByCluster.
+// HybridIdentityMetadataClientListByClusterResponse contains the response from method HybridIdentityMetadataClient.NewListByClusterPager.
 type HybridIdentityMetadataClientListByClusterResponse struct {
 	HybridIdentityMetadataList
 }
@@ -64,12 +64,12 @@ type HybridIdentityMetadataClientPutResponse struct {
 	HybridIdentityMetadata
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	ResourceProviderOperationList
 }
 
-// ProvisionedClustersClientCreateOrUpdateResponse contains the response from method ProvisionedClustersClient.CreateOrUpdate.
+// ProvisionedClustersClientCreateOrUpdateResponse contains the response from method ProvisionedClustersClient.BeginCreateOrUpdate.
 type ProvisionedClustersClientCreateOrUpdateResponse struct {
 	ProvisionedClustersResponse
 }
@@ -84,22 +84,32 @@ type ProvisionedClustersClientGetResponse struct {
 	ProvisionedClustersResponse
 }
 
-// ProvisionedClustersClientListByResourceGroupResponse contains the response from method ProvisionedClustersClient.ListByResourceGroup.
+// ProvisionedClustersClientGetUpgradeProfileResponse contains the response from method ProvisionedClustersClient.GetUpgradeProfile.
+type ProvisionedClustersClientGetUpgradeProfileResponse struct {
+	ProvisionedClusterUpgradeProfile
+}
+
+// ProvisionedClustersClientListByResourceGroupResponse contains the response from method ProvisionedClustersClient.NewListByResourceGroupPager.
 type ProvisionedClustersClientListByResourceGroupResponse struct {
 	ProvisionedClustersResponseListResult
 }
 
-// ProvisionedClustersClientListBySubscriptionResponse contains the response from method ProvisionedClustersClient.ListBySubscription.
+// ProvisionedClustersClientListBySubscriptionResponse contains the response from method ProvisionedClustersClient.NewListBySubscriptionPager.
 type ProvisionedClustersClientListBySubscriptionResponse struct {
 	ProvisionedClustersResponseListResult
 }
 
-// ProvisionedClustersClientUpdateResponse contains the response from method ProvisionedClustersClient.Update.
+// ProvisionedClustersClientUpdateResponse contains the response from method ProvisionedClustersClient.BeginUpdate.
 type ProvisionedClustersClientUpdateResponse struct {
 	ProvisionedClustersResponse
 }
 
-// StorageSpacesClientCreateOrUpdateResponse contains the response from method StorageSpacesClient.CreateOrUpdate.
+// ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse contains the response from method ProvisionedClustersClient.BeginUpgradeNodeImageVersionForEntireCluster.
+type ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse struct {
+	// placeholder for future response values
+}
+
+// StorageSpacesClientCreateOrUpdateResponse contains the response from method StorageSpacesClient.BeginCreateOrUpdate.
 type StorageSpacesClientCreateOrUpdateResponse struct {
 	StorageSpaces
 }
@@ -109,12 +119,12 @@ type StorageSpacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// StorageSpacesClientListByResourceGroupResponse contains the response from method StorageSpacesClient.ListByResourceGroup.
+// StorageSpacesClientListByResourceGroupResponse contains the response from method StorageSpacesClient.NewListByResourceGroupPager.
 type StorageSpacesClientListByResourceGroupResponse struct {
 	StorageSpacesListResult
 }
 
-// StorageSpacesClientListBySubscriptionResponse contains the response from method StorageSpacesClient.ListBySubscription.
+// StorageSpacesClientListBySubscriptionResponse contains the response from method StorageSpacesClient.NewListBySubscriptionPager.
 type StorageSpacesClientListBySubscriptionResponse struct {
 	StorageSpacesListResult
 }
@@ -124,12 +134,12 @@ type StorageSpacesClientRetrieveResponse struct {
 	StorageSpaces
 }
 
-// StorageSpacesClientUpdateResponse contains the response from method StorageSpacesClient.Update.
+// StorageSpacesClientUpdateResponse contains the response from method StorageSpacesClient.BeginUpdate.
 type StorageSpacesClientUpdateResponse struct {
 	StorageSpaces
 }
 
-// VirtualNetworksClientCreateOrUpdateResponse contains the response from method VirtualNetworksClient.CreateOrUpdate.
+// VirtualNetworksClientCreateOrUpdateResponse contains the response from method VirtualNetworksClient.BeginCreateOrUpdate.
 type VirtualNetworksClientCreateOrUpdateResponse struct {
 	VirtualNetworks
 }
@@ -139,12 +149,12 @@ type VirtualNetworksClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualNetworksClientListByResourceGroupResponse contains the response from method VirtualNetworksClient.ListByResourceGroup.
+// VirtualNetworksClientListByResourceGroupResponse contains the response from method VirtualNetworksClient.NewListByResourceGroupPager.
 type VirtualNetworksClientListByResourceGroupResponse struct {
 	VirtualNetworksListResult
 }
 
-// VirtualNetworksClientListBySubscriptionResponse contains the response from method VirtualNetworksClient.ListBySubscription.
+// VirtualNetworksClientListBySubscriptionResponse contains the response from method VirtualNetworksClient.NewListBySubscriptionPager.
 type VirtualNetworksClientListBySubscriptionResponse struct {
 	VirtualNetworksListResult
 }
@@ -154,7 +164,7 @@ type VirtualNetworksClientRetrieveResponse struct {
 	VirtualNetworks
 }
 
-// VirtualNetworksClientUpdateResponse contains the response from method VirtualNetworksClient.Update.
+// VirtualNetworksClientUpdateResponse contains the response from method VirtualNetworksClient.BeginUpdate.
 type VirtualNetworksClientUpdateResponse struct {
 	VirtualNetworks
 }

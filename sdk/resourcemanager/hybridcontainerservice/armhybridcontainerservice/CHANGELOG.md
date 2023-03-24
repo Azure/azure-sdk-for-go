@@ -1,5 +1,24 @@
 # Release History
 
+## 0.2.0 (2023-03-24)
+### Breaking Changes
+
+- Struct `VirtualNetworksPropertiesInfraVnetProfileKubevirt` has been removed
+- Field `Kubevirt` of struct `VirtualNetworksPropertiesInfraVnetProfile` has been removed
+
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New function `*ProvisionedClustersClient.GetUpgradeProfile(context.Context, string, string, *ProvisionedClustersClientGetUpgradeProfileOptions) (ProvisionedClustersClientGetUpgradeProfileResponse, error)`
+- New function `*ProvisionedClustersClient.BeginUpgradeNodeImageVersionForEntireCluster(context.Context, string, string, *ProvisionedClustersClientBeginUpgradeNodeImageVersionForEntireClusterOptions) (*runtime.Poller[ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse], error)`
+- New struct `ProvisionedClusterPoolUpgradeProfile`
+- New struct `ProvisionedClusterPoolUpgradeProfileProperties`
+- New struct `ProvisionedClusterUpgradeProfile`
+- New struct `ProvisionedClusterUpgradeProfileProperties`
+- New struct `VirtualNetworksPropertiesInfraVnetProfileNetworkCloud`
+- New field `NetworkCloud` in struct `VirtualNetworksPropertiesInfraVnetProfile`
+
+
 ## 0.1.1 (2022-10-12)
 ### Other Changes
 - Loosen Go version requirement.

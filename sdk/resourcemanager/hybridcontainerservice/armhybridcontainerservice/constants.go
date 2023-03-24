@@ -11,7 +11,7 @@ package armhybridcontainerservice
 
 const (
 	moduleName    = "armhybridcontainerservice"
-	moduleVersion = "v0.1.1"
+	moduleVersion = "v0.2.0"
 )
 
 type AgentPoolProvisioningState string

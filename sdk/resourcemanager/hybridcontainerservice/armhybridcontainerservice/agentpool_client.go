@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // AgentPoolClient contains the methods for the AgentPool group.
 // Don't use this type directly, use NewAgentPoolClient() instead.
 type AgentPoolClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAgentPoolClient creates a new instance of AgentPoolClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAgentPoolClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentPoolClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AgentPoolClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AgentPoolClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates the agent pool in the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
-// options - AgentPoolClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentPoolClient.BeginCreateOrUpdate
-// method.
-func (client *AgentPoolClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, provisionedClustersName string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientBeginCreateOrUpdateOptions) (*runtime.Poller[AgentPoolClientCreateOrUpdateResponse], error) {
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
+//   - options - AgentPoolClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentPoolClient.BeginCreateOrUpdate
+//     method.
+func (client *AgentPoolClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientBeginCreateOrUpdateOptions) (*runtime.Poller[AgentPoolClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, provisionedClustersName, agentPoolName, agentPool, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, agentPoolName, agentPool, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AgentPoolClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentPoolClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AgentPoolClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AgentPoolClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates the agent pool in the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-func (client *AgentPoolClient) createOrUpdate(ctx context.Context, resourceGroupName string, provisionedClustersName string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, provisionedClustersName, agentPoolName, agentPool, options)
+//
+// Generated from API version 2022-09-01-preview
+func (client *AgentPoolClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, agentPool, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -96,8 +87,8 @@ func (client *AgentPoolClient) createOrUpdate(ctx context.Context, resourceGroup
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AgentPoolClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/agentPools/{agentPoolName}"
+func (client *AgentPoolClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -106,20 +97,20 @@ func (client *AgentPoolClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if agentPoolName == "" {
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, agentPool)
@@ -127,17 +118,18 @@ func (client *AgentPoolClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // Delete - Deletes the agent pool in the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
-// options - AgentPoolClientDeleteOptions contains the optional parameters for the AgentPoolClient.Delete method.
-func (client *AgentPoolClient) Delete(ctx context.Context, resourceGroupName string, provisionedClustersName string, agentPoolName string, options *AgentPoolClientDeleteOptions) (AgentPoolClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, provisionedClustersName, agentPoolName, options)
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
+//   - options - AgentPoolClientDeleteOptions contains the optional parameters for the AgentPoolClient.Delete method.
+func (client *AgentPoolClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolClientDeleteOptions) (AgentPoolClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
 		return AgentPoolClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentPoolClientDeleteResponse{}, err
 	}
@@ -148,8 +140,8 @@ func (client *AgentPoolClient) Delete(ctx context.Context, resourceGroupName str
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AgentPoolClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, agentPoolName string, options *AgentPoolClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/agentPools/{agentPoolName}"
+func (client *AgentPoolClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -158,20 +150,20 @@ func (client *AgentPoolClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if agentPoolName == "" {
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -179,17 +171,18 @@ func (client *AgentPoolClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Gets the agent pool in the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
-// options - AgentPoolClientGetOptions contains the optional parameters for the AgentPoolClient.Get method.
-func (client *AgentPoolClient) Get(ctx context.Context, resourceGroupName string, provisionedClustersName string, agentPoolName string, options *AgentPoolClientGetOptions) (AgentPoolClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, provisionedClustersName, agentPoolName, options)
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
+//   - options - AgentPoolClientGetOptions contains the optional parameters for the AgentPoolClient.Get method.
+func (client *AgentPoolClient) Get(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolClientGetOptions) (AgentPoolClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
 		return AgentPoolClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentPoolClientGetResponse{}, err
 	}
@@ -200,8 +193,8 @@ func (client *AgentPoolClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *AgentPoolClient) getCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, agentPoolName string, options *AgentPoolClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/agentPools/{agentPoolName}"
+func (client *AgentPoolClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -210,20 +203,20 @@ func (client *AgentPoolClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if agentPoolName == "" {
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -240,17 +233,18 @@ func (client *AgentPoolClient) getHandleResponse(resp *http.Response) (AgentPool
 
 // ListByProvisionedCluster - Gets the agent pools in the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// options - AgentPoolClientListByProvisionedClusterOptions contains the optional parameters for the AgentPoolClient.ListByProvisionedCluster
-// method.
-func (client *AgentPoolClient) ListByProvisionedCluster(ctx context.Context, resourceGroupName string, provisionedClustersName string, options *AgentPoolClientListByProvisionedClusterOptions) (AgentPoolClientListByProvisionedClusterResponse, error) {
-	req, err := client.listByProvisionedClusterCreateRequest(ctx, resourceGroupName, provisionedClustersName, options)
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - options - AgentPoolClientListByProvisionedClusterOptions contains the optional parameters for the AgentPoolClient.ListByProvisionedCluster
+//     method.
+func (client *AgentPoolClient) ListByProvisionedCluster(ctx context.Context, resourceGroupName string, resourceName string, options *AgentPoolClientListByProvisionedClusterOptions) (AgentPoolClientListByProvisionedClusterResponse, error) {
+	req, err := client.listByProvisionedClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return AgentPoolClientListByProvisionedClusterResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentPoolClientListByProvisionedClusterResponse{}, err
 	}
@@ -261,8 +255,8 @@ func (client *AgentPoolClient) ListByProvisionedCluster(ctx context.Context, res
 }
 
 // listByProvisionedClusterCreateRequest creates the ListByProvisionedCluster request.
-func (client *AgentPoolClient) listByProvisionedClusterCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, options *AgentPoolClientListByProvisionedClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/agentPools"
+func (client *AgentPoolClient) listByProvisionedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *AgentPoolClientListByProvisionedClusterOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/agentPools"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -271,16 +265,16 @@ func (client *AgentPoolClient) listByProvisionedClusterCreateRequest(ctx context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -297,17 +291,18 @@ func (client *AgentPoolClient) listByProvisionedClusterHandleResponse(resp *http
 
 // Update - Updates the agent pool in the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
-// options - AgentPoolClientUpdateOptions contains the optional parameters for the AgentPoolClient.Update method.
-func (client *AgentPoolClient) Update(ctx context.Context, resourceGroupName string, provisionedClustersName string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientUpdateOptions) (AgentPoolClientUpdateResponse, error) {
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, provisionedClustersName, agentPoolName, agentPool, options)
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
+//   - options - AgentPoolClientUpdateOptions contains the optional parameters for the AgentPoolClient.Update method.
+func (client *AgentPoolClient) Update(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientUpdateOptions) (AgentPoolClientUpdateResponse, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, agentPool, options)
 	if err != nil {
 		return AgentPoolClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentPoolClientUpdateResponse{}, err
 	}
@@ -318,8 +313,8 @@ func (client *AgentPoolClient) Update(ctx context.Context, resourceGroupName str
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AgentPoolClient) updateCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/agentPools/{agentPoolName}"
+func (client *AgentPoolClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -328,20 +323,20 @@ func (client *AgentPoolClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if agentPoolName == "" {
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, agentPool)

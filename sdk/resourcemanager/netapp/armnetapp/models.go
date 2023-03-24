@@ -16,8 +16,8 @@ type Account struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
-	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	// The identity used for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// NetApp Account properties
 	Properties *AccountProperties `json:"properties,omitempty"`
@@ -52,7 +52,7 @@ type AccountBackupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountBackupsClientListOptions contains the optional parameters for the AccountBackupsClient.List method.
+// AccountBackupsClientListOptions contains the optional parameters for the AccountBackupsClient.NewListPager method.
 type AccountBackupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -144,12 +144,13 @@ type AccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription method.
+// AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.NewListBySubscriptionPager
+// method.
 type AccountsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
+// AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
 type AccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -202,6 +203,10 @@ type ActiveDirectory struct {
 	// Plain text password of Active Directory domain administrator, value is masked in the response
 	Password *string `json:"password,omitempty"`
 
+	// Comma separated list of IPv4 addresses of preferred servers for LDAP client. At most two comma separated IPv4 addresses
+	// can be passed.
+	PreferredServersForLdapClient *string `json:"preferredServersForLdapClient,omitempty"`
+
 	// Domain Users in the Active directory to be given SeSecurityPrivilege privilege (Needed for SMB Continuously available shares
 	// for SQL). A list of unique usernames without domain specifier
 	SecurityOperators []*string `json:"securityOperators,omitempty"`
@@ -217,7 +222,7 @@ type ActiveDirectory struct {
 	// NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount volumes
 	SmbServerName *string `json:"smbServerName,omitempty"`
 
-	// Username of Active Directory domain administrator
+	// A domain user account with permission to create machine accounts
 	Username *string `json:"username,omitempty"`
 
 	// READ-ONLY; Status of the Active Directory
@@ -241,13 +246,16 @@ type Backup struct {
 	// REQUIRED; Backup Properties
 	Properties *BackupProperties `json:"properties,omitempty"`
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -283,7 +291,7 @@ type BackupPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.List method.
+// BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.NewListPager method.
 type BackupPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -399,6 +407,20 @@ type BackupProperties struct {
 	VolumeName *string `json:"volumeName,omitempty" azure:"ro"`
 }
 
+// BackupRestoreFiles - Restore payload for single file backup restore
+type BackupRestoreFiles struct {
+	// REQUIRED; Resource Id of the destination volume on which the files need to be restored
+	DestinationVolumeID *string `json:"destinationVolumeId,omitempty"`
+
+	// REQUIRED; List of files to be restored
+	FileList []*string `json:"fileList,omitempty"`
+
+	// Destination folder where the files will be restored. The path name should start with a forward slash. If it is omitted
+	// from request then restore is done at the root folder of the destination volume by
+	// default
+	RestoreFilePath *string `json:"restoreFilePath,omitempty"`
+}
+
 // BackupStatus - Backup status
 type BackupStatus struct {
 	// READ-ONLY; Displays error message if the backup is in an error state
@@ -438,6 +460,12 @@ type BackupsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// BackupsClientBeginRestoreFilesOptions contains the optional parameters for the BackupsClient.BeginRestoreFiles method.
+type BackupsClientBeginRestoreFilesOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // BackupsClientBeginUpdateOptions contains the optional parameters for the BackupsClient.BeginUpdate method.
 type BackupsClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -460,7 +488,7 @@ type BackupsClientGetVolumeRestoreStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupsClientListOptions contains the optional parameters for the BackupsClient.List method.
+// BackupsClientListOptions contains the optional parameters for the BackupsClient.NewListPager method.
 type BackupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -469,6 +497,16 @@ type BackupsClientListOptions struct {
 type BackupsList struct {
 	// A list of Backups
 	Value []*Backup `json:"value,omitempty"`
+}
+
+// BreakFileLocksRequest - Break file locks request
+type BreakFileLocksRequest struct {
+	// To clear file locks on a volume for a particular client
+	ClientIP *string `json:"clientIp,omitempty"`
+
+	// Break File locks could be a disruptive operation for application as locks on the volume will be broken, if want to process,
+	// set to true.
+	ConfirmRunningDisruptiveOperation *bool `json:"confirmRunningDisruptiveOperation,omitempty"`
 }
 
 // BreakReplicationRequest - Break replication request
@@ -654,23 +692,6 @@ type HourlySchedule struct {
 	UsedBytes *int64 `json:"usedBytes,omitempty"`
 }
 
-// Identity for the resource.
-type Identity struct {
-	// REQUIRED; The identity type.
-	Type *IdentityType `json:"type,omitempty"`
-
-	// Gets or sets a list of key value pairs that describe the set of User Assigned identities that will be used with this storage
-	// account. The key is the ARM resource identifier of the identity. Only 1
-	// User Assigned identity is permitted here.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
-
-	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
 // KeyVaultProperties - Properties of key vault.
 type KeyVaultProperties struct {
 	// REQUIRED; The name of KeyVault key.
@@ -714,6 +735,26 @@ type LogSpecification struct {
 
 	// Name of log specification.
 	Name *string `json:"name,omitempty"`
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
 // MetricSpecification - Metric specification of operation.
@@ -843,7 +884,7 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -929,7 +970,7 @@ type PoolsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoolsClientListOptions contains the optional parameters for the PoolsClient.List method.
+// PoolsClientListOptions contains the optional parameters for the PoolsClient.NewListPager method.
 type PoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1066,7 +1107,7 @@ type ResourceQuotaLimitsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.List method.
+// ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.NewListPager method.
 type ResourceQuotaLimitsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1109,13 +1150,16 @@ type Snapshot struct {
 	// Snapshot Properties
 	Properties *SnapshotProperties `json:"properties,omitempty"`
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -1141,7 +1185,7 @@ type SnapshotPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotPoliciesClientListOptions contains the optional parameters for the SnapshotPoliciesClient.List method.
+// SnapshotPoliciesClientListOptions contains the optional parameters for the SnapshotPoliciesClient.NewListPager method.
 type SnapshotPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1282,7 +1326,7 @@ type SnapshotsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
+// SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.NewListPager method.
 type SnapshotsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1451,7 +1495,7 @@ type SubvolumesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubvolumesClientListByVolumeOptions contains the optional parameters for the SubvolumesClient.ListByVolume method.
+// SubvolumesClientListByVolumeOptions contains the optional parameters for the SubvolumesClient.NewListByVolumePager method.
 type SubvolumesClientListByVolumeOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1486,45 +1530,13 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// UserAssignedIdentity for the resource.
+// UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
-	// READ-ONLY; The client ID of the identity.
+	// READ-ONLY; The client ID of the assigned identity.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The principal ID of the identity.
+	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-}
-
-// Vault information
-type Vault struct {
-	// REQUIRED; Vault Properties
-	Properties *VaultProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// VaultList - List of Vaults
-type VaultList struct {
-	// A list of vaults
-	Value []*Vault `json:"value,omitempty"`
-}
-
-// VaultProperties - Vault properties
-type VaultProperties struct {
-	// Vault Name
-	VaultName *string `json:"vaultName,omitempty"`
-}
-
-// VaultsClientListOptions contains the optional parameters for the VaultsClient.List method.
-type VaultsClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // Volume resource
@@ -1567,9 +1579,6 @@ type VolumeBackupProperties struct {
 
 	// Policy Enforced
 	PolicyEnforced *bool `json:"policyEnforced,omitempty"`
-
-	// Vault Resource ID
-	VaultID *string `json:"vaultId,omitempty"`
 }
 
 // VolumeBackups - Volume details using the backup policy
@@ -1703,7 +1712,7 @@ type VolumeGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumeGroupsClientListByNetAppAccountOptions contains the optional parameters for the VolumeGroupsClient.ListByNetAppAccount
+// VolumeGroupsClientListByNetAppAccountOptions contains the optional parameters for the VolumeGroupsClient.NewListByNetAppAccountPager
 // method.
 type VolumeGroupsClientListByNetAppAccountOptions struct {
 	// placeholder for future optional parameters
@@ -1765,7 +1774,7 @@ type VolumePatchProperties struct {
 	// The service level of the file system
 	ServiceLevel *ServiceLevel `json:"serviceLevel,omitempty"`
 
-	// Maximum throughput in Mibps that can be achieved by this volume and this will be accepted as input only for manual qosType
+	// Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for manual qosType
 	// volume
 	ThroughputMibps *float32 `json:"throughputMibps,omitempty"`
 
@@ -1805,7 +1814,7 @@ type VolumeProperties struct {
 	SubnetID *string `json:"subnetId,omitempty"`
 
 	// REQUIRED; Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-	// size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+	// size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 
 	// Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose
@@ -1849,6 +1858,9 @@ type VolumeProperties struct {
 
 	// Specifies if default quota is enabled for the volume.
 	IsDefaultQuotaEnabled *bool `json:"isDefaultQuotaEnabled,omitempty"`
+
+	// Specifies whether volume is a Large Volume or Regular Volume.
+	IsLargeVolume *bool `json:"isLargeVolume,omitempty"`
 
 	// Restoring
 	IsRestoring *bool `json:"isRestoring,omitempty"`
@@ -1927,8 +1939,15 @@ type VolumeProperties struct {
 	// happening on this volume. This value will update every 5 minutes during cloning.
 	CloneProgress *int32 `json:"cloneProgress,omitempty" azure:"ro"`
 
+	// READ-ONLY; Data store resource unique identifier
+	DataStoreResourceID []*string `json:"dataStoreResourceId,omitempty" azure:"ro"`
+
 	// READ-ONLY; Specifies if the volume is encrypted or not. Only available on volumes created or updated after 2022-01-01.
 	Encrypted *bool `json:"encrypted,omitempty" azure:"ro"`
+
+	// READ-ONLY; Flag indicating whether file access logs are enabled for the volume, based on active diagnostic settings present
+	// on the volume.
+	FileAccessLogs *FileAccessLogs `json:"fileAccessLogs,omitempty" azure:"ro"`
 
 	// READ-ONLY; Unique FileSystem Identifier.
 	FileSystemID *string `json:"fileSystemId,omitempty" azure:"ro"`
@@ -1942,6 +1961,10 @@ type VolumeProperties struct {
 
 	// READ-ONLY; Network Sibling Set ID for the the group of volumes sharing networking resources.
 	NetworkSiblingSetID *string `json:"networkSiblingSetId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The availability zone where the volume is provisioned. This refers to the logical availability zone where the
+	// volume resides.
+	ProvisionedAvailabilityZone *string `json:"provisionedAvailabilityZone,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -1966,6 +1989,9 @@ type VolumePropertiesDataProtection struct {
 
 	// Snapshot properties.
 	Snapshot *VolumeSnapshotProperties `json:"snapshot,omitempty"`
+
+	// VolumeRelocation properties
+	VolumeRelocation *VolumeRelocationProperties `json:"volumeRelocation,omitempty"`
 }
 
 // VolumePropertiesExportPolicy - Set of export policy rules
@@ -2002,6 +2028,9 @@ type VolumeQuotaRule struct {
 type VolumeQuotaRulePatch struct {
 	// Volume Quota Rule Properties
 	Properties *VolumeQuotaRulesProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // VolumeQuotaRulesClientBeginCreateOptions contains the optional parameters for the VolumeQuotaRulesClient.BeginCreate method.
@@ -2027,7 +2056,7 @@ type VolumeQuotaRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumeQuotaRulesClientListByVolumeOptions contains the optional parameters for the VolumeQuotaRulesClient.ListByVolume
+// VolumeQuotaRulesClientListByVolumeOptions contains the optional parameters for the VolumeQuotaRulesClient.NewListByVolumePager
 // method.
 type VolumeQuotaRulesClientListByVolumeOptions struct {
 	// placeholder for future optional parameters
@@ -2055,6 +2084,15 @@ type VolumeQuotaRulesProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// VolumeRelocationProperties - Volume relocation properties
+type VolumeRelocationProperties struct {
+	// Has relocation been requested for this volume
+	RelocationRequested *bool `json:"relocationRequested,omitempty"`
+
+	// READ-ONLY; Has relocation finished and is ready to be cleaned up
+	ReadyToBeFinalized *bool `json:"readyToBeFinalized,omitempty" azure:"ro"`
+}
+
 // VolumeRevert - revert a volume to the snapshot
 type VolumeRevert struct {
 	// Resource id of the snapshot
@@ -2070,6 +2108,14 @@ type VolumeSnapshotProperties struct {
 // VolumesClientBeginAuthorizeReplicationOptions contains the optional parameters for the VolumesClient.BeginAuthorizeReplication
 // method.
 type VolumesClientBeginAuthorizeReplicationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginBreakFileLocksOptions contains the optional parameters for the VolumesClient.BeginBreakFileLocks method.
+type VolumesClientBeginBreakFileLocksOptions struct {
+	// Optional body to provide the ability to clear file locks with selected options
+	Body *BreakFileLocksRequest
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -2177,12 +2223,12 @@ type VolumesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesClientListOptions contains the optional parameters for the VolumesClient.List method.
+// VolumesClientListOptions contains the optional parameters for the VolumesClient.NewListPager method.
 type VolumesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesClientListReplicationsOptions contains the optional parameters for the VolumesClient.ListReplications method.
+// VolumesClientListReplicationsOptions contains the optional parameters for the VolumesClient.NewListReplicationsPager method.
 type VolumesClientListReplicationsOptions struct {
 	// placeholder for future optional parameters
 }

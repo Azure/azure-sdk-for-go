@@ -24,11 +24,11 @@ func ExampleVirtualHubBgpConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubBgpConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "hub1", nil)
+	pager := clientFactory.NewVirtualHubBgpConnectionsClient().NewListPager("rg1", "hub1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,11 +66,11 @@ func ExampleVirtualHubBgpConnectionsClient_BeginListLearnedRoutes() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubBgpConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListLearnedRoutes(ctx, "rg1", "virtualRouter1", "peer1", nil)
+	poller, err := clientFactory.NewVirtualHubBgpConnectionsClient().BeginListLearnedRoutes(ctx, "rg1", "virtualRouter1", "peer1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -111,11 +111,11 @@ func ExampleVirtualHubBgpConnectionsClient_BeginListAdvertisedRoutes() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubBgpConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListAdvertisedRoutes(ctx, "rg1", "virtualRouter1", "peer1", nil)
+	poller, err := clientFactory.NewVirtualHubBgpConnectionsClient().BeginListAdvertisedRoutes(ctx, "rg1", "virtualRouter1", "peer1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

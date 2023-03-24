@@ -25,11 +25,11 @@ func ExampleAdminRulesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", &armnetwork.AdminRulesClientListOptions{Top: nil,
+	pager := clientFactory.NewAdminRulesClient().NewListPager("rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", &armnetwork.AdminRulesClientListOptions{Top: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {
@@ -91,11 +91,11 @@ func ExampleAdminRulesClient_Get_getsSecurityAdminRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", nil)
+	res, err := clientFactory.NewAdminRulesClient().Get(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -149,11 +149,11 @@ func ExampleAdminRulesClient_Get_getsSecurityDefaultAdminRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleDefaultAdminRule", nil)
+	res, err := clientFactory.NewAdminRulesClient().Get(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleDefaultAdminRule", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -208,11 +208,11 @@ func ExampleAdminRulesClient_CreateOrUpdate_createADefaultAdminRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleDefaultAdminRule", &armnetwork.DefaultAdminRule{
+	res, err := clientFactory.NewAdminRulesClient().CreateOrUpdate(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleDefaultAdminRule", &armnetwork.DefaultAdminRule{
 		Kind: to.Ptr(armnetwork.AdminRuleKindDefault),
 		Properties: &armnetwork.DefaultAdminPropertiesFormat{
 			Flag: to.Ptr("AllowVnetInbound"),
@@ -272,11 +272,11 @@ func ExampleAdminRulesClient_CreateOrUpdate_createAnAdminRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", &armnetwork.AdminRule{
+	res, err := clientFactory.NewAdminRulesClient().CreateOrUpdate(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", &armnetwork.AdminRule{
 		Kind: to.Ptr(armnetwork.AdminRuleKindCustom),
 		Properties: &armnetwork.AdminPropertiesFormat{
 			Description: to.Ptr("This is Sample Admin Rule"),
@@ -353,11 +353,11 @@ func ExampleAdminRulesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", &armnetwork.AdminRulesClientBeginDeleteOptions{Force: to.Ptr(false)})
+	poller, err := clientFactory.NewAdminRulesClient().BeginDelete(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", &armnetwork.AdminRulesClientBeginDeleteOptions{Force: to.Ptr(false)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

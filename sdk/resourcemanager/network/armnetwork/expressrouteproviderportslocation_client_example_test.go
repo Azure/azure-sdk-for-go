@@ -24,11 +24,11 @@ func ExampleExpressRouteProviderPortsLocationClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteProviderPortsLocationClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, &armnetwork.ExpressRouteProviderPortsLocationClientListOptions{Filter: nil})
+	res, err := clientFactory.NewExpressRouteProviderPortsLocationClient().List(ctx, &armnetwork.ExpressRouteProviderPortsLocationClientListOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

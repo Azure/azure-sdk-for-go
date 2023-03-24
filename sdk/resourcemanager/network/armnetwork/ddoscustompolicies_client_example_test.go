@@ -25,11 +25,11 @@ func ExampleDdosCustomPoliciesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewDdosCustomPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "test-ddos-custom-policy", nil)
+	poller, err := clientFactory.NewDdosCustomPoliciesClient().BeginDelete(ctx, "rg1", "test-ddos-custom-policy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleDdosCustomPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewDdosCustomPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "test-ddos-custom-policy", nil)
+	res, err := clientFactory.NewDdosCustomPoliciesClient().Get(ctx, "rg1", "test-ddos-custom-policy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -76,11 +76,11 @@ func ExampleDdosCustomPoliciesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewDdosCustomPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-ddos-custom-policy", armnetwork.DdosCustomPolicy{
+	poller, err := clientFactory.NewDdosCustomPoliciesClient().BeginCreateOrUpdate(ctx, "rg1", "test-ddos-custom-policy", armnetwork.DdosCustomPolicy{
 		Location: to.Ptr("centraluseuap"),
 	}, nil)
 	if err != nil {
@@ -112,11 +112,11 @@ func ExampleDdosCustomPoliciesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewDdosCustomPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "test-ddos-custom-policy", armnetwork.TagsObject{
+	res, err := clientFactory.NewDdosCustomPoliciesClient().UpdateTags(ctx, "rg1", "test-ddos-custom-policy", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),

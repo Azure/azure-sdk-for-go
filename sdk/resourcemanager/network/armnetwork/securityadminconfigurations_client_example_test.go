@@ -25,11 +25,11 @@ func ExampleSecurityAdminConfigurationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityAdminConfigurationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "testNetworkManager", &armnetwork.SecurityAdminConfigurationsClientListOptions{Top: nil,
+	pager := clientFactory.NewSecurityAdminConfigurationsClient().NewListPager("rg1", "testNetworkManager", &armnetwork.SecurityAdminConfigurationsClientListOptions{Top: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {
@@ -74,11 +74,11 @@ func ExampleSecurityAdminConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityAdminConfigurationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", nil)
+	res, err := clientFactory.NewSecurityAdminConfigurationsClient().Get(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -113,11 +113,11 @@ func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityAdminConfigurationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", armnetwork.SecurityAdminConfiguration{
+	res, err := clientFactory.NewSecurityAdminConfigurationsClient().CreateOrUpdate(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", armnetwork.SecurityAdminConfiguration{
 		Properties: &armnetwork.SecurityAdminConfigurationPropertiesFormat{
 			Description: to.Ptr("A sample policy"),
 			ApplyOnNetworkIntentPolicyBasedServices: []*armnetwork.NetworkIntentPolicyBasedService{
@@ -158,11 +158,11 @@ func ExampleSecurityAdminConfigurationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityAdminConfigurationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", &armnetwork.SecurityAdminConfigurationsClientBeginDeleteOptions{Force: to.Ptr(false)})
+	poller, err := clientFactory.NewSecurityAdminConfigurationsClient().BeginDelete(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", &armnetwork.SecurityAdminConfigurationsClientBeginDeleteOptions{Force: to.Ptr(false)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

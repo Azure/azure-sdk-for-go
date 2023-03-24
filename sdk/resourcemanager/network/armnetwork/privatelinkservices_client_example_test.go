@@ -25,11 +25,11 @@ func ExamplePrivateLinkServicesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "testPls", nil)
+	poller, err := clientFactory.NewPrivateLinkServicesClient().BeginDelete(ctx, "rg1", "testPls", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExamplePrivateLinkServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testPls", &armnetwork.PrivateLinkServicesClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewPrivateLinkServicesClient().Get(ctx, "rg1", "testPls", &armnetwork.PrivateLinkServicesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -124,11 +124,11 @@ func ExamplePrivateLinkServicesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testPls", armnetwork.PrivateLinkService{
+	poller, err := clientFactory.NewPrivateLinkServicesClient().BeginCreateOrUpdate(ctx, "rg1", "testPls", armnetwork.PrivateLinkService{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.PrivateLinkServiceProperties{
 			AutoApproval: &armnetwork.PrivateLinkServicePropertiesAutoApproval{
@@ -227,11 +227,11 @@ func ExamplePrivateLinkServicesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewPrivateLinkServicesClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -367,11 +367,11 @@ func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewPrivateLinkServicesClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -509,11 +509,11 @@ func ExamplePrivateLinkServicesClient_GetPrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetPrivateEndpointConnection(ctx, "rg1", "testPls", "testPlePeConnection", &armnetwork.PrivateLinkServicesClientGetPrivateEndpointConnectionOptions{Expand: nil})
+	res, err := clientFactory.NewPrivateLinkServicesClient().GetPrivateEndpointConnection(ctx, "rg1", "testPls", "testPlePeConnection", &armnetwork.PrivateLinkServicesClientGetPrivateEndpointConnectionOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -541,11 +541,11 @@ func ExamplePrivateLinkServicesClient_UpdatePrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdatePrivateEndpointConnection(ctx, "rg1", "testPls", "testPlePeConnection", armnetwork.PrivateEndpointConnection{
+	res, err := clientFactory.NewPrivateLinkServicesClient().UpdatePrivateEndpointConnection(ctx, "rg1", "testPls", "testPlePeConnection", armnetwork.PrivateEndpointConnection{
 		Name: to.Ptr("testPlePeConnection"),
 		Properties: &armnetwork.PrivateEndpointConnectionProperties{
 			PrivateEndpoint: &armnetwork.PrivateEndpoint{
@@ -584,11 +584,11 @@ func ExamplePrivateLinkServicesClient_BeginDeletePrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeletePrivateEndpointConnection(ctx, "rg1", "testPls", "testPlePeConnection", nil)
+	poller, err := clientFactory.NewPrivateLinkServicesClient().BeginDeletePrivateEndpointConnection(ctx, "rg1", "testPls", "testPlePeConnection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -605,11 +605,11 @@ func ExamplePrivateLinkServicesClient_NewListPrivateEndpointConnectionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPrivateEndpointConnectionsPager("rg1", "testPls", nil)
+	pager := clientFactory.NewPrivateLinkServicesClient().NewListPrivateEndpointConnectionsPager("rg1", "testPls", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -657,11 +657,11 @@ func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibility() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCheckPrivateLinkServiceVisibility(ctx, "westus", armnetwork.CheckPrivateLinkServiceVisibilityRequest{
+	poller, err := clientFactory.NewPrivateLinkServicesClient().BeginCheckPrivateLinkServiceVisibility(ctx, "westus", armnetwork.CheckPrivateLinkServiceVisibilityRequest{
 		PrivateLinkServiceAlias: to.Ptr("mypls.00000000-0000-0000-0000-000000000000.azure.privatelinkservice"),
 	}, nil)
 	if err != nil {
@@ -686,11 +686,11 @@ func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibilityByRe
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCheckPrivateLinkServiceVisibilityByResourceGroup(ctx, "westus", "rg1", armnetwork.CheckPrivateLinkServiceVisibilityRequest{
+	poller, err := clientFactory.NewPrivateLinkServicesClient().BeginCheckPrivateLinkServiceVisibilityByResourceGroup(ctx, "westus", "rg1", armnetwork.CheckPrivateLinkServiceVisibilityRequest{
 		PrivateLinkServiceAlias: to.Ptr("mypls.00000000-0000-0000-0000-000000000000.azure.privatelinkservice"),
 	}, nil)
 	if err != nil {
@@ -715,11 +715,11 @@ func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesPage
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAutoApprovedPrivateLinkServicesPager("regionName", nil)
+	pager := clientFactory.NewPrivateLinkServicesClient().NewListAutoApprovedPrivateLinkServicesPager("regionName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -752,11 +752,11 @@ func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesByRe
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateLinkServicesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager("regionName", "rg1", nil)
+	pager := clientFactory.NewPrivateLinkServicesClient().NewListAutoApprovedPrivateLinkServicesByResourceGroupPager("regionName", "rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

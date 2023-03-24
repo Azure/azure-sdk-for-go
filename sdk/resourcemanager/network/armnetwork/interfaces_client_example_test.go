@@ -25,11 +25,11 @@ func ExampleInterfacesClient_NewListCloudServiceRoleInstanceNetworkInterfacesPag
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCloudServiceRoleInstanceNetworkInterfacesPager("rg1", "cs1", "TestVMRole_IN_0", nil)
+	pager := clientFactory.NewInterfacesClient().NewListCloudServiceRoleInstanceNetworkInterfacesPager("rg1", "cs1", "TestVMRole_IN_0", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -100,11 +100,11 @@ func ExampleInterfacesClient_NewListCloudServiceNetworkInterfacesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCloudServiceNetworkInterfacesPager("rg1", "cs1", nil)
+	pager := clientFactory.NewInterfacesClient().NewListCloudServiceNetworkInterfacesPager("rg1", "cs1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -222,11 +222,11 @@ func ExampleInterfacesClient_GetCloudServiceNetworkInterface() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCloudServiceNetworkInterface(ctx, "rg1", "cs1", "TestVMRole_IN_0", "nic1", &armnetwork.InterfacesClientGetCloudServiceNetworkInterfaceOptions{Expand: nil})
+	res, err := clientFactory.NewInterfacesClient().GetCloudServiceNetworkInterface(ctx, "rg1", "cs1", "TestVMRole_IN_0", "nic1", &armnetwork.InterfacesClientGetCloudServiceNetworkInterfaceOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -289,11 +289,11 @@ func ExampleInterfacesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "test-nic", nil)
+	poller, err := clientFactory.NewInterfacesClient().BeginDelete(ctx, "rg1", "test-nic", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -310,11 +310,11 @@ func ExampleInterfacesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "test-nic", &armnetwork.InterfacesClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewInterfacesClient().Get(ctx, "rg1", "test-nic", &armnetwork.InterfacesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -379,11 +379,11 @@ func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterface() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-nic", armnetwork.Interface{
+	poller, err := clientFactory.NewInterfacesClient().BeginCreateOrUpdate(ctx, "rg1", "test-nic", armnetwork.Interface{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.InterfacePropertiesFormat{
 			DisableTCPStateTracking:     to.Ptr(true),
@@ -458,11 +458,11 @@ func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceWithGatew
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-nic", armnetwork.Interface{
+	poller, err := clientFactory.NewInterfacesClient().BeginCreateOrUpdate(ctx, "rg1", "test-nic", armnetwork.Interface{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.InterfacePropertiesFormat{
 			EnableAcceleratedNetworking: to.Ptr(true),
@@ -540,11 +540,11 @@ func ExampleInterfacesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "test-nic", armnetwork.TagsObject{
+	res, err := clientFactory.NewInterfacesClient().UpdateTags(ctx, "rg1", "test-nic", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -606,11 +606,11 @@ func ExampleInterfacesClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewInterfacesClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -717,11 +717,11 @@ func ExampleInterfacesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewInterfacesClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -827,11 +827,11 @@ func ExampleInterfacesClient_BeginGetEffectiveRouteTable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetEffectiveRouteTable(ctx, "rg1", "nic1", nil)
+	poller, err := clientFactory.NewInterfacesClient().BeginGetEffectiveRouteTable(ctx, "rg1", "nic1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -908,11 +908,11 @@ func ExampleInterfacesClient_BeginListEffectiveNetworkSecurityGroups() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListEffectiveNetworkSecurityGroups(ctx, "rg1", "nic1", nil)
+	poller, err := clientFactory.NewInterfacesClient().BeginListEffectiveNetworkSecurityGroups(ctx, "rg1", "nic1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -990,11 +990,11 @@ func ExampleInterfacesClient_NewListVirtualMachineScaleSetVMNetworkInterfacesPag
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListVirtualMachineScaleSetVMNetworkInterfacesPager("rg1", "vmss1", "1", nil)
+	pager := clientFactory.NewInterfacesClient().NewListVirtualMachineScaleSetVMNetworkInterfacesPager("rg1", "vmss1", "1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1068,11 +1068,11 @@ func ExampleInterfacesClient_NewListVirtualMachineScaleSetNetworkInterfacesPager
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListVirtualMachineScaleSetNetworkInterfacesPager("rg1", "vmss1", nil)
+	pager := clientFactory.NewInterfacesClient().NewListVirtualMachineScaleSetNetworkInterfacesPager("rg1", "vmss1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1196,11 +1196,11 @@ func ExampleInterfacesClient_GetVirtualMachineScaleSetNetworkInterface() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetVirtualMachineScaleSetNetworkInterface(ctx, "rg1", "vmss1", "1", "nic1", &armnetwork.InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions{Expand: nil})
+	res, err := clientFactory.NewInterfacesClient().GetVirtualMachineScaleSetNetworkInterface(ctx, "rg1", "vmss1", "1", "nic1", &armnetwork.InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1266,11 +1266,11 @@ func ExampleInterfacesClient_NewListVirtualMachineScaleSetIPConfigurationsPager(
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListVirtualMachineScaleSetIPConfigurationsPager("rg1", "vmss1", "2", "nic1", &armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions{Expand: nil})
+	pager := clientFactory.NewInterfacesClient().NewListVirtualMachineScaleSetIPConfigurationsPager("rg1", "vmss1", "2", "nic1", &armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions{Expand: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1316,11 +1316,11 @@ func ExampleInterfacesClient_GetVirtualMachineScaleSetIPConfiguration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfacesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetVirtualMachineScaleSetIPConfiguration(ctx, "rg1", "vmss1", "2", "nic1", "ip1", &armnetwork.InterfacesClientGetVirtualMachineScaleSetIPConfigurationOptions{Expand: nil})
+	res, err := clientFactory.NewInterfacesClient().GetVirtualMachineScaleSetIPConfiguration(ctx, "rg1", "vmss1", "2", "nic1", "ip1", &armnetwork.InterfacesClientGetVirtualMachineScaleSetIPConfigurationOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

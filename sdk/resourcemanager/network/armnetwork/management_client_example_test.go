@@ -25,11 +25,11 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPutBastionShareableLink(ctx, "rg1", "bastionhosttenant", armnetwork.BastionShareableLinkListRequest{
+	poller, err := clientFactory.NewManagementClient().BeginPutBastionShareableLink(ctx, "rg1", "bastionhosttenant", armnetwork.BastionShareableLinkListRequest{
 		VMs: []*armnetwork.BastionShareableLink{
 			{
 				VM: &armnetwork.VM{
@@ -86,11 +86,11 @@ func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteBastionShareableLink(ctx, "rg1", "bastionhosttenant", armnetwork.BastionShareableLinkListRequest{
+	poller, err := clientFactory.NewManagementClient().BeginDeleteBastionShareableLink(ctx, "rg1", "bastionhosttenant", armnetwork.BastionShareableLinkListRequest{
 		VMs: []*armnetwork.BastionShareableLink{
 			{
 				VM: &armnetwork.VM{
@@ -119,11 +119,11 @@ func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetBastionShareableLinkPager("rg1", "bastionhosttenant", armnetwork.BastionShareableLinkListRequest{
+	pager := clientFactory.NewManagementClient().NewGetBastionShareableLinkPager("rg1", "bastionhosttenant", armnetwork.BastionShareableLinkListRequest{
 		VMs: []*armnetwork.BastionShareableLink{
 			{
 				VM: &armnetwork.VM{
@@ -173,11 +173,11 @@ func ExampleManagementClient_BeginGetActiveSessions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetActiveSessions(ctx, "rg1", "bastionhosttenant", nil)
+	poller, err := clientFactory.NewManagementClient().BeginGetActiveSessions(ctx, "rg1", "bastionhosttenant", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -221,11 +221,11 @@ func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewDisconnectActiveSessionsPager("rg1", "bastionhosttenant", armnetwork.SessionIDs{}, nil)
+	pager := clientFactory.NewManagementClient().NewDisconnectActiveSessionsPager("rg1", "bastionhosttenant", armnetwork.SessionIDs{}, nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -264,11 +264,11 @@ func ExampleManagementClient_CheckDNSNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckDNSNameAvailability(ctx, "westus", "testdns", nil)
+	res, err := clientFactory.NewManagementClient().CheckDNSNameAvailability(ctx, "westus", "testdns", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -287,11 +287,11 @@ func ExampleManagementClient_ExpressRouteProviderPort() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ExpressRouteProviderPort(ctx, "abc", nil)
+	res, err := clientFactory.NewManagementClient().ExpressRouteProviderPort(ctx, "abc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -323,11 +323,11 @@ func ExampleManagementClient_ListActiveConnectivityConfigurations() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListActiveConnectivityConfigurations(ctx, "myResourceGroup", "testNetworkManager", armnetwork.ActiveConfigurationParameter{
+	res, err := clientFactory.NewManagementClient().ListActiveConnectivityConfigurations(ctx, "myResourceGroup", "testNetworkManager", armnetwork.ActiveConfigurationParameter{
 		Regions: []*string{
 			to.Ptr("westus")},
 		SkipToken: to.Ptr("fakeSkipTokenCode"),
@@ -383,11 +383,11 @@ func ExampleManagementClient_ListActiveSecurityAdminRules() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListActiveSecurityAdminRules(ctx, "myResourceGroup", "testNetworkManager", armnetwork.ActiveConfigurationParameter{
+	res, err := clientFactory.NewManagementClient().ListActiveSecurityAdminRules(ctx, "myResourceGroup", "testNetworkManager", armnetwork.ActiveConfigurationParameter{
 		Regions: []*string{
 			to.Ptr("westus")},
 		SkipToken: to.Ptr("fakeSkipTokenCode"),
@@ -454,11 +454,11 @@ func ExampleManagementClient_ListNetworkManagerEffectiveConnectivityConfiguratio
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListNetworkManagerEffectiveConnectivityConfigurations(ctx, "myResourceGroup", "testVirtualNetwork", armnetwork.QueryRequestOptions{
+	res, err := clientFactory.NewManagementClient().ListNetworkManagerEffectiveConnectivityConfigurations(ctx, "myResourceGroup", "testVirtualNetwork", armnetwork.QueryRequestOptions{
 		SkipToken: to.Ptr("FakeSkipTokenCode"),
 	}, &armnetwork.ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsOptions{Top: nil})
 	if err != nil {
@@ -510,11 +510,11 @@ func ExampleManagementClient_ListNetworkManagerEffectiveSecurityAdminRules() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListNetworkManagerEffectiveSecurityAdminRules(ctx, "myResourceGroup", "testVirtualNetwork", armnetwork.QueryRequestOptions{
+	res, err := clientFactory.NewManagementClient().ListNetworkManagerEffectiveSecurityAdminRules(ctx, "myResourceGroup", "testVirtualNetwork", armnetwork.QueryRequestOptions{
 		SkipToken: to.Ptr("FakeSkipTokenCode"),
 	}, &armnetwork.ManagementClientListNetworkManagerEffectiveSecurityAdminRulesOptions{Top: nil})
 	if err != nil {
@@ -577,11 +577,11 @@ func ExampleManagementClient_SupportedSecurityProviders() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SupportedSecurityProviders(ctx, "rg1", "wan1", nil)
+	res, err := clientFactory.NewManagementClient().SupportedSecurityProviders(ctx, "rg1", "wan1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -605,11 +605,11 @@ func ExampleManagementClient_BeginGeneratevirtualwanvpnserverconfigurationvpnpro
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx, "rg1", "wan1", armnetwork.VirtualWanVPNProfileParameters{
+	poller, err := clientFactory.NewManagementClient().BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx, "rg1", "wan1", armnetwork.VirtualWanVPNProfileParameters{
 		AuthenticationMethod:             to.Ptr(armnetwork.AuthenticationMethodEAPTLS),
 		VPNServerConfigurationResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnconfig1"),
 	}, nil)

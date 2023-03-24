@@ -25,11 +25,11 @@ func ExampleManagementGroupNetworkManagerConnectionsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementGroupNetworkManagerConnectionsClient(cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "managementGroupA", "TestNMConnection", armnetwork.ManagerConnection{
+	res, err := clientFactory.NewManagementGroupNetworkManagerConnectionsClient().CreateOrUpdate(ctx, "managementGroupA", "TestNMConnection", armnetwork.ManagerConnection{
 		Properties: &armnetwork.ManagerConnectionProperties{
 			NetworkManagerID: to.Ptr("/subscriptions/subscriptionC/resourceGroup/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager"),
 		},
@@ -67,11 +67,11 @@ func ExampleManagementGroupNetworkManagerConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementGroupNetworkManagerConnectionsClient(cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "managementGroupA", "TestNMConnection", nil)
+	res, err := clientFactory.NewManagementGroupNetworkManagerConnectionsClient().Get(ctx, "managementGroupA", "TestNMConnection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -105,11 +105,11 @@ func ExampleManagementGroupNetworkManagerConnectionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementGroupNetworkManagerConnectionsClient(cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "managementGroupA", "TestNMConnection", nil)
+	_, err = clientFactory.NewManagementGroupNetworkManagerConnectionsClient().Delete(ctx, "managementGroupA", "TestNMConnection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -122,11 +122,11 @@ func ExampleManagementGroupNetworkManagerConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementGroupNetworkManagerConnectionsClient(cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("managementGroupA", &armnetwork.ManagementGroupNetworkManagerConnectionsClientListOptions{Top: nil,
+	pager := clientFactory.NewManagementGroupNetworkManagerConnectionsClient().NewListPager("managementGroupA", &armnetwork.ManagementGroupNetworkManagerConnectionsClientListOptions{Top: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {

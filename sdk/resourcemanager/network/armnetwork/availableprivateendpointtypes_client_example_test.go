@@ -24,11 +24,11 @@ func ExampleAvailablePrivateEndpointTypesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAvailablePrivateEndpointTypesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("regionName", nil)
+	pager := clientFactory.NewAvailablePrivateEndpointTypesClient().NewListPager("regionName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -57,11 +57,11 @@ func ExampleAvailablePrivateEndpointTypesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAvailablePrivateEndpointTypesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("regionName", "rg1", nil)
+	pager := clientFactory.NewAvailablePrivateEndpointTypesClient().NewListByResourceGroupPager("regionName", "rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

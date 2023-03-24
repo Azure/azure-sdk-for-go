@@ -25,11 +25,11 @@ func ExampleP2SVPNGatewaysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "p2sVpnGateway1", nil)
+	res, err := clientFactory.NewP2SVPNGatewaysClient().Get(ctx, "rg1", "p2sVpnGateway1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -131,11 +131,11 @@ func ExampleP2SVPNGatewaysClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "p2sVpnGateway1", armnetwork.P2SVPNGateway{
+	poller, err := clientFactory.NewP2SVPNGatewaysClient().BeginCreateOrUpdate(ctx, "rg1", "p2sVpnGateway1", armnetwork.P2SVPNGateway{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -293,11 +293,11 @@ func ExampleP2SVPNGatewaysClient_BeginUpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateTags(ctx, "rg1", "p2sVpnGateway1", armnetwork.TagsObject{
+	poller, err := clientFactory.NewP2SVPNGatewaysClient().BeginUpdateTags(ctx, "rg1", "p2sVpnGateway1", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -410,11 +410,11 @@ func ExampleP2SVPNGatewaysClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "p2sVpnGateway1", nil)
+	poller, err := clientFactory.NewP2SVPNGatewaysClient().BeginDelete(ctx, "rg1", "p2sVpnGateway1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -431,11 +431,11 @@ func ExampleP2SVPNGatewaysClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewP2SVPNGatewaysClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -627,11 +627,11 @@ func ExampleP2SVPNGatewaysClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewP2SVPNGatewaysClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -827,11 +827,11 @@ func ExampleP2SVPNGatewaysClient_BeginReset() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginReset(ctx, "rg1", "p2sVpnGateway1", nil)
+	poller, err := clientFactory.NewP2SVPNGatewaysClient().BeginReset(ctx, "rg1", "p2sVpnGateway1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -913,11 +913,11 @@ func ExampleP2SVPNGatewaysClient_BeginGenerateVPNProfile() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGenerateVPNProfile(ctx, "rg1", "p2sVpnGateway1", armnetwork.P2SVPNProfileParameters{
+	poller, err := clientFactory.NewP2SVPNGatewaysClient().BeginGenerateVPNProfile(ctx, "rg1", "p2sVpnGateway1", armnetwork.P2SVPNProfileParameters{
 		AuthenticationMethod: to.Ptr(armnetwork.AuthenticationMethodEAPTLS),
 	}, nil)
 	if err != nil {
@@ -942,11 +942,11 @@ func ExampleP2SVPNGatewaysClient_BeginGetP2SVPNConnectionHealth() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetP2SVPNConnectionHealth(ctx, "rg1", "p2sVpnGateway1", nil)
+	poller, err := clientFactory.NewP2SVPNGatewaysClient().BeginGetP2SVPNConnectionHealth(ctx, "rg1", "p2sVpnGateway1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1028,11 +1028,11 @@ func ExampleP2SVPNGatewaysClient_BeginGetP2SVPNConnectionHealthDetailed() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetP2SVPNConnectionHealthDetailed(ctx, "p2s-vpn-gateway-test", "p2svpngateway", armnetwork.P2SVPNConnectionHealthRequest{
+	poller, err := clientFactory.NewP2SVPNGatewaysClient().BeginGetP2SVPNConnectionHealthDetailed(ctx, "p2s-vpn-gateway-test", "p2svpngateway", armnetwork.P2SVPNConnectionHealthRequest{
 		OutputBlobSasURL: to.Ptr("https://blobcortextesturl.blob.core.windows.net/folderforconfig/p2sconnectionhealths?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),
 		VPNUserNamesFilter: []*string{
 			to.Ptr("vpnUser1"),
@@ -1060,11 +1060,11 @@ func ExampleP2SVPNGatewaysClient_BeginDisconnectP2SVPNConnections() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewP2SVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDisconnectP2SVPNConnections(ctx, "p2s-vpn-gateway-test", "p2svpngateway", armnetwork.P2SVPNConnectionRequest{
+	poller, err := clientFactory.NewP2SVPNGatewaysClient().BeginDisconnectP2SVPNConnections(ctx, "p2s-vpn-gateway-test", "p2svpngateway", armnetwork.P2SVPNConnectionRequest{
 		VPNConnectionIDs: []*string{
 			to.Ptr("vpnconnId1"),
 			to.Ptr("vpnconnId2")},

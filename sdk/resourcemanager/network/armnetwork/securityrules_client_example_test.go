@@ -25,11 +25,11 @@ func ExampleSecurityRulesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityRulesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "testnsg", "rule1", nil)
+	poller, err := clientFactory.NewSecurityRulesClient().BeginDelete(ctx, "rg1", "testnsg", "rule1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleSecurityRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityRulesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testnsg", "rule1", nil)
+	res, err := clientFactory.NewSecurityRulesClient().Get(ctx, "rg1", "testnsg", "rule1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -81,11 +81,11 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityRulesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testnsg", "rule1", armnetwork.SecurityRule{
+	poller, err := clientFactory.NewSecurityRulesClient().BeginCreateOrUpdate(ctx, "rg1", "testnsg", "rule1", armnetwork.SecurityRule{
 		Properties: &armnetwork.SecurityRulePropertiesFormat{
 			Access:                   to.Ptr(armnetwork.SecurityRuleAccessDeny),
 			DestinationAddressPrefix: to.Ptr("11.0.0.0/8"),
@@ -131,11 +131,11 @@ func ExampleSecurityRulesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityRulesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "testnsg", nil)
+	pager := clientFactory.NewSecurityRulesClient().NewListPager("rg1", "testnsg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -25,11 +25,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", nil)
+	poller, err := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().BeginDelete(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyNatRul
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", nil)
+	res, err := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().Get(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,11 +102,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", nil)
+	res, err := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().Get(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -153,11 +153,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "firewallPolicy", "ruleGroup1", nil)
+	res, err := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().Get(ctx, "rg1", "firewallPolicy", "ruleGroup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -204,11 +204,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("e747cc13-97d4-4a79-b463-42d7f4e558f2", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", nil)
+	res, err := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().Get(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -258,11 +258,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", armnetwork.FirewallPolicyRuleCollectionGroup{
+	poller, err := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().BeginCreateOrUpdate(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", armnetwork.FirewallPolicyRuleCollectionGroup{
 		Properties: &armnetwork.FirewallPolicyRuleCollectionGroupProperties{
 			Priority: to.Ptr[int32](100),
 			RuleCollections: []armnetwork.FirewallPolicyRuleCollectionClassification{
@@ -348,11 +348,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", armnetwork.FirewallPolicyRuleCollectionGroup{
+	poller, err := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().BeginCreateOrUpdate(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", armnetwork.FirewallPolicyRuleCollectionGroup{
 		Properties: &armnetwork.FirewallPolicyRuleCollectionGroupProperties{
 			Priority: to.Ptr[int32](100),
 			RuleCollections: []armnetwork.FirewallPolicyRuleCollectionClassification{
@@ -429,11 +429,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", armnetwork.FirewallPolicyRuleCollectionGroup{
+	poller, err := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().BeginCreateOrUpdate(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", armnetwork.FirewallPolicyRuleCollectionGroup{
 		Properties: &armnetwork.FirewallPolicyRuleCollectionGroupProperties{
 			Priority: to.Ptr[int32](110),
 			RuleCollections: []armnetwork.FirewallPolicyRuleCollectionClassification{
@@ -508,11 +508,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("e747cc13-97d4-4a79-b463-42d7f4e558f2", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", armnetwork.FirewallPolicyRuleCollectionGroup{
+	poller, err := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().BeginCreateOrUpdate(ctx, "rg1", "firewallPolicy", "ruleCollectionGroup1", armnetwork.FirewallPolicyRuleCollectionGroup{
 		Properties: &armnetwork.FirewallPolicyRuleCollectionGroupProperties{
 			Priority: to.Ptr[int32](110),
 			RuleCollections: []armnetwork.FirewallPolicyRuleCollectionClassification{
@@ -593,11 +593,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewal
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("e747cc13-97d4-4a79-b463-42d7f4e558f2", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "firewallPolicy", nil)
+	pager := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().NewListPager("rg1", "firewallPolicy", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -655,11 +655,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewal
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "firewallPolicy", nil)
+	pager := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().NewListPager("rg1", "firewallPolicy", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -715,11 +715,11 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewal
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "firewallPolicy", nil)
+	pager := clientFactory.NewFirewallPolicyRuleCollectionGroupsClient().NewListPager("rg1", "firewallPolicy", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

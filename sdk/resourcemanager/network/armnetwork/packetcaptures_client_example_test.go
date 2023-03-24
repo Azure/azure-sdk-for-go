@@ -25,11 +25,11 @@ func ExamplePacketCapturesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPacketCapturesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "rg1", "nw1", "pc1", armnetwork.PacketCapture{
+	poller, err := clientFactory.NewPacketCapturesClient().BeginCreate(ctx, "rg1", "nw1", "pc1", armnetwork.PacketCapture{
 		Properties: &armnetwork.PacketCaptureParameters{
 			BytesToCapturePerPacket: to.Ptr[int64](10000),
 			Filters: []*armnetwork.PacketCaptureFilter{
@@ -64,11 +64,11 @@ func ExamplePacketCapturesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPacketCapturesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "nw1", "pc1", nil)
+	res, err := clientFactory.NewPacketCapturesClient().Get(ctx, "rg1", "nw1", "pc1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -107,11 +107,11 @@ func ExamplePacketCapturesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPacketCapturesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "nw1", "pc1", nil)
+	poller, err := clientFactory.NewPacketCapturesClient().BeginDelete(ctx, "rg1", "nw1", "pc1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -128,11 +128,11 @@ func ExamplePacketCapturesClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPacketCapturesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStop(ctx, "rg1", "nw1", "pc1", nil)
+	poller, err := clientFactory.NewPacketCapturesClient().BeginStop(ctx, "rg1", "nw1", "pc1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -149,11 +149,11 @@ func ExamplePacketCapturesClient_BeginGetStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPacketCapturesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetStatus(ctx, "rg1", "nw1", "pc1", nil)
+	poller, err := clientFactory.NewPacketCapturesClient().BeginGetStatus(ctx, "rg1", "nw1", "pc1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -182,11 +182,11 @@ func ExamplePacketCapturesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPacketCapturesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "nw1", nil)
+	pager := clientFactory.NewPacketCapturesClient().NewListPager("rg1", "nw1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

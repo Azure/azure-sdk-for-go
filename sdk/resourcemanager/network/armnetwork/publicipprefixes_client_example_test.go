@@ -25,11 +25,11 @@ func ExamplePublicIPPrefixesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPPrefixesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "test-ipprefix", nil)
+	poller, err := clientFactory.NewPublicIPPrefixesClient().BeginDelete(ctx, "rg1", "test-ipprefix", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExamplePublicIPPrefixesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPPrefixesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "test-ipprefix", &armnetwork.PublicIPPrefixesClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewPublicIPPrefixesClient().Get(ctx, "rg1", "test-ipprefix", &armnetwork.PublicIPPrefixesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -89,11 +89,11 @@ func ExamplePublicIPPrefixesClient_BeginCreateOrUpdate_createPublicIpPrefixAlloc
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPPrefixesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-ipprefix", armnetwork.PublicIPPrefix{
+	poller, err := clientFactory.NewPublicIPPrefixesClient().BeginCreateOrUpdate(ctx, "rg1", "test-ipprefix", armnetwork.PublicIPPrefix{
 		Location: to.Ptr("westus"),
 		Properties: &armnetwork.PublicIPPrefixPropertiesFormat{
 			PrefixLength:           to.Ptr[int32](30),
@@ -145,11 +145,11 @@ func ExamplePublicIPPrefixesClient_BeginCreateOrUpdate_createPublicIpPrefixDefau
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPPrefixesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-ipprefix", armnetwork.PublicIPPrefix{
+	poller, err := clientFactory.NewPublicIPPrefixesClient().BeginCreateOrUpdate(ctx, "rg1", "test-ipprefix", armnetwork.PublicIPPrefix{
 		Location: to.Ptr("westus"),
 		Properties: &armnetwork.PublicIPPrefixPropertiesFormat{
 			PrefixLength: to.Ptr[int32](30),
@@ -196,11 +196,11 @@ func ExamplePublicIPPrefixesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPPrefixesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "test-ipprefix", armnetwork.TagsObject{
+	res, err := clientFactory.NewPublicIPPrefixesClient().UpdateTags(ctx, "rg1", "test-ipprefix", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -244,11 +244,11 @@ func ExamplePublicIPPrefixesClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPPrefixesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewPublicIPPrefixesClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -336,11 +336,11 @@ func ExamplePublicIPPrefixesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPPrefixesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewPublicIPPrefixesClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

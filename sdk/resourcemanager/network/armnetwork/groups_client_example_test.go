@@ -25,11 +25,11 @@ func ExampleGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewGroupsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testNetworkManager", "testNetworkGroup", nil)
+	res, err := clientFactory.NewGroupsClient().Get(ctx, "rg1", "testNetworkManager", "testNetworkGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -62,11 +62,11 @@ func ExampleGroupsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewGroupsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "testNetworkManager", "testNetworkGroup", armnetwork.Group{
+	res, err := clientFactory.NewGroupsClient().CreateOrUpdate(ctx, "rg1", "testNetworkManager", "testNetworkGroup", armnetwork.Group{
 		Properties: &armnetwork.GroupProperties{
 			Description: to.Ptr("A sample group"),
 		},
@@ -103,11 +103,11 @@ func ExampleGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewGroupsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "testNetworkManager", "testNetworkGroup", &armnetwork.GroupsClientBeginDeleteOptions{Force: to.Ptr(false)})
+	poller, err := clientFactory.NewGroupsClient().BeginDelete(ctx, "rg1", "testNetworkManager", "testNetworkGroup", &armnetwork.GroupsClientBeginDeleteOptions{Force: to.Ptr(false)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -124,11 +124,11 @@ func ExampleGroupsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewGroupsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "testNetworkManager", &armnetwork.GroupsClientListOptions{Top: nil,
+	pager := clientFactory.NewGroupsClient().NewListPager("rg1", "testNetworkManager", &armnetwork.GroupsClientListOptions{Top: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {

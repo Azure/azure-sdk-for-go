@@ -25,11 +25,11 @@ func ExampleRoutesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRoutesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "testrt", "route1", nil)
+	poller, err := clientFactory.NewRoutesClient().BeginDelete(ctx, "rg1", "testrt", "route1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleRoutesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRoutesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testrt", "route1", nil)
+	res, err := clientFactory.NewRoutesClient().Get(ctx, "rg1", "testrt", "route1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -75,11 +75,11 @@ func ExampleRoutesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRoutesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testrt", "route1", armnetwork.Route{
+	poller, err := clientFactory.NewRoutesClient().BeginCreateOrUpdate(ctx, "rg1", "testrt", "route1", armnetwork.Route{
 		Properties: &armnetwork.RoutePropertiesFormat{
 			AddressPrefix: to.Ptr("10.0.3.0/24"),
 			NextHopType:   to.Ptr(armnetwork.RouteNextHopTypeVirtualNetworkGateway),
@@ -113,11 +113,11 @@ func ExampleRoutesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRoutesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "testrt", nil)
+	pager := clientFactory.NewRoutesClient().NewListPager("rg1", "testrt", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

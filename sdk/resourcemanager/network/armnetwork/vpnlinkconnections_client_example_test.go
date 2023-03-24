@@ -24,11 +24,11 @@ func ExampleVPNLinkConnectionsClient_BeginResetConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNLinkConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResetConnection(ctx, "rg1", "gateway1", "vpnConnection1", "Connection-Link1", nil)
+	poller, err := clientFactory.NewVPNLinkConnectionsClient().BeginResetConnection(ctx, "rg1", "gateway1", "vpnConnection1", "Connection-Link1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -45,11 +45,11 @@ func ExampleVPNLinkConnectionsClient_BeginGetIkeSas() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNLinkConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetIkeSas(ctx, "rg1", "gateway1", "vpnConnection1", "Connection-Link1", nil)
+	poller, err := clientFactory.NewVPNLinkConnectionsClient().BeginGetIkeSas(ctx, "rg1", "gateway1", "vpnConnection1", "Connection-Link1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -70,11 +70,11 @@ func ExampleVPNLinkConnectionsClient_NewListByVPNConnectionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNLinkConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByVPNConnectionPager("rg1", "gateway1", "vpnConnection1", nil)
+	pager := clientFactory.NewVPNLinkConnectionsClient().NewListByVPNConnectionPager("rg1", "gateway1", "vpnConnection1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

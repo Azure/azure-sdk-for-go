@@ -25,11 +25,11 @@ func ExampleVirtualHubRouteTableV2SClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "virtualHub1", "virtualHubRouteTable1a", nil)
+	res, err := clientFactory.NewVirtualHubRouteTableV2SClient().Get(ctx, "rg1", "virtualHub1", "virtualHubRouteTable1a", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -73,11 +73,11 @@ func ExampleVirtualHubRouteTableV2SClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "virtualHub1", "virtualHubRouteTable1a", armnetwork.VirtualHubRouteTableV2{
+	poller, err := clientFactory.NewVirtualHubRouteTableV2SClient().BeginCreateOrUpdate(ctx, "rg1", "virtualHub1", "virtualHubRouteTable1a", armnetwork.VirtualHubRouteTableV2{
 		Properties: &armnetwork.VirtualHubRouteTableV2Properties{
 			AttachedConnections: []*string{
 				to.Ptr("All_Vnets")},
@@ -148,11 +148,11 @@ func ExampleVirtualHubRouteTableV2SClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "virtualHub1", "virtualHubRouteTable1a", nil)
+	poller, err := clientFactory.NewVirtualHubRouteTableV2SClient().BeginDelete(ctx, "rg1", "virtualHub1", "virtualHubRouteTable1a", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -169,11 +169,11 @@ func ExampleVirtualHubRouteTableV2SClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "virtualHub1", nil)
+	pager := clientFactory.NewVirtualHubRouteTableV2SClient().NewListPager("rg1", "virtualHub1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -25,11 +25,11 @@ func ExamplePrivateDNSZoneGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateDNSZoneGroupsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "testPe", "testPdnsgroup", nil)
+	poller, err := clientFactory.NewPrivateDNSZoneGroupsClient().BeginDelete(ctx, "rg1", "testPe", "testPdnsgroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExamplePrivateDNSZoneGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateDNSZoneGroupsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testPe", "testPdnsgroup", nil)
+	res, err := clientFactory.NewPrivateDNSZoneGroupsClient().Get(ctx, "rg1", "testPe", "testPdnsgroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -114,11 +114,11 @@ func ExamplePrivateDNSZoneGroupsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateDNSZoneGroupsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testPe", "testPdnsgroup", armnetwork.PrivateDNSZoneGroup{
+	poller, err := clientFactory.NewPrivateDNSZoneGroupsClient().BeginCreateOrUpdate(ctx, "rg1", "testPe", "testPdnsgroup", armnetwork.PrivateDNSZoneGroup{
 		Properties: &armnetwork.PrivateDNSZoneGroupPropertiesFormat{
 			PrivateDNSZoneConfigs: []*armnetwork.PrivateDNSZoneConfig{
 				{
@@ -175,11 +175,11 @@ func ExamplePrivateDNSZoneGroupsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateDNSZoneGroupsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("testPe", "rg1", nil)
+	pager := clientFactory.NewPrivateDNSZoneGroupsClient().NewListPager("testPe", "rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

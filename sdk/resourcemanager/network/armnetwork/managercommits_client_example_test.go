@@ -25,11 +25,11 @@ func ExampleManagerCommitsClient_BeginPost() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagerCommitsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPost(ctx, "resoureGroupSample", "testNetworkManager", armnetwork.ManagerCommit{
+	poller, err := clientFactory.NewManagerCommitsClient().BeginPost(ctx, "resoureGroupSample", "testNetworkManager", armnetwork.ManagerCommit{
 		CommitType: to.Ptr(armnetwork.ConfigurationTypeSecurityAdmin),
 		ConfigurationIDs: []*string{
 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resoureGroupSample/providers/Microsoft.Network/networkManagers/testNetworkManager/securityAdminConfigurations/SampleSecurityAdminConfig")},

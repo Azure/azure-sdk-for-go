@@ -470,21 +470,21 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientCreateResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientCreateResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientCreateResponse{}, err
 		}
@@ -714,21 +714,21 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientDownloadResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientDownloadResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientDownloadResponse{}, err
 		}
@@ -982,21 +982,21 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientGetPropertiesResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientGetPropertiesResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientGetPropertiesResponse{}, err
 		}
@@ -1374,21 +1374,21 @@ func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientSetHTTPHeadersResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientSetHTTPHeadersResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientSetHTTPHeadersResponse{}, err
 		}

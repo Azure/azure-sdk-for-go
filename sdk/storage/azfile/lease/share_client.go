@@ -75,7 +75,7 @@ func (s *ShareClient) Break(ctx context.Context, options *ShareBreakOptions) (Sh
 
 // Change operation can be used to change the lease ID of an active lease.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-share.
-func (s *ShareClient) Change(ctx context.Context, leaseID string, proposedLeaseID string, options *ShareChangeOptions) (ShareChangeResponse, error) {
+func (s *ShareClient) Change(ctx context.Context, proposedLeaseID string, options *ShareChangeOptions) (ShareChangeResponse, error) {
 	if s.LeaseID() == nil {
 		return ShareChangeResponse{}, errors.New("leaseID cannot be nil")
 	}
@@ -105,7 +105,7 @@ func (s *ShareClient) Release(ctx context.Context, options *ShareReleaseOptions)
 
 // Renew operation can be used to renew an existing lease.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-share.
-func (s *ShareClient) Renew(ctx context.Context, leaseID string, options *ShareRenewOptions) (ShareRenewResponse, error) {
+func (s *ShareClient) Renew(ctx context.Context, options *ShareRenewOptions) (ShareRenewResponse, error) {
 	if s.LeaseID() == nil {
 		return ShareRenewResponse{}, errors.New("leaseID cannot be nil")
 	}

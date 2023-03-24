@@ -276,7 +276,9 @@ directive:
 
 ``` yaml
 directive:
-  - from: zz_directory_client.go
+  - from:
+    - zz_directory_client.go
+    - zz_file_client.go
     where: $
     transform: >-
       return $.

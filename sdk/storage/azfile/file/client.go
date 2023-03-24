@@ -97,7 +97,7 @@ func (f *Client) URL() string {
 }
 
 // Create operation creates a new file or replaces a file. Note it only initializes the file with no content.
-//   - fileContentLength: Specifies the maximum size for the file, up to 4 TB.
+//   - fileContentLength: Specifies the maximum size for the file in bytes, up to 4 TB.
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {

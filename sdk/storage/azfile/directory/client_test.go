@@ -223,11 +223,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryClientUsingSAS() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	dirName := testcommon.GenerateDirectoryName(testName)
-	dirClient := shareClient.NewDirectoryClient(dirName)
-
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	dirClient := testcommon.CreateNewDirectory(context.Background(), _require, testcommon.GenerateDirectoryName(testName), shareClient)
 
 	permissions := sas.FilePermissions{
 		Read:   true,
@@ -247,7 +243,30 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryClientUsingSAS() {
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
 
-	// TODO: create files using dirSASClient
+	subDirSASClient := dirSASClient.NewSubdirectoryClient("subdir")
+	_, err = subDirSASClient.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+
+	// TODO: directory SAS client unable to do create and get properties on directories.
+	// Also unable to do create or get properties on files. Validate this behaviour.
+	fileSASClient := dirSASClient.NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fileSASClient.Create(context.Background(), 1024, nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+
+	_, err = fileSASClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+
+	// create file using shared key client
+	_, err = dirClient.NewFileClient(testcommon.GenerateFileName(testName)).Create(context.Background(), 1024, nil)
+	_require.NoError(err)
+
+	// get properties using SAS client
+	_, err = fileSASClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
 }
 
 func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteDefault() {

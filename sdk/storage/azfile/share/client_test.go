@@ -163,13 +163,20 @@ func (s *ShareUnrecordedTestsSuite) TestShareClientUsingSAS() {
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthorizationFailure)
 
-	// TODO: create files using shareSASClient
 	dirName1 := testcommon.GenerateDirectoryName(testName) + "1"
 	_, err = shareSASClient.NewDirectoryClient(dirName1).Create(context.Background(), nil)
 	_require.NoError(err)
 
 	dirName2 := testcommon.GenerateDirectoryName(testName) + "2"
 	_, err = shareSASClient.NewDirectoryClient(dirName2).Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName1 := testcommon.GenerateFileName(testName) + "1"
+	_, err = shareSASClient.NewRootDirectoryClient().NewFileClient(fileName1).Create(context.Background(), 1024, nil)
+	_require.NoError(err)
+
+	fileName2 := testcommon.GenerateFileName(testName) + "2"
+	_, err = shareSASClient.NewDirectoryClient(dirName2).NewFileClient(fileName2).Create(context.Background(), 1024, nil)
 	_require.NoError(err)
 
 	dirCtr, fileCtr := 0, 0
@@ -181,7 +188,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareClientUsingSAS() {
 		fileCtr += len(resp.Segment.Files)
 	}
 	_require.Equal(dirCtr, 2)
-	_require.Equal(fileCtr, 0)
+	_require.Equal(fileCtr, 1)
 }
 
 func (s *ShareUnrecordedTestsSuite) TestShareCreateDeleteNonDefault() {

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // CommunicationsGatewaysClient contains the methods for the CommunicationsGateways group.
 // Don't use this type directly, use NewCommunicationsGatewaysClient() instead.
 type CommunicationsGatewaysClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCommunicationsGatewaysClient creates a new instance of CommunicationsGatewaysClient with the specified values.
@@ -36,21 +33,13 @@ type CommunicationsGatewaysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCommunicationsGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommunicationsGatewaysClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CommunicationsGatewaysClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CommunicationsGatewaysClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,7 +47,7 @@ func NewCommunicationsGatewaysClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Create a CommunicationsGateway
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - communicationsGatewayName - Unique identifier for this deployment
 //   - resource - Resource create parameters.
@@ -70,24 +59,24 @@ func (client *CommunicationsGatewaysClient) BeginCreateOrUpdate(ctx context.Cont
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommunicationsGatewaysClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunicationsGatewaysClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CommunicationsGatewaysClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CommunicationsGatewaysClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create a CommunicationsGateway
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 func (client *CommunicationsGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, communicationsGatewayName string, resource CommunicationsGateway, options *CommunicationsGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, communicationsGatewayName, resource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -112,12 +101,12 @@ func (client *CommunicationsGatewaysClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter communicationsGatewayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationsGatewayName}", url.PathEscape(communicationsGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -126,7 +115,7 @@ func (client *CommunicationsGatewaysClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Delete a CommunicationsGateway
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - communicationsGatewayName - Unique identifier for this deployment
 //   - options - CommunicationsGatewaysClientBeginDeleteOptions contains the optional parameters for the CommunicationsGatewaysClient.BeginDelete
@@ -137,24 +126,24 @@ func (client *CommunicationsGatewaysClient) BeginDelete(ctx context.Context, res
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommunicationsGatewaysClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunicationsGatewaysClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CommunicationsGatewaysClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CommunicationsGatewaysClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete a CommunicationsGateway
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 func (client *CommunicationsGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, communicationsGatewayName string, options *CommunicationsGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, communicationsGatewayName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -179,12 +168,12 @@ func (client *CommunicationsGatewaysClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter communicationsGatewayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationsGatewayName}", url.PathEscape(communicationsGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,7 +182,7 @@ func (client *CommunicationsGatewaysClient) deleteCreateRequest(ctx context.Cont
 // Get - Get a CommunicationsGateway
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - communicationsGatewayName - Unique identifier for this deployment
 //   - options - CommunicationsGatewaysClientGetOptions contains the optional parameters for the CommunicationsGatewaysClient.Get
@@ -203,7 +192,7 @@ func (client *CommunicationsGatewaysClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return CommunicationsGatewaysClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CommunicationsGatewaysClientGetResponse{}, err
 	}
@@ -228,12 +217,12 @@ func (client *CommunicationsGatewaysClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter communicationsGatewayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationsGatewayName}", url.PathEscape(communicationsGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -250,7 +239,7 @@ func (client *CommunicationsGatewaysClient) getHandleResponse(resp *http.Respons
 
 // NewListByResourceGroupPager - List CommunicationsGateway resources by resource group
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CommunicationsGatewaysClientListByResourceGroupOptions contains the optional parameters for the CommunicationsGatewaysClient.NewListByResourceGroupPager
 //     method.
@@ -270,7 +259,7 @@ func (client *CommunicationsGatewaysClient) NewListByResourceGroupPager(resource
 			if err != nil {
 				return CommunicationsGatewaysClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CommunicationsGatewaysClientListByResourceGroupResponse{}, err
 			}
@@ -293,12 +282,12 @@ func (client *CommunicationsGatewaysClient) listByResourceGroupCreateRequest(ctx
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -315,7 +304,7 @@ func (client *CommunicationsGatewaysClient) listByResourceGroupHandleResponse(re
 
 // NewListBySubscriptionPager - List CommunicationsGateway resources by subscription ID
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - options - CommunicationsGatewaysClientListBySubscriptionOptions contains the optional parameters for the CommunicationsGatewaysClient.NewListBySubscriptionPager
 //     method.
 func (client *CommunicationsGatewaysClient) NewListBySubscriptionPager(options *CommunicationsGatewaysClientListBySubscriptionOptions) *runtime.Pager[CommunicationsGatewaysClientListBySubscriptionResponse] {
@@ -334,7 +323,7 @@ func (client *CommunicationsGatewaysClient) NewListBySubscriptionPager(options *
 			if err != nil {
 				return CommunicationsGatewaysClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CommunicationsGatewaysClientListBySubscriptionResponse{}, err
 			}
@@ -353,12 +342,12 @@ func (client *CommunicationsGatewaysClient) listBySubscriptionCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -376,7 +365,7 @@ func (client *CommunicationsGatewaysClient) listBySubscriptionHandleResponse(res
 // Update - Update a CommunicationsGateway
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - communicationsGatewayName - Unique identifier for this deployment
 //   - properties - The resource properties to be updated.
@@ -387,7 +376,7 @@ func (client *CommunicationsGatewaysClient) Update(ctx context.Context, resource
 	if err != nil {
 		return CommunicationsGatewaysClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CommunicationsGatewaysClientUpdateResponse{}, err
 	}
@@ -412,12 +401,12 @@ func (client *CommunicationsGatewaysClient) updateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter communicationsGatewayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationsGatewayName}", url.PathEscape(communicationsGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)

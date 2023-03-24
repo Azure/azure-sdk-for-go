@@ -39,29 +39,9 @@ type CommunicationsGatewaysClientUpdateResponse struct {
 	CommunicationsGateway
 }
 
-// ContactsClientCreateOrUpdateResponse contains the response from method ContactsClient.BeginCreateOrUpdate.
-type ContactsClientCreateOrUpdateResponse struct {
-	Contact
-}
-
-// ContactsClientDeleteResponse contains the response from method ContactsClient.BeginDelete.
-type ContactsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ContactsClientGetResponse contains the response from method ContactsClient.Get.
-type ContactsClientGetResponse struct {
-	Contact
-}
-
-// ContactsClientListByCommunicationsGatewayResponse contains the response from method ContactsClient.NewListByCommunicationsGatewayPager.
-type ContactsClientListByCommunicationsGatewayResponse struct {
-	ContactListResult
-}
-
-// ContactsClientUpdateResponse contains the response from method ContactsClient.Update.
-type ContactsClientUpdateResponse struct {
-	Contact
+// NameAvailabilityClientCheckLocalResponse contains the response from method NameAvailabilityClient.CheckLocal.
+type NameAvailabilityClientCheckLocalResponse struct {
+	CheckNameAvailabilityResponse
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

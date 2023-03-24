@@ -3,7 +3,7 @@
 ## 3.0.0 (2023-03-24)
 ### Breaking Changes
 
-- Field `RefundResponse` of struct `ReturnClientPostResponse` has been removed
+- Response of `ReturnClient.Post` has been changed from `RefundResponse` to `ReservationOrderResponse`
 
 ### Features Added
 

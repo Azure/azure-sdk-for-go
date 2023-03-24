@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // LogProfilesClient contains the methods for the LogProfiles group.
 // Don't use this type directly, use NewLogProfilesClient() instead.
 type LogProfilesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewLogProfilesClient creates a new instance of LogProfilesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLogProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogProfilesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".LogProfilesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &LogProfilesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update a log profile in Azure Monitoring REST API.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// logProfileName - The name of the log profile.
-// parameters - Parameters supplied to the operation.
-// options - LogProfilesClientCreateOrUpdateOptions contains the optional parameters for the LogProfilesClient.CreateOrUpdate
-// method.
+//   - logProfileName - The name of the log profile.
+//   - parameters - Parameters supplied to the operation.
+//   - options - LogProfilesClientCreateOrUpdateOptions contains the optional parameters for the LogProfilesClient.CreateOrUpdate
+//     method.
 func (client *LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileName string, parameters LogProfileResource, options *LogProfilesClientCreateOrUpdateOptions) (LogProfilesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, logProfileName, parameters, options)
 	if err != nil {
 		return LogProfilesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LogProfilesClientCreateOrUpdateResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *LogProfilesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,15 +100,16 @@ func (client *LogProfilesClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Deletes the log profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// logProfileName - The name of the log profile.
-// options - LogProfilesClientDeleteOptions contains the optional parameters for the LogProfilesClient.Delete method.
+//   - logProfileName - The name of the log profile.
+//   - options - LogProfilesClientDeleteOptions contains the optional parameters for the LogProfilesClient.Delete method.
 func (client *LogProfilesClient) Delete(ctx context.Context, logProfileName string, options *LogProfilesClientDeleteOptions) (LogProfilesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, logProfileName, options)
 	if err != nil {
 		return LogProfilesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LogProfilesClientDeleteResponse{}, err
 	}
@@ -139,7 +130,7 @@ func (client *LogProfilesClient) deleteCreateRequest(ctx context.Context, logPro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,15 +142,16 @@ func (client *LogProfilesClient) deleteCreateRequest(ctx context.Context, logPro
 
 // Get - Gets the log profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// logProfileName - The name of the log profile.
-// options - LogProfilesClientGetOptions contains the optional parameters for the LogProfilesClient.Get method.
+//   - logProfileName - The name of the log profile.
+//   - options - LogProfilesClientGetOptions contains the optional parameters for the LogProfilesClient.Get method.
 func (client *LogProfilesClient) Get(ctx context.Context, logProfileName string, options *LogProfilesClientGetOptions) (LogProfilesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, logProfileName, options)
 	if err != nil {
 		return LogProfilesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LogProfilesClientGetResponse{}, err
 	}
@@ -180,7 +172,7 @@ func (client *LogProfilesClient) getCreateRequest(ctx context.Context, logProfil
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -201,8 +193,9 @@ func (client *LogProfilesClient) getHandleResponse(resp *http.Response) (LogProf
 }
 
 // NewListPager - List the log profiles.
+//
 // Generated from API version 2016-03-01
-// options - LogProfilesClientListOptions contains the optional parameters for the LogProfilesClient.List method.
+//   - options - LogProfilesClientListOptions contains the optional parameters for the LogProfilesClient.NewListPager method.
 func (client *LogProfilesClient) NewListPager(options *LogProfilesClientListOptions) *runtime.Pager[LogProfilesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LogProfilesClientListResponse]{
 		More: func(page LogProfilesClientListResponse) bool {
@@ -213,7 +206,7 @@ func (client *LogProfilesClient) NewListPager(options *LogProfilesClientListOpti
 			if err != nil {
 				return LogProfilesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LogProfilesClientListResponse{}, err
 			}
@@ -232,7 +225,7 @@ func (client *LogProfilesClient) listCreateRequest(ctx context.Context, options 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -254,16 +247,17 @@ func (client *LogProfilesClient) listHandleResponse(resp *http.Response) (LogPro
 
 // Update - Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// logProfileName - The name of the log profile.
-// logProfilesResource - Parameters supplied to the operation.
-// options - LogProfilesClientUpdateOptions contains the optional parameters for the LogProfilesClient.Update method.
+//   - logProfileName - The name of the log profile.
+//   - logProfilesResource - Parameters supplied to the operation.
+//   - options - LogProfilesClientUpdateOptions contains the optional parameters for the LogProfilesClient.Update method.
 func (client *LogProfilesClient) Update(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch, options *LogProfilesClientUpdateOptions) (LogProfilesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, logProfileName, logProfilesResource, options)
 	if err != nil {
 		return LogProfilesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LogProfilesClientUpdateResponse{}, err
 	}
@@ -284,7 +278,7 @@ func (client *LogProfilesClient) updateCreateRequest(ctx context.Context, logPro
 		return nil, errors.New("parameter logProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{logProfileName}", url.PathEscape(logProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

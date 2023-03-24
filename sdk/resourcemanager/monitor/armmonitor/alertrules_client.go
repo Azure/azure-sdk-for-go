@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // AlertRulesClient contains the methods for the AlertRules group.
 // Don't use this type directly, use NewAlertRulesClient() instead.
 type AlertRulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAlertRulesClient creates a new instance of AlertRulesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAlertRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertRulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AlertRulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AlertRulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a classic metric alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// ruleName - The name of the rule.
-// parameters - The parameters of the rule to create or update.
-// options - AlertRulesClientCreateOrUpdateOptions contains the optional parameters for the AlertRulesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ruleName - The name of the rule.
+//   - parameters - The parameters of the rule to create or update.
+//   - options - AlertRulesClientCreateOrUpdateOptions contains the optional parameters for the AlertRulesClient.CreateOrUpdate
+//     method.
 func (client *AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters AlertRuleResource, options *AlertRulesClientCreateOrUpdateOptions) (AlertRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters, options)
 	if err != nil {
 		return AlertRulesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -93,7 +83,7 @@ func (client *AlertRulesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,16 +105,17 @@ func (client *AlertRulesClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Deletes a classic metric alert rule
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// ruleName - The name of the rule.
-// options - AlertRulesClientDeleteOptions contains the optional parameters for the AlertRulesClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ruleName - The name of the rule.
+//   - options - AlertRulesClientDeleteOptions contains the optional parameters for the AlertRulesClient.Delete method.
 func (client *AlertRulesClient) Delete(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRulesClientDeleteOptions) (AlertRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
 		return AlertRulesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertRulesClientDeleteResponse{}, err
 	}
@@ -149,7 +140,7 @@ func (client *AlertRulesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,16 +153,17 @@ func (client *AlertRulesClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets a classic metric alert rule
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// ruleName - The name of the rule.
-// options - AlertRulesClientGetOptions contains the optional parameters for the AlertRulesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ruleName - The name of the rule.
+//   - options - AlertRulesClientGetOptions contains the optional parameters for the AlertRulesClient.Get method.
 func (client *AlertRulesClient) Get(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRulesClientGetOptions) (AlertRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
 		return AlertRulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertRulesClientGetResponse{}, err
 	}
@@ -196,7 +188,7 @@ func (client *AlertRulesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -217,10 +209,11 @@ func (client *AlertRulesClient) getHandleResponse(resp *http.Response) (AlertRul
 }
 
 // NewListByResourceGroupPager - List the classic metric alert rules within a resource group.
+//
 // Generated from API version 2016-03-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - AlertRulesClientListByResourceGroupOptions contains the optional parameters for the AlertRulesClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - AlertRulesClientListByResourceGroupOptions contains the optional parameters for the AlertRulesClient.NewListByResourceGroupPager
+//     method.
 func (client *AlertRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *AlertRulesClientListByResourceGroupOptions) *runtime.Pager[AlertRulesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertRulesClientListByResourceGroupResponse]{
 		More: func(page AlertRulesClientListByResourceGroupResponse) bool {
@@ -231,7 +224,7 @@ func (client *AlertRulesClient) NewListByResourceGroupPager(resourceGroupName st
 			if err != nil {
 				return AlertRulesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AlertRulesClientListByResourceGroupResponse{}, err
 			}
@@ -254,7 +247,7 @@ func (client *AlertRulesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -275,9 +268,10 @@ func (client *AlertRulesClient) listByResourceGroupHandleResponse(resp *http.Res
 }
 
 // NewListBySubscriptionPager - List the classic metric alert rules within a subscription.
+//
 // Generated from API version 2016-03-01
-// options - AlertRulesClientListBySubscriptionOptions contains the optional parameters for the AlertRulesClient.ListBySubscription
-// method.
+//   - options - AlertRulesClientListBySubscriptionOptions contains the optional parameters for the AlertRulesClient.NewListBySubscriptionPager
+//     method.
 func (client *AlertRulesClient) NewListBySubscriptionPager(options *AlertRulesClientListBySubscriptionOptions) *runtime.Pager[AlertRulesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertRulesClientListBySubscriptionResponse]{
 		More: func(page AlertRulesClientListBySubscriptionResponse) bool {
@@ -288,7 +282,7 @@ func (client *AlertRulesClient) NewListBySubscriptionPager(options *AlertRulesCl
 			if err != nil {
 				return AlertRulesClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AlertRulesClientListBySubscriptionResponse{}, err
 			}
@@ -307,7 +301,7 @@ func (client *AlertRulesClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -329,17 +323,18 @@ func (client *AlertRulesClient) listBySubscriptionHandleResponse(resp *http.Resp
 
 // Update - Updates an existing classic metric AlertRuleResource. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// ruleName - The name of the rule.
-// alertRulesResource - Parameters supplied to the operation.
-// options - AlertRulesClientUpdateOptions contains the optional parameters for the AlertRulesClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ruleName - The name of the rule.
+//   - alertRulesResource - Parameters supplied to the operation.
+//   - options - AlertRulesClientUpdateOptions contains the optional parameters for the AlertRulesClient.Update method.
 func (client *AlertRulesClient) Update(ctx context.Context, resourceGroupName string, ruleName string, alertRulesResource AlertRuleResourcePatch, options *AlertRulesClientUpdateOptions) (AlertRulesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, ruleName, alertRulesResource, options)
 	if err != nil {
 		return AlertRulesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertRulesClientUpdateResponse{}, err
 	}
@@ -364,7 +359,7 @@ func (client *AlertRulesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter ruleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -23,28 +21,19 @@ import (
 // TenantActivityLogsClient contains the methods for the TenantActivityLogs group.
 // Don't use this type directly, use NewTenantActivityLogsClient() instead.
 type TenantActivityLogsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewTenantActivityLogsClient creates a new instance of TenantActivityLogsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantActivityLogsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TenantActivityLogsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TenantActivityLogsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -53,8 +42,10 @@ func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm
 // for the subscription is applicable to this API (the parameters, $filter, etc.). One thing to
 // point out here is that this API does not retrieve the logs at the individual subscription of the tenant but only surfaces
 // the logs that were generated at the tenant level.
+//
 // Generated from API version 2015-04-01
-// options - TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.List method.
+//   - options - TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.NewListPager
+//     method.
 func (client *TenantActivityLogsClient) NewListPager(options *TenantActivityLogsClientListOptions) *runtime.Pager[TenantActivityLogsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TenantActivityLogsClientListResponse]{
 		More: func(page TenantActivityLogsClientListResponse) bool {
@@ -71,7 +62,7 @@ func (client *TenantActivityLogsClient) NewListPager(options *TenantActivityLogs
 			if err != nil {
 				return TenantActivityLogsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TenantActivityLogsClientListResponse{}, err
 			}
@@ -86,7 +77,7 @@ func (client *TenantActivityLogsClient) NewListPager(options *TenantActivityLogs
 // listCreateRequest creates the List request.
 func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, options *TenantActivityLogsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Insights/eventtypes/management/values"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

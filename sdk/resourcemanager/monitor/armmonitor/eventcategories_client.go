@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -23,36 +21,29 @@ import (
 // EventCategoriesClient contains the methods for the EventCategories group.
 // Don't use this type directly, use NewEventCategoriesClient() instead.
 type EventCategoriesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewEventCategoriesClient creates a new instance of EventCategoriesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EventCategoriesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EventCategoriesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EventCategoriesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Get the list of available event categories supported in the Activity Logs Service. The current list includes
 // the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
+//
 // Generated from API version 2015-04-01
-// options - EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.List method.
+//   - options - EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.NewListPager
+//     method.
 func (client *EventCategoriesClient) NewListPager(options *EventCategoriesClientListOptions) *runtime.Pager[EventCategoriesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EventCategoriesClientListResponse]{
 		More: func(page EventCategoriesClientListResponse) bool {
@@ -63,7 +54,7 @@ func (client *EventCategoriesClient) NewListPager(options *EventCategoriesClient
 			if err != nil {
 				return EventCategoriesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EventCategoriesClientListResponse{}, err
 			}
@@ -78,7 +69,7 @@ func (client *EventCategoriesClient) NewListPager(options *EventCategoriesClient
 // listCreateRequest creates the List request.
 func (client *EventCategoriesClient) listCreateRequest(ctx context.Context, options *EventCategoriesClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Insights/eventcategories"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

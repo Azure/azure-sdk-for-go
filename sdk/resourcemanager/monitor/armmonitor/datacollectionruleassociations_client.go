@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // DataCollectionRuleAssociationsClient contains the methods for the DataCollectionRuleAssociations group.
 // Don't use this type directly, use NewDataCollectionRuleAssociationsClient() instead.
 type DataCollectionRuleAssociationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDataCollectionRuleAssociationsClient creates a new instance of DataCollectionRuleAssociationsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataCollectionRuleAssociationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DataCollectionRuleAssociationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DataCollectionRuleAssociationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Creates or updates an association.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-09-01-preview
-// resourceURI - The identifier of the resource.
-// associationName - The name of the association. The name is case insensitive.
-// options - DataCollectionRuleAssociationsClientCreateOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Create
-// method.
+//
+// Generated from API version 2022-06-01
+//   - resourceURI - The identifier of the resource.
+//   - associationName - The name of the association. The name is case insensitive.
+//   - options - DataCollectionRuleAssociationsClientCreateOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Create
+//     method.
 func (client *DataCollectionRuleAssociationsClient) Create(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsClientCreateOptions) (DataCollectionRuleAssociationsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceURI, associationName, options)
 	if err != nil {
 		return DataCollectionRuleAssociationsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataCollectionRuleAssociationsClientCreateResponse{}, err
 	}
@@ -85,12 +75,12 @@ func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx cont
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -110,17 +100,18 @@ func (client *DataCollectionRuleAssociationsClient) createHandleResponse(resp *h
 
 // Delete - Deletes an association.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-09-01-preview
-// resourceURI - The identifier of the resource.
-// associationName - The name of the association. The name is case insensitive.
-// options - DataCollectionRuleAssociationsClientDeleteOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Delete
-// method.
+//
+// Generated from API version 2022-06-01
+//   - resourceURI - The identifier of the resource.
+//   - associationName - The name of the association. The name is case insensitive.
+//   - options - DataCollectionRuleAssociationsClientDeleteOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Delete
+//     method.
 func (client *DataCollectionRuleAssociationsClient) Delete(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsClientDeleteOptions) (DataCollectionRuleAssociationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceURI, associationName, options)
 	if err != nil {
 		return DataCollectionRuleAssociationsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataCollectionRuleAssociationsClientDeleteResponse{}, err
 	}
@@ -138,12 +129,12 @@ func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx cont
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -151,17 +142,18 @@ func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx cont
 
 // Get - Returns the specified association.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-09-01-preview
-// resourceURI - The identifier of the resource.
-// associationName - The name of the association. The name is case insensitive.
-// options - DataCollectionRuleAssociationsClientGetOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Get
-// method.
+//
+// Generated from API version 2022-06-01
+//   - resourceURI - The identifier of the resource.
+//   - associationName - The name of the association. The name is case insensitive.
+//   - options - DataCollectionRuleAssociationsClientGetOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Get
+//     method.
 func (client *DataCollectionRuleAssociationsClient) Get(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsClientGetOptions) (DataCollectionRuleAssociationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, associationName, options)
 	if err != nil {
 		return DataCollectionRuleAssociationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataCollectionRuleAssociationsClientGetResponse{}, err
 	}
@@ -179,12 +171,12 @@ func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,11 +192,12 @@ func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http
 }
 
 // NewListByDataCollectionEndpointPager - Lists associations for the specified data collection endpoint.
-// Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
-// options - DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for
-// the DataCollectionRuleAssociationsClient.ListByDataCollectionEndpoint method.
+//
+// Generated from API version 2022-06-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+//   - options - DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for
+//     the DataCollectionRuleAssociationsClient.NewListByDataCollectionEndpointPager method.
 func (client *DataCollectionRuleAssociationsClient) NewListByDataCollectionEndpointPager(resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse) bool {
@@ -221,7 +214,7 @@ func (client *DataCollectionRuleAssociationsClient) NewListByDataCollectionEndpo
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse{}, err
 			}
@@ -248,12 +241,12 @@ func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpoint
 		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -269,10 +262,11 @@ func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpoint
 }
 
 // NewListByResourcePager - Lists associations for the specified resource.
-// Generated from API version 2021-09-01-preview
-// resourceURI - The identifier of the resource.
-// options - DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByResource
-// method.
+//
+// Generated from API version 2022-06-01
+//   - resourceURI - The identifier of the resource.
+//   - options - DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByResourcePager
+//     method.
 func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByResourceResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByResourceResponse) bool {
@@ -289,7 +283,7 @@ func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resou
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByResourceResponse{}, err
 			}
@@ -305,12 +299,12 @@ func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resou
 func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(ctx context.Context, resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,11 +320,12 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse
 }
 
 // NewListByRulePager - Lists associations for the specified data collection rule.
-// Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
-// options - DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByRule
-// method.
+//
+// Generated from API version 2022-06-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
+//   - options - DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByRulePager
+//     method.
 func (client *DataCollectionRuleAssociationsClient) NewListByRulePager(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsClientListByRuleOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByRuleResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByRuleResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByRuleResponse) bool {
@@ -347,7 +342,7 @@ func (client *DataCollectionRuleAssociationsClient) NewListByRulePager(resourceG
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByRuleResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataCollectionRuleAssociationsClientListByRuleResponse{}, err
 			}
@@ -374,12 +369,12 @@ func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx 
 		return nil, errors.New("parameter dataCollectionRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionRuleName}", url.PathEscape(dataCollectionRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

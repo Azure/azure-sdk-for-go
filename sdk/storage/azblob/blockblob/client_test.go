@@ -732,7 +732,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlWithCPK() {
 	_require.EqualValues(getResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	encryptionScope := testcommon.GetCPKScopeInfo(s.T())

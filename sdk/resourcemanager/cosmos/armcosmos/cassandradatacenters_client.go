@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // CassandraDataCentersClient contains the methods for the CassandraDataCenters group.
 // Don't use this type directly, use NewCassandraDataCentersClient() instead.
 type CassandraDataCentersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCassandraDataCentersClient creates a new instance of CassandraDataCentersClient with the specified values.
@@ -36,21 +33,13 @@ type CassandraDataCentersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCassandraDataCentersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CassandraDataCentersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CassandraDataCentersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CassandraDataCentersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -59,7 +48,7 @@ func NewCassandraDataCentersClient(subscriptionID string, credential azcore.Toke
 // only some properties, use PATCH.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - Managed Cassandra cluster name.
 //   - dataCenterName - Data center name in a managed Cassandra cluster.
@@ -72,9 +61,9 @@ func (client *CassandraDataCentersClient) BeginCreateUpdate(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraDataCentersClientCreateUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraDataCentersClientCreateUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraDataCentersClientCreateUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraDataCentersClientCreateUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -82,13 +71,13 @@ func (client *CassandraDataCentersClient) BeginCreateUpdate(ctx context.Context,
 // some properties, use PATCH.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 func (client *CassandraDataCentersClient) createUpdate(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, body DataCenterResource, options *CassandraDataCentersClientBeginCreateUpdateOptions) (*http.Response, error) {
 	req, err := client.createUpdateCreateRequest(ctx, resourceGroupName, clusterName, dataCenterName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -117,12 +106,12 @@ func (client *CassandraDataCentersClient) createUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter dataCenterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCenterName}", url.PathEscape(dataCenterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -131,7 +120,7 @@ func (client *CassandraDataCentersClient) createUpdateCreateRequest(ctx context.
 // BeginDelete - Delete a managed Cassandra data center.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - Managed Cassandra cluster name.
 //   - dataCenterName - Data center name in a managed Cassandra cluster.
@@ -143,22 +132,22 @@ func (client *CassandraDataCentersClient) BeginDelete(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraDataCentersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraDataCentersClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraDataCentersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraDataCentersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete a managed Cassandra data center.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 func (client *CassandraDataCentersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, options *CassandraDataCentersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, dataCenterName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -187,12 +176,12 @@ func (client *CassandraDataCentersClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter dataCenterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCenterName}", url.PathEscape(dataCenterName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +190,7 @@ func (client *CassandraDataCentersClient) deleteCreateRequest(ctx context.Contex
 // Get - Get the properties of a managed Cassandra data center.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - Managed Cassandra cluster name.
 //   - dataCenterName - Data center name in a managed Cassandra cluster.
@@ -212,7 +201,7 @@ func (client *CassandraDataCentersClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return CassandraDataCentersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CassandraDataCentersClientGetResponse{}, err
 	}
@@ -241,12 +230,12 @@ func (client *CassandraDataCentersClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter dataCenterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCenterName}", url.PathEscape(dataCenterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,7 +252,7 @@ func (client *CassandraDataCentersClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - List all data centers in a particular managed Cassandra cluster.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - Managed Cassandra cluster name.
 //   - options - CassandraDataCentersClientListOptions contains the optional parameters for the CassandraDataCentersClient.NewListPager
@@ -278,7 +267,7 @@ func (client *CassandraDataCentersClient) NewListPager(resourceGroupName string,
 			if err != nil {
 				return CassandraDataCentersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CassandraDataCentersClientListResponse{}, err
 			}
@@ -305,12 +294,12 @@ func (client *CassandraDataCentersClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,7 +317,7 @@ func (client *CassandraDataCentersClient) listHandleResponse(resp *http.Response
 // BeginUpdate - Update some of the properties of a managed Cassandra data center.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - Managed Cassandra cluster name.
 //   - dataCenterName - Data center name in a managed Cassandra cluster.
@@ -341,22 +330,22 @@ func (client *CassandraDataCentersClient) BeginUpdate(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraDataCentersClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraDataCentersClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraDataCentersClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraDataCentersClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update some of the properties of a managed Cassandra data center.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 func (client *CassandraDataCentersClient) update(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, body DataCenterResource, options *CassandraDataCentersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, dataCenterName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -385,12 +374,12 @@ func (client *CassandraDataCentersClient) updateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter dataCenterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCenterName}", url.PathEscape(dataCenterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

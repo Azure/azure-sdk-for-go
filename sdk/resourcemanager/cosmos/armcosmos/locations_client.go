@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
 type LocationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
@@ -36,21 +33,13 @@ type LocationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".LocationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &LocationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,7 +47,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 // Get - Get the properties of an existing Cosmos DB location
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - options - LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
 func (client *LocationsClient) Get(ctx context.Context, location string, options *LocationsClientGetOptions) (LocationsClientGetResponse, error) {
@@ -66,7 +55,7 @@ func (client *LocationsClient) Get(ctx context.Context, location string, options
 	if err != nil {
 		return LocationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocationsClientGetResponse{}, err
 	}
@@ -87,12 +76,12 @@ func (client *LocationsClient) getCreateRequest(ctx context.Context, location st
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +98,7 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 
 // NewListPager - List Cosmos DB locations and their properties
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - options - LocationsClientListOptions contains the optional parameters for the LocationsClient.NewListPager method.
 func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LocationsClientListResponse]{
@@ -121,7 +110,7 @@ func (client *LocationsClient) NewListPager(options *LocationsClientListOptions)
 			if err != nil {
 				return LocationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LocationsClientListResponse{}, err
 			}
@@ -140,12 +129,12 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, options *L
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

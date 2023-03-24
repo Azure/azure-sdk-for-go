@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // DatabaseAccountsClient contains the methods for the DatabaseAccounts group.
 // Don't use this type directly, use NewDatabaseAccountsClient() instead.
 type DatabaseAccountsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDatabaseAccountsClient creates a new instance of DatabaseAccountsClient with the specified values.
@@ -36,21 +33,13 @@ type DatabaseAccountsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabaseAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseAccountsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DatabaseAccountsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DatabaseAccountsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,7 +47,7 @@ func NewDatabaseAccountsClient(subscriptionID string, credential azcore.TokenCre
 // CheckNameExists - Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase
 // letters, numbers, and the '-' character, and must be between 3 and 50 characters.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - accountName - Cosmos DB database account name.
 //   - options - DatabaseAccountsClientCheckNameExistsOptions contains the optional parameters for the DatabaseAccountsClient.CheckNameExists
 //     method.
@@ -67,7 +56,7 @@ func (client *DatabaseAccountsClient) CheckNameExists(ctx context.Context, accou
 	if err != nil {
 		return DatabaseAccountsClientCheckNameExistsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientCheckNameExistsResponse{}, err
 	}
@@ -84,12 +73,12 @@ func (client *DatabaseAccountsClient) checkNameExistsCreateRequest(ctx context.C
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -98,7 +87,7 @@ func (client *DatabaseAccountsClient) checkNameExistsCreateRequest(ctx context.C
 // updates on an account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - createUpdateParameters - The parameters to provide for the current database account.
@@ -110,9 +99,9 @@ func (client *DatabaseAccountsClient) BeginCreateOrUpdate(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -120,13 +109,13 @@ func (client *DatabaseAccountsClient) BeginCreateOrUpdate(ctx context.Context, r
 // updates on an account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 func (client *DatabaseAccountsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, options *DatabaseAccountsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, createUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -151,12 +140,12 @@ func (client *DatabaseAccountsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, createUpdateParameters)
@@ -165,7 +154,7 @@ func (client *DatabaseAccountsClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Deletes an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - DatabaseAccountsClientBeginDeleteOptions contains the optional parameters for the DatabaseAccountsClient.BeginDelete
@@ -176,22 +165,22 @@ func (client *DatabaseAccountsClient) BeginDelete(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 func (client *DatabaseAccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -216,12 +205,12 @@ func (client *DatabaseAccountsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -231,7 +220,7 @@ func (client *DatabaseAccountsClient) deleteCreateRequest(ctx context.Context, r
 // Failover priority values must be unique for each of the regions in which the database account exists.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - failoverParameters - The new failover policies for the database account.
@@ -243,9 +232,9 @@ func (client *DatabaseAccountsClient) BeginFailoverPriorityChange(ctx context.Co
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientFailoverPriorityChangeResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientFailoverPriorityChangeResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientFailoverPriorityChangeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientFailoverPriorityChangeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -254,13 +243,13 @@ func (client *DatabaseAccountsClient) BeginFailoverPriorityChange(ctx context.Co
 // Failover priority values must be unique for each of the regions in which the database account exists.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 func (client *DatabaseAccountsClient) failoverPriorityChange(ctx context.Context, resourceGroupName string, accountName string, failoverParameters FailoverPolicies, options *DatabaseAccountsClientBeginFailoverPriorityChangeOptions) (*http.Response, error) {
 	req, err := client.failoverPriorityChangeCreateRequest(ctx, resourceGroupName, accountName, failoverParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -285,12 +274,12 @@ func (client *DatabaseAccountsClient) failoverPriorityChangeCreateRequest(ctx co
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, failoverParameters)
 }
@@ -298,7 +287,7 @@ func (client *DatabaseAccountsClient) failoverPriorityChangeCreateRequest(ctx co
 // Get - Retrieves the properties of an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - DatabaseAccountsClientGetOptions contains the optional parameters for the DatabaseAccountsClient.Get method.
@@ -307,7 +296,7 @@ func (client *DatabaseAccountsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DatabaseAccountsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientGetResponse{}, err
 	}
@@ -332,12 +321,12 @@ func (client *DatabaseAccountsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -355,7 +344,7 @@ func (client *DatabaseAccountsClient) getHandleResponse(resp *http.Response) (Da
 // GetReadOnlyKeys - Lists the read-only access keys for the specified Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - DatabaseAccountsClientGetReadOnlyKeysOptions contains the optional parameters for the DatabaseAccountsClient.GetReadOnlyKeys
@@ -365,7 +354,7 @@ func (client *DatabaseAccountsClient) GetReadOnlyKeys(ctx context.Context, resou
 	if err != nil {
 		return DatabaseAccountsClientGetReadOnlyKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientGetReadOnlyKeysResponse{}, err
 	}
@@ -390,12 +379,12 @@ func (client *DatabaseAccountsClient) getReadOnlyKeysCreateRequest(ctx context.C
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -412,7 +401,7 @@ func (client *DatabaseAccountsClient) getReadOnlyKeysHandleResponse(resp *http.R
 
 // NewListPager - Lists all the Azure Cosmos DB database accounts available under the subscription.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - options - DatabaseAccountsClientListOptions contains the optional parameters for the DatabaseAccountsClient.NewListPager
 //     method.
 func (client *DatabaseAccountsClient) NewListPager(options *DatabaseAccountsClientListOptions) *runtime.Pager[DatabaseAccountsClientListResponse] {
@@ -425,7 +414,7 @@ func (client *DatabaseAccountsClient) NewListPager(options *DatabaseAccountsClie
 			if err != nil {
 				return DatabaseAccountsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabaseAccountsClientListResponse{}, err
 			}
@@ -444,12 +433,12 @@ func (client *DatabaseAccountsClient) listCreateRequest(ctx context.Context, opt
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -466,7 +455,7 @@ func (client *DatabaseAccountsClient) listHandleResponse(resp *http.Response) (D
 
 // NewListByResourceGroupPager - Lists all the Azure Cosmos DB database accounts available under the given resource group.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DatabaseAccountsClientListByResourceGroupOptions contains the optional parameters for the DatabaseAccountsClient.NewListByResourceGroupPager
 //     method.
@@ -480,7 +469,7 @@ func (client *DatabaseAccountsClient) NewListByResourceGroupPager(resourceGroupN
 			if err != nil {
 				return DatabaseAccountsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabaseAccountsClientListByResourceGroupResponse{}, err
 			}
@@ -503,12 +492,12 @@ func (client *DatabaseAccountsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -526,7 +515,7 @@ func (client *DatabaseAccountsClient) listByResourceGroupHandleResponse(resp *ht
 // ListConnectionStrings - Lists the connection strings for the specified Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - DatabaseAccountsClientListConnectionStringsOptions contains the optional parameters for the DatabaseAccountsClient.ListConnectionStrings
@@ -536,7 +525,7 @@ func (client *DatabaseAccountsClient) ListConnectionStrings(ctx context.Context,
 	if err != nil {
 		return DatabaseAccountsClientListConnectionStringsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientListConnectionStringsResponse{}, err
 	}
@@ -561,12 +550,12 @@ func (client *DatabaseAccountsClient) listConnectionStringsCreateRequest(ctx con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -584,7 +573,7 @@ func (client *DatabaseAccountsClient) listConnectionStringsHandleResponse(resp *
 // ListKeys - Lists the access keys for the specified Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - DatabaseAccountsClientListKeysOptions contains the optional parameters for the DatabaseAccountsClient.ListKeys
@@ -594,7 +583,7 @@ func (client *DatabaseAccountsClient) ListKeys(ctx context.Context, resourceGrou
 	if err != nil {
 		return DatabaseAccountsClientListKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientListKeysResponse{}, err
 	}
@@ -619,12 +608,12 @@ func (client *DatabaseAccountsClient) listKeysCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -641,7 +630,7 @@ func (client *DatabaseAccountsClient) listKeysHandleResponse(resp *http.Response
 
 // NewListMetricDefinitionsPager - Retrieves metric definitions for the given database account.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - DatabaseAccountsClientListMetricDefinitionsOptions contains the optional parameters for the DatabaseAccountsClient.NewListMetricDefinitionsPager
@@ -656,7 +645,7 @@ func (client *DatabaseAccountsClient) NewListMetricDefinitionsPager(resourceGrou
 			if err != nil {
 				return DatabaseAccountsClientListMetricDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabaseAccountsClientListMetricDefinitionsResponse{}, err
 			}
@@ -683,12 +672,12 @@ func (client *DatabaseAccountsClient) listMetricDefinitionsCreateRequest(ctx con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -705,7 +694,7 @@ func (client *DatabaseAccountsClient) listMetricDefinitionsHandleResponse(resp *
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
@@ -723,7 +712,7 @@ func (client *DatabaseAccountsClient) NewListMetricsPager(resourceGroupName stri
 			if err != nil {
 				return DatabaseAccountsClientListMetricsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabaseAccountsClientListMetricsResponse{}, err
 			}
@@ -750,12 +739,12 @@ func (client *DatabaseAccountsClient) listMetricsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -774,7 +763,7 @@ func (client *DatabaseAccountsClient) listMetricsHandleResponse(resp *http.Respo
 // ListReadOnlyKeys - Lists the read-only access keys for the specified Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - DatabaseAccountsClientListReadOnlyKeysOptions contains the optional parameters for the DatabaseAccountsClient.ListReadOnlyKeys
@@ -784,7 +773,7 @@ func (client *DatabaseAccountsClient) ListReadOnlyKeys(ctx context.Context, reso
 	if err != nil {
 		return DatabaseAccountsClientListReadOnlyKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabaseAccountsClientListReadOnlyKeysResponse{}, err
 	}
@@ -809,12 +798,12 @@ func (client *DatabaseAccountsClient) listReadOnlyKeysCreateRequest(ctx context.
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -831,7 +820,7 @@ func (client *DatabaseAccountsClient) listReadOnlyKeysHandleResponse(resp *http.
 
 // NewListUsagesPager - Retrieves the usages (most recent data) for the given database account.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - DatabaseAccountsClientListUsagesOptions contains the optional parameters for the DatabaseAccountsClient.NewListUsagesPager
@@ -846,7 +835,7 @@ func (client *DatabaseAccountsClient) NewListUsagesPager(resourceGroupName strin
 			if err != nil {
 				return DatabaseAccountsClientListUsagesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabaseAccountsClientListUsagesResponse{}, err
 			}
@@ -873,12 +862,12 @@ func (client *DatabaseAccountsClient) listUsagesCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -899,7 +888,7 @@ func (client *DatabaseAccountsClient) listUsagesHandleResponse(resp *http.Respon
 // BeginOfflineRegion - Offline the specified region for the specified Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - regionParameterForOffline - Cosmos DB region to offline for the database account.
@@ -911,22 +900,22 @@ func (client *DatabaseAccountsClient) BeginOfflineRegion(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientOfflineRegionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientOfflineRegionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientOfflineRegionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientOfflineRegionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // OfflineRegion - Offline the specified region for the specified Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 func (client *DatabaseAccountsClient) offlineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline, options *DatabaseAccountsClientBeginOfflineRegionOptions) (*http.Response, error) {
 	req, err := client.offlineRegionCreateRequest(ctx, resourceGroupName, accountName, regionParameterForOffline, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -951,12 +940,12 @@ func (client *DatabaseAccountsClient) offlineRegionCreateRequest(ctx context.Con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regionParameterForOffline)
@@ -965,7 +954,7 @@ func (client *DatabaseAccountsClient) offlineRegionCreateRequest(ctx context.Con
 // BeginOnlineRegion - Online the specified region for the specified Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - regionParameterForOnline - Cosmos DB region to online for the database account.
@@ -977,22 +966,22 @@ func (client *DatabaseAccountsClient) BeginOnlineRegion(ctx context.Context, res
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientOnlineRegionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientOnlineRegionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientOnlineRegionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientOnlineRegionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // OnlineRegion - Online the specified region for the specified Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 func (client *DatabaseAccountsClient) onlineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline, options *DatabaseAccountsClientBeginOnlineRegionOptions) (*http.Response, error) {
 	req, err := client.onlineRegionCreateRequest(ctx, resourceGroupName, accountName, regionParameterForOnline, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1017,12 +1006,12 @@ func (client *DatabaseAccountsClient) onlineRegionCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regionParameterForOnline)
@@ -1031,7 +1020,7 @@ func (client *DatabaseAccountsClient) onlineRegionCreateRequest(ctx context.Cont
 // BeginRegenerateKey - Regenerates an access key for the specified Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyToRegenerate - The name of the key to regenerate.
@@ -1043,22 +1032,22 @@ func (client *DatabaseAccountsClient) BeginRegenerateKey(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientRegenerateKeyResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientRegenerateKeyResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientRegenerateKeyResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientRegenerateKeyResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // RegenerateKey - Regenerates an access key for the specified Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 func (client *DatabaseAccountsClient) regenerateKey(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, options *DatabaseAccountsClientBeginRegenerateKeyOptions) (*http.Response, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, accountName, keyToRegenerate, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1083,12 +1072,12 @@ func (client *DatabaseAccountsClient) regenerateKeyCreateRequest(ctx context.Con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, keyToRegenerate)
 }
@@ -1096,7 +1085,7 @@ func (client *DatabaseAccountsClient) regenerateKeyCreateRequest(ctx context.Con
 // BeginUpdate - Updates the properties of an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - updateParameters - The parameters to provide for the current database account.
@@ -1108,22 +1097,22 @@ func (client *DatabaseAccountsClient) BeginUpdate(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabaseAccountsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabaseAccountsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabaseAccountsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Updates the properties of an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 func (client *DatabaseAccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, updateParameters DatabaseAccountUpdateParameters, options *DatabaseAccountsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, updateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1148,12 +1137,12 @@ func (client *DatabaseAccountsClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, updateParameters)

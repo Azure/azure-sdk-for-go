@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_ListByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_ListByFactory.json
 func ExampleDatasetsClient_NewListByFactoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDatasetsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
+	pager := clientFactory.NewDatasetsClient().NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -81,18 +81,18 @@ func ExampleDatasetsClient_NewListByFactoryPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Create.json
 func ExampleDatasetsClient_CreateOrUpdate_datasetsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDatasetsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleDataset", armdatafactory.DatasetResource{
+	res, err := clientFactory.NewDatasetsClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleDataset", armdatafactory.DatasetResource{
 		Properties: &armdatafactory.AzureBlobDataset{
 			Type: to.Ptr("AzureBlob"),
 			LinkedServiceName: &armdatafactory.LinkedServiceReference{
@@ -176,18 +176,18 @@ func ExampleDatasetsClient_CreateOrUpdate_datasetsCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Update.json
 func ExampleDatasetsClient_CreateOrUpdate_datasetsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDatasetsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleDataset", armdatafactory.DatasetResource{
+	res, err := clientFactory.NewDatasetsClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleDataset", armdatafactory.DatasetResource{
 		Properties: &armdatafactory.AzureBlobDataset{
 			Type:        to.Ptr("AzureBlob"),
 			Description: to.Ptr("Example description"),
@@ -261,18 +261,18 @@ func ExampleDatasetsClient_CreateOrUpdate_datasetsUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Get.json
 func ExampleDatasetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDatasetsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleDataset", &armdatafactory.DatasetsClientGetOptions{IfNoneMatch: nil})
+	res, err := clientFactory.NewDatasetsClient().Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleDataset", &armdatafactory.DatasetsClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -316,18 +316,18 @@ func ExampleDatasetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Delete.json
 func ExampleDatasetsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDatasetsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleDataset", nil)
+	_, err = clientFactory.NewDatasetsClient().Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleDataset", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

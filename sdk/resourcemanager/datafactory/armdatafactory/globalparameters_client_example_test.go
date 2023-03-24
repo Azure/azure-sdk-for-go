@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_ListByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_ListByFactory.json
 func ExampleGlobalParametersClient_NewListByFactoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewGlobalParametersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
+	pager := clientFactory.NewGlobalParametersClient().NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -81,18 +81,18 @@ func ExampleGlobalParametersClient_NewListByFactoryPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Get.json
 func ExampleGlobalParametersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewGlobalParametersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "default", nil)
+	res, err := clientFactory.NewGlobalParametersClient().Get(ctx, "exampleResourceGroup", "exampleFactoryName", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -113,18 +113,18 @@ func ExampleGlobalParametersClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Create.json
 func ExampleGlobalParametersClient_CreateOrUpdate_globalParametersCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewGlobalParametersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "default", armdatafactory.GlobalParameterResource{
+	res, err := clientFactory.NewGlobalParametersClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "default", armdatafactory.GlobalParameterResource{
 		Properties: map[string]*armdatafactory.GlobalParameterSpecification{
 			"waitTime": {
 				Type:  to.Ptr(armdatafactory.GlobalParameterTypeInt),
@@ -152,18 +152,18 @@ func ExampleGlobalParametersClient_CreateOrUpdate_globalParametersCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Update.json
 func ExampleGlobalParametersClient_CreateOrUpdate_globalParametersUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewGlobalParametersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "default", armdatafactory.GlobalParameterResource{
+	res, err := clientFactory.NewGlobalParametersClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "default", armdatafactory.GlobalParameterResource{
 		Properties: map[string]*armdatafactory.GlobalParameterSpecification{
 			"waitTime": {
 				Type:  to.Ptr(armdatafactory.GlobalParameterTypeInt),
@@ -191,18 +191,18 @@ func ExampleGlobalParametersClient_CreateOrUpdate_globalParametersUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Delete.json
 func ExampleGlobalParametersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewGlobalParametersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "default", nil)
+	_, err = clientFactory.NewGlobalParametersClient().Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

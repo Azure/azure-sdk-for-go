@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_ListByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_ListByFactory.json
 func ExampleCredentialOperationsClient_NewListByFactoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewCredentialOperationsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
+	pager := clientFactory.NewCredentialOperationsClient().NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -59,18 +59,18 @@ func ExampleCredentialOperationsClient_NewListByFactoryPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.json
 func ExampleCredentialOperationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewCredentialOperationsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", armdatafactory.ManagedIdentityCredentialResource{
+	res, err := clientFactory.NewCredentialOperationsClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", armdatafactory.ManagedIdentityCredentialResource{
 		Properties: &armdatafactory.ManagedIdentityCredential{
 			Type: to.Ptr("ManagedIdentity"),
 			TypeProperties: &armdatafactory.ManagedIdentityTypeProperties{
@@ -98,18 +98,18 @@ func ExampleCredentialOperationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Get.json
 func ExampleCredentialOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewCredentialOperationsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", &armdatafactory.CredentialOperationsClientGetOptions{IfNoneMatch: nil})
+	res, err := clientFactory.NewCredentialOperationsClient().Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", &armdatafactory.CredentialOperationsClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -131,18 +131,18 @@ func ExampleCredentialOperationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Delete.json
 func ExampleCredentialOperationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewCredentialOperationsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", nil)
+	_, err = clientFactory.NewCredentialOperationsClient().Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

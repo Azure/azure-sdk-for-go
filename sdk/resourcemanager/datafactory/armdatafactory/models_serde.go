@@ -3325,6 +3325,8 @@ func (a AzureBlobFSLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "azureCloudType", &a.AzureCloudType)
 	populate(objectMap, "credential", a.Credential)
 	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populate(objectMap, "sasToken", a.SasToken)
+	populate(objectMap, "sasUri", &a.SasURI)
 	populate(objectMap, "servicePrincipalCredential", a.ServicePrincipalCredential)
 	populate(objectMap, "servicePrincipalCredentialType", &a.ServicePrincipalCredentialType)
 	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
@@ -3354,6 +3356,12 @@ func (a *AzureBlobFSLinkedServiceTypeProperties) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &a.EncryptedCredential)
+			delete(rawMsg, key)
+		case "sasToken":
+			a.SasToken, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "sasUri":
+			err = unpopulate(val, "SasURI", &a.SasURI)
 			delete(rawMsg, key)
 		case "servicePrincipalCredential":
 			a.ServicePrincipalCredential, err = unmarshalSecretBaseClassification(val)
@@ -3790,8 +3798,10 @@ func (a AzureBlobStorageLinkedServiceTypeProperties) MarshalJSON() ([]byte, erro
 	objectMap := make(map[string]any)
 	populate(objectMap, "accountKey", a.AccountKey)
 	populate(objectMap, "accountKind", a.AccountKind)
+	populate(objectMap, "authenticationType", a.AuthenticationType)
 	populate(objectMap, "azureCloudType", &a.AzureCloudType)
 	populate(objectMap, "connectionString", &a.ConnectionString)
+	populate(objectMap, "containerUri", &a.ContainerURI)
 	populate(objectMap, "credential", a.Credential)
 	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "sasToken", a.SasToken)
@@ -3818,11 +3828,17 @@ func (a *AzureBlobStorageLinkedServiceTypeProperties) UnmarshalJSON(data []byte)
 		case "accountKind":
 			err = unpopulate(val, "AccountKind", &a.AccountKind)
 			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &a.AuthenticationType)
+			delete(rawMsg, key)
 		case "azureCloudType":
 			err = unpopulate(val, "AzureCloudType", &a.AzureCloudType)
 			delete(rawMsg, key)
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &a.ConnectionString)
+			delete(rawMsg, key)
+		case "containerUri":
+			err = unpopulate(val, "ContainerURI", &a.ContainerURI)
 			delete(rawMsg, key)
 		case "credential":
 			err = unpopulate(val, "Credential", &a.Credential)
@@ -11894,6 +11910,52 @@ func (c *CopyActivityTypeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "validateDataConsistency":
 			err = unpopulate(val, "ValidateDataConsistency", &c.ValidateDataConsistency)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CopyComputeScaleProperties.
+func (c CopyComputeScaleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "dataIntegrationUnit", c.DataIntegrationUnit)
+	populate(objectMap, "timeToLive", c.TimeToLive)
+	if c.AdditionalProperties != nil {
+		for key, val := range c.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CopyComputeScaleProperties.
+func (c *CopyComputeScaleProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dataIntegrationUnit":
+			err = unpopulate(val, "DataIntegrationUnit", &c.DataIntegrationUnit)
+			delete(rawMsg, key)
+		case "timeToLive":
+			err = unpopulate(val, "TimeToLive", &c.TimeToLive)
+			delete(rawMsg, key)
+		default:
+			if c.AdditionalProperties == nil {
+				c.AdditionalProperties = map[string]any{}
+			}
+			if val != nil {
+				var aux any
+				err = json.Unmarshal(val, &aux)
+				c.AdditionalProperties[key] = aux
+			}
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -25953,11 +26015,13 @@ func (i *IntegrationRuntimeAuthKeys) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type IntegrationRuntimeComputeProperties.
 func (i IntegrationRuntimeComputeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "copyComputeScaleProperties", i.CopyComputeScaleProperties)
 	populate(objectMap, "dataFlowProperties", i.DataFlowProperties)
 	populate(objectMap, "location", i.Location)
 	populate(objectMap, "maxParallelExecutionsPerNode", i.MaxParallelExecutionsPerNode)
 	populate(objectMap, "nodeSize", i.NodeSize)
 	populate(objectMap, "numberOfNodes", i.NumberOfNodes)
+	populate(objectMap, "pipelineExternalComputeScaleProperties", i.PipelineExternalComputeScaleProperties)
 	populate(objectMap, "vNetProperties", i.VNetProperties)
 	if i.AdditionalProperties != nil {
 		for key, val := range i.AdditionalProperties {
@@ -25976,6 +26040,9 @@ func (i *IntegrationRuntimeComputeProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "copyComputeScaleProperties":
+			err = unpopulate(val, "CopyComputeScaleProperties", &i.CopyComputeScaleProperties)
+			delete(rawMsg, key)
 		case "dataFlowProperties":
 			err = unpopulate(val, "DataFlowProperties", &i.DataFlowProperties)
 			delete(rawMsg, key)
@@ -25990,6 +26057,9 @@ func (i *IntegrationRuntimeComputeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "numberOfNodes":
 			err = unpopulate(val, "NumberOfNodes", &i.NumberOfNodes)
+			delete(rawMsg, key)
+		case "pipelineExternalComputeScaleProperties":
+			err = unpopulate(val, "PipelineExternalComputeScaleProperties", &i.PipelineExternalComputeScaleProperties)
 			delete(rawMsg, key)
 		case "vNetProperties":
 			err = unpopulate(val, "VNetProperties", &i.VNetProperties)
@@ -35453,6 +35523,48 @@ func (p *PipelineElapsedTimeMetricPolicy) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "duration":
 			err = unpopulate(val, "Duration", &p.Duration)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PipelineExternalComputeScaleProperties.
+func (p PipelineExternalComputeScaleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "timeToLive", p.TimeToLive)
+	if p.AdditionalProperties != nil {
+		for key, val := range p.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PipelineExternalComputeScaleProperties.
+func (p *PipelineExternalComputeScaleProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "timeToLive":
+			err = unpopulate(val, "TimeToLive", &p.TimeToLive)
+			delete(rawMsg, key)
+		default:
+			if p.AdditionalProperties == nil {
+				p.AdditionalProperties = map[string]any{}
+			}
+			if val != nil {
+				var aux any
+				err = json.Unmarshal(val, &aux)
+				p.AdditionalProperties[key] = aux
+			}
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // DatasetsClient contains the methods for the Datasets group.
 // Don't use this type directly, use NewDatasetsClient() instead.
 type DatasetsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDatasetsClient creates a new instance of DatasetsClient with the specified values.
@@ -36,21 +33,13 @@ type DatasetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatasetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatasetsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DatasetsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DatasetsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *DatasetsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DatasetsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatasetsClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +87,7 @@ func (client *DatasetsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter datasetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{datasetName}", url.PathEscape(datasetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +123,7 @@ func (client *DatasetsClient) Delete(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return DatasetsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatasetsClientDeleteResponse{}, err
 	}
@@ -163,7 +152,7 @@ func (client *DatasetsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter datasetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{datasetName}", url.PathEscape(datasetName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,7 +176,7 @@ func (client *DatasetsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return DatasetsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatasetsClientGetResponse{}, err
 	}
@@ -216,7 +205,7 @@ func (client *DatasetsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter datasetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{datasetName}", url.PathEscape(datasetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,7 +251,7 @@ func (client *DatasetsClient) NewListByFactoryPager(resourceGroupName string, fa
 			if err != nil {
 				return DatasetsClientListByFactoryResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatasetsClientListByFactoryResponse{}, err
 			}
@@ -289,7 +278,7 @@ func (client *DatasetsClient) listByFactoryCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

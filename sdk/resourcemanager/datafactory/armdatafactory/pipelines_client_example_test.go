@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_ListByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_ListByFactory.json
 func ExamplePipelinesClient_NewListByFactoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
+	pager := clientFactory.NewPipelinesClient().NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -107,18 +107,18 @@ func ExamplePipelinesClient_NewListByFactoryPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Create.json
 func ExamplePipelinesClient_CreateOrUpdate_pipelinesCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", armdatafactory.PipelineResource{
+	res, err := clientFactory.NewPipelinesClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", armdatafactory.PipelineResource{
 		Properties: &armdatafactory.Pipeline{
 			Activities: []armdatafactory.ActivityClassification{
 				&armdatafactory.ForEachActivity{
@@ -275,18 +275,18 @@ func ExamplePipelinesClient_CreateOrUpdate_pipelinesCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Update.json
 func ExamplePipelinesClient_CreateOrUpdate_pipelinesUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", armdatafactory.PipelineResource{
+	res, err := clientFactory.NewPipelinesClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", armdatafactory.PipelineResource{
 		Properties: &armdatafactory.Pipeline{
 			Description: to.Ptr("Example description"),
 			Activities: []armdatafactory.ActivityClassification{
@@ -417,18 +417,18 @@ func ExamplePipelinesClient_CreateOrUpdate_pipelinesUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Get.json
 func ExamplePipelinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", &armdatafactory.PipelinesClientGetOptions{IfNoneMatch: nil})
+	res, err := clientFactory.NewPipelinesClient().Get(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", &armdatafactory.PipelinesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -508,35 +508,35 @@ func ExamplePipelinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Delete.json
 func ExamplePipelinesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", nil)
+	_, err = clientFactory.NewPipelinesClient().Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_CreateRun.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_CreateRun.json
 func ExamplePipelinesClient_CreateRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPipelinesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateRun(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", &armdatafactory.PipelinesClientCreateRunOptions{ReferencePipelineRunID: nil,
+	res, err := clientFactory.NewPipelinesClient().CreateRun(ctx, "exampleResourceGroup", "exampleFactoryName", "examplePipeline", &armdatafactory.PipelinesClientCreateRunOptions{ReferencePipelineRunID: nil,
 		IsRecovery:        nil,
 		StartActivityName: nil,
 		StartFromFailure:  nil,

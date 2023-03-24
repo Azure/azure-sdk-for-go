@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // CredentialOperationsClient contains the methods for the CredentialOperations group.
 // Don't use this type directly, use NewCredentialOperationsClient() instead.
 type CredentialOperationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCredentialOperationsClient creates a new instance of CredentialOperationsClient with the specified values.
@@ -36,21 +33,13 @@ type CredentialOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCredentialOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CredentialOperationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CredentialOperationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CredentialOperationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *CredentialOperationsClient) CreateOrUpdate(ctx context.Context, re
 	if err != nil {
 		return CredentialOperationsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CredentialOperationsClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +88,7 @@ func (client *CredentialOperationsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter credentialName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{credentialName}", url.PathEscape(credentialName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +125,7 @@ func (client *CredentialOperationsClient) Delete(ctx context.Context, resourceGr
 	if err != nil {
 		return CredentialOperationsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CredentialOperationsClientDeleteResponse{}, err
 	}
@@ -165,7 +154,7 @@ func (client *CredentialOperationsClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter credentialName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{credentialName}", url.PathEscape(credentialName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -190,7 +179,7 @@ func (client *CredentialOperationsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return CredentialOperationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CredentialOperationsClientGetResponse{}, err
 	}
@@ -219,7 +208,7 @@ func (client *CredentialOperationsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter credentialName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{credentialName}", url.PathEscape(credentialName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -265,7 +254,7 @@ func (client *CredentialOperationsClient) NewListByFactoryPager(resourceGroupNam
 			if err != nil {
 				return CredentialOperationsClientListByFactoryResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CredentialOperationsClientListByFactoryResponse{}, err
 			}
@@ -292,7 +281,7 @@ func (client *CredentialOperationsClient) listByFactoryCreateRequest(ctx context
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -102,6 +102,7 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	defer func() {
 		// reset logging
 		log.SetEvents()
+		log.SetListener(nil)
 	}()
 	logEntries := 0
 	log.SetListener(func(cls log.Event, msg string) {
@@ -131,6 +132,7 @@ func TestRPRegistrationPolicyNA(t *testing.T) {
 	defer func() {
 		// reset logging
 		log.SetEvents()
+		log.SetListener(nil)
 	}()
 	log.SetListener(func(cls log.Event, msg string) {
 		t.Fatalf("unexpected log entry %s: %s", cls, msg)
@@ -164,6 +166,7 @@ func TestRPRegistrationPolicy409Other(t *testing.T) {
 	defer func() {
 		// reset logging
 		log.SetEvents()
+		log.SetListener(nil)
 	}()
 	log.SetListener(func(cls log.Event, msg string) {
 		t.Fatalf("unexpected log entry %s: %s", cls, msg)
@@ -190,6 +193,7 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 	defer func() {
 		// reset logging
 		log.SetEvents()
+		log.SetListener(nil)
 	}()
 	logEntries := 0
 	log.SetListener(func(cls log.Event, msg string) {
@@ -224,6 +228,7 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 	defer func() {
 		// reset logging
 		log.SetEvents()
+		log.SetListener(nil)
 	}()
 	logEntries := 0
 	log.SetListener(func(cls log.Event, msg string) {
@@ -254,6 +259,7 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	defer func() {
 		// reset logging
 		log.SetEvents()
+		log.SetListener(nil)
 	}()
 	logEntries := 0
 	log.SetListener(func(cls log.Event, msg string) {
@@ -296,6 +302,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	defer func() {
 		// reset logging
 		log.SetEvents()
+		log.SetListener(nil)
 	}()
 	logEntries := 0
 	log.SetListener(func(cls log.Event, msg string) {
@@ -388,6 +395,7 @@ func TestRPRegistrationPolicyEnvironmentsInSubExceeded(t *testing.T) {
 	defer func() {
 		// reset logging
 		log.SetEvents()
+		log.SetListener(nil)
 	}()
 	resp, err := client.FakeAPI(context.Background())
 	require.Error(t, err)

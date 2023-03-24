@@ -16,8 +16,8 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
@@ -28,6 +28,11 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	log.SetListener(func(cls log.Event, s string) {
 		rawlog[cls] = s
 	})
+	defer func() {
+		// reset logging
+		log.SetEvents()
+		log.SetListener(nil)
+	}()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
@@ -84,6 +89,11 @@ func TestPolicyLoggingError(t *testing.T) {
 	log.SetListener(func(cls log.Event, s string) {
 		rawlog[cls] = s
 	})
+	defer func() {
+		// reset logging
+		log.SetEvents()
+		log.SetListener(nil)
+	}()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetError(errors.New("bogus error"))
@@ -162,6 +172,11 @@ func TestWithAllowedHeadersQueryParams(t *testing.T) {
 	log.SetListener(func(cls log.Event, s string) {
 		rawlog[cls] = s
 	})
+	defer func() {
+		// reset logging
+		log.SetEvents()
+		log.SetListener(nil)
+	}()
 
 	const (
 		plAllowedHeader = "pipeline-allowed"

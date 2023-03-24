@@ -115,6 +115,7 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	defer func() {
 		// reset logging
 		log.SetEvents()
+		log.SetListener(nil)
 	}()
 	logEntries := 0
 	log.SetListener(func(cls log.Event, msg string) {

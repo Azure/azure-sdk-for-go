@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/BackupFeature_Validate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/AzureIaasVm/BackupFeature_Validate.json
 func ExampleFeatureSupportClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewFeatureSupportClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Validate(ctx, "southeastasia", &armrecoveryservicesbackup.AzureVMResourceFeatureSupportRequest{
+	res, err := clientFactory.NewFeatureSupportClient().Validate(ctx, "southeastasia", &armrecoveryservicesbackup.AzureVMResourceFeatureSupportRequest{
 		FeatureType: to.Ptr("AzureVMResourceBackup"),
 		VMSize:      to.Ptr("Basic_A0"),
 		VMSKU:       to.Ptr("Premium"),

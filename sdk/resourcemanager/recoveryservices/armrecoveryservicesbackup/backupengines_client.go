@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // BackupEnginesClient contains the methods for the BackupEngines group.
 // Don't use this type directly, use NewBackupEnginesClient() instead.
 type BackupEnginesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewBackupEnginesClient creates a new instance of BackupEnginesClient with the specified values.
@@ -36,21 +33,13 @@ type BackupEnginesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupEnginesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".BackupEnginesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &BackupEnginesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,7 +47,7 @@ func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Returns backup management server registered to Recovery Services Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - backupEngineName - Name of the backup management server.
@@ -68,7 +57,7 @@ func (client *BackupEnginesClient) Get(ctx context.Context, vaultName string, re
 	if err != nil {
 		return BackupEnginesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BackupEnginesClientGetResponse{}, err
 	}
@@ -97,12 +86,12 @@ func (client *BackupEnginesClient) getCreateRequest(ctx context.Context, vaultNa
 		return nil, errors.New("parameter backupEngineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupEngineName}", url.PathEscape(backupEngineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -125,7 +114,7 @@ func (client *BackupEnginesClient) getHandleResponse(resp *http.Response) (Backu
 
 // NewListPager - Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupEnginesClientListOptions contains the optional parameters for the BackupEnginesClient.NewListPager method.
@@ -145,7 +134,7 @@ func (client *BackupEnginesClient) NewListPager(vaultName string, resourceGroupN
 			if err != nil {
 				return BackupEnginesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return BackupEnginesClientListResponse{}, err
 			}
@@ -172,12 +161,12 @@ func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // RestoresClient contains the methods for the Restores group.
 // Don't use this type directly, use NewRestoresClient() instead.
 type RestoresClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRestoresClient creates a new instance of RestoresClient with the specified values.
@@ -36,21 +33,13 @@ type RestoresClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestoresClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RestoresClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RestoresClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -59,7 +48,7 @@ func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential,
 // call, use GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the backed up items.
@@ -74,9 +63,9 @@ func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[RestoresClientTriggerResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RestoresClientTriggerResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[RestoresClientTriggerResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RestoresClientTriggerResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -84,13 +73,13 @@ func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string
 // use GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 func (client *RestoresClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*http.Response, error) {
 	req, err := client.triggerCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -131,12 +120,12 @@ func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultNam
 		return nil, errors.New("parameter recoveryPointID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recoveryPointId}", url.PathEscape(recoveryPointID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

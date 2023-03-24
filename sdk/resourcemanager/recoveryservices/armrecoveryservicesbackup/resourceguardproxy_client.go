@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ResourceGuardProxyClient contains the methods for the ResourceGuardProxy group.
 // Don't use this type directly, use NewResourceGuardProxyClient() instead.
 type ResourceGuardProxyClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewResourceGuardProxyClient creates a new instance of ResourceGuardProxyClient with the specified values.
@@ -36,21 +33,13 @@ type ResourceGuardProxyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceGuardProxyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceGuardProxyClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ResourceGuardProxyClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ResourceGuardProxyClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,7 +47,7 @@ func NewResourceGuardProxyClient(subscriptionID string, credential azcore.TokenC
 // Delete - Delete ResourceGuardProxy under vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - ResourceGuardProxyClientDeleteOptions contains the optional parameters for the ResourceGuardProxyClient.Delete
@@ -68,7 +57,7 @@ func (client *ResourceGuardProxyClient) Delete(ctx context.Context, vaultName st
 	if err != nil {
 		return ResourceGuardProxyClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceGuardProxyClientDeleteResponse{}, err
 	}
@@ -97,12 +86,12 @@ func (client *ResourceGuardProxyClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter resourceGuardProxyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardProxyName}", url.PathEscape(resourceGuardProxyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +100,7 @@ func (client *ResourceGuardProxyClient) deleteCreateRequest(ctx context.Context,
 // Get - Returns ResourceGuardProxy under vault and with the name referenced in request
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - ResourceGuardProxyClientGetOptions contains the optional parameters for the ResourceGuardProxyClient.Get method.
@@ -120,7 +109,7 @@ func (client *ResourceGuardProxyClient) Get(ctx context.Context, vaultName strin
 	if err != nil {
 		return ResourceGuardProxyClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceGuardProxyClientGetResponse{}, err
 	}
@@ -149,12 +138,12 @@ func (client *ResourceGuardProxyClient) getCreateRequest(ctx context.Context, va
 		return nil, errors.New("parameter resourceGuardProxyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardProxyName}", url.PathEscape(resourceGuardProxyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,7 +161,7 @@ func (client *ResourceGuardProxyClient) getHandleResponse(resp *http.Response) (
 // Put - Add or Update ResourceGuardProxy under vault Secures vault critical operations
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - parameters - Request body for operation
@@ -182,7 +171,7 @@ func (client *ResourceGuardProxyClient) Put(ctx context.Context, vaultName strin
 	if err != nil {
 		return ResourceGuardProxyClientPutResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceGuardProxyClientPutResponse{}, err
 	}
@@ -211,12 +200,12 @@ func (client *ResourceGuardProxyClient) putCreateRequest(ctx context.Context, va
 		return nil, errors.New("parameter resourceGuardProxyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardProxyName}", url.PathEscape(resourceGuardProxyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -234,7 +223,7 @@ func (client *ResourceGuardProxyClient) putHandleResponse(resp *http.Response) (
 // UnlockDelete - Secures delete ResourceGuardProxy operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - parameters - Request body for operation
@@ -245,7 +234,7 @@ func (client *ResourceGuardProxyClient) UnlockDelete(ctx context.Context, vaultN
 	if err != nil {
 		return ResourceGuardProxyClientUnlockDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceGuardProxyClientUnlockDeleteResponse{}, err
 	}
@@ -274,12 +263,12 @@ func (client *ResourceGuardProxyClient) unlockDeleteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceGuardProxyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardProxyName}", url.PathEscape(resourceGuardProxyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

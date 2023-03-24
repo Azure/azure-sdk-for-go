@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewResourceGuardProxyClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", nil)
+	res, err := clientFactory.NewResourceGuardProxyClient().Get(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -57,18 +57,18 @@ func ExampleResourceGuardProxyClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewResourceGuardProxyClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Put(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", armrecoveryservicesbackup.ResourceGuardProxyBaseResource{
+	res, err := clientFactory.NewResourceGuardProxyClient().Put(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", armrecoveryservicesbackup.ResourceGuardProxyBaseResource{
 		Properties: &armrecoveryservicesbackup.ResourceGuardProxyBase{
 			ResourceGuardResourceID: to.Ptr("/subscriptions/c999d45b-944f-418c-a0d8-c3fcfd1802c8/resourceGroups/vaultguardRGNew/providers/Microsoft.DataProtection/resourceGuards/VaultGuardTestNew"),
 		},
@@ -100,35 +100,35 @@ func ExampleResourceGuardProxyClient_Put() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewResourceGuardProxyClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", nil)
+	_, err = clientFactory.NewResourceGuardProxyClient().Delete(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_UnlockDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewResourceGuardProxyClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UnlockDelete(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", armrecoveryservicesbackup.UnlockDeleteRequest{
+	res, err := clientFactory.NewResourceGuardProxyClient().UnlockDelete(ctx, "sampleVault", "SampleResourceGroup", "swaggerExample", armrecoveryservicesbackup.UnlockDeleteRequest{
 		ResourceGuardOperationRequests: []*string{
 			to.Ptr("/subscriptions/c999d45b-944f-418c-a0d8-c3fcfd1802c8/resourceGroups/vaultguardRGNew/providers/Microsoft.DataProtection/resourceGuards/VaultGuardTestNew/deleteProtectedItemRequests/default")},
 		ResourceToBeDeleted: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/gaallarg/providers/Microsoft.RecoveryServices/vaults/MercuryCrrVault/backupFabrics/Azure/protectionContainers/VMAppContainer;compute;crrtestrg;crrtestvm/protectedItems/SQLDataBase;mssqlserver;testdb"),

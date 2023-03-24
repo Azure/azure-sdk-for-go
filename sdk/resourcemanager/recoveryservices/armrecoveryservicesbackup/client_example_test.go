@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
 func ExampleClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetOperationStatus(ctx, "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", nil)
+	res, err := clientFactory.NewClient().GetOperationStatus(ctx, "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -45,18 +45,18 @@ func ExampleClient_GetOperationStatus() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupDataMove/PrepareDataMove_Post.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/BackupDataMove/PrepareDataMove_Post.json
 func ExampleClient_BeginBMSPrepareDataMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginBMSPrepareDataMove(ctx, "source-rsv", "sourceRG", armrecoveryservicesbackup.PrepareDataMoveRequest{
+	poller, err := clientFactory.NewClient().BeginBMSPrepareDataMove(ctx, "source-rsv", "sourceRG", armrecoveryservicesbackup.PrepareDataMoveRequest{
 		DataMoveLevel:    to.Ptr(armrecoveryservicesbackup.DataMoveLevelVault),
 		TargetRegion:     to.Ptr("USGov Virginia"),
 		TargetResourceID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/targetRG/providers/Microsoft.RecoveryServices/vaults/target-rsv"),
@@ -70,18 +70,18 @@ func ExampleClient_BeginBMSPrepareDataMove() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupDataMove/TriggerDataMove_Post.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/BackupDataMove/TriggerDataMove_Post.json
 func ExampleClient_BeginBMSTriggerDataMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginBMSTriggerDataMove(ctx, "target-rsv", "targetRG", armrecoveryservicesbackup.TriggerDataMoveRequest{
+	poller, err := clientFactory.NewClient().BeginBMSTriggerDataMove(ctx, "target-rsv", "targetRG", armrecoveryservicesbackup.TriggerDataMoveRequest{
 		CorrelationID:    to.Ptr("MTg2OTcyMzM4NzYyMjc1NDY3Nzs1YmUzYmVmNi04YjJiLTRhOTItOTllYi01NTM0MDllYjk2NjE="),
 		DataMoveLevel:    to.Ptr(armrecoveryservicesbackup.DataMoveLevelVault),
 		SourceRegion:     to.Ptr("USGov Iowa"),
@@ -96,18 +96,18 @@ func ExampleClient_BeginBMSTriggerDataMove() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/TriggerRecoveryPointMove_Post.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/TriggerRecoveryPointMove_Post.json
 func ExampleClient_BeginMoveRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMoveRecoveryPoint(ctx, "testVault", "netsdktestrg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334", armrecoveryservicesbackup.MoveRPAcrossTiersRequest{
+	poller, err := clientFactory.NewClient().BeginMoveRecoveryPoint(ctx, "testVault", "netsdktestrg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334", armrecoveryservicesbackup.MoveRPAcrossTiersRequest{
 		ObjectType:     to.Ptr("MoveRPAcrossTiersRequest"),
 		SourceTierType: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierTypeHardenedRP),
 		TargetTierType: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierTypeArchivedRP),

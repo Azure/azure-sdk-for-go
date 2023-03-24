@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ProtectionPoliciesClient contains the methods for the ProtectionPolicies group.
 // Don't use this type directly, use NewProtectionPoliciesClient() instead.
 type ProtectionPoliciesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewProtectionPoliciesClient creates a new instance of ProtectionPoliciesClient with the specified values.
@@ -36,21 +33,13 @@ type ProtectionPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionPoliciesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ProtectionPoliciesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProtectionPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -59,7 +48,7 @@ func NewProtectionPoliciesClient(subscriptionID string, credential azcore.TokenC
 // fetched using GetPolicyOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - policyName - Backup policy to be created.
@@ -71,7 +60,7 @@ func (client *ProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, vaul
 	if err != nil {
 		return ProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -100,12 +89,12 @@ func (client *ProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter policyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -124,7 +113,7 @@ func (client *ProtectionPoliciesClient) createOrUpdateHandleResponse(resp *http.
 // of the operation can be fetched using GetProtectionPolicyOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - policyName - Backup policy to be deleted.
@@ -136,9 +125,9 @@ func (client *ProtectionPoliciesClient) BeginDelete(ctx context.Context, vaultNa
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ProtectionPoliciesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ProtectionPoliciesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ProtectionPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ProtectionPoliciesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -146,13 +135,13 @@ func (client *ProtectionPoliciesClient) BeginDelete(ctx context.Context, vaultNa
 // the operation can be fetched using GetProtectionPolicyOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 func (client *ProtectionPoliciesClient) deleteOperation(ctx context.Context, vaultName string, resourceGroupName string, policyName string, options *ProtectionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, vaultName, resourceGroupName, policyName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -181,12 +170,12 @@ func (client *ProtectionPoliciesClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter policyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -196,7 +185,7 @@ func (client *ProtectionPoliciesClient) deleteCreateRequest(ctx context.Context,
 // Status of the operation can be fetched using GetPolicyOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - policyName - Backup policy information to be fetched.
@@ -206,7 +195,7 @@ func (client *ProtectionPoliciesClient) Get(ctx context.Context, vaultName strin
 	if err != nil {
 		return ProtectionPoliciesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProtectionPoliciesClientGetResponse{}, err
 	}
@@ -235,12 +224,12 @@ func (client *ProtectionPoliciesClient) getCreateRequest(ctx context.Context, va
 		return nil, errors.New("parameter policyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

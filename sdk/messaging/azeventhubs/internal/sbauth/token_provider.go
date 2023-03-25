@@ -122,8 +122,9 @@ func (tpa *TokenProvider) getSASToken(uri string) (*auth.Token, time.Time, error
 	var expiryTime time.Time
 
 	if authToken.Expiry != "0" {
-		unixSeconds, _ := strconv.ParseInt(authToken.Expiry, 10, 64)
-		expiryTime = time.Unix(unixSeconds, 0)
+		// TODO: I'd like to just use the actual Expiry time we generated
+		// Filed here https://github.com/Azure/azure-sdk-for-go/issues/20468
+		expiryTime = time.Now().Add(time.Minute * 15)
 	}
 
 	return authToken,

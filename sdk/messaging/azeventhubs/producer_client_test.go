@@ -69,8 +69,10 @@ func TestProducerClient_SAS(t *testing.T) {
 	require.NotEmpty(t, events)
 
 	logs := getLogsFn()
-	require.Contains(t, logs, "[azeh.Auth] Token does not have an expiration date, no background renewal needed.")
+	require.Contains(t, logs, backgroundRenewalDisabledMsg)
 }
+
+const backgroundRenewalDisabledMsg = "[azeh.Auth] Token does not have an expiration date, no background renewal needed."
 
 func TestClientsUnauthorizedCreds(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
@@ -166,10 +168,7 @@ func TestClientsUnauthorizedCreds(t *testing.T) {
 		require.Nil(t, batch)
 		require.Empty(t, events)
 	})
-	require.Contains(t, logs, backgroundRenewalDisabledMsg)
 }
-
-const backgroundRenewalDisabledMsg = "[azeh.Auth] Token does not have an expiration date, no background renewal needed."
 
 func TestProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 	getLogsFn := test.CaptureLogsForTest()
@@ -209,7 +208,7 @@ func TestProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 // checkForTokenRefresh just makes sure that background token refresh has been started
 // and that we haven't somehow fallen into the trap of marking all tokens are expired.
 func checkForTokenRefresh(t *testing.T, logs []string, eventHubName string) {
-	require.NotContains(t, logs, "[azsb.Auth] Token does not have an expiration date, no background renewal needed.")
+	require.NotContains(t, logs, backgroundRenewalDisabledMsg)
 
 	for _, log := range logs {
 		if strings.HasPrefix(log, fmt.Sprintf("[azeh.Auth] (%s/$management) next refresh in ", eventHubName)) {

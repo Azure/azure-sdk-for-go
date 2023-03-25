@@ -172,8 +172,10 @@ func TestNewClientUsingSharedAccessSignature(t *testing.T) {
 	require.EqualValues(t, "hello world", string(messages[0].Body))
 
 	logs := getLogsFn()
-	require.Contains(t, logs, "[azsb.Auth] Token does not have an expiration date, no background renewal needed.")
+	require.Contains(t, logs, backgroundRenewalDisabledMsg)
 }
+
+const backgroundRenewalDisabledMsg = "[azsb.Auth] Token does not have an expiration date, no background renewal needed."
 
 const fastNotFoundDuration = 10 * time.Second
 

@@ -37,6 +37,8 @@ func TestReceiverCancel(t *testing.T) {
 }
 
 func TestReceiverSendFiveReceiveFive(t *testing.T) {
+	getLogsFn := test.CaptureLogsForTest()
+
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
@@ -63,6 +65,21 @@ func TestReceiverSendFiveReceiveFive(t *testing.T) {
 
 		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
 	}
+
+	logs := getLogsFn()
+	checkForTokenRefresh(t, logs, queueName)
+}
+
+// checkForTokenRefresh just makes sure that background token refresh has been started
+// and that we haven't somehow fallen into the trap of marking all tokens are expired.
+func checkForTokenRefresh(t *testing.T, logs []string, queueName string) {
+	require.NotContains(t, logs, backgroundRenewalDisabledMsg)
+	for _, log := range logs {
+		if strings.HasPrefix(log, fmt.Sprintf("[azsb.Auth] (%s) next refresh in ", queueName)) {
+			return
+		}
+	}
+	require.Fail(t, "No token negotiation log lines")
 }
 
 func TestReceiverSendFiveReceiveFive_Subscription(t *testing.T) {

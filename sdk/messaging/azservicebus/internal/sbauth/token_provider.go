@@ -117,7 +117,16 @@ func (tpa *TokenProvider) getSASToken(uri string) (*auth.Token, time.Time, error
 		return nil, time.Time{}, err
 	}
 
+	// we can ignore the error here since we did the string-izing of the time
+	// in the first place.
+	var expiryTime time.Time
+
+	if authToken.Expiry != "0" {
+		unixSeconds, _ := strconv.ParseInt(authToken.Expiry, 10, 64)
+		expiryTime = time.Unix(unixSeconds, 0)
+	}
+
 	return authToken,
-		time.Time{},
+		expiryTime,
 		nil
 }

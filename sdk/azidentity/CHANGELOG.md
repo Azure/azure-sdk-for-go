@@ -5,6 +5,10 @@
 ### Features Added
 
 ### Breaking Changes
+> These changes affect only code written against a beta version such as v1.3.0-beta.4
+* Moved `NewWorkloadIdentityCredential()` parameters into `WorkloadIdentityCredentialOptions`.
+  The constructor now reads default configuration from environment variables set by the Azure
+  workload identity webhook by default.
 
 ### Bugs Fixed
 * Fixed an issue in `DefaultAzureCredential` that could cause the managed identity endpoint check to fail in rare circumstances.

@@ -71,8 +71,13 @@ func TestWorkloadIdentityCredential_Live(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			co, stop := initRecording(t)
 			defer stop()
-			o := WorkloadIdentityCredentialOptions{ClientOptions: co, DisableInstanceDiscovery: b}
-			cred, err := NewWorkloadIdentityCredential(liveSP.tenantID, liveSP.clientID, f, &o)
+			cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+				ClientID:                 liveSP.clientID,
+				ClientOptions:            co,
+				DisableInstanceDiscovery: b,
+				TenantID:                 liveSP.tenantID,
+				TokenFilePath:            f,
+			})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -111,10 +116,12 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
 	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody(accessTokenRespSuccess))
 	srv.AppendResponse()
-	opts := WorkloadIdentityCredentialOptions{
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:      fakeClientID,
 		ClientOptions: policy.ClientOptions{Transport: srv},
-	}
-	cred, err := NewWorkloadIdentityCredential(fakeTenantID, fakeClientID, tempFile, &opts)
+		TenantID:      fakeTenantID,
+		TokenFilePath: tempFile,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -144,10 +151,12 @@ func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 	srv.AppendResponse()
 	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody(accessTokenRespSuccess))
 	srv.AppendResponse()
-	opts := WorkloadIdentityCredentialOptions{
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:      fakeClientID,
 		ClientOptions: policy.ClientOptions{Transport: srv},
-	}
-	cred, err := NewWorkloadIdentityCredential(fakeTenantID, fakeClientID, tempFile, &opts)
+		TenantID:      fakeTenantID,
+		TokenFilePath: tempFile,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

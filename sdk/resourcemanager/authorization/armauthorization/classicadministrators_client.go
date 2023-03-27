@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,40 +24,31 @@ import (
 // ClassicAdministratorsClient contains the methods for the ClassicAdministrators group.
 // Don't use this type directly, use NewClassicAdministratorsClient() instead.
 type ClassicAdministratorsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewClassicAdministratorsClient creates a new instance of ClassicAdministratorsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewClassicAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClassicAdministratorsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ClassicAdministratorsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ClassicAdministratorsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Gets service administrator, account administrator, and co-administrators for the subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-07-01
-// options - ClassicAdministratorsClientListOptions contains the optional parameters for the ClassicAdministratorsClient.List
-// method.
+//   - options - ClassicAdministratorsClientListOptions contains the optional parameters for the ClassicAdministratorsClient.NewListPager
+//     method.
 func (client *ClassicAdministratorsClient) NewListPager(options *ClassicAdministratorsClientListOptions) *runtime.Pager[ClassicAdministratorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClassicAdministratorsClientListResponse]{
 		More: func(page ClassicAdministratorsClientListResponse) bool {
@@ -76,7 +65,7 @@ func (client *ClassicAdministratorsClient) NewListPager(options *ClassicAdminist
 			if err != nil {
 				return ClassicAdministratorsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClassicAdministratorsClientListResponse{}, err
 			}
@@ -95,7 +84,7 @@ func (client *ClassicAdministratorsClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -3,7 +3,6 @@
 ## 1.1.0-beta.1 (2023-03-27)
 ### Features Added
 
-- New struct `ClientFactory` which is a client factory used to create any client in this module
 - New enum type `ActivationStatus` with values `ActivationStatusActive`, `ActivationStatusInactive`
 - New enum type `AuditLogStatus` with values `AuditLogStatusDisabled`, `AuditLogStatusEnabled`
 - New enum type `AzureADAuthenticationAsArmPolicyStatus` with values `AzureADAuthenticationAsArmPolicyStatusDisabled`, `AzureADAuthenticationAsArmPolicyStatusEnabled`

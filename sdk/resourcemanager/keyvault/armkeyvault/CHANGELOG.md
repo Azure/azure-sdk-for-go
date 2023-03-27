@@ -1,10 +1,9 @@
 # Release History
 
 ## 1.1.0-beta.2 (2023-03-27)
-### Breaking Changes
+### Features Added
 
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 1.1.0-beta.1 (2022-05-19)

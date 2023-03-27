@@ -6,6 +6,9 @@
 - Struct `DeploymentScriptPropertiesBase` has been removed
 - Struct `ScriptConfigurationBase` has been removed
 
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 ## 1.0.0 (2022-05-18)
 

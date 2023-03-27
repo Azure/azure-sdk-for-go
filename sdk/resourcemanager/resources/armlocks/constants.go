@@ -11,7 +11,7 @@ package armlocks
 
 const (
 	moduleName    = "armlocks"
-	moduleVersion = "v1.0.1"
+	moduleVersion = "v1.1.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

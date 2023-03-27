@@ -16,10 +16,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-const secret = "secret"
+const fakeSecret = "secret"
 
 func TestClientSecretCredential_InvalidTenantID(t *testing.T) {
-	cred, err := NewClientSecretCredential(badTenantID, fakeClientID, secret, nil)
+	cred, err := NewClientSecretCredential(badTenantID, fakeClientID, fakeSecret, nil)
 	if err == nil {
 		t.Fatal("Expected an error but received none")
 	}
@@ -29,7 +29,7 @@ func TestClientSecretCredential_InvalidTenantID(t *testing.T) {
 }
 
 func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
-	cred, err := NewClientSecretCredential(fakeTenantID, fakeClientID, secret, nil)
+	cred, err := NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, nil)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}

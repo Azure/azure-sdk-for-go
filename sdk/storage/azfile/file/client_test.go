@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"strings"
@@ -423,4 +424,445 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.NotNil(getResp.Version)
 	_require.Equal(getResp.Date.IsZero(), false)
 	_require.NotNil(getResp.IsServerEncrypted)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFilePreservePermissions() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 0, &file.CreateOptions{
+		Permissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+	})
+
+	// Grab the original perm key before we set file headers.
+	getResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	pKey := getResp.FilePermissionKey
+	cTime := getResp.FileCreationTime
+	lwTime := getResp.FileLastWriteTime
+	attribs := getResp.FileAttributes
+
+	md5Str := "MDAwMDAwMDA="
+	var testMd5 []byte
+	copy(testMd5[:], md5Str)
+
+	properties := file.SetHTTPHeadersOptions{
+		HTTPHeaders: &file.HTTPHeaders{
+			ContentType:        to.Ptr("text/html"),
+			ContentEncoding:    to.Ptr("gzip"),
+			ContentLanguage:    to.Ptr("tr,en"),
+			ContentMD5:         testMd5,
+			CacheControl:       to.Ptr("no-transform"),
+			ContentDisposition: to.Ptr("attachment"),
+		},
+		// SMBProperties, when options are left nil, leads to preserving.
+		SMBProperties: &file.SMBProperties{},
+	}
+
+	setResp, err := fClient.SetHTTPHeaders(context.Background(), &properties)
+	_require.NoError(err)
+	_require.NotNil(setResp.ETag)
+	_require.NotNil(setResp.RequestID)
+	_require.NotNil(setResp.LastModified)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.NotNil(setResp.Version)
+	_require.Equal(setResp.Date.IsZero(), false)
+
+	getResp, err = fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(setResp.LastModified)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.Equal(*getResp.FileType, "File")
+
+	_require.EqualValues(getResp.ContentType, properties.HTTPHeaders.ContentType)
+	_require.EqualValues(getResp.ContentEncoding, properties.HTTPHeaders.ContentEncoding)
+	_require.EqualValues(getResp.ContentLanguage, properties.HTTPHeaders.ContentLanguage)
+	_require.EqualValues(getResp.ContentMD5, properties.HTTPHeaders.ContentMD5)
+	_require.EqualValues(getResp.CacheControl, properties.HTTPHeaders.CacheControl)
+	_require.EqualValues(getResp.ContentDisposition, properties.HTTPHeaders.ContentDisposition)
+	_require.Equal(*getResp.ContentLength, int64(0))
+	// Ensure that the permission key gets preserved
+	_require.EqualValues(getResp.FilePermissionKey, pKey)
+	_require.EqualValues(cTime, getResp.FileCreationTime)
+	_require.EqualValues(lwTime, getResp.FileLastWriteTime)
+	_require.EqualValues(attribs, getResp.FileAttributes)
+
+	_require.NotNil(getResp.ETag)
+	_require.NotNil(getResp.RequestID)
+	_require.NotNil(getResp.Version)
+	_require.Equal(getResp.Date.IsZero(), false)
+	_require.NotNil(getResp.IsServerEncrypted)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesSnapshot() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer func() {
+		_, err := shareClient.Delete(context.Background(), &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+		_require.NoError(err)
+	}()
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	md5Str := "MDAwMDAwMDA="
+	var testMd5 []byte
+	copy(testMd5[:], md5Str)
+
+	fileSetHTTPHeadersOptions := file.SetHTTPHeadersOptions{
+		HTTPHeaders: &file.HTTPHeaders{
+			ContentType:        to.Ptr("text/html"),
+			ContentEncoding:    to.Ptr("gzip"),
+			ContentLanguage:    to.Ptr("tr,en"),
+			ContentMD5:         testMd5,
+			CacheControl:       to.Ptr("no-transform"),
+			ContentDisposition: to.Ptr("attachment"),
+		},
+	}
+	setResp, err := fClient.SetHTTPHeaders(context.Background(), &fileSetHTTPHeadersOptions)
+	_require.NoError(err)
+	_require.NotEqual(*setResp.ETag, "")
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.NotEqual(setResp.RequestID, "")
+	_require.NotEqual(setResp.Version, "")
+	_require.Equal(setResp.Date.IsZero(), false)
+	_require.NotNil(setResp.IsServerEncrypted)
+
+	metadata := map[string]*string{
+		"Foo": to.Ptr("Foovalue"),
+		"Bar": to.Ptr("Barvalue"),
+	}
+	_, err = fClient.SetMetadata(context.Background(), &file.SetMetadataOptions{
+		Metadata: metadata,
+	})
+	_require.NoError(err)
+
+	resp, err := shareClient.CreateSnapshot(context.Background(), &share.CreateSnapshotOptions{Metadata: map[string]*string{}})
+	_require.NoError(err)
+	_require.NotNil(resp.Snapshot)
+
+	// get properties on the share snapshot
+	getResp, err := fClient.GetProperties(context.Background(), &file.GetPropertiesOptions{
+		ShareSnapshot: resp.Snapshot,
+	})
+	_require.NoError(err)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.Equal(*getResp.FileType, "File")
+
+	_require.EqualValues(getResp.ContentType, fileSetHTTPHeadersOptions.HTTPHeaders.ContentType)
+	_require.EqualValues(getResp.ContentEncoding, fileSetHTTPHeadersOptions.HTTPHeaders.ContentEncoding)
+	_require.EqualValues(getResp.ContentLanguage, fileSetHTTPHeadersOptions.HTTPHeaders.ContentLanguage)
+	_require.EqualValues(getResp.ContentMD5, fileSetHTTPHeadersOptions.HTTPHeaders.ContentMD5)
+	_require.EqualValues(getResp.CacheControl, fileSetHTTPHeadersOptions.HTTPHeaders.CacheControl)
+	_require.EqualValues(getResp.ContentDisposition, fileSetHTTPHeadersOptions.HTTPHeaders.ContentDisposition)
+	_require.Equal(*getResp.ContentLength, int64(0))
+
+	_require.NotNil(getResp.ETag)
+	_require.NotNil(getResp.RequestID)
+	_require.NotNil(getResp.Version)
+	_require.Equal(getResp.Date.IsZero(), false)
+	_require.NotNil(getResp.IsServerEncrypted)
+	_require.EqualValues(getResp.Metadata, metadata)
+}
+
+func (f *FileUnrecordedTestsSuite) TestGetSetMetadataNonDefault() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	metadata := map[string]*string{
+		"Foo": to.Ptr("Foovalue"),
+		"Bar": to.Ptr("Barvalue"),
+	}
+	setResp, err := fClient.SetMetadata(context.Background(), &file.SetMetadataOptions{
+		Metadata: metadata,
+	})
+	_require.NoError(err)
+	_require.NotNil(setResp.ETag)
+	_require.NotNil(setResp.RequestID)
+	_require.NotNil(setResp.Version)
+	_require.Equal(setResp.Date.IsZero(), false)
+	_require.NotNil(setResp.IsServerEncrypted)
+
+	getResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(getResp.ETag)
+	_require.NotNil(getResp.RequestID)
+	_require.NotNil(getResp.Version)
+	_require.Equal(getResp.Date.IsZero(), false)
+	_require.NotNil(getResp.IsServerEncrypted)
+	_require.EqualValues(getResp.Metadata, metadata)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileSetMetadataNil() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	md := map[string]*string{"Not": to.Ptr("nil")}
+
+	_, err = fClient.SetMetadata(context.Background(), &file.SetMetadataOptions{
+		Metadata: md,
+	})
+	_require.NoError(err)
+
+	resp1, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.EqualValues(resp1.Metadata, md)
+
+	_, err = fClient.SetMetadata(context.Background(), nil)
+	_require.NoError(err)
+
+	resp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp2.Metadata, 0)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileSetMetadataDefaultEmpty() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	md := map[string]*string{"Not": to.Ptr("nil")}
+
+	_, err = fClient.SetMetadata(context.Background(), &file.SetMetadataOptions{
+		Metadata: md,
+	})
+	_require.NoError(err)
+
+	resp1, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.EqualValues(resp1.Metadata, md)
+
+	_, err = fClient.SetMetadata(context.Background(), &file.SetMetadataOptions{
+		Metadata: map[string]*string{},
+	})
+	_require.NoError(err)
+
+	resp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp2.Metadata, 0)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileSetMetadataInvalidField() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	_, err = fClient.SetMetadata(context.Background(), &file.SetMetadataOptions{
+		Metadata: map[string]*string{"!@#$%^&*()": to.Ptr("!@#$%^&*()")},
+	})
+	_require.Error(err)
+}
+
+func waitForCopy(_require *require.Assertions, copyFClient *file.Client, fileCopyResponse file.StartCopyFromURLResponse) {
+	status := fileCopyResponse.CopyStatus
+	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
+	start := time.Now()
+	for *status != file.CopyStatusTypeSuccess {
+		GetPropertiesResp, err := copyFClient.GetProperties(context.Background(), nil)
+		_require.NoError(err)
+		status = GetPropertiesResp.CopyStatus
+		currentTime := time.Now()
+		if currentTime.Sub(start) >= time.Minute && *status != file.CopyStatusTypeSuccess {
+			_require.Fail("Copy status is " + string(*status) + "after 1 minute")
+		}
+	}
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopyMetadata() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	basicMetadata := map[string]*string{
+		"Foo": to.Ptr("Foovalue"),
+		"Bar": to.Ptr("Barvalue"),
+	}
+	resp, err := copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{Metadata: basicMetadata})
+	_require.NoError(err)
+	waitForCopy(_require, copyFClient, resp)
+
+	resp2, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.EqualValues(resp2.Metadata, basicMetadata)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopyMetadataNil() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	basicMetadata := map[string]*string{
+		"Foo": to.Ptr("Foovalue"),
+		"Bar": to.Ptr("Barvalue"),
+	}
+
+	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
+	_, err = copyFClient.Create(context.Background(), 0, &file.CreateOptions{Metadata: basicMetadata})
+	_require.NoError(err)
+
+	gResp, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.EqualValues(gResp.Metadata, basicMetadata)
+
+	resp, err := copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), nil)
+	_require.NoError(err)
+
+	waitForCopy(_require, copyFClient, resp)
+
+	resp2, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp2.Metadata, 0)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopyMetadataEmpty() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	basicMetadata := map[string]*string{
+		"Foo": to.Ptr("Foovalue"),
+		"Bar": to.Ptr("Barvalue"),
+	}
+
+	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
+	_, err = copyFClient.Create(context.Background(), 0, &file.CreateOptions{Metadata: basicMetadata})
+	_require.NoError(err)
+
+	gResp, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.EqualValues(gResp.Metadata, basicMetadata)
+
+	resp, err := copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{Metadata: map[string]*string{}})
+	_require.NoError(err)
+
+	waitForCopy(_require, copyFClient, resp)
+
+	resp2, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp2.Metadata, 0)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopyNegativeMetadataInvalidField() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+		Metadata: map[string]*string{"!@#$%^&*()": to.Ptr("!@#$%^&*()")},
+	})
+	_require.Error(err)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceNonExistent() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), nil)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }

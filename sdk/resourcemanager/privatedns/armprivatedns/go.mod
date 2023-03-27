@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns/v2
 
 go 1.18
 

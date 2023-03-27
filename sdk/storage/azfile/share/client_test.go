@@ -893,7 +893,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetStats() {
 	// _require.Equal(gResp.LastModified.IsZero(), false) // TODO: Even share is once updated, no LastModified would be returned.
 	_require.NotNil(gResp.RequestID)
 	_require.NotNil(gResp.Version)
-	_require.Equal(*gResp.ShareUsageBytes, int32(0))
+	_require.Equal(*gResp.ShareUsageBytes, int64(0))
 }
 
 func (s *ShareUnrecordedTestsSuite) TestShareGetStatsNegative() {
@@ -911,7 +911,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetStatsNegative() {
 }
 
 // TODO: uncomment this test after directory and file clients are added
-/*func (s *ShareUnrecordedTestsSuite) TestSetAndGetStatistics() {
+func (s *ShareUnrecordedTestsSuite) TestSetAndGetStatistics() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -929,13 +929,13 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetStatsNegative() {
 	_require.NoError(err)
 
 	fileClient := dirClient.NewFileClient("testfile")
-	_, err = fileClient.Create(context.Background(), int64(1024 * 1024 * 1024 * 1024), nil)
+	_, err = fileClient.Create(context.Background(), int64(1024*1024*1024*1024), nil)
 	_require.NoError(err)
 
 	getStats, err := shareClient.GetStatistics(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*getStats.ShareUsageBytes, int64(1024*1024*1024*1024))
-}*/
+}
 
 func deleteShare(ctx context.Context, _require *require.Assertions, shareClient *share.Client, o *share.DeleteOptions) {
 	_, err := shareClient.Delete(ctx, o)

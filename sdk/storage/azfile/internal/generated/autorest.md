@@ -296,3 +296,14 @@ directive:
   transform: >
     $.required = true;
 ```
+
+### Convert ShareUsageBytes to int64
+
+``` yaml
+directive:
+  - from: zz_models.go
+    where: $
+    transform: >-
+      return $.
+        replace(/ShareUsageBytes\s+\*int32/g, `ShareUsageBytes *int64`);
+```

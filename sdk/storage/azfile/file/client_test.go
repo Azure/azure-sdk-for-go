@@ -8,12 +8,14 @@ package file_test
 
 import (
 	"context"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -854,6 +856,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyNegativeMetadataInvalidField
 func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceNonExistent() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
+
 	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
@@ -865,4 +868,184 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceNonExistent() {
 
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), nil)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileAbortCopyNoCopyStarted() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = copyFClient.AbortCopy(context.Background(), "copynotstarted", nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidQueryParameterValue)
+}
+
+func (f *FileUnrecordedTestsSuite) TestResizeFile() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 1234, nil)
+	_require.NoError(err)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, int64(1234))
+
+	_, err = fClient.Resize(context.Background(), 4096, nil)
+	_require.NoError(err)
+
+	gResp, err = fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, int64(4096))
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileResizeZero() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 10, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Resize(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*resp.ContentLength, int64(0))
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileResizeInvalidSizeNegative() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Resize(context.Background(), -4, nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.OutOfRangeInput)
+}
+
+func (f *FileUnrecordedTestsSuite) TestNegativeFileSizeMoreThanShareQuota() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	var fileShareMaxQuota int32 = 1024                  // share size in GiB which is 1TiB
+	var fileMaxAllowedSizeInBytes int64 = 4398046511104 // file size in bytes which is 4 TiB
+
+	shareClient := testcommon.GetShareClient(testcommon.GenerateShareName(testName), svcClient)
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{
+		Quota: &fileShareMaxQuota,
+	})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileMaxAllowedSizeInBytes, &file.CreateOptions{
+		HTTPHeaders: &file.HTTPHeaders{},
+	})
+	_require.Error(err)
+}
+
+func (f *FileUnrecordedTestsSuite) TestCreateMaximumSizeFileShare() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	var fileShareMaxQuota int32 = 5120                  // share size in GiB which is 5TiB
+	var fileMaxAllowedSizeInBytes int64 = 4398046511104 // file size in bytes which is 4 TiB
+
+	shareClient := testcommon.GetShareClient(testcommon.GenerateShareName(testName), svcClient)
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{
+		Quota: &fileShareMaxQuota,
+	})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileMaxAllowedSizeInBytes, &file.CreateOptions{
+		HTTPHeaders: &file.HTTPHeaders{},
+	})
+	_require.NoError(err)
+}
+
+func (f *FileUnrecordedTestsSuite) TestSASFileClientNoKey() {
+	_require := require.New(f.T())
+	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
+	_require.NoError(err)
+
+	testName := f.T().Name()
+	shareName := testcommon.GenerateShareName(testName)
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient, err := file.NewClientWithNoCredential(fmt.Sprintf("https://%s.file.core.windows.net/%v/%v", accountName, shareName, fileName), nil)
+	_require.NoError(err)
+
+	permissions := sas.FilePermissions{
+		Read:   true,
+		Write:  true,
+		Delete: true,
+		Create: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	_, err = fileClient.GetSASURL(permissions, expiry, nil)
+	_require.Equal(err, fileerror.MissingSharedKeyCredential)
+}
+
+func (f *FileUnrecordedTestsSuite) TestSASDirectoryClientSignNegative() {
+	_require := require.New(f.T())
+	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
+	_require.NoError(err)
+	accountKey, err := testcommon.GetRequiredEnv(testcommon.AccountKeyEnvVar)
+	_require.NoError(err)
+
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	testName := f.T().Name()
+	shareName := testcommon.GenerateShareName(testName)
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient, err := file.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.file.core.windows.net/%v%v", accountName, shareName, fileName), cred, nil)
+	_require.NoError(err)
+
+	permissions := sas.FilePermissions{
+		Read:   true,
+		Write:  true,
+		Delete: true,
+		Create: true,
+	}
+	expiry := time.Time{}
+
+	_, err = fileClient.GetSASURL(permissions, expiry, nil)
+	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }

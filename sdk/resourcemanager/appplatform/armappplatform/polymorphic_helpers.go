@@ -15,7 +15,7 @@ func unmarshalAcceleratorAuthSettingClassification(rawMsg json.RawMessage) (Acce
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func unmarshalCertificatePropertiesClassification(rawMsg json.RawMessage) (Certi
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func unmarshalCustomPersistentDiskPropertiesClassification(rawMsg json.RawMessag
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func unmarshalProbeActionClassification(rawMsg json.RawMessage) (ProbeActionClas
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func unmarshalStoragePropertiesClassification(rawMsg json.RawMessage) (StoragePr
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func unmarshalUserSourceInfoClassification(rawMsg json.RawMessage) (UserSourceIn
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

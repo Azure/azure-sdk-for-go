@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,62 +24,55 @@ import (
 // ReportClient contains the methods for the Report group.
 // Don't use this type directly, use NewReportClient() instead.
 type ReportClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewReportClient creates a new instance of ReportClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewReportClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReportClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ReportClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ReportClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a new AppComplianceAutomation report or update an exiting AppComplianceAutomation report.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-16-preview
-// reportName - Report Name.
-// parameters - Parameters for the create or update operation
-// options - ReportClientBeginCreateOrUpdateOptions contains the optional parameters for the ReportClient.BeginCreateOrUpdate
-// method.
+//   - reportName - Report Name.
+//   - parameters - Parameters for the create or update operation
+//   - options - ReportClientBeginCreateOrUpdateOptions contains the optional parameters for the ReportClient.BeginCreateOrUpdate
+//     method.
 func (client *ReportClient) BeginCreateOrUpdate(ctx context.Context, reportName string, parameters ReportResource, options *ReportClientBeginCreateOrUpdateOptions) (*runtime.Poller[ReportClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, reportName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ReportClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReportClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ReportClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReportClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create a new AppComplianceAutomation report or update an exiting AppComplianceAutomation report.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-16-preview
 func (client *ReportClient) createOrUpdate(ctx context.Context, reportName string, parameters ReportResource, options *ReportClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, reportName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +89,7 @@ func (client *ReportClient) createOrUpdateCreateRequest(ctx context.Context, rep
 		return nil, errors.New("parameter reportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reportName}", url.PathEscape(reportName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,32 +102,34 @@ func (client *ReportClient) createOrUpdateCreateRequest(ctx context.Context, rep
 
 // BeginDelete - Delete an AppComplianceAutomation report.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-16-preview
-// reportName - Report Name.
-// options - ReportClientBeginDeleteOptions contains the optional parameters for the ReportClient.BeginDelete method.
+//   - reportName - Report Name.
+//   - options - ReportClientBeginDeleteOptions contains the optional parameters for the ReportClient.BeginDelete method.
 func (client *ReportClient) BeginDelete(ctx context.Context, reportName string, options *ReportClientBeginDeleteOptions) (*runtime.Poller[ReportClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, reportName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ReportClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReportClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ReportClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReportClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete an AppComplianceAutomation report.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-16-preview
 func (client *ReportClient) deleteOperation(ctx context.Context, reportName string, options *ReportClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, reportName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +146,7 @@ func (client *ReportClient) deleteCreateRequest(ctx context.Context, reportName 
 		return nil, errors.New("parameter reportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reportName}", url.PathEscape(reportName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,15 +159,16 @@ func (client *ReportClient) deleteCreateRequest(ctx context.Context, reportName 
 
 // Get - Get the AppComplianceAutomation report and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-16-preview
-// reportName - Report Name.
-// options - ReportClientGetOptions contains the optional parameters for the ReportClient.Get method.
+//   - reportName - Report Name.
+//   - options - ReportClientGetOptions contains the optional parameters for the ReportClient.Get method.
 func (client *ReportClient) Get(ctx context.Context, reportName string, options *ReportClientGetOptions) (ReportClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, reportName, options)
 	if err != nil {
 		return ReportClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReportClientGetResponse{}, err
 	}
@@ -191,7 +185,7 @@ func (client *ReportClient) getCreateRequest(ctx context.Context, reportName str
 		return nil, errors.New("parameter reportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reportName}", url.PathEscape(reportName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -213,33 +207,35 @@ func (client *ReportClient) getHandleResponse(resp *http.Response) (ReportClient
 
 // BeginUpdate - Update an exiting AppComplianceAutomation report.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-16-preview
-// reportName - Report Name.
-// parameters - Parameters for the create or update operation
-// options - ReportClientBeginUpdateOptions contains the optional parameters for the ReportClient.BeginUpdate method.
+//   - reportName - Report Name.
+//   - parameters - Parameters for the create or update operation
+//   - options - ReportClientBeginUpdateOptions contains the optional parameters for the ReportClient.BeginUpdate method.
 func (client *ReportClient) BeginUpdate(ctx context.Context, reportName string, parameters ReportResourcePatch, options *ReportClientBeginUpdateOptions) (*runtime.Poller[ReportClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, reportName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ReportClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReportClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ReportClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReportClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update an exiting AppComplianceAutomation report.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-16-preview
 func (client *ReportClient) update(ctx context.Context, reportName string, parameters ReportResourcePatch, options *ReportClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, reportName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -256,7 +252,7 @@ func (client *ReportClient) updateCreateRequest(ctx context.Context, reportName 
 		return nil, errors.New("parameter reportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reportName}", url.PathEscape(reportName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

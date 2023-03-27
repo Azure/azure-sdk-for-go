@@ -22,14 +22,20 @@ import (
 )
 
 func TestConsumerClient_UsingWebSockets(t *testing.T) {
-	// NOTE: This error is coming from the `nhooyr.io/websocket` package. There's an
-	// open discussion here:
-	//   https://github.com/nhooyr/websocket/discussions/380
-	//
-	// The frame it's waiting for (at this point) is the other half of the websocket CLOSE handshake.
-	// I wireshark'd this and confirmed that the frame does arrive, it's just not read by the local
-	// package. In this context, since the connection has already shut down, this is harmless.
-	var expectedWSErr = "failed to close WebSocket: failed to read frame header: EOF"
+	const (
+		// NOTE: This error is coming from the `nhooyr.io/websocket` package. There's an
+		// open discussion here:
+		//   https://github.com/nhooyr/websocket/discussions/380
+		//
+		// The frame it's waiting for (at this point) is the other half of the websocket CLOSE handshake.
+		// I wireshark'd this and confirmed that the frame does arrive, it's just not read by the local
+		// package. In this context, since the connection has already shut down, this is harmless.
+		expectedWSErr1 = "failed to close WebSocket: failed to read frame header: EOF"
+
+		// in addition, the returned error on close doesn't implement net.ErrClosed so we can also see this.
+		// https://github.com/nhooyr/websocket/issues/286
+		expectedWSErr2 = "failed to read: WebSocket closed: sent close frame: status = StatusNormalClosure and reason = \"\""
+	)
 
 	newWebSocketConnFn := func(ctx context.Context, args azeventhubs.WebSocketConnParams) (net.Conn, error) {
 		opts := &websocket.DialOptions{
@@ -53,7 +59,10 @@ func TestConsumerClient_UsingWebSockets(t *testing.T) {
 
 	defer func() {
 		err := producerClient.Close(context.Background())
-		require.EqualError(t, err, expectedWSErr)
+		require.Error(t, err)
+		if es := err.Error(); es != expectedWSErr1 && es != expectedWSErr2 {
+			t.Fatalf("unexpected error %v", err)
+		}
 	}()
 
 	partProps, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
@@ -79,7 +88,10 @@ func TestConsumerClient_UsingWebSockets(t *testing.T) {
 
 	defer func() {
 		err := consumerClient.Close(context.Background())
-		require.EqualError(t, err, expectedWSErr)
+		require.Error(t, err)
+		if es := err.Error(); es != expectedWSErr1 && es != expectedWSErr2 {
+			t.Fatalf("unexpected error %v", err)
+		}
 	}()
 
 	partClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{

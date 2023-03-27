@@ -35,9 +35,8 @@ func TestLinksCBSLinkStillOpen(t *testing.T) {
 
 	newLinkFn := func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (AMQPSenderCloser, error) {
 		return session.NewSender(ctx, entityPath, &amqp.SenderOptions{
-			SettlementMode:              to.Ptr(amqp.ModeMixed),
-			RequestedReceiverSettleMode: to.Ptr(amqp.ModeFirst),
-			IgnoreDispositionErrors:     true,
+			SettlementMode:              to.Ptr(amqp.SenderSettleModeMixed),
+			RequestedReceiverSettleMode: to.Ptr(amqp.ReceiverSettleModeFirst),
 		})
 	}
 

@@ -120,7 +120,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	nextRefreshDurationChecks := 0
 
 	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
-		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Client{}}, nil
+		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Conn{}}, nil
 	}
 
 	cancel, _, err := ns.startNegotiateClaimRenewer(
@@ -188,7 +188,7 @@ func TestNamespaceNegotiateClaimNonRenewableToken(t *testing.T) {
 	}
 
 	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
-		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Client{}}, nil
+		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Conn{}}, nil
 	}
 
 	// since the token is non-renewable we will just do the single cbsNegotiateClaim call and never renew.
@@ -255,7 +255,7 @@ func TestNamespaceNegotiateClaimFatalErrors(t *testing.T) {
 	defer endCapture()
 
 	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
-		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Client{}}, nil
+		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Conn{}}, nil
 	}
 
 	_, done, err := ns.startNegotiateClaimRenewer(

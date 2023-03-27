@@ -14,7 +14,7 @@ import (
 // AMQPReceiver is implemented by *amqp.Receiver
 type AMQPReceiver interface {
 	IssueCredit(credit uint32) error
-	Receive(ctx context.Context) (*amqp.Message, error)
+	Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error)
 	Prefetched() *amqp.Message
 
 	// settlement functions
@@ -40,7 +40,7 @@ type AMQPReceiverCloser interface {
 
 // AMQPSender is implemented by *amqp.Sender
 type AMQPSender interface {
-	Send(ctx context.Context, msg *amqp.Message) error
+	Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error
 	MaxMessageSize() uint64
 	LinkName() string
 }
@@ -84,7 +84,7 @@ type RPCResponse struct {
 // It exists only so we can return AMQPSession, which itself only exists so we can
 // return interfaces for AMQPSender and AMQPReceiver from AMQPSession.
 type AMQPClientWrapper struct {
-	Inner *amqp.Client
+	Inner *amqp.Conn
 }
 
 func (w *AMQPClientWrapper) Close() error {
@@ -150,8 +150,8 @@ func (rw *AMQPReceiverWrapper) IssueCredit(credit uint32) error {
 	return err
 }
 
-func (rw *AMQPReceiverWrapper) Receive(ctx context.Context) (*amqp.Message, error) {
-	message, err := rw.inner.Receive(ctx)
+func (rw *AMQPReceiverWrapper) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+	message, err := rw.inner.Receive(ctx, o)
 
 	if err != nil {
 		return nil, err

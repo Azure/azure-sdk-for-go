@@ -5,6 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
+> These changes affect only code written against a beta version such as v1.3.0-beta.4
+* Removed CAE support. It will return in the next beta release.
 
 ### Bugs Fixed
 * Fixed an issue in `DefaultAzureCredential` that could cause the managed identity endpoint check to fail in rare circumstances.

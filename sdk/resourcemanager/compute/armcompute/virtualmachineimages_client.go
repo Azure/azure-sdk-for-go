@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,52 +25,44 @@ import (
 // VirtualMachineImagesClient contains the methods for the VirtualMachineImages group.
 // Don't use this type directly, use NewVirtualMachineImagesClient() instead.
 type VirtualMachineImagesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineImagesClient creates a new instance of VirtualMachineImagesClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVirtualMachineImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineImagesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".VirtualMachineImagesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &VirtualMachineImagesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets a virtual machine image.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// location - The name of a supported Azure region.
-// publisherName - A valid image publisher.
-// offer - A valid image publisher offer.
-// skus - A valid image SKU.
-// version - A valid image SKU version.
-// options - VirtualMachineImagesClientGetOptions contains the optional parameters for the VirtualMachineImagesClient.Get
-// method.
+//   - location - The name of a supported Azure region.
+//   - publisherName - A valid image publisher.
+//   - offer - A valid image publisher offer.
+//   - skus - A valid image SKU.
+//   - version - A valid image SKU version.
+//   - options - VirtualMachineImagesClientGetOptions contains the optional parameters for the VirtualMachineImagesClient.Get
+//     method.
 func (client *VirtualMachineImagesClient) Get(ctx context.Context, location string, publisherName string, offer string, skus string, version string, options *VirtualMachineImagesClientGetOptions) (VirtualMachineImagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, publisherName, offer, skus, version, options)
 	if err != nil {
 		return VirtualMachineImagesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualMachineImagesClientGetResponse{}, err
 	}
@@ -109,7 +99,7 @@ func (client *VirtualMachineImagesClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,19 +121,20 @@ func (client *VirtualMachineImagesClient) getHandleResponse(resp *http.Response)
 
 // List - Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// location - The name of a supported Azure region.
-// publisherName - A valid image publisher.
-// offer - A valid image publisher offer.
-// skus - A valid image SKU.
-// options - VirtualMachineImagesClientListOptions contains the optional parameters for the VirtualMachineImagesClient.List
-// method.
+//   - location - The name of a supported Azure region.
+//   - publisherName - A valid image publisher.
+//   - offer - A valid image publisher offer.
+//   - skus - A valid image SKU.
+//   - options - VirtualMachineImagesClientListOptions contains the optional parameters for the VirtualMachineImagesClient.List
+//     method.
 func (client *VirtualMachineImagesClient) List(ctx context.Context, location string, publisherName string, offer string, skus string, options *VirtualMachineImagesClientListOptions) (VirtualMachineImagesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, publisherName, offer, skus, options)
 	if err != nil {
 		return VirtualMachineImagesClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualMachineImagesClientListResponse{}, err
 	}
@@ -176,7 +167,7 @@ func (client *VirtualMachineImagesClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,17 +198,18 @@ func (client *VirtualMachineImagesClient) listHandleResponse(resp *http.Response
 
 // ListByEdgeZone - Gets a list of all virtual machine image versions for the specified edge zone
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// location - The name of a supported Azure region.
-// edgeZone - The name of the edge zone.
-// options - VirtualMachineImagesClientListByEdgeZoneOptions contains the optional parameters for the VirtualMachineImagesClient.ListByEdgeZone
-// method.
+//   - location - The name of a supported Azure region.
+//   - edgeZone - The name of the edge zone.
+//   - options - VirtualMachineImagesClientListByEdgeZoneOptions contains the optional parameters for the VirtualMachineImagesClient.ListByEdgeZone
+//     method.
 func (client *VirtualMachineImagesClient) ListByEdgeZone(ctx context.Context, location string, edgeZone string, options *VirtualMachineImagesClientListByEdgeZoneOptions) (VirtualMachineImagesClientListByEdgeZoneResponse, error) {
 	req, err := client.listByEdgeZoneCreateRequest(ctx, location, edgeZone, options)
 	if err != nil {
 		return VirtualMachineImagesClientListByEdgeZoneResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualMachineImagesClientListByEdgeZoneResponse{}, err
 	}
@@ -242,7 +234,7 @@ func (client *VirtualMachineImagesClient) listByEdgeZoneCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -264,17 +256,18 @@ func (client *VirtualMachineImagesClient) listByEdgeZoneHandleResponse(resp *htt
 
 // ListOffers - Gets a list of virtual machine image offers for the specified location and publisher.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// location - The name of a supported Azure region.
-// publisherName - A valid image publisher.
-// options - VirtualMachineImagesClientListOffersOptions contains the optional parameters for the VirtualMachineImagesClient.ListOffers
-// method.
+//   - location - The name of a supported Azure region.
+//   - publisherName - A valid image publisher.
+//   - options - VirtualMachineImagesClientListOffersOptions contains the optional parameters for the VirtualMachineImagesClient.ListOffers
+//     method.
 func (client *VirtualMachineImagesClient) ListOffers(ctx context.Context, location string, publisherName string, options *VirtualMachineImagesClientListOffersOptions) (VirtualMachineImagesClientListOffersResponse, error) {
 	req, err := client.listOffersCreateRequest(ctx, location, publisherName, options)
 	if err != nil {
 		return VirtualMachineImagesClientListOffersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualMachineImagesClientListOffersResponse{}, err
 	}
@@ -299,7 +292,7 @@ func (client *VirtualMachineImagesClient) listOffersCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -321,16 +314,17 @@ func (client *VirtualMachineImagesClient) listOffersHandleResponse(resp *http.Re
 
 // ListPublishers - Gets a list of virtual machine image publishers for the specified Azure location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// location - The name of a supported Azure region.
-// options - VirtualMachineImagesClientListPublishersOptions contains the optional parameters for the VirtualMachineImagesClient.ListPublishers
-// method.
+//   - location - The name of a supported Azure region.
+//   - options - VirtualMachineImagesClientListPublishersOptions contains the optional parameters for the VirtualMachineImagesClient.ListPublishers
+//     method.
 func (client *VirtualMachineImagesClient) ListPublishers(ctx context.Context, location string, options *VirtualMachineImagesClientListPublishersOptions) (VirtualMachineImagesClientListPublishersResponse, error) {
 	req, err := client.listPublishersCreateRequest(ctx, location, options)
 	if err != nil {
 		return VirtualMachineImagesClientListPublishersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualMachineImagesClientListPublishersResponse{}, err
 	}
@@ -351,7 +345,7 @@ func (client *VirtualMachineImagesClient) listPublishersCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -373,18 +367,19 @@ func (client *VirtualMachineImagesClient) listPublishersHandleResponse(resp *htt
 
 // ListSKUs - Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// location - The name of a supported Azure region.
-// publisherName - A valid image publisher.
-// offer - A valid image publisher offer.
-// options - VirtualMachineImagesClientListSKUsOptions contains the optional parameters for the VirtualMachineImagesClient.ListSKUs
-// method.
+//   - location - The name of a supported Azure region.
+//   - publisherName - A valid image publisher.
+//   - offer - A valid image publisher offer.
+//   - options - VirtualMachineImagesClientListSKUsOptions contains the optional parameters for the VirtualMachineImagesClient.ListSKUs
+//     method.
 func (client *VirtualMachineImagesClient) ListSKUs(ctx context.Context, location string, publisherName string, offer string, options *VirtualMachineImagesClientListSKUsOptions) (VirtualMachineImagesClientListSKUsResponse, error) {
 	req, err := client.listSKUsCreateRequest(ctx, location, publisherName, offer, options)
 	if err != nil {
 		return VirtualMachineImagesClientListSKUsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualMachineImagesClientListSKUsResponse{}, err
 	}
@@ -413,7 +408,7 @@ func (client *VirtualMachineImagesClient) listSKUsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

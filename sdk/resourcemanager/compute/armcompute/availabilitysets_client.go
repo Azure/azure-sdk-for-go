@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // AvailabilitySetsClient contains the methods for the AvailabilitySets group.
 // Don't use this type directly, use NewAvailabilitySetsClient() instead.
 type AvailabilitySetsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAvailabilitySetsClient creates a new instance of AvailabilitySetsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailabilitySetsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AvailabilitySetsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AvailabilitySetsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// availabilitySetName - The name of the availability set.
-// parameters - Parameters supplied to the Create Availability Set operation.
-// options - AvailabilitySetsClientCreateOrUpdateOptions contains the optional parameters for the AvailabilitySetsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - availabilitySetName - The name of the availability set.
+//   - parameters - Parameters supplied to the Create Availability Set operation.
+//   - options - AvailabilitySetsClientCreateOrUpdateOptions contains the optional parameters for the AvailabilitySetsClient.CreateOrUpdate
+//     method.
 func (client *AvailabilitySetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySet, options *AvailabilitySetsClientCreateOrUpdateOptions) (AvailabilitySetsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, availabilitySetName, parameters, options)
 	if err != nil {
 		return AvailabilitySetsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AvailabilitySetsClientCreateOrUpdateResponse{}, err
 	}
@@ -94,7 +84,7 @@ func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,16 +106,17 @@ func (client *AvailabilitySetsClient) createOrUpdateHandleResponse(resp *http.Re
 
 // Delete - Delete an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// availabilitySetName - The name of the availability set.
-// options - AvailabilitySetsClientDeleteOptions contains the optional parameters for the AvailabilitySetsClient.Delete method.
+//   - resourceGroupName - The name of the resource group.
+//   - availabilitySetName - The name of the availability set.
+//   - options - AvailabilitySetsClientDeleteOptions contains the optional parameters for the AvailabilitySetsClient.Delete method.
 func (client *AvailabilitySetsClient) Delete(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientDeleteOptions) (AvailabilitySetsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
 	if err != nil {
 		return AvailabilitySetsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AvailabilitySetsClientDeleteResponse{}, err
 	}
@@ -150,7 +141,7 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,16 +154,17 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 
 // Get - Retrieves information about an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// availabilitySetName - The name of the availability set.
-// options - AvailabilitySetsClientGetOptions contains the optional parameters for the AvailabilitySetsClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - availabilitySetName - The name of the availability set.
+//   - options - AvailabilitySetsClientGetOptions contains the optional parameters for the AvailabilitySetsClient.Get method.
 func (client *AvailabilitySetsClient) Get(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientGetOptions) (AvailabilitySetsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
 	if err != nil {
 		return AvailabilitySetsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AvailabilitySetsClientGetResponse{}, err
 	}
@@ -197,7 +189,7 @@ func (client *AvailabilitySetsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,9 +210,11 @@ func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response) (Av
 }
 
 // NewListPager - Lists all availability sets in a resource group.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// options - AvailabilitySetsClientListOptions contains the optional parameters for the AvailabilitySetsClient.List method.
+//   - resourceGroupName - The name of the resource group.
+//   - options - AvailabilitySetsClientListOptions contains the optional parameters for the AvailabilitySetsClient.NewListPager
+//     method.
 func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, options *AvailabilitySetsClientListOptions) *runtime.Pager[AvailabilitySetsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListResponse]{
 		More: func(page AvailabilitySetsClientListResponse) bool {
@@ -237,7 +231,7 @@ func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, opt
 			if err != nil {
 				return AvailabilitySetsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AvailabilitySetsClientListResponse{}, err
 			}
@@ -260,7 +254,7 @@ func (client *AvailabilitySetsClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -282,11 +276,12 @@ func (client *AvailabilitySetsClient) listHandleResponse(resp *http.Response) (A
 
 // NewListAvailableSizesPager - Lists all available virtual machine sizes that can be used to create a new virtual machine
 // in an existing availability set.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// availabilitySetName - The name of the availability set.
-// options - AvailabilitySetsClientListAvailableSizesOptions contains the optional parameters for the AvailabilitySetsClient.ListAvailableSizes
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - availabilitySetName - The name of the availability set.
+//   - options - AvailabilitySetsClientListAvailableSizesOptions contains the optional parameters for the AvailabilitySetsClient.NewListAvailableSizesPager
+//     method.
 func (client *AvailabilitySetsClient) NewListAvailableSizesPager(resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientListAvailableSizesOptions) *runtime.Pager[AvailabilitySetsClientListAvailableSizesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListAvailableSizesResponse]{
 		More: func(page AvailabilitySetsClientListAvailableSizesResponse) bool {
@@ -297,7 +292,7 @@ func (client *AvailabilitySetsClient) NewListAvailableSizesPager(resourceGroupNa
 			if err != nil {
 				return AvailabilitySetsClientListAvailableSizesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AvailabilitySetsClientListAvailableSizesResponse{}, err
 			}
@@ -324,7 +319,7 @@ func (client *AvailabilitySetsClient) listAvailableSizesCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -345,9 +340,10 @@ func (client *AvailabilitySetsClient) listAvailableSizesHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - Lists all availability sets in a subscription.
+//
 // Generated from API version 2022-11-01
-// options - AvailabilitySetsClientListBySubscriptionOptions contains the optional parameters for the AvailabilitySetsClient.ListBySubscription
-// method.
+//   - options - AvailabilitySetsClientListBySubscriptionOptions contains the optional parameters for the AvailabilitySetsClient.NewListBySubscriptionPager
+//     method.
 func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *AvailabilitySetsClientListBySubscriptionOptions) *runtime.Pager[AvailabilitySetsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListBySubscriptionResponse]{
 		More: func(page AvailabilitySetsClientListBySubscriptionResponse) bool {
@@ -364,7 +360,7 @@ func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *Availa
 			if err != nil {
 				return AvailabilitySetsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AvailabilitySetsClientListBySubscriptionResponse{}, err
 			}
@@ -383,7 +379,7 @@ func (client *AvailabilitySetsClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -408,17 +404,18 @@ func (client *AvailabilitySetsClient) listBySubscriptionHandleResponse(resp *htt
 
 // Update - Update an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// availabilitySetName - The name of the availability set.
-// parameters - Parameters supplied to the Update Availability Set operation.
-// options - AvailabilitySetsClientUpdateOptions contains the optional parameters for the AvailabilitySetsClient.Update method.
+//   - resourceGroupName - The name of the resource group.
+//   - availabilitySetName - The name of the availability set.
+//   - parameters - Parameters supplied to the Update Availability Set operation.
+//   - options - AvailabilitySetsClientUpdateOptions contains the optional parameters for the AvailabilitySetsClient.Update method.
 func (client *AvailabilitySetsClient) Update(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySetUpdate, options *AvailabilitySetsClientUpdateOptions) (AvailabilitySetsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, availabilitySetName, parameters, options)
 	if err != nil {
 		return AvailabilitySetsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AvailabilitySetsClientUpdateResponse{}, err
 	}
@@ -443,7 +440,7 @@ func (client *AvailabilitySetsClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

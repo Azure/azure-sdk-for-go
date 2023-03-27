@@ -62,22 +62,23 @@ type AccountClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup method.
+// AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.NewListByResourceGroupPager
+// method.
 type AccountClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountClientListDetectorsOptions contains the optional parameters for the AccountClient.ListDetectors method.
+// AccountClientListDetectorsOptions contains the optional parameters for the AccountClient.NewListDetectorsPager method.
 type AccountClientListDetectorsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountClientListOptions contains the optional parameters for the AccountClient.List method.
+// AccountClientListOptions contains the optional parameters for the AccountClient.NewListPager method.
 type AccountClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the AccountClient.ListOutboundNetworkDependenciesEndpoints
+// AccountClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the AccountClient.NewListOutboundNetworkDependenciesEndpointsPager
 // method.
 type AccountClientListOutboundNetworkDependenciesEndpointsOptions struct {
 	// placeholder for future optional parameters
@@ -323,7 +324,7 @@ type ApplicationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationClientListOptions contains the optional parameters for the ApplicationClient.List method.
+// ApplicationClientListOptions contains the optional parameters for the ApplicationClient.NewListPager method.
 type ApplicationClientListOptions struct {
 	// The maximum number of items to return in the response.
 	Maxresults *int32
@@ -373,7 +374,7 @@ type ApplicationPackageClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationPackageClientListOptions contains the optional parameters for the ApplicationPackageClient.List method.
+// ApplicationPackageClientListOptions contains the optional parameters for the ApplicationPackageClient.NewListPager method.
 type ApplicationPackageClientListOptions struct {
 	// The maximum number of items to return in the response.
 	Maxresults *int32
@@ -614,7 +615,7 @@ type CertificateClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificateClientListByBatchAccountOptions contains the optional parameters for the CertificateClient.ListByBatchAccount
+// CertificateClientListByBatchAccountOptions contains the optional parameters for the CertificateClient.NewListByBatchAccountPager
 // method.
 type CertificateClientListByBatchAccountOptions struct {
 	// OData filter expression. Valid properties for filtering are "properties/provisioningState", "properties/provisioningStateTransitionTime",
@@ -1128,7 +1129,7 @@ type LocationClientGetQuotasOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationClientListSupportedCloudServiceSKUsOptions contains the optional parameters for the LocationClient.ListSupportedCloudServiceSKUs
+// LocationClientListSupportedCloudServiceSKUsOptions contains the optional parameters for the LocationClient.NewListSupportedCloudServiceSKUsPager
 // method.
 type LocationClientListSupportedCloudServiceSKUsOptions struct {
 	// OData filter expression. Valid properties for filtering are "familyName".
@@ -1137,7 +1138,7 @@ type LocationClientListSupportedCloudServiceSKUsOptions struct {
 	Maxresults *int32
 }
 
-// LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.ListSupportedVirtualMachineSKUs
+// LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.NewListSupportedVirtualMachineSKUsPager
 // method.
 type LocationClientListSupportedVirtualMachineSKUsOptions struct {
 	// OData filter expression. Valid properties for filtering are "familyName".
@@ -1277,7 +1278,7 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty"`
 
 	// Properties of the operation.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 }
 
 // OperationDisplay - The object that describes the operation.
@@ -1305,7 +1306,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1375,7 +1376,7 @@ type PoolClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoolClientListByBatchAccountOptions contains the optional parameters for the PoolClient.ListByBatchAccount method.
+// PoolClientListByBatchAccountOptions contains the optional parameters for the PoolClient.NewListByBatchAccountPager method.
 type PoolClientListByBatchAccountOptions struct {
 	// OData filter expression. Valid properties for filtering are:
 	// name properties/allocationState properties/allocationStateTransitionTime properties/creationTime properties/provisioningState
@@ -1576,7 +1577,7 @@ type PrivateEndpointConnectionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionClientListByBatchAccountOptions contains the optional parameters for the PrivateEndpointConnectionClient.ListByBatchAccount
+// PrivateEndpointConnectionClientListByBatchAccountOptions contains the optional parameters for the PrivateEndpointConnectionClient.NewListByBatchAccountPager
 // method.
 type PrivateEndpointConnectionClientListByBatchAccountOptions struct {
 	// The maximum number of items to return in the response.
@@ -1621,7 +1622,7 @@ type PrivateLinkResourceClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourceClientListByBatchAccountOptions contains the optional parameters for the PrivateLinkResourceClient.ListByBatchAccount
+// PrivateLinkResourceClientListByBatchAccountOptions contains the optional parameters for the PrivateLinkResourceClient.NewListByBatchAccountPager
 // method.
 type PrivateLinkResourceClientListByBatchAccountOptions struct {
 	// The maximum number of items to return in the response.
@@ -1938,13 +1939,13 @@ type VMExtension struct {
 	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings any `json:"protectedSettings,omitempty"`
 
 	// Collection of extension names after which this extension needs to be provisioned.
 	ProvisionAfterExtensions []*string `json:"provisionAfterExtensions,omitempty"`
 
 	// JSON formatted public settings for the extension.
-	Settings interface{} `json:"settings,omitempty"`
+	Settings any `json:"settings,omitempty"`
 
 	// The version of script handler.
 	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`

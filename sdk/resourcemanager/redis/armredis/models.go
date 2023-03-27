@@ -79,12 +79,12 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+// ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager method.
 type ClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+// ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 type ClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -94,7 +94,8 @@ type ClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListUpgradeNotificationsOptions contains the optional parameters for the Client.ListUpgradeNotifications method.
+// ClientListUpgradeNotificationsOptions contains the optional parameters for the Client.NewListUpgradeNotificationsPager
+// method.
 type ClientListUpgradeNotificationsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -109,7 +110,7 @@ type ClientRegenerateKeyOptions struct {
 // etc.
 type CommonPropertiesRedisConfiguration struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies whether the aof backup is enabled
 	AofBackupEnabled *string `json:"aof-backup-enabled,omitempty"`
@@ -230,7 +231,7 @@ type CreateProperties struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -319,7 +320,7 @@ type FirewallRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.List method.
+// FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.NewListPager method.
 type FirewallRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -387,7 +388,7 @@ type LinkedServerClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.List method.
+// LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.NewListPager method.
 type LinkedServerClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -561,7 +562,7 @@ type OperationStatus struct {
 	PercentComplete *float32 `json:"percentComplete,omitempty"`
 
 	// Additional properties from RP, only when operation is successful
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties map[string]any `json:"properties,omitempty"`
 
 	// The start time of the operation.
 	StartTime *time.Time `json:"startTime,omitempty"`
@@ -594,7 +595,7 @@ type OperationStatusResult struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -642,7 +643,7 @@ type PatchSchedulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.ListByRedisResource
+// PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.NewListByRedisResourcePager
 // method.
 type PatchSchedulesClientListByRedisResourceOptions struct {
 	// placeholder for future optional parameters
@@ -706,7 +707,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -745,7 +746,7 @@ type PrivateLinkResourceProperties struct {
 	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
 }
 
-// PrivateLinkResourcesClientListByRedisCacheOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByRedisCache
+// PrivateLinkResourcesClientListByRedisCacheOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByRedisCachePager
 // method.
 type PrivateLinkResourcesClientListByRedisCacheOptions struct {
 	// placeholder for future optional parameters

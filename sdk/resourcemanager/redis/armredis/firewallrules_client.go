@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,51 +24,43 @@ import (
 // FirewallRulesClient contains the methods for the FirewallRules group.
 // Don't use this type directly, use NewFirewallRulesClient() instead.
 type FirewallRulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewFirewallRulesClient creates a new instance of FirewallRulesClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FirewallRulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".FirewallRulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &FirewallRulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update a redis cache firewall rule
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// cacheName - The name of the Redis cache.
-// ruleName - The name of the firewall rule.
-// parameters - Parameters supplied to the create or update redis firewall rule operation.
-// options - FirewallRulesClientCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - cacheName - The name of the Redis cache.
+//   - ruleName - The name of the firewall rule.
+//   - parameters - Parameters supplied to the create or update redis firewall rule operation.
+//   - options - FirewallRulesClientCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.CreateOrUpdate
+//     method.
 func (client *FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, parameters FirewallRule, options *FirewallRulesClientCreateOrUpdateOptions) (FirewallRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cacheName, ruleName, parameters, options)
 	if err != nil {
 		return FirewallRulesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FirewallRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,17 +111,18 @@ func (client *FirewallRulesClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // Delete - Deletes a single firewall rule in a specified redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// cacheName - The name of the Redis cache.
-// ruleName - The name of the firewall rule.
-// options - FirewallRulesClientDeleteOptions contains the optional parameters for the FirewallRulesClient.Delete method.
+//   - resourceGroupName - The name of the resource group.
+//   - cacheName - The name of the Redis cache.
+//   - ruleName - The name of the firewall rule.
+//   - options - FirewallRulesClientDeleteOptions contains the optional parameters for the FirewallRulesClient.Delete method.
 func (client *FirewallRulesClient) Delete(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, options *FirewallRulesClientDeleteOptions) (FirewallRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cacheName, ruleName, options)
 	if err != nil {
 		return FirewallRulesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FirewallRulesClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,17 +164,18 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - Gets a single firewall rule in a specified redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// cacheName - The name of the Redis cache.
-// ruleName - The name of the firewall rule.
-// options - FirewallRulesClientGetOptions contains the optional parameters for the FirewallRulesClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - cacheName - The name of the Redis cache.
+//   - ruleName - The name of the firewall rule.
+//   - options - FirewallRulesClientGetOptions contains the optional parameters for the FirewallRulesClient.Get method.
 func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, options *FirewallRulesClientGetOptions) (FirewallRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cacheName, ruleName, options)
 	if err != nil {
 		return FirewallRulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FirewallRulesClientGetResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,10 +225,11 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 }
 
 // NewListPager - Gets all firewall rules in the specified redis cache.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// cacheName - The name of the Redis cache.
-// options - FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.List method.
+//   - resourceGroupName - The name of the resource group.
+//   - cacheName - The name of the Redis cache.
+//   - options - FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.NewListPager method.
 func (client *FirewallRulesClient) NewListPager(resourceGroupName string, cacheName string, options *FirewallRulesClientListOptions) *runtime.Pager[FirewallRulesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FirewallRulesClientListResponse]{
 		More: func(page FirewallRulesClientListResponse) bool {
@@ -253,7 +246,7 @@ func (client *FirewallRulesClient) NewListPager(resourceGroupName string, cacheN
 			if err != nil {
 				return FirewallRulesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FirewallRulesClientListResponse{}, err
 			}
@@ -280,7 +273,7 @@ func (client *FirewallRulesClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -19,17 +19,17 @@ type ClientCheckNameAvailabilityResponse struct {
 	// placeholder for future response values
 }
 
-// ClientCreateResponse contains the response from method Client.Create.
+// ClientCreateResponse contains the response from method Client.BeginCreate.
 type ClientCreateResponse struct {
 	ResourceInfo
 }
 
-// ClientDeleteResponse contains the response from method Client.Delete.
+// ClientDeleteResponse contains the response from method Client.BeginDelete.
 type ClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ClientExportDataResponse contains the response from method Client.ExportData.
+// ClientExportDataResponse contains the response from method Client.BeginExportData.
 type ClientExportDataResponse struct {
 	// placeholder for future response values
 }
@@ -44,17 +44,17 @@ type ClientGetResponse struct {
 	ResourceInfo
 }
 
-// ClientImportDataResponse contains the response from method Client.ImportData.
+// ClientImportDataResponse contains the response from method Client.BeginImportData.
 type ClientImportDataResponse struct {
 	// placeholder for future response values
 }
 
-// ClientListByResourceGroupResponse contains the response from method Client.ListByResourceGroup.
+// ClientListByResourceGroupResponse contains the response from method Client.NewListByResourceGroupPager.
 type ClientListByResourceGroupResponse struct {
 	ListResult
 }
 
-// ClientListBySubscriptionResponse contains the response from method Client.ListBySubscription.
+// ClientListBySubscriptionResponse contains the response from method Client.NewListBySubscriptionPager.
 type ClientListBySubscriptionResponse struct {
 	ListResult
 }
@@ -64,7 +64,7 @@ type ClientListKeysResponse struct {
 	AccessKeys
 }
 
-// ClientListUpgradeNotificationsResponse contains the response from method Client.ListUpgradeNotifications.
+// ClientListUpgradeNotificationsResponse contains the response from method Client.NewListUpgradeNotificationsPager.
 type ClientListUpgradeNotificationsResponse struct {
 	NotificationListResponse
 }
@@ -74,7 +74,7 @@ type ClientRegenerateKeyResponse struct {
 	AccessKeys
 }
 
-// ClientUpdateResponse contains the response from method Client.Update.
+// ClientUpdateResponse contains the response from method Client.BeginUpdate.
 type ClientUpdateResponse struct {
 	ResourceInfo
 }
@@ -94,17 +94,17 @@ type FirewallRulesClientGetResponse struct {
 	FirewallRule
 }
 
-// FirewallRulesClientListResponse contains the response from method FirewallRulesClient.List.
+// FirewallRulesClientListResponse contains the response from method FirewallRulesClient.NewListPager.
 type FirewallRulesClientListResponse struct {
 	FirewallRuleListResult
 }
 
-// LinkedServerClientCreateResponse contains the response from method LinkedServerClient.Create.
+// LinkedServerClientCreateResponse contains the response from method LinkedServerClient.BeginCreate.
 type LinkedServerClientCreateResponse struct {
 	LinkedServerWithProperties
 }
 
-// LinkedServerClientDeleteResponse contains the response from method LinkedServerClient.Delete.
+// LinkedServerClientDeleteResponse contains the response from method LinkedServerClient.BeginDelete.
 type LinkedServerClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -114,12 +114,12 @@ type LinkedServerClientGetResponse struct {
 	LinkedServerWithProperties
 }
 
-// LinkedServerClientListResponse contains the response from method LinkedServerClient.List.
+// LinkedServerClientListResponse contains the response from method LinkedServerClient.NewListPager.
 type LinkedServerClientListResponse struct {
 	LinkedServerWithPropertiesList
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -139,7 +139,7 @@ type PatchSchedulesClientGetResponse struct {
 	PatchSchedule
 }
 
-// PatchSchedulesClientListByRedisResourceResponse contains the response from method PatchSchedulesClient.ListByRedisResource.
+// PatchSchedulesClientListByRedisResourceResponse contains the response from method PatchSchedulesClient.NewListByRedisResourcePager.
 type PatchSchedulesClientListByRedisResourceResponse struct {
 	PatchScheduleListResult
 }
@@ -154,17 +154,17 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateEndpointConnectionsClientPutResponse contains the response from method PrivateEndpointConnectionsClient.Put.
+// PrivateEndpointConnectionsClientPutResponse contains the response from method PrivateEndpointConnectionsClient.BeginPut.
 type PrivateEndpointConnectionsClientPutResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateLinkResourcesClientListByRedisCacheResponse contains the response from method PrivateLinkResourcesClient.ListByRedisCache.
+// PrivateLinkResourcesClientListByRedisCacheResponse contains the response from method PrivateLinkResourcesClient.NewListByRedisCachePager.
 type PrivateLinkResourcesClientListByRedisCacheResponse struct {
 	PrivateLinkResourceListResult
 }

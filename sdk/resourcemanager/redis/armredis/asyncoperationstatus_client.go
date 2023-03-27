@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // AsyncOperationStatusClient contains the methods for the AsyncOperationStatus group.
 // Don't use this type directly, use NewAsyncOperationStatusClient() instead.
 type AsyncOperationStatusClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAsyncOperationStatusClient creates a new instance of AsyncOperationStatusClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAsyncOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AsyncOperationStatusClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AsyncOperationStatusClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AsyncOperationStatusClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - For checking the ongoing status of an operation
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// location - The location at which operation was triggered
-// operationID - The ID of asynchronous operation
-// options - AsyncOperationStatusClientGetOptions contains the optional parameters for the AsyncOperationStatusClient.Get
-// method.
+//   - location - The location at which operation was triggered
+//   - operationID - The ID of asynchronous operation
+//   - options - AsyncOperationStatusClientGetOptions contains the optional parameters for the AsyncOperationStatusClient.Get
+//     method.
 func (client *AsyncOperationStatusClient) Get(ctx context.Context, location string, operationID string, options *AsyncOperationStatusClientGetOptions) (AsyncOperationStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, operationID, options)
 	if err != nil {
 		return AsyncOperationStatusClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AsyncOperationStatusClientGetResponse{}, err
 	}
@@ -93,7 +83,7 @@ func (client *AsyncOperationStatusClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

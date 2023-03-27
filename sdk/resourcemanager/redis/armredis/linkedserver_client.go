@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // LinkedServerClient contains the methods for the LinkedServer group.
 // Don't use this type directly, use NewLinkedServerClient() instead.
 type LinkedServerClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewLinkedServerClient creates a new instance of LinkedServerClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLinkedServerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LinkedServerClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".LinkedServerClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &LinkedServerClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Adds a linked server to the Redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// linkedServerName - The name of the linked server that is being added to the Redis cache.
-// parameters - Parameters supplied to the Create Linked server operation.
-// options - LinkedServerClientBeginCreateOptions contains the optional parameters for the LinkedServerClient.BeginCreate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - linkedServerName - The name of the linked server that is being added to the Redis cache.
+//   - parameters - Parameters supplied to the Create Linked server operation.
+//   - options - LinkedServerClientBeginCreateOptions contains the optional parameters for the LinkedServerClient.BeginCreate
+//     method.
 func (client *LinkedServerClient) BeginCreate(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (*runtime.Poller[LinkedServerClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, name, linkedServerName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[LinkedServerClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LinkedServerClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[LinkedServerClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LinkedServerClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Adds a linked server to the Redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
 func (client *LinkedServerClient) create(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, name, linkedServerName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +105,7 @@ func (client *LinkedServerClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,33 +118,35 @@ func (client *LinkedServerClient) createCreateRequest(ctx context.Context, resou
 
 // BeginDelete - Deletes the linked server from a redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the redis cache.
-// linkedServerName - The name of the linked server that is being added to the Redis cache.
-// options - LinkedServerClientBeginDeleteOptions contains the optional parameters for the LinkedServerClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the redis cache.
+//   - linkedServerName - The name of the linked server that is being added to the Redis cache.
+//   - options - LinkedServerClientBeginDeleteOptions contains the optional parameters for the LinkedServerClient.BeginDelete
+//     method.
 func (client *LinkedServerClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerClientBeginDeleteOptions) (*runtime.Poller[LinkedServerClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, name, linkedServerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[LinkedServerClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LinkedServerClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[LinkedServerClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LinkedServerClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the linked server from a redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
 func (client *LinkedServerClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, linkedServerName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +175,7 @@ func (client *LinkedServerClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -195,17 +188,18 @@ func (client *LinkedServerClient) deleteCreateRequest(ctx context.Context, resou
 
 // Get - Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the redis cache.
-// linkedServerName - The name of the linked server.
-// options - LinkedServerClientGetOptions contains the optional parameters for the LinkedServerClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the redis cache.
+//   - linkedServerName - The name of the linked server.
+//   - options - LinkedServerClientGetOptions contains the optional parameters for the LinkedServerClient.Get method.
 func (client *LinkedServerClient) Get(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerClientGetOptions) (LinkedServerClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, linkedServerName, options)
 	if err != nil {
 		return LinkedServerClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LinkedServerClientGetResponse{}, err
 	}
@@ -234,7 +228,7 @@ func (client *LinkedServerClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -255,10 +249,11 @@ func (client *LinkedServerClient) getHandleResponse(resp *http.Response) (Linked
 }
 
 // NewListPager - Gets the list of linked servers associated with this redis cache (requires Premium SKU).
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the redis cache.
-// options - LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.List method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the redis cache.
+//   - options - LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.NewListPager method.
 func (client *LinkedServerClient) NewListPager(resourceGroupName string, name string, options *LinkedServerClientListOptions) *runtime.Pager[LinkedServerClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LinkedServerClientListResponse]{
 		More: func(page LinkedServerClientListResponse) bool {
@@ -275,7 +270,7 @@ func (client *LinkedServerClient) NewListPager(resourceGroupName string, name st
 			if err != nil {
 				return LinkedServerClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LinkedServerClientListResponse{}, err
 			}
@@ -302,7 +297,7 @@ func (client *LinkedServerClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

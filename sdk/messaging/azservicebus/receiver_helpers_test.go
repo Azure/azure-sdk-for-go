@@ -57,7 +57,7 @@ func (r *StubAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 	if r.stubReceive != nil {
 		return r.stubReceive(r.inner, ctx)
 	}
-	return r.inner.Receive(ctx)
+	return r.inner.Receive(ctx, nil)
 }
 
 func (r *StubAMQPReceiver) Prefetched() *amqp.Message {

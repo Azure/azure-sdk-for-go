@@ -133,9 +133,9 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 		const name = "com.microsoft:session-filter"
 		const code = uint64(0x00000137000000C)
 		if link.sessionID == nil {
-			receiverOpts.Filters = append(receiverOpts.Filters, amqp.LinkFilterSource(name, code, nil))
+			receiverOpts.Filters = append(receiverOpts.Filters, amqp.NewLinkFilter(name, code, nil))
 		} else {
-			receiverOpts.Filters = append(receiverOpts.Filters, amqp.LinkFilterSource(name, code, link.sessionID))
+			receiverOpts.Filters = append(receiverOpts.Filters, amqp.NewLinkFilter(name, code, link.sessionID))
 		}
 	}
 
@@ -165,7 +165,7 @@ func (l *rpcLink) startResponseRouter() {
 	defer azlog.Writef(l.logEvent, responseRouterShutdownMessage)
 
 	for {
-		res, err := l.receiver.Receive(l.rpcLinkCtx)
+		res, err := l.receiver.Receive(l.rpcLinkCtx, nil)
 
 		if err != nil {
 			// if the link or connection has a malfunction that would require it to restart then
@@ -243,7 +243,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 		return nil, l.broadcastErr
 	}
 
-	err = l.sender.Send(ctx, msg)
+	err = l.sender.Send(ctx, msg, nil)
 
 	if err != nil {
 		l.deleteChannelFromMap(messageID)

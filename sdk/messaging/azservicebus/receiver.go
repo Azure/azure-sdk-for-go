@@ -485,20 +485,19 @@ func (e *entity) SetSubQueue(subQueue SubQueue) error {
 }
 
 func createLinkOptions(mode ReceiveMode) *amqp.ReceiverOptions {
-	receiveMode := amqp.ModeSecond
+	receiveMode := amqp.ReceiverSettleModeSecond
 
 	if mode == ReceiveModeReceiveAndDelete {
-		receiveMode = amqp.ModeFirst
+		receiveMode = amqp.ReceiverSettleModeFirst
 	}
 
 	receiverOpts := &amqp.ReceiverOptions{
 		SettlementMode: receiveMode.Ptr(),
-		ManualCredits:  true,
-		Credit:         defaultLinkRxBuffer,
+		Credit:         -1,
 	}
 
 	if mode == ReceiveModeReceiveAndDelete {
-		receiverOpts.RequestedSenderSettleMode = amqp.ModeSettled.Ptr()
+		receiverOpts.RequestedSenderSettleMode = amqp.SenderSettleModeSettled.Ptr()
 	}
 
 	return receiverOpts
@@ -531,7 +530,7 @@ func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AM
 	// so the user doesn't end up in a situation where we're holding onto a bunch
 	// of messages but never return because they never cancelled and we never
 	// received all 'count' number of messages.
-	firstMsg, err := receiver.Receive(parentCtx)
+	firstMsg, err := receiver.Receive(parentCtx, nil)
 
 	if err != nil {
 		// drain the prefetch buffer - we're stopping because of a
@@ -559,7 +558,7 @@ func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AM
 	var lastErr error
 
 	for i := 0; i < count-1; i++ {
-		msg, err := receiver.Receive(ctx)
+		msg, err := receiver.Receive(ctx, nil)
 
 		if err != nil {
 			lastErr = err
@@ -621,7 +620,7 @@ func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 
 		for {
 			// we might not have all the messages we need here.
-			msg, err := receiver.Receive(ctx)
+			msg, err := receiver.Receive(ctx, nil)
 
 			if err == nil {
 				err = receiver.ReleaseMessage(ctx, msg)

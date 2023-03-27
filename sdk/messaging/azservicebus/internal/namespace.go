@@ -193,12 +193,12 @@ func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, er
 		}
 
 		connOptions.HostName = ns.FQDN
-		client, err := amqp.New(nConn, &connOptions)
+		client, err := amqp.NewConn(ctx, nConn, &connOptions)
 
 		return &amqpwrap.AMQPClientWrapper{Inner: client, ID: id.String()}, err
 	}
 
-	client, err := amqp.Dial(ns.getAMQPHostURI(), &connOptions)
+	client, err := amqp.Dial(ctx, ns.getAMQPHostURI(), &connOptions)
 	return &amqpwrap.AMQPClientWrapper{Inner: client, ID: id.String()}, err
 }
 

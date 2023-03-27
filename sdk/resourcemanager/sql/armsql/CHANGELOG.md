@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.1-beta.1 (2023-03-27)
+### Other Changes
+
+
 ## 1.0.0 (2022-06-02)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

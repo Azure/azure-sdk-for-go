@@ -118,7 +118,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	}
 
 	var errorsLogged []error
-	var nextRefreshDurationChecks atomic.Int32
+	var nextRefreshDurationChecks int32
 
 	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
 		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Client{}}, nil
@@ -129,8 +129,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 		"my entity path",
 		cbsNegotiateClaim, func(expirationTimeParam, currentTime time.Time) time.Duration {
 			require.EqualValues(t, expires, expirationTimeParam)
-			updated := nextRefreshDurationChecks.Add(1)
-
+			updated := atomic.AddInt32(&nextRefreshDurationChecks, 1)
 			if updated == 1 {
 				return 0
 			}
@@ -142,7 +141,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	require.NoError(t, err)
 	time.Sleep(3 * time.Second) // make sure, even with variability, we get at least one renewal
 
-	require.EqualValues(t, 2, nextRefreshDurationChecks.Load())
+	require.EqualValues(t, 2, atomic.LoadInt32(&nextRefreshDurationChecks))
 	require.EqualValues(t, 2, cbsNegotiateClaimCalled)
 	require.Empty(t, errorsLogged)
 

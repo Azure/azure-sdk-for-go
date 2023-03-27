@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // ContainerAppsDiagnosticsClient contains the methods for the ContainerAppsDiagnostics group.
 // Don't use this type directly, use NewContainerAppsDiagnosticsClient() instead.
 type ContainerAppsDiagnosticsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewContainerAppsDiagnosticsClient creates a new instance of ContainerAppsDiagnosticsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewContainerAppsDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsDiagnosticsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ContainerAppsDiagnosticsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ContainerAppsDiagnosticsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // GetDetector - Get a diagnostics result of a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// containerAppName - Name of the Container App.
-// detectorName - Name of the Container App Detector.
-// options - ContainerAppsDiagnosticsClientGetDetectorOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.GetDetector
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - detectorName - Name of the Container App Detector.
+//   - options - ContainerAppsDiagnosticsClientGetDetectorOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.GetDetector
+//     method.
 func (client *ContainerAppsDiagnosticsClient) GetDetector(ctx context.Context, resourceGroupName string, containerAppName string, detectorName string, options *ContainerAppsDiagnosticsClientGetDetectorOptions) (ContainerAppsDiagnosticsClientGetDetectorResponse, error) {
 	req, err := client.getDetectorCreateRequest(ctx, resourceGroupName, containerAppName, detectorName, options)
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetDetectorResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetDetectorResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *ContainerAppsDiagnosticsClient) getDetectorCreateRequest(ctx conte
 		return nil, errors.New("parameter detectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{detectorName}", url.PathEscape(detectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,18 +109,19 @@ func (client *ContainerAppsDiagnosticsClient) getDetectorHandleResponse(resp *ht
 
 // GetRevision - Get a revision of a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// containerAppName - Name of the Container App.
-// revisionName - Name of the Container App Revision.
-// options - ContainerAppsDiagnosticsClientGetRevisionOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.GetRevision
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - revisionName - Name of the Container App Revision.
+//   - options - ContainerAppsDiagnosticsClientGetRevisionOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.GetRevision
+//     method.
 func (client *ContainerAppsDiagnosticsClient) GetRevision(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, options *ContainerAppsDiagnosticsClientGetRevisionOptions) (ContainerAppsDiagnosticsClientGetRevisionResponse, error) {
 	req, err := client.getRevisionCreateRequest(ctx, resourceGroupName, containerAppName, revisionName, options)
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetRevisionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetRevisionResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *ContainerAppsDiagnosticsClient) getRevisionCreateRequest(ctx conte
 		return nil, errors.New("parameter revisionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{revisionName}", url.PathEscape(revisionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,17 +172,18 @@ func (client *ContainerAppsDiagnosticsClient) getRevisionHandleResponse(resp *ht
 
 // GetRoot - Get the properties of a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// containerAppName - Name of the Container App.
-// options - ContainerAppsDiagnosticsClientGetRootOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.GetRoot
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - options - ContainerAppsDiagnosticsClientGetRootOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.GetRoot
+//     method.
 func (client *ContainerAppsDiagnosticsClient) GetRoot(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsDiagnosticsClientGetRootOptions) (ContainerAppsDiagnosticsClientGetRootResponse, error) {
 	req, err := client.getRootCreateRequest(ctx, resourceGroupName, containerAppName, options)
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetRootResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetRootResponse{}, err
 	}
@@ -216,7 +208,7 @@ func (client *ContainerAppsDiagnosticsClient) getRootCreateRequest(ctx context.C
 		return nil, errors.New("parameter containerAppName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -237,11 +229,12 @@ func (client *ContainerAppsDiagnosticsClient) getRootHandleResponse(resp *http.R
 }
 
 // NewListDetectorsPager - Get the list of diagnostics for a given Container App.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// containerAppName - Name of the Container App for which detector info is needed.
-// options - ContainerAppsDiagnosticsClientListDetectorsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.ListDetectors
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App for which detector info is needed.
+//   - options - ContainerAppsDiagnosticsClientListDetectorsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.NewListDetectorsPager
+//     method.
 func (client *ContainerAppsDiagnosticsClient) NewListDetectorsPager(resourceGroupName string, containerAppName string, options *ContainerAppsDiagnosticsClientListDetectorsOptions) *runtime.Pager[ContainerAppsDiagnosticsClientListDetectorsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContainerAppsDiagnosticsClientListDetectorsResponse]{
 		More: func(page ContainerAppsDiagnosticsClientListDetectorsResponse) bool {
@@ -258,7 +251,7 @@ func (client *ContainerAppsDiagnosticsClient) NewListDetectorsPager(resourceGrou
 			if err != nil {
 				return ContainerAppsDiagnosticsClientListDetectorsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ContainerAppsDiagnosticsClientListDetectorsResponse{}, err
 			}
@@ -285,7 +278,7 @@ func (client *ContainerAppsDiagnosticsClient) listDetectorsCreateRequest(ctx con
 		return nil, errors.New("parameter containerAppName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -306,11 +299,12 @@ func (client *ContainerAppsDiagnosticsClient) listDetectorsHandleResponse(resp *
 }
 
 // NewListRevisionsPager - Get the Revisions for a given Container App.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// containerAppName - Name of the Container App for which Revisions are needed.
-// options - ContainerAppsDiagnosticsClientListRevisionsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.ListRevisions
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App for which Revisions are needed.
+//   - options - ContainerAppsDiagnosticsClientListRevisionsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.NewListRevisionsPager
+//     method.
 func (client *ContainerAppsDiagnosticsClient) NewListRevisionsPager(resourceGroupName string, containerAppName string, options *ContainerAppsDiagnosticsClientListRevisionsOptions) *runtime.Pager[ContainerAppsDiagnosticsClientListRevisionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContainerAppsDiagnosticsClientListRevisionsResponse]{
 		More: func(page ContainerAppsDiagnosticsClientListRevisionsResponse) bool {
@@ -327,7 +321,7 @@ func (client *ContainerAppsDiagnosticsClient) NewListRevisionsPager(resourceGrou
 			if err != nil {
 				return ContainerAppsDiagnosticsClientListRevisionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ContainerAppsDiagnosticsClientListRevisionsResponse{}, err
 			}
@@ -354,7 +348,7 @@ func (client *ContainerAppsDiagnosticsClient) listRevisionsCreateRequest(ctx con
 		return nil, errors.New("parameter containerAppName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

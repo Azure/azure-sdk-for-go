@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // CertificatesClient contains the methods for the Certificates group.
 // Don't use this type directly, use NewCertificatesClient() instead.
 type CertificatesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCertificatesClient creates a new instance of CertificatesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificatesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CertificatesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CertificatesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or Update a Certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// environmentName - Name of the Managed Environment.
-// certificateName - Name of the Certificate.
-// options - CertificatesClientCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - certificateName - Name of the Certificate.
+//   - options - CertificatesClientCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.CreateOrUpdate
+//     method.
 func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, certificateName string, options *CertificatesClientCreateOrUpdateOptions) (CertificatesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, environmentName, certificateName, options)
 	if err != nil {
 		return CertificatesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificatesClientCreateOrUpdateResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,17 +112,18 @@ func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Deletes the specified Certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// environmentName - Name of the Managed Environment.
-// certificateName - Name of the Certificate.
-// options - CertificatesClientDeleteOptions contains the optional parameters for the CertificatesClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - certificateName - Name of the Certificate.
+//   - options - CertificatesClientDeleteOptions contains the optional parameters for the CertificatesClient.Delete method.
 func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName string, environmentName string, certificateName string, options *CertificatesClientDeleteOptions) (CertificatesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, environmentName, certificateName, options)
 	if err != nil {
 		return CertificatesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificatesClientDeleteResponse{}, err
 	}
@@ -161,7 +152,7 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,17 +165,18 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 
 // Get - Get the specified Certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// environmentName - Name of the Managed Environment.
-// certificateName - Name of the Certificate.
-// options - CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - certificateName - Name of the Certificate.
+//   - options - CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
 func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName string, environmentName string, certificateName string, options *CertificatesClientGetOptions) (CertificatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, environmentName, certificateName, options)
 	if err != nil {
 		return CertificatesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificatesClientGetResponse{}, err
 	}
@@ -213,7 +205,7 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -234,10 +226,11 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 }
 
 // NewListPager - Get the Certificates in a given managed environment.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// environmentName - Name of the Managed Environment.
-// options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
 func (client *CertificatesClient) NewListPager(resourceGroupName string, environmentName string, options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CertificatesClientListResponse]{
 		More: func(page CertificatesClientListResponse) bool {
@@ -254,7 +247,7 @@ func (client *CertificatesClient) NewListPager(resourceGroupName string, environ
 			if err != nil {
 				return CertificatesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CertificatesClientListResponse{}, err
 			}
@@ -281,7 +274,7 @@ func (client *CertificatesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter environmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -303,18 +296,19 @@ func (client *CertificatesClient) listHandleResponse(resp *http.Response) (Certi
 
 // Update - Patches a certificate. Currently only patching of tags is supported
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// environmentName - Name of the Managed Environment.
-// certificateName - Name of the Certificate.
-// certificateEnvelope - Properties of a certificate that need to be updated
-// options - CertificatesClientUpdateOptions contains the optional parameters for the CertificatesClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - certificateName - Name of the Certificate.
+//   - certificateEnvelope - Properties of a certificate that need to be updated
+//   - options - CertificatesClientUpdateOptions contains the optional parameters for the CertificatesClient.Update method.
 func (client *CertificatesClient) Update(ctx context.Context, resourceGroupName string, environmentName string, certificateName string, certificateEnvelope CertificatePatch, options *CertificatesClientUpdateOptions) (CertificatesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, environmentName, certificateName, certificateEnvelope, options)
 	if err != nil {
 		return CertificatesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificatesClientUpdateResponse{}, err
 	}
@@ -343,7 +337,7 @@ func (client *CertificatesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

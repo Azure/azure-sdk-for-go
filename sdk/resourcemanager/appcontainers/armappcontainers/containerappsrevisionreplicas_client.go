@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // ContainerAppsRevisionReplicasClient contains the methods for the ContainerAppsRevisionReplicas group.
 // Don't use this type directly, use NewContainerAppsRevisionReplicasClient() instead.
 type ContainerAppsRevisionReplicasClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewContainerAppsRevisionReplicasClient creates a new instance of ContainerAppsRevisionReplicasClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewContainerAppsRevisionReplicasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsRevisionReplicasClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ContainerAppsRevisionReplicasClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ContainerAppsRevisionReplicasClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // GetReplica - Get a replica for a Container App Revision.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// containerAppName - Name of the Container App.
-// revisionName - Name of the Container App Revision.
-// replicaName - Name of the Container App Revision Replica.
-// options - ContainerAppsRevisionReplicasClientGetReplicaOptions contains the optional parameters for the ContainerAppsRevisionReplicasClient.GetReplica
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - revisionName - Name of the Container App Revision.
+//   - replicaName - Name of the Container App Revision Replica.
+//   - options - ContainerAppsRevisionReplicasClientGetReplicaOptions contains the optional parameters for the ContainerAppsRevisionReplicasClient.GetReplica
+//     method.
 func (client *ContainerAppsRevisionReplicasClient) GetReplica(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, replicaName string, options *ContainerAppsRevisionReplicasClientGetReplicaOptions) (ContainerAppsRevisionReplicasClientGetReplicaResponse, error) {
 	req, err := client.getReplicaCreateRequest(ctx, resourceGroupName, containerAppName, revisionName, replicaName, options)
 	if err != nil {
 		return ContainerAppsRevisionReplicasClientGetReplicaResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsRevisionReplicasClientGetReplicaResponse{}, err
 	}
@@ -102,7 +92,7 @@ func (client *ContainerAppsRevisionReplicasClient) getReplicaCreateRequest(ctx c
 		return nil, errors.New("parameter replicaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{replicaName}", url.PathEscape(replicaName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,18 +114,19 @@ func (client *ContainerAppsRevisionReplicasClient) getReplicaHandleResponse(resp
 
 // ListReplicas - List replicas for a Container App Revision.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// containerAppName - Name of the Container App.
-// revisionName - Name of the Container App Revision.
-// options - ContainerAppsRevisionReplicasClientListReplicasOptions contains the optional parameters for the ContainerAppsRevisionReplicasClient.ListReplicas
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - revisionName - Name of the Container App Revision.
+//   - options - ContainerAppsRevisionReplicasClientListReplicasOptions contains the optional parameters for the ContainerAppsRevisionReplicasClient.ListReplicas
+//     method.
 func (client *ContainerAppsRevisionReplicasClient) ListReplicas(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, options *ContainerAppsRevisionReplicasClientListReplicasOptions) (ContainerAppsRevisionReplicasClientListReplicasResponse, error) {
 	req, err := client.listReplicasCreateRequest(ctx, resourceGroupName, containerAppName, revisionName, options)
 	if err != nil {
 		return ContainerAppsRevisionReplicasClientListReplicasResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerAppsRevisionReplicasClientListReplicasResponse{}, err
 	}
@@ -164,7 +155,7 @@ func (client *ContainerAppsRevisionReplicasClient) listReplicasCreateRequest(ctx
 		return nil, errors.New("parameter revisionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{revisionName}", url.PathEscape(revisionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

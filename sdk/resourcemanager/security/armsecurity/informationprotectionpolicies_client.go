@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,47 +24,39 @@ import (
 // InformationProtectionPoliciesClient contains the methods for the InformationProtectionPolicies group.
 // Don't use this type directly, use NewInformationProtectionPoliciesClient() instead.
 type InformationProtectionPoliciesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewInformationProtectionPoliciesClient creates a new instance of InformationProtectionPoliciesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*InformationProtectionPoliciesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".InformationProtectionPoliciesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &InformationProtectionPoliciesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Details of the information protection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-08-01-preview
-// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
-// (/providers/Microsoft.Management/managementGroups/mgName).
-// informationProtectionPolicyName - Name of the information protection policy.
-// informationProtectionPolicy - Information protection policy.
-// options - InformationProtectionPoliciesClientCreateOrUpdateOptions contains the optional parameters for the InformationProtectionPoliciesClient.CreateOrUpdate
-// method.
+//   - scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+//     (/providers/Microsoft.Management/managementGroups/mgName).
+//   - informationProtectionPolicyName - Name of the information protection policy.
+//   - informationProtectionPolicy - Information protection policy.
+//   - options - InformationProtectionPoliciesClientCreateOrUpdateOptions contains the optional parameters for the InformationProtectionPoliciesClient.CreateOrUpdate
+//     method.
 func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName InformationProtectionPolicyName, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesClientCreateOrUpdateOptions) (InformationProtectionPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, informationProtectionPolicyName, informationProtectionPolicy, options)
 	if err != nil {
 		return InformationProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return InformationProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -84,7 +74,7 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(c
 		return nil, errors.New("parameter informationProtectionPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{informationProtectionPolicyName}", url.PathEscape(string(informationProtectionPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -106,18 +96,19 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateHandleResponse(
 
 // Get - Details of the information protection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-08-01-preview
-// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
-// (/providers/Microsoft.Management/managementGroups/mgName).
-// informationProtectionPolicyName - Name of the information protection policy.
-// options - InformationProtectionPoliciesClientGetOptions contains the optional parameters for the InformationProtectionPoliciesClient.Get
-// method.
+//   - scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+//     (/providers/Microsoft.Management/managementGroups/mgName).
+//   - informationProtectionPolicyName - Name of the information protection policy.
+//   - options - InformationProtectionPoliciesClientGetOptions contains the optional parameters for the InformationProtectionPoliciesClient.Get
+//     method.
 func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scope string, informationProtectionPolicyName InformationProtectionPolicyName, options *InformationProtectionPoliciesClientGetOptions) (InformationProtectionPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, informationProtectionPolicyName, options)
 	if err != nil {
 		return InformationProtectionPoliciesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return InformationProtectionPoliciesClientGetResponse{}, err
 	}
@@ -135,7 +126,7 @@ func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter informationProtectionPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{informationProtectionPolicyName}", url.PathEscape(string(informationProtectionPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,11 +147,12 @@ func (client *InformationProtectionPoliciesClient) getHandleResponse(resp *http.
 }
 
 // NewListPager - Information protection policies of a specific management group.
+//
 // Generated from API version 2017-08-01-preview
-// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
-// (/providers/Microsoft.Management/managementGroups/mgName).
-// options - InformationProtectionPoliciesClientListOptions contains the optional parameters for the InformationProtectionPoliciesClient.List
-// method.
+//   - scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+//     (/providers/Microsoft.Management/managementGroups/mgName).
+//   - options - InformationProtectionPoliciesClientListOptions contains the optional parameters for the InformationProtectionPoliciesClient.NewListPager
+//     method.
 func (client *InformationProtectionPoliciesClient) NewListPager(scope string, options *InformationProtectionPoliciesClientListOptions) *runtime.Pager[InformationProtectionPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InformationProtectionPoliciesClientListResponse]{
 		More: func(page InformationProtectionPoliciesClientListResponse) bool {
@@ -177,7 +169,7 @@ func (client *InformationProtectionPoliciesClient) NewListPager(scope string, op
 			if err != nil {
 				return InformationProtectionPoliciesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return InformationProtectionPoliciesClientListResponse{}, err
 			}
@@ -193,7 +185,7 @@ func (client *InformationProtectionPoliciesClient) NewListPager(scope string, op
 func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context.Context, scope string, options *InformationProtectionPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

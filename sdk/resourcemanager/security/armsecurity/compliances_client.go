@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,45 +24,37 @@ import (
 // CompliancesClient contains the methods for the Compliances group.
 // Don't use this type directly, use NewCompliancesClient() instead.
 type CompliancesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewCompliancesClient creates a new instance of CompliancesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCompliancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CompliancesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CompliancesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CompliancesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Details of a specific Compliance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-08-01-preview
-// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
-// (/providers/Microsoft.Management/managementGroups/mgName).
-// complianceName - name of the Compliance
-// options - CompliancesClientGetOptions contains the optional parameters for the CompliancesClient.Get method.
+//   - scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+//     (/providers/Microsoft.Management/managementGroups/mgName).
+//   - complianceName - name of the Compliance
+//   - options - CompliancesClientGetOptions contains the optional parameters for the CompliancesClient.Get method.
 func (client *CompliancesClient) Get(ctx context.Context, scope string, complianceName string, options *CompliancesClientGetOptions) (CompliancesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, complianceName, options)
 	if err != nil {
 		return CompliancesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CompliancesClientGetResponse{}, err
 	}
@@ -82,7 +72,7 @@ func (client *CompliancesClient) getCreateRequest(ctx context.Context, scope str
 		return nil, errors.New("parameter complianceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{complianceName}", url.PathEscape(complianceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -103,10 +93,11 @@ func (client *CompliancesClient) getHandleResponse(resp *http.Response) (Complia
 }
 
 // NewListPager - The Compliance scores of the specific management group.
+//
 // Generated from API version 2017-08-01-preview
-// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
-// (/providers/Microsoft.Management/managementGroups/mgName).
-// options - CompliancesClientListOptions contains the optional parameters for the CompliancesClient.List method.
+//   - scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+//     (/providers/Microsoft.Management/managementGroups/mgName).
+//   - options - CompliancesClientListOptions contains the optional parameters for the CompliancesClient.NewListPager method.
 func (client *CompliancesClient) NewListPager(scope string, options *CompliancesClientListOptions) *runtime.Pager[CompliancesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CompliancesClientListResponse]{
 		More: func(page CompliancesClientListResponse) bool {
@@ -123,7 +114,7 @@ func (client *CompliancesClient) NewListPager(scope string, options *Compliances
 			if err != nil {
 				return CompliancesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CompliancesClientListResponse{}, err
 			}
@@ -139,7 +130,7 @@ func (client *CompliancesClient) NewListPager(scope string, options *Compliances
 func (client *CompliancesClient) listCreateRequest(ctx context.Context, scope string, options *CompliancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/compliances"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

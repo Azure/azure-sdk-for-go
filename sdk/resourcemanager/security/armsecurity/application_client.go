@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // ApplicationClient contains the methods for the Application group.
 // Don't use this type directly, use NewApplicationClient() instead.
 type ApplicationClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewApplicationClient creates a new instance of ApplicationClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ApplicationClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ApplicationClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or update a security application on the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// applicationID - The security Application key - unique key for the standard application
-// application - Application over a subscription scope
-// options - ApplicationClientCreateOrUpdateOptions contains the optional parameters for the ApplicationClient.CreateOrUpdate
-// method.
+//   - applicationID - The security Application key - unique key for the standard application
+//   - application - Application over a subscription scope
+//   - options - ApplicationClientCreateOrUpdateOptions contains the optional parameters for the ApplicationClient.CreateOrUpdate
+//     method.
 func (client *ApplicationClient) CreateOrUpdate(ctx context.Context, applicationID string, application Application, options *ApplicationClientCreateOrUpdateOptions) (ApplicationClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, applicationID, application, options)
 	if err != nil {
 		return ApplicationClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ApplicationClientCreateOrUpdateResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *ApplicationClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter applicationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationId}", url.PathEscape(applicationID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,15 +100,16 @@ func (client *ApplicationClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Delete an Application over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// applicationID - The security Application key - unique key for the standard application
-// options - ApplicationClientDeleteOptions contains the optional parameters for the ApplicationClient.Delete method.
+//   - applicationID - The security Application key - unique key for the standard application
+//   - options - ApplicationClientDeleteOptions contains the optional parameters for the ApplicationClient.Delete method.
 func (client *ApplicationClient) Delete(ctx context.Context, applicationID string, options *ApplicationClientDeleteOptions) (ApplicationClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, applicationID, options)
 	if err != nil {
 		return ApplicationClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ApplicationClientDeleteResponse{}, err
 	}
@@ -139,7 +130,7 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, applic
 		return nil, errors.New("parameter applicationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationId}", url.PathEscape(applicationID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,15 +142,16 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, applic
 
 // Get - Get a specific application for the requested scope by applicationId
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// applicationID - The security Application key - unique key for the standard application
-// options - ApplicationClientGetOptions contains the optional parameters for the ApplicationClient.Get method.
+//   - applicationID - The security Application key - unique key for the standard application
+//   - options - ApplicationClientGetOptions contains the optional parameters for the ApplicationClient.Get method.
 func (client *ApplicationClient) Get(ctx context.Context, applicationID string, options *ApplicationClientGetOptions) (ApplicationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, applicationID, options)
 	if err != nil {
 		return ApplicationClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ApplicationClientGetResponse{}, err
 	}
@@ -180,7 +172,7 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, applicati
 		return nil, errors.New("parameter applicationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationId}", url.PathEscape(applicationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

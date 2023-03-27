@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,47 +24,39 @@ import (
 // ContactsClient contains the methods for the SecurityContacts group.
 // Don't use this type directly, use NewContactsClient() instead.
 type ContactsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewContactsClient creates a new instance of ContactsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewContactsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContactsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ContactsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ContactsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Create security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01-preview
-// securityContactName - Name of the security contact object
-// securityContact - Security contact object
-// options - ContactsClientCreateOptions contains the optional parameters for the ContactsClient.Create method.
+//   - securityContactName - Name of the security contact object
+//   - securityContact - Security contact object
+//   - options - ContactsClientCreateOptions contains the optional parameters for the ContactsClient.Create method.
 func (client *ContactsClient) Create(ctx context.Context, securityContactName string, securityContact Contact, options *ContactsClientCreateOptions) (ContactsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, securityContactName, securityContact, options)
 	if err != nil {
 		return ContactsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContactsClientCreateResponse{}, err
 	}
@@ -87,7 +77,7 @@ func (client *ContactsClient) createCreateRequest(ctx context.Context, securityC
 		return nil, errors.New("parameter securityContactName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{securityContactName}", url.PathEscape(securityContactName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,15 +99,16 @@ func (client *ContactsClient) createHandleResponse(resp *http.Response) (Contact
 
 // Delete - Delete security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01-preview
-// securityContactName - Name of the security contact object
-// options - ContactsClientDeleteOptions contains the optional parameters for the ContactsClient.Delete method.
+//   - securityContactName - Name of the security contact object
+//   - options - ContactsClientDeleteOptions contains the optional parameters for the ContactsClient.Delete method.
 func (client *ContactsClient) Delete(ctx context.Context, securityContactName string, options *ContactsClientDeleteOptions) (ContactsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, securityContactName, options)
 	if err != nil {
 		return ContactsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContactsClientDeleteResponse{}, err
 	}
@@ -138,7 +129,7 @@ func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityC
 		return nil, errors.New("parameter securityContactName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{securityContactName}", url.PathEscape(securityContactName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,15 +142,16 @@ func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityC
 
 // Get - Get Default Security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01-preview
-// securityContactName - Name of the security contact object
-// options - ContactsClientGetOptions contains the optional parameters for the ContactsClient.Get method.
+//   - securityContactName - Name of the security contact object
+//   - options - ContactsClientGetOptions contains the optional parameters for the ContactsClient.Get method.
 func (client *ContactsClient) Get(ctx context.Context, securityContactName string, options *ContactsClientGetOptions) (ContactsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, securityContactName, options)
 	if err != nil {
 		return ContactsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContactsClientGetResponse{}, err
 	}
@@ -180,7 +172,7 @@ func (client *ContactsClient) getCreateRequest(ctx context.Context, securityCont
 		return nil, errors.New("parameter securityContactName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{securityContactName}", url.PathEscape(securityContactName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -201,8 +193,9 @@ func (client *ContactsClient) getHandleResponse(resp *http.Response) (ContactsCl
 }
 
 // NewListPager - List all security contact configurations for the subscription
+//
 // Generated from API version 2020-01-01-preview
-// options - ContactsClientListOptions contains the optional parameters for the ContactsClient.List method.
+//   - options - ContactsClientListOptions contains the optional parameters for the ContactsClient.NewListPager method.
 func (client *ContactsClient) NewListPager(options *ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContactsClientListResponse]{
 		More: func(page ContactsClientListResponse) bool {
@@ -219,7 +212,7 @@ func (client *ContactsClient) NewListPager(options *ContactsClientListOptions) *
 			if err != nil {
 				return ContactsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ContactsClientListResponse{}, err
 			}
@@ -238,7 +231,7 @@ func (client *ContactsClient) listCreateRequest(ctx context.Context, options *Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

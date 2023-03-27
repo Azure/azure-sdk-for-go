@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // AccountConnectorsClient contains the methods for the AccountConnectors group.
 // Don't use this type directly, use NewAccountConnectorsClient() instead.
 type AccountConnectorsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAccountConnectorsClient creates a new instance of AccountConnectorsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAccountConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountConnectorsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AccountConnectorsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AccountConnectorsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -59,17 +48,18 @@ func NewAccountConnectorsClient(subscriptionID string, credential azcore.TokenCr
 // either account credentials or role-based authentication. For GCP, use account organization
 // credentials.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01-preview
-// connectorName - Name of the cloud account connector
-// connectorSetting - Settings for the cloud account connector
-// options - AccountConnectorsClientCreateOrUpdateOptions contains the optional parameters for the AccountConnectorsClient.CreateOrUpdate
-// method.
+//   - connectorName - Name of the cloud account connector
+//   - connectorSetting - Settings for the cloud account connector
+//   - options - AccountConnectorsClientCreateOrUpdateOptions contains the optional parameters for the AccountConnectorsClient.CreateOrUpdate
+//     method.
 func (client *AccountConnectorsClient) CreateOrUpdate(ctx context.Context, connectorName string, connectorSetting ConnectorSetting, options *AccountConnectorsClientCreateOrUpdateOptions) (AccountConnectorsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, connectorName, connectorSetting, options)
 	if err != nil {
 		return AccountConnectorsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountConnectorsClientCreateOrUpdateResponse{}, err
 	}
@@ -90,7 +80,7 @@ func (client *AccountConnectorsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter connectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -112,16 +102,17 @@ func (client *AccountConnectorsClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Delete a cloud account connector from a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01-preview
-// connectorName - Name of the cloud account connector
-// options - AccountConnectorsClientDeleteOptions contains the optional parameters for the AccountConnectorsClient.Delete
-// method.
+//   - connectorName - Name of the cloud account connector
+//   - options - AccountConnectorsClientDeleteOptions contains the optional parameters for the AccountConnectorsClient.Delete
+//     method.
 func (client *AccountConnectorsClient) Delete(ctx context.Context, connectorName string, options *AccountConnectorsClientDeleteOptions) (AccountConnectorsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, connectorName, options)
 	if err != nil {
 		return AccountConnectorsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountConnectorsClientDeleteResponse{}, err
 	}
@@ -142,7 +133,7 @@ func (client *AccountConnectorsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter connectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,15 +146,16 @@ func (client *AccountConnectorsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Details of a specific cloud account connector
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01-preview
-// connectorName - Name of the cloud account connector
-// options - AccountConnectorsClientGetOptions contains the optional parameters for the AccountConnectorsClient.Get method.
+//   - connectorName - Name of the cloud account connector
+//   - options - AccountConnectorsClientGetOptions contains the optional parameters for the AccountConnectorsClient.Get method.
 func (client *AccountConnectorsClient) Get(ctx context.Context, connectorName string, options *AccountConnectorsClientGetOptions) (AccountConnectorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, connectorName, options)
 	if err != nil {
 		return AccountConnectorsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountConnectorsClientGetResponse{}, err
 	}
@@ -184,7 +176,7 @@ func (client *AccountConnectorsClient) getCreateRequest(ctx context.Context, con
 		return nil, errors.New("parameter connectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -205,8 +197,10 @@ func (client *AccountConnectorsClient) getHandleResponse(resp *http.Response) (A
 }
 
 // NewListPager - Cloud accounts connectors of a subscription
+//
 // Generated from API version 2020-01-01-preview
-// options - AccountConnectorsClientListOptions contains the optional parameters for the AccountConnectorsClient.List method.
+//   - options - AccountConnectorsClientListOptions contains the optional parameters for the AccountConnectorsClient.NewListPager
+//     method.
 func (client *AccountConnectorsClient) NewListPager(options *AccountConnectorsClientListOptions) *runtime.Pager[AccountConnectorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountConnectorsClientListResponse]{
 		More: func(page AccountConnectorsClientListResponse) bool {
@@ -223,7 +217,7 @@ func (client *AccountConnectorsClient) NewListPager(options *AccountConnectorsCl
 			if err != nil {
 				return AccountConnectorsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AccountConnectorsClientListResponse{}, err
 			}
@@ -242,7 +236,7 @@ func (client *AccountConnectorsClient) listCreateRequest(ctx context.Context, op
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,41 +24,33 @@ import (
 // ConnectorApplicationsClient contains the methods for the SecurityConnectorApplications group.
 // Don't use this type directly, use NewConnectorApplicationsClient() instead.
 type ConnectorApplicationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewConnectorApplicationsClient creates a new instance of ConnectorApplicationsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewConnectorApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorApplicationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ConnectorApplicationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ConnectorApplicationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Get a list of all relevant applications over a security connector level scope
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// securityConnectorName - The security connector name.
-// options - ConnectorApplicationsClientListOptions contains the optional parameters for the ConnectorApplicationsClient.List
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - options - ConnectorApplicationsClientListOptions contains the optional parameters for the ConnectorApplicationsClient.NewListPager
+//     method.
 func (client *ConnectorApplicationsClient) NewListPager(resourceGroupName string, securityConnectorName string, options *ConnectorApplicationsClientListOptions) *runtime.Pager[ConnectorApplicationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConnectorApplicationsClientListResponse]{
 		More: func(page ConnectorApplicationsClientListResponse) bool {
@@ -77,7 +67,7 @@ func (client *ConnectorApplicationsClient) NewListPager(resourceGroupName string
 			if err != nil {
 				return ConnectorApplicationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ConnectorApplicationsClientListResponse{}, err
 			}
@@ -104,7 +94,7 @@ func (client *ConnectorApplicationsClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter securityConnectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

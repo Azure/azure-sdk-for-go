@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // WorkspaceSettingsClient contains the methods for the WorkspaceSettings group.
 // Don't use this type directly, use NewWorkspaceSettingsClient() instead.
 type WorkspaceSettingsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkspaceSettingsClient creates a new instance of WorkspaceSettingsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWorkspaceSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceSettingsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkspaceSettingsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkspaceSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - creating settings about where we should store your security data and logs
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-08-01-preview
-// workspaceSettingName - Name of the security setting
-// workspaceSetting - Security data setting object
-// options - WorkspaceSettingsClientCreateOptions contains the optional parameters for the WorkspaceSettingsClient.Create
-// method.
+//   - workspaceSettingName - Name of the security setting
+//   - workspaceSetting - Security data setting object
+//   - options - WorkspaceSettingsClientCreateOptions contains the optional parameters for the WorkspaceSettingsClient.Create
+//     method.
 func (client *WorkspaceSettingsClient) Create(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsClientCreateOptions) (WorkspaceSettingsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, workspaceSettingName, workspaceSetting, options)
 	if err != nil {
 		return WorkspaceSettingsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkspaceSettingsClientCreateResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter workspaceSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceSettingName}", url.PathEscape(workspaceSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,16 +100,17 @@ func (client *WorkspaceSettingsClient) createHandleResponse(resp *http.Response)
 
 // Delete - Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-08-01-preview
-// workspaceSettingName - Name of the security setting
-// options - WorkspaceSettingsClientDeleteOptions contains the optional parameters for the WorkspaceSettingsClient.Delete
-// method.
+//   - workspaceSettingName - Name of the security setting
+//   - options - WorkspaceSettingsClientDeleteOptions contains the optional parameters for the WorkspaceSettingsClient.Delete
+//     method.
 func (client *WorkspaceSettingsClient) Delete(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsClientDeleteOptions) (WorkspaceSettingsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, workspaceSettingName, options)
 	if err != nil {
 		return WorkspaceSettingsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkspaceSettingsClientDeleteResponse{}, err
 	}
@@ -140,7 +131,7 @@ func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter workspaceSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceSettingName}", url.PathEscape(workspaceSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -154,15 +145,16 @@ func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, 
 // Get - Settings about where we should store your security data and logs. If the result is empty, it means that no custom-workspace
 // configuration was set
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-08-01-preview
-// workspaceSettingName - Name of the security setting
-// options - WorkspaceSettingsClientGetOptions contains the optional parameters for the WorkspaceSettingsClient.Get method.
+//   - workspaceSettingName - Name of the security setting
+//   - options - WorkspaceSettingsClientGetOptions contains the optional parameters for the WorkspaceSettingsClient.Get method.
 func (client *WorkspaceSettingsClient) Get(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsClientGetOptions) (WorkspaceSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, workspaceSettingName, options)
 	if err != nil {
 		return WorkspaceSettingsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkspaceSettingsClientGetResponse{}, err
 	}
@@ -183,7 +175,7 @@ func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, wor
 		return nil, errors.New("parameter workspaceSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceSettingName}", url.PathEscape(workspaceSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -205,8 +197,10 @@ func (client *WorkspaceSettingsClient) getHandleResponse(resp *http.Response) (W
 
 // NewListPager - Settings about where we should store your security data and logs. If the result is empty, it means that
 // no custom-workspace configuration was set
+//
 // Generated from API version 2017-08-01-preview
-// options - WorkspaceSettingsClientListOptions contains the optional parameters for the WorkspaceSettingsClient.List method.
+//   - options - WorkspaceSettingsClientListOptions contains the optional parameters for the WorkspaceSettingsClient.NewListPager
+//     method.
 func (client *WorkspaceSettingsClient) NewListPager(options *WorkspaceSettingsClientListOptions) *runtime.Pager[WorkspaceSettingsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkspaceSettingsClientListResponse]{
 		More: func(page WorkspaceSettingsClientListResponse) bool {
@@ -223,7 +217,7 @@ func (client *WorkspaceSettingsClient) NewListPager(options *WorkspaceSettingsCl
 			if err != nil {
 				return WorkspaceSettingsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkspaceSettingsClientListResponse{}, err
 			}
@@ -242,7 +236,7 @@ func (client *WorkspaceSettingsClient) listCreateRequest(ctx context.Context, op
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -264,17 +258,18 @@ func (client *WorkspaceSettingsClient) listHandleResponse(resp *http.Response) (
 
 // Update - Settings about where we should store your security data and logs
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-08-01-preview
-// workspaceSettingName - Name of the security setting
-// workspaceSetting - Security data setting object
-// options - WorkspaceSettingsClientUpdateOptions contains the optional parameters for the WorkspaceSettingsClient.Update
-// method.
+//   - workspaceSettingName - Name of the security setting
+//   - workspaceSetting - Security data setting object
+//   - options - WorkspaceSettingsClientUpdateOptions contains the optional parameters for the WorkspaceSettingsClient.Update
+//     method.
 func (client *WorkspaceSettingsClient) Update(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsClientUpdateOptions) (WorkspaceSettingsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, workspaceSettingName, workspaceSetting, options)
 	if err != nil {
 		return WorkspaceSettingsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkspaceSettingsClientUpdateResponse{}, err
 	}
@@ -295,7 +290,7 @@ func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter workspaceSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceSettingName}", url.PathEscape(workspaceSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

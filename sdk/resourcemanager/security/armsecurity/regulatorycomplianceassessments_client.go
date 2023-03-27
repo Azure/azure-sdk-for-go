@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // RegulatoryComplianceAssessmentsClient contains the methods for the RegulatoryComplianceAssessments group.
 // Don't use this type directly, use NewRegulatoryComplianceAssessmentsClient() instead.
 type RegulatoryComplianceAssessmentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRegulatoryComplianceAssessmentsClient creates a new instance of RegulatoryComplianceAssessmentsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegulatoryComplianceAssessmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RegulatoryComplianceAssessmentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RegulatoryComplianceAssessmentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Supported regulatory compliance details and state for selected assessment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-01-01-preview
-// regulatoryComplianceStandardName - Name of the regulatory compliance standard object
-// regulatoryComplianceControlName - Name of the regulatory compliance control object
-// regulatoryComplianceAssessmentName - Name of the regulatory compliance assessment object
-// options - RegulatoryComplianceAssessmentsClientGetOptions contains the optional parameters for the RegulatoryComplianceAssessmentsClient.Get
-// method.
+//   - regulatoryComplianceStandardName - Name of the regulatory compliance standard object
+//   - regulatoryComplianceControlName - Name of the regulatory compliance control object
+//   - regulatoryComplianceAssessmentName - Name of the regulatory compliance assessment object
+//   - options - RegulatoryComplianceAssessmentsClientGetOptions contains the optional parameters for the RegulatoryComplianceAssessmentsClient.Get
+//     method.
 func (client *RegulatoryComplianceAssessmentsClient) Get(ctx context.Context, regulatoryComplianceStandardName string, regulatoryComplianceControlName string, regulatoryComplianceAssessmentName string, options *RegulatoryComplianceAssessmentsClientGetOptions) (RegulatoryComplianceAssessmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, regulatoryComplianceStandardName, regulatoryComplianceControlName, regulatoryComplianceAssessmentName, options)
 	if err != nil {
 		return RegulatoryComplianceAssessmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RegulatoryComplianceAssessmentsClientGetResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *RegulatoryComplianceAssessmentsClient) getCreateRequest(ctx contex
 		return nil, errors.New("parameter regulatoryComplianceAssessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{regulatoryComplianceAssessmentName}", url.PathEscape(regulatoryComplianceAssessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -118,11 +108,12 @@ func (client *RegulatoryComplianceAssessmentsClient) getHandleResponse(resp *htt
 }
 
 // NewListPager - Details and state of assessments mapped to selected regulatory compliance control
+//
 // Generated from API version 2019-01-01-preview
-// regulatoryComplianceStandardName - Name of the regulatory compliance standard object
-// regulatoryComplianceControlName - Name of the regulatory compliance control object
-// options - RegulatoryComplianceAssessmentsClientListOptions contains the optional parameters for the RegulatoryComplianceAssessmentsClient.List
-// method.
+//   - regulatoryComplianceStandardName - Name of the regulatory compliance standard object
+//   - regulatoryComplianceControlName - Name of the regulatory compliance control object
+//   - options - RegulatoryComplianceAssessmentsClientListOptions contains the optional parameters for the RegulatoryComplianceAssessmentsClient.NewListPager
+//     method.
 func (client *RegulatoryComplianceAssessmentsClient) NewListPager(regulatoryComplianceStandardName string, regulatoryComplianceControlName string, options *RegulatoryComplianceAssessmentsClientListOptions) *runtime.Pager[RegulatoryComplianceAssessmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RegulatoryComplianceAssessmentsClientListResponse]{
 		More: func(page RegulatoryComplianceAssessmentsClientListResponse) bool {
@@ -139,7 +130,7 @@ func (client *RegulatoryComplianceAssessmentsClient) NewListPager(regulatoryComp
 			if err != nil {
 				return RegulatoryComplianceAssessmentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RegulatoryComplianceAssessmentsClientListResponse{}, err
 			}
@@ -166,7 +157,7 @@ func (client *RegulatoryComplianceAssessmentsClient) listCreateRequest(ctx conte
 		return nil, errors.New("parameter regulatoryComplianceControlName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{regulatoryComplianceControlName}", url.PathEscape(regulatoryComplianceControlName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

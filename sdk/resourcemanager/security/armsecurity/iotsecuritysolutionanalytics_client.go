@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // IotSecuritySolutionAnalyticsClient contains the methods for the IotSecuritySolutionAnalytics group.
 // Don't use this type directly, use NewIotSecuritySolutionAnalyticsClient() instead.
 type IotSecuritySolutionAnalyticsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewIotSecuritySolutionAnalyticsClient creates a new instance of IotSecuritySolutionAnalyticsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionAnalyticsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".IotSecuritySolutionAnalyticsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &IotSecuritySolutionAnalyticsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Use this method to get IoT Security Analytics metrics.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-08-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// solutionName - The name of the IoT Security solution.
-// options - IotSecuritySolutionAnalyticsClientGetOptions contains the optional parameters for the IotSecuritySolutionAnalyticsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - solutionName - The name of the IoT Security solution.
+//   - options - IotSecuritySolutionAnalyticsClientGetOptions contains the optional parameters for the IotSecuritySolutionAnalyticsClient.Get
+//     method.
 func (client *IotSecuritySolutionAnalyticsClient) Get(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionAnalyticsClientGetOptions) (IotSecuritySolutionAnalyticsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, solutionName, options)
 	if err != nil {
 		return IotSecuritySolutionAnalyticsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IotSecuritySolutionAnalyticsClientGetResponse{}, err
 	}
@@ -92,7 +82,7 @@ func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -114,17 +104,18 @@ func (client *IotSecuritySolutionAnalyticsClient) getHandleResponse(resp *http.R
 
 // List - Use this method to get IoT security Analytics metrics in an array.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-08-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// solutionName - The name of the IoT Security solution.
-// options - IotSecuritySolutionAnalyticsClientListOptions contains the optional parameters for the IotSecuritySolutionAnalyticsClient.List
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - solutionName - The name of the IoT Security solution.
+//   - options - IotSecuritySolutionAnalyticsClientListOptions contains the optional parameters for the IotSecuritySolutionAnalyticsClient.List
+//     method.
 func (client *IotSecuritySolutionAnalyticsClient) List(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionAnalyticsClientListOptions) (IotSecuritySolutionAnalyticsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, solutionName, options)
 	if err != nil {
 		return IotSecuritySolutionAnalyticsClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IotSecuritySolutionAnalyticsClientListResponse{}, err
 	}
@@ -149,7 +140,7 @@ func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

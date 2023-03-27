@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // DiscoveredSecuritySolutionsClient contains the methods for the DiscoveredSecuritySolutions group.
 // Don't use this type directly, use NewDiscoveredSecuritySolutionsClient() instead.
 type DiscoveredSecuritySolutionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDiscoveredSecuritySolutionsClient creates a new instance of DiscoveredSecuritySolutionsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDiscoveredSecuritySolutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiscoveredSecuritySolutionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DiscoveredSecuritySolutionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DiscoveredSecuritySolutionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets a specific discovered Security Solution.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
-// discoveredSecuritySolutionName - Name of a discovered security solution.
-// options - DiscoveredSecuritySolutionsClientGetOptions contains the optional parameters for the DiscoveredSecuritySolutionsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+//   - discoveredSecuritySolutionName - Name of a discovered security solution.
+//   - options - DiscoveredSecuritySolutionsClientGetOptions contains the optional parameters for the DiscoveredSecuritySolutionsClient.Get
+//     method.
 func (client *DiscoveredSecuritySolutionsClient) Get(ctx context.Context, resourceGroupName string, ascLocation string, discoveredSecuritySolutionName string, options *DiscoveredSecuritySolutionsClientGetOptions) (DiscoveredSecuritySolutionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ascLocation, discoveredSecuritySolutionName, options)
 	if err != nil {
 		return DiscoveredSecuritySolutionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiscoveredSecuritySolutionsClientGetResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *DiscoveredSecuritySolutionsClient) getCreateRequest(ctx context.Co
 		return nil, errors.New("parameter discoveredSecuritySolutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{discoveredSecuritySolutionName}", url.PathEscape(discoveredSecuritySolutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -118,9 +108,10 @@ func (client *DiscoveredSecuritySolutionsClient) getHandleResponse(resp *http.Re
 }
 
 // NewListPager - Gets a list of discovered Security Solutions for the subscription.
+//
 // Generated from API version 2020-01-01
-// options - DiscoveredSecuritySolutionsClientListOptions contains the optional parameters for the DiscoveredSecuritySolutionsClient.List
-// method.
+//   - options - DiscoveredSecuritySolutionsClientListOptions contains the optional parameters for the DiscoveredSecuritySolutionsClient.NewListPager
+//     method.
 func (client *DiscoveredSecuritySolutionsClient) NewListPager(options *DiscoveredSecuritySolutionsClientListOptions) *runtime.Pager[DiscoveredSecuritySolutionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiscoveredSecuritySolutionsClientListResponse]{
 		More: func(page DiscoveredSecuritySolutionsClientListResponse) bool {
@@ -137,7 +128,7 @@ func (client *DiscoveredSecuritySolutionsClient) NewListPager(options *Discovere
 			if err != nil {
 				return DiscoveredSecuritySolutionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiscoveredSecuritySolutionsClientListResponse{}, err
 			}
@@ -156,7 +147,7 @@ func (client *DiscoveredSecuritySolutionsClient) listCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -177,10 +168,11 @@ func (client *DiscoveredSecuritySolutionsClient) listHandleResponse(resp *http.R
 }
 
 // NewListByHomeRegionPager - Gets a list of discovered Security Solutions for the subscription and location.
+//
 // Generated from API version 2020-01-01
-// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
-// options - DiscoveredSecuritySolutionsClientListByHomeRegionOptions contains the optional parameters for the DiscoveredSecuritySolutionsClient.ListByHomeRegion
-// method.
+//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+//   - options - DiscoveredSecuritySolutionsClientListByHomeRegionOptions contains the optional parameters for the DiscoveredSecuritySolutionsClient.NewListByHomeRegionPager
+//     method.
 func (client *DiscoveredSecuritySolutionsClient) NewListByHomeRegionPager(ascLocation string, options *DiscoveredSecuritySolutionsClientListByHomeRegionOptions) *runtime.Pager[DiscoveredSecuritySolutionsClientListByHomeRegionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiscoveredSecuritySolutionsClientListByHomeRegionResponse]{
 		More: func(page DiscoveredSecuritySolutionsClientListByHomeRegionResponse) bool {
@@ -197,7 +189,7 @@ func (client *DiscoveredSecuritySolutionsClient) NewListByHomeRegionPager(ascLoc
 			if err != nil {
 				return DiscoveredSecuritySolutionsClientListByHomeRegionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiscoveredSecuritySolutionsClientListByHomeRegionResponse{}, err
 			}
@@ -220,7 +212,7 @@ func (client *DiscoveredSecuritySolutionsClient) listByHomeRegionCreateRequest(c
 		return nil, errors.New("parameter ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

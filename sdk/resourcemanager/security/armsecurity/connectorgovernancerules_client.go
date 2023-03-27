@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // ConnectorGovernanceRulesClient contains the methods for the SecurityConnectorGovernanceRules group.
 // Don't use this type directly, use NewConnectorGovernanceRulesClient() instead.
 type ConnectorGovernanceRulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewConnectorGovernanceRulesClient creates a new instance of ConnectorGovernanceRulesClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewConnectorGovernanceRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorGovernanceRulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ConnectorGovernanceRulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ConnectorGovernanceRulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or update a security GovernanceRule on the given security connector.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// securityConnectorName - The security connector name.
-// ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
-// governanceRule - GovernanceRule over a subscription scope
-// options - ConnectorGovernanceRulesClientCreateOrUpdateOptions contains the optional parameters for the ConnectorGovernanceRulesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
+//   - governanceRule - GovernanceRule over a subscription scope
+//   - options - ConnectorGovernanceRulesClientCreateOrUpdateOptions contains the optional parameters for the ConnectorGovernanceRulesClient.CreateOrUpdate
+//     method.
 func (client *ConnectorGovernanceRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, securityConnectorName string, ruleID string, governanceRule GovernanceRule, options *ConnectorGovernanceRulesClientCreateOrUpdateOptions) (ConnectorGovernanceRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, securityConnectorName, ruleID, governanceRule, options)
 	if err != nil {
 		return ConnectorGovernanceRulesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConnectorGovernanceRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *ConnectorGovernanceRulesClient) createOrUpdateCreateRequest(ctx co
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,18 +110,19 @@ func (client *ConnectorGovernanceRulesClient) createOrUpdateHandleResponse(resp 
 
 // Delete - Delete a GovernanceRule over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// securityConnectorName - The security connector name.
-// ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
-// options - ConnectorGovernanceRulesClientDeleteOptions contains the optional parameters for the ConnectorGovernanceRulesClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
+//   - options - ConnectorGovernanceRulesClientDeleteOptions contains the optional parameters for the ConnectorGovernanceRulesClient.Delete
+//     method.
 func (client *ConnectorGovernanceRulesClient) Delete(ctx context.Context, resourceGroupName string, securityConnectorName string, ruleID string, options *ConnectorGovernanceRulesClientDeleteOptions) (ConnectorGovernanceRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, securityConnectorName, ruleID, options)
 	if err != nil {
 		return ConnectorGovernanceRulesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConnectorGovernanceRulesClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *ConnectorGovernanceRulesClient) deleteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,18 +163,19 @@ func (client *ConnectorGovernanceRulesClient) deleteCreateRequest(ctx context.Co
 
 // Get - Get a specific governanceRule for the requested scope by ruleId
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// securityConnectorName - The security connector name.
-// ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
-// options - ConnectorGovernanceRulesClientGetOptions contains the optional parameters for the ConnectorGovernanceRulesClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
+//   - options - ConnectorGovernanceRulesClientGetOptions contains the optional parameters for the ConnectorGovernanceRulesClient.Get
+//     method.
 func (client *ConnectorGovernanceRulesClient) Get(ctx context.Context, resourceGroupName string, securityConnectorName string, ruleID string, options *ConnectorGovernanceRulesClientGetOptions) (ConnectorGovernanceRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, securityConnectorName, ruleID, options)
 	if err != nil {
 		return ConnectorGovernanceRulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConnectorGovernanceRulesClientGetResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *ConnectorGovernanceRulesClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

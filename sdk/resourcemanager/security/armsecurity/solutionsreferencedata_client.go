@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +24,38 @@ import (
 // SolutionsReferenceDataClient contains the methods for the SecuritySolutionsReferenceData group.
 // Don't use this type directly, use NewSolutionsReferenceDataClient() instead.
 type SolutionsReferenceDataClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSolutionsReferenceDataClient creates a new instance of SolutionsReferenceDataClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSolutionsReferenceDataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionsReferenceDataClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SolutionsReferenceDataClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SolutionsReferenceDataClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // List - Gets a list of all supported Security Solutions for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01
-// options - SolutionsReferenceDataClientListOptions contains the optional parameters for the SolutionsReferenceDataClient.List
-// method.
+//   - options - SolutionsReferenceDataClientListOptions contains the optional parameters for the SolutionsReferenceDataClient.List
+//     method.
 func (client *SolutionsReferenceDataClient) List(ctx context.Context, options *SolutionsReferenceDataClientListOptions) (SolutionsReferenceDataClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
 		return SolutionsReferenceDataClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SolutionsReferenceDataClientListResponse{}, err
 	}
@@ -82,7 +72,7 @@ func (client *SolutionsReferenceDataClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -104,16 +94,17 @@ func (client *SolutionsReferenceDataClient) listHandleResponse(resp *http.Respon
 
 // ListByHomeRegion - Gets list of all supported Security Solutions for subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01
-// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
-// options - SolutionsReferenceDataClientListByHomeRegionOptions contains the optional parameters for the SolutionsReferenceDataClient.ListByHomeRegion
-// method.
+//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+//   - options - SolutionsReferenceDataClientListByHomeRegionOptions contains the optional parameters for the SolutionsReferenceDataClient.ListByHomeRegion
+//     method.
 func (client *SolutionsReferenceDataClient) ListByHomeRegion(ctx context.Context, ascLocation string, options *SolutionsReferenceDataClientListByHomeRegionOptions) (SolutionsReferenceDataClientListByHomeRegionResponse, error) {
 	req, err := client.listByHomeRegionCreateRequest(ctx, ascLocation, options)
 	if err != nil {
 		return SolutionsReferenceDataClientListByHomeRegionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SolutionsReferenceDataClientListByHomeRegionResponse{}, err
 	}
@@ -134,7 +125,7 @@ func (client *SolutionsReferenceDataClient) listByHomeRegionCreateRequest(ctx co
 		return nil, errors.New("parameter ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

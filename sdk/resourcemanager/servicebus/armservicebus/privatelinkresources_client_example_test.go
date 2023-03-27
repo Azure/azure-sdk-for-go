@@ -24,11 +24,11 @@ func ExamplePrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewPrivateLinkResourcesClient("subID", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "ArunMonocle", "sdk-Namespace-2924", nil)
+	res, err := clientFactory.NewPrivateLinkResourcesClient().Get(ctx, "ArunMonocle", "sdk-Namespace-2924", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

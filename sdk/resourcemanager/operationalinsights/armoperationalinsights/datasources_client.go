@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // DataSourcesClient contains the methods for the DataSources group.
 // Don't use this type directly, use NewDataSourcesClient() instead.
 type DataSourcesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDataSourcesClient creates a new instance of DataSourcesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDataSourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataSourcesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DataSourcesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DataSourcesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update a data source.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// dataSourceName - The name of the datasource resource.
-// parameters - The parameters required to create or update a datasource.
-// options - DataSourcesClientCreateOrUpdateOptions contains the optional parameters for the DataSourcesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - dataSourceName - The name of the datasource resource.
+//   - parameters - The parameters required to create or update a datasource.
+//   - options - DataSourcesClientCreateOrUpdateOptions contains the optional parameters for the DataSourcesClient.CreateOrUpdate
+//     method.
 func (client *DataSourcesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, parameters DataSource, options *DataSourcesClientCreateOrUpdateOptions) (DataSourcesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, dataSourceName, parameters, options)
 	if err != nil {
 		return DataSourcesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataSourcesClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *DataSourcesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *DataSourcesClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Deletes a data source instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// dataSourceName - Name of the datasource.
-// options - DataSourcesClientDeleteOptions contains the optional parameters for the DataSourcesClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - dataSourceName - Name of the datasource.
+//   - options - DataSourcesClientDeleteOptions contains the optional parameters for the DataSourcesClient.Delete method.
 func (client *DataSourcesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, options *DataSourcesClientDeleteOptions) (DataSourcesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, dataSourceName, options)
 	if err != nil {
 		return DataSourcesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataSourcesClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *DataSourcesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,17 +162,18 @@ func (client *DataSourcesClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Gets a datasource instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// dataSourceName - Name of the datasource
-// options - DataSourcesClientGetOptions contains the optional parameters for the DataSourcesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - dataSourceName - Name of the datasource
+//   - options - DataSourcesClientGetOptions contains the optional parameters for the DataSourcesClient.Get method.
 func (client *DataSourcesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, options *DataSourcesClientGetOptions) (DataSourcesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, dataSourceName, options)
 	if err != nil {
 		return DataSourcesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataSourcesClientGetResponse{}, err
 	}
@@ -210,7 +202,7 @@ func (client *DataSourcesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,13 +223,13 @@ func (client *DataSourcesClient) getHandleResponse(resp *http.Response) (DataSou
 }
 
 // NewListByWorkspacePager - Gets the first page of data source instances in a workspace with the link to the next page.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// filter - The filter to apply on the operation.
-// options - DataSourcesClientListByWorkspaceOptions contains the optional parameters for the DataSourcesClient.ListByWorkspace
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - filter - The filter to apply on the operation.
+//   - options - DataSourcesClientListByWorkspaceOptions contains the optional parameters for the DataSourcesClient.NewListByWorkspacePager
+//     method.
 func (client *DataSourcesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, filter string, options *DataSourcesClientListByWorkspaceOptions) *runtime.Pager[DataSourcesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataSourcesClientListByWorkspaceResponse]{
 		More: func(page DataSourcesClientListByWorkspaceResponse) bool {
@@ -254,7 +246,7 @@ func (client *DataSourcesClient) NewListByWorkspacePager(resourceGroupName strin
 			if err != nil {
 				return DataSourcesClientListByWorkspaceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataSourcesClientListByWorkspaceResponse{}, err
 			}
@@ -281,7 +273,7 @@ func (client *DataSourcesClient) listByWorkspaceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

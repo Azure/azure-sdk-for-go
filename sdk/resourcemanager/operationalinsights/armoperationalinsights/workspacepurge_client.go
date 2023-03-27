@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // WorkspacePurgeClient contains the methods for the WorkspacePurge group.
 // Don't use this type directly, use NewWorkspacePurgeClient() instead.
 type WorkspacePurgeClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkspacePurgeClient creates a new instance of WorkspacePurgeClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWorkspacePurgeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspacePurgeClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkspacePurgeClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkspacePurgeClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // GetPurgeStatus - Gets status of an ongoing purge operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// purgeID - In a purge status request, this is the Id of the operation the status of which is returned.
-// options - WorkspacePurgeClientGetPurgeStatusOptions contains the optional parameters for the WorkspacePurgeClient.GetPurgeStatus
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - purgeID - In a purge status request, this is the Id of the operation the status of which is returned.
+//   - options - WorkspacePurgeClientGetPurgeStatusOptions contains the optional parameters for the WorkspacePurgeClient.GetPurgeStatus
+//     method.
 func (client *WorkspacePurgeClient) GetPurgeStatus(ctx context.Context, resourceGroupName string, workspaceName string, purgeID string, options *WorkspacePurgeClientGetPurgeStatusOptions) (WorkspacePurgeClientGetPurgeStatusResponse, error) {
 	req, err := client.getPurgeStatusCreateRequest(ctx, resourceGroupName, workspaceName, purgeID, options)
 	if err != nil {
 		return WorkspacePurgeClientGetPurgeStatusResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkspacePurgeClientGetPurgeStatusResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *WorkspacePurgeClient) getPurgeStatusCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter purgeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{purgeId}", url.PathEscape(purgeID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,17 +113,18 @@ func (client *WorkspacePurgeClient) getPurgeStatusHandleResponse(resp *http.Resp
 // user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior
 // to using for a purge request to verify that the results are expected.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// body - Describes the body of a request to purge data in a single table of an Log Analytics Workspace
-// options - WorkspacePurgeClientPurgeOptions contains the optional parameters for the WorkspacePurgeClient.Purge method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - body - Describes the body of a request to purge data in a single table of an Log Analytics Workspace
+//   - options - WorkspacePurgeClientPurgeOptions contains the optional parameters for the WorkspacePurgeClient.Purge method.
 func (client *WorkspacePurgeClient) Purge(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeBody, options *WorkspacePurgeClientPurgeOptions) (WorkspacePurgeClientPurgeResponse, error) {
 	req, err := client.purgeCreateRequest(ctx, resourceGroupName, workspaceName, body, options)
 	if err != nil {
 		return WorkspacePurgeClientPurgeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkspacePurgeClientPurgeResponse{}, err
 	}
@@ -158,7 +149,7 @@ func (client *WorkspacePurgeClient) purgeCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // SharedKeysClient contains the methods for the SharedKeys group.
 // Don't use this type directly, use NewSharedKeysClient() instead.
 type SharedKeysClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSharedKeysClient creates a new instance of SharedKeysClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSharedKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharedKeysClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SharedKeysClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SharedKeysClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // GetSharedKeys - Gets the shared keys for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - SharedKeysClientGetSharedKeysOptions contains the optional parameters for the SharedKeysClient.GetSharedKeys
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - SharedKeysClientGetSharedKeysOptions contains the optional parameters for the SharedKeysClient.GetSharedKeys
+//     method.
 func (client *SharedKeysClient) GetSharedKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysClientGetSharedKeysOptions) (SharedKeysClientGetSharedKeysResponse, error) {
 	req, err := client.getSharedKeysCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
 		return SharedKeysClientGetSharedKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SharedKeysClientGetSharedKeysResponse{}, err
 	}
@@ -92,7 +82,7 @@ func (client *SharedKeysClient) getSharedKeysCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,16 +105,17 @@ func (client *SharedKeysClient) getSharedKeysHandleResponse(resp *http.Response)
 // Regenerate - Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
 // Insights agents to the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - SharedKeysClientRegenerateOptions contains the optional parameters for the SharedKeysClient.Regenerate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - SharedKeysClientRegenerateOptions contains the optional parameters for the SharedKeysClient.Regenerate method.
 func (client *SharedKeysClient) Regenerate(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysClientRegenerateOptions) (SharedKeysClientRegenerateResponse, error) {
 	req, err := client.regenerateCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
 		return SharedKeysClientRegenerateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SharedKeysClientRegenerateResponse{}, err
 	}
@@ -149,7 +140,7 @@ func (client *SharedKeysClient) regenerateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

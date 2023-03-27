@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // SavedSearchesClient contains the methods for the SavedSearches group.
 // Don't use this type directly, use NewSavedSearchesClient() instead.
 type SavedSearchesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSavedSearchesClient creates a new instance of SavedSearchesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSavedSearchesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SavedSearchesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SavedSearchesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SavedSearchesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a saved search for a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// savedSearchID - The id of the saved search.
-// parameters - The parameters required to save a search.
-// options - SavedSearchesClientCreateOrUpdateOptions contains the optional parameters for the SavedSearchesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - savedSearchID - The id of the saved search.
+//   - parameters - The parameters required to save a search.
+//   - options - SavedSearchesClientCreateOrUpdateOptions contains the optional parameters for the SavedSearchesClient.CreateOrUpdate
+//     method.
 func (client *SavedSearchesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, parameters SavedSearch, options *SavedSearchesClientCreateOrUpdateOptions) (SavedSearchesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, savedSearchID, parameters, options)
 	if err != nil {
 		return SavedSearchesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SavedSearchesClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *SavedSearchesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter savedSearchID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{savedSearchId}", url.PathEscape(savedSearchID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *SavedSearchesClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // Delete - Deletes the specified saved search in a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// savedSearchID - The id of the saved search.
-// options - SavedSearchesClientDeleteOptions contains the optional parameters for the SavedSearchesClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - savedSearchID - The id of the saved search.
+//   - options - SavedSearchesClientDeleteOptions contains the optional parameters for the SavedSearchesClient.Delete method.
 func (client *SavedSearchesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, options *SavedSearchesClientDeleteOptions) (SavedSearchesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, savedSearchID, options)
 	if err != nil {
 		return SavedSearchesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SavedSearchesClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *SavedSearchesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter savedSearchID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{savedSearchId}", url.PathEscape(savedSearchID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,17 +162,18 @@ func (client *SavedSearchesClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - Gets the specified saved search for a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// savedSearchID - The id of the saved search.
-// options - SavedSearchesClientGetOptions contains the optional parameters for the SavedSearchesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - savedSearchID - The id of the saved search.
+//   - options - SavedSearchesClientGetOptions contains the optional parameters for the SavedSearchesClient.Get method.
 func (client *SavedSearchesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, options *SavedSearchesClientGetOptions) (SavedSearchesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, savedSearchID, options)
 	if err != nil {
 		return SavedSearchesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SavedSearchesClientGetResponse{}, err
 	}
@@ -210,7 +202,7 @@ func (client *SavedSearchesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter savedSearchID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{savedSearchId}", url.PathEscape(savedSearchID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,17 +224,18 @@ func (client *SavedSearchesClient) getHandleResponse(resp *http.Response) (Saved
 
 // ListByWorkspace - Gets the saved searches for a given Log Analytics Workspace
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - SavedSearchesClientListByWorkspaceOptions contains the optional parameters for the SavedSearchesClient.ListByWorkspace
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - SavedSearchesClientListByWorkspaceOptions contains the optional parameters for the SavedSearchesClient.ListByWorkspace
+//     method.
 func (client *SavedSearchesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *SavedSearchesClientListByWorkspaceOptions) (SavedSearchesClientListByWorkspaceResponse, error) {
 	req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
 		return SavedSearchesClientListByWorkspaceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SavedSearchesClientListByWorkspaceResponse{}, err
 	}
@@ -267,7 +260,7 @@ func (client *SavedSearchesClient) listByWorkspaceCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

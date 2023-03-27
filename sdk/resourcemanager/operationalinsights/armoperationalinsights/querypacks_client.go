@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // QueryPacksClient contains the methods for the QueryPacks group.
 // Don't use this type directly, use NewQueryPacksClient() instead.
 type QueryPacksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewQueryPacksClient creates a new instance of QueryPacksClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewQueryPacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QueryPacksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".QueryPacksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &QueryPacksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,18 +47,19 @@ func NewQueryPacksClient(subscriptionID string, credential azcore.TokenCredentia
 // CreateOrUpdate - Creates (or updates) a Log Analytics QueryPack. Note: You cannot specify a different value for InstrumentationKey
 // nor AppId in the Put operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// queryPackName - The name of the Log Analytics QueryPack resource.
-// logAnalyticsQueryPackPayload - Properties that need to be specified to create or update a Log Analytics QueryPack.
-// options - QueryPacksClientCreateOrUpdateOptions contains the optional parameters for the QueryPacksClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - queryPackName - The name of the Log Analytics QueryPack resource.
+//   - logAnalyticsQueryPackPayload - Properties that need to be specified to create or update a Log Analytics QueryPack.
+//   - options - QueryPacksClientCreateOrUpdateOptions contains the optional parameters for the QueryPacksClient.CreateOrUpdate
+//     method.
 func (client *QueryPacksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, queryPackName string, logAnalyticsQueryPackPayload LogAnalyticsQueryPack, options *QueryPacksClientCreateOrUpdateOptions) (QueryPacksClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, queryPackName, logAnalyticsQueryPackPayload, options)
 	if err != nil {
 		return QueryPacksClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueryPacksClientCreateOrUpdateResponse{}, err
 	}
@@ -94,7 +84,7 @@ func (client *QueryPacksClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter queryPackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{queryPackName}", url.PathEscape(queryPackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,16 +106,17 @@ func (client *QueryPacksClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Deletes a Log Analytics QueryPack.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// queryPackName - The name of the Log Analytics QueryPack resource.
-// options - QueryPacksClientDeleteOptions contains the optional parameters for the QueryPacksClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - queryPackName - The name of the Log Analytics QueryPack resource.
+//   - options - QueryPacksClientDeleteOptions contains the optional parameters for the QueryPacksClient.Delete method.
 func (client *QueryPacksClient) Delete(ctx context.Context, resourceGroupName string, queryPackName string, options *QueryPacksClientDeleteOptions) (QueryPacksClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, queryPackName, options)
 	if err != nil {
 		return QueryPacksClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueryPacksClientDeleteResponse{}, err
 	}
@@ -150,7 +141,7 @@ func (client *QueryPacksClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter queryPackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{queryPackName}", url.PathEscape(queryPackName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,16 +154,17 @@ func (client *QueryPacksClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Returns a Log Analytics QueryPack.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// queryPackName - The name of the Log Analytics QueryPack resource.
-// options - QueryPacksClientGetOptions contains the optional parameters for the QueryPacksClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - queryPackName - The name of the Log Analytics QueryPack resource.
+//   - options - QueryPacksClientGetOptions contains the optional parameters for the QueryPacksClient.Get method.
 func (client *QueryPacksClient) Get(ctx context.Context, resourceGroupName string, queryPackName string, options *QueryPacksClientGetOptions) (QueryPacksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, queryPackName, options)
 	if err != nil {
 		return QueryPacksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueryPacksClientGetResponse{}, err
 	}
@@ -197,7 +189,7 @@ func (client *QueryPacksClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter queryPackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{queryPackName}", url.PathEscape(queryPackName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,9 +210,9 @@ func (client *QueryPacksClient) getHandleResponse(resp *http.Response) (QueryPac
 }
 
 // NewListPager - Gets a list of all Log Analytics QueryPacks within a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-09-01
-// options - QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.List method.
+//   - options - QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.NewListPager method.
 func (client *QueryPacksClient) NewListPager(options *QueryPacksClientListOptions) *runtime.Pager[QueryPacksClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[QueryPacksClientListResponse]{
 		More: func(page QueryPacksClientListResponse) bool {
@@ -237,7 +229,7 @@ func (client *QueryPacksClient) NewListPager(options *QueryPacksClientListOption
 			if err != nil {
 				return QueryPacksClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return QueryPacksClientListResponse{}, err
 			}
@@ -256,7 +248,7 @@ func (client *QueryPacksClient) listCreateRequest(ctx context.Context, options *
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -277,11 +269,11 @@ func (client *QueryPacksClient) listHandleResponse(resp *http.Response) (QueryPa
 }
 
 // NewListByResourceGroupPager - Gets a list of Log Analytics QueryPacks within a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - QueryPacksClientListByResourceGroupOptions contains the optional parameters for the QueryPacksClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - QueryPacksClientListByResourceGroupOptions contains the optional parameters for the QueryPacksClient.NewListByResourceGroupPager
+//     method.
 func (client *QueryPacksClient) NewListByResourceGroupPager(resourceGroupName string, options *QueryPacksClientListByResourceGroupOptions) *runtime.Pager[QueryPacksClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[QueryPacksClientListByResourceGroupResponse]{
 		More: func(page QueryPacksClientListByResourceGroupResponse) bool {
@@ -298,7 +290,7 @@ func (client *QueryPacksClient) NewListByResourceGroupPager(resourceGroupName st
 			if err != nil {
 				return QueryPacksClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return QueryPacksClientListByResourceGroupResponse{}, err
 			}
@@ -321,7 +313,7 @@ func (client *QueryPacksClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -343,17 +335,18 @@ func (client *QueryPacksClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // UpdateTags - Updates an existing QueryPack's tags. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// queryPackName - The name of the Log Analytics QueryPack resource.
-// queryPackTags - Updated tag information to set into the QueryPack instance.
-// options - QueryPacksClientUpdateTagsOptions contains the optional parameters for the QueryPacksClient.UpdateTags method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - queryPackName - The name of the Log Analytics QueryPack resource.
+//   - queryPackTags - Updated tag information to set into the QueryPack instance.
+//   - options - QueryPacksClientUpdateTagsOptions contains the optional parameters for the QueryPacksClient.UpdateTags method.
 func (client *QueryPacksClient) UpdateTags(ctx context.Context, resourceGroupName string, queryPackName string, queryPackTags TagsResource, options *QueryPacksClientUpdateTagsOptions) (QueryPacksClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, queryPackName, queryPackTags, options)
 	if err != nil {
 		return QueryPacksClientUpdateTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueryPacksClientUpdateTagsResponse{}, err
 	}
@@ -378,7 +371,7 @@ func (client *QueryPacksClient) updateTagsCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter queryPackName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{queryPackName}", url.PathEscape(queryPackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

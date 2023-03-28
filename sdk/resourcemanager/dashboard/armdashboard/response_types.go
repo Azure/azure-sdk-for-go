@@ -9,12 +9,12 @@
 
 package armdashboard
 
-// GrafanaClientCreateResponse contains the response from method GrafanaClient.Create.
+// GrafanaClientCreateResponse contains the response from method GrafanaClient.BeginCreate.
 type GrafanaClientCreateResponse struct {
 	ManagedGrafana
 }
 
-// GrafanaClientDeleteResponse contains the response from method GrafanaClient.Delete.
+// GrafanaClientDeleteResponse contains the response from method GrafanaClient.BeginDelete.
 type GrafanaClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,12 +24,12 @@ type GrafanaClientGetResponse struct {
 	ManagedGrafana
 }
 
-// GrafanaClientListByResourceGroupResponse contains the response from method GrafanaClient.ListByResourceGroup.
+// GrafanaClientListByResourceGroupResponse contains the response from method GrafanaClient.NewListByResourceGroupPager.
 type GrafanaClientListByResourceGroupResponse struct {
 	ManagedGrafanaListResponse
 }
 
-// GrafanaClientListResponse contains the response from method GrafanaClient.List.
+// GrafanaClientListResponse contains the response from method GrafanaClient.NewListPager.
 type GrafanaClientListResponse struct {
 	ManagedGrafanaListResponse
 }
@@ -39,17 +39,17 @@ type GrafanaClientUpdateResponse struct {
 	ManagedGrafana
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsClientApproveResponse contains the response from method PrivateEndpointConnectionsClient.Approve.
+// PrivateEndpointConnectionsClientApproveResponse contains the response from method PrivateEndpointConnectionsClient.BeginApprove.
 type PrivateEndpointConnectionsClientApproveResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -59,7 +59,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }
@@ -69,7 +69,7 @@ type PrivateLinkResourcesClientGetResponse struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.NewListPager.
 type PrivateLinkResourcesClientListResponse struct {
 	PrivateLinkResourceListResult
 }

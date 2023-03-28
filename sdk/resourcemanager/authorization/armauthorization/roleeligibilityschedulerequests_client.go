@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,45 +24,37 @@ import (
 // RoleEligibilityScheduleRequestsClient contains the methods for the RoleEligibilityScheduleRequests group.
 // Don't use this type directly, use NewRoleEligibilityScheduleRequestsClient() instead.
 type RoleEligibilityScheduleRequestsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewRoleEligibilityScheduleRequestsClient creates a new instance of RoleEligibilityScheduleRequestsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRoleEligibilityScheduleRequestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleEligibilityScheduleRequestsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RoleEligibilityScheduleRequestsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RoleEligibilityScheduleRequestsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Cancel - Cancels a pending role eligibility schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role eligibility request to cancel.
-// roleEligibilityScheduleRequestName - The name of the role eligibility request to cancel.
-// options - RoleEligibilityScheduleRequestsClientCancelOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Cancel
-// method.
+//   - scope - The scope of the role eligibility request to cancel.
+//   - roleEligibilityScheduleRequestName - The name of the role eligibility request to cancel.
+//   - options - RoleEligibilityScheduleRequestsClientCancelOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Cancel
+//     method.
 func (client *RoleEligibilityScheduleRequestsClient) Cancel(ctx context.Context, scope string, roleEligibilityScheduleRequestName string, options *RoleEligibilityScheduleRequestsClientCancelOptions) (RoleEligibilityScheduleRequestsClientCancelResponse, error) {
 	req, err := client.cancelCreateRequest(ctx, scope, roleEligibilityScheduleRequestName, options)
 	if err != nil {
 		return RoleEligibilityScheduleRequestsClientCancelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleEligibilityScheduleRequestsClientCancelResponse{}, err
 	}
@@ -82,7 +72,7 @@ func (client *RoleEligibilityScheduleRequestsClient) cancelCreateRequest(ctx con
 		return nil, errors.New("parameter roleEligibilityScheduleRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleEligibilityScheduleRequestName}", url.PathEscape(roleEligibilityScheduleRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,22 +85,23 @@ func (client *RoleEligibilityScheduleRequestsClient) cancelCreateRequest(ctx con
 
 // Create - Creates a role eligibility schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role eligibility schedule request to create. The scope can be any REST resource instance. For
-// example, use '/subscriptions/{subscription-id}/' for a subscription,
-// '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-// '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-// for a resource.
-// roleEligibilityScheduleRequestName - The name of the role eligibility to create. It can be any valid GUID.
-// parameters - Parameters for the role eligibility schedule request.
-// options - RoleEligibilityScheduleRequestsClientCreateOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Create
-// method.
+//   - scope - The scope of the role eligibility schedule request to create. The scope can be any REST resource instance. For
+//     example, use '/subscriptions/{subscription-id}/' for a subscription,
+//     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+//     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+//     for a resource.
+//   - roleEligibilityScheduleRequestName - The name of the role eligibility to create. It can be any valid GUID.
+//   - parameters - Parameters for the role eligibility schedule request.
+//   - options - RoleEligibilityScheduleRequestsClientCreateOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Create
+//     method.
 func (client *RoleEligibilityScheduleRequestsClient) Create(ctx context.Context, scope string, roleEligibilityScheduleRequestName string, parameters RoleEligibilityScheduleRequest, options *RoleEligibilityScheduleRequestsClientCreateOptions) (RoleEligibilityScheduleRequestsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, scope, roleEligibilityScheduleRequestName, parameters, options)
 	if err != nil {
 		return RoleEligibilityScheduleRequestsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleEligibilityScheduleRequestsClientCreateResponse{}, err
 	}
@@ -128,7 +119,7 @@ func (client *RoleEligibilityScheduleRequestsClient) createCreateRequest(ctx con
 		return nil, errors.New("parameter roleEligibilityScheduleRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleEligibilityScheduleRequestName}", url.PathEscape(roleEligibilityScheduleRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,17 +141,18 @@ func (client *RoleEligibilityScheduleRequestsClient) createHandleResponse(resp *
 
 // Get - Get the specified role eligibility schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role eligibility schedule request.
-// roleEligibilityScheduleRequestName - The name (guid) of the role eligibility schedule request to get.
-// options - RoleEligibilityScheduleRequestsClientGetOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Get
-// method.
+//   - scope - The scope of the role eligibility schedule request.
+//   - roleEligibilityScheduleRequestName - The name (guid) of the role eligibility schedule request to get.
+//   - options - RoleEligibilityScheduleRequestsClientGetOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Get
+//     method.
 func (client *RoleEligibilityScheduleRequestsClient) Get(ctx context.Context, scope string, roleEligibilityScheduleRequestName string, options *RoleEligibilityScheduleRequestsClientGetOptions) (RoleEligibilityScheduleRequestsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleEligibilityScheduleRequestName, options)
 	if err != nil {
 		return RoleEligibilityScheduleRequestsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleEligibilityScheduleRequestsClientGetResponse{}, err
 	}
@@ -178,7 +170,7 @@ func (client *RoleEligibilityScheduleRequestsClient) getCreateRequest(ctx contex
 		return nil, errors.New("parameter roleEligibilityScheduleRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleEligibilityScheduleRequestName}", url.PathEscape(roleEligibilityScheduleRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -199,11 +191,11 @@ func (client *RoleEligibilityScheduleRequestsClient) getHandleResponse(resp *htt
 }
 
 // NewListForScopePager - Gets role eligibility schedule requests for a scope.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role eligibility schedule requests.
-// options - RoleEligibilityScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.ListForScope
-// method.
+//   - scope - The scope of the role eligibility schedule requests.
+//   - options - RoleEligibilityScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.NewListForScopePager
+//     method.
 func (client *RoleEligibilityScheduleRequestsClient) NewListForScopePager(scope string, options *RoleEligibilityScheduleRequestsClientListForScopeOptions) *runtime.Pager[RoleEligibilityScheduleRequestsClientListForScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RoleEligibilityScheduleRequestsClientListForScopeResponse]{
 		More: func(page RoleEligibilityScheduleRequestsClientListForScopeResponse) bool {
@@ -220,7 +212,7 @@ func (client *RoleEligibilityScheduleRequestsClient) NewListForScopePager(scope 
 			if err != nil {
 				return RoleEligibilityScheduleRequestsClientListForScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RoleEligibilityScheduleRequestsClientListForScopeResponse{}, err
 			}
@@ -236,7 +228,7 @@ func (client *RoleEligibilityScheduleRequestsClient) NewListForScopePager(scope 
 func (client *RoleEligibilityScheduleRequestsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleEligibilityScheduleRequestsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleRequests"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -261,18 +253,19 @@ func (client *RoleEligibilityScheduleRequestsClient) listForScopeHandleResponse(
 
 // Validate - Validates a new role eligibility schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role eligibility request to validate.
-// roleEligibilityScheduleRequestName - The name of the role eligibility request to validate.
-// parameters - Parameters for the role eligibility schedule request.
-// options - RoleEligibilityScheduleRequestsClientValidateOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Validate
-// method.
+//   - scope - The scope of the role eligibility request to validate.
+//   - roleEligibilityScheduleRequestName - The name of the role eligibility request to validate.
+//   - parameters - Parameters for the role eligibility schedule request.
+//   - options - RoleEligibilityScheduleRequestsClientValidateOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Validate
+//     method.
 func (client *RoleEligibilityScheduleRequestsClient) Validate(ctx context.Context, scope string, roleEligibilityScheduleRequestName string, parameters RoleEligibilityScheduleRequest, options *RoleEligibilityScheduleRequestsClientValidateOptions) (RoleEligibilityScheduleRequestsClientValidateResponse, error) {
 	req, err := client.validateCreateRequest(ctx, scope, roleEligibilityScheduleRequestName, parameters, options)
 	if err != nil {
 		return RoleEligibilityScheduleRequestsClientValidateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleEligibilityScheduleRequestsClientValidateResponse{}, err
 	}
@@ -290,7 +283,7 @@ func (client *RoleEligibilityScheduleRequestsClient) validateCreateRequest(ctx c
 		return nil, errors.New("parameter roleEligibilityScheduleRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleEligibilityScheduleRequestName}", url.PathEscape(roleEligibilityScheduleRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

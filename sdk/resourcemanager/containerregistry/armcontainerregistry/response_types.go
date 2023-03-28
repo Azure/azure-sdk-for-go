@@ -39,9 +39,149 @@ type AgentPoolsClientUpdateResponse struct {
 	AgentPool
 }
 
+// CacheRulesClientCreateResponse contains the response from method CacheRulesClient.BeginCreate.
+type CacheRulesClientCreateResponse struct {
+	CacheRule
+}
+
+// CacheRulesClientDeleteResponse contains the response from method CacheRulesClient.BeginDelete.
+type CacheRulesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CacheRulesClientGetResponse contains the response from method CacheRulesClient.Get.
+type CacheRulesClientGetResponse struct {
+	CacheRule
+}
+
+// CacheRulesClientListResponse contains the response from method CacheRulesClient.NewListPager.
+type CacheRulesClientListResponse struct {
+	CacheRulesListResult
+}
+
+// CacheRulesClientUpdateResponse contains the response from method CacheRulesClient.BeginUpdate.
+type CacheRulesClientUpdateResponse struct {
+	CacheRule
+}
+
+// ConnectedRegistriesClientCreateResponse contains the response from method ConnectedRegistriesClient.BeginCreate.
+type ConnectedRegistriesClientCreateResponse struct {
+	ConnectedRegistry
+}
+
+// ConnectedRegistriesClientDeactivateResponse contains the response from method ConnectedRegistriesClient.BeginDeactivate.
+type ConnectedRegistriesClientDeactivateResponse struct {
+	// placeholder for future response values
+}
+
+// ConnectedRegistriesClientDeleteResponse contains the response from method ConnectedRegistriesClient.BeginDelete.
+type ConnectedRegistriesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConnectedRegistriesClientGetResponse contains the response from method ConnectedRegistriesClient.Get.
+type ConnectedRegistriesClientGetResponse struct {
+	ConnectedRegistry
+}
+
+// ConnectedRegistriesClientListResponse contains the response from method ConnectedRegistriesClient.NewListPager.
+type ConnectedRegistriesClientListResponse struct {
+	ConnectedRegistryListResult
+}
+
+// ConnectedRegistriesClientUpdateResponse contains the response from method ConnectedRegistriesClient.BeginUpdate.
+type ConnectedRegistriesClientUpdateResponse struct {
+	ConnectedRegistry
+}
+
+// CredentialSetsClientCreateResponse contains the response from method CredentialSetsClient.BeginCreate.
+type CredentialSetsClientCreateResponse struct {
+	CredentialSet
+}
+
+// CredentialSetsClientDeleteResponse contains the response from method CredentialSetsClient.BeginDelete.
+type CredentialSetsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CredentialSetsClientGetResponse contains the response from method CredentialSetsClient.Get.
+type CredentialSetsClientGetResponse struct {
+	CredentialSet
+}
+
+// CredentialSetsClientListResponse contains the response from method CredentialSetsClient.NewListPager.
+type CredentialSetsClientListResponse struct {
+	CredentialSetListResult
+}
+
+// CredentialSetsClientUpdateResponse contains the response from method CredentialSetsClient.BeginUpdate.
+type CredentialSetsClientUpdateResponse struct {
+	CredentialSet
+}
+
+// ExportPipelinesClientCreateResponse contains the response from method ExportPipelinesClient.BeginCreate.
+type ExportPipelinesClientCreateResponse struct {
+	ExportPipeline
+}
+
+// ExportPipelinesClientDeleteResponse contains the response from method ExportPipelinesClient.BeginDelete.
+type ExportPipelinesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExportPipelinesClientGetResponse contains the response from method ExportPipelinesClient.Get.
+type ExportPipelinesClientGetResponse struct {
+	ExportPipeline
+}
+
+// ExportPipelinesClientListResponse contains the response from method ExportPipelinesClient.NewListPager.
+type ExportPipelinesClientListResponse struct {
+	ExportPipelineListResult
+}
+
+// ImportPipelinesClientCreateResponse contains the response from method ImportPipelinesClient.BeginCreate.
+type ImportPipelinesClientCreateResponse struct {
+	ImportPipeline
+}
+
+// ImportPipelinesClientDeleteResponse contains the response from method ImportPipelinesClient.BeginDelete.
+type ImportPipelinesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ImportPipelinesClientGetResponse contains the response from method ImportPipelinesClient.Get.
+type ImportPipelinesClientGetResponse struct {
+	ImportPipeline
+}
+
+// ImportPipelinesClientListResponse contains the response from method ImportPipelinesClient.NewListPager.
+type ImportPipelinesClientListResponse struct {
+	ImportPipelineListResult
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
+}
+
+// PipelineRunsClientCreateResponse contains the response from method PipelineRunsClient.BeginCreate.
+type PipelineRunsClientCreateResponse struct {
+	PipelineRun
+}
+
+// PipelineRunsClientDeleteResponse contains the response from method PipelineRunsClient.BeginDelete.
+type PipelineRunsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PipelineRunsClientGetResponse contains the response from method PipelineRunsClient.Get.
+type PipelineRunsClientGetResponse struct {
+	PipelineRun
+}
+
+// PipelineRunsClientListResponse contains the response from method PipelineRunsClient.NewListPager.
+type PipelineRunsClientListResponse struct {
+	PipelineRunListResult
 }
 
 // PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.

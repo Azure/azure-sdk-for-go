@@ -38,13 +38,43 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+func (c *ClientFactory) NewCacheRulesClient() *CacheRulesClient {
+	subClient, _ := NewCacheRulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewConnectedRegistriesClient() *ConnectedRegistriesClient {
+	subClient, _ := NewConnectedRegistriesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewCredentialSetsClient() *CredentialSetsClient {
+	subClient, _ := NewCredentialSetsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewExportPipelinesClient() *ExportPipelinesClient {
+	subClient, _ := NewExportPipelinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewRegistriesClient() *RegistriesClient {
 	subClient, _ := NewRegistriesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+func (c *ClientFactory) NewImportPipelinesClient() *ImportPipelinesClient {
+	subClient, _ := NewImportPipelinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewPipelineRunsClient() *PipelineRunsClient {
+	subClient, _ := NewPipelineRunsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

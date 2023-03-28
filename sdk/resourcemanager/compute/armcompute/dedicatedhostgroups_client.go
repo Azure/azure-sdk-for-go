@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,32 +24,23 @@ import (
 // DedicatedHostGroupsClient contains the methods for the DedicatedHostGroups group.
 // Don't use this type directly, use NewDedicatedHostGroupsClient() instead.
 type DedicatedHostGroupsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDedicatedHostGroupsClient creates a new instance of DedicatedHostGroupsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDedicatedHostGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DedicatedHostGroupsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DedicatedHostGroupsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DedicatedHostGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -59,18 +48,19 @@ func NewDedicatedHostGroupsClient(subscriptionID string, credential azcore.Token
 // CreateOrUpdate - Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please
 // see Dedicated Host Documentation [https://go.microsoft.com/fwlink/?linkid=2082596]
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// hostGroupName - The name of the dedicated host group.
-// parameters - Parameters supplied to the Create Dedicated Host Group.
-// options - DedicatedHostGroupsClientCreateOrUpdateOptions contains the optional parameters for the DedicatedHostGroupsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - hostGroupName - The name of the dedicated host group.
+//   - parameters - Parameters supplied to the Create Dedicated Host Group.
+//   - options - DedicatedHostGroupsClientCreateOrUpdateOptions contains the optional parameters for the DedicatedHostGroupsClient.CreateOrUpdate
+//     method.
 func (client *DedicatedHostGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, parameters DedicatedHostGroup, options *DedicatedHostGroupsClientCreateOrUpdateOptions) (DedicatedHostGroupsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, hostGroupName, parameters, options)
 	if err != nil {
 		return DedicatedHostGroupsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DedicatedHostGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -95,7 +85,7 @@ func (client *DedicatedHostGroupsClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,17 +107,18 @@ func (client *DedicatedHostGroupsClient) createOrUpdateHandleResponse(resp *http
 
 // Delete - Delete a dedicated host group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// hostGroupName - The name of the dedicated host group.
-// options - DedicatedHostGroupsClientDeleteOptions contains the optional parameters for the DedicatedHostGroupsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - hostGroupName - The name of the dedicated host group.
+//   - options - DedicatedHostGroupsClientDeleteOptions contains the optional parameters for the DedicatedHostGroupsClient.Delete
+//     method.
 func (client *DedicatedHostGroupsClient) Delete(ctx context.Context, resourceGroupName string, hostGroupName string, options *DedicatedHostGroupsClientDeleteOptions) (DedicatedHostGroupsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostGroupName, options)
 	if err != nil {
 		return DedicatedHostGroupsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DedicatedHostGroupsClientDeleteResponse{}, err
 	}
@@ -152,7 +143,7 @@ func (client *DedicatedHostGroupsClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,16 +156,17 @@ func (client *DedicatedHostGroupsClient) deleteCreateRequest(ctx context.Context
 
 // Get - Retrieves information about a dedicated host group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// hostGroupName - The name of the dedicated host group.
-// options - DedicatedHostGroupsClientGetOptions contains the optional parameters for the DedicatedHostGroupsClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - hostGroupName - The name of the dedicated host group.
+//   - options - DedicatedHostGroupsClientGetOptions contains the optional parameters for the DedicatedHostGroupsClient.Get method.
 func (client *DedicatedHostGroupsClient) Get(ctx context.Context, resourceGroupName string, hostGroupName string, options *DedicatedHostGroupsClientGetOptions) (DedicatedHostGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostGroupName, options)
 	if err != nil {
 		return DedicatedHostGroupsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DedicatedHostGroupsClientGetResponse{}, err
 	}
@@ -199,7 +191,7 @@ func (client *DedicatedHostGroupsClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -224,10 +216,11 @@ func (client *DedicatedHostGroupsClient) getHandleResponse(resp *http.Response) 
 
 // NewListByResourceGroupPager - Lists all of the dedicated host groups in the specified resource group. Use the nextLink
 // property in the response to get the next page of dedicated host groups.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// options - DedicatedHostGroupsClientListByResourceGroupOptions contains the optional parameters for the DedicatedHostGroupsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - options - DedicatedHostGroupsClientListByResourceGroupOptions contains the optional parameters for the DedicatedHostGroupsClient.NewListByResourceGroupPager
+//     method.
 func (client *DedicatedHostGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *DedicatedHostGroupsClientListByResourceGroupOptions) *runtime.Pager[DedicatedHostGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DedicatedHostGroupsClientListByResourceGroupResponse]{
 		More: func(page DedicatedHostGroupsClientListByResourceGroupResponse) bool {
@@ -244,7 +237,7 @@ func (client *DedicatedHostGroupsClient) NewListByResourceGroupPager(resourceGro
 			if err != nil {
 				return DedicatedHostGroupsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DedicatedHostGroupsClientListByResourceGroupResponse{}, err
 			}
@@ -267,7 +260,7 @@ func (client *DedicatedHostGroupsClient) listByResourceGroupCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -289,9 +282,10 @@ func (client *DedicatedHostGroupsClient) listByResourceGroupHandleResponse(resp 
 
 // NewListBySubscriptionPager - Lists all of the dedicated host groups in the subscription. Use the nextLink property in the
 // response to get the next page of dedicated host groups.
+//
 // Generated from API version 2022-11-01
-// options - DedicatedHostGroupsClientListBySubscriptionOptions contains the optional parameters for the DedicatedHostGroupsClient.ListBySubscription
-// method.
+//   - options - DedicatedHostGroupsClientListBySubscriptionOptions contains the optional parameters for the DedicatedHostGroupsClient.NewListBySubscriptionPager
+//     method.
 func (client *DedicatedHostGroupsClient) NewListBySubscriptionPager(options *DedicatedHostGroupsClientListBySubscriptionOptions) *runtime.Pager[DedicatedHostGroupsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DedicatedHostGroupsClientListBySubscriptionResponse]{
 		More: func(page DedicatedHostGroupsClientListBySubscriptionResponse) bool {
@@ -308,7 +302,7 @@ func (client *DedicatedHostGroupsClient) NewListBySubscriptionPager(options *Ded
 			if err != nil {
 				return DedicatedHostGroupsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DedicatedHostGroupsClientListBySubscriptionResponse{}, err
 			}
@@ -327,7 +321,7 @@ func (client *DedicatedHostGroupsClient) listBySubscriptionCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -349,18 +343,19 @@ func (client *DedicatedHostGroupsClient) listBySubscriptionHandleResponse(resp *
 
 // Update - Update an dedicated host group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// hostGroupName - The name of the dedicated host group.
-// parameters - Parameters supplied to the Update Dedicated Host Group operation.
-// options - DedicatedHostGroupsClientUpdateOptions contains the optional parameters for the DedicatedHostGroupsClient.Update
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - hostGroupName - The name of the dedicated host group.
+//   - parameters - Parameters supplied to the Update Dedicated Host Group operation.
+//   - options - DedicatedHostGroupsClientUpdateOptions contains the optional parameters for the DedicatedHostGroupsClient.Update
+//     method.
 func (client *DedicatedHostGroupsClient) Update(ctx context.Context, resourceGroupName string, hostGroupName string, parameters DedicatedHostGroupUpdate, options *DedicatedHostGroupsClientUpdateOptions) (DedicatedHostGroupsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostGroupName, parameters, options)
 	if err != nil {
 		return DedicatedHostGroupsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DedicatedHostGroupsClientUpdateResponse{}, err
 	}
@@ -385,7 +380,7 @@ func (client *DedicatedHostGroupsClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

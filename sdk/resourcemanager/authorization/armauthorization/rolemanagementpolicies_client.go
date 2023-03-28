@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,45 +24,37 @@ import (
 // RoleManagementPoliciesClient contains the methods for the RoleManagementPolicies group.
 // Don't use this type directly, use NewRoleManagementPoliciesClient() instead.
 type RoleManagementPoliciesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewRoleManagementPoliciesClient creates a new instance of RoleManagementPoliciesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRoleManagementPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleManagementPoliciesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RoleManagementPoliciesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RoleManagementPoliciesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Delete - Delete a role management policy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role management policy to upsert.
-// roleManagementPolicyName - The name (guid) of the role management policy to upsert.
-// options - RoleManagementPoliciesClientDeleteOptions contains the optional parameters for the RoleManagementPoliciesClient.Delete
-// method.
+//   - scope - The scope of the role management policy to upsert.
+//   - roleManagementPolicyName - The name (guid) of the role management policy to upsert.
+//   - options - RoleManagementPoliciesClientDeleteOptions contains the optional parameters for the RoleManagementPoliciesClient.Delete
+//     method.
 func (client *RoleManagementPoliciesClient) Delete(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesClientDeleteOptions) (RoleManagementPoliciesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, roleManagementPolicyName, options)
 	if err != nil {
 		return RoleManagementPoliciesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleManagementPoliciesClientDeleteResponse{}, err
 	}
@@ -82,7 +72,7 @@ func (client *RoleManagementPoliciesClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter roleManagementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleManagementPolicyName}", url.PathEscape(roleManagementPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,17 +85,18 @@ func (client *RoleManagementPoliciesClient) deleteCreateRequest(ctx context.Cont
 
 // Get - Get the specified role management policy for a resource scope
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role management policy.
-// roleManagementPolicyName - The name (guid) of the role management policy to get.
-// options - RoleManagementPoliciesClientGetOptions contains the optional parameters for the RoleManagementPoliciesClient.Get
-// method.
+//   - scope - The scope of the role management policy.
+//   - roleManagementPolicyName - The name (guid) of the role management policy to get.
+//   - options - RoleManagementPoliciesClientGetOptions contains the optional parameters for the RoleManagementPoliciesClient.Get
+//     method.
 func (client *RoleManagementPoliciesClient) Get(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesClientGetOptions) (RoleManagementPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleManagementPolicyName, options)
 	if err != nil {
 		return RoleManagementPoliciesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleManagementPoliciesClientGetResponse{}, err
 	}
@@ -123,7 +114,7 @@ func (client *RoleManagementPoliciesClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter roleManagementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleManagementPolicyName}", url.PathEscape(roleManagementPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,11 +135,11 @@ func (client *RoleManagementPoliciesClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListForScopePager - Gets role management policies for a resource scope.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role management policy.
-// options - RoleManagementPoliciesClientListForScopeOptions contains the optional parameters for the RoleManagementPoliciesClient.ListForScope
-// method.
+//   - scope - The scope of the role management policy.
+//   - options - RoleManagementPoliciesClientListForScopeOptions contains the optional parameters for the RoleManagementPoliciesClient.NewListForScopePager
+//     method.
 func (client *RoleManagementPoliciesClient) NewListForScopePager(scope string, options *RoleManagementPoliciesClientListForScopeOptions) *runtime.Pager[RoleManagementPoliciesClientListForScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RoleManagementPoliciesClientListForScopeResponse]{
 		More: func(page RoleManagementPoliciesClientListForScopeResponse) bool {
@@ -165,7 +156,7 @@ func (client *RoleManagementPoliciesClient) NewListForScopePager(scope string, o
 			if err != nil {
 				return RoleManagementPoliciesClientListForScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RoleManagementPoliciesClientListForScopeResponse{}, err
 			}
@@ -181,7 +172,7 @@ func (client *RoleManagementPoliciesClient) NewListForScopePager(scope string, o
 func (client *RoleManagementPoliciesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleManagementPoliciesClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -203,18 +194,19 @@ func (client *RoleManagementPoliciesClient) listForScopeHandleResponse(resp *htt
 
 // Update - Update a role management policy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role management policy to upsert.
-// roleManagementPolicyName - The name (guid) of the role management policy to upsert.
-// parameters - Parameters for the role management policy.
-// options - RoleManagementPoliciesClientUpdateOptions contains the optional parameters for the RoleManagementPoliciesClient.Update
-// method.
+//   - scope - The scope of the role management policy to upsert.
+//   - roleManagementPolicyName - The name (guid) of the role management policy to upsert.
+//   - parameters - Parameters for the role management policy.
+//   - options - RoleManagementPoliciesClientUpdateOptions contains the optional parameters for the RoleManagementPoliciesClient.Update
+//     method.
 func (client *RoleManagementPoliciesClient) Update(ctx context.Context, scope string, roleManagementPolicyName string, parameters RoleManagementPolicy, options *RoleManagementPoliciesClientUpdateOptions) (RoleManagementPoliciesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, scope, roleManagementPolicyName, parameters, options)
 	if err != nil {
 		return RoleManagementPoliciesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleManagementPoliciesClientUpdateResponse{}, err
 	}
@@ -232,7 +224,7 @@ func (client *RoleManagementPoliciesClient) updateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter roleManagementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleManagementPolicyName}", url.PathEscape(roleManagementPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

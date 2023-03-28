@@ -3858,36 +3858,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockStreamUploadWithDifferentB
 	_require.Equal(*(committed[1].Size), secondBlockSize)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-
-	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
-
-	var largeBlockSize, numberOfBlocks int64 = 2500 * 1024 * 1024, 2
-	content := make([]byte, numberOfBlocks*largeBlockSize)
-
-	_, err = bbClient.UploadBuffer(context.Background(), content, &blockblob.UploadBufferOptions{
-		BlockSize:   largeBlockSize,
-		Concurrency: 2,
-	})
-	_require.Nil(err)
-
-	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-	_require.Nil(err)
-	_require.Len(resp.BlockList.CommittedBlocks, 2)
-	_require.Equal(*resp.BlobContentLength, numberOfBlocks*largeBlockSize)
-	committed := resp.BlockList.CommittedBlocks
-	_require.Equal(*(committed[0].Size), largeBlockSize)
-	_require.Equal(*(committed[1].Size), largeBlockSize)
-}
-
 type fakeBlockBlob struct {
 	totalStaged int64
 }

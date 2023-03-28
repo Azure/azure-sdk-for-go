@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,50 +25,42 @@ import (
 // EnvironmentTypesClient contains the methods for the EnvironmentTypes group.
 // Don't use this type directly, use NewEnvironmentTypesClient() instead.
 type EnvironmentTypesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewEnvironmentTypesClient creates a new instance of EnvironmentTypesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEnvironmentTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnvironmentTypesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EnvironmentTypesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EnvironmentTypesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates an environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// environmentTypeName - The name of the environment type.
-// body - Represents an Environment Type.
-// options - EnvironmentTypesClientCreateOrUpdateOptions contains the optional parameters for the EnvironmentTypesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - environmentTypeName - The name of the environment type.
+//   - body - Represents an Environment Type.
+//   - options - EnvironmentTypesClientCreateOrUpdateOptions contains the optional parameters for the EnvironmentTypesClient.CreateOrUpdate
+//     method.
 func (client *EnvironmentTypesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, body EnvironmentType, options *EnvironmentTypesClientCreateOrUpdateOptions) (EnvironmentTypesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, environmentTypeName, body, options)
 	if err != nil {
 		return EnvironmentTypesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentTypesClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *EnvironmentTypesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter environmentTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{environmentTypeName}", url.PathEscape(environmentTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,17 +111,18 @@ func (client *EnvironmentTypesClient) createOrUpdateHandleResponse(resp *http.Re
 
 // Delete - Deletes an environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// environmentTypeName - The name of the environment type.
-// options - EnvironmentTypesClientDeleteOptions contains the optional parameters for the EnvironmentTypesClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - environmentTypeName - The name of the environment type.
+//   - options - EnvironmentTypesClientDeleteOptions contains the optional parameters for the EnvironmentTypesClient.Delete method.
 func (client *EnvironmentTypesClient) Delete(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, options *EnvironmentTypesClientDeleteOptions) (EnvironmentTypesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, environmentTypeName, options)
 	if err != nil {
 		return EnvironmentTypesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentTypesClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *EnvironmentTypesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter environmentTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{environmentTypeName}", url.PathEscape(environmentTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,17 +164,18 @@ func (client *EnvironmentTypesClient) deleteCreateRequest(ctx context.Context, r
 
 // Get - Gets an environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// environmentTypeName - The name of the environment type.
-// options - EnvironmentTypesClientGetOptions contains the optional parameters for the EnvironmentTypesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - environmentTypeName - The name of the environment type.
+//   - options - EnvironmentTypesClientGetOptions contains the optional parameters for the EnvironmentTypesClient.Get method.
 func (client *EnvironmentTypesClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, options *EnvironmentTypesClientGetOptions) (EnvironmentTypesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, environmentTypeName, options)
 	if err != nil {
 		return EnvironmentTypesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentTypesClientGetResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *EnvironmentTypesClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter environmentTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{environmentTypeName}", url.PathEscape(environmentTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,11 +225,12 @@ func (client *EnvironmentTypesClient) getHandleResponse(resp *http.Response) (En
 }
 
 // NewListByDevCenterPager - Lists environment types for the devcenter.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// options - EnvironmentTypesClientListByDevCenterOptions contains the optional parameters for the EnvironmentTypesClient.ListByDevCenter
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - options - EnvironmentTypesClientListByDevCenterOptions contains the optional parameters for the EnvironmentTypesClient.NewListByDevCenterPager
+//     method.
 func (client *EnvironmentTypesClient) NewListByDevCenterPager(resourceGroupName string, devCenterName string, options *EnvironmentTypesClientListByDevCenterOptions) *runtime.Pager[EnvironmentTypesClientListByDevCenterResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EnvironmentTypesClientListByDevCenterResponse]{
 		More: func(page EnvironmentTypesClientListByDevCenterResponse) bool {
@@ -254,7 +247,7 @@ func (client *EnvironmentTypesClient) NewListByDevCenterPager(resourceGroupName 
 			if err != nil {
 				return EnvironmentTypesClientListByDevCenterResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EnvironmentTypesClientListByDevCenterResponse{}, err
 			}
@@ -281,7 +274,7 @@ func (client *EnvironmentTypesClient) listByDevCenterCreateRequest(ctx context.C
 		return nil, errors.New("parameter devCenterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -306,18 +299,19 @@ func (client *EnvironmentTypesClient) listByDevCenterHandleResponse(resp *http.R
 
 // Update - Partially updates an environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// environmentTypeName - The name of the environment type.
-// body - Updatable environment type properties.
-// options - EnvironmentTypesClientUpdateOptions contains the optional parameters for the EnvironmentTypesClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - environmentTypeName - The name of the environment type.
+//   - body - Updatable environment type properties.
+//   - options - EnvironmentTypesClientUpdateOptions contains the optional parameters for the EnvironmentTypesClient.Update method.
 func (client *EnvironmentTypesClient) Update(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, body EnvironmentTypeUpdate, options *EnvironmentTypesClientUpdateOptions) (EnvironmentTypesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, environmentTypeName, body, options)
 	if err != nil {
 		return EnvironmentTypesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EnvironmentTypesClientUpdateResponse{}, err
 	}
@@ -346,7 +340,7 @@ func (client *EnvironmentTypesClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter environmentTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{environmentTypeName}", url.PathEscape(environmentTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

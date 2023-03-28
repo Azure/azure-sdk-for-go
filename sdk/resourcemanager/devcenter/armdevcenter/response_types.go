@@ -9,12 +9,12 @@
 
 package armdevcenter
 
-// AttachedNetworksClientCreateOrUpdateResponse contains the response from method AttachedNetworksClient.CreateOrUpdate.
+// AttachedNetworksClientCreateOrUpdateResponse contains the response from method AttachedNetworksClient.BeginCreateOrUpdate.
 type AttachedNetworksClientCreateOrUpdateResponse struct {
 	AttachedNetworkConnection
 }
 
-// AttachedNetworksClientDeleteResponse contains the response from method AttachedNetworksClient.Delete.
+// AttachedNetworksClientDeleteResponse contains the response from method AttachedNetworksClient.BeginDelete.
 type AttachedNetworksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -29,22 +29,22 @@ type AttachedNetworksClientGetByProjectResponse struct {
 	AttachedNetworkConnection
 }
 
-// AttachedNetworksClientListByDevCenterResponse contains the response from method AttachedNetworksClient.ListByDevCenter.
+// AttachedNetworksClientListByDevCenterResponse contains the response from method AttachedNetworksClient.NewListByDevCenterPager.
 type AttachedNetworksClientListByDevCenterResponse struct {
 	AttachedNetworkListResult
 }
 
-// AttachedNetworksClientListByProjectResponse contains the response from method AttachedNetworksClient.ListByProject.
+// AttachedNetworksClientListByProjectResponse contains the response from method AttachedNetworksClient.NewListByProjectPager.
 type AttachedNetworksClientListByProjectResponse struct {
 	AttachedNetworkListResult
 }
 
-// CatalogsClientCreateOrUpdateResponse contains the response from method CatalogsClient.CreateOrUpdate.
+// CatalogsClientCreateOrUpdateResponse contains the response from method CatalogsClient.BeginCreateOrUpdate.
 type CatalogsClientCreateOrUpdateResponse struct {
 	Catalog
 }
 
-// CatalogsClientDeleteResponse contains the response from method CatalogsClient.Delete.
+// CatalogsClientDeleteResponse contains the response from method CatalogsClient.BeginDelete.
 type CatalogsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -54,17 +54,17 @@ type CatalogsClientGetResponse struct {
 	Catalog
 }
 
-// CatalogsClientListByDevCenterResponse contains the response from method CatalogsClient.ListByDevCenter.
+// CatalogsClientListByDevCenterResponse contains the response from method CatalogsClient.NewListByDevCenterPager.
 type CatalogsClientListByDevCenterResponse struct {
 	CatalogListResult
 }
 
-// CatalogsClientSyncResponse contains the response from method CatalogsClient.Sync.
+// CatalogsClientSyncResponse contains the response from method CatalogsClient.BeginSync.
 type CatalogsClientSyncResponse struct {
 	// placeholder for future response values
 }
 
-// CatalogsClientUpdateResponse contains the response from method CatalogsClient.Update.
+// CatalogsClientUpdateResponse contains the response from method CatalogsClient.BeginUpdate.
 type CatalogsClientUpdateResponse struct {
 	Catalog
 }
@@ -74,12 +74,12 @@ type CheckNameAvailabilityClientExecuteResponse struct {
 	CheckNameAvailabilityResponse
 }
 
-// DevBoxDefinitionsClientCreateOrUpdateResponse contains the response from method DevBoxDefinitionsClient.CreateOrUpdate.
+// DevBoxDefinitionsClientCreateOrUpdateResponse contains the response from method DevBoxDefinitionsClient.BeginCreateOrUpdate.
 type DevBoxDefinitionsClientCreateOrUpdateResponse struct {
 	DevBoxDefinition
 }
 
-// DevBoxDefinitionsClientDeleteResponse contains the response from method DevBoxDefinitionsClient.Delete.
+// DevBoxDefinitionsClientDeleteResponse contains the response from method DevBoxDefinitionsClient.BeginDelete.
 type DevBoxDefinitionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -94,27 +94,27 @@ type DevBoxDefinitionsClientGetResponse struct {
 	DevBoxDefinition
 }
 
-// DevBoxDefinitionsClientListByDevCenterResponse contains the response from method DevBoxDefinitionsClient.ListByDevCenter.
+// DevBoxDefinitionsClientListByDevCenterResponse contains the response from method DevBoxDefinitionsClient.NewListByDevCenterPager.
 type DevBoxDefinitionsClientListByDevCenterResponse struct {
 	DevBoxDefinitionListResult
 }
 
-// DevBoxDefinitionsClientListByProjectResponse contains the response from method DevBoxDefinitionsClient.ListByProject.
+// DevBoxDefinitionsClientListByProjectResponse contains the response from method DevBoxDefinitionsClient.NewListByProjectPager.
 type DevBoxDefinitionsClientListByProjectResponse struct {
 	DevBoxDefinitionListResult
 }
 
-// DevBoxDefinitionsClientUpdateResponse contains the response from method DevBoxDefinitionsClient.Update.
+// DevBoxDefinitionsClientUpdateResponse contains the response from method DevBoxDefinitionsClient.BeginUpdate.
 type DevBoxDefinitionsClientUpdateResponse struct {
 	DevBoxDefinition
 }
 
-// DevCentersClientCreateOrUpdateResponse contains the response from method DevCentersClient.CreateOrUpdate.
+// DevCentersClientCreateOrUpdateResponse contains the response from method DevCentersClient.BeginCreateOrUpdate.
 type DevCentersClientCreateOrUpdateResponse struct {
 	DevCenter
 }
 
-// DevCentersClientDeleteResponse contains the response from method DevCentersClient.Delete.
+// DevCentersClientDeleteResponse contains the response from method DevCentersClient.BeginDelete.
 type DevCentersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -124,17 +124,17 @@ type DevCentersClientGetResponse struct {
 	DevCenter
 }
 
-// DevCentersClientListByResourceGroupResponse contains the response from method DevCentersClient.ListByResourceGroup.
+// DevCentersClientListByResourceGroupResponse contains the response from method DevCentersClient.NewListByResourceGroupPager.
 type DevCentersClientListByResourceGroupResponse struct {
 	ListResult
 }
 
-// DevCentersClientListBySubscriptionResponse contains the response from method DevCentersClient.ListBySubscription.
+// DevCentersClientListBySubscriptionResponse contains the response from method DevCentersClient.NewListBySubscriptionPager.
 type DevCentersClientListBySubscriptionResponse struct {
 	ListResult
 }
 
-// DevCentersClientUpdateResponse contains the response from method DevCentersClient.Update.
+// DevCentersClientUpdateResponse contains the response from method DevCentersClient.BeginUpdate.
 type DevCentersClientUpdateResponse struct {
 	DevCenter
 }
@@ -154,7 +154,7 @@ type EnvironmentTypesClientGetResponse struct {
 	EnvironmentType
 }
 
-// EnvironmentTypesClientListByDevCenterResponse contains the response from method EnvironmentTypesClient.ListByDevCenter.
+// EnvironmentTypesClientListByDevCenterResponse contains the response from method EnvironmentTypesClient.NewListByDevCenterPager.
 type EnvironmentTypesClientListByDevCenterResponse struct {
 	EnvironmentTypeListResult
 }
@@ -164,12 +164,12 @@ type EnvironmentTypesClientUpdateResponse struct {
 	EnvironmentType
 }
 
-// GalleriesClientCreateOrUpdateResponse contains the response from method GalleriesClient.CreateOrUpdate.
+// GalleriesClientCreateOrUpdateResponse contains the response from method GalleriesClient.BeginCreateOrUpdate.
 type GalleriesClientCreateOrUpdateResponse struct {
 	Gallery
 }
 
-// GalleriesClientDeleteResponse contains the response from method GalleriesClient.Delete.
+// GalleriesClientDeleteResponse contains the response from method GalleriesClient.BeginDelete.
 type GalleriesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -179,7 +179,7 @@ type GalleriesClientGetResponse struct {
 	Gallery
 }
 
-// GalleriesClientListByDevCenterResponse contains the response from method GalleriesClient.ListByDevCenter.
+// GalleriesClientListByDevCenterResponse contains the response from method GalleriesClient.NewListByDevCenterPager.
 type GalleriesClientListByDevCenterResponse struct {
 	GalleryListResult
 }
@@ -189,7 +189,7 @@ type ImageVersionsClientGetResponse struct {
 	ImageVersion
 }
 
-// ImageVersionsClientListByImageResponse contains the response from method ImageVersionsClient.ListByImage.
+// ImageVersionsClientListByImageResponse contains the response from method ImageVersionsClient.NewListByImagePager.
 type ImageVersionsClientListByImageResponse struct {
 	ImageVersionListResult
 }
@@ -199,22 +199,22 @@ type ImagesClientGetResponse struct {
 	Image
 }
 
-// ImagesClientListByDevCenterResponse contains the response from method ImagesClient.ListByDevCenter.
+// ImagesClientListByDevCenterResponse contains the response from method ImagesClient.NewListByDevCenterPager.
 type ImagesClientListByDevCenterResponse struct {
 	ImageListResult
 }
 
-// ImagesClientListByGalleryResponse contains the response from method ImagesClient.ListByGallery.
+// ImagesClientListByGalleryResponse contains the response from method ImagesClient.NewListByGalleryPager.
 type ImagesClientListByGalleryResponse struct {
 	ImageListResult
 }
 
-// NetworkConnectionsClientCreateOrUpdateResponse contains the response from method NetworkConnectionsClient.CreateOrUpdate.
+// NetworkConnectionsClientCreateOrUpdateResponse contains the response from method NetworkConnectionsClient.BeginCreateOrUpdate.
 type NetworkConnectionsClientCreateOrUpdateResponse struct {
 	NetworkConnection
 }
 
-// NetworkConnectionsClientDeleteResponse contains the response from method NetworkConnectionsClient.Delete.
+// NetworkConnectionsClientDeleteResponse contains the response from method NetworkConnectionsClient.BeginDelete.
 type NetworkConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -229,27 +229,27 @@ type NetworkConnectionsClientGetResponse struct {
 	NetworkConnection
 }
 
-// NetworkConnectionsClientListByResourceGroupResponse contains the response from method NetworkConnectionsClient.ListByResourceGroup.
+// NetworkConnectionsClientListByResourceGroupResponse contains the response from method NetworkConnectionsClient.NewListByResourceGroupPager.
 type NetworkConnectionsClientListByResourceGroupResponse struct {
 	NetworkConnectionListResult
 }
 
-// NetworkConnectionsClientListBySubscriptionResponse contains the response from method NetworkConnectionsClient.ListBySubscription.
+// NetworkConnectionsClientListBySubscriptionResponse contains the response from method NetworkConnectionsClient.NewListBySubscriptionPager.
 type NetworkConnectionsClientListBySubscriptionResponse struct {
 	NetworkConnectionListResult
 }
 
-// NetworkConnectionsClientListHealthDetailsResponse contains the response from method NetworkConnectionsClient.ListHealthDetails.
+// NetworkConnectionsClientListHealthDetailsResponse contains the response from method NetworkConnectionsClient.NewListHealthDetailsPager.
 type NetworkConnectionsClientListHealthDetailsResponse struct {
 	HealthCheckStatusDetailsListResult
 }
 
-// NetworkConnectionsClientRunHealthChecksResponse contains the response from method NetworkConnectionsClient.RunHealthChecks.
+// NetworkConnectionsClientRunHealthChecksResponse contains the response from method NetworkConnectionsClient.BeginRunHealthChecks.
 type NetworkConnectionsClientRunHealthChecksResponse struct {
 	// placeholder for future response values
 }
 
-// NetworkConnectionsClientUpdateResponse contains the response from method NetworkConnectionsClient.Update.
+// NetworkConnectionsClientUpdateResponse contains the response from method NetworkConnectionsClient.BeginUpdate.
 type NetworkConnectionsClientUpdateResponse struct {
 	NetworkConnection
 }
@@ -259,17 +259,17 @@ type OperationStatusesClientGetResponse struct {
 	OperationStatus
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PoolsClientCreateOrUpdateResponse contains the response from method PoolsClient.CreateOrUpdate.
+// PoolsClientCreateOrUpdateResponse contains the response from method PoolsClient.BeginCreateOrUpdate.
 type PoolsClientCreateOrUpdateResponse struct {
 	Pool
 }
 
-// PoolsClientDeleteResponse contains the response from method PoolsClient.Delete.
+// PoolsClientDeleteResponse contains the response from method PoolsClient.BeginDelete.
 type PoolsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -279,12 +279,12 @@ type PoolsClientGetResponse struct {
 	Pool
 }
 
-// PoolsClientListByProjectResponse contains the response from method PoolsClient.ListByProject.
+// PoolsClientListByProjectResponse contains the response from method PoolsClient.NewListByProjectPager.
 type PoolsClientListByProjectResponse struct {
 	PoolListResult
 }
 
-// PoolsClientUpdateResponse contains the response from method PoolsClient.Update.
+// PoolsClientUpdateResponse contains the response from method PoolsClient.BeginUpdate.
 type PoolsClientUpdateResponse struct {
 	Pool
 }
@@ -294,7 +294,7 @@ type ProjectAllowedEnvironmentTypesClientGetResponse struct {
 	AllowedEnvironmentType
 }
 
-// ProjectAllowedEnvironmentTypesClientListResponse contains the response from method ProjectAllowedEnvironmentTypesClient.List.
+// ProjectAllowedEnvironmentTypesClientListResponse contains the response from method ProjectAllowedEnvironmentTypesClient.NewListPager.
 type ProjectAllowedEnvironmentTypesClientListResponse struct {
 	AllowedEnvironmentTypeListResult
 }
@@ -314,7 +314,7 @@ type ProjectEnvironmentTypesClientGetResponse struct {
 	ProjectEnvironmentType
 }
 
-// ProjectEnvironmentTypesClientListResponse contains the response from method ProjectEnvironmentTypesClient.List.
+// ProjectEnvironmentTypesClientListResponse contains the response from method ProjectEnvironmentTypesClient.NewListPager.
 type ProjectEnvironmentTypesClientListResponse struct {
 	ProjectEnvironmentTypeListResult
 }
@@ -324,12 +324,12 @@ type ProjectEnvironmentTypesClientUpdateResponse struct {
 	ProjectEnvironmentType
 }
 
-// ProjectsClientCreateOrUpdateResponse contains the response from method ProjectsClient.CreateOrUpdate.
+// ProjectsClientCreateOrUpdateResponse contains the response from method ProjectsClient.BeginCreateOrUpdate.
 type ProjectsClientCreateOrUpdateResponse struct {
 	Project
 }
 
-// ProjectsClientDeleteResponse contains the response from method ProjectsClient.Delete.
+// ProjectsClientDeleteResponse contains the response from method ProjectsClient.BeginDelete.
 type ProjectsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -339,32 +339,32 @@ type ProjectsClientGetResponse struct {
 	Project
 }
 
-// ProjectsClientListByResourceGroupResponse contains the response from method ProjectsClient.ListByResourceGroup.
+// ProjectsClientListByResourceGroupResponse contains the response from method ProjectsClient.NewListByResourceGroupPager.
 type ProjectsClientListByResourceGroupResponse struct {
 	ProjectListResult
 }
 
-// ProjectsClientListBySubscriptionResponse contains the response from method ProjectsClient.ListBySubscription.
+// ProjectsClientListBySubscriptionResponse contains the response from method ProjectsClient.NewListBySubscriptionPager.
 type ProjectsClientListBySubscriptionResponse struct {
 	ProjectListResult
 }
 
-// ProjectsClientUpdateResponse contains the response from method ProjectsClient.Update.
+// ProjectsClientUpdateResponse contains the response from method ProjectsClient.BeginUpdate.
 type ProjectsClientUpdateResponse struct {
 	Project
 }
 
-// SKUsClientListBySubscriptionResponse contains the response from method SKUsClient.ListBySubscription.
+// SKUsClientListBySubscriptionResponse contains the response from method SKUsClient.NewListBySubscriptionPager.
 type SKUsClientListBySubscriptionResponse struct {
 	SKUListResult
 }
 
-// SchedulesClientCreateOrUpdateResponse contains the response from method SchedulesClient.CreateOrUpdate.
+// SchedulesClientCreateOrUpdateResponse contains the response from method SchedulesClient.BeginCreateOrUpdate.
 type SchedulesClientCreateOrUpdateResponse struct {
 	Schedule
 }
 
-// SchedulesClientDeleteResponse contains the response from method SchedulesClient.Delete.
+// SchedulesClientDeleteResponse contains the response from method SchedulesClient.BeginDelete.
 type SchedulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -374,17 +374,17 @@ type SchedulesClientGetResponse struct {
 	Schedule
 }
 
-// SchedulesClientListByPoolResponse contains the response from method SchedulesClient.ListByPool.
+// SchedulesClientListByPoolResponse contains the response from method SchedulesClient.NewListByPoolPager.
 type SchedulesClientListByPoolResponse struct {
 	ScheduleListResult
 }
 
-// SchedulesClientUpdateResponse contains the response from method SchedulesClient.Update.
+// SchedulesClientUpdateResponse contains the response from method SchedulesClient.BeginUpdate.
 type SchedulesClientUpdateResponse struct {
 	Schedule
 }
 
-// UsagesClientListByLocationResponse contains the response from method UsagesClient.ListByLocation.
+// UsagesClientListByLocationResponse contains the response from method UsagesClient.NewListByLocationPager.
 type UsagesClientListByLocationResponse struct {
 	ListUsagesResult
 }

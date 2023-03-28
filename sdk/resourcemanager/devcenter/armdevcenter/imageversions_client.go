@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // ImageVersionsClient contains the methods for the ImageVersions group.
 // Don't use this type directly, use NewImageVersionsClient() instead.
 type ImageVersionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewImageVersionsClient creates a new instance of ImageVersionsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImageVersionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ImageVersionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ImageVersionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets an image version.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// galleryName - The name of the gallery.
-// imageName - The name of the image.
-// versionName - The version of the image.
-// options - ImageVersionsClientGetOptions contains the optional parameters for the ImageVersionsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - galleryName - The name of the gallery.
+//   - imageName - The name of the image.
+//   - versionName - The version of the image.
+//   - options - ImageVersionsClientGetOptions contains the optional parameters for the ImageVersionsClient.Get method.
 func (client *ImageVersionsClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, versionName string, options *ImageVersionsClientGetOptions) (ImageVersionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, imageName, versionName, options)
 	if err != nil {
 		return ImageVersionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ImageVersionsClientGetResponse{}, err
 	}
@@ -106,7 +96,7 @@ func (client *ImageVersionsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter versionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{versionName}", url.PathEscape(versionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,13 +117,14 @@ func (client *ImageVersionsClient) getHandleResponse(resp *http.Response) (Image
 }
 
 // NewListByImagePager - Lists versions for an image.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// galleryName - The name of the gallery.
-// imageName - The name of the image.
-// options - ImageVersionsClientListByImageOptions contains the optional parameters for the ImageVersionsClient.ListByImage
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - galleryName - The name of the gallery.
+//   - imageName - The name of the image.
+//   - options - ImageVersionsClientListByImageOptions contains the optional parameters for the ImageVersionsClient.NewListByImagePager
+//     method.
 func (client *ImageVersionsClient) NewListByImagePager(resourceGroupName string, devCenterName string, galleryName string, imageName string, options *ImageVersionsClientListByImageOptions) *runtime.Pager[ImageVersionsClientListByImageResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ImageVersionsClientListByImageResponse]{
 		More: func(page ImageVersionsClientListByImageResponse) bool {
@@ -150,7 +141,7 @@ func (client *ImageVersionsClient) NewListByImagePager(resourceGroupName string,
 			if err != nil {
 				return ImageVersionsClientListByImageResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ImageVersionsClientListByImageResponse{}, err
 			}
@@ -185,7 +176,7 @@ func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter imageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

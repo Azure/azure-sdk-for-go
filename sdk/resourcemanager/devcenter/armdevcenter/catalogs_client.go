@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,67 +25,60 @@ import (
 // CatalogsClient contains the methods for the Catalogs group.
 // Don't use this type directly, use NewCatalogsClient() instead.
 type CatalogsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCatalogsClient creates a new instance of CatalogsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCatalogsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CatalogsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CatalogsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CatalogsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// catalogName - The name of the Catalog.
-// body - Represents a catalog.
-// options - CatalogsClientBeginCreateOrUpdateOptions contains the optional parameters for the CatalogsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - catalogName - The name of the Catalog.
+//   - body - Represents a catalog.
+//   - options - CatalogsClientBeginCreateOrUpdateOptions contains the optional parameters for the CatalogsClient.BeginCreateOrUpdate
+//     method.
 func (client *CatalogsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, body Catalog, options *CatalogsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CatalogsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, devCenterName, catalogName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CatalogsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CatalogsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CatalogsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CatalogsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
 func (client *CatalogsClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, body Catalog, options *CatalogsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +107,7 @@ func (client *CatalogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter catalogName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -129,34 +120,36 @@ func (client *CatalogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Deletes a catalog resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// catalogName - The name of the Catalog.
-// options - CatalogsClientBeginDeleteOptions contains the optional parameters for the CatalogsClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - catalogName - The name of the Catalog.
+//   - options - CatalogsClientBeginDeleteOptions contains the optional parameters for the CatalogsClient.BeginDelete method.
 func (client *CatalogsClient) BeginDelete(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientBeginDeleteOptions) (*runtime.Poller[CatalogsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, devCenterName, catalogName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CatalogsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CatalogsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CatalogsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CatalogsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a catalog resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
 func (client *CatalogsClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +178,7 @@ func (client *CatalogsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter catalogName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -198,17 +191,18 @@ func (client *CatalogsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets a catalog
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// catalogName - The name of the Catalog.
-// options - CatalogsClientGetOptions contains the optional parameters for the CatalogsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - catalogName - The name of the Catalog.
+//   - options - CatalogsClientGetOptions contains the optional parameters for the CatalogsClient.Get method.
 func (client *CatalogsClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientGetOptions) (CatalogsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 	if err != nil {
 		return CatalogsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CatalogsClientGetResponse{}, err
 	}
@@ -237,7 +231,7 @@ func (client *CatalogsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter catalogName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -258,11 +252,12 @@ func (client *CatalogsClient) getHandleResponse(resp *http.Response) (CatalogsCl
 }
 
 // NewListByDevCenterPager - Lists catalogs for a devcenter.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// options - CatalogsClientListByDevCenterOptions contains the optional parameters for the CatalogsClient.ListByDevCenter
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - options - CatalogsClientListByDevCenterOptions contains the optional parameters for the CatalogsClient.NewListByDevCenterPager
+//     method.
 func (client *CatalogsClient) NewListByDevCenterPager(resourceGroupName string, devCenterName string, options *CatalogsClientListByDevCenterOptions) *runtime.Pager[CatalogsClientListByDevCenterResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CatalogsClientListByDevCenterResponse]{
 		More: func(page CatalogsClientListByDevCenterResponse) bool {
@@ -279,7 +274,7 @@ func (client *CatalogsClient) NewListByDevCenterPager(resourceGroupName string, 
 			if err != nil {
 				return CatalogsClientListByDevCenterResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CatalogsClientListByDevCenterResponse{}, err
 			}
@@ -306,7 +301,7 @@ func (client *CatalogsClient) listByDevCenterCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter devCenterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -331,34 +326,36 @@ func (client *CatalogsClient) listByDevCenterHandleResponse(resp *http.Response)
 
 // BeginSync - Syncs templates for a template source.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// catalogName - The name of the Catalog.
-// options - CatalogsClientBeginSyncOptions contains the optional parameters for the CatalogsClient.BeginSync method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - catalogName - The name of the Catalog.
+//   - options - CatalogsClientBeginSyncOptions contains the optional parameters for the CatalogsClient.BeginSync method.
 func (client *CatalogsClient) BeginSync(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientBeginSyncOptions) (*runtime.Poller[CatalogsClientSyncResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.syncOperation(ctx, resourceGroupName, devCenterName, catalogName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CatalogsClientSyncResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CatalogsClientSyncResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CatalogsClientSyncResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CatalogsClientSyncResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Sync - Syncs templates for a template source.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
 func (client *CatalogsClient) syncOperation(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientBeginSyncOptions) (*http.Response, error) {
 	req, err := client.syncCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -387,7 +384,7 @@ func (client *CatalogsClient) syncCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter catalogName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -400,35 +397,37 @@ func (client *CatalogsClient) syncCreateRequest(ctx context.Context, resourceGro
 
 // BeginUpdate - Partially updates a catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// devCenterName - The name of the devcenter.
-// catalogName - The name of the Catalog.
-// body - Updatable catalog properties.
-// options - CatalogsClientBeginUpdateOptions contains the optional parameters for the CatalogsClient.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - devCenterName - The name of the devcenter.
+//   - catalogName - The name of the Catalog.
+//   - body - Updatable catalog properties.
+//   - options - CatalogsClientBeginUpdateOptions contains the optional parameters for the CatalogsClient.BeginUpdate method.
 func (client *CatalogsClient) BeginUpdate(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, body CatalogUpdate, options *CatalogsClientBeginUpdateOptions) (*runtime.Poller[CatalogsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, devCenterName, catalogName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CatalogsClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CatalogsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CatalogsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CatalogsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Partially updates a catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-11-preview
 func (client *CatalogsClient) update(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, body CatalogUpdate, options *CatalogsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -457,7 +456,7 @@ func (client *CatalogsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter catalogName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

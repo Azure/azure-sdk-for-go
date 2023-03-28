@@ -731,7 +731,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
+	loc, err := time.LoadLocation("Asia/Kolkata")
+	_require.NoError(err)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, -10)
+	currentTime = currentTime.In(loc) // converting to IST
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -764,7 +767,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
+	loc, err := time.LoadLocation("EST")
+	_require.NoError(err)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, 10)
+	currentTime = currentTime.In(loc) // converting to EST
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -802,7 +808,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
+	loc, err := time.LoadLocation("Asia/Kolkata")
+	_require.NoError(err)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, 10)
+	currentTime = currentTime.In(loc) // converting to IST
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -839,7 +848,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
+	loc, err := time.LoadLocation("EST")
+	_require.NoError(err)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, -10)
+	currentTime = currentTime.In(loc) //converting to EST
 
 	uploadBlockBlobOptions := blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -849,7 +861,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(nil)), &uploadBlockBlobOptions)
-	_ = err
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -1062,7 +1074,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfModifiedSinceFalse()
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 	})
-	_ = err
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }

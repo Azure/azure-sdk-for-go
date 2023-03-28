@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation
 
 go 1.18
 

@@ -11,7 +11,7 @@ package armattestation
 
 const (
 	moduleName    = "armattestation"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v1.1.0"
 )
 
 // AttestationServiceStatus - Status of attestation service.

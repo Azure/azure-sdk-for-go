@@ -6,6 +6,9 @@
 * Added `ShouldRetry` to `policy.RetryOptions` for finer-grained control over when to retry.
 
 ### Breaking Changes
+> These changes affect only code written against a beta version such as v1.5.0-beta.1
+* Removed `Claims` and `TenantID` fields from `policy.TokenRequestOptions`
+* Removed CAE support for ARM clients
 
 ### Bugs Fixed
 * Added non-conformant LRO terminal states `Cancelled` and `Completed`.

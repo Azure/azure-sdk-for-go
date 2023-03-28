@@ -25,11 +25,11 @@ func ExampleDeploymentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewDeploymentsClient("subscriptionId", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroupName", "accountName", nil)
+	pager := clientFactory.NewDeploymentsClient().NewListPager("resourceGroupName", "accountName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -70,11 +70,11 @@ func ExampleDeploymentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewDeploymentsClient("subscriptionId", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroupName", "accountName", "deploymentName", nil)
+	res, err := clientFactory.NewDeploymentsClient().Get(ctx, "resourceGroupName", "accountName", "deploymentName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -107,11 +107,11 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewDeploymentsClient("subscriptionId", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "resourceGroupName", "accountName", "deploymentName", armcognitiveservices.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "resourceGroupName", "accountName", "deploymentName", armcognitiveservices.Deployment{
 		Properties: &armcognitiveservices.DeploymentProperties{
 			Model: &armcognitiveservices.DeploymentModel{
 				Name:    to.Ptr("ada"),
@@ -160,11 +160,11 @@ func ExampleDeploymentsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewDeploymentsClient("subscriptionId", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resourceGroupName", "accountName", "deploymentName", nil)
+	poller, err := clientFactory.NewDeploymentsClient().BeginDelete(ctx, "resourceGroupName", "accountName", "deploymentName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

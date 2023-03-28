@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // CommitmentPlansClient contains the methods for the CommitmentPlans group.
 // Don't use this type directly, use NewCommitmentPlansClient() instead.
 type CommitmentPlansClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCommitmentPlansClient creates a new instance of CommitmentPlansClient with the specified values.
@@ -36,21 +33,13 @@ type CommitmentPlansClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCommitmentPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommitmentPlansClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CommitmentPlansClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CommitmentPlansClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *CommitmentPlansClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return CommitmentPlansClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CommitmentPlansClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +88,7 @@ func (client *CommitmentPlansClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter commitmentPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,11 +124,11 @@ func (client *CommitmentPlansClient) BeginCreateOrUpdateAssociation(ctx context.
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommitmentPlansClientCreateOrUpdateAssociationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommitmentPlansClientCreateOrUpdateAssociationResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CommitmentPlansClientCreateOrUpdateAssociationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientCreateOrUpdateAssociationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -152,7 +141,7 @@ func (client *CommitmentPlansClient) createOrUpdateAssociation(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -181,7 +170,7 @@ func (client *CommitmentPlansClient) createOrUpdateAssociationCreateRequest(ctx 
 		return nil, errors.New("parameter commitmentPlanAssociationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanAssociationName}", url.PathEscape(commitmentPlanAssociationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,11 +196,11 @@ func (client *CommitmentPlansClient) BeginCreateOrUpdatePlan(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommitmentPlansClientCreateOrUpdatePlanResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommitmentPlansClientCreateOrUpdatePlanResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CommitmentPlansClientCreateOrUpdatePlanResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientCreateOrUpdatePlanResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -224,7 +213,7 @@ func (client *CommitmentPlansClient) createOrUpdatePlan(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +238,7 @@ func (client *CommitmentPlansClient) createOrUpdatePlanCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -275,9 +264,9 @@ func (client *CommitmentPlansClient) BeginDelete(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CommitmentPlansClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CommitmentPlansClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CommitmentPlansClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -290,7 +279,7 @@ func (client *CommitmentPlansClient) deleteOperation(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -319,7 +308,7 @@ func (client *CommitmentPlansClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter commitmentPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -345,11 +334,11 @@ func (client *CommitmentPlansClient) BeginDeleteAssociation(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommitmentPlansClientDeleteAssociationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommitmentPlansClientDeleteAssociationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CommitmentPlansClientDeleteAssociationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientDeleteAssociationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -362,7 +351,7 @@ func (client *CommitmentPlansClient) deleteAssociation(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -391,7 +380,7 @@ func (client *CommitmentPlansClient) deleteAssociationCreateRequest(ctx context.
 		return nil, errors.New("parameter commitmentPlanAssociationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanAssociationName}", url.PathEscape(commitmentPlanAssociationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -416,11 +405,11 @@ func (client *CommitmentPlansClient) BeginDeletePlan(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommitmentPlansClientDeletePlanResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommitmentPlansClientDeletePlanResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CommitmentPlansClientDeletePlanResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientDeletePlanResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -433,7 +422,7 @@ func (client *CommitmentPlansClient) deletePlan(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -458,7 +447,7 @@ func (client *CommitmentPlansClient) deletePlanCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -482,7 +471,7 @@ func (client *CommitmentPlansClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return CommitmentPlansClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CommitmentPlansClientGetResponse{}, err
 	}
@@ -511,7 +500,7 @@ func (client *CommitmentPlansClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter commitmentPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -545,7 +534,7 @@ func (client *CommitmentPlansClient) GetAssociation(ctx context.Context, resourc
 	if err != nil {
 		return CommitmentPlansClientGetAssociationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CommitmentPlansClientGetAssociationResponse{}, err
 	}
@@ -574,7 +563,7 @@ func (client *CommitmentPlansClient) getAssociationCreateRequest(ctx context.Con
 		return nil, errors.New("parameter commitmentPlanAssociationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanAssociationName}", url.PathEscape(commitmentPlanAssociationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -606,7 +595,7 @@ func (client *CommitmentPlansClient) GetPlan(ctx context.Context, resourceGroupN
 	if err != nil {
 		return CommitmentPlansClientGetPlanResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CommitmentPlansClientGetPlanResponse{}, err
 	}
@@ -631,7 +620,7 @@ func (client *CommitmentPlansClient) getPlanCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -674,7 +663,7 @@ func (client *CommitmentPlansClient) NewListPager(resourceGroupName string, acco
 			if err != nil {
 				return CommitmentPlansClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CommitmentPlansClientListResponse{}, err
 			}
@@ -701,7 +690,7 @@ func (client *CommitmentPlansClient) listCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -744,7 +733,7 @@ func (client *CommitmentPlansClient) NewListAssociationsPager(resourceGroupName 
 			if err != nil {
 				return CommitmentPlansClientListAssociationsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CommitmentPlansClientListAssociationsResponse{}, err
 			}
@@ -771,7 +760,7 @@ func (client *CommitmentPlansClient) listAssociationsCreateRequest(ctx context.C
 		return nil, errors.New("parameter commitmentPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -813,7 +802,7 @@ func (client *CommitmentPlansClient) NewListPlansByResourceGroupPager(resourceGr
 			if err != nil {
 				return CommitmentPlansClientListPlansByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CommitmentPlansClientListPlansByResourceGroupResponse{}, err
 			}
@@ -836,7 +825,7 @@ func (client *CommitmentPlansClient) listPlansByResourceGroupCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -877,7 +866,7 @@ func (client *CommitmentPlansClient) NewListPlansBySubscriptionPager(options *Co
 			if err != nil {
 				return CommitmentPlansClientListPlansBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CommitmentPlansClientListPlansBySubscriptionResponse{}, err
 			}
@@ -896,7 +885,7 @@ func (client *CommitmentPlansClient) listPlansBySubscriptionCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -931,11 +920,11 @@ func (client *CommitmentPlansClient) BeginUpdatePlan(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommitmentPlansClientUpdatePlanResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommitmentPlansClientUpdatePlanResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CommitmentPlansClientUpdatePlanResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientUpdatePlanResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -948,7 +937,7 @@ func (client *CommitmentPlansClient) updatePlan(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -973,7 +962,7 @@ func (client *CommitmentPlansClient) updatePlanCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

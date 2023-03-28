@@ -58,13 +58,13 @@ type ElasticSansClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ElasticSansClientListByResourceGroupOptions contains the optional parameters for the ElasticSansClient.ListByResourceGroup
+// ElasticSansClientListByResourceGroupOptions contains the optional parameters for the ElasticSansClient.NewListByResourceGroupPager
 // method.
 type ElasticSansClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ElasticSansClientListBySubscriptionOptions contains the optional parameters for the ElasticSansClient.ListBySubscription
+// ElasticSansClientListBySubscriptionOptions contains the optional parameters for the ElasticSansClient.NewListBySubscriptionPager
 // method.
 type ElasticSansClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -127,7 +127,7 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -232,7 +232,7 @@ type SKULocationInfo struct {
 	Zones []*string `json:"zones,omitempty" azure:"ro"`
 }
 
-// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 type SKUsClientListOptions struct {
 	// Specify $filter='location eq ' to filter on location.
 	Filter *string
@@ -409,7 +409,7 @@ type VolumeGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumeGroupsClientListByElasticSanOptions contains the optional parameters for the VolumeGroupsClient.ListByElasticSan
+// VolumeGroupsClientListByElasticSanOptions contains the optional parameters for the VolumeGroupsClient.NewListByElasticSanPager
 // method.
 type VolumeGroupsClientListByElasticSanOptions struct {
 	// placeholder for future optional parameters
@@ -477,7 +477,8 @@ type VolumesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesClientListByVolumeGroupOptions contains the optional parameters for the VolumesClient.ListByVolumeGroup method.
+// VolumesClientListByVolumeGroupOptions contains the optional parameters for the VolumesClient.NewListByVolumeGroupPager
+// method.
 type VolumesClientListByVolumeGroupOptions struct {
 	// placeholder for future optional parameters
 }

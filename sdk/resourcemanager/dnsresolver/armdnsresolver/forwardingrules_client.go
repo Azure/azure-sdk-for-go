@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,50 +25,42 @@ import (
 // ForwardingRulesClient contains the methods for the ForwardingRules group.
 // Don't use this type directly, use NewForwardingRulesClient() instead.
 type ForwardingRulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewForwardingRulesClient creates a new instance of ForwardingRulesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewForwardingRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ForwardingRulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ForwardingRulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ForwardingRulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a forwarding rule in a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
-// forwardingRuleName - The name of the forwarding rule.
-// parameters - Parameters supplied to the CreateOrUpdate operation.
-// options - ForwardingRulesClientCreateOrUpdateOptions contains the optional parameters for the ForwardingRulesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
+//   - forwardingRuleName - The name of the forwarding rule.
+//   - parameters - Parameters supplied to the CreateOrUpdate operation.
+//   - options - ForwardingRulesClientCreateOrUpdateOptions contains the optional parameters for the ForwardingRulesClient.CreateOrUpdate
+//     method.
 func (client *ForwardingRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, forwardingRuleName string, parameters ForwardingRule, options *ForwardingRulesClientCreateOrUpdateOptions) (ForwardingRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, options)
 	if err != nil {
 		return ForwardingRulesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ForwardingRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *ForwardingRulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter forwardingRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{forwardingRuleName}", url.PathEscape(forwardingRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,17 +117,18 @@ func (client *ForwardingRulesClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
-// forwardingRuleName - The name of the forwarding rule.
-// options - ForwardingRulesClientDeleteOptions contains the optional parameters for the ForwardingRulesClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
+//   - forwardingRuleName - The name of the forwarding rule.
+//   - options - ForwardingRulesClientDeleteOptions contains the optional parameters for the ForwardingRulesClient.Delete method.
 func (client *ForwardingRulesClient) Delete(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, forwardingRuleName string, options *ForwardingRulesClientDeleteOptions) (ForwardingRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, options)
 	if err != nil {
 		return ForwardingRulesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ForwardingRulesClientDeleteResponse{}, err
 	}
@@ -166,7 +157,7 @@ func (client *ForwardingRulesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter forwardingRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{forwardingRuleName}", url.PathEscape(forwardingRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -182,17 +173,18 @@ func (client *ForwardingRulesClient) deleteCreateRequest(ctx context.Context, re
 
 // Get - Gets properties of a forwarding rule in a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
-// forwardingRuleName - The name of the forwarding rule.
-// options - ForwardingRulesClientGetOptions contains the optional parameters for the ForwardingRulesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
+//   - forwardingRuleName - The name of the forwarding rule.
+//   - options - ForwardingRulesClientGetOptions contains the optional parameters for the ForwardingRulesClient.Get method.
 func (client *ForwardingRulesClient) Get(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, forwardingRuleName string, options *ForwardingRulesClientGetOptions) (ForwardingRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, options)
 	if err != nil {
 		return ForwardingRulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ForwardingRulesClientGetResponse{}, err
 	}
@@ -221,7 +213,7 @@ func (client *ForwardingRulesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter forwardingRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{forwardingRuleName}", url.PathEscape(forwardingRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,10 +234,12 @@ func (client *ForwardingRulesClient) getHandleResponse(resp *http.Response) (For
 }
 
 // NewListPager - Lists forwarding rules in a DNS forwarding ruleset.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
-// options - ForwardingRulesClientListOptions contains the optional parameters for the ForwardingRulesClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
+//   - options - ForwardingRulesClientListOptions contains the optional parameters for the ForwardingRulesClient.NewListPager
+//     method.
 func (client *ForwardingRulesClient) NewListPager(resourceGroupName string, dnsForwardingRulesetName string, options *ForwardingRulesClientListOptions) *runtime.Pager[ForwardingRulesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ForwardingRulesClientListResponse]{
 		More: func(page ForwardingRulesClientListResponse) bool {
@@ -262,7 +256,7 @@ func (client *ForwardingRulesClient) NewListPager(resourceGroupName string, dnsF
 			if err != nil {
 				return ForwardingRulesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ForwardingRulesClientListResponse{}, err
 			}
@@ -289,7 +283,7 @@ func (client *ForwardingRulesClient) listCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter dnsForwardingRulesetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsForwardingRulesetName}", url.PathEscape(dnsForwardingRulesetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -314,18 +308,19 @@ func (client *ForwardingRulesClient) listHandleResponse(resp *http.Response) (Fo
 
 // Update - Updates a forwarding rule in a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
-// forwardingRuleName - The name of the forwarding rule.
-// parameters - Parameters supplied to the Update operation.
-// options - ForwardingRulesClientUpdateOptions contains the optional parameters for the ForwardingRulesClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
+//   - forwardingRuleName - The name of the forwarding rule.
+//   - parameters - Parameters supplied to the Update operation.
+//   - options - ForwardingRulesClientUpdateOptions contains the optional parameters for the ForwardingRulesClient.Update method.
 func (client *ForwardingRulesClient) Update(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, forwardingRuleName string, parameters ForwardingRulePatch, options *ForwardingRulesClientUpdateOptions) (ForwardingRulesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, options)
 	if err != nil {
 		return ForwardingRulesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ForwardingRulesClientUpdateResponse{}, err
 	}
@@ -354,7 +349,7 @@ func (client *ForwardingRulesClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter forwardingRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{forwardingRuleName}", url.PathEscape(forwardingRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

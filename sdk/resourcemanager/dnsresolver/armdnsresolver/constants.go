@@ -11,7 +11,7 @@ package armdnsresolver
 
 const (
 	moduleName    = "armdnsresolver"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

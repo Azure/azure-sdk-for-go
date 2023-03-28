@@ -1,10 +1,6 @@
 # Release History
 
 ## 0.5.0 (2023-03-28)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-
 ### Features Added
 
 - New struct `ClientFactory` which is a client factory used to create any client in this module

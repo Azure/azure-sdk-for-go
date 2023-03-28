@@ -22,8 +22,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,66 +32,59 @@ import (
 // GuestAgentsClient contains the methods for the GuestAgents group.
 // Don't use this type directly, use NewGuestAgentsClient() instead.
 type GuestAgentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewGuestAgentsClient creates a new instance of GuestAgentsClient with the specified values.
-// subscriptionID - The Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGuestAgentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GuestAgentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GuestAgentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GuestAgentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Create Or Update GuestAgent.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// virtualMachineName - Name of the vm.
-// name - Name of the guestAgents.
-// body - Request payload.
-// options - GuestAgentsClientBeginCreateOptions contains the optional parameters for the GuestAgentsClient.BeginCreate method.
+//   - resourceGroupName - The Resource Group Name.
+//   - virtualMachineName - Name of the vm.
+//   - name - Name of the guestAgents.
+//   - body - Request payload.
+//   - options - GuestAgentsClientBeginCreateOptions contains the optional parameters for the GuestAgentsClient.BeginCreate method.
 func (client *GuestAgentsClient) BeginCreate(ctx context.Context, resourceGroupName string, virtualMachineName string, name string, body GuestAgent, options *GuestAgentsClientBeginCreateOptions) (*runtime.Poller[GuestAgentsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, virtualMachineName, name, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[GuestAgentsClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GuestAgentsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[GuestAgentsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GuestAgentsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Create Or Update GuestAgent.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *GuestAgentsClient) create(ctx context.Context, resourceGroupName string, virtualMachineName string, name string, body GuestAgent, options *GuestAgentsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, virtualMachineName, name, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +113,7 @@ func (client *GuestAgentsClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,32 +126,34 @@ func (client *GuestAgentsClient) createCreateRequest(ctx context.Context, resour
 
 // BeginDelete - Implements GuestAgent DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// virtualMachineName - Name of the vm.
-// name - Name of the GuestAgent.
-// options - GuestAgentsClientBeginDeleteOptions contains the optional parameters for the GuestAgentsClient.BeginDelete method.
+//   - resourceGroupName - The Resource Group Name.
+//   - virtualMachineName - Name of the vm.
+//   - name - Name of the GuestAgent.
+//   - options - GuestAgentsClientBeginDeleteOptions contains the optional parameters for the GuestAgentsClient.BeginDelete method.
 func (client *GuestAgentsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualMachineName string, name string, options *GuestAgentsClientBeginDeleteOptions) (*runtime.Poller[GuestAgentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualMachineName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GuestAgentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GuestAgentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GuestAgentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GuestAgentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Implements GuestAgent DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *GuestAgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualMachineName string, name string, options *GuestAgentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualMachineName, name, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -189,7 +182,7 @@ func (client *GuestAgentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,17 +195,18 @@ func (client *GuestAgentsClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Implements GuestAgent GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// virtualMachineName - Name of the vm.
-// name - Name of the GuestAgent.
-// options - GuestAgentsClientGetOptions contains the optional parameters for the GuestAgentsClient.Get method.
+//   - resourceGroupName - The Resource Group Name.
+//   - virtualMachineName - Name of the vm.
+//   - name - Name of the GuestAgent.
+//   - options - GuestAgentsClientGetOptions contains the optional parameters for the GuestAgentsClient.Get method.
 func (client *GuestAgentsClient) Get(ctx context.Context, resourceGroupName string, virtualMachineName string, name string, options *GuestAgentsClientGetOptions) (GuestAgentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualMachineName, name, options)
 	if err != nil {
 		return GuestAgentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GuestAgentsClientGetResponse{}, err
 	}
@@ -241,7 +235,7 @@ func (client *GuestAgentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,11 +256,12 @@ func (client *GuestAgentsClient) getHandleResponse(resp *http.Response) (GuestAg
 }
 
 // NewListByVMPager - Returns the list of GuestAgent of the given vm.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// virtualMachineName - Name of the vm.
-// options - GuestAgentsClientListByVMOptions contains the optional parameters for the GuestAgentsClient.ListByVM method.
+//   - resourceGroupName - The Resource Group Name.
+//   - virtualMachineName - Name of the vm.
+//   - options - GuestAgentsClientListByVMOptions contains the optional parameters for the GuestAgentsClient.NewListByVMPager
+//     method.
 func (client *GuestAgentsClient) NewListByVMPager(resourceGroupName string, virtualMachineName string, options *GuestAgentsClientListByVMOptions) *runtime.Pager[GuestAgentsClientListByVMResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GuestAgentsClientListByVMResponse]{
 		More: func(page GuestAgentsClientListByVMResponse) bool {
@@ -283,7 +278,7 @@ func (client *GuestAgentsClient) NewListByVMPager(resourceGroupName string, virt
 			if err != nil {
 				return GuestAgentsClientListByVMResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GuestAgentsClientListByVMResponse{}, err
 			}
@@ -310,7 +305,7 @@ func (client *GuestAgentsClient) listByVMCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

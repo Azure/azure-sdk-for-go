@@ -22,8 +22,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,65 +33,58 @@ import (
 // DatastoresClient contains the methods for the Datastores group.
 // Don't use this type directly, use NewDatastoresClient() instead.
 type DatastoresClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDatastoresClient creates a new instance of DatastoresClient with the specified values.
-// subscriptionID - The Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDatastoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatastoresClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DatastoresClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DatastoresClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Create Or Update datastore.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// datastoreName - Name of the datastore.
-// body - Request payload.
-// options - DatastoresClientBeginCreateOptions contains the optional parameters for the DatastoresClient.BeginCreate method.
+//   - resourceGroupName - The Resource Group Name.
+//   - datastoreName - Name of the datastore.
+//   - body - Request payload.
+//   - options - DatastoresClientBeginCreateOptions contains the optional parameters for the DatastoresClient.BeginCreate method.
 func (client *DatastoresClient) BeginCreate(ctx context.Context, resourceGroupName string, datastoreName string, body Datastore, options *DatastoresClientBeginCreateOptions) (*runtime.Poller[DatastoresClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, datastoreName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DatastoresClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatastoresClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[DatastoresClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatastoresClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Create Or Update datastore.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *DatastoresClient) create(ctx context.Context, resourceGroupName string, datastoreName string, body Datastore, options *DatastoresClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, datastoreName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +109,7 @@ func (client *DatastoresClient) createCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter datastoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{datastoreName}", url.PathEscape(datastoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,31 +122,33 @@ func (client *DatastoresClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Implements datastore DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// datastoreName - Name of the datastore.
-// options - DatastoresClientBeginDeleteOptions contains the optional parameters for the DatastoresClient.BeginDelete method.
+//   - resourceGroupName - The Resource Group Name.
+//   - datastoreName - Name of the datastore.
+//   - options - DatastoresClientBeginDeleteOptions contains the optional parameters for the DatastoresClient.BeginDelete method.
 func (client *DatastoresClient) BeginDelete(ctx context.Context, resourceGroupName string, datastoreName string, options *DatastoresClientBeginDeleteOptions) (*runtime.Poller[DatastoresClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, datastoreName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatastoresClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatastoresClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatastoresClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatastoresClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Implements datastore DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *DatastoresClient) deleteOperation(ctx context.Context, resourceGroupName string, datastoreName string, options *DatastoresClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, datastoreName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +173,7 @@ func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter datastoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{datastoreName}", url.PathEscape(datastoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -196,16 +189,17 @@ func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Implements datastore GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// datastoreName - Name of the datastore.
-// options - DatastoresClientGetOptions contains the optional parameters for the DatastoresClient.Get method.
+//   - resourceGroupName - The Resource Group Name.
+//   - datastoreName - Name of the datastore.
+//   - options - DatastoresClientGetOptions contains the optional parameters for the DatastoresClient.Get method.
 func (client *DatastoresClient) Get(ctx context.Context, resourceGroupName string, datastoreName string, options *DatastoresClientGetOptions) (DatastoresClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, datastoreName, options)
 	if err != nil {
 		return DatastoresClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatastoresClientGetResponse{}, err
 	}
@@ -230,7 +224,7 @@ func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter datastoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{datastoreName}", url.PathEscape(datastoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -251,9 +245,9 @@ func (client *DatastoresClient) getHandleResponse(resp *http.Response) (Datastor
 }
 
 // NewListPager - List of datastores in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// options - DatastoresClientListOptions contains the optional parameters for the DatastoresClient.List method.
+//   - options - DatastoresClientListOptions contains the optional parameters for the DatastoresClient.NewListPager method.
 func (client *DatastoresClient) NewListPager(options *DatastoresClientListOptions) *runtime.Pager[DatastoresClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DatastoresClientListResponse]{
 		More: func(page DatastoresClientListResponse) bool {
@@ -270,7 +264,7 @@ func (client *DatastoresClient) NewListPager(options *DatastoresClientListOption
 			if err != nil {
 				return DatastoresClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatastoresClientListResponse{}, err
 			}
@@ -289,7 +283,7 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, options *
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,11 +304,11 @@ func (client *DatastoresClient) listHandleResponse(resp *http.Response) (Datasto
 }
 
 // NewListByResourceGroupPager - List of datastores in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// options - DatastoresClientListByResourceGroupOptions contains the optional parameters for the DatastoresClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The Resource Group Name.
+//   - options - DatastoresClientListByResourceGroupOptions contains the optional parameters for the DatastoresClient.NewListByResourceGroupPager
+//     method.
 func (client *DatastoresClient) NewListByResourceGroupPager(resourceGroupName string, options *DatastoresClientListByResourceGroupOptions) *runtime.Pager[DatastoresClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DatastoresClientListByResourceGroupResponse]{
 		More: func(page DatastoresClientListByResourceGroupResponse) bool {
@@ -331,7 +325,7 @@ func (client *DatastoresClient) NewListByResourceGroupPager(resourceGroupName st
 			if err != nil {
 				return DatastoresClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatastoresClientListByResourceGroupResponse{}, err
 			}
@@ -354,7 +348,7 @@ func (client *DatastoresClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -376,17 +370,18 @@ func (client *DatastoresClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // Update - API to update certain properties of the datastore resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// datastoreName - Name of the datastore.
-// body - Resource properties to update.
-// options - DatastoresClientUpdateOptions contains the optional parameters for the DatastoresClient.Update method.
+//   - resourceGroupName - The Resource Group Name.
+//   - datastoreName - Name of the datastore.
+//   - body - Resource properties to update.
+//   - options - DatastoresClientUpdateOptions contains the optional parameters for the DatastoresClient.Update method.
 func (client *DatastoresClient) Update(ctx context.Context, resourceGroupName string, datastoreName string, body ResourcePatch, options *DatastoresClientUpdateOptions) (DatastoresClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, datastoreName, body, options)
 	if err != nil {
 		return DatastoresClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatastoresClientUpdateResponse{}, err
 	}
@@ -411,7 +406,7 @@ func (client *DatastoresClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter datastoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{datastoreName}", url.PathEscape(datastoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -17,12 +17,12 @@
 
 package armconnectedvmware
 
-// ClustersClientCreateResponse contains the response from method ClustersClient.Create.
+// ClustersClientCreateResponse contains the response from method ClustersClient.BeginCreate.
 type ClustersClientCreateResponse struct {
 	Cluster
 }
 
-// ClustersClientDeleteResponse contains the response from method ClustersClient.Delete.
+// ClustersClientDeleteResponse contains the response from method ClustersClient.BeginDelete.
 type ClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -32,12 +32,12 @@ type ClustersClientGetResponse struct {
 	Cluster
 }
 
-// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.ListByResourceGroup.
+// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.NewListByResourceGroupPager.
 type ClustersClientListByResourceGroupResponse struct {
 	ClustersList
 }
 
-// ClustersClientListResponse contains the response from method ClustersClient.List.
+// ClustersClientListResponse contains the response from method ClustersClient.NewListPager.
 type ClustersClientListResponse struct {
 	ClustersList
 }
@@ -47,12 +47,12 @@ type ClustersClientUpdateResponse struct {
 	Cluster
 }
 
-// DatastoresClientCreateResponse contains the response from method DatastoresClient.Create.
+// DatastoresClientCreateResponse contains the response from method DatastoresClient.BeginCreate.
 type DatastoresClientCreateResponse struct {
 	Datastore
 }
 
-// DatastoresClientDeleteResponse contains the response from method DatastoresClient.Delete.
+// DatastoresClientDeleteResponse contains the response from method DatastoresClient.BeginDelete.
 type DatastoresClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -62,12 +62,12 @@ type DatastoresClientGetResponse struct {
 	Datastore
 }
 
-// DatastoresClientListByResourceGroupResponse contains the response from method DatastoresClient.ListByResourceGroup.
+// DatastoresClientListByResourceGroupResponse contains the response from method DatastoresClient.NewListByResourceGroupPager.
 type DatastoresClientListByResourceGroupResponse struct {
 	DatastoresList
 }
 
-// DatastoresClientListResponse contains the response from method DatastoresClient.List.
+// DatastoresClientListResponse contains the response from method DatastoresClient.NewListPager.
 type DatastoresClientListResponse struct {
 	DatastoresList
 }
@@ -77,12 +77,12 @@ type DatastoresClientUpdateResponse struct {
 	Datastore
 }
 
-// GuestAgentsClientCreateResponse contains the response from method GuestAgentsClient.Create.
+// GuestAgentsClientCreateResponse contains the response from method GuestAgentsClient.BeginCreate.
 type GuestAgentsClientCreateResponse struct {
 	GuestAgent
 }
 
-// GuestAgentsClientDeleteResponse contains the response from method GuestAgentsClient.Delete.
+// GuestAgentsClientDeleteResponse contains the response from method GuestAgentsClient.BeginDelete.
 type GuestAgentsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -92,17 +92,17 @@ type GuestAgentsClientGetResponse struct {
 	GuestAgent
 }
 
-// GuestAgentsClientListByVMResponse contains the response from method GuestAgentsClient.ListByVM.
+// GuestAgentsClientListByVMResponse contains the response from method GuestAgentsClient.NewListByVMPager.
 type GuestAgentsClientListByVMResponse struct {
 	GuestAgentList
 }
 
-// HostsClientCreateResponse contains the response from method HostsClient.Create.
+// HostsClientCreateResponse contains the response from method HostsClient.BeginCreate.
 type HostsClientCreateResponse struct {
 	Host
 }
 
-// HostsClientDeleteResponse contains the response from method HostsClient.Delete.
+// HostsClientDeleteResponse contains the response from method HostsClient.BeginDelete.
 type HostsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -112,12 +112,12 @@ type HostsClientGetResponse struct {
 	Host
 }
 
-// HostsClientListByResourceGroupResponse contains the response from method HostsClient.ListByResourceGroup.
+// HostsClientListByResourceGroupResponse contains the response from method HostsClient.NewListByResourceGroupPager.
 type HostsClientListByResourceGroupResponse struct {
 	HostsList
 }
 
-// HostsClientListResponse contains the response from method HostsClient.List.
+// HostsClientListResponse contains the response from method HostsClient.NewListPager.
 type HostsClientListResponse struct {
 	HostsList
 }
@@ -142,7 +142,7 @@ type HybridIdentityMetadataClientGetResponse struct {
 	HybridIdentityMetadata
 }
 
-// HybridIdentityMetadataClientListByVMResponse contains the response from method HybridIdentityMetadataClient.ListByVM.
+// HybridIdentityMetadataClientListByVMResponse contains the response from method HybridIdentityMetadataClient.NewListByVMPager.
 type HybridIdentityMetadataClientListByVMResponse struct {
 	HybridIdentityMetadataList
 }
@@ -162,17 +162,17 @@ type InventoryItemsClientGetResponse struct {
 	InventoryItem
 }
 
-// InventoryItemsClientListByVCenterResponse contains the response from method InventoryItemsClient.ListByVCenter.
+// InventoryItemsClientListByVCenterResponse contains the response from method InventoryItemsClient.NewListByVCenterPager.
 type InventoryItemsClientListByVCenterResponse struct {
 	InventoryItemsList
 }
 
-// MachineExtensionsClientCreateOrUpdateResponse contains the response from method MachineExtensionsClient.CreateOrUpdate.
+// MachineExtensionsClientCreateOrUpdateResponse contains the response from method MachineExtensionsClient.BeginCreateOrUpdate.
 type MachineExtensionsClientCreateOrUpdateResponse struct {
 	MachineExtension
 }
 
-// MachineExtensionsClientDeleteResponse contains the response from method MachineExtensionsClient.Delete.
+// MachineExtensionsClientDeleteResponse contains the response from method MachineExtensionsClient.BeginDelete.
 type MachineExtensionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -182,27 +182,27 @@ type MachineExtensionsClientGetResponse struct {
 	MachineExtension
 }
 
-// MachineExtensionsClientListResponse contains the response from method MachineExtensionsClient.List.
+// MachineExtensionsClientListResponse contains the response from method MachineExtensionsClient.NewListPager.
 type MachineExtensionsClientListResponse struct {
 	MachineExtensionsListResult
 }
 
-// MachineExtensionsClientUpdateResponse contains the response from method MachineExtensionsClient.Update.
+// MachineExtensionsClientUpdateResponse contains the response from method MachineExtensionsClient.BeginUpdate.
 type MachineExtensionsClientUpdateResponse struct {
 	MachineExtension
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationsList
 }
 
-// ResourcePoolsClientCreateResponse contains the response from method ResourcePoolsClient.Create.
+// ResourcePoolsClientCreateResponse contains the response from method ResourcePoolsClient.BeginCreate.
 type ResourcePoolsClientCreateResponse struct {
 	ResourcePool
 }
 
-// ResourcePoolsClientDeleteResponse contains the response from method ResourcePoolsClient.Delete.
+// ResourcePoolsClientDeleteResponse contains the response from method ResourcePoolsClient.BeginDelete.
 type ResourcePoolsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -212,12 +212,12 @@ type ResourcePoolsClientGetResponse struct {
 	ResourcePool
 }
 
-// ResourcePoolsClientListByResourceGroupResponse contains the response from method ResourcePoolsClient.ListByResourceGroup.
+// ResourcePoolsClientListByResourceGroupResponse contains the response from method ResourcePoolsClient.NewListByResourceGroupPager.
 type ResourcePoolsClientListByResourceGroupResponse struct {
 	ResourcePoolsList
 }
 
-// ResourcePoolsClientListResponse contains the response from method ResourcePoolsClient.List.
+// ResourcePoolsClientListResponse contains the response from method ResourcePoolsClient.NewListPager.
 type ResourcePoolsClientListResponse struct {
 	ResourcePoolsList
 }
@@ -227,12 +227,12 @@ type ResourcePoolsClientUpdateResponse struct {
 	ResourcePool
 }
 
-// VCentersClientCreateResponse contains the response from method VCentersClient.Create.
+// VCentersClientCreateResponse contains the response from method VCentersClient.BeginCreate.
 type VCentersClientCreateResponse struct {
 	VCenter
 }
 
-// VCentersClientDeleteResponse contains the response from method VCentersClient.Delete.
+// VCentersClientDeleteResponse contains the response from method VCentersClient.BeginDelete.
 type VCentersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -242,12 +242,12 @@ type VCentersClientGetResponse struct {
 	VCenter
 }
 
-// VCentersClientListByResourceGroupResponse contains the response from method VCentersClient.ListByResourceGroup.
+// VCentersClientListByResourceGroupResponse contains the response from method VCentersClient.NewListByResourceGroupPager.
 type VCentersClientListByResourceGroupResponse struct {
 	VCentersList
 }
 
-// VCentersClientListResponse contains the response from method VCentersClient.List.
+// VCentersClientListResponse contains the response from method VCentersClient.NewListPager.
 type VCentersClientListResponse struct {
 	VCentersList
 }
@@ -257,12 +257,12 @@ type VCentersClientUpdateResponse struct {
 	VCenter
 }
 
-// VirtualMachineTemplatesClientCreateResponse contains the response from method VirtualMachineTemplatesClient.Create.
+// VirtualMachineTemplatesClientCreateResponse contains the response from method VirtualMachineTemplatesClient.BeginCreate.
 type VirtualMachineTemplatesClientCreateResponse struct {
 	VirtualMachineTemplate
 }
 
-// VirtualMachineTemplatesClientDeleteResponse contains the response from method VirtualMachineTemplatesClient.Delete.
+// VirtualMachineTemplatesClientDeleteResponse contains the response from method VirtualMachineTemplatesClient.BeginDelete.
 type VirtualMachineTemplatesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -272,12 +272,12 @@ type VirtualMachineTemplatesClientGetResponse struct {
 	VirtualMachineTemplate
 }
 
-// VirtualMachineTemplatesClientListByResourceGroupResponse contains the response from method VirtualMachineTemplatesClient.ListByResourceGroup.
+// VirtualMachineTemplatesClientListByResourceGroupResponse contains the response from method VirtualMachineTemplatesClient.NewListByResourceGroupPager.
 type VirtualMachineTemplatesClientListByResourceGroupResponse struct {
 	VirtualMachineTemplatesList
 }
 
-// VirtualMachineTemplatesClientListResponse contains the response from method VirtualMachineTemplatesClient.List.
+// VirtualMachineTemplatesClientListResponse contains the response from method VirtualMachineTemplatesClient.NewListPager.
 type VirtualMachineTemplatesClientListResponse struct {
 	VirtualMachineTemplatesList
 }
@@ -287,17 +287,17 @@ type VirtualMachineTemplatesClientUpdateResponse struct {
 	VirtualMachineTemplate
 }
 
-// VirtualMachinesClientAssessPatchesResponse contains the response from method VirtualMachinesClient.AssessPatches.
+// VirtualMachinesClientAssessPatchesResponse contains the response from method VirtualMachinesClient.BeginAssessPatches.
 type VirtualMachinesClientAssessPatchesResponse struct {
 	VirtualMachineAssessPatchesResult
 }
 
-// VirtualMachinesClientCreateResponse contains the response from method VirtualMachinesClient.Create.
+// VirtualMachinesClientCreateResponse contains the response from method VirtualMachinesClient.BeginCreate.
 type VirtualMachinesClientCreateResponse struct {
 	VirtualMachine
 }
 
-// VirtualMachinesClientDeleteResponse contains the response from method VirtualMachinesClient.Delete.
+// VirtualMachinesClientDeleteResponse contains the response from method VirtualMachinesClient.BeginDelete.
 type VirtualMachinesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -307,47 +307,47 @@ type VirtualMachinesClientGetResponse struct {
 	VirtualMachine
 }
 
-// VirtualMachinesClientInstallPatchesResponse contains the response from method VirtualMachinesClient.InstallPatches.
+// VirtualMachinesClientInstallPatchesResponse contains the response from method VirtualMachinesClient.BeginInstallPatches.
 type VirtualMachinesClientInstallPatchesResponse struct {
 	VirtualMachineInstallPatchesResult
 }
 
-// VirtualMachinesClientListByResourceGroupResponse contains the response from method VirtualMachinesClient.ListByResourceGroup.
+// VirtualMachinesClientListByResourceGroupResponse contains the response from method VirtualMachinesClient.NewListByResourceGroupPager.
 type VirtualMachinesClientListByResourceGroupResponse struct {
 	VirtualMachinesList
 }
 
-// VirtualMachinesClientListResponse contains the response from method VirtualMachinesClient.List.
+// VirtualMachinesClientListResponse contains the response from method VirtualMachinesClient.NewListPager.
 type VirtualMachinesClientListResponse struct {
 	VirtualMachinesList
 }
 
-// VirtualMachinesClientRestartResponse contains the response from method VirtualMachinesClient.Restart.
+// VirtualMachinesClientRestartResponse contains the response from method VirtualMachinesClient.BeginRestart.
 type VirtualMachinesClientRestartResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualMachinesClientStartResponse contains the response from method VirtualMachinesClient.Start.
+// VirtualMachinesClientStartResponse contains the response from method VirtualMachinesClient.BeginStart.
 type VirtualMachinesClientStartResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualMachinesClientStopResponse contains the response from method VirtualMachinesClient.Stop.
+// VirtualMachinesClientStopResponse contains the response from method VirtualMachinesClient.BeginStop.
 type VirtualMachinesClientStopResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualMachinesClientUpdateResponse contains the response from method VirtualMachinesClient.Update.
+// VirtualMachinesClientUpdateResponse contains the response from method VirtualMachinesClient.BeginUpdate.
 type VirtualMachinesClientUpdateResponse struct {
 	VirtualMachine
 }
 
-// VirtualNetworksClientCreateResponse contains the response from method VirtualNetworksClient.Create.
+// VirtualNetworksClientCreateResponse contains the response from method VirtualNetworksClient.BeginCreate.
 type VirtualNetworksClientCreateResponse struct {
 	VirtualNetwork
 }
 
-// VirtualNetworksClientDeleteResponse contains the response from method VirtualNetworksClient.Delete.
+// VirtualNetworksClientDeleteResponse contains the response from method VirtualNetworksClient.BeginDelete.
 type VirtualNetworksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -357,12 +357,12 @@ type VirtualNetworksClientGetResponse struct {
 	VirtualNetwork
 }
 
-// VirtualNetworksClientListByResourceGroupResponse contains the response from method VirtualNetworksClient.ListByResourceGroup.
+// VirtualNetworksClientListByResourceGroupResponse contains the response from method VirtualNetworksClient.NewListByResourceGroupPager.
 type VirtualNetworksClientListByResourceGroupResponse struct {
 	VirtualNetworksList
 }
 
-// VirtualNetworksClientListResponse contains the response from method VirtualNetworksClient.List.
+// VirtualNetworksClientListResponse contains the response from method VirtualNetworksClient.NewListPager.
 type VirtualNetworksClientListResponse struct {
 	VirtualNetworksList
 }

@@ -22,8 +22,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,67 +32,60 @@ import (
 // MachineExtensionsClient contains the methods for the MachineExtensions group.
 // Don't use this type directly, use NewMachineExtensionsClient() instead.
 type MachineExtensionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewMachineExtensionsClient creates a new instance of MachineExtensionsClient with the specified values.
-// subscriptionID - The Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMachineExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MachineExtensionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MachineExtensionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MachineExtensionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - The operation to create or update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// name - The name of the machine where the extension should be created or updated.
-// extensionName - The name of the machine extension.
-// extensionParameters - Parameters supplied to the Create Machine Extension operation.
-// options - MachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The Resource Group Name.
+//   - name - The name of the machine where the extension should be created or updated.
+//   - extensionName - The name of the machine extension.
+//   - extensionParameters - Parameters supplied to the Create Machine Extension operation.
+//   - options - MachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginCreateOrUpdate
+//     method.
 func (client *MachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MachineExtensionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, name, extensionName, extensionParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MachineExtensionsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MachineExtensionsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MachineExtensionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MachineExtensionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - The operation to create or update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *MachineExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, extensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +114,7 @@ func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionName}", url.PathEscape(extensionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,33 +127,35 @@ func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.C
 
 // BeginDelete - The operation to delete the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// name - The name of the machine where the extension should be deleted.
-// extensionName - The name of the machine extension.
-// options - MachineExtensionsClientBeginDeleteOptions contains the optional parameters for the MachineExtensionsClient.BeginDelete
-// method.
+//   - resourceGroupName - The Resource Group Name.
+//   - name - The name of the machine where the extension should be deleted.
+//   - extensionName - The name of the machine extension.
+//   - options - MachineExtensionsClientBeginDeleteOptions contains the optional parameters for the MachineExtensionsClient.BeginDelete
+//     method.
 func (client *MachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*runtime.Poller[MachineExtensionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, name, extensionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MachineExtensionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MachineExtensionsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MachineExtensionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MachineExtensionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - The operation to delete the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *MachineExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, extensionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +184,7 @@ func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionName}", url.PathEscape(extensionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -204,17 +197,18 @@ func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - The operation to get the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// name - The name of the machine containing the extension.
-// extensionName - The name of the machine extension.
-// options - MachineExtensionsClientGetOptions contains the optional parameters for the MachineExtensionsClient.Get method.
+//   - resourceGroupName - The Resource Group Name.
+//   - name - The name of the machine containing the extension.
+//   - extensionName - The name of the machine extension.
+//   - options - MachineExtensionsClientGetOptions contains the optional parameters for the MachineExtensionsClient.Get method.
 func (client *MachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, name string, extensionName string, options *MachineExtensionsClientGetOptions) (MachineExtensionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, extensionName, options)
 	if err != nil {
 		return MachineExtensionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MachineExtensionsClientGetResponse{}, err
 	}
@@ -243,7 +237,7 @@ func (client *MachineExtensionsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionName}", url.PathEscape(extensionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -264,11 +258,12 @@ func (client *MachineExtensionsClient) getHandleResponse(resp *http.Response) (M
 }
 
 // NewListPager - The operation to get all extensions of a non-Azure machine
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// name - The name of the machine containing the extension.
-// options - MachineExtensionsClientListOptions contains the optional parameters for the MachineExtensionsClient.List method.
+//   - resourceGroupName - The Resource Group Name.
+//   - name - The name of the machine containing the extension.
+//   - options - MachineExtensionsClientListOptions contains the optional parameters for the MachineExtensionsClient.NewListPager
+//     method.
 func (client *MachineExtensionsClient) NewListPager(resourceGroupName string, name string, options *MachineExtensionsClientListOptions) *runtime.Pager[MachineExtensionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MachineExtensionsClientListResponse]{
 		More: func(page MachineExtensionsClientListResponse) bool {
@@ -285,7 +280,7 @@ func (client *MachineExtensionsClient) NewListPager(resourceGroupName string, na
 			if err != nil {
 				return MachineExtensionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MachineExtensionsClientListResponse{}, err
 			}
@@ -312,7 +307,7 @@ func (client *MachineExtensionsClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -337,34 +332,36 @@ func (client *MachineExtensionsClient) listHandleResponse(resp *http.Response) (
 
 // BeginUpdate - The operation to update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// name - The name of the machine where the extension should be created or updated.
-// extensionName - The name of the machine extension.
-// extensionParameters - Parameters supplied to the Create Machine Extension operation.
-// options - MachineExtensionsClientBeginUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginUpdate
-// method.
+//   - resourceGroupName - The Resource Group Name.
+//   - name - The name of the machine where the extension should be created or updated.
+//   - extensionName - The name of the machine extension.
+//   - extensionParameters - Parameters supplied to the Create Machine Extension operation.
+//   - options - MachineExtensionsClientBeginUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginUpdate
+//     method.
 func (client *MachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, name string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*runtime.Poller[MachineExtensionsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, name, extensionName, extensionParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MachineExtensionsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MachineExtensionsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MachineExtensionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MachineExtensionsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - The operation to update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *MachineExtensionsClient) update(ctx context.Context, resourceGroupName string, name string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, extensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -393,7 +390,7 @@ func (client *MachineExtensionsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionName}", url.PathEscape(extensionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

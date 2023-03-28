@@ -555,6 +555,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 }
 
 func TestClaims(t *testing.T) {
+	t.Skip("unskip this test after adding back CAE support")
 	realCP1 := disableCP1
 	t.Cleanup(func() { disableCP1 = realCP1 })
 	claim := `"test":"pass"`
@@ -644,9 +645,10 @@ func TestClaims(t *testing.T) {
 				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"A"}}); err != nil {
 					t.Fatal(err)
 				}
-				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
-					t.Fatal(err)
-				}
+				// TODO: uncomment after restoring TokenRequestOptions.Claims
+				// if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
+				// 	t.Fatal(err)
+				// }
 				if reqs != 2 {
 					t.Fatalf("expected %d token requests, got %d", 2, reqs)
 				}

@@ -25,11 +25,11 @@ func ExampleNamespacesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewNamespacesClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -962,11 +962,11 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("ArunMonocle", nil)
+	pager := clientFactory.NewNamespacesClient().NewListByResourceGroupPager("ArunMonocle", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1012,11 +1012,11 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "ArunMonocle", "sdk-Namespace2924", armservicebus.SBNamespace{
+	poller, err := clientFactory.NewNamespacesClient().BeginCreateOrUpdate(ctx, "ArunMonocle", "sdk-Namespace2924", armservicebus.SBNamespace{
 		Location: to.Ptr("South Central US"),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -1074,11 +1074,11 @@ func ExampleNamespacesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "ArunMonocle", "sdk-Namespace-3285", nil)
+	poller, err := clientFactory.NewNamespacesClient().BeginDelete(ctx, "ArunMonocle", "sdk-Namespace-3285", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1095,11 +1095,11 @@ func ExampleNamespacesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "ArunMonocle", "sdk-Namespace-2924", nil)
+	res, err := clientFactory.NewNamespacesClient().Get(ctx, "ArunMonocle", "sdk-Namespace-2924", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1154,11 +1154,11 @@ func ExampleNamespacesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "ArunMonocle", "sdk-Namespace-3285", armservicebus.SBNamespaceUpdateParameters{
+	res, err := clientFactory.NewNamespacesClient().Update(ctx, "ArunMonocle", "sdk-Namespace-3285", armservicebus.SBNamespaceUpdateParameters{
 		Location: to.Ptr("South Central US"),
 		Tags: map[string]*string{
 			"tag3": to.Ptr("value3"),
@@ -1203,11 +1203,11 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("Subscription", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateNetworkRuleSet(ctx, "ResourceGroup", "sdk-Namespace-6019", armservicebus.NetworkRuleSet{
+	res, err := clientFactory.NewNamespacesClient().CreateOrUpdateNetworkRuleSet(ctx, "ResourceGroup", "sdk-Namespace-6019", armservicebus.NetworkRuleSet{
 		Properties: &armservicebus.NetworkRuleSetProperties{
 			DefaultAction: to.Ptr(armservicebus.DefaultActionDeny),
 			IPRules: []*armservicebus.NWRuleSetIPRules{
@@ -1316,11 +1316,11 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("Subscription", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetNetworkRuleSet(ctx, "ResourceGroup", "sdk-Namespace-6019", nil)
+	res, err := clientFactory.NewNamespacesClient().GetNetworkRuleSet(ctx, "ResourceGroup", "sdk-Namespace-6019", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1385,11 +1385,11 @@ func ExampleNamespacesClient_NewListNetworkRuleSetsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("Subscription", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListNetworkRuleSetsPager("ResourceGroup", "sdk-Namespace-6019", nil)
+	pager := clientFactory.NewNamespacesClient().NewListNetworkRuleSetsPager("ResourceGroup", "sdk-Namespace-6019", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1461,11 +1461,11 @@ func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAuthorizationRulesPager("ArunMonocle", "sdk-Namespace-6914", nil)
+	pager := clientFactory.NewNamespacesClient().NewListAuthorizationRulesPager("ArunMonocle", "sdk-Namespace-6914", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1510,11 +1510,11 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-6914", "sdk-AuthRules-1788", armservicebus.SBAuthorizationRule{
+	res, err := clientFactory.NewNamespacesClient().CreateOrUpdateAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-6914", "sdk-AuthRules-1788", armservicebus.SBAuthorizationRule{
 		Properties: &armservicebus.SBAuthorizationRuleProperties{
 			Rights: []*armservicebus.AccessRights{
 				to.Ptr(armservicebus.AccessRightsListen),
@@ -1546,11 +1546,11 @@ func ExampleNamespacesClient_DeleteAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.DeleteAuthorizationRule(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", nil)
+	_, err = clientFactory.NewNamespacesClient().DeleteAuthorizationRule(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1563,11 +1563,11 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-6914", "sdk-AuthRules-1788", nil)
+	res, err := clientFactory.NewNamespacesClient().GetAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-6914", "sdk-AuthRules-1788", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1593,11 +1593,11 @@ func ExampleNamespacesClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListKeys(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", nil)
+	res, err := clientFactory.NewNamespacesClient().ListKeys(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1620,11 +1620,11 @@ func ExampleNamespacesClient_RegenerateKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RegenerateKeys(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", armservicebus.RegenerateAccessKeyParameters{
+	res, err := clientFactory.NewNamespacesClient().RegenerateKeys(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", armservicebus.RegenerateAccessKeyParameters{
 		KeyType: to.Ptr(armservicebus.KeyTypePrimaryKey),
 	}, nil)
 	if err != nil {
@@ -1649,11 +1649,11 @@ func ExampleNamespacesClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, armservicebus.CheckNameAvailability{
+	res, err := clientFactory.NewNamespacesClient().CheckNameAvailability(ctx, armservicebus.CheckNameAvailability{
 		Name: to.Ptr("sdk-Namespace-2924"),
 	}, nil)
 	if err != nil {

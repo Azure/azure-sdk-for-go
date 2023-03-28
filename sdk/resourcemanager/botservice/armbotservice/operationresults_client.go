@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,62 +24,55 @@ import (
 // OperationResultsClient contains the methods for the OperationResults group.
 // Don't use this type directly, use NewOperationResultsClient() instead.
 type OperationResultsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewOperationResultsClient creates a new instance of OperationResultsClient with the specified values.
-// subscriptionID - Azure Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationResultsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".OperationResultsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &OperationResultsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginGet - Get the operation result for a long running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-15
-// operationResultID - The ID of the operation result to get.
-// options - OperationResultsClientBeginGetOptions contains the optional parameters for the OperationResultsClient.BeginGet
-// method.
+//   - operationResultID - The ID of the operation result to get.
+//   - options - OperationResultsClientBeginGetOptions contains the optional parameters for the OperationResultsClient.BeginGet
+//     method.
 func (client *OperationResultsClient) BeginGet(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*runtime.Poller[OperationResultsClientGetResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.get(ctx, operationResultID, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[OperationResultsClientGetResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OperationResultsClientGetResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[OperationResultsClientGetResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OperationResultsClientGetResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Get - Get the operation result for a long running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-15
 func (client *OperationResultsClient) get(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*http.Response, error) {
 	req, err := client.getCreateRequest(ctx, operationResultID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +93,7 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, oper
 		return nil, errors.New("parameter operationResultID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationResultId}", url.PathEscape(operationResultID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

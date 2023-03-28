@@ -160,7 +160,7 @@ type BotConnectionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotConnectionClientListByBotServiceOptions contains the optional parameters for the BotConnectionClient.ListByBotService
+// BotConnectionClientListByBotServiceOptions contains the optional parameters for the BotConnectionClient.NewListByBotServicePager
 // method.
 type BotConnectionClientListByBotServiceOptions struct {
 	// placeholder for future optional parameters
@@ -321,12 +321,12 @@ type BotsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.ListByResourceGroup method.
+// BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.NewListByResourceGroupPager method.
 type BotsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsClientListOptions contains the optional parameters for the BotsClient.List method.
+// BotsClientListOptions contains the optional parameters for the BotsClient.NewListPager method.
 type BotsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -422,7 +422,8 @@ type ChannelsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ChannelsClientListByResourceGroupOptions contains the optional parameters for the ChannelsClient.ListByResourceGroup method.
+// ChannelsClientListByResourceGroupOptions contains the optional parameters for the ChannelsClient.NewListByResourceGroupPager
+// method.
 type ChannelsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1147,7 +1148,7 @@ type OperationEntity struct {
 	Origin *string `json:"origin,omitempty"`
 
 	// Additional properties.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 }
 
 // OperationEntityListResult - The list of bot service operation response.
@@ -1180,7 +1181,7 @@ type OperationResultsDescription struct {
 	Status *OperationResultStatus `json:"status,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1270,7 +1271,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // DirectLineClient contains the methods for the DirectLine group.
 // Don't use this type directly, use NewDirectLineClient() instead.
 type DirectLineClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDirectLineClient creates a new instance of DirectLineClient with the specified values.
-// subscriptionID - Azure Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDirectLineClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DirectLineClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DirectLineClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DirectLineClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // RegenerateKeys - Regenerates secret keys and returns them for the DirectLine Channel of a particular BotService resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-15
-// resourceGroupName - The name of the Bot resource group in the user subscription.
-// resourceName - The name of the Bot resource.
-// channelName - The name of the Channel resource for which keys are to be regenerated.
-// parameters - The parameters to provide for the created bot.
-// options - DirectLineClientRegenerateKeysOptions contains the optional parameters for the DirectLineClient.RegenerateKeys
-// method.
+//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+//   - resourceName - The name of the Bot resource.
+//   - channelName - The name of the Channel resource for which keys are to be regenerated.
+//   - parameters - The parameters to provide for the created bot.
+//   - options - DirectLineClientRegenerateKeysOptions contains the optional parameters for the DirectLineClient.RegenerateKeys
+//     method.
 func (client *DirectLineClient) RegenerateKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName RegenerateKeysChannelName, parameters SiteInfo, options *DirectLineClientRegenerateKeysOptions) (DirectLineClientRegenerateKeysResponse, error) {
 	req, err := client.regenerateKeysCreateRequest(ctx, resourceGroupName, resourceName, channelName, parameters, options)
 	if err != nil {
 		return DirectLineClientRegenerateKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DirectLineClientRegenerateKeysResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *DirectLineClient) regenerateKeysCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter channelName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{channelName}", url.PathEscape(string(channelName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

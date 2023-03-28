@@ -4,8 +4,6 @@
 ### Breaking Changes
 
 - Struct `ErrorAdditionalInfo` has been removed
-- Struct `ErrorBody` has been removed
-- Struct `ErrorResponse` has been removed
 
 ### Features Added
 

@@ -97,7 +97,9 @@ func (e *Events) Chan() <-chan Event {
 func (e *Events) All() []Event {
 	e.mu.Lock()
 	defer e.mu.Unlock()
-	return e.all
+	cp := make([]Event, len(e.all))
+	copy(cp, e.all)
+	return cp
 }
 
 func (e *Events) Clear() {
@@ -180,7 +182,7 @@ func (e *Events) CloseConnection(name string) {
 func (e *Events) GetOpenLinks() []string {
 	opened := map[string]bool{}
 
-	for _, evt := range e.all {
+	for _, evt := range e.All() {
 		switch evt.Type {
 		case EventTypeLinkOpen:
 			opened[evt.Data.(LinkEvent).Name] = true
@@ -209,7 +211,7 @@ func (e *Events) GetOpenLinks() []string {
 func (e *Events) GetOpenConns() []string {
 	opened := map[string]bool{}
 
-	for _, evt := range e.all {
+	for _, evt := range e.All() {
 		switch evt.Type {
 		case EventTypeConnOpen:
 			opened[evt.Data.(string)] = true

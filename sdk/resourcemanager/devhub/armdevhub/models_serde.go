@@ -18,7 +18,7 @@ import (
 
 // MarshalJSON implements the json.Marshaller interface for type ACR.
 func (a ACR) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "acrRegistryName", a.AcrRegistryName)
 	populate(objectMap, "acrRepositoryName", a.AcrRepositoryName)
 	populate(objectMap, "acrResourceGroup", a.AcrResourceGroup)
@@ -57,7 +57,7 @@ func (a *ACR) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DeleteWorkflowResponse.
 func (d DeleteWorkflowResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "status", d.Status)
 	return json.Marshal(objectMap)
 }
@@ -84,7 +84,7 @@ func (d *DeleteWorkflowResponse) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DeploymentProperties.
 func (d DeploymentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "helmChartPath", d.HelmChartPath)
 	populate(objectMap, "helmValues", d.HelmValues)
 	populate(objectMap, "kubeManifestLocations", d.KubeManifestLocations)
@@ -127,7 +127,7 @@ func (d *DeploymentProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type GitHubOAuthCallRequest.
 func (g GitHubOAuthCallRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "redirectUrl", g.RedirectURL)
 	return json.Marshal(objectMap)
 }
@@ -154,7 +154,7 @@ func (g *GitHubOAuthCallRequest) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type GitHubOAuthInfoResponse.
 func (g GitHubOAuthInfoResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "authURL", g.AuthURL)
 	populate(objectMap, "token", g.Token)
 	return json.Marshal(objectMap)
@@ -185,7 +185,7 @@ func (g *GitHubOAuthInfoResponse) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type GitHubOAuthListResponse.
 func (g GitHubOAuthListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "value", g.Value)
 	return json.Marshal(objectMap)
 }
@@ -212,7 +212,7 @@ func (g *GitHubOAuthListResponse) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type GitHubOAuthProperties.
 func (g GitHubOAuthProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "username", g.Username)
 	return json.Marshal(objectMap)
 }
@@ -239,7 +239,7 @@ func (g *GitHubOAuthProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type GitHubOAuthResponse.
 func (g GitHubOAuthResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", g.ID)
 	populate(objectMap, "name", g.Name)
 	populate(objectMap, "properties", g.Properties)
@@ -282,7 +282,7 @@ func (g *GitHubOAuthResponse) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type GitHubWorkflowProfile.
 func (g GitHubWorkflowProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "acr", g.Acr)
 	populate(objectMap, "aksResourceId", g.AksResourceID)
 	populate(objectMap, "authStatus", g.AuthStatus)
@@ -365,7 +365,7 @@ func (g *GitHubWorkflowProfile) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type GitHubWorkflowProfileOidcCredentials.
 func (g GitHubWorkflowProfileOidcCredentials) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "azureClientId", g.AzureClientID)
 	populate(objectMap, "azureTenantId", g.AzureTenantID)
 	return json.Marshal(objectMap)
@@ -396,7 +396,7 @@ func (g *GitHubWorkflowProfileOidcCredentials) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type Operation.
 func (o Operation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "actionType", o.ActionType)
 	populate(objectMap, "display", o.Display)
 	populate(objectMap, "isDataAction", o.IsDataAction)
@@ -439,7 +439,7 @@ func (o *Operation) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type OperationDisplay.
 func (o OperationDisplay) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "description", o.Description)
 	populate(objectMap, "operation", o.Operation)
 	populate(objectMap, "provider", o.Provider)
@@ -478,7 +478,7 @@ func (o *OperationDisplay) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type OperationListResult.
 func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", o.NextLink)
 	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
@@ -509,7 +509,7 @@ func (o *OperationListResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
@@ -556,7 +556,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TagsObject.
 func (t TagsObject) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "tags", t.Tags)
 	return json.Marshal(objectMap)
 }
@@ -583,7 +583,7 @@ func (t *TagsObject) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type Workflow.
 func (w Workflow) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", w.ID)
 	populate(objectMap, "location", w.Location)
 	populate(objectMap, "name", w.Name)
@@ -634,7 +634,7 @@ func (w *Workflow) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type WorkflowListResult.
 func (w WorkflowListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", w.NextLink)
 	populate(objectMap, "value", w.Value)
 	return json.Marshal(objectMap)
@@ -665,7 +665,7 @@ func (w *WorkflowListResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type WorkflowProperties.
 func (w WorkflowProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "githubWorkflowProfile", w.GithubWorkflowProfile)
 	return json.Marshal(objectMap)
 }
@@ -692,7 +692,7 @@ func (w *WorkflowProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type WorkflowRun.
 func (w WorkflowRun) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "lastRunAt", w.LastRunAt)
 	populate(objectMap, "succeeded", w.Succeeded)
 	populate(objectMap, "workflowRunURL", w.WorkflowRunURL)
@@ -725,7 +725,7 @@ func (w *WorkflowRun) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
+func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
 	} else if azcore.IsNullValue(v) {
@@ -735,7 +735,7 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, fn string, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil {
 		return nil
 	}

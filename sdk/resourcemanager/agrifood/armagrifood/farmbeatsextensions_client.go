@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,43 +25,35 @@ import (
 // FarmBeatsExtensionsClient contains the methods for the FarmBeatsExtensions group.
 // Don't use this type directly, use NewFarmBeatsExtensionsClient() instead.
 type FarmBeatsExtensionsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewFarmBeatsExtensionsClient creates a new instance of FarmBeatsExtensionsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewFarmBeatsExtensionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*FarmBeatsExtensionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".FarmBeatsExtensionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &FarmBeatsExtensionsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Get farmBeats extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// farmBeatsExtensionID - farmBeatsExtensionId to be queried.
-// options - FarmBeatsExtensionsClientGetOptions contains the optional parameters for the FarmBeatsExtensionsClient.Get method.
+//   - farmBeatsExtensionID - farmBeatsExtensionId to be queried.
+//   - options - FarmBeatsExtensionsClientGetOptions contains the optional parameters for the FarmBeatsExtensionsClient.Get method.
 func (client *FarmBeatsExtensionsClient) Get(ctx context.Context, farmBeatsExtensionID string, options *FarmBeatsExtensionsClientGetOptions) (FarmBeatsExtensionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, farmBeatsExtensionID, options)
 	if err != nil {
 		return FarmBeatsExtensionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FarmBeatsExtensionsClientGetResponse{}, err
 	}
@@ -80,7 +70,7 @@ func (client *FarmBeatsExtensionsClient) getCreateRequest(ctx context.Context, f
 		return nil, errors.New("parameter farmBeatsExtensionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{farmBeatsExtensionId}", url.PathEscape(farmBeatsExtensionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -101,10 +91,10 @@ func (client *FarmBeatsExtensionsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Get list of farmBeats extension.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// options - FarmBeatsExtensionsClientListOptions contains the optional parameters for the FarmBeatsExtensionsClient.List
-// method.
+//   - options - FarmBeatsExtensionsClientListOptions contains the optional parameters for the FarmBeatsExtensionsClient.NewListPager
+//     method.
 func (client *FarmBeatsExtensionsClient) NewListPager(options *FarmBeatsExtensionsClientListOptions) *runtime.Pager[FarmBeatsExtensionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FarmBeatsExtensionsClientListResponse]{
 		More: func(page FarmBeatsExtensionsClientListResponse) bool {
@@ -121,7 +111,7 @@ func (client *FarmBeatsExtensionsClient) NewListPager(options *FarmBeatsExtensio
 			if err != nil {
 				return FarmBeatsExtensionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FarmBeatsExtensionsClientListResponse{}, err
 			}
@@ -136,7 +126,7 @@ func (client *FarmBeatsExtensionsClient) NewListPager(options *FarmBeatsExtensio
 // listCreateRequest creates the List request.
 func (client *FarmBeatsExtensionsClient) listCreateRequest(ctx context.Context, options *FarmBeatsExtensionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.AgFoodPlatform/farmBeatsExtensionDefinitions"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -9,17 +9,17 @@
 
 package armappcomplianceautomation
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// ReportClientCreateOrUpdateResponse contains the response from method ReportClient.CreateOrUpdate.
+// ReportClientCreateOrUpdateResponse contains the response from method ReportClient.BeginCreateOrUpdate.
 type ReportClientCreateOrUpdateResponse struct {
 	ReportResource
 }
 
-// ReportClientDeleteResponse contains the response from method ReportClient.Delete.
+// ReportClientDeleteResponse contains the response from method ReportClient.BeginDelete.
 type ReportClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -29,17 +29,17 @@ type ReportClientGetResponse struct {
 	ReportResource
 }
 
-// ReportClientUpdateResponse contains the response from method ReportClient.Update.
+// ReportClientUpdateResponse contains the response from method ReportClient.BeginUpdate.
 type ReportClientUpdateResponse struct {
 	ReportResource
 }
 
-// ReportsClientListResponse contains the response from method ReportsClient.List.
+// ReportsClientListResponse contains the response from method ReportsClient.NewListPager.
 type ReportsClientListResponse struct {
 	ReportResourceList
 }
 
-// SnapshotClientDownloadResponse contains the response from method SnapshotClient.Download.
+// SnapshotClientDownloadResponse contains the response from method SnapshotClient.BeginDownload.
 type SnapshotClientDownloadResponse struct {
 	DownloadResponse
 }
@@ -49,7 +49,7 @@ type SnapshotClientGetResponse struct {
 	SnapshotResource
 }
 
-// SnapshotsClientListResponse contains the response from method SnapshotsClient.List.
+// SnapshotsClientListResponse contains the response from method SnapshotsClient.NewListPager.
 type SnapshotsClientListResponse struct {
 	SnapshotResourceList
 }

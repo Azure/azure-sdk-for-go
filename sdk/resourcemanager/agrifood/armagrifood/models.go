@@ -59,7 +59,7 @@ type DetailedInformation struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -153,7 +153,8 @@ type ExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsClientListByFarmBeatsOptions contains the optional parameters for the ExtensionsClient.ListByFarmBeats method.
+// ExtensionsClientListByFarmBeatsOptions contains the optional parameters for the ExtensionsClient.NewListByFarmBeatsPager
+// method.
 type ExtensionsClientListByFarmBeatsOptions struct {
 	// Installed extension categories.
 	ExtensionCategories []string
@@ -265,7 +266,7 @@ type FarmBeatsExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FarmBeatsExtensionsClientListOptions contains the optional parameters for the FarmBeatsExtensionsClient.List method.
+// FarmBeatsExtensionsClientListOptions contains the optional parameters for the FarmBeatsExtensionsClient.NewListPager method.
 type FarmBeatsExtensionsClientListOptions struct {
 	// Extension categories.
 	ExtensionCategories []string
@@ -316,7 +317,7 @@ type FarmBeatsModelsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FarmBeatsModelsClientListByResourceGroupOptions contains the optional parameters for the FarmBeatsModelsClient.ListByResourceGroup
+// FarmBeatsModelsClientListByResourceGroupOptions contains the optional parameters for the FarmBeatsModelsClient.NewListByResourceGroupPager
 // method.
 type FarmBeatsModelsClientListByResourceGroupOptions struct {
 	// Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
@@ -325,7 +326,7 @@ type FarmBeatsModelsClientListByResourceGroupOptions struct {
 	SkipToken *string
 }
 
-// FarmBeatsModelsClientListBySubscriptionOptions contains the optional parameters for the FarmBeatsModelsClient.ListBySubscription
+// FarmBeatsModelsClientListBySubscriptionOptions contains the optional parameters for the FarmBeatsModelsClient.NewListBySubscriptionPager
 // method.
 type FarmBeatsModelsClientListBySubscriptionOptions struct {
 	// Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
@@ -443,7 +444,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -509,7 +510,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByResource
+// PrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByResourcePager
 // method.
 type PrivateEndpointConnectionsClientListByResourceOptions struct {
 	// placeholder for future optional parameters
@@ -556,7 +557,7 @@ type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesClientListByResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByResource
+// PrivateLinkResourcesClientListByResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByResourcePager
 // method.
 type PrivateLinkResourcesClientListByResourceOptions struct {
 	// placeholder for future optional parameters

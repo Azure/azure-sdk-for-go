@@ -44,7 +44,7 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 	}
 
 	resp, err := link.RPC(context.Background(), &amqp.Message{
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			rpcTesterProperty: responses,
 		},
 	})
@@ -99,7 +99,7 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 	}
 
 	resp, err := link.RPC(context.Background(), &amqp.Message{
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			rpcTesterProperty: responses,
 		},
 		Properties: &amqp.MessageProperties{
@@ -133,7 +133,7 @@ func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
 	require.NotNil(t, link)
 
 	resp, err := link.RPC(context.Background(), &amqp.Message{
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			rpcTesterProperty: []*rpcTestResp{
 				{M: exampleMessageWithStatusCode(400)},
 			},
@@ -151,7 +151,7 @@ func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
 
 	// validate that a normal error doesn't cause the response router to shut down
 	resp, err = link.RPC(context.Background(), &amqp.Message{
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			rpcTesterProperty: []*rpcTestResp{
 				{M: exampleMessageWithStatusCode(200)},
 			},
@@ -281,7 +281,7 @@ func exampleMessageWithStatusCode(statusCode int32) *amqp.Message {
 			// will get auto-filled in by the test
 			CorrelationID: nil,
 		},
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			statusCodeKey: statusCode,
 		},
 	}

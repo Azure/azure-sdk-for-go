@@ -601,7 +601,7 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 
 	require.NoError(t, sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello, this is the body"),
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			// Some primitive types are missing - it's a bit unclear what the right representation of this would be in Go:
 			// - TypeCodeDecimal32
 			// - TypeCodeDecimal64
@@ -638,7 +638,7 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 
 	actualProps := messages[0].ApplicationProperties
 
-	require.Equal(t, map[string]interface{}{
+	require.Equal(t, map[string]any{
 		"timestamp": expectedTime,
 
 		"byte":   byte(128),

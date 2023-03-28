@@ -9,25 +9,6 @@
 
 package azkeys
 
-// ActionType - The type of the action.
-type ActionType string
-
-const (
-	// ActionTypeRotate - Rotate the key based on the key policy.
-	ActionTypeRotate ActionType = "rotate"
-	// ActionTypeNotify - Trigger event grid events. For preview, the notification time is not configurable and it is default
-	// to 30 days before expiry.
-	ActionTypeNotify ActionType = "notify"
-)
-
-// PossibleActionTypeValues returns the possible values for the ActionType const type.
-func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
-		ActionTypeRotate,
-		ActionTypeNotify,
-	}
-}
-
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains
 // 'Purgeable' the key can be permanently deleted by a privileged user; otherwise, only the system
 // can purge the key, at the end of the retention interval.
@@ -266,5 +247,24 @@ func PossibleKeyEncryptionAlgorithmValues() []KeyEncryptionAlgorithm {
 		KeyEncryptionAlgorithmCKMRSAAESKEYWRAP,
 		KeyEncryptionAlgorithmRSAAESKEYWRAP256,
 		KeyEncryptionAlgorithmRSAAESKEYWRAP384,
+	}
+}
+
+// KeyRotationPolicyAction - The type of the action.
+type KeyRotationPolicyAction string
+
+const (
+	// KeyRotationPolicyActionRotate - Rotate the key based on the key policy.
+	KeyRotationPolicyActionRotate KeyRotationPolicyAction = "rotate"
+	// KeyRotationPolicyActionNotify - Trigger event grid events. For preview, the notification time is not configurable and it
+	// is default to 30 days before expiry.
+	KeyRotationPolicyActionNotify KeyRotationPolicyAction = "notify"
+)
+
+// PossibleKeyRotationPolicyActionValues returns the possible values for the KeyRotationPolicyAction const type.
+func PossibleKeyRotationPolicyActionValues() []KeyRotationPolicyAction {
+	return []KeyRotationPolicyAction{
+		KeyRotationPolicyActionRotate,
+		KeyRotationPolicyActionNotify,
 	}
 }

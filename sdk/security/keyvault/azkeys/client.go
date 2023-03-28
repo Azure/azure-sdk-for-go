@@ -40,7 +40,7 @@ type Client struct {
 // operation requires the key/backup permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key.
 //   - options - BackupKeyOptions contains the optional parameters for the Client.BackupKey method.
 func (client *Client) BackupKey(ctx context.Context, name string, options *BackupKeyOptions) (BackupKeyResponse, error) {
@@ -70,7 +70,7 @@ func (client *Client) backupKeyCreateRequest(ctx context.Context, name string, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -90,8 +90,10 @@ func (client *Client) backupKeyHandleResponse(resp *http.Response) (BackupKeyRes
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
-//   - name - The name for the new key. The system will generate the version name for the new key.
+// Generated from API version 7.4
+//   - name - The name for the new key. The system will generate the version name for the new key. The value you provide may be
+//     copied globally for the purpose of running the service. The value provided should not
+//     include personally identifiable or sensitive information.
 //   - parameters - The parameters to create a key.
 //   - options - CreateKeyOptions contains the optional parameters for the Client.CreateKey method.
 func (client *Client) CreateKey(ctx context.Context, name string, parameters CreateKeyParameters, options *CreateKeyOptions) (CreateKeyResponse, error) {
@@ -121,7 +123,7 @@ func (client *Client) createKeyCreateRequest(ctx context.Context, name string, p
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -146,7 +148,7 @@ func (client *Client) createKeyHandleResponse(resp *http.Response) (CreateKeyRes
 // for more information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key.
 //   - version - The version of the key.
 //   - parameters - The parameters for the decryption operation.
@@ -179,7 +181,7 @@ func (client *Client) decryptCreateRequest(ctx context.Context, name string, ver
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -199,7 +201,7 @@ func (client *Client) decryptHandleResponse(resp *http.Response) (DecryptRespons
 // Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the keys/delete permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key to delete.
 //   - options - DeleteKeyOptions contains the optional parameters for the Client.DeleteKey method.
 func (client *Client) DeleteKey(ctx context.Context, name string, options *DeleteKeyOptions) (DeleteKeyResponse, error) {
@@ -229,7 +231,7 @@ func (client *Client) deleteKeyCreateRequest(ctx context.Context, name string, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,7 +255,7 @@ func (client *Client) deleteKeyHandleResponse(resp *http.Response) (DeleteKeyRes
 // public key material. This operation requires the keys/encrypt permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key.
 //   - version - The version of the key.
 //   - parameters - The parameters for the encryption operation.
@@ -286,7 +288,7 @@ func (client *Client) encryptCreateRequest(ctx context.Context, name string, ver
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -306,7 +308,7 @@ func (client *Client) encryptHandleResponse(resp *http.Response) (EncryptRespons
 // operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key.
 //   - options - GetDeletedKeyOptions contains the optional parameters for the Client.GetDeletedKey method.
 func (client *Client) GetDeletedKey(ctx context.Context, name string, options *GetDeletedKeyOptions) (GetDeletedKeyResponse, error) {
@@ -336,7 +338,7 @@ func (client *Client) getDeletedKeyCreateRequest(ctx context.Context, name strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -355,7 +357,7 @@ func (client *Client) getDeletedKeyHandleResponse(resp *http.Response) (GetDelet
 // is released in the response. This operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key to get.
 //   - version - Adding the version parameter retrieves a specific version of a key. This URI fragment is optional. If not specified,
 //     the latest version of the key is returned.
@@ -388,7 +390,7 @@ func (client *Client) getKeyCreateRequest(ctx context.Context, name string, vers
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -407,7 +409,7 @@ func (client *Client) getKeyHandleResponse(resp *http.Response) (GetKeyResponse,
 // vault. This operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key in a given key vault.
 //   - options - GetKeyRotationPolicyOptions contains the optional parameters for the Client.GetKeyRotationPolicy method.
 func (client *Client) GetKeyRotationPolicy(ctx context.Context, name string, options *GetKeyRotationPolicyOptions) (GetKeyRotationPolicyResponse, error) {
@@ -437,7 +439,7 @@ func (client *Client) getKeyRotationPolicyCreateRequest(ctx context.Context, nam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -455,7 +457,7 @@ func (client *Client) getKeyRotationPolicyHandleResponse(resp *http.Response) (G
 // GetRandomBytes - Get the requested number of bytes containing random values from a managed HSM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - parameters - The request object to get random bytes.
 //   - options - GetRandomBytesOptions contains the optional parameters for the Client.GetRandomBytes method.
 func (client *Client) GetRandomBytes(ctx context.Context, parameters GetRandomBytesRequest, options *GetRandomBytesOptions) (GetRandomBytesResponse, error) {
@@ -481,7 +483,7 @@ func (client *Client) getRandomBytesCreateRequest(ctx context.Context, parameter
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -501,8 +503,9 @@ func (client *Client) getRandomBytesHandleResponse(resp *http.Response) (GetRand
 // keys/import permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
-//   - name - Name for the imported key.
+// Generated from API version 7.4
+//   - name - Name for the imported key. The value you provide may be copied globally for the purpose of running the service.
+//     The value provided should not include personally identifiable or sensitive information.
 //   - parameters - The parameters to import a key.
 //   - options - ImportKeyOptions contains the optional parameters for the Client.ImportKey method.
 func (client *Client) ImportKey(ctx context.Context, name string, parameters ImportKeyParameters, options *ImportKeyOptions) (ImportKeyResponse, error) {
@@ -532,7 +535,7 @@ func (client *Client) importKeyCreateRequest(ctx context.Context, name string, p
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -553,7 +556,7 @@ func (client *Client) importKeyHandleResponse(resp *http.Response) (ImportKeyRes
 // an error if invoked on a non soft-delete enabled vault. This operation
 // requires the keys/list permission.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - options - ListDeletedKeysOptions contains the optional parameters for the Client.NewListDeletedKeysPager method.
 func (client *Client) NewListDeletedKeysPager(options *ListDeletedKeysOptions) *runtime.Pager[ListDeletedKeysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListDeletedKeysResponse]{
@@ -594,7 +597,7 @@ func (client *Client) listDeletedKeysCreateRequest(ctx context.Context, options 
 	if options != nil && options.MaxResults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
 	}
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -612,7 +615,7 @@ func (client *Client) listDeletedKeysHandleResponse(resp *http.Response) (ListDe
 // NewListKeyVersionsPager - The full key identifier, attributes, and tags are provided in the response. This operation requires
 // the keys/list permission.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key.
 //   - options - ListKeyVersionsOptions contains the optional parameters for the Client.NewListKeyVersionsPager method.
 func (client *Client) NewListKeyVersionsPager(name string, options *ListKeyVersionsOptions) *runtime.Pager[ListKeyVersionsResponse] {
@@ -658,7 +661,7 @@ func (client *Client) listKeyVersionsCreateRequest(ctx context.Context, name str
 	if options != nil && options.MaxResults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
 	}
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -678,7 +681,7 @@ func (client *Client) listKeyVersionsHandleResponse(resp *http.Response) (ListKe
 // identifier, attributes, and tags are provided in the response. Individual versions of a key are not listed in the response.
 // This operation requires the keys/list permission.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - options - ListKeysOptions contains the optional parameters for the Client.NewListKeysPager method.
 func (client *Client) NewListKeysPager(options *ListKeysOptions) *runtime.Pager[ListKeysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListKeysResponse]{
@@ -719,7 +722,7 @@ func (client *Client) listKeysCreateRequest(ctx context.Context, options *ListKe
 	if options != nil && options.MaxResults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
 	}
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -739,7 +742,7 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ListKeysRespo
 // This operation requires the keys/purge permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key
 //   - options - PurgeDeletedKeyOptions contains the optional parameters for the Client.PurgeDeletedKey method.
 func (client *Client) PurgeDeletedKey(ctx context.Context, name string, options *PurgeDeletedKeyOptions) (PurgeDeletedKeyResponse, error) {
@@ -769,7 +772,7 @@ func (client *Client) purgeDeletedKeyCreateRequest(ctx context.Context, name str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -781,7 +784,7 @@ func (client *Client) purgeDeletedKeyCreateRequest(ctx context.Context, name str
 // requires the keys/recover permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the deleted key.
 //   - options - RecoverDeletedKeyOptions contains the optional parameters for the Client.RecoverDeletedKey method.
 func (client *Client) RecoverDeletedKey(ctx context.Context, name string, options *RecoverDeletedKeyOptions) (RecoverDeletedKeyResponse, error) {
@@ -811,7 +814,7 @@ func (client *Client) recoverDeletedKeyCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -830,7 +833,7 @@ func (client *Client) recoverDeletedKeyHandleResponse(resp *http.Response) (Reco
 // requires the keys/release permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key to get.
 //   - version - Adding the version parameter retrieves a specific version of a key.
 //   - parameters - The parameters for the key release operation.
@@ -863,7 +866,7 @@ func (client *Client) releaseCreateRequest(ctx context.Context, name string, ver
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -889,7 +892,7 @@ func (client *Client) releaseHandleResponse(resp *http.Response) (ReleaseRespons
 // The user must have RESTORE permission in the target Key Vault. This operation requires the keys/restore permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - parameters - The parameters to restore the key.
 //   - options - RestoreKeyOptions contains the optional parameters for the Client.RestoreKey method.
 func (client *Client) RestoreKey(ctx context.Context, parameters RestoreKeyParameters, options *RestoreKeyOptions) (RestoreKeyResponse, error) {
@@ -915,7 +918,7 @@ func (client *Client) restoreKeyCreateRequest(ctx context.Context, parameters Re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -933,7 +936,7 @@ func (client *Client) restoreKeyHandleResponse(resp *http.Response) (RestoreKeyR
 // RotateKey - The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of key to be rotated. The system will generate a new version in the specified key.
 //   - options - RotateKeyOptions contains the optional parameters for the Client.RotateKey method.
 func (client *Client) RotateKey(ctx context.Context, name string, options *RotateKeyOptions) (RotateKeyResponse, error) {
@@ -963,7 +966,7 @@ func (client *Client) rotateKeyCreateRequest(ctx context.Context, name string, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -982,7 +985,7 @@ func (client *Client) rotateKeyHandleResponse(resp *http.Response) (RotateKeyRes
 // uses the private portion of the key. This operation requires the keys/sign permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key.
 //   - version - The version of the key.
 //   - parameters - The parameters for the signing operation.
@@ -1015,7 +1018,7 @@ func (client *Client) signCreateRequest(ctx context.Context, name string, versio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1036,7 +1039,7 @@ func (client *Client) signHandleResponse(resp *http.Response) (SignResponse, err
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key.
 //   - version - The version of the key.
 //   - parameters - The parameters for the key operation.
@@ -1069,7 +1072,7 @@ func (client *Client) unwrapKeyCreateRequest(ctx context.Context, name string, v
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1088,7 +1091,7 @@ func (client *Client) unwrapKeyHandleResponse(resp *http.Response) (UnwrapKeyRes
 // of a key itself cannot be changed. This operation requires the keys/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of key to update.
 //   - version - The version of the key to update.
 //   - parameters - The parameters of the key to update.
@@ -1121,7 +1124,7 @@ func (client *Client) updateKeyCreateRequest(ctx context.Context, name string, v
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1140,7 +1143,7 @@ func (client *Client) updateKeyHandleResponse(resp *http.Response) (UpdateKeyRes
 // keys/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key in the given vault.
 //   - keyRotationPolicy - The policy for the key.
 //   - options - UpdateKeyRotationPolicyOptions contains the optional parameters for the Client.UpdateKeyRotationPolicy
@@ -1172,7 +1175,7 @@ func (client *Client) updateKeyRotationPolicyCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, keyRotationPolicy)
@@ -1194,7 +1197,7 @@ func (client *Client) updateKeyRotationPolicyHandleResponse(resp *http.Response)
 // the keys/verify permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key.
 //   - version - The version of the key.
 //   - parameters - The parameters for verify operations.
@@ -1227,7 +1230,7 @@ func (client *Client) verifyCreateRequest(ctx context.Context, name string, vers
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1250,7 +1253,7 @@ func (client *Client) verifyHandleResponse(resp *http.Response) (VerifyResponse,
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.3
+// Generated from API version 7.4
 //   - name - The name of the key.
 //   - version - The version of the key.
 //   - parameters - The parameters for wrap operation.
@@ -1283,7 +1286,7 @@ func (client *Client) wrapKeyCreateRequest(ctx context.Context, name string, ver
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3")
+	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

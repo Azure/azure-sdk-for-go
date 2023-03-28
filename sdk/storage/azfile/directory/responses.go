@@ -28,3 +28,12 @@ type ListFilesAndDirectoriesResponse = generated.DirectoryClientListFilesAndDire
 
 // ListFilesAndDirectoriesSegmentResponse - An enumeration of directories and files.
 type ListFilesAndDirectoriesSegmentResponse = generated.ListFilesAndDirectoriesSegmentResponse
+
+// ListHandlesResponse contains the response from method Client.ListHandles.
+type ListHandlesResponse = generated.DirectoryClientListHandlesResponse
+
+// ListHandlesSegmentResponse - An enumeration of handles.
+type ListHandlesSegmentResponse = generated.ListHandlesResponse
+
+// ForceCloseHandlesResponse contains the response from method Client.ForceCloseHandles.
+type ForceCloseHandlesResponse = generated.DirectoryClientForceCloseHandlesResponse

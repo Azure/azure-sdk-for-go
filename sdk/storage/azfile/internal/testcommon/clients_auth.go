@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
@@ -148,5 +149,21 @@ func CreateNewShare(ctx context.Context, _require *require.Assertions, shareName
 
 func DeleteShare(ctx context.Context, _require *require.Assertions, shareClient *share.Client) {
 	_, err := shareClient.Delete(ctx, nil)
+	_require.NoError(err)
+}
+
+func GetDirectoryClient(dirName string, s *share.Client) *directory.Client {
+	return s.NewDirectoryClient(dirName)
+}
+
+func CreateNewDirectory(ctx context.Context, _require *require.Assertions, dirName string, shareClient *share.Client) *directory.Client {
+	dirClient := GetDirectoryClient(dirName, shareClient)
+	_, err := dirClient.Create(ctx, nil)
+	_require.NoError(err)
+	return dirClient
+}
+
+func DeleteDirectory(ctx context.Context, _require *require.Assertions, dirClient *directory.Client) {
+	_, err := dirClient.Delete(ctx, nil)
 	_require.NoError(err)
 }

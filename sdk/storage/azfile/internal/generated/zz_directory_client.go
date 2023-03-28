@@ -49,7 +49,7 @@ func NewDirectoryClient(endpoint string, pl runtime.Pipeline) *DirectoryClient {
 //   - fileCreationTime - Creation time for the file/directory. Default value: Now.
 //   - fileLastWriteTime - Last write time for the file/directory. Default value: Now.
 //   - options - DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
-func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
+func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
 		return DirectoryClientCreateResponse{}, err
@@ -65,7 +65,7 @@ func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string
 }
 
 // createCreateRequest creates the Create request.
-func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientCreateOptions) (*policy.Request, error) {
+func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryClientCreateOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -91,8 +91,8 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttr
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
 	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
-	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime.Format(time.RFC1123)}
-	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime.Format(time.RFC1123)}
+	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime}
+	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
@@ -137,21 +137,21 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
@@ -397,21 +397,21 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
@@ -435,36 +435,9 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 // Generated from API version 2020-10-02
 //   - options - DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.NewListFilesAndDirectoriesSegmentPager
 //     method.
-func (client *DirectoryClient) NewListFilesAndDirectoriesSegmentPager(options *DirectoryClientListFilesAndDirectoriesSegmentOptions) *runtime.Pager[DirectoryClientListFilesAndDirectoriesSegmentResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DirectoryClientListFilesAndDirectoriesSegmentResponse]{
-		More: func(page DirectoryClientListFilesAndDirectoriesSegmentResponse) bool {
-			return page.NextMarker != nil && len(*page.NextMarker) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DirectoryClientListFilesAndDirectoriesSegmentResponse) (DirectoryClientListFilesAndDirectoriesSegmentResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listFilesAndDirectoriesSegmentCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextMarker)
-			}
-			if err != nil {
-				return DirectoryClientListFilesAndDirectoriesSegmentResponse{}, err
-			}
-			resp, err := client.pl.Do(req)
-			if err != nil {
-				return DirectoryClientListFilesAndDirectoriesSegmentResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DirectoryClientListFilesAndDirectoriesSegmentResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listFilesAndDirectoriesSegmentHandleResponse(resp)
-		},
-	})
-}
-
+//
 // listFilesAndDirectoriesSegmentCreateRequest creates the ListFilesAndDirectoriesSegment request.
-func (client *DirectoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx context.Context, options *DirectoryClientListFilesAndDirectoriesSegmentOptions) (*policy.Request, error) {
+func (client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(ctx context.Context, options *DirectoryClientListFilesAndDirectoriesSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -500,7 +473,7 @@ func (client *DirectoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx c
 }
 
 // listFilesAndDirectoriesSegmentHandleResponse handles the ListFilesAndDirectoriesSegment response.
-func (client *DirectoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp *http.Response) (DirectoryClientListFilesAndDirectoriesSegmentResponse, error) {
+func (client *DirectoryClient) ListFilesAndDirectoriesSegmentHandleResponse(resp *http.Response) (DirectoryClientListFilesAndDirectoriesSegmentResponse, error) {
 	result := DirectoryClientListFilesAndDirectoriesSegmentResponse{}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -681,7 +654,7 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 //   - fileCreationTime - Creation time for the file/directory. Default value: Now.
 //   - fileLastWriteTime - Last write time for the file/directory. Default value: Now.
 //   - options - DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
-func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
+func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
 	req, err := client.setPropertiesCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
 		return DirectoryClientSetPropertiesResponse{}, err
@@ -697,7 +670,7 @@ func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientSetPropertiesOptions) (*policy.Request, error) {
+func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryClientSetPropertiesOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -717,8 +690,8 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, f
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
 	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
-	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime.Format(time.RFC1123)}
-	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime.Format(time.RFC1123)}
+	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime}
+	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
@@ -763,21 +736,21 @@ func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}

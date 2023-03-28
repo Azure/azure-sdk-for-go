@@ -163,17 +163,25 @@ func (s *ShareUnrecordedTestsSuite) TestShareClientUsingSAS() {
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthorizationFailure)
 
-	// TODO: create directories and files and uncomment this
-	//dirCtr, fileCtr := 0, 0
-	//pager := shareSASClient.NewRootDirectoryClient().NewListFilesAndDirectoriesPager(nil)
-	//for pager.More() {
-	//	resp, err := pager.NextPage(context.Background())
-	//	_require.NoError(err)
-	//	dirCtr += len(resp.Segment.Directories)
-	//	fileCtr += len(resp.Segment.Files)
-	//}
-	//_require.Equal(dirCtr, 0)
-	//_require.Equal(fileCtr, 0)
+	// TODO: create files using shareSASClient
+	dirName1 := testcommon.GenerateDirectoryName(testName) + "1"
+	_, err = shareSASClient.NewDirectoryClient(dirName1).Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName2 := testcommon.GenerateDirectoryName(testName) + "2"
+	_, err = shareSASClient.NewDirectoryClient(dirName2).Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirCtr, fileCtr := 0, 0
+	pager := shareSASClient.NewRootDirectoryClient().NewListFilesAndDirectoriesPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		dirCtr += len(resp.Segment.Directories)
+		fileCtr += len(resp.Segment.Files)
+	}
+	_require.Equal(dirCtr, 2)
+	_require.Equal(fileCtr, 0)
 }
 
 func (s *ShareUnrecordedTestsSuite) TestShareCreateDeleteNonDefault() {

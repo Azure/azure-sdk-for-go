@@ -2288,7 +2288,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTags() {
 
 func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	_require := require.New(s.T())
-	testName := s.T().Name()
+	testName := "bb" + s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 

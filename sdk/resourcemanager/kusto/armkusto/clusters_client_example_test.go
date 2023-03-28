@@ -25,11 +25,11 @@ func ExampleClustersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "kustorptest", "kustoCluster", nil)
+	res, err := clientFactory.NewClustersClient().Get(ctx, "kustorptest", "kustoCluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -110,11 +110,11 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", armkusto.Cluster{
+	poller, err := clientFactory.NewClustersClient().BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", armkusto.Cluster{
 		Location: to.Ptr("westus"),
 		Identity: &armkusto.Identity{
 			Type: to.Ptr(armkusto.IdentityTypeSystemAssigned),
@@ -194,11 +194,11 @@ func ExampleClustersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "kustorptest", "kustoCluster2", armkusto.ClusterUpdate{
+	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "kustorptest", "kustoCluster2", armkusto.ClusterUpdate{
 		Location: to.Ptr("westus"),
 	}, &armkusto.ClustersClientBeginUpdateOptions{IfMatch: to.Ptr("*")})
 	if err != nil {
@@ -254,11 +254,11 @@ func ExampleClustersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "kustorptest", "kustoCluster2", nil)
+	poller, err := clientFactory.NewClustersClient().BeginDelete(ctx, "kustorptest", "kustoCluster2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -275,11 +275,11 @@ func ExampleClustersClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStop(ctx, "kustorptest", "kustoCluster2", nil)
+	poller, err := clientFactory.NewClustersClient().BeginStop(ctx, "kustorptest", "kustoCluster2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -296,11 +296,11 @@ func ExampleClustersClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx, "kustorptest", "kustoCluster2", nil)
+	poller, err := clientFactory.NewClustersClient().BeginStart(ctx, "kustorptest", "kustoCluster2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -317,11 +317,11 @@ func ExampleClustersClient_NewListFollowerDatabasesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListFollowerDatabasesPager("kustorptest", "kustoCluster", nil)
+	pager := clientFactory.NewClustersClient().NewListFollowerDatabasesPager("kustorptest", "kustoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -371,11 +371,11 @@ func ExampleClustersClient_BeginDetachFollowerDatabases() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDetachFollowerDatabases(ctx, "kustorptest", "kustoCluster", armkusto.FollowerDatabaseDefinition{
+	poller, err := clientFactory.NewClustersClient().BeginDetachFollowerDatabases(ctx, "kustorptest", "kustoCluster", armkusto.FollowerDatabaseDefinition{
 		AttachedDatabaseConfigurationName: to.Ptr("attachedDatabaseConfigurationsTest"),
 		ClusterResourceID:                 to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/kustoCluster2"),
 	}, nil)
@@ -395,11 +395,11 @@ func ExampleClustersClient_BeginDiagnoseVirtualNetwork() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDiagnoseVirtualNetwork(ctx, "kustorptest", "kustoCluster", nil)
+	poller, err := clientFactory.NewClustersClient().BeginDiagnoseVirtualNetwork(ctx, "kustorptest", "kustoCluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -423,11 +423,11 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("kustorptest", nil)
+	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("kustorptest", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -502,11 +502,11 @@ func ExampleClustersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewClustersClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -604,11 +604,11 @@ func ExampleClustersClient_NewListSKUsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSKUsPager(nil)
+	pager := clientFactory.NewClustersClient().NewListSKUsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -712,11 +712,11 @@ func ExampleClustersClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "westus", armkusto.ClusterCheckNameRequest{
+	res, err := clientFactory.NewClustersClient().CheckNameAvailability(ctx, "westus", armkusto.ClusterCheckNameRequest{
 		Name: to.Ptr("kustoCluster"),
 		Type: to.Ptr("Microsoft.Kusto/clusters"),
 	}, nil)
@@ -740,11 +740,11 @@ func ExampleClustersClient_NewListSKUsByResourcePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSKUsByResourcePager("kustorptest", "kustoCluster", nil)
+	pager := clientFactory.NewClustersClient().NewListSKUsByResourcePager("kustorptest", "kustoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -820,11 +820,11 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOutboundNetworkDependenciesEndpointsPager("kustorptest", "kustoCluster", nil)
+	pager := clientFactory.NewClustersClient().NewListOutboundNetworkDependenciesEndpointsPager("kustorptest", "kustoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1000,11 +1000,11 @@ func ExampleClustersClient_NewListLanguageExtensionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListLanguageExtensionsPager("kustorptest", "kustoCluster", nil)
+	pager := clientFactory.NewClustersClient().NewListLanguageExtensionsPager("kustorptest", "kustoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1034,11 +1034,11 @@ func ExampleClustersClient_BeginAddLanguageExtensions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginAddLanguageExtensions(ctx, "kustorptest", "kustoCluster", armkusto.LanguageExtensionsList{
+	poller, err := clientFactory.NewClustersClient().BeginAddLanguageExtensions(ctx, "kustorptest", "kustoCluster", armkusto.LanguageExtensionsList{
 		Value: []*armkusto.LanguageExtension{
 			{
 				LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNamePYTHON),
@@ -1063,11 +1063,11 @@ func ExampleClustersClient_BeginRemoveLanguageExtensions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClustersClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRemoveLanguageExtensions(ctx, "kustorptest", "kustoCluster", armkusto.LanguageExtensionsList{
+	poller, err := clientFactory.NewClustersClient().BeginRemoveLanguageExtensions(ctx, "kustorptest", "kustoCluster", armkusto.LanguageExtensionsList{
 		Value: []*armkusto.LanguageExtension{
 			{
 				LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNamePYTHON),

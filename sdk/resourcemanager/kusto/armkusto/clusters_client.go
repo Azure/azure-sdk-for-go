@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ClustersClient contains the methods for the Clusters group.
 // Don't use this type directly, use NewClustersClient() instead.
 type ClustersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewClustersClient creates a new instance of ClustersClient with the specified values.
@@ -37,21 +34,13 @@ type ClustersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ClustersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ClustersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *ClustersClient) BeginAddLanguageExtensions(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClustersClientAddLanguageExtensionsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientAddLanguageExtensionsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientAddLanguageExtensionsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientAddLanguageExtensionsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *ClustersClient) addLanguageExtensions(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +100,7 @@ func (client *ClustersClient) addLanguageExtensionsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +124,7 @@ func (client *ClustersClient) CheckNameAvailability(ctx context.Context, locatio
 	if err != nil {
 		return ClustersClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClustersClientCheckNameAvailabilityResponse{}, err
 	}
@@ -156,7 +145,7 @@ func (client *ClustersClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -191,9 +180,9 @@ func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClustersClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -206,7 +195,7 @@ func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +220,7 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -261,9 +250,9 @@ func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClustersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -276,7 +265,7 @@ func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -301,7 +290,7 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -327,9 +316,9 @@ func (client *ClustersClient) BeginDetachFollowerDatabases(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClustersClientDetachFollowerDatabasesResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientDetachFollowerDatabasesResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientDetachFollowerDatabasesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientDetachFollowerDatabasesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -342,7 +331,7 @@ func (client *ClustersClient) detachFollowerDatabases(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -367,7 +356,7 @@ func (client *ClustersClient) detachFollowerDatabasesCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -393,11 +382,11 @@ func (client *ClustersClient) BeginDiagnoseVirtualNetwork(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClustersClientDiagnoseVirtualNetworkResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientDiagnoseVirtualNetworkResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientDiagnoseVirtualNetworkResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientDiagnoseVirtualNetworkResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -411,7 +400,7 @@ func (client *ClustersClient) diagnoseVirtualNetwork(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -436,7 +425,7 @@ func (client *ClustersClient) diagnoseVirtualNetworkCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -459,7 +448,7 @@ func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ClustersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClustersClientGetResponse{}, err
 	}
@@ -484,7 +473,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -518,7 +507,7 @@ func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *
 			if err != nil {
 				return ClustersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClustersClientListResponse{}, err
 			}
@@ -537,7 +526,7 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, options *Cl
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -573,7 +562,7 @@ func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName stri
 			if err != nil {
 				return ClustersClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClustersClientListByResourceGroupResponse{}, err
 			}
@@ -596,7 +585,7 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -634,7 +623,7 @@ func (client *ClustersClient) NewListFollowerDatabasesPager(resourceGroupName st
 			if err != nil {
 				return ClustersClientListFollowerDatabasesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClustersClientListFollowerDatabasesResponse{}, err
 			}
@@ -661,7 +650,7 @@ func (client *ClustersClient) listFollowerDatabasesCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -698,7 +687,7 @@ func (client *ClustersClient) NewListLanguageExtensionsPager(resourceGroupName s
 			if err != nil {
 				return ClustersClientListLanguageExtensionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClustersClientListLanguageExtensionsResponse{}, err
 			}
@@ -725,7 +714,7 @@ func (client *ClustersClient) listLanguageExtensionsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -768,7 +757,7 @@ func (client *ClustersClient) NewListOutboundNetworkDependenciesEndpointsPager(r
 			if err != nil {
 				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 			}
@@ -795,7 +784,7 @@ func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsCreateRequ
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -829,7 +818,7 @@ func (client *ClustersClient) NewListSKUsPager(options *ClustersClientListSKUsOp
 			if err != nil {
 				return ClustersClientListSKUsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClustersClientListSKUsResponse{}, err
 			}
@@ -848,7 +837,7 @@ func (client *ClustersClient) listSKUsCreateRequest(ctx context.Context, options
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -885,7 +874,7 @@ func (client *ClustersClient) NewListSKUsByResourcePager(resourceGroupName strin
 			if err != nil {
 				return ClustersClientListSKUsByResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClustersClientListSKUsByResourceResponse{}, err
 			}
@@ -912,7 +901,7 @@ func (client *ClustersClient) listSKUsByResourceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -947,9 +936,9 @@ func (client *ClustersClient) BeginRemoveLanguageExtensions(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClustersClientRemoveLanguageExtensionsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientRemoveLanguageExtensionsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientRemoveLanguageExtensionsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientRemoveLanguageExtensionsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -962,7 +951,7 @@ func (client *ClustersClient) removeLanguageExtensions(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -987,7 +976,7 @@ func (client *ClustersClient) removeLanguageExtensionsCreateRequest(ctx context.
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1011,9 +1000,9 @@ func (client *ClustersClient) BeginStart(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClustersClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientStartResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1026,7 +1015,7 @@ func (client *ClustersClient) start(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1051,7 +1040,7 @@ func (client *ClustersClient) startCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1075,9 +1064,9 @@ func (client *ClustersClient) BeginStop(ctx context.Context, resourceGroupName s
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClustersClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientStopResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientStopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1090,7 +1079,7 @@ func (client *ClustersClient) stop(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1115,7 +1104,7 @@ func (client *ClustersClient) stopCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1140,9 +1129,9 @@ func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClustersClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1155,7 +1144,7 @@ func (client *ClustersClient) update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1180,7 +1169,7 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -27,11 +27,11 @@ func ExampleDataConnectionsClient_NewListByDatabasePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabasePager("kustorptest", "kustoCluster", "KustoDatabase8", nil)
+	pager := clientFactory.NewDataConnectionsClient().NewListByDatabasePager("kustorptest", "kustoCluster", "KustoDatabase8", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -117,11 +117,11 @@ func ExampleDataConnectionsClient_BeginDataConnectionValidation_kustoDataConnect
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDataConnectionValidation(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DataConnectionValidation{
+	poller, err := clientFactory.NewDataConnectionsClient().BeginDataConnectionValidation(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DataConnectionValidation{
 		DataConnectionName: to.Ptr("dataConnectionTest"),
 		Properties: &armkusto.EventGridDataConnection{
 			Kind: to.Ptr(armkusto.DataConnectionKindEventGrid),
@@ -161,11 +161,11 @@ func ExampleDataConnectionsClient_BeginDataConnectionValidation_kustoDataConnect
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDataConnectionValidation(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DataConnectionValidation{
+	poller, err := clientFactory.NewDataConnectionsClient().BeginDataConnectionValidation(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DataConnectionValidation{
 		DataConnectionName: to.Ptr("dataConnectionTest"),
 		Properties: &armkusto.EventHubDataConnection{
 			Kind: to.Ptr(armkusto.DataConnectionKindEventHub),
@@ -201,11 +201,11 @@ func ExampleDataConnectionsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DataConnectionCheckNameRequest{
+	res, err := clientFactory.NewDataConnectionsClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DataConnectionCheckNameRequest{
 		Name: to.Ptr("DataConnections8"),
 		Type: to.Ptr("Microsoft.Kusto/clusters/databases/dataConnections"),
 	}, nil)
@@ -230,11 +230,11 @@ func ExampleDataConnectionsClient_Get_kustoDataConnectionsCosmosDbGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest", nil)
+	res, err := clientFactory.NewDataConnectionsClient().Get(ctx, "kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -270,11 +270,11 @@ func ExampleDataConnectionsClient_Get_kustoDataConnectionsEventGridGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", nil)
+	res, err := clientFactory.NewDataConnectionsClient().Get(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -314,11 +314,11 @@ func ExampleDataConnectionsClient_Get_kustoDataConnectionsGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", nil)
+	res, err := clientFactory.NewDataConnectionsClient().Get(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -358,11 +358,11 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsCosmos
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest", &armkusto.CosmosDbDataConnection{
+	poller, err := clientFactory.NewDataConnectionsClient().BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest", &armkusto.CosmosDbDataConnection{
 		Kind:     to.Ptr(armkusto.DataConnectionKindCosmosDb),
 		Location: to.Ptr("westus"),
 		Properties: &armkusto.CosmosDbDataConnectionProperties{
@@ -413,11 +413,11 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsCreate
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventHubDataConnection{
+	poller, err := clientFactory.NewDataConnectionsClient().BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventHubDataConnection{
 		Kind:     to.Ptr(armkusto.DataConnectionKindEventHub),
 		Location: to.Ptr("westus"),
 		Properties: &armkusto.EventHubConnectionProperties{
@@ -460,11 +460,11 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsEventG
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventGridDataConnection{
+	poller, err := clientFactory.NewDataConnectionsClient().BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventGridDataConnection{
 		Kind:     to.Ptr(armkusto.DataConnectionKindEventGrid),
 		Location: to.Ptr("westus"),
 		Properties: &armkusto.EventGridConnectionProperties{
@@ -523,11 +523,11 @@ func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsCosmosDbUpdate
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest", &armkusto.CosmosDbDataConnection{
+	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest", &armkusto.CosmosDbDataConnection{
 		Kind:     to.Ptr(armkusto.DataConnectionKindCosmosDb),
 		Location: to.Ptr("westus"),
 		Properties: &armkusto.CosmosDbDataConnectionProperties{
@@ -578,11 +578,11 @@ func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventGridUpdat
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventGridDataConnection{
+	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventGridDataConnection{
 		Kind:     to.Ptr(armkusto.DataConnectionKindEventGrid),
 		Location: to.Ptr("westus"),
 		Properties: &armkusto.EventGridConnectionProperties{
@@ -641,11 +641,11 @@ func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventHubDataConnection{
+	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventHubDataConnection{
 		Kind:     to.Ptr(armkusto.DataConnectionKindEventHub),
 		Location: to.Ptr("westus"),
 		Properties: &armkusto.EventHubConnectionProperties{
@@ -688,11 +688,11 @@ func ExampleDataConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", nil)
+	poller, err := clientFactory.NewDataConnectionsClient().BeginDelete(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

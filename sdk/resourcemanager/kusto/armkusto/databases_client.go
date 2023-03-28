@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // DatabasesClient contains the methods for the Databases group.
 // Don't use this type directly, use NewDatabasesClient() instead.
 type DatabasesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDatabasesClient creates a new instance of DatabasesClient with the specified values.
@@ -37,21 +34,13 @@ type DatabasesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DatabasesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DatabasesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *DatabasesClient) AddPrincipals(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DatabasesClientAddPrincipalsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabasesClientAddPrincipalsResponse{}, err
 	}
@@ -99,7 +88,7 @@ func (client *DatabasesClient) addPrincipalsCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +122,7 @@ func (client *DatabasesClient) CheckNameAvailability(ctx context.Context, resour
 	if err != nil {
 		return DatabasesClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabasesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -158,7 +147,7 @@ func (client *DatabasesClient) checkNameAvailabilityCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,9 +183,9 @@ func (client *DatabasesClient) BeginCreateOrUpdate(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabasesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabasesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabasesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -209,7 +198,7 @@ func (client *DatabasesClient) createOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -238,7 +227,7 @@ func (client *DatabasesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -266,9 +255,9 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabasesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabasesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabasesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -281,7 +270,7 @@ func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGrou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -310,7 +299,7 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -334,7 +323,7 @@ func (client *DatabasesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return DatabasesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabasesClientGetResponse{}, err
 	}
@@ -363,7 +352,7 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -400,7 +389,7 @@ func (client *DatabasesClient) NewListByClusterPager(resourceGroupName string, c
 			if err != nil {
 				return DatabasesClientListByClusterResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabasesClientListByClusterResponse{}, err
 			}
@@ -427,7 +416,7 @@ func (client *DatabasesClient) listByClusterCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -465,7 +454,7 @@ func (client *DatabasesClient) NewListPrincipalsPager(resourceGroupName string, 
 			if err != nil {
 				return DatabasesClientListPrincipalsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabasesClientListPrincipalsResponse{}, err
 			}
@@ -496,7 +485,7 @@ func (client *DatabasesClient) listPrincipalsCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -531,7 +520,7 @@ func (client *DatabasesClient) RemovePrincipals(ctx context.Context, resourceGro
 	if err != nil {
 		return DatabasesClientRemovePrincipalsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabasesClientRemovePrincipalsResponse{}, err
 	}
@@ -560,7 +549,7 @@ func (client *DatabasesClient) removePrincipalsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -595,9 +584,9 @@ func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabasesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabasesClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabasesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -610,7 +599,7 @@ func (client *DatabasesClient) update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -639,7 +628,7 @@ func (client *DatabasesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

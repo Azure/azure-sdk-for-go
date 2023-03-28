@@ -25,11 +25,11 @@ func ExampleDatabasePrincipalAssignmentsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasePrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "kustorptest", "kustoCluster", "Kustodatabase8", armkusto.DatabasePrincipalAssignmentCheckNameRequest{
+	res, err := clientFactory.NewDatabasePrincipalAssignmentsClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", "Kustodatabase8", armkusto.DatabasePrincipalAssignmentCheckNameRequest{
 		Name: to.Ptr("kustoprincipal1"),
 		Type: to.Ptr("Microsoft.Kusto/clusters/databases/principalAssignments"),
 	}, nil)
@@ -53,11 +53,11 @@ func ExampleDatabasePrincipalAssignmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasePrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1", nil)
+	res, err := clientFactory.NewDatabasePrincipalAssignmentsClient().Get(ctx, "kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,11 +88,11 @@ func ExampleDatabasePrincipalAssignmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasePrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1", armkusto.DatabasePrincipalAssignment{
+	poller, err := clientFactory.NewDatabasePrincipalAssignmentsClient().BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1", armkusto.DatabasePrincipalAssignment{
 		Properties: &armkusto.DatabasePrincipalProperties{
 			PrincipalID:   to.Ptr("87654321-1234-1234-1234-123456789123"),
 			PrincipalType: to.Ptr(armkusto.PrincipalTypeApp),
@@ -134,11 +134,11 @@ func ExampleDatabasePrincipalAssignmentsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasePrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1", nil)
+	poller, err := clientFactory.NewDatabasePrincipalAssignmentsClient().BeginDelete(ctx, "kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -155,11 +155,11 @@ func ExampleDatabasePrincipalAssignmentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasePrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("kustorptest", "kustoCluster", "Kustodatabase8", nil)
+	pager := clientFactory.NewDatabasePrincipalAssignmentsClient().NewListPager("kustorptest", "kustoCluster", "Kustodatabase8", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

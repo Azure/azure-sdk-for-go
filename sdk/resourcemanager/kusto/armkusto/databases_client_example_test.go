@@ -25,11 +25,11 @@ func ExampleDatabasesClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "kustorptest", "kustoCluster", armkusto.CheckNameRequest{
+	res, err := clientFactory.NewDatabasesClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", armkusto.CheckNameRequest{
 		Name: to.Ptr("database1"),
 		Type: to.Ptr(armkusto.TypeMicrosoftKustoClustersDatabases),
 	}, nil)
@@ -53,11 +53,11 @@ func ExampleDatabasesClient_NewListByClusterPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByClusterPager("kustorptest", "kustoCluster", nil)
+	pager := clientFactory.NewDatabasesClient().NewListByClusterPager("kustorptest", "kustoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -127,11 +127,11 @@ func ExampleDatabasesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", nil)
+	res, err := clientFactory.NewDatabasesClient().Get(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -160,11 +160,11 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_kustoReadOnlyDatabaseUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "kustoReadOnlyDatabase", &armkusto.ReadOnlyFollowingDatabase{
+	poller, err := clientFactory.NewDatabasesClient().BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "kustoReadOnlyDatabase", &armkusto.ReadOnlyFollowingDatabase{
 		Kind:     to.Ptr(armkusto.KindReadOnlyFollowing),
 		Location: to.Ptr("westus"),
 		Properties: &armkusto.ReadOnlyFollowingDatabaseProperties{
@@ -199,11 +199,11 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_kustoReadWriteDatabaseCreateOrUp
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", &armkusto.ReadWriteDatabase{
+	poller, err := clientFactory.NewDatabasesClient().BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", &armkusto.ReadWriteDatabase{
 		Kind:     to.Ptr(armkusto.KindReadWrite),
 		Location: to.Ptr("westus"),
 		Properties: &armkusto.ReadWriteDatabaseProperties{
@@ -238,11 +238,11 @@ func ExampleDatabasesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", &armkusto.ReadWriteDatabase{
+	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", &armkusto.ReadWriteDatabase{
 		Kind: to.Ptr(armkusto.KindReadWrite),
 		Properties: &armkusto.ReadWriteDatabaseProperties{
 			HotCachePeriod: to.Ptr("P1D"),
@@ -280,11 +280,11 @@ func ExampleDatabasesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", nil)
+	poller, err := clientFactory.NewDatabasesClient().BeginDelete(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -301,11 +301,11 @@ func ExampleDatabasesClient_NewListPrincipalsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPrincipalsPager("kustorptest", "kustoCluster", "KustoDatabase8", nil)
+	pager := clientFactory.NewDatabasesClient().NewListPrincipalsPager("kustorptest", "kustoCluster", "KustoDatabase8", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -353,11 +353,11 @@ func ExampleDatabasesClient_AddPrincipals() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.AddPrincipals(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DatabasePrincipalListRequest{
+	res, err := clientFactory.NewDatabasesClient().AddPrincipals(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DatabasePrincipalListRequest{
 		Value: []*armkusto.DatabasePrincipal{
 			{
 				Name:  to.Ptr("Some User"),
@@ -426,11 +426,11 @@ func ExampleDatabasesClient_RemovePrincipals() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RemovePrincipals(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DatabasePrincipalListRequest{
+	res, err := clientFactory.NewDatabasesClient().RemovePrincipals(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DatabasePrincipalListRequest{
 		Value: []*armkusto.DatabasePrincipal{
 			{
 				Name:  to.Ptr("Some User"),

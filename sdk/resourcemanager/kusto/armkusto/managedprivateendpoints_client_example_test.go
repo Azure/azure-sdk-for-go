@@ -25,11 +25,11 @@ func ExampleManagedPrivateEndpointsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewManagedPrivateEndpointsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "kustorptest", "kustoCluster", armkusto.ManagedPrivateEndpointsCheckNameRequest{
+	res, err := clientFactory.NewManagedPrivateEndpointsClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", armkusto.ManagedPrivateEndpointsCheckNameRequest{
 		Name: to.Ptr("pme1"),
 		Type: to.Ptr("Microsoft.Kusto/clusters/managedPrivateEndpoints"),
 	}, nil)
@@ -53,11 +53,11 @@ func ExampleManagedPrivateEndpointsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewManagedPrivateEndpointsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("kustorptest", "kustoCluster", nil)
+	pager := clientFactory.NewManagedPrivateEndpointsClient().NewListPager("kustorptest", "kustoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -101,11 +101,11 @@ func ExampleManagedPrivateEndpointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewManagedPrivateEndpointsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "kustorptest", "kustoCluster", "managedPrivateEndpointTest", nil)
+	res, err := clientFactory.NewManagedPrivateEndpointsClient().Get(ctx, "kustorptest", "kustoCluster", "managedPrivateEndpointTest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -131,11 +131,11 @@ func ExampleManagedPrivateEndpointsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewManagedPrivateEndpointsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "managedPrivateEndpointTest", armkusto.ManagedPrivateEndpoint{
+	poller, err := clientFactory.NewManagedPrivateEndpointsClient().BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "managedPrivateEndpointTest", armkusto.ManagedPrivateEndpoint{
 		Properties: &armkusto.ManagedPrivateEndpointProperties{
 			GroupID:               to.Ptr("blob"),
 			PrivateLinkResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/storageAccountTest"),
@@ -171,11 +171,11 @@ func ExampleManagedPrivateEndpointsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewManagedPrivateEndpointsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "kustorptest", "kustoCluster", "managedPrivateEndpointTest", armkusto.ManagedPrivateEndpoint{
+	poller, err := clientFactory.NewManagedPrivateEndpointsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "managedPrivateEndpointTest", armkusto.ManagedPrivateEndpoint{
 		Properties: &armkusto.ManagedPrivateEndpointProperties{
 			GroupID:               to.Ptr("blob"),
 			PrivateLinkResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/storageAccountTest"),
@@ -211,11 +211,11 @@ func ExampleManagedPrivateEndpointsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewManagedPrivateEndpointsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "kustorptest", "kustoCluster", "managedPrivateEndpointTest", nil)
+	poller, err := clientFactory.NewManagedPrivateEndpointsClient().BeginDelete(ctx, "kustorptest", "kustoCluster", "managedPrivateEndpointTest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

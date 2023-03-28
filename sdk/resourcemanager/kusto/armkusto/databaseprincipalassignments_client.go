@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // DatabasePrincipalAssignmentsClient contains the methods for the DatabasePrincipalAssignments group.
 // Don't use this type directly, use NewDatabasePrincipalAssignmentsClient() instead.
 type DatabasePrincipalAssignmentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDatabasePrincipalAssignmentsClient creates a new instance of DatabasePrincipalAssignmentsClient with the specified values.
@@ -37,21 +34,13 @@ type DatabasePrincipalAssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabasePrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasePrincipalAssignmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DatabasePrincipalAssignmentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DatabasePrincipalAssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,7 +60,7 @@ func (client *DatabasePrincipalAssignmentsClient) CheckNameAvailability(ctx cont
 	if err != nil {
 		return DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -100,7 +89,7 @@ func (client *DatabasePrincipalAssignmentsClient) checkNameAvailabilityCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -137,9 +126,9 @@ func (client *DatabasePrincipalAssignmentsClient) BeginCreateOrUpdate(ctx contex
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -152,7 +141,7 @@ func (client *DatabasePrincipalAssignmentsClient) createOrUpdate(ctx context.Con
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +174,7 @@ func (client *DatabasePrincipalAssignmentsClient) createOrUpdateCreateRequest(ct
 		return nil, errors.New("parameter principalAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{principalAssignmentName}", url.PathEscape(principalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -212,9 +201,9 @@ func (client *DatabasePrincipalAssignmentsClient) BeginDelete(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabasePrincipalAssignmentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DatabasePrincipalAssignmentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasePrincipalAssignmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DatabasePrincipalAssignmentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -227,7 +216,7 @@ func (client *DatabasePrincipalAssignmentsClient) deleteOperation(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -260,7 +249,7 @@ func (client *DatabasePrincipalAssignmentsClient) deleteCreateRequest(ctx contex
 		return nil, errors.New("parameter principalAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{principalAssignmentName}", url.PathEscape(principalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -286,7 +275,7 @@ func (client *DatabasePrincipalAssignmentsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return DatabasePrincipalAssignmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DatabasePrincipalAssignmentsClientGetResponse{}, err
 	}
@@ -319,7 +308,7 @@ func (client *DatabasePrincipalAssignmentsClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter principalAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{principalAssignmentName}", url.PathEscape(principalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,7 +346,7 @@ func (client *DatabasePrincipalAssignmentsClient) NewListPager(resourceGroupName
 			if err != nil {
 				return DatabasePrincipalAssignmentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DatabasePrincipalAssignmentsClientListResponse{}, err
 			}
@@ -388,7 +377,7 @@ func (client *DatabasePrincipalAssignmentsClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

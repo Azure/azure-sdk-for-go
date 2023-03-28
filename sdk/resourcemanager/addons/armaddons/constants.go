@@ -11,7 +11,7 @@ package armaddons
 
 const (
 	moduleName    = "armaddons"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.2.0"
 )
 
 // OneTimeCharge - The one time charge status for the subscription.

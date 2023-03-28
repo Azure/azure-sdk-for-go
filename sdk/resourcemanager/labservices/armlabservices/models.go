@@ -59,7 +59,7 @@ type Credentials struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -214,7 +214,7 @@ type ImagesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.ListByLabPlan method.
+// ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.NewListByLabPlanPager method.
 type ImagesClientListByLabPlanOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -402,12 +402,14 @@ type LabPlansClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabPlansClientListByResourceGroupOptions contains the optional parameters for the LabPlansClient.ListByResourceGroup method.
+// LabPlansClientListByResourceGroupOptions contains the optional parameters for the LabPlansClient.NewListByResourceGroupPager
+// method.
 type LabPlansClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabPlansClientListBySubscriptionOptions contains the optional parameters for the LabPlansClient.ListBySubscription method.
+// LabPlansClientListBySubscriptionOptions contains the optional parameters for the LabPlansClient.NewListBySubscriptionPager
+// method.
 type LabPlansClientListBySubscriptionOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -529,12 +531,12 @@ type LabsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.ListByResourceGroup method.
+// LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.NewListByResourceGroupPager method.
 type LabsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.ListBySubscription method.
+// LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.NewListBySubscriptionPager method.
 type LabsClientListBySubscriptionOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -627,7 +629,7 @@ type OperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -864,7 +866,7 @@ type SKURestrictions struct {
 	Values []*string `json:"values,omitempty" azure:"ro"`
 }
 
-// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 type SKUsClientListOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -958,7 +960,7 @@ type SchedulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SchedulesClientListByLabOptions contains the optional parameters for the SchedulesClient.ListByLab method.
+// SchedulesClientListByLabOptions contains the optional parameters for the SchedulesClient.NewListByLabPager method.
 type SchedulesClientListByLabOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -1069,7 +1071,7 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
+// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.NewListByLocationPager method.
 type UsagesClientListByLocationOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -1161,7 +1163,7 @@ type UsersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsersClientListByLabOptions contains the optional parameters for the UsersClient.ListByLab method.
+// UsersClientListByLabOptions contains the optional parameters for the UsersClient.NewListByLabPager method.
 type UsersClientListByLabOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -1300,7 +1302,8 @@ type VirtualMachinesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesClientListByLabOptions contains the optional parameters for the VirtualMachinesClient.ListByLab method.
+// VirtualMachinesClientListByLabOptions contains the optional parameters for the VirtualMachinesClient.NewListByLabPager
+// method.
 type VirtualMachinesClientListByLabOptions struct {
 	// The filter to apply to the operation.
 	Filter *string

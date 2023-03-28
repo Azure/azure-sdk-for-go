@@ -19,7 +19,7 @@ type ImagesClientGetResponse struct {
 	Image
 }
 
-// ImagesClientListByLabPlanResponse contains the response from method ImagesClient.ListByLabPlan.
+// ImagesClientListByLabPlanResponse contains the response from method ImagesClient.NewListByLabPlanPager.
 type ImagesClientListByLabPlanResponse struct {
 	PagedImages
 }
@@ -29,12 +29,12 @@ type ImagesClientUpdateResponse struct {
 	Image
 }
 
-// LabPlansClientCreateOrUpdateResponse contains the response from method LabPlansClient.CreateOrUpdate.
+// LabPlansClientCreateOrUpdateResponse contains the response from method LabPlansClient.BeginCreateOrUpdate.
 type LabPlansClientCreateOrUpdateResponse struct {
 	LabPlan
 }
 
-// LabPlansClientDeleteResponse contains the response from method LabPlansClient.Delete.
+// LabPlansClientDeleteResponse contains the response from method LabPlansClient.BeginDelete.
 type LabPlansClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -44,32 +44,32 @@ type LabPlansClientGetResponse struct {
 	LabPlan
 }
 
-// LabPlansClientListByResourceGroupResponse contains the response from method LabPlansClient.ListByResourceGroup.
+// LabPlansClientListByResourceGroupResponse contains the response from method LabPlansClient.NewListByResourceGroupPager.
 type LabPlansClientListByResourceGroupResponse struct {
 	PagedLabPlans
 }
 
-// LabPlansClientListBySubscriptionResponse contains the response from method LabPlansClient.ListBySubscription.
+// LabPlansClientListBySubscriptionResponse contains the response from method LabPlansClient.NewListBySubscriptionPager.
 type LabPlansClientListBySubscriptionResponse struct {
 	PagedLabPlans
 }
 
-// LabPlansClientSaveImageResponse contains the response from method LabPlansClient.SaveImage.
+// LabPlansClientSaveImageResponse contains the response from method LabPlansClient.BeginSaveImage.
 type LabPlansClientSaveImageResponse struct {
 	// placeholder for future response values
 }
 
-// LabPlansClientUpdateResponse contains the response from method LabPlansClient.Update.
+// LabPlansClientUpdateResponse contains the response from method LabPlansClient.BeginUpdate.
 type LabPlansClientUpdateResponse struct {
 	LabPlan
 }
 
-// LabsClientCreateOrUpdateResponse contains the response from method LabsClient.CreateOrUpdate.
+// LabsClientCreateOrUpdateResponse contains the response from method LabsClient.BeginCreateOrUpdate.
 type LabsClientCreateOrUpdateResponse struct {
 	Lab
 }
 
-// LabsClientDeleteResponse contains the response from method LabsClient.Delete.
+// LabsClientDeleteResponse contains the response from method LabsClient.BeginDelete.
 type LabsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -79,27 +79,27 @@ type LabsClientGetResponse struct {
 	Lab
 }
 
-// LabsClientListByResourceGroupResponse contains the response from method LabsClient.ListByResourceGroup.
+// LabsClientListByResourceGroupResponse contains the response from method LabsClient.NewListByResourceGroupPager.
 type LabsClientListByResourceGroupResponse struct {
 	PagedLabs
 }
 
-// LabsClientListBySubscriptionResponse contains the response from method LabsClient.ListBySubscription.
+// LabsClientListBySubscriptionResponse contains the response from method LabsClient.NewListBySubscriptionPager.
 type LabsClientListBySubscriptionResponse struct {
 	PagedLabs
 }
 
-// LabsClientPublishResponse contains the response from method LabsClient.Publish.
+// LabsClientPublishResponse contains the response from method LabsClient.BeginPublish.
 type LabsClientPublishResponse struct {
 	// placeholder for future response values
 }
 
-// LabsClientSyncGroupResponse contains the response from method LabsClient.SyncGroup.
+// LabsClientSyncGroupResponse contains the response from method LabsClient.BeginSyncGroup.
 type LabsClientSyncGroupResponse struct {
 	// placeholder for future response values
 }
 
-// LabsClientUpdateResponse contains the response from method LabsClient.Update.
+// LabsClientUpdateResponse contains the response from method LabsClient.BeginUpdate.
 type LabsClientUpdateResponse struct {
 	Lab
 }
@@ -109,12 +109,12 @@ type OperationResultsClientGetResponse struct {
 	OperationResult
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// SKUsClientListResponse contains the response from method SKUsClient.List.
+// SKUsClientListResponse contains the response from method SKUsClient.NewListPager.
 type SKUsClientListResponse struct {
 	PagedSKUInfos
 }
@@ -124,7 +124,7 @@ type SchedulesClientCreateOrUpdateResponse struct {
 	Schedule
 }
 
-// SchedulesClientDeleteResponse contains the response from method SchedulesClient.Delete.
+// SchedulesClientDeleteResponse contains the response from method SchedulesClient.BeginDelete.
 type SchedulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -134,7 +134,7 @@ type SchedulesClientGetResponse struct {
 	Schedule
 }
 
-// SchedulesClientListByLabResponse contains the response from method SchedulesClient.ListByLab.
+// SchedulesClientListByLabResponse contains the response from method SchedulesClient.NewListByLabPager.
 type SchedulesClientListByLabResponse struct {
 	PagedSchedules
 }
@@ -144,17 +144,17 @@ type SchedulesClientUpdateResponse struct {
 	Schedule
 }
 
-// UsagesClientListByLocationResponse contains the response from method UsagesClient.ListByLocation.
+// UsagesClientListByLocationResponse contains the response from method UsagesClient.NewListByLocationPager.
 type UsagesClientListByLocationResponse struct {
 	ListUsagesResult
 }
 
-// UsersClientCreateOrUpdateResponse contains the response from method UsersClient.CreateOrUpdate.
+// UsersClientCreateOrUpdateResponse contains the response from method UsersClient.BeginCreateOrUpdate.
 type UsersClientCreateOrUpdateResponse struct {
 	User
 }
 
-// UsersClientDeleteResponse contains the response from method UsersClient.Delete.
+// UsersClientDeleteResponse contains the response from method UsersClient.BeginDelete.
 type UsersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -164,17 +164,17 @@ type UsersClientGetResponse struct {
 	User
 }
 
-// UsersClientInviteResponse contains the response from method UsersClient.Invite.
+// UsersClientInviteResponse contains the response from method UsersClient.BeginInvite.
 type UsersClientInviteResponse struct {
 	// placeholder for future response values
 }
 
-// UsersClientListByLabResponse contains the response from method UsersClient.ListByLab.
+// UsersClientListByLabResponse contains the response from method UsersClient.NewListByLabPager.
 type UsersClientListByLabResponse struct {
 	PagedUsers
 }
 
-// UsersClientUpdateResponse contains the response from method UsersClient.Update.
+// UsersClientUpdateResponse contains the response from method UsersClient.BeginUpdate.
 type UsersClientUpdateResponse struct {
 	User
 }
@@ -184,32 +184,32 @@ type VirtualMachinesClientGetResponse struct {
 	VirtualMachine
 }
 
-// VirtualMachinesClientListByLabResponse contains the response from method VirtualMachinesClient.ListByLab.
+// VirtualMachinesClientListByLabResponse contains the response from method VirtualMachinesClient.NewListByLabPager.
 type VirtualMachinesClientListByLabResponse struct {
 	PagedVirtualMachines
 }
 
-// VirtualMachinesClientRedeployResponse contains the response from method VirtualMachinesClient.Redeploy.
+// VirtualMachinesClientRedeployResponse contains the response from method VirtualMachinesClient.BeginRedeploy.
 type VirtualMachinesClientRedeployResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualMachinesClientReimageResponse contains the response from method VirtualMachinesClient.Reimage.
+// VirtualMachinesClientReimageResponse contains the response from method VirtualMachinesClient.BeginReimage.
 type VirtualMachinesClientReimageResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualMachinesClientResetPasswordResponse contains the response from method VirtualMachinesClient.ResetPassword.
+// VirtualMachinesClientResetPasswordResponse contains the response from method VirtualMachinesClient.BeginResetPassword.
 type VirtualMachinesClientResetPasswordResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualMachinesClientStartResponse contains the response from method VirtualMachinesClient.Start.
+// VirtualMachinesClientStartResponse contains the response from method VirtualMachinesClient.BeginStart.
 type VirtualMachinesClientStartResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualMachinesClientStopResponse contains the response from method VirtualMachinesClient.Stop.
+// VirtualMachinesClientStopResponse contains the response from method VirtualMachinesClient.BeginStop.
 type VirtualMachinesClientStopResponse struct {
 	// placeholder for future response values
 }

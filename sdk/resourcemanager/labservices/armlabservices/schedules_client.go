@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // SchedulesClient contains the methods for the Schedules group.
 // Don't use this type directly, use NewSchedulesClient() instead.
 type SchedulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSchedulesClient creates a new instance of SchedulesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SchedulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SchedulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SchedulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Operation to create or update a lab schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
-// body - The request body.
-// options - SchedulesClientCreateOrUpdateOptions contains the optional parameters for the SchedulesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
+//   - body - The request body.
+//   - options - SchedulesClientCreateOrUpdateOptions contains the optional parameters for the SchedulesClient.CreateOrUpdate
+//     method.
 func (client *SchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, scheduleName string, body Schedule, options *SchedulesClientCreateOrUpdateOptions) (SchedulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, scheduleName, body, options)
 	if err != nil {
 		return SchedulesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SchedulesClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter scheduleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scheduleName}", url.PathEscape(scheduleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,34 +110,36 @@ func (client *SchedulesClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // BeginDelete - Operation to delete a schedule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
-// options - SchedulesClientBeginDeleteOptions contains the optional parameters for the SchedulesClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
+//   - options - SchedulesClientBeginDeleteOptions contains the optional parameters for the SchedulesClient.BeginDelete method.
 func (client *SchedulesClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, scheduleName string, options *SchedulesClientBeginDeleteOptions) (*runtime.Poller[SchedulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, labName, scheduleName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SchedulesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchedulesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SchedulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SchedulesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Operation to delete a schedule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *SchedulesClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, scheduleName string, options *SchedulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, scheduleName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +168,7 @@ func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter scheduleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scheduleName}", url.PathEscape(scheduleName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,17 +181,18 @@ func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Returns the properties of a lab Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
-// options - SchedulesClientGetOptions contains the optional parameters for the SchedulesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
+//   - options - SchedulesClientGetOptions contains the optional parameters for the SchedulesClient.Get method.
 func (client *SchedulesClient) Get(ctx context.Context, resourceGroupName string, labName string, scheduleName string, options *SchedulesClientGetOptions) (SchedulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, scheduleName, options)
 	if err != nil {
 		return SchedulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SchedulesClientGetResponse{}, err
 	}
@@ -228,7 +221,7 @@ func (client *SchedulesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter scheduleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scheduleName}", url.PathEscape(scheduleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,11 +242,11 @@ func (client *SchedulesClient) getHandleResponse(resp *http.Response) (Schedules
 }
 
 // NewListByLabPager - Returns a list of all schedules for a lab.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// options - SchedulesClientListByLabOptions contains the optional parameters for the SchedulesClient.ListByLab method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - options - SchedulesClientListByLabOptions contains the optional parameters for the SchedulesClient.NewListByLabPager method.
 func (client *SchedulesClient) NewListByLabPager(resourceGroupName string, labName string, options *SchedulesClientListByLabOptions) *runtime.Pager[SchedulesClientListByLabResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SchedulesClientListByLabResponse]{
 		More: func(page SchedulesClientListByLabResponse) bool {
@@ -270,7 +263,7 @@ func (client *SchedulesClient) NewListByLabPager(resourceGroupName string, labNa
 			if err != nil {
 				return SchedulesClientListByLabResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SchedulesClientListByLabResponse{}, err
 			}
@@ -297,7 +290,7 @@ func (client *SchedulesClient) listByLabCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -322,18 +315,19 @@ func (client *SchedulesClient) listByLabHandleResponse(resp *http.Response) (Sch
 
 // Update - Operation to update a lab schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
-// body - The request body.
-// options - SchedulesClientUpdateOptions contains the optional parameters for the SchedulesClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - scheduleName - The name of the schedule that uniquely identifies it within containing lab. Used in resource URIs.
+//   - body - The request body.
+//   - options - SchedulesClientUpdateOptions contains the optional parameters for the SchedulesClient.Update method.
 func (client *SchedulesClient) Update(ctx context.Context, resourceGroupName string, labName string, scheduleName string, body ScheduleUpdate, options *SchedulesClientUpdateOptions) (SchedulesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, scheduleName, body, options)
 	if err != nil {
 		return SchedulesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SchedulesClientUpdateResponse{}, err
 	}
@@ -362,7 +356,7 @@ func (client *SchedulesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter scheduleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scheduleName}", url.PathEscape(scheduleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

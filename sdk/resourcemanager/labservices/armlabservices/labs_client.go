@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // LabsClient contains the methods for the Labs group.
 // Don't use this type directly, use NewLabsClient() instead.
 type LabsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewLabsClient creates a new instance of LabsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLabsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LabsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".LabsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &LabsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Operation to create or update a lab resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// body - The request body.
-// options - LabsClientBeginCreateOrUpdateOptions contains the optional parameters for the LabsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - body - The request body.
+//   - options - LabsClientBeginCreateOrUpdateOptions contains the optional parameters for the LabsClient.BeginCreateOrUpdate
+//     method.
 func (client *LabsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, body Lab, options *LabsClientBeginCreateOrUpdateOptions) (*runtime.Poller[LabsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LabsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LabsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaOriginalURI,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[LabsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Operation to create or update a lab resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LabsClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, body Lab, options *LabsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +101,7 @@ func (client *LabsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,33 +114,35 @@ func (client *LabsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 
 // BeginDelete - Operation to delete a lab resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// options - LabsClientBeginDeleteOptions contains the optional parameters for the LabsClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - options - LabsClientBeginDeleteOptions contains the optional parameters for the LabsClient.BeginDelete method.
 func (client *LabsClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, options *LabsClientBeginDeleteOptions) (*runtime.Poller[LabsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, labName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LabsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LabsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[LabsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Operation to delete a lab resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LabsClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, options *LabsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +167,7 @@ func (client *LabsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,16 +180,17 @@ func (client *LabsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 
 // Get - Returns the properties of a lab resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// options - LabsClientGetOptions contains the optional parameters for the LabsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - options - LabsClientGetOptions contains the optional parameters for the LabsClient.Get method.
 func (client *LabsClient) Get(ctx context.Context, resourceGroupName string, labName string, options *LabsClientGetOptions) (LabsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, options)
 	if err != nil {
 		return LabsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LabsClientGetResponse{}, err
 	}
@@ -221,7 +215,7 @@ func (client *LabsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,11 +236,11 @@ func (client *LabsClient) getHandleResponse(resp *http.Response) (LabsClientGetR
 }
 
 // NewListByResourceGroupPager - Returns a list of all labs in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.NewListByResourceGroupPager
+//     method.
 func (client *LabsClient) NewListByResourceGroupPager(resourceGroupName string, options *LabsClientListByResourceGroupOptions) *runtime.Pager[LabsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LabsClientListByResourceGroupResponse]{
 		More: func(page LabsClientListByResourceGroupResponse) bool {
@@ -263,7 +257,7 @@ func (client *LabsClient) NewListByResourceGroupPager(resourceGroupName string, 
 			if err != nil {
 				return LabsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LabsClientListByResourceGroupResponse{}, err
 			}
@@ -286,7 +280,7 @@ func (client *LabsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,9 +301,10 @@ func (client *LabsClient) listByResourceGroupHandleResponse(resp *http.Response)
 }
 
 // NewListBySubscriptionPager - Returns a list of all labs for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// options - LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.ListBySubscription method.
+//   - options - LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.NewListBySubscriptionPager
+//     method.
 func (client *LabsClient) NewListBySubscriptionPager(options *LabsClientListBySubscriptionOptions) *runtime.Pager[LabsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LabsClientListBySubscriptionResponse]{
 		More: func(page LabsClientListBySubscriptionResponse) bool {
@@ -326,7 +321,7 @@ func (client *LabsClient) NewListBySubscriptionPager(options *LabsClientListBySu
 			if err != nil {
 				return LabsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LabsClientListBySubscriptionResponse{}, err
 			}
@@ -345,7 +340,7 @@ func (client *LabsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -370,33 +365,35 @@ func (client *LabsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 
 // BeginPublish - Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// options - LabsClientBeginPublishOptions contains the optional parameters for the LabsClient.BeginPublish method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - options - LabsClientBeginPublishOptions contains the optional parameters for the LabsClient.BeginPublish method.
 func (client *LabsClient) BeginPublish(ctx context.Context, resourceGroupName string, labName string, options *LabsClientBeginPublishOptions) (*runtime.Poller[LabsClientPublishResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.publish(ctx, resourceGroupName, labName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LabsClientPublishResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LabsClientPublishResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[LabsClientPublishResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientPublishResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Publish - Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LabsClient) publish(ctx context.Context, resourceGroupName string, labName string, options *LabsClientBeginPublishOptions) (*http.Response, error) {
 	req, err := client.publishCreateRequest(ctx, resourceGroupName, labName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -421,7 +418,7 @@ func (client *LabsClient) publishCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -434,33 +431,35 @@ func (client *LabsClient) publishCreateRequest(ctx context.Context, resourceGrou
 
 // BeginSyncGroup - Action used to manually kick off an AAD group sync job.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// options - LabsClientBeginSyncGroupOptions contains the optional parameters for the LabsClient.BeginSyncGroup method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - options - LabsClientBeginSyncGroupOptions contains the optional parameters for the LabsClient.BeginSyncGroup method.
 func (client *LabsClient) BeginSyncGroup(ctx context.Context, resourceGroupName string, labName string, options *LabsClientBeginSyncGroupOptions) (*runtime.Poller[LabsClientSyncGroupResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.syncGroup(ctx, resourceGroupName, labName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LabsClientSyncGroupResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LabsClientSyncGroupResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[LabsClientSyncGroupResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientSyncGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // SyncGroup - Action used to manually kick off an AAD group sync job.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LabsClient) syncGroup(ctx context.Context, resourceGroupName string, labName string, options *LabsClientBeginSyncGroupOptions) (*http.Response, error) {
 	req, err := client.syncGroupCreateRequest(ctx, resourceGroupName, labName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -485,7 +484,7 @@ func (client *LabsClient) syncGroupCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -498,34 +497,36 @@ func (client *LabsClient) syncGroupCreateRequest(ctx context.Context, resourceGr
 
 // BeginUpdate - Operation to update a lab resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-// body - The request body.
-// options - LabsClientBeginUpdateOptions contains the optional parameters for the LabsClient.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labName - The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+//   - body - The request body.
+//   - options - LabsClientBeginUpdateOptions contains the optional parameters for the LabsClient.BeginUpdate method.
 func (client *LabsClient) BeginUpdate(ctx context.Context, resourceGroupName string, labName string, body LabUpdate, options *LabsClientBeginUpdateOptions) (*runtime.Poller[LabsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, labName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LabsClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LabsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[LabsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Operation to update a lab resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LabsClient) update(ctx context.Context, resourceGroupName string, labName string, body LabUpdate, options *LabsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -550,7 +551,7 @@ func (client *LabsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

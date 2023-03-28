@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // PlacementPoliciesClient contains the methods for the PlacementPolicies group.
 // Don't use this type directly, use NewPlacementPoliciesClient() instead.
 type PlacementPoliciesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPlacementPoliciesClient creates a new instance of PlacementPoliciesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPlacementPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PlacementPoliciesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PlacementPoliciesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PlacementPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a placement policy in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// clusterName - Name of the cluster in the private cloud
-// placementPolicyName - Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy
-// placementPolicy - A placement policy in the private cloud cluster
-// options - PlacementPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PlacementPoliciesClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - clusterName - Name of the cluster in the private cloud
+//   - placementPolicyName - Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy
+//   - placementPolicy - A placement policy in the private cloud cluster
+//   - options - PlacementPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PlacementPoliciesClient.BeginCreateOrUpdate
+//     method.
 func (client *PlacementPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, placementPolicyName string, placementPolicy PlacementPolicy, options *PlacementPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PlacementPoliciesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, clusterName, placementPolicyName, placementPolicy, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[PlacementPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PlacementPoliciesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[PlacementPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PlacementPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a placement policy in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *PlacementPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, placementPolicyName string, placementPolicy PlacementPolicy, options *PlacementPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, placementPolicyName, placementPolicy, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +109,7 @@ func (client *PlacementPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter placementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{placementPolicyName}", url.PathEscape(placementPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,34 +122,36 @@ func (client *PlacementPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 
 // BeginDelete - Delete a placement policy in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// clusterName - Name of the cluster in the private cloud
-// placementPolicyName - Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy
-// options - PlacementPoliciesClientBeginDeleteOptions contains the optional parameters for the PlacementPoliciesClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - clusterName - Name of the cluster in the private cloud
+//   - placementPolicyName - Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy
+//   - options - PlacementPoliciesClientBeginDeleteOptions contains the optional parameters for the PlacementPoliciesClient.BeginDelete
+//     method.
 func (client *PlacementPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, placementPolicyName string, options *PlacementPoliciesClientBeginDeleteOptions) (*runtime.Poller[PlacementPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, clusterName, placementPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[PlacementPoliciesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PlacementPoliciesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[PlacementPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PlacementPoliciesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete a placement policy in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *PlacementPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, placementPolicyName string, options *PlacementPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, placementPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +184,7 @@ func (client *PlacementPoliciesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter placementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{placementPolicyName}", url.PathEscape(placementPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -204,18 +197,19 @@ func (client *PlacementPoliciesClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Get a placement policy by name in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// clusterName - Name of the cluster in the private cloud
-// placementPolicyName - Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy
-// options - PlacementPoliciesClientGetOptions contains the optional parameters for the PlacementPoliciesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - clusterName - Name of the cluster in the private cloud
+//   - placementPolicyName - Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy
+//   - options - PlacementPoliciesClientGetOptions contains the optional parameters for the PlacementPoliciesClient.Get method.
 func (client *PlacementPoliciesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, placementPolicyName string, options *PlacementPoliciesClientGetOptions) (PlacementPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, placementPolicyName, options)
 	if err != nil {
 		return PlacementPoliciesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PlacementPoliciesClientGetResponse{}, err
 	}
@@ -248,7 +242,7 @@ func (client *PlacementPoliciesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter placementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{placementPolicyName}", url.PathEscape(placementPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,11 +263,13 @@ func (client *PlacementPoliciesClient) getHandleResponse(resp *http.Response) (P
 }
 
 // NewListPager - List placement policies in a private cloud cluster
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// clusterName - Name of the cluster in the private cloud
-// options - PlacementPoliciesClientListOptions contains the optional parameters for the PlacementPoliciesClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - clusterName - Name of the cluster in the private cloud
+//   - options - PlacementPoliciesClientListOptions contains the optional parameters for the PlacementPoliciesClient.NewListPager
+//     method.
 func (client *PlacementPoliciesClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *PlacementPoliciesClientListOptions) *runtime.Pager[PlacementPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PlacementPoliciesClientListResponse]{
 		More: func(page PlacementPoliciesClientListResponse) bool {
@@ -290,7 +286,7 @@ func (client *PlacementPoliciesClient) NewListPager(resourceGroupName string, pr
 			if err != nil {
 				return PlacementPoliciesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PlacementPoliciesClientListResponse{}, err
 			}
@@ -321,7 +317,7 @@ func (client *PlacementPoliciesClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -343,35 +339,37 @@ func (client *PlacementPoliciesClient) listHandleResponse(resp *http.Response) (
 
 // BeginUpdate - Update a placement policy in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// clusterName - Name of the cluster in the private cloud
-// placementPolicyName - Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy
-// placementPolicyUpdate - The placement policy properties that may be updated
-// options - PlacementPoliciesClientBeginUpdateOptions contains the optional parameters for the PlacementPoliciesClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - clusterName - Name of the cluster in the private cloud
+//   - placementPolicyName - Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy
+//   - placementPolicyUpdate - The placement policy properties that may be updated
+//   - options - PlacementPoliciesClientBeginUpdateOptions contains the optional parameters for the PlacementPoliciesClient.BeginUpdate
+//     method.
 func (client *PlacementPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, placementPolicyName string, placementPolicyUpdate PlacementPolicyUpdate, options *PlacementPoliciesClientBeginUpdateOptions) (*runtime.Poller[PlacementPoliciesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, privateCloudName, clusterName, placementPolicyName, placementPolicyUpdate, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[PlacementPoliciesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PlacementPoliciesClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[PlacementPoliciesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PlacementPoliciesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update a placement policy in a private cloud cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *PlacementPoliciesClient) update(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, placementPolicyName string, placementPolicyUpdate PlacementPolicyUpdate, options *PlacementPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, placementPolicyName, placementPolicyUpdate, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -404,7 +402,7 @@ func (client *PlacementPoliciesClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter placementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{placementPolicyName}", url.PathEscape(placementPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

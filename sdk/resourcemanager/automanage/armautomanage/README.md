@@ -43,14 +43,12 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Clients
+## Client Factory
 
-Azure Automanage modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
+Azure Automanage module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
-reportsClient, err := armautomanage.NewReportsClient("<subscription ID>", cred, nil)
-configProfilesClient, err := armautomanage.NewConfigurationProfilesClient("<subscription ID>", cred, nil)
-assignmentClient, err := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription ID>", cred, nil)
+clientFactory, err := armautomanage.NewClientFactory(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -61,7 +59,17 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-reportsClient, err := armautomanage.NewReportsClient("<subscription ID>", cred, &options)
+clientFactory, err := armautomanage.NewClientFactory(<subscription ID>, cred, &options)
+```
+
+## Clients
+
+A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
+
+```go
+reportsClient := clientFactory.NewReportsClient()
+configProfilesClient := clientFactory.NewReportsClient()
+assignmentClient := clientFactory.NewReportsClient()
 ```
 
 ## Create or Update a Custom Automanage Configuration Profile

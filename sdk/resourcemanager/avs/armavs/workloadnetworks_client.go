@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,65 +24,58 @@ import (
 // WorkloadNetworksClient contains the methods for the WorkloadNetworks group.
 // Don't use this type directly, use NewWorkloadNetworksClient() instead.
 type WorkloadNetworksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkloadNetworksClient creates a new instance of WorkloadNetworksClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWorkloadNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkloadNetworksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkloadNetworksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkloadNetworksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateDNSService - Create a DNS service by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// dnsServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
-// workloadNetworkDNSService - NSX DNS Service
-// options - WorkloadNetworksClientBeginCreateDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateDNSService
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - dnsServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
+//   - workloadNetworkDNSService - NSX DNS Service
+//   - options - WorkloadNetworksClientBeginCreateDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateDNSService
+//     method.
 func (client *WorkloadNetworksClient) BeginCreateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginCreateDNSServiceOptions) (*runtime.Poller[WorkloadNetworksClientCreateDNSServiceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createDNSService(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientCreateDNSServiceResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientCreateDNSServiceResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDNSServiceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDNSServiceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateDNSService - Create a DNS service by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) createDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginCreateDNSServiceOptions) (*http.Response, error) {
 	req, err := client.createDNSServiceCreateRequest(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +104,7 @@ func (client *WorkloadNetworksClient) createDNSServiceCreateRequest(ctx context.
 		return nil, errors.New("parameter dnsServiceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsServiceId}", url.PathEscape(dnsServiceID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,34 +117,36 @@ func (client *WorkloadNetworksClient) createDNSServiceCreateRequest(ctx context.
 
 // BeginCreateDNSZone - Create a DNS zone by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// dnsZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
-// workloadNetworkDNSZone - NSX DNS Zone
-// options - WorkloadNetworksClientBeginCreateDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateDNSZone
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - dnsZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
+//   - workloadNetworkDNSZone - NSX DNS Zone
+//   - options - WorkloadNetworksClientBeginCreateDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateDNSZone
+//     method.
 func (client *WorkloadNetworksClient) BeginCreateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginCreateDNSZoneOptions) (*runtime.Poller[WorkloadNetworksClientCreateDNSZoneResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createDNSZone(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientCreateDNSZoneResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientCreateDNSZoneResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDNSZoneResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDNSZoneResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateDNSZone - Create a DNS zone by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) createDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginCreateDNSZoneOptions) (*http.Response, error) {
 	req, err := client.createDNSZoneCreateRequest(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +175,7 @@ func (client *WorkloadNetworksClient) createDNSZoneCreateRequest(ctx context.Con
 		return nil, errors.New("parameter dnsZoneID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsZoneId}", url.PathEscape(dnsZoneID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -195,34 +188,36 @@ func (client *WorkloadNetworksClient) createDNSZoneCreateRequest(ctx context.Con
 
 // BeginCreateDhcp - Create dhcp by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// dhcpID - NSX DHCP identifier. Generally the same as the DHCP display name
-// workloadNetworkDhcp - NSX DHCP
-// options - WorkloadNetworksClientBeginCreateDhcpOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateDhcp
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - dhcpID - NSX DHCP identifier. Generally the same as the DHCP display name
+//   - workloadNetworkDhcp - NSX DHCP
+//   - options - WorkloadNetworksClientBeginCreateDhcpOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateDhcp
+//     method.
 func (client *WorkloadNetworksClient) BeginCreateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginCreateDhcpOptions) (*runtime.Poller[WorkloadNetworksClientCreateDhcpResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createDhcp(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientCreateDhcpResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientCreateDhcpResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDhcpResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDhcpResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateDhcp - Create dhcp by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) createDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginCreateDhcpOptions) (*http.Response, error) {
 	req, err := client.createDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -251,7 +246,7 @@ func (client *WorkloadNetworksClient) createDhcpCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter dhcpID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dhcpId}", url.PathEscape(dhcpID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -264,34 +259,36 @@ func (client *WorkloadNetworksClient) createDhcpCreateRequest(ctx context.Contex
 
 // BeginCreatePortMirroring - Create a port mirroring profile by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// portMirroringID - NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name
-// workloadNetworkPortMirroring - NSX port mirroring
-// options - WorkloadNetworksClientBeginCreatePortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreatePortMirroring
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - portMirroringID - NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name
+//   - workloadNetworkPortMirroring - NSX port mirroring
+//   - options - WorkloadNetworksClientBeginCreatePortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreatePortMirroring
+//     method.
 func (client *WorkloadNetworksClient) BeginCreatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginCreatePortMirroringOptions) (*runtime.Poller[WorkloadNetworksClientCreatePortMirroringResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createPortMirroring(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientCreatePortMirroringResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientCreatePortMirroringResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreatePortMirroringResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreatePortMirroringResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreatePortMirroring - Create a port mirroring profile by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) createPortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginCreatePortMirroringOptions) (*http.Response, error) {
 	req, err := client.createPortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -320,7 +317,7 @@ func (client *WorkloadNetworksClient) createPortMirroringCreateRequest(ctx conte
 		return nil, errors.New("parameter portMirroringID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{portMirroringId}", url.PathEscape(portMirroringID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -333,34 +330,36 @@ func (client *WorkloadNetworksClient) createPortMirroringCreateRequest(ctx conte
 
 // BeginCreatePublicIP - Create a Public IP Block by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// publicIPID - NSX Public IP Block identifier. Generally the same as the Public IP Block's display name
-// workloadNetworkPublicIP - NSX Public IP Block
-// options - WorkloadNetworksClientBeginCreatePublicIPOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreatePublicIP
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - publicIPID - NSX Public IP Block identifier. Generally the same as the Public IP Block's display name
+//   - workloadNetworkPublicIP - NSX Public IP Block
+//   - options - WorkloadNetworksClientBeginCreatePublicIPOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreatePublicIP
+//     method.
 func (client *WorkloadNetworksClient) BeginCreatePublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, workloadNetworkPublicIP WorkloadNetworkPublicIP, options *WorkloadNetworksClientBeginCreatePublicIPOptions) (*runtime.Poller[WorkloadNetworksClientCreatePublicIPResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createPublicIP(ctx, resourceGroupName, privateCloudName, publicIPID, workloadNetworkPublicIP, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientCreatePublicIPResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientCreatePublicIPResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreatePublicIPResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreatePublicIPResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreatePublicIP - Create a Public IP Block by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) createPublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, workloadNetworkPublicIP WorkloadNetworkPublicIP, options *WorkloadNetworksClientBeginCreatePublicIPOptions) (*http.Response, error) {
 	req, err := client.createPublicIPCreateRequest(ctx, resourceGroupName, privateCloudName, publicIPID, workloadNetworkPublicIP, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -389,7 +388,7 @@ func (client *WorkloadNetworksClient) createPublicIPCreateRequest(ctx context.Co
 		return nil, errors.New("parameter publicIPID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{publicIPId}", url.PathEscape(publicIPID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -402,34 +401,36 @@ func (client *WorkloadNetworksClient) createPublicIPCreateRequest(ctx context.Co
 
 // BeginCreateSegments - Create a segment by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// segmentID - NSX Segment identifier. Generally the same as the Segment's display name
-// workloadNetworkSegment - NSX Segment
-// options - WorkloadNetworksClientBeginCreateSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateSegments
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - segmentID - NSX Segment identifier. Generally the same as the Segment's display name
+//   - workloadNetworkSegment - NSX Segment
+//   - options - WorkloadNetworksClientBeginCreateSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateSegments
+//     method.
 func (client *WorkloadNetworksClient) BeginCreateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginCreateSegmentsOptions) (*runtime.Poller[WorkloadNetworksClientCreateSegmentsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createSegments(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientCreateSegmentsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientCreateSegmentsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateSegmentsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateSegmentsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateSegments - Create a segment by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) createSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginCreateSegmentsOptions) (*http.Response, error) {
 	req, err := client.createSegmentsCreateRequest(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -458,7 +459,7 @@ func (client *WorkloadNetworksClient) createSegmentsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter segmentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{segmentId}", url.PathEscape(segmentID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -471,34 +472,36 @@ func (client *WorkloadNetworksClient) createSegmentsCreateRequest(ctx context.Co
 
 // BeginCreateVMGroup - Create a vm group by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// vmGroupID - NSX VM Group identifier. Generally the same as the VM Group's display name
-// workloadNetworkVMGroup - NSX VM Group
-// options - WorkloadNetworksClientBeginCreateVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateVMGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - vmGroupID - NSX VM Group identifier. Generally the same as the VM Group's display name
+//   - workloadNetworkVMGroup - NSX VM Group
+//   - options - WorkloadNetworksClientBeginCreateVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateVMGroup
+//     method.
 func (client *WorkloadNetworksClient) BeginCreateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginCreateVMGroupOptions) (*runtime.Poller[WorkloadNetworksClientCreateVMGroupResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createVMGroup(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientCreateVMGroupResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientCreateVMGroupResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateVMGroupResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateVMGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateVMGroup - Create a vm group by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) createVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginCreateVMGroupOptions) (*http.Response, error) {
 	req, err := client.createVMGroupCreateRequest(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -527,7 +530,7 @@ func (client *WorkloadNetworksClient) createVMGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter vmGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmGroupId}", url.PathEscape(vmGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -540,33 +543,35 @@ func (client *WorkloadNetworksClient) createVMGroupCreateRequest(ctx context.Con
 
 // BeginDeleteDNSService - Delete a DNS service by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientBeginDeleteDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteDNSService
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientBeginDeleteDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteDNSService
+//     method.
 func (client *WorkloadNetworksClient) BeginDeleteDNSService(ctx context.Context, resourceGroupName string, dnsServiceID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteDNSServiceOptions) (*runtime.Poller[WorkloadNetworksClientDeleteDNSServiceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteDNSService(ctx, resourceGroupName, dnsServiceID, privateCloudName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientDeleteDNSServiceResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientDeleteDNSServiceResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDNSServiceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDNSServiceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // DeleteDNSService - Delete a DNS service by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) deleteDNSService(ctx context.Context, resourceGroupName string, dnsServiceID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteDNSServiceOptions) (*http.Response, error) {
 	req, err := client.deleteDNSServiceCreateRequest(ctx, resourceGroupName, dnsServiceID, privateCloudName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -595,7 +600,7 @@ func (client *WorkloadNetworksClient) deleteDNSServiceCreateRequest(ctx context.
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -608,33 +613,35 @@ func (client *WorkloadNetworksClient) deleteDNSServiceCreateRequest(ctx context.
 
 // BeginDeleteDNSZone - Delete a DNS zone by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientBeginDeleteDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteDNSZone
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientBeginDeleteDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteDNSZone
+//     method.
 func (client *WorkloadNetworksClient) BeginDeleteDNSZone(ctx context.Context, resourceGroupName string, dnsZoneID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteDNSZoneOptions) (*runtime.Poller[WorkloadNetworksClientDeleteDNSZoneResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteDNSZone(ctx, resourceGroupName, dnsZoneID, privateCloudName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientDeleteDNSZoneResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientDeleteDNSZoneResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDNSZoneResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDNSZoneResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // DeleteDNSZone - Delete a DNS zone by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) deleteDNSZone(ctx context.Context, resourceGroupName string, dnsZoneID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteDNSZoneOptions) (*http.Response, error) {
 	req, err := client.deleteDNSZoneCreateRequest(ctx, resourceGroupName, dnsZoneID, privateCloudName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -663,7 +670,7 @@ func (client *WorkloadNetworksClient) deleteDNSZoneCreateRequest(ctx context.Con
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -676,33 +683,35 @@ func (client *WorkloadNetworksClient) deleteDNSZoneCreateRequest(ctx context.Con
 
 // BeginDeleteDhcp - Delete dhcp by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// dhcpID - NSX DHCP identifier. Generally the same as the DHCP display name
-// options - WorkloadNetworksClientBeginDeleteDhcpOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteDhcp
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - dhcpID - NSX DHCP identifier. Generally the same as the DHCP display name
+//   - options - WorkloadNetworksClientBeginDeleteDhcpOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteDhcp
+//     method.
 func (client *WorkloadNetworksClient) BeginDeleteDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, options *WorkloadNetworksClientBeginDeleteDhcpOptions) (*runtime.Poller[WorkloadNetworksClientDeleteDhcpResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteDhcp(ctx, resourceGroupName, privateCloudName, dhcpID, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientDeleteDhcpResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientDeleteDhcpResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDhcpResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDhcpResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // DeleteDhcp - Delete dhcp by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) deleteDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, options *WorkloadNetworksClientBeginDeleteDhcpOptions) (*http.Response, error) {
 	req, err := client.deleteDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, dhcpID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -731,7 +740,7 @@ func (client *WorkloadNetworksClient) deleteDhcpCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter dhcpID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dhcpId}", url.PathEscape(dhcpID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -744,33 +753,35 @@ func (client *WorkloadNetworksClient) deleteDhcpCreateRequest(ctx context.Contex
 
 // BeginDeletePortMirroring - Delete a port mirroring profile by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// portMirroringID - NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientBeginDeletePortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeletePortMirroring
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - portMirroringID - NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientBeginDeletePortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeletePortMirroring
+//     method.
 func (client *WorkloadNetworksClient) BeginDeletePortMirroring(ctx context.Context, resourceGroupName string, portMirroringID string, privateCloudName string, options *WorkloadNetworksClientBeginDeletePortMirroringOptions) (*runtime.Poller[WorkloadNetworksClientDeletePortMirroringResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deletePortMirroring(ctx, resourceGroupName, portMirroringID, privateCloudName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientDeletePortMirroringResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientDeletePortMirroringResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeletePortMirroringResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeletePortMirroringResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // DeletePortMirroring - Delete a port mirroring profile by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) deletePortMirroring(ctx context.Context, resourceGroupName string, portMirroringID string, privateCloudName string, options *WorkloadNetworksClientBeginDeletePortMirroringOptions) (*http.Response, error) {
 	req, err := client.deletePortMirroringCreateRequest(ctx, resourceGroupName, portMirroringID, privateCloudName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -799,7 +810,7 @@ func (client *WorkloadNetworksClient) deletePortMirroringCreateRequest(ctx conte
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -812,33 +823,35 @@ func (client *WorkloadNetworksClient) deletePortMirroringCreateRequest(ctx conte
 
 // BeginDeletePublicIP - Delete a Public IP Block by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// publicIPID - NSX Public IP Block identifier. Generally the same as the Public IP Block's display name
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientBeginDeletePublicIPOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeletePublicIP
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - publicIPID - NSX Public IP Block identifier. Generally the same as the Public IP Block's display name
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientBeginDeletePublicIPOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeletePublicIP
+//     method.
 func (client *WorkloadNetworksClient) BeginDeletePublicIP(ctx context.Context, resourceGroupName string, publicIPID string, privateCloudName string, options *WorkloadNetworksClientBeginDeletePublicIPOptions) (*runtime.Poller[WorkloadNetworksClientDeletePublicIPResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deletePublicIP(ctx, resourceGroupName, publicIPID, privateCloudName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientDeletePublicIPResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientDeletePublicIPResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeletePublicIPResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeletePublicIPResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // DeletePublicIP - Delete a Public IP Block by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) deletePublicIP(ctx context.Context, resourceGroupName string, publicIPID string, privateCloudName string, options *WorkloadNetworksClientBeginDeletePublicIPOptions) (*http.Response, error) {
 	req, err := client.deletePublicIPCreateRequest(ctx, resourceGroupName, publicIPID, privateCloudName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -867,7 +880,7 @@ func (client *WorkloadNetworksClient) deletePublicIPCreateRequest(ctx context.Co
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -880,33 +893,35 @@ func (client *WorkloadNetworksClient) deletePublicIPCreateRequest(ctx context.Co
 
 // BeginDeleteSegment - Delete a segment by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// segmentID - NSX Segment identifier. Generally the same as the Segment's display name
-// options - WorkloadNetworksClientBeginDeleteSegmentOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteSegment
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - segmentID - NSX Segment identifier. Generally the same as the Segment's display name
+//   - options - WorkloadNetworksClientBeginDeleteSegmentOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteSegment
+//     method.
 func (client *WorkloadNetworksClient) BeginDeleteSegment(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, options *WorkloadNetworksClientBeginDeleteSegmentOptions) (*runtime.Poller[WorkloadNetworksClientDeleteSegmentResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteSegment(ctx, resourceGroupName, privateCloudName, segmentID, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientDeleteSegmentResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientDeleteSegmentResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteSegmentResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteSegmentResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // DeleteSegment - Delete a segment by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) deleteSegment(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, options *WorkloadNetworksClientBeginDeleteSegmentOptions) (*http.Response, error) {
 	req, err := client.deleteSegmentCreateRequest(ctx, resourceGroupName, privateCloudName, segmentID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -935,7 +950,7 @@ func (client *WorkloadNetworksClient) deleteSegmentCreateRequest(ctx context.Con
 		return nil, errors.New("parameter segmentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{segmentId}", url.PathEscape(segmentID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -948,33 +963,35 @@ func (client *WorkloadNetworksClient) deleteSegmentCreateRequest(ctx context.Con
 
 // BeginDeleteVMGroup - Delete a vm group by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// vmGroupID - NSX VM Group identifier. Generally the same as the VM Group's display name
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientBeginDeleteVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteVMGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vmGroupID - NSX VM Group identifier. Generally the same as the VM Group's display name
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientBeginDeleteVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.BeginDeleteVMGroup
+//     method.
 func (client *WorkloadNetworksClient) BeginDeleteVMGroup(ctx context.Context, resourceGroupName string, vmGroupID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteVMGroupOptions) (*runtime.Poller[WorkloadNetworksClientDeleteVMGroupResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteVMGroup(ctx, resourceGroupName, vmGroupID, privateCloudName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientDeleteVMGroupResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientDeleteVMGroupResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteVMGroupResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteVMGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // DeleteVMGroup - Delete a vm group by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) deleteVMGroup(ctx context.Context, resourceGroupName string, vmGroupID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteVMGroupOptions) (*http.Response, error) {
 	req, err := client.deleteVMGroupCreateRequest(ctx, resourceGroupName, vmGroupID, privateCloudName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1003,7 +1020,7 @@ func (client *WorkloadNetworksClient) deleteVMGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1016,17 +1033,18 @@ func (client *WorkloadNetworksClient) deleteVMGroupCreateRequest(ctx context.Con
 
 // Get - Get a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// workloadNetworkName - Name for the workload network in the private cloud
-// options - WorkloadNetworksClientGetOptions contains the optional parameters for the WorkloadNetworksClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - workloadNetworkName - Name for the workload network in the private cloud
+//   - options - WorkloadNetworksClientGetOptions contains the optional parameters for the WorkloadNetworksClient.Get method.
 func (client *WorkloadNetworksClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, workloadNetworkName WorkloadNetworkName, options *WorkloadNetworksClientGetOptions) (WorkloadNetworksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, workloadNetworkName, options)
 	if err != nil {
 		return WorkloadNetworksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkloadNetworksClientGetResponse{}, err
 	}
@@ -1055,7 +1073,7 @@ func (client *WorkloadNetworksClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter workloadNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadNetworkName}", url.PathEscape(string(workloadNetworkName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1077,18 +1095,19 @@ func (client *WorkloadNetworksClient) getHandleResponse(resp *http.Response) (Wo
 
 // GetDNSService - Get a DNS service by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// dnsServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
-// options - WorkloadNetworksClientGetDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.GetDNSService
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - dnsServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
+//   - options - WorkloadNetworksClientGetDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.GetDNSService
+//     method.
 func (client *WorkloadNetworksClient) GetDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, options *WorkloadNetworksClientGetDNSServiceOptions) (WorkloadNetworksClientGetDNSServiceResponse, error) {
 	req, err := client.getDNSServiceCreateRequest(ctx, resourceGroupName, privateCloudName, dnsServiceID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetDNSServiceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkloadNetworksClientGetDNSServiceResponse{}, err
 	}
@@ -1117,7 +1136,7 @@ func (client *WorkloadNetworksClient) getDNSServiceCreateRequest(ctx context.Con
 		return nil, errors.New("parameter dnsServiceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsServiceId}", url.PathEscape(dnsServiceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1139,18 +1158,19 @@ func (client *WorkloadNetworksClient) getDNSServiceHandleResponse(resp *http.Res
 
 // GetDNSZone - Get a DNS zone by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// dnsZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
-// options - WorkloadNetworksClientGetDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.GetDNSZone
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - dnsZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
+//   - options - WorkloadNetworksClientGetDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.GetDNSZone
+//     method.
 func (client *WorkloadNetworksClient) GetDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, options *WorkloadNetworksClientGetDNSZoneOptions) (WorkloadNetworksClientGetDNSZoneResponse, error) {
 	req, err := client.getDNSZoneCreateRequest(ctx, resourceGroupName, privateCloudName, dnsZoneID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetDNSZoneResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkloadNetworksClientGetDNSZoneResponse{}, err
 	}
@@ -1179,7 +1199,7 @@ func (client *WorkloadNetworksClient) getDNSZoneCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter dnsZoneID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsZoneId}", url.PathEscape(dnsZoneID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1201,18 +1221,19 @@ func (client *WorkloadNetworksClient) getDNSZoneHandleResponse(resp *http.Respon
 
 // GetDhcp - Get dhcp by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dhcpID - NSX DHCP identifier. Generally the same as the DHCP display name
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientGetDhcpOptions contains the optional parameters for the WorkloadNetworksClient.GetDhcp
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dhcpID - NSX DHCP identifier. Generally the same as the DHCP display name
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientGetDhcpOptions contains the optional parameters for the WorkloadNetworksClient.GetDhcp
+//     method.
 func (client *WorkloadNetworksClient) GetDhcp(ctx context.Context, resourceGroupName string, dhcpID string, privateCloudName string, options *WorkloadNetworksClientGetDhcpOptions) (WorkloadNetworksClientGetDhcpResponse, error) {
 	req, err := client.getDhcpCreateRequest(ctx, resourceGroupName, dhcpID, privateCloudName, options)
 	if err != nil {
 		return WorkloadNetworksClientGetDhcpResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkloadNetworksClientGetDhcpResponse{}, err
 	}
@@ -1241,7 +1262,7 @@ func (client *WorkloadNetworksClient) getDhcpCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1263,18 +1284,19 @@ func (client *WorkloadNetworksClient) getDhcpHandleResponse(resp *http.Response)
 
 // GetGateway - Get a gateway by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// gatewayID - NSX Gateway identifier. Generally the same as the Gateway's display name
-// options - WorkloadNetworksClientGetGatewayOptions contains the optional parameters for the WorkloadNetworksClient.GetGateway
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - gatewayID - NSX Gateway identifier. Generally the same as the Gateway's display name
+//   - options - WorkloadNetworksClientGetGatewayOptions contains the optional parameters for the WorkloadNetworksClient.GetGateway
+//     method.
 func (client *WorkloadNetworksClient) GetGateway(ctx context.Context, resourceGroupName string, privateCloudName string, gatewayID string, options *WorkloadNetworksClientGetGatewayOptions) (WorkloadNetworksClientGetGatewayResponse, error) {
 	req, err := client.getGatewayCreateRequest(ctx, resourceGroupName, privateCloudName, gatewayID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetGatewayResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkloadNetworksClientGetGatewayResponse{}, err
 	}
@@ -1303,7 +1325,7 @@ func (client *WorkloadNetworksClient) getGatewayCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter gatewayID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gatewayId}", url.PathEscape(gatewayID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1325,18 +1347,19 @@ func (client *WorkloadNetworksClient) getGatewayHandleResponse(resp *http.Respon
 
 // GetPortMirroring - Get a port mirroring profile by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// portMirroringID - NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name
-// options - WorkloadNetworksClientGetPortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.GetPortMirroring
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - portMirroringID - NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name
+//   - options - WorkloadNetworksClientGetPortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.GetPortMirroring
+//     method.
 func (client *WorkloadNetworksClient) GetPortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, options *WorkloadNetworksClientGetPortMirroringOptions) (WorkloadNetworksClientGetPortMirroringResponse, error) {
 	req, err := client.getPortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, portMirroringID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetPortMirroringResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkloadNetworksClientGetPortMirroringResponse{}, err
 	}
@@ -1365,7 +1388,7 @@ func (client *WorkloadNetworksClient) getPortMirroringCreateRequest(ctx context.
 		return nil, errors.New("parameter portMirroringID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{portMirroringId}", url.PathEscape(portMirroringID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1387,18 +1410,19 @@ func (client *WorkloadNetworksClient) getPortMirroringHandleResponse(resp *http.
 
 // GetPublicIP - Get a Public IP Block by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// publicIPID - NSX Public IP Block identifier. Generally the same as the Public IP Block's display name
-// options - WorkloadNetworksClientGetPublicIPOptions contains the optional parameters for the WorkloadNetworksClient.GetPublicIP
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - publicIPID - NSX Public IP Block identifier. Generally the same as the Public IP Block's display name
+//   - options - WorkloadNetworksClientGetPublicIPOptions contains the optional parameters for the WorkloadNetworksClient.GetPublicIP
+//     method.
 func (client *WorkloadNetworksClient) GetPublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, options *WorkloadNetworksClientGetPublicIPOptions) (WorkloadNetworksClientGetPublicIPResponse, error) {
 	req, err := client.getPublicIPCreateRequest(ctx, resourceGroupName, privateCloudName, publicIPID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetPublicIPResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkloadNetworksClientGetPublicIPResponse{}, err
 	}
@@ -1427,7 +1451,7 @@ func (client *WorkloadNetworksClient) getPublicIPCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter publicIPID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{publicIPId}", url.PathEscape(publicIPID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1449,18 +1473,19 @@ func (client *WorkloadNetworksClient) getPublicIPHandleResponse(resp *http.Respo
 
 // GetSegment - Get a segment by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// segmentID - NSX Segment identifier. Generally the same as the Segment's display name
-// options - WorkloadNetworksClientGetSegmentOptions contains the optional parameters for the WorkloadNetworksClient.GetSegment
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - segmentID - NSX Segment identifier. Generally the same as the Segment's display name
+//   - options - WorkloadNetworksClientGetSegmentOptions contains the optional parameters for the WorkloadNetworksClient.GetSegment
+//     method.
 func (client *WorkloadNetworksClient) GetSegment(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, options *WorkloadNetworksClientGetSegmentOptions) (WorkloadNetworksClientGetSegmentResponse, error) {
 	req, err := client.getSegmentCreateRequest(ctx, resourceGroupName, privateCloudName, segmentID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetSegmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkloadNetworksClientGetSegmentResponse{}, err
 	}
@@ -1489,7 +1514,7 @@ func (client *WorkloadNetworksClient) getSegmentCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter segmentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{segmentId}", url.PathEscape(segmentID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1511,18 +1536,19 @@ func (client *WorkloadNetworksClient) getSegmentHandleResponse(resp *http.Respon
 
 // GetVMGroup - Get a vm group by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// vmGroupID - NSX VM Group identifier. Generally the same as the VM Group's display name
-// options - WorkloadNetworksClientGetVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.GetVMGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - vmGroupID - NSX VM Group identifier. Generally the same as the VM Group's display name
+//   - options - WorkloadNetworksClientGetVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.GetVMGroup
+//     method.
 func (client *WorkloadNetworksClient) GetVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, options *WorkloadNetworksClientGetVMGroupOptions) (WorkloadNetworksClientGetVMGroupResponse, error) {
 	req, err := client.getVMGroupCreateRequest(ctx, resourceGroupName, privateCloudName, vmGroupID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetVMGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkloadNetworksClientGetVMGroupResponse{}, err
 	}
@@ -1551,7 +1577,7 @@ func (client *WorkloadNetworksClient) getVMGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter vmGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmGroupId}", url.PathEscape(vmGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1573,18 +1599,19 @@ func (client *WorkloadNetworksClient) getVMGroupHandleResponse(resp *http.Respon
 
 // GetVirtualMachine - Get a virtual machine by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// virtualMachineID - Virtual Machine identifier
-// options - WorkloadNetworksClientGetVirtualMachineOptions contains the optional parameters for the WorkloadNetworksClient.GetVirtualMachine
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - virtualMachineID - Virtual Machine identifier
+//   - options - WorkloadNetworksClientGetVirtualMachineOptions contains the optional parameters for the WorkloadNetworksClient.GetVirtualMachine
+//     method.
 func (client *WorkloadNetworksClient) GetVirtualMachine(ctx context.Context, resourceGroupName string, privateCloudName string, virtualMachineID string, options *WorkloadNetworksClientGetVirtualMachineOptions) (WorkloadNetworksClientGetVirtualMachineResponse, error) {
 	req, err := client.getVirtualMachineCreateRequest(ctx, resourceGroupName, privateCloudName, virtualMachineID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetVirtualMachineResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkloadNetworksClientGetVirtualMachineResponse{}, err
 	}
@@ -1613,7 +1640,7 @@ func (client *WorkloadNetworksClient) getVirtualMachineCreateRequest(ctx context
 		return nil, errors.New("parameter virtualMachineID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineId}", url.PathEscape(virtualMachineID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1634,10 +1661,12 @@ func (client *WorkloadNetworksClient) getVirtualMachineHandleResponse(resp *http
 }
 
 // NewListPager - List of workload networks in a private cloud.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientListOptions contains the optional parameters for the WorkloadNetworksClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientListOptions contains the optional parameters for the WorkloadNetworksClient.NewListPager
+//     method.
 func (client *WorkloadNetworksClient) NewListPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListOptions) *runtime.Pager[WorkloadNetworksClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListResponse]{
 		More: func(page WorkloadNetworksClientListResponse) bool {
@@ -1654,7 +1683,7 @@ func (client *WorkloadNetworksClient) NewListPager(resourceGroupName string, pri
 			if err != nil {
 				return WorkloadNetworksClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkloadNetworksClientListResponse{}, err
 			}
@@ -1681,7 +1710,7 @@ func (client *WorkloadNetworksClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1702,11 +1731,12 @@ func (client *WorkloadNetworksClient) listHandleResponse(resp *http.Response) (W
 }
 
 // NewListDNSServicesPager - List of DNS services in a private cloud workload network.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientListDNSServicesOptions contains the optional parameters for the WorkloadNetworksClient.ListDNSServices
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientListDNSServicesOptions contains the optional parameters for the WorkloadNetworksClient.NewListDNSServicesPager
+//     method.
 func (client *WorkloadNetworksClient) NewListDNSServicesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSServicesOptions) *runtime.Pager[WorkloadNetworksClientListDNSServicesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListDNSServicesResponse]{
 		More: func(page WorkloadNetworksClientListDNSServicesResponse) bool {
@@ -1723,7 +1753,7 @@ func (client *WorkloadNetworksClient) NewListDNSServicesPager(resourceGroupName 
 			if err != nil {
 				return WorkloadNetworksClientListDNSServicesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkloadNetworksClientListDNSServicesResponse{}, err
 			}
@@ -1750,7 +1780,7 @@ func (client *WorkloadNetworksClient) listDNSServicesCreateRequest(ctx context.C
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1771,11 +1801,12 @@ func (client *WorkloadNetworksClient) listDNSServicesHandleResponse(resp *http.R
 }
 
 // NewListDNSZonesPager - List of DNS zones in a private cloud workload network.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientListDNSZonesOptions contains the optional parameters for the WorkloadNetworksClient.ListDNSZones
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientListDNSZonesOptions contains the optional parameters for the WorkloadNetworksClient.NewListDNSZonesPager
+//     method.
 func (client *WorkloadNetworksClient) NewListDNSZonesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSZonesOptions) *runtime.Pager[WorkloadNetworksClientListDNSZonesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListDNSZonesResponse]{
 		More: func(page WorkloadNetworksClientListDNSZonesResponse) bool {
@@ -1792,7 +1823,7 @@ func (client *WorkloadNetworksClient) NewListDNSZonesPager(resourceGroupName str
 			if err != nil {
 				return WorkloadNetworksClientListDNSZonesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkloadNetworksClientListDNSZonesResponse{}, err
 			}
@@ -1819,7 +1850,7 @@ func (client *WorkloadNetworksClient) listDNSZonesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1840,11 +1871,12 @@ func (client *WorkloadNetworksClient) listDNSZonesHandleResponse(resp *http.Resp
 }
 
 // NewListDhcpPager - List dhcp in a private cloud workload network.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientListDhcpOptions contains the optional parameters for the WorkloadNetworksClient.ListDhcp
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientListDhcpOptions contains the optional parameters for the WorkloadNetworksClient.NewListDhcpPager
+//     method.
 func (client *WorkloadNetworksClient) NewListDhcpPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDhcpOptions) *runtime.Pager[WorkloadNetworksClientListDhcpResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListDhcpResponse]{
 		More: func(page WorkloadNetworksClientListDhcpResponse) bool {
@@ -1861,7 +1893,7 @@ func (client *WorkloadNetworksClient) NewListDhcpPager(resourceGroupName string,
 			if err != nil {
 				return WorkloadNetworksClientListDhcpResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkloadNetworksClientListDhcpResponse{}, err
 			}
@@ -1888,7 +1920,7 @@ func (client *WorkloadNetworksClient) listDhcpCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1909,11 +1941,12 @@ func (client *WorkloadNetworksClient) listDhcpHandleResponse(resp *http.Response
 }
 
 // NewListGatewaysPager - List of gateways in a private cloud workload network.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientListGatewaysOptions contains the optional parameters for the WorkloadNetworksClient.ListGateways
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientListGatewaysOptions contains the optional parameters for the WorkloadNetworksClient.NewListGatewaysPager
+//     method.
 func (client *WorkloadNetworksClient) NewListGatewaysPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListGatewaysOptions) *runtime.Pager[WorkloadNetworksClientListGatewaysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListGatewaysResponse]{
 		More: func(page WorkloadNetworksClientListGatewaysResponse) bool {
@@ -1930,7 +1963,7 @@ func (client *WorkloadNetworksClient) NewListGatewaysPager(resourceGroupName str
 			if err != nil {
 				return WorkloadNetworksClientListGatewaysResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkloadNetworksClientListGatewaysResponse{}, err
 			}
@@ -1957,7 +1990,7 @@ func (client *WorkloadNetworksClient) listGatewaysCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1978,11 +2011,12 @@ func (client *WorkloadNetworksClient) listGatewaysHandleResponse(resp *http.Resp
 }
 
 // NewListPortMirroringPager - List of port mirroring profiles in a private cloud workload network.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientListPortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.ListPortMirroring
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientListPortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.NewListPortMirroringPager
+//     method.
 func (client *WorkloadNetworksClient) NewListPortMirroringPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPortMirroringOptions) *runtime.Pager[WorkloadNetworksClientListPortMirroringResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListPortMirroringResponse]{
 		More: func(page WorkloadNetworksClientListPortMirroringResponse) bool {
@@ -1999,7 +2033,7 @@ func (client *WorkloadNetworksClient) NewListPortMirroringPager(resourceGroupNam
 			if err != nil {
 				return WorkloadNetworksClientListPortMirroringResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkloadNetworksClientListPortMirroringResponse{}, err
 			}
@@ -2026,7 +2060,7 @@ func (client *WorkloadNetworksClient) listPortMirroringCreateRequest(ctx context
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2047,11 +2081,12 @@ func (client *WorkloadNetworksClient) listPortMirroringHandleResponse(resp *http
 }
 
 // NewListPublicIPsPager - List of Public IP Blocks in a private cloud workload network.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientListPublicIPsOptions contains the optional parameters for the WorkloadNetworksClient.ListPublicIPs
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientListPublicIPsOptions contains the optional parameters for the WorkloadNetworksClient.NewListPublicIPsPager
+//     method.
 func (client *WorkloadNetworksClient) NewListPublicIPsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPublicIPsOptions) *runtime.Pager[WorkloadNetworksClientListPublicIPsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListPublicIPsResponse]{
 		More: func(page WorkloadNetworksClientListPublicIPsResponse) bool {
@@ -2068,7 +2103,7 @@ func (client *WorkloadNetworksClient) NewListPublicIPsPager(resourceGroupName st
 			if err != nil {
 				return WorkloadNetworksClientListPublicIPsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkloadNetworksClientListPublicIPsResponse{}, err
 			}
@@ -2095,7 +2130,7 @@ func (client *WorkloadNetworksClient) listPublicIPsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2116,11 +2151,12 @@ func (client *WorkloadNetworksClient) listPublicIPsHandleResponse(resp *http.Res
 }
 
 // NewListSegmentsPager - List of segments in a private cloud workload network.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientListSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.ListSegments
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientListSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.NewListSegmentsPager
+//     method.
 func (client *WorkloadNetworksClient) NewListSegmentsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListSegmentsOptions) *runtime.Pager[WorkloadNetworksClientListSegmentsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListSegmentsResponse]{
 		More: func(page WorkloadNetworksClientListSegmentsResponse) bool {
@@ -2137,7 +2173,7 @@ func (client *WorkloadNetworksClient) NewListSegmentsPager(resourceGroupName str
 			if err != nil {
 				return WorkloadNetworksClientListSegmentsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkloadNetworksClientListSegmentsResponse{}, err
 			}
@@ -2164,7 +2200,7 @@ func (client *WorkloadNetworksClient) listSegmentsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2185,11 +2221,12 @@ func (client *WorkloadNetworksClient) listSegmentsHandleResponse(resp *http.Resp
 }
 
 // NewListVMGroupsPager - List of vm groups in a private cloud workload network.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientListVMGroupsOptions contains the optional parameters for the WorkloadNetworksClient.ListVMGroups
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientListVMGroupsOptions contains the optional parameters for the WorkloadNetworksClient.NewListVMGroupsPager
+//     method.
 func (client *WorkloadNetworksClient) NewListVMGroupsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVMGroupsOptions) *runtime.Pager[WorkloadNetworksClientListVMGroupsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListVMGroupsResponse]{
 		More: func(page WorkloadNetworksClientListVMGroupsResponse) bool {
@@ -2206,7 +2243,7 @@ func (client *WorkloadNetworksClient) NewListVMGroupsPager(resourceGroupName str
 			if err != nil {
 				return WorkloadNetworksClientListVMGroupsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkloadNetworksClientListVMGroupsResponse{}, err
 			}
@@ -2233,7 +2270,7 @@ func (client *WorkloadNetworksClient) listVMGroupsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2254,11 +2291,12 @@ func (client *WorkloadNetworksClient) listVMGroupsHandleResponse(resp *http.Resp
 }
 
 // NewListVirtualMachinesPager - List of virtual machines in a private cloud workload network.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - WorkloadNetworksClientListVirtualMachinesOptions contains the optional parameters for the WorkloadNetworksClient.ListVirtualMachines
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - WorkloadNetworksClientListVirtualMachinesOptions contains the optional parameters for the WorkloadNetworksClient.NewListVirtualMachinesPager
+//     method.
 func (client *WorkloadNetworksClient) NewListVirtualMachinesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVirtualMachinesOptions) *runtime.Pager[WorkloadNetworksClientListVirtualMachinesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListVirtualMachinesResponse]{
 		More: func(page WorkloadNetworksClientListVirtualMachinesResponse) bool {
@@ -2275,7 +2313,7 @@ func (client *WorkloadNetworksClient) NewListVirtualMachinesPager(resourceGroupN
 			if err != nil {
 				return WorkloadNetworksClientListVirtualMachinesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkloadNetworksClientListVirtualMachinesResponse{}, err
 			}
@@ -2302,7 +2340,7 @@ func (client *WorkloadNetworksClient) listVirtualMachinesCreateRequest(ctx conte
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2324,34 +2362,36 @@ func (client *WorkloadNetworksClient) listVirtualMachinesHandleResponse(resp *ht
 
 // BeginUpdateDNSService - Create or update a DNS service by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// dnsServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
-// workloadNetworkDNSService - NSX DNS Service
-// options - WorkloadNetworksClientBeginUpdateDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDNSService
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - dnsServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
+//   - workloadNetworkDNSService - NSX DNS Service
+//   - options - WorkloadNetworksClientBeginUpdateDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDNSService
+//     method.
 func (client *WorkloadNetworksClient) BeginUpdateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*runtime.Poller[WorkloadNetworksClientUpdateDNSServiceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateDNSService(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientUpdateDNSServiceResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientUpdateDNSServiceResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDNSServiceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDNSServiceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // UpdateDNSService - Create or update a DNS service by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) updateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*http.Response, error) {
 	req, err := client.updateDNSServiceCreateRequest(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2380,7 +2420,7 @@ func (client *WorkloadNetworksClient) updateDNSServiceCreateRequest(ctx context.
 		return nil, errors.New("parameter dnsServiceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsServiceId}", url.PathEscape(dnsServiceID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2393,34 +2433,36 @@ func (client *WorkloadNetworksClient) updateDNSServiceCreateRequest(ctx context.
 
 // BeginUpdateDNSZone - Create or update a DNS zone by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// dnsZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
-// workloadNetworkDNSZone - NSX DNS Zone
-// options - WorkloadNetworksClientBeginUpdateDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDNSZone
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - dnsZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
+//   - workloadNetworkDNSZone - NSX DNS Zone
+//   - options - WorkloadNetworksClientBeginUpdateDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDNSZone
+//     method.
 func (client *WorkloadNetworksClient) BeginUpdateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*runtime.Poller[WorkloadNetworksClientUpdateDNSZoneResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateDNSZone(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientUpdateDNSZoneResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientUpdateDNSZoneResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDNSZoneResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDNSZoneResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // UpdateDNSZone - Create or update a DNS zone by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) updateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*http.Response, error) {
 	req, err := client.updateDNSZoneCreateRequest(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2449,7 +2491,7 @@ func (client *WorkloadNetworksClient) updateDNSZoneCreateRequest(ctx context.Con
 		return nil, errors.New("parameter dnsZoneID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsZoneId}", url.PathEscape(dnsZoneID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2462,34 +2504,36 @@ func (client *WorkloadNetworksClient) updateDNSZoneCreateRequest(ctx context.Con
 
 // BeginUpdateDhcp - Create or update dhcp by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// dhcpID - NSX DHCP identifier. Generally the same as the DHCP display name
-// workloadNetworkDhcp - NSX DHCP
-// options - WorkloadNetworksClientBeginUpdateDhcpOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDhcp
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - dhcpID - NSX DHCP identifier. Generally the same as the DHCP display name
+//   - workloadNetworkDhcp - NSX DHCP
+//   - options - WorkloadNetworksClientBeginUpdateDhcpOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDhcp
+//     method.
 func (client *WorkloadNetworksClient) BeginUpdateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (*runtime.Poller[WorkloadNetworksClientUpdateDhcpResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateDhcp(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientUpdateDhcpResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientUpdateDhcpResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDhcpResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDhcpResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // UpdateDhcp - Create or update dhcp by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) updateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (*http.Response, error) {
 	req, err := client.updateDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2518,7 +2562,7 @@ func (client *WorkloadNetworksClient) updateDhcpCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter dhcpID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dhcpId}", url.PathEscape(dhcpID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2531,34 +2575,36 @@ func (client *WorkloadNetworksClient) updateDhcpCreateRequest(ctx context.Contex
 
 // BeginUpdatePortMirroring - Create or update a port mirroring profile by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// portMirroringID - NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name
-// workloadNetworkPortMirroring - NSX port mirroring
-// options - WorkloadNetworksClientBeginUpdatePortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdatePortMirroring
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - portMirroringID - NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name
+//   - workloadNetworkPortMirroring - NSX port mirroring
+//   - options - WorkloadNetworksClientBeginUpdatePortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdatePortMirroring
+//     method.
 func (client *WorkloadNetworksClient) BeginUpdatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*runtime.Poller[WorkloadNetworksClientUpdatePortMirroringResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updatePortMirroring(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientUpdatePortMirroringResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientUpdatePortMirroringResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdatePortMirroringResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdatePortMirroringResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // UpdatePortMirroring - Create or update a port mirroring profile by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) updatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*http.Response, error) {
 	req, err := client.updatePortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2587,7 +2633,7 @@ func (client *WorkloadNetworksClient) updatePortMirroringCreateRequest(ctx conte
 		return nil, errors.New("parameter portMirroringID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{portMirroringId}", url.PathEscape(portMirroringID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2600,34 +2646,36 @@ func (client *WorkloadNetworksClient) updatePortMirroringCreateRequest(ctx conte
 
 // BeginUpdateSegments - Create or update a segment by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// segmentID - NSX Segment identifier. Generally the same as the Segment's display name
-// workloadNetworkSegment - NSX Segment
-// options - WorkloadNetworksClientBeginUpdateSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateSegments
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - segmentID - NSX Segment identifier. Generally the same as the Segment's display name
+//   - workloadNetworkSegment - NSX Segment
+//   - options - WorkloadNetworksClientBeginUpdateSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateSegments
+//     method.
 func (client *WorkloadNetworksClient) BeginUpdateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*runtime.Poller[WorkloadNetworksClientUpdateSegmentsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateSegments(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientUpdateSegmentsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientUpdateSegmentsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateSegmentsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateSegmentsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // UpdateSegments - Create or update a segment by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) updateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*http.Response, error) {
 	req, err := client.updateSegmentsCreateRequest(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2656,7 +2704,7 @@ func (client *WorkloadNetworksClient) updateSegmentsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter segmentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{segmentId}", url.PathEscape(segmentID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2669,34 +2717,36 @@ func (client *WorkloadNetworksClient) updateSegmentsCreateRequest(ctx context.Co
 
 // BeginUpdateVMGroup - Create or update a vm group by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// vmGroupID - NSX VM Group identifier. Generally the same as the VM Group's display name
-// workloadNetworkVMGroup - NSX VM Group
-// options - WorkloadNetworksClientBeginUpdateVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateVMGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - vmGroupID - NSX VM Group identifier. Generally the same as the VM Group's display name
+//   - workloadNetworkVMGroup - NSX VM Group
+//   - options - WorkloadNetworksClientBeginUpdateVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateVMGroup
+//     method.
 func (client *WorkloadNetworksClient) BeginUpdateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*runtime.Poller[WorkloadNetworksClientUpdateVMGroupResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateVMGroup(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkloadNetworksClientUpdateVMGroupResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadNetworksClientUpdateVMGroupResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateVMGroupResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateVMGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // UpdateVMGroup - Create or update a vm group by id in a private cloud workload network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *WorkloadNetworksClient) updateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*http.Response, error) {
 	req, err := client.updateVMGroupCreateRequest(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2725,7 +2775,7 @@ func (client *WorkloadNetworksClient) updateVMGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter vmGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmGroupId}", url.PathEscape(vmGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

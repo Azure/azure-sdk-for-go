@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // ScriptPackagesClient contains the methods for the ScriptPackages group.
 // Don't use this type directly, use NewScriptPackagesClient() instead.
 type ScriptPackagesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewScriptPackagesClient creates a new instance of ScriptPackagesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewScriptPackagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptPackagesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ScriptPackagesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ScriptPackagesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get a script package available to run on a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// scriptPackageName - Name of the script package in the private cloud
-// options - ScriptPackagesClientGetOptions contains the optional parameters for the ScriptPackagesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - scriptPackageName - Name of the script package in the private cloud
+//   - options - ScriptPackagesClientGetOptions contains the optional parameters for the ScriptPackagesClient.Get method.
 func (client *ScriptPackagesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptPackagesClientGetOptions) (ScriptPackagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, scriptPackageName, options)
 	if err != nil {
 		return ScriptPackagesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ScriptPackagesClientGetResponse{}, err
 	}
@@ -96,7 +86,7 @@ func (client *ScriptPackagesClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter scriptPackageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptPackageName}", url.PathEscape(scriptPackageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,10 +107,11 @@ func (client *ScriptPackagesClient) getHandleResponse(resp *http.Response) (Scri
 }
 
 // NewListPager - List script packages available to run on the private cloud
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - ScriptPackagesClientListOptions contains the optional parameters for the ScriptPackagesClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - ScriptPackagesClientListOptions contains the optional parameters for the ScriptPackagesClient.NewListPager method.
 func (client *ScriptPackagesClient) NewListPager(resourceGroupName string, privateCloudName string, options *ScriptPackagesClientListOptions) *runtime.Pager[ScriptPackagesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ScriptPackagesClientListResponse]{
 		More: func(page ScriptPackagesClientListResponse) bool {
@@ -137,7 +128,7 @@ func (client *ScriptPackagesClient) NewListPager(resourceGroupName string, priva
 			if err != nil {
 				return ScriptPackagesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ScriptPackagesClientListResponse{}, err
 			}
@@ -164,7 +155,7 @@ func (client *ScriptPackagesClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

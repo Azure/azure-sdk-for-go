@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // ConfigurationProfileHCRPAssignmentsClient contains the methods for the ConfigurationProfileHCRPAssignments group.
 // Don't use this type directly, use NewConfigurationProfileHCRPAssignmentsClient() instead.
 type ConfigurationProfileHCRPAssignmentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewConfigurationProfileHCRPAssignmentsClient creates a new instance of ConfigurationProfileHCRPAssignmentsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewConfigurationProfileHCRPAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationProfileHCRPAssignmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ConfigurationProfileHCRPAssignmentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ConfigurationProfileHCRPAssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates an association between a ARC machine and Automanage configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// machineName - The name of the Arc machine.
-// configurationProfileAssignmentName - Name of the configuration profile assignment. Only default is supported.
-// parameters - Parameters supplied to the create or update configuration profile assignment.
-// options - ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfileHCRPAssignmentsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - machineName - The name of the Arc machine.
+//   - configurationProfileAssignmentName - Name of the configuration profile assignment. Only default is supported.
+//   - parameters - Parameters supplied to the create or update configuration profile assignment.
+//   - options - ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfileHCRPAssignmentsClient.CreateOrUpdate
+//     method.
 func (client *ConfigurationProfileHCRPAssignmentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string, parameters ConfigurationProfileAssignment, options *ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateOptions) (ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, machineName, configurationProfileAssignmentName, parameters, options)
 	if err != nil {
 		return ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *ConfigurationProfileHCRPAssignmentsClient) createOrUpdateCreateReq
 		return nil, errors.New("parameter configurationProfileAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationProfileAssignmentName}", url.PathEscape(configurationProfileAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,18 +110,19 @@ func (client *ConfigurationProfileHCRPAssignmentsClient) createOrUpdateHandleRes
 
 // Delete - Delete a configuration profile assignment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// machineName - The name of the Arc machine.
-// configurationProfileAssignmentName - Name of the configuration profile assignment
-// options - ConfigurationProfileHCRPAssignmentsClientDeleteOptions contains the optional parameters for the ConfigurationProfileHCRPAssignmentsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - machineName - The name of the Arc machine.
+//   - configurationProfileAssignmentName - Name of the configuration profile assignment
+//   - options - ConfigurationProfileHCRPAssignmentsClientDeleteOptions contains the optional parameters for the ConfigurationProfileHCRPAssignmentsClient.Delete
+//     method.
 func (client *ConfigurationProfileHCRPAssignmentsClient) Delete(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string, options *ConfigurationProfileHCRPAssignmentsClientDeleteOptions) (ConfigurationProfileHCRPAssignmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, machineName, configurationProfileAssignmentName, options)
 	if err != nil {
 		return ConfigurationProfileHCRPAssignmentsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationProfileHCRPAssignmentsClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *ConfigurationProfileHCRPAssignmentsClient) deleteCreateRequest(ctx
 		return nil, errors.New("parameter configurationProfileAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationProfileAssignmentName}", url.PathEscape(configurationProfileAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,18 +164,19 @@ func (client *ConfigurationProfileHCRPAssignmentsClient) deleteCreateRequest(ctx
 
 // Get - Get information about a configuration profile assignment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// machineName - The name of the Arc machine.
-// configurationProfileAssignmentName - The configuration profile assignment name.
-// options - ConfigurationProfileHCRPAssignmentsClientGetOptions contains the optional parameters for the ConfigurationProfileHCRPAssignmentsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - machineName - The name of the Arc machine.
+//   - configurationProfileAssignmentName - The configuration profile assignment name.
+//   - options - ConfigurationProfileHCRPAssignmentsClientGetOptions contains the optional parameters for the ConfigurationProfileHCRPAssignmentsClient.Get
+//     method.
 func (client *ConfigurationProfileHCRPAssignmentsClient) Get(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string, options *ConfigurationProfileHCRPAssignmentsClientGetOptions) (ConfigurationProfileHCRPAssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, machineName, configurationProfileAssignmentName, options)
 	if err != nil {
 		return ConfigurationProfileHCRPAssignmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationProfileHCRPAssignmentsClientGetResponse{}, err
 	}
@@ -213,7 +205,7 @@ func (client *ConfigurationProfileHCRPAssignmentsClient) getCreateRequest(ctx co
 		return nil, errors.New("parameter configurationProfileAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationProfileAssignmentName}", url.PathEscape(configurationProfileAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

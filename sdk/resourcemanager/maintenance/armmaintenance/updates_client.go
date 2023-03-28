@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,43 +24,35 @@ import (
 // UpdatesClient contains the methods for the Updates group.
 // Don't use this type directly, use NewUpdatesClient() instead.
 type UpdatesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewUpdatesClient creates a new instance of UpdatesClient with the specified values.
-// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdatesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".UpdatesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &UpdatesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Get updates to resources.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource group name
-// providerName - Resource provider name
-// resourceType - Resource type
-// resourceName - Resource identifier
-// options - UpdatesClientListOptions contains the optional parameters for the UpdatesClient.List method.
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - options - UpdatesClientListOptions contains the optional parameters for the UpdatesClient.NewListPager method.
 func (client *UpdatesClient) NewListPager(resourceGroupName string, providerName string, resourceType string, resourceName string, options *UpdatesClientListOptions) *runtime.Pager[UpdatesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UpdatesClientListResponse]{
 		More: func(page UpdatesClientListResponse) bool {
@@ -73,7 +63,7 @@ func (client *UpdatesClient) NewListPager(resourceGroupName string, providerName
 			if err != nil {
 				return UpdatesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return UpdatesClientListResponse{}, err
 			}
@@ -108,7 +98,7 @@ func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -129,14 +119,15 @@ func (client *UpdatesClient) listHandleResponse(resp *http.Response) (UpdatesCli
 }
 
 // NewListParentPager - Get updates to resources.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource group name
-// providerName - Resource provider name
-// resourceParentType - Resource parent type
-// resourceParentName - Resource parent identifier
-// resourceType - Resource type
-// resourceName - Resource identifier
-// options - UpdatesClientListParentOptions contains the optional parameters for the UpdatesClient.ListParent method.
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceParentType - Resource parent type
+//   - resourceParentName - Resource parent identifier
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - options - UpdatesClientListParentOptions contains the optional parameters for the UpdatesClient.NewListParentPager method.
 func (client *UpdatesClient) NewListParentPager(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *UpdatesClientListParentOptions) *runtime.Pager[UpdatesClientListParentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UpdatesClientListParentResponse]{
 		More: func(page UpdatesClientListParentResponse) bool {
@@ -147,7 +138,7 @@ func (client *UpdatesClient) NewListParentPager(resourceGroupName string, provid
 			if err != nil {
 				return UpdatesClientListParentResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return UpdatesClientListParentResponse{}, err
 			}
@@ -190,7 +181,7 @@ func (client *UpdatesClient) listParentCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // ConfigurationsClient contains the methods for the MaintenanceConfigurations group.
 // Don't use this type directly, use NewConfigurationsClient() instead.
 type ConfigurationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient with the specified values.
-// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ConfigurationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or Update configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource Group Name
-// resourceName - Maintenance Configuration Name
-// configuration - The configuration
-// options - ConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - Resource Group Name
+//   - resourceName - Maintenance Configuration Name
+//   - configuration - The configuration
+//   - options - ConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationsClient.CreateOrUpdate
+//     method.
 func (client *ConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configuration Configuration, options *ConfigurationsClientCreateOrUpdateOptions) (ConfigurationsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, configuration, options)
 	if err != nil {
 		return ConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationsClientCreateOrUpdateResponse{}, err
 	}
@@ -94,7 +84,7 @@ func (client *ConfigurationsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,16 +106,17 @@ func (client *ConfigurationsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Delete Configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource Group Name
-// resourceName - Maintenance Configuration Name
-// options - ConfigurationsClientDeleteOptions contains the optional parameters for the ConfigurationsClient.Delete method.
+//   - resourceGroupName - Resource Group Name
+//   - resourceName - Maintenance Configuration Name
+//   - options - ConfigurationsClientDeleteOptions contains the optional parameters for the ConfigurationsClient.Delete method.
 func (client *ConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *ConfigurationsClientDeleteOptions) (ConfigurationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ConfigurationsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationsClientDeleteResponse{}, err
 	}
@@ -150,7 +141,7 @@ func (client *ConfigurationsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,16 +163,17 @@ func (client *ConfigurationsClient) deleteHandleResponse(resp *http.Response) (C
 
 // Get - Get Configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource Group Name
-// resourceName - Maintenance Configuration Name
-// options - ConfigurationsClientGetOptions contains the optional parameters for the ConfigurationsClient.Get method.
+//   - resourceGroupName - Resource Group Name
+//   - resourceName - Maintenance Configuration Name
+//   - options - ConfigurationsClientGetOptions contains the optional parameters for the ConfigurationsClient.Get method.
 func (client *ConfigurationsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ConfigurationsClientGetOptions) (ConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ConfigurationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationsClientGetResponse{}, err
 	}
@@ -206,7 +198,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -227,8 +219,9 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 }
 
 // NewListPager - Get Configuration records within a subscription
+//
 // Generated from API version 2022-07-01-preview
-// options - ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.List method.
+//   - options - ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.NewListPager method.
 func (client *ConfigurationsClient) NewListPager(options *ConfigurationsClientListOptions) *runtime.Pager[ConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationsClientListResponse]{
 		More: func(page ConfigurationsClientListResponse) bool {
@@ -239,7 +232,7 @@ func (client *ConfigurationsClient) NewListPager(options *ConfigurationsClientLi
 			if err != nil {
 				return ConfigurationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ConfigurationsClientListResponse{}, err
 			}
@@ -258,7 +251,7 @@ func (client *ConfigurationsClient) listCreateRequest(ctx context.Context, optio
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -280,17 +273,18 @@ func (client *ConfigurationsClient) listHandleResponse(resp *http.Response) (Con
 
 // Update - Patch configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource Group Name
-// resourceName - Maintenance Configuration Name
-// configuration - The configuration
-// options - ConfigurationsClientUpdateOptions contains the optional parameters for the ConfigurationsClient.Update method.
+//   - resourceGroupName - Resource Group Name
+//   - resourceName - Maintenance Configuration Name
+//   - configuration - The configuration
+//   - options - ConfigurationsClientUpdateOptions contains the optional parameters for the ConfigurationsClient.Update method.
 func (client *ConfigurationsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, configuration Configuration, options *ConfigurationsClientUpdateOptions) (ConfigurationsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, configuration, options)
 	if err != nil {
 		return ConfigurationsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationsClientUpdateResponse{}, err
 	}
@@ -315,7 +309,7 @@ func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

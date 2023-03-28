@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,53 +24,45 @@ import (
 // ConfigurationAssignmentsClient contains the methods for the ConfigurationAssignments group.
 // Don't use this type directly, use NewConfigurationAssignmentsClient() instead.
 type ConfigurationAssignmentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewConfigurationAssignmentsClient creates a new instance of ConfigurationAssignmentsClient with the specified values.
-// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewConfigurationAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ConfigurationAssignmentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ConfigurationAssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Register configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource group name
-// providerName - Resource provider name
-// resourceType - Resource type
-// resourceName - Resource identifier
-// configurationAssignmentName - Configuration assignment name
-// configurationAssignment - The configurationAssignment
-// options - ConfigurationAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationAssignmentsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - configurationAssignmentName - Configuration assignment name
+//   - configurationAssignment - The configurationAssignment
+//   - options - ConfigurationAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationAssignmentsClient.CreateOrUpdate
+//     method.
 func (client *ConfigurationAssignmentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsClientCreateOrUpdateOptions) (ConfigurationAssignmentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, configurationAssignment, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationAssignmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -109,7 +99,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateCreateRequest(ctx co
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,23 +121,24 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateHandleResponse(resp 
 
 // CreateOrUpdateParent - Register configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource group name
-// providerName - Resource provider name
-// resourceParentType - Resource parent type
-// resourceParentName - Resource parent identifier
-// resourceType - Resource type
-// resourceName - Resource identifier
-// configurationAssignmentName - Configuration assignment name
-// configurationAssignment - The configurationAssignment
-// options - ConfigurationAssignmentsClientCreateOrUpdateParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.CreateOrUpdateParent
-// method.
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceParentType - Resource parent type
+//   - resourceParentName - Resource parent identifier
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - configurationAssignmentName - Configuration assignment name
+//   - configurationAssignment - The configurationAssignment
+//   - options - ConfigurationAssignmentsClientCreateOrUpdateParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.CreateOrUpdateParent
+//     method.
 func (client *ConfigurationAssignmentsClient) CreateOrUpdateParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsClientCreateOrUpdateParentOptions) (ConfigurationAssignmentsClientCreateOrUpdateParentResponse, error) {
 	req, err := client.createOrUpdateParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, configurationAssignmentName, configurationAssignment, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientCreateOrUpdateParentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationAssignmentsClientCreateOrUpdateParentResponse{}, err
 	}
@@ -192,7 +183,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentCreateRequest(
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -214,20 +205,21 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentHandleResponse
 
 // Delete - Unregister configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource group name
-// providerName - Resource provider name
-// resourceType - Resource type
-// resourceName - Resource identifier
-// configurationAssignmentName - Unique configuration assignment name
-// options - ConfigurationAssignmentsClientDeleteOptions contains the optional parameters for the ConfigurationAssignmentsClient.Delete
-// method.
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - configurationAssignmentName - Unique configuration assignment name
+//   - options - ConfigurationAssignmentsClientDeleteOptions contains the optional parameters for the ConfigurationAssignmentsClient.Delete
+//     method.
 func (client *ConfigurationAssignmentsClient) Delete(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientDeleteOptions) (ConfigurationAssignmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationAssignmentsClientDeleteResponse{}, err
 	}
@@ -264,7 +256,7 @@ func (client *ConfigurationAssignmentsClient) deleteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -286,22 +278,23 @@ func (client *ConfigurationAssignmentsClient) deleteHandleResponse(resp *http.Re
 
 // DeleteParent - Unregister configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource group name
-// providerName - Resource provider name
-// resourceParentType - Resource parent type
-// resourceParentName - Resource parent identifier
-// resourceType - Resource type
-// resourceName - Resource identifier
-// configurationAssignmentName - Unique configuration assignment name
-// options - ConfigurationAssignmentsClientDeleteParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.DeleteParent
-// method.
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceParentType - Resource parent type
+//   - resourceParentName - Resource parent identifier
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - configurationAssignmentName - Unique configuration assignment name
+//   - options - ConfigurationAssignmentsClientDeleteParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.DeleteParent
+//     method.
 func (client *ConfigurationAssignmentsClient) DeleteParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientDeleteParentOptions) (ConfigurationAssignmentsClientDeleteParentResponse, error) {
 	req, err := client.deleteParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientDeleteParentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationAssignmentsClientDeleteParentResponse{}, err
 	}
@@ -346,7 +339,7 @@ func (client *ConfigurationAssignmentsClient) deleteParentCreateRequest(ctx cont
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -368,20 +361,21 @@ func (client *ConfigurationAssignmentsClient) deleteParentHandleResponse(resp *h
 
 // Get - Get configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource group name
-// providerName - Resource provider name
-// resourceType - Resource type
-// resourceName - Resource identifier
-// configurationAssignmentName - Configuration assignment name
-// options - ConfigurationAssignmentsClientGetOptions contains the optional parameters for the ConfigurationAssignmentsClient.Get
-// method.
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - configurationAssignmentName - Configuration assignment name
+//   - options - ConfigurationAssignmentsClientGetOptions contains the optional parameters for the ConfigurationAssignmentsClient.Get
+//     method.
 func (client *ConfigurationAssignmentsClient) Get(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientGetOptions) (ConfigurationAssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationAssignmentsClientGetResponse{}, err
 	}
@@ -418,7 +412,7 @@ func (client *ConfigurationAssignmentsClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -440,22 +434,23 @@ func (client *ConfigurationAssignmentsClient) getHandleResponse(resp *http.Respo
 
 // GetParent - Get configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource group name
-// providerName - Resource provider name
-// resourceParentType - Resource parent type
-// resourceParentName - Resource parent identifier
-// resourceType - Resource type
-// resourceName - Resource identifier
-// configurationAssignmentName - Configuration assignment name
-// options - ConfigurationAssignmentsClientGetParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.GetParent
-// method.
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceParentType - Resource parent type
+//   - resourceParentName - Resource parent identifier
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - configurationAssignmentName - Configuration assignment name
+//   - options - ConfigurationAssignmentsClientGetParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.GetParent
+//     method.
 func (client *ConfigurationAssignmentsClient) GetParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientGetParentOptions) (ConfigurationAssignmentsClientGetParentResponse, error) {
 	req, err := client.getParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientGetParentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationAssignmentsClientGetParentResponse{}, err
 	}
@@ -500,7 +495,7 @@ func (client *ConfigurationAssignmentsClient) getParentCreateRequest(ctx context
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -521,13 +516,14 @@ func (client *ConfigurationAssignmentsClient) getParentHandleResponse(resp *http
 }
 
 // NewListPager - List configurationAssignments for resource.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource group name
-// providerName - Resource provider name
-// resourceType - Resource type
-// resourceName - Resource identifier
-// options - ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.List
-// method.
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - options - ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.NewListPager
+//     method.
 func (client *ConfigurationAssignmentsClient) NewListPager(resourceGroupName string, providerName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListOptions) *runtime.Pager[ConfigurationAssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationAssignmentsClientListResponse]{
 		More: func(page ConfigurationAssignmentsClientListResponse) bool {
@@ -538,7 +534,7 @@ func (client *ConfigurationAssignmentsClient) NewListPager(resourceGroupName str
 			if err != nil {
 				return ConfigurationAssignmentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ConfigurationAssignmentsClientListResponse{}, err
 			}
@@ -573,7 +569,7 @@ func (client *ConfigurationAssignmentsClient) listCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -594,15 +590,16 @@ func (client *ConfigurationAssignmentsClient) listHandleResponse(resp *http.Resp
 }
 
 // NewListParentPager - List configurationAssignments for resource.
+//
 // Generated from API version 2022-07-01-preview
-// resourceGroupName - Resource group name
-// providerName - Resource provider name
-// resourceParentType - Resource parent type
-// resourceParentName - Resource parent identifier
-// resourceType - Resource type
-// resourceName - Resource identifier
-// options - ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.ListParent
-// method.
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceParentType - Resource parent type
+//   - resourceParentName - Resource parent identifier
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - options - ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.NewListParentPager
+//     method.
 func (client *ConfigurationAssignmentsClient) NewListParentPager(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListParentOptions) *runtime.Pager[ConfigurationAssignmentsClientListParentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationAssignmentsClientListParentResponse]{
 		More: func(page ConfigurationAssignmentsClientListParentResponse) bool {
@@ -613,7 +610,7 @@ func (client *ConfigurationAssignmentsClient) NewListParentPager(resourceGroupNa
 			if err != nil {
 				return ConfigurationAssignmentsClientListParentResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ConfigurationAssignmentsClientListParentResponse{}, err
 			}
@@ -656,7 +653,7 @@ func (client *ConfigurationAssignmentsClient) listParentCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

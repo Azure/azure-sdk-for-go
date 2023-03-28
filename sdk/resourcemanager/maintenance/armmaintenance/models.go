@@ -29,7 +29,7 @@ type ApplyUpdate struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ApplyUpdateForResourceGroupClientListOptions contains the optional parameters for the ApplyUpdateForResourceGroupClient.List
+// ApplyUpdateForResourceGroupClientListOptions contains the optional parameters for the ApplyUpdateForResourceGroupClient.NewListPager
 // method.
 type ApplyUpdateForResourceGroupClientListOptions struct {
 	// placeholder for future optional parameters
@@ -68,7 +68,7 @@ type ApplyUpdatesClientGetParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplyUpdatesClientListOptions contains the optional parameters for the ApplyUpdatesClient.List method.
+// ApplyUpdatesClientListOptions contains the optional parameters for the ApplyUpdatesClient.NewListPager method.
 type ApplyUpdatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -162,19 +162,19 @@ type ConfigurationAssignmentsClientGetParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.List
+// ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.NewListPager
 // method.
 type ConfigurationAssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.ListParent
+// ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.NewListParentPager
 // method.
 type ConfigurationAssignmentsClientListParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsWithinSubscriptionClientListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscriptionClient.List
+// ConfigurationAssignmentsWithinSubscriptionClientListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscriptionClient.NewListPager
 // method.
 type ConfigurationAssignmentsWithinSubscriptionClientListOptions struct {
 	// placeholder for future optional parameters
@@ -217,7 +217,7 @@ type ConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.List method.
+// ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.NewListPager method.
 type ConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -227,7 +227,7 @@ type ConfigurationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsForResourceGroupClientListOptions contains the optional parameters for the ConfigurationsForResourceGroupClient.List
+// ConfigurationsForResourceGroupClientListOptions contains the optional parameters for the ConfigurationsForResourceGroupClient.NewListPager
 // method.
 type ConfigurationsForResourceGroupClientListOptions struct {
 	// placeholder for future optional parameters
@@ -335,7 +335,7 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty"`
 
 	// Properties of the operation
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 }
 
 // OperationInfo - Information about an operation
@@ -353,7 +353,7 @@ type OperationInfo struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -370,7 +370,7 @@ type PublicMaintenanceConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.List
+// PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.NewListPager
 // method.
 type PublicMaintenanceConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -460,12 +460,12 @@ type UpdateProperties struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// UpdatesClientListOptions contains the optional parameters for the UpdatesClient.List method.
+// UpdatesClientListOptions contains the optional parameters for the UpdatesClient.NewListPager method.
 type UpdatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UpdatesClientListParentOptions contains the optional parameters for the UpdatesClient.ListParent method.
+// UpdatesClientListParentOptions contains the optional parameters for the UpdatesClient.NewListParentPager method.
 type UpdatesClientListParentOptions struct {
 	// placeholder for future optional parameters
 }

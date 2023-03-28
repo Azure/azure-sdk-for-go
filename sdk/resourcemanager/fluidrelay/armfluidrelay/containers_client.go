@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // ContainersClient contains the methods for the FluidRelayContainers group.
 // Don't use this type directly, use NewContainersClient() instead.
 type ContainersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewContainersClient creates a new instance of ContainersClient with the specified values.
-// subscriptionID - The subscription id (GUID) for this resource.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription id (GUID) for this resource.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ContainersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ContainersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Delete - Delete a Fluid Relay container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroup - The resource group containing the resource.
-// fluidRelayServerName - The Fluid Relay server resource name.
-// fluidRelayContainerName - The Fluid Relay container resource name.
-// options - ContainersClientDeleteOptions contains the optional parameters for the ContainersClient.Delete method.
+//   - resourceGroup - The resource group containing the resource.
+//   - fluidRelayServerName - The Fluid Relay server resource name.
+//   - fluidRelayContainerName - The Fluid Relay container resource name.
+//   - options - ContainersClientDeleteOptions contains the optional parameters for the ContainersClient.Delete method.
 func (client *ContainersClient) Delete(ctx context.Context, resourceGroup string, fluidRelayServerName string, fluidRelayContainerName string, options *ContainersClientDeleteOptions) (ContainersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroup, fluidRelayServerName, fluidRelayContainerName, options)
 	if err != nil {
 		return ContainersClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainersClientDeleteResponse{}, err
 	}
@@ -96,7 +86,7 @@ func (client *ContainersClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter fluidRelayContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fluidRelayContainerName}", url.PathEscape(fluidRelayContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,17 +99,18 @@ func (client *ContainersClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Get a Fluid Relay container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroup - The resource group containing the resource.
-// fluidRelayServerName - The Fluid Relay server resource name.
-// fluidRelayContainerName - The Fluid Relay container resource name.
-// options - ContainersClientGetOptions contains the optional parameters for the ContainersClient.Get method.
+//   - resourceGroup - The resource group containing the resource.
+//   - fluidRelayServerName - The Fluid Relay server resource name.
+//   - fluidRelayContainerName - The Fluid Relay container resource name.
+//   - options - ContainersClientGetOptions contains the optional parameters for the ContainersClient.Get method.
 func (client *ContainersClient) Get(ctx context.Context, resourceGroup string, fluidRelayServerName string, fluidRelayContainerName string, options *ContainersClientGetOptions) (ContainersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroup, fluidRelayServerName, fluidRelayContainerName, options)
 	if err != nil {
 		return ContainersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainersClientGetResponse{}, err
 	}
@@ -148,7 +139,7 @@ func (client *ContainersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter fluidRelayContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fluidRelayContainerName}", url.PathEscape(fluidRelayContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,12 +160,12 @@ func (client *ContainersClient) getHandleResponse(resp *http.Response) (Containe
 }
 
 // NewListByFluidRelayServersPager - List all Fluid Relay containers which are children of a given Fluid Relay server.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroup - The resource group containing the resource.
-// fluidRelayServerName - The Fluid Relay server resource name.
-// options - ContainersClientListByFluidRelayServersOptions contains the optional parameters for the ContainersClient.ListByFluidRelayServers
-// method.
+//   - resourceGroup - The resource group containing the resource.
+//   - fluidRelayServerName - The Fluid Relay server resource name.
+//   - options - ContainersClientListByFluidRelayServersOptions contains the optional parameters for the ContainersClient.NewListByFluidRelayServersPager
+//     method.
 func (client *ContainersClient) NewListByFluidRelayServersPager(resourceGroup string, fluidRelayServerName string, options *ContainersClientListByFluidRelayServersOptions) *runtime.Pager[ContainersClientListByFluidRelayServersResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContainersClientListByFluidRelayServersResponse]{
 		More: func(page ContainersClientListByFluidRelayServersResponse) bool {
@@ -191,7 +182,7 @@ func (client *ContainersClient) NewListByFluidRelayServersPager(resourceGroup st
 			if err != nil {
 				return ContainersClientListByFluidRelayServersResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ContainersClientListByFluidRelayServersResponse{}, err
 			}
@@ -218,7 +209,7 @@ func (client *ContainersClient) listByFluidRelayServersCreateRequest(ctx context
 		return nil, errors.New("parameter fluidRelayServerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fluidRelayServerName}", url.PathEscape(fluidRelayServerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

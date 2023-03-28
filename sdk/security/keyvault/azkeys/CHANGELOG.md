@@ -3,9 +3,11 @@
 ## 0.10.0 (Unreleased)
 
 ### Features Added
+* Upgraded to API version 7.4
 
 ### Breaking Changes
 * Moved from `sdk/keyvault/azkeys` to `sdk/security/keyvault/azkeys`
+* Renamed `ActionType` to `KeyRotationPolicyAction`
 
 ### Bugs Fixed
 

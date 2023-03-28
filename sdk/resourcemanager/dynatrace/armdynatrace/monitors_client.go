@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // MonitorsClient contains the methods for the Monitors group.
 // Don't use this type directly, use NewMonitorsClient() instead.
 type MonitorsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewMonitorsClient creates a new instance of MonitorsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MonitorsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MonitorsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a MonitorResource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// resource - Resource create parameters.
-// options - MonitorsClientBeginCreateOrUpdateOptions contains the optional parameters for the MonitorsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - resource - Resource create parameters.
+//   - options - MonitorsClientBeginCreateOrUpdateOptions contains the optional parameters for the MonitorsClient.BeginCreateOrUpdate
+//     method.
 func (client *MonitorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, resource MonitorResource, options *MonitorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MonitorsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, monitorName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MonitorsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MonitorsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create a MonitorResource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
 func (client *MonitorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, resource MonitorResource, options *MonitorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, monitorName, resource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +101,7 @@ func (client *MonitorsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,33 +114,35 @@ func (client *MonitorsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Delete a MonitorResource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// options - MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
 func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*runtime.Poller[MonitorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, monitorName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MonitorsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MonitorsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete a MonitorResource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
 func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +167,7 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,16 +180,17 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Get a MonitorResource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// options - MonitorsClientGetOptions contains the optional parameters for the MonitorsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - MonitorsClientGetOptions contains the optional parameters for the MonitorsClient.Get method.
 func (client *MonitorsClient) Get(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetOptions) (MonitorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return MonitorsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MonitorsClientGetResponse{}, err
 	}
@@ -221,7 +215,7 @@ func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,17 +237,18 @@ func (client *MonitorsClient) getHandleResponse(resp *http.Response) (MonitorsCl
 
 // GetAccountCredentials - Gets the user account credentials for a Monitor
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// options - MonitorsClientGetAccountCredentialsOptions contains the optional parameters for the MonitorsClient.GetAccountCredentials
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - MonitorsClientGetAccountCredentialsOptions contains the optional parameters for the MonitorsClient.GetAccountCredentials
+//     method.
 func (client *MonitorsClient) GetAccountCredentials(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetAccountCredentialsOptions) (MonitorsClientGetAccountCredentialsResponse, error) {
 	req, err := client.getAccountCredentialsCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return MonitorsClientGetAccountCredentialsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MonitorsClientGetAccountCredentialsResponse{}, err
 	}
@@ -278,7 +273,7 @@ func (client *MonitorsClient) getAccountCredentialsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -300,16 +295,17 @@ func (client *MonitorsClient) getAccountCredentialsHandleResponse(resp *http.Res
 
 // GetSSODetails - Gets the SSO configuration details from the partner.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// options - MonitorsClientGetSSODetailsOptions contains the optional parameters for the MonitorsClient.GetSSODetails method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - MonitorsClientGetSSODetailsOptions contains the optional parameters for the MonitorsClient.GetSSODetails method.
 func (client *MonitorsClient) GetSSODetails(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetSSODetailsOptions) (MonitorsClientGetSSODetailsResponse, error) {
 	req, err := client.getSSODetailsCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return MonitorsClientGetSSODetailsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MonitorsClientGetSSODetailsResponse{}, err
 	}
@@ -334,7 +330,7 @@ func (client *MonitorsClient) getSSODetailsCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,17 +356,18 @@ func (client *MonitorsClient) getSSODetailsHandleResponse(resp *http.Response) (
 // GetVMHostPayload - Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a
 // VM.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// options - MonitorsClientGetVMHostPayloadOptions contains the optional parameters for the MonitorsClient.GetVMHostPayload
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - MonitorsClientGetVMHostPayloadOptions contains the optional parameters for the MonitorsClient.GetVMHostPayload
+//     method.
 func (client *MonitorsClient) GetVMHostPayload(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetVMHostPayloadOptions) (MonitorsClientGetVMHostPayloadResponse, error) {
 	req, err := client.getVMHostPayloadCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return MonitorsClientGetVMHostPayloadResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MonitorsClientGetVMHostPayloadResponse{}, err
 	}
@@ -395,7 +392,7 @@ func (client *MonitorsClient) getVMHostPayloadCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -416,11 +413,12 @@ func (client *MonitorsClient) getVMHostPayloadHandleResponse(resp *http.Response
 }
 
 // NewListAppServicesPager - Gets list of App Services with Dynatrace PaaS OneAgent enabled
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// options - MonitorsClientListAppServicesOptions contains the optional parameters for the MonitorsClient.ListAppServices
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - MonitorsClientListAppServicesOptions contains the optional parameters for the MonitorsClient.NewListAppServicesPager
+//     method.
 func (client *MonitorsClient) NewListAppServicesPager(resourceGroupName string, monitorName string, options *MonitorsClientListAppServicesOptions) *runtime.Pager[MonitorsClientListAppServicesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListAppServicesResponse]{
 		More: func(page MonitorsClientListAppServicesResponse) bool {
@@ -437,7 +435,7 @@ func (client *MonitorsClient) NewListAppServicesPager(resourceGroupName string, 
 			if err != nil {
 				return MonitorsClientListAppServicesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MonitorsClientListAppServicesResponse{}, err
 			}
@@ -464,7 +462,7 @@ func (client *MonitorsClient) listAppServicesCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -485,10 +483,11 @@ func (client *MonitorsClient) listAppServicesHandleResponse(resp *http.Response)
 }
 
 // NewListByResourceGroupPager - List MonitorResource resources by resource group
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.NewListByResourceGroupPager
+//     method.
 func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName string, options *MonitorsClientListByResourceGroupOptions) *runtime.Pager[MonitorsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListByResourceGroupResponse]{
 		More: func(page MonitorsClientListByResourceGroupResponse) bool {
@@ -505,7 +504,7 @@ func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName stri
 			if err != nil {
 				return MonitorsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MonitorsClientListByResourceGroupResponse{}, err
 			}
@@ -528,7 +527,7 @@ func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -549,9 +548,10 @@ func (client *MonitorsClient) listByResourceGroupHandleResponse(resp *http.Respo
 }
 
 // NewListBySubscriptionIDPager - List all MonitorResource by subscriptionId
+//
 // Generated from API version 2021-09-01
-// options - MonitorsClientListBySubscriptionIDOptions contains the optional parameters for the MonitorsClient.ListBySubscriptionID
-// method.
+//   - options - MonitorsClientListBySubscriptionIDOptions contains the optional parameters for the MonitorsClient.NewListBySubscriptionIDPager
+//     method.
 func (client *MonitorsClient) NewListBySubscriptionIDPager(options *MonitorsClientListBySubscriptionIDOptions) *runtime.Pager[MonitorsClientListBySubscriptionIDResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListBySubscriptionIDResponse]{
 		More: func(page MonitorsClientListBySubscriptionIDResponse) bool {
@@ -568,7 +568,7 @@ func (client *MonitorsClient) NewListBySubscriptionIDPager(options *MonitorsClie
 			if err != nil {
 				return MonitorsClientListBySubscriptionIDResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MonitorsClientListBySubscriptionIDResponse{}, err
 			}
@@ -587,7 +587,7 @@ func (client *MonitorsClient) listBySubscriptionIDCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -608,10 +608,11 @@ func (client *MonitorsClient) listBySubscriptionIDHandleResponse(resp *http.Resp
 }
 
 // NewListHostsPager - List the compute resources currently being monitored by the Dynatrace resource.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// options - MonitorsClientListHostsOptions contains the optional parameters for the MonitorsClient.ListHosts method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - MonitorsClientListHostsOptions contains the optional parameters for the MonitorsClient.NewListHostsPager method.
 func (client *MonitorsClient) NewListHostsPager(resourceGroupName string, monitorName string, options *MonitorsClientListHostsOptions) *runtime.Pager[MonitorsClientListHostsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListHostsResponse]{
 		More: func(page MonitorsClientListHostsResponse) bool {
@@ -628,7 +629,7 @@ func (client *MonitorsClient) NewListHostsPager(resourceGroupName string, monito
 			if err != nil {
 				return MonitorsClientListHostsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MonitorsClientListHostsResponse{}, err
 			}
@@ -655,7 +656,7 @@ func (client *MonitorsClient) listHostsCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -676,12 +677,13 @@ func (client *MonitorsClient) listHostsHandleResponse(resp *http.Response) (Moni
 }
 
 // NewListLinkableEnvironmentsPager - Gets all the Dynatrace environments that a user can link a azure resource to
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// request - The details of the linkable environment request.
-// options - MonitorsClientListLinkableEnvironmentsOptions contains the optional parameters for the MonitorsClient.ListLinkableEnvironments
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - request - The details of the linkable environment request.
+//   - options - MonitorsClientListLinkableEnvironmentsOptions contains the optional parameters for the MonitorsClient.NewListLinkableEnvironmentsPager
+//     method.
 func (client *MonitorsClient) NewListLinkableEnvironmentsPager(resourceGroupName string, monitorName string, request LinkableEnvironmentRequest, options *MonitorsClientListLinkableEnvironmentsOptions) *runtime.Pager[MonitorsClientListLinkableEnvironmentsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListLinkableEnvironmentsResponse]{
 		More: func(page MonitorsClientListLinkableEnvironmentsResponse) bool {
@@ -698,7 +700,7 @@ func (client *MonitorsClient) NewListLinkableEnvironmentsPager(resourceGroupName
 			if err != nil {
 				return MonitorsClientListLinkableEnvironmentsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MonitorsClientListLinkableEnvironmentsResponse{}, err
 			}
@@ -725,7 +727,7 @@ func (client *MonitorsClient) listLinkableEnvironmentsCreateRequest(ctx context.
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -746,11 +748,12 @@ func (client *MonitorsClient) listLinkableEnvironmentsHandleResponse(resp *http.
 }
 
 // NewListMonitoredResourcesPager - List the resources currently being monitored by the Dynatrace monitor resource.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// options - MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.ListMonitoredResources
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.NewListMonitoredResourcesPager
+//     method.
 func (client *MonitorsClient) NewListMonitoredResourcesPager(resourceGroupName string, monitorName string, options *MonitorsClientListMonitoredResourcesOptions) *runtime.Pager[MonitorsClientListMonitoredResourcesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListMonitoredResourcesResponse]{
 		More: func(page MonitorsClientListMonitoredResourcesResponse) bool {
@@ -767,7 +770,7 @@ func (client *MonitorsClient) NewListMonitoredResourcesPager(resourceGroupName s
 			if err != nil {
 				return MonitorsClientListMonitoredResourcesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MonitorsClientListMonitoredResourcesResponse{}, err
 			}
@@ -794,7 +797,7 @@ func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Co
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -816,17 +819,18 @@ func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Re
 
 // Update - Update a MonitorResource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// resource - The resource properties to be updated.
-// options - MonitorsClientUpdateOptions contains the optional parameters for the MonitorsClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - resource - The resource properties to be updated.
+//   - options - MonitorsClientUpdateOptions contains the optional parameters for the MonitorsClient.Update method.
 func (client *MonitorsClient) Update(ctx context.Context, resourceGroupName string, monitorName string, resource MonitorResourceUpdate, options *MonitorsClientUpdateOptions) (MonitorsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, monitorName, resource, options)
 	if err != nil {
 		return MonitorsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MonitorsClientUpdateResponse{}, err
 	}
@@ -851,7 +855,7 @@ func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

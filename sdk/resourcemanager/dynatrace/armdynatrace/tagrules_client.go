@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // TagRulesClient contains the methods for the TagRules group.
 // Don't use this type directly, use NewTagRulesClient() instead.
 type TagRulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTagRulesClient creates a new instance of TagRulesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTagRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TagRulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TagRulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TagRulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// ruleSetName - Monitor resource name
-// resource - Resource create parameters.
-// options - TagRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - ruleSetName - Monitor resource name
+//   - resource - Resource create parameters.
+//   - options - TagRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.BeginCreateOrUpdate
+//     method.
 func (client *TagRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, resource TagRule, options *TagRulesClientBeginCreateOrUpdateOptions) (*runtime.Poller[TagRulesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, monitorName, ruleSetName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[TagRulesClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TagRulesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[TagRulesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TagRulesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
 func (client *TagRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, resource TagRule, options *TagRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, monitorName, ruleSetName, resource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +106,7 @@ func (client *TagRulesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter ruleSetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleSetName}", url.PathEscape(ruleSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,34 +119,36 @@ func (client *TagRulesClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Delete a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// ruleSetName - Monitor resource name
-// options - TagRulesClientBeginDeleteOptions contains the optional parameters for the TagRulesClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - ruleSetName - Monitor resource name
+//   - options - TagRulesClientBeginDeleteOptions contains the optional parameters for the TagRulesClient.BeginDelete method.
 func (client *TagRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientBeginDeleteOptions) (*runtime.Poller[TagRulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, monitorName, ruleSetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[TagRulesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TagRulesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[TagRulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TagRulesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
 func (client *TagRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, ruleSetName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -184,7 +177,7 @@ func (client *TagRulesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter ruleSetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleSetName}", url.PathEscape(ruleSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -197,17 +190,18 @@ func (client *TagRulesClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Get a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// ruleSetName - Monitor resource name
-// options - TagRulesClientGetOptions contains the optional parameters for the TagRulesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - ruleSetName - Monitor resource name
+//   - options - TagRulesClientGetOptions contains the optional parameters for the TagRulesClient.Get method.
 func (client *TagRulesClient) Get(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientGetOptions) (TagRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, monitorName, ruleSetName, options)
 	if err != nil {
 		return TagRulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TagRulesClientGetResponse{}, err
 	}
@@ -236,7 +230,7 @@ func (client *TagRulesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter ruleSetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleSetName}", url.PathEscape(ruleSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -257,10 +251,11 @@ func (client *TagRulesClient) getHandleResponse(resp *http.Response) (TagRulesCl
 }
 
 // NewListPager - List all TagRule by monitorName
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// options - TagRulesClientListOptions contains the optional parameters for the TagRulesClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - TagRulesClientListOptions contains the optional parameters for the TagRulesClient.NewListPager method.
 func (client *TagRulesClient) NewListPager(resourceGroupName string, monitorName string, options *TagRulesClientListOptions) *runtime.Pager[TagRulesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TagRulesClientListResponse]{
 		More: func(page TagRulesClientListResponse) bool {
@@ -277,7 +272,7 @@ func (client *TagRulesClient) NewListPager(resourceGroupName string, monitorName
 			if err != nil {
 				return TagRulesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TagRulesClientListResponse{}, err
 			}
@@ -304,7 +299,7 @@ func (client *TagRulesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -326,18 +321,19 @@ func (client *TagRulesClient) listHandleResponse(resp *http.Response) (TagRulesC
 
 // Update - Update a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// ruleSetName - Monitor resource name
-// resource - The resource properties to be updated.
-// options - TagRulesClientUpdateOptions contains the optional parameters for the TagRulesClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - ruleSetName - Monitor resource name
+//   - resource - The resource properties to be updated.
+//   - options - TagRulesClientUpdateOptions contains the optional parameters for the TagRulesClient.Update method.
 func (client *TagRulesClient) Update(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, resource TagRuleUpdate, options *TagRulesClientUpdateOptions) (TagRulesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, monitorName, ruleSetName, resource, options)
 	if err != nil {
 		return TagRulesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TagRulesClientUpdateResponse{}, err
 	}
@@ -366,7 +362,7 @@ func (client *TagRulesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter ruleSetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleSetName}", url.PathEscape(ruleSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -9,12 +9,12 @@
 
 package armdynatrace
 
-// MonitorsClientCreateOrUpdateResponse contains the response from method MonitorsClient.CreateOrUpdate.
+// MonitorsClientCreateOrUpdateResponse contains the response from method MonitorsClient.BeginCreateOrUpdate.
 type MonitorsClientCreateOrUpdateResponse struct {
 	MonitorResource
 }
 
-// MonitorsClientDeleteResponse contains the response from method MonitorsClient.Delete.
+// MonitorsClientDeleteResponse contains the response from method MonitorsClient.BeginDelete.
 type MonitorsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -39,32 +39,32 @@ type MonitorsClientGetVMHostPayloadResponse struct {
 	VMExtensionPayload
 }
 
-// MonitorsClientListAppServicesResponse contains the response from method MonitorsClient.ListAppServices.
+// MonitorsClientListAppServicesResponse contains the response from method MonitorsClient.NewListAppServicesPager.
 type MonitorsClientListAppServicesResponse struct {
 	AppServiceListResponse
 }
 
-// MonitorsClientListByResourceGroupResponse contains the response from method MonitorsClient.ListByResourceGroup.
+// MonitorsClientListByResourceGroupResponse contains the response from method MonitorsClient.NewListByResourceGroupPager.
 type MonitorsClientListByResourceGroupResponse struct {
 	MonitorResourceListResult
 }
 
-// MonitorsClientListBySubscriptionIDResponse contains the response from method MonitorsClient.ListBySubscriptionID.
+// MonitorsClientListBySubscriptionIDResponse contains the response from method MonitorsClient.NewListBySubscriptionIDPager.
 type MonitorsClientListBySubscriptionIDResponse struct {
 	MonitorResourceListResult
 }
 
-// MonitorsClientListHostsResponse contains the response from method MonitorsClient.ListHosts.
+// MonitorsClientListHostsResponse contains the response from method MonitorsClient.NewListHostsPager.
 type MonitorsClientListHostsResponse struct {
 	VMHostsListResponse
 }
 
-// MonitorsClientListLinkableEnvironmentsResponse contains the response from method MonitorsClient.ListLinkableEnvironments.
+// MonitorsClientListLinkableEnvironmentsResponse contains the response from method MonitorsClient.NewListLinkableEnvironmentsPager.
 type MonitorsClientListLinkableEnvironmentsResponse struct {
 	LinkableEnvironmentListResponse
 }
 
-// MonitorsClientListMonitoredResourcesResponse contains the response from method MonitorsClient.ListMonitoredResources.
+// MonitorsClientListMonitoredResourcesResponse contains the response from method MonitorsClient.NewListMonitoredResourcesPager.
 type MonitorsClientListMonitoredResourcesResponse struct {
 	MonitoredResourceListResponse
 }
@@ -74,12 +74,12 @@ type MonitorsClientUpdateResponse struct {
 	MonitorResource
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// SingleSignOnClientCreateOrUpdateResponse contains the response from method SingleSignOnClient.CreateOrUpdate.
+// SingleSignOnClientCreateOrUpdateResponse contains the response from method SingleSignOnClient.BeginCreateOrUpdate.
 type SingleSignOnClientCreateOrUpdateResponse struct {
 	SingleSignOnResource
 }
@@ -89,17 +89,17 @@ type SingleSignOnClientGetResponse struct {
 	SingleSignOnResource
 }
 
-// SingleSignOnClientListResponse contains the response from method SingleSignOnClient.List.
+// SingleSignOnClientListResponse contains the response from method SingleSignOnClient.NewListPager.
 type SingleSignOnClientListResponse struct {
 	SingleSignOnResourceListResult
 }
 
-// TagRulesClientCreateOrUpdateResponse contains the response from method TagRulesClient.CreateOrUpdate.
+// TagRulesClientCreateOrUpdateResponse contains the response from method TagRulesClient.BeginCreateOrUpdate.
 type TagRulesClientCreateOrUpdateResponse struct {
 	TagRule
 }
 
-// TagRulesClientDeleteResponse contains the response from method TagRulesClient.Delete.
+// TagRulesClientDeleteResponse contains the response from method TagRulesClient.BeginDelete.
 type TagRulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -109,7 +109,7 @@ type TagRulesClientGetResponse struct {
 	TagRule
 }
 
-// TagRulesClientListResponse contains the response from method TagRulesClient.List.
+// TagRulesClientListResponse contains the response from method TagRulesClient.NewListPager.
 type TagRulesClientListResponse struct {
 	TagRuleListResult
 }

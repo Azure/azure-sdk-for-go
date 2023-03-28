@@ -345,34 +345,35 @@ type MonitorsClientGetVMHostPayloadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsClientListAppServicesOptions contains the optional parameters for the MonitorsClient.ListAppServices method.
+// MonitorsClientListAppServicesOptions contains the optional parameters for the MonitorsClient.NewListAppServicesPager method.
 type MonitorsClientListAppServicesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.ListByResourceGroup method.
+// MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.NewListByResourceGroupPager
+// method.
 type MonitorsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsClientListBySubscriptionIDOptions contains the optional parameters for the MonitorsClient.ListBySubscriptionID
+// MonitorsClientListBySubscriptionIDOptions contains the optional parameters for the MonitorsClient.NewListBySubscriptionIDPager
 // method.
 type MonitorsClientListBySubscriptionIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsClientListHostsOptions contains the optional parameters for the MonitorsClient.ListHosts method.
+// MonitorsClientListHostsOptions contains the optional parameters for the MonitorsClient.NewListHostsPager method.
 type MonitorsClientListHostsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsClientListLinkableEnvironmentsOptions contains the optional parameters for the MonitorsClient.ListLinkableEnvironments
+// MonitorsClientListLinkableEnvironmentsOptions contains the optional parameters for the MonitorsClient.NewListLinkableEnvironmentsPager
 // method.
 type MonitorsClientListLinkableEnvironmentsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.ListMonitoredResources
+// MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.NewListMonitoredResourcesPager
 // method.
 type MonitorsClientListMonitoredResourcesOptions struct {
 	// placeholder for future optional parameters
@@ -432,7 +433,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -488,7 +489,7 @@ type SingleSignOnClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SingleSignOnClientListOptions contains the optional parameters for the SingleSignOnClient.List method.
+// SingleSignOnClientListOptions contains the optional parameters for the SingleSignOnClient.NewListPager method.
 type SingleSignOnClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -612,7 +613,7 @@ type TagRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagRulesClientListOptions contains the optional parameters for the TagRulesClient.List method.
+// TagRulesClientListOptions contains the optional parameters for the TagRulesClient.NewListPager method.
 type TagRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }

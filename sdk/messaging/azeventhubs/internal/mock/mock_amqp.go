@@ -97,10 +97,10 @@ func (mr *MockAMQPReceiverMockRecorder) LinkName() *gomock.Call {
 }
 
 // LinkSourceFilterValue mocks base method.
-func (m *MockAMQPReceiver) LinkSourceFilterValue(name string) interface{} {
+func (m *MockAMQPReceiver) LinkSourceFilterValue(name string) any {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "LinkSourceFilterValue", name)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].(any)
 	return ret0
 }
 
@@ -275,10 +275,10 @@ func (mr *MockAMQPReceiverCloserMockRecorder) LinkName() *gomock.Call {
 }
 
 // LinkSourceFilterValue mocks base method.
-func (m *MockAMQPReceiverCloser) LinkSourceFilterValue(name string) interface{} {
+func (m *MockAMQPReceiverCloser) LinkSourceFilterValue(name string) any {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "LinkSourceFilterValue", name)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].(any)
 	return ret0
 }
 

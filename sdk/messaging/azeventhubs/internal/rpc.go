@@ -228,7 +228,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 	msg.Properties.ReplyTo = &l.clientAddress
 
 	if msg.ApplicationProperties == nil {
-		msg.ApplicationProperties = make(map[string]interface{})
+		msg.ApplicationProperties = make(map[string]any)
 	}
 
 	if _, ok := msg.ApplicationProperties["server-timeout"]; !ok {

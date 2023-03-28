@@ -164,7 +164,7 @@ func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, er
 	connOptions := amqp.ConnOptions{
 		SASLType:    amqp.SASLTypeAnonymous(),
 		MaxSessions: 65535,
-		Properties: map[string]interface{}{
+		Properties: map[string]any{
 			"product":    "MSGolangClient",
 			"version":    Version,
 			"platform":   runtime.GOOS,

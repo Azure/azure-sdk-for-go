@@ -34,7 +34,7 @@ func TestMessageBatchUnitTests(t *testing.T) {
 
 		err := mb.AddMessage(&Message{
 			Body: []byte("small body"),
-			ApplicationProperties: map[string]interface{}{
+			ApplicationProperties: map[string]any{
 				"small": "value",
 			},
 		}, nil)
@@ -54,7 +54,7 @@ func TestMessageBatchUnitTests(t *testing.T) {
 
 		err := mb.AddMessage(&Message{
 			Body: []byte("small body"),
-			ApplicationProperties: map[string]interface{}{
+			ApplicationProperties: map[string]any{
 				"hello":      "world",
 				"anInt":      100,
 				"aFLoat":     100.1,

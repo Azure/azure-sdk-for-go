@@ -38,7 +38,7 @@ func MustGenerateMessages(sc *StressContext, sender *azservicebus.Sender, messag
 	for i := 0; i < messageLimit; i++ {
 		err := streamingBatch.Add(ctx, &azservicebus.Message{
 			Body: extraBytes,
-			ApplicationProperties: map[string]interface{}{
+			ApplicationProperties: map[string]any{
 				"Number": i,
 			},
 		}, nil)

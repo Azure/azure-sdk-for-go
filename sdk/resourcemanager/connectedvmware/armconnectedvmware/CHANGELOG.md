@@ -4,11 +4,7 @@
 ### Breaking Changes
 
 - Struct `Condition` has been removed
-- Struct `ErrorDefinition` has been removed
-- Struct `ErrorResponse` has been removed
 - Struct `MachineExtensionInstanceView` has been removed
-- Struct `ProxyResource` has been removed
-- Struct `Resource` has been removed
 
 ### Features Added
 

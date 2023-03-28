@@ -11,7 +11,7 @@ package armmanagementpartner
 
 const (
 	moduleName    = "armmanagementpartner"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.6.0"
 )
 
 // ManagementPartnerState - this is the management partner state: Active or Deleted

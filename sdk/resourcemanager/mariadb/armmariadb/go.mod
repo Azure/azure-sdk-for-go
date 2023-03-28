@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb
 
 go 1.18
 

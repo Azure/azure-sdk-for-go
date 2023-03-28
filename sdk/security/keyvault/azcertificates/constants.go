@@ -122,6 +122,7 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 	}
 }
 
+// KeyUsageType - Defines how the certificate's key may be used.
 type KeyUsageType string
 
 const (

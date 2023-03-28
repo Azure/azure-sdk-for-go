@@ -11,7 +11,7 @@ package armloadtesting
 
 const (
 	moduleName    = "armloadtesting"
-	moduleVersion = "v1.0.2"
+	moduleVersion = "v1.1.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

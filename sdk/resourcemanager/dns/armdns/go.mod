@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns
 
 go 1.18
 

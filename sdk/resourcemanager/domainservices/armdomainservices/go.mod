@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices
 
 go 1.18
 

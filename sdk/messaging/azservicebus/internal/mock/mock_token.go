@@ -46,7 +46,7 @@ func (m *MockTokenProvider) GetToken(uri string) (*auth.Token, error) {
 }
 
 // GetToken indicates an expected call of GetToken.
-func (mr *MockTokenProviderMockRecorder) GetToken(uri interface{}) *gomock.Call {
+func (mr *MockTokenProviderMockRecorder) GetToken(uri any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetToken", reflect.TypeOf((*MockTokenProvider)(nil).GetToken), uri)
 }

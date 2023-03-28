@@ -36,10 +36,10 @@ func TestErrMissingField_Error(t *testing.T) {
 
 func TestErrIncorrectType_Error(t *testing.T) {
 	var a int
-	var b map[string]interface{}
+	var b map[string]any
 	var c *float64
 
-	types := map[reflect.Type]interface{}{
+	types := map[reflect.Type]any{
 		reflect.TypeOf(a): 7.0,
 		reflect.TypeOf(b): map[string]string{},
 		reflect.TypeOf(c): int(2),

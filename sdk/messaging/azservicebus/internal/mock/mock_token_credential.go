@@ -48,7 +48,7 @@ func (m *MockTokenCredential) GetToken(ctx context.Context, options policy.Token
 }
 
 // GetToken indicates an expected call of GetToken.
-func (mr *MockTokenCredentialMockRecorder) GetToken(ctx, options interface{}) *gomock.Call {
+func (mr *MockTokenCredentialMockRecorder) GetToken(ctx, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetToken", reflect.TypeOf((*MockTokenCredential)(nil).GetToken), ctx, options)
 }

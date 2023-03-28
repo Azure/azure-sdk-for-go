@@ -49,7 +49,7 @@ func (m *MockRPCLink) Close(ctx context.Context) error {
 }
 
 // Close indicates an expected call of Close.
-func (mr *MockRPCLinkMockRecorder) Close(ctx interface{}) *gomock.Call {
+func (mr *MockRPCLinkMockRecorder) Close(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockRPCLink)(nil).Close), ctx)
 }
@@ -64,7 +64,7 @@ func (m *MockRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPC
 }
 
 // RPC indicates an expected call of RPC.
-func (mr *MockRPCLinkMockRecorder) RPC(ctx, msg interface{}) *gomock.Call {
+func (mr *MockRPCLinkMockRecorder) RPC(ctx, msg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RPC", reflect.TypeOf((*MockRPCLink)(nil).RPC), ctx, msg)
 }

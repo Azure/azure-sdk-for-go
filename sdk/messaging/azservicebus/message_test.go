@@ -40,7 +40,7 @@ func TestMessageUnitTest(t *testing.T) {
 		require.EqualValues(t, "the body", string(amqpMessage.Data[0]))
 		require.EqualValues(t, 1, len(amqpMessage.Data))
 
-		require.EqualValues(t, map[interface{}]interface{}{
+		require.EqualValues(t, map[any]any{
 			partitionKeyAnnotation:          "partition key",
 			scheduledEnqueuedTimeAnnotation: scheduledEnqueuedTime,
 		}, amqpMessage.Annotations)
@@ -63,7 +63,7 @@ func TestAMQPMessageToReceivedMessage(t *testing.T) {
 			Data: [][]byte{
 				[]byte("hello"),
 			},
-			Annotations: map[interface{}]interface{}{
+			Annotations: map[any]any{
 				"x-opt-locked-until":            lockedUntil,
 				"x-opt-sequence-number":         int64(101),
 				"x-opt-partition-key":           "partitionKey1",
@@ -125,7 +125,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 			"x-opt-via-partition-key":       "via",
 			"custom-annotation":             "value",
 		},
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			"test": "foo",
 		},
 		Header: &amqp.MessageHeader{
@@ -153,14 +153,14 @@ func TestAMQPMessageToMessage(t *testing.T) {
 
 	require.EqualValues(t, msg.LockToken, expectedAMQPEncodedLockTokenGUID, "locktoken")
 
-	require.EqualValues(t, map[string]interface{}{
+	require.EqualValues(t, map[string]any{
 		"test": "foo",
 	}, msg.ApplicationProperties)
 }
 
 func TestMessageState(t *testing.T) {
 	testData := []struct {
-		PropValue interface{}
+		PropValue any
 		Expected  MessageState
 	}{
 		{PropValue: int32(0), Expected: MessageStateActive},

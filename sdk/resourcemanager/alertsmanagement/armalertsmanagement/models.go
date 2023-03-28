@@ -177,13 +177,13 @@ type AlertProcessingRulesClientGetByNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertProcessingRulesClientListByResourceGroupOptions contains the optional parameters for the AlertProcessingRulesClient.ListByResourceGroup
+// AlertProcessingRulesClientListByResourceGroupOptions contains the optional parameters for the AlertProcessingRulesClient.NewListByResourceGroupPager
 // method.
 type AlertProcessingRulesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertProcessingRulesClientListBySubscriptionOptions contains the optional parameters for the AlertProcessingRulesClient.ListBySubscription
+// AlertProcessingRulesClientListBySubscriptionOptions contains the optional parameters for the AlertProcessingRulesClient.NewListBySubscriptionPager
 // method.
 type AlertProcessingRulesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -209,10 +209,10 @@ type AlertProperties struct {
 	Essentials *Essentials `json:"essentials,omitempty"`
 
 	// READ-ONLY; Information specific to the monitor service that gives more contextual details about the alert.
-	Context interface{} `json:"context,omitempty" azure:"ro"`
+	Context any `json:"context,omitempty" azure:"ro"`
 
 	// READ-ONLY; Config which would be used for displaying the data in portal.
-	EgressConfig interface{} `json:"egressConfig,omitempty" azure:"ro"`
+	EgressConfig any `json:"egressConfig,omitempty" azure:"ro"`
 }
 
 // AlertsClientChangeStateOptions contains the optional parameters for the AlertsClient.ChangeState method.
@@ -221,7 +221,7 @@ type AlertsClientChangeStateOptions struct {
 	Comment *string
 }
 
-// AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.GetAll method.
+// AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.NewGetAllPager method.
 type AlertsClientGetAllOptions struct {
 	// Filter by specific alert rule. Default value is to select all.
 	AlertRule *string
@@ -640,7 +640,7 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -858,7 +858,7 @@ type SmartGroupsClientChangeStateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SmartGroupsClientGetAllOptions contains the optional parameters for the SmartGroupsClient.GetAll method.
+// SmartGroupsClientGetAllOptions contains the optional parameters for the SmartGroupsClient.NewGetAllPager method.
 type SmartGroupsClientGetAllOptions struct {
 	// Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to select all.
 	MonitorCondition *MonitorCondition

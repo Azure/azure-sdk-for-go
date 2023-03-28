@@ -292,7 +292,7 @@ type (
 	ErrIncorrectType struct {
 		Key          string
 		ExpectedType reflect.Type
-		ActualValue  interface{}
+		ActualValue  any
 	}
 
 	// ErrAMQP indicates that the server communicated an AMQP error with a particular
@@ -321,7 +321,7 @@ func (e ErrMalformedMessage) Error() string {
 
 // NewErrIncorrectType lets you skip using the `reflect` package. Just provide a variable of the desired type as
 // 'expected'.
-func NewErrIncorrectType(key string, expected, actual interface{}) ErrIncorrectType {
+func NewErrIncorrectType(key string, expected, actual any) ErrIncorrectType {
 	return ErrIncorrectType{
 		Key:          key,
 		ExpectedType: reflect.TypeOf(expected),

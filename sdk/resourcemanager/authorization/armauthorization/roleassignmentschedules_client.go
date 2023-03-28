@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,45 +24,37 @@ import (
 // RoleAssignmentSchedulesClient contains the methods for the RoleAssignmentSchedules group.
 // Don't use this type directly, use NewRoleAssignmentSchedulesClient() instead.
 type RoleAssignmentSchedulesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewRoleAssignmentSchedulesClient creates a new instance of RoleAssignmentSchedulesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRoleAssignmentSchedulesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleAssignmentSchedulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RoleAssignmentSchedulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RoleAssignmentSchedulesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Get the specified role assignment schedule for a resource scope
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role assignment schedule.
-// roleAssignmentScheduleName - The name (guid) of the role assignment schedule to get.
-// options - RoleAssignmentSchedulesClientGetOptions contains the optional parameters for the RoleAssignmentSchedulesClient.Get
-// method.
+//   - scope - The scope of the role assignment schedule.
+//   - roleAssignmentScheduleName - The name (guid) of the role assignment schedule to get.
+//   - options - RoleAssignmentSchedulesClientGetOptions contains the optional parameters for the RoleAssignmentSchedulesClient.Get
+//     method.
 func (client *RoleAssignmentSchedulesClient) Get(ctx context.Context, scope string, roleAssignmentScheduleName string, options *RoleAssignmentSchedulesClientGetOptions) (RoleAssignmentSchedulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleAssignmentScheduleName, options)
 	if err != nil {
 		return RoleAssignmentSchedulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentSchedulesClientGetResponse{}, err
 	}
@@ -82,7 +72,7 @@ func (client *RoleAssignmentSchedulesClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter roleAssignmentScheduleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentScheduleName}", url.PathEscape(roleAssignmentScheduleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -103,11 +93,11 @@ func (client *RoleAssignmentSchedulesClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListForScopePager - Gets role assignment schedules for a resource scope.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role assignments schedules.
-// options - RoleAssignmentSchedulesClientListForScopeOptions contains the optional parameters for the RoleAssignmentSchedulesClient.ListForScope
-// method.
+//   - scope - The scope of the role assignments schedules.
+//   - options - RoleAssignmentSchedulesClientListForScopeOptions contains the optional parameters for the RoleAssignmentSchedulesClient.NewListForScopePager
+//     method.
 func (client *RoleAssignmentSchedulesClient) NewListForScopePager(scope string, options *RoleAssignmentSchedulesClientListForScopeOptions) *runtime.Pager[RoleAssignmentSchedulesClientListForScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentSchedulesClientListForScopeResponse]{
 		More: func(page RoleAssignmentSchedulesClientListForScopeResponse) bool {
@@ -124,7 +114,7 @@ func (client *RoleAssignmentSchedulesClient) NewListForScopePager(scope string, 
 			if err != nil {
 				return RoleAssignmentSchedulesClientListForScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RoleAssignmentSchedulesClientListForScopeResponse{}, err
 			}
@@ -140,7 +130,7 @@ func (client *RoleAssignmentSchedulesClient) NewListForScopePager(scope string, 
 func (client *RoleAssignmentSchedulesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentSchedulesClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentSchedules"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

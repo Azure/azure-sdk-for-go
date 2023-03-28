@@ -74,7 +74,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 
 	msg := &amqp.Message{
 		Value: token.Token,
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			cbsOperationKey:  cbsOperationPutToken,
 			cbsTokenTypeKey:  string(token.TokenType),
 			cbsAudienceKey:   audience,

@@ -58,7 +58,7 @@ func NewContextWithValueMatcher[KT comparable, VT comparable](key KT, value VT) 
 	return ContextWithValueMatcher[KT, VT]{key, value}
 }
 
-func (m ContextWithValueMatcher[KT, VT]) Matches(x interface{}) bool {
+func (m ContextWithValueMatcher[KT, VT]) Matches(x any) bool {
 	ctx := x.(context.Context)
 	return ctx.Value(m.Key) == m.Value
 }
@@ -88,7 +88,7 @@ type ContextCancelledMatcher struct {
 }
 
 // Matches returns whether x is a match.
-func (m ContextCancelledMatcher) Matches(x interface{}) bool {
+func (m ContextCancelledMatcher) Matches(x any) bool {
 	ctx := x.(context.Context)
 
 	if m.WantCancelled {
@@ -105,7 +105,7 @@ func (m ContextCancelledMatcher) String() string {
 
 type ContextCreatedForTest struct{}
 
-func (m ContextCreatedForTest) Matches(x interface{}) bool {
+func (m ContextCreatedForTest) Matches(x any) bool {
 	ctx := x.(context.Context)
 	return ctx.Value(testContextKey(0)) != nil
 }

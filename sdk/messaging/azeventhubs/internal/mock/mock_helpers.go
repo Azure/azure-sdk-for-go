@@ -71,7 +71,7 @@ type ContextCancelledMatcher struct {
 }
 
 // Matches returns whether x is a match.
-func (m ContextCancelledMatcher) Matches(x interface{}) bool {
+func (m ContextCancelledMatcher) Matches(x any) bool {
 	ctx := x.(context.Context)
 
 	if m.WantCancelled {
@@ -88,7 +88,7 @@ func (m ContextCancelledMatcher) String() string {
 
 type ContextHasTestValueMatcher struct{}
 
-func (m ContextHasTestValueMatcher) Matches(x interface{}) bool {
+func (m ContextHasTestValueMatcher) Matches(x any) bool {
 	ctx := x.(context.Context)
 	return ctx.Value(testContextKey(0)) == "correctContextWasUsed"
 }

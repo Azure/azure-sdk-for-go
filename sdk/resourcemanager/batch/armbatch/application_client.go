@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,48 +25,40 @@ import (
 // ApplicationClient contains the methods for the Application group.
 // Don't use this type directly, use NewApplicationClient() instead.
 type ApplicationClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewApplicationClient creates a new instance of ApplicationClient with the specified values.
-// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ApplicationClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ApplicationClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Adds an application to the specified Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// applicationName - The name of the application. This must be unique within the account.
-// options - ApplicationClientCreateOptions contains the optional parameters for the ApplicationClient.Create method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - applicationName - The name of the application. This must be unique within the account.
+//   - options - ApplicationClientCreateOptions contains the optional parameters for the ApplicationClient.Create method.
 func (client *ApplicationClient) Create(ctx context.Context, resourceGroupName string, accountName string, applicationName string, options *ApplicationClientCreateOptions) (ApplicationClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, applicationName, options)
 	if err != nil {
 		return ApplicationClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ApplicationClientCreateResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *ApplicationClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,17 +112,18 @@ func (client *ApplicationClient) createHandleResponse(resp *http.Response) (Appl
 
 // Delete - Deletes an application.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// applicationName - The name of the application. This must be unique within the account.
-// options - ApplicationClientDeleteOptions contains the optional parameters for the ApplicationClient.Delete method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - applicationName - The name of the application. This must be unique within the account.
+//   - options - ApplicationClientDeleteOptions contains the optional parameters for the ApplicationClient.Delete method.
 func (client *ApplicationClient) Delete(ctx context.Context, resourceGroupName string, accountName string, applicationName string, options *ApplicationClientDeleteOptions) (ApplicationClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, applicationName, options)
 	if err != nil {
 		return ApplicationClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ApplicationClientDeleteResponse{}, err
 	}
@@ -161,7 +152,7 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,17 +165,18 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Gets information about the specified application.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// applicationName - The name of the application. This must be unique within the account.
-// options - ApplicationClientGetOptions contains the optional parameters for the ApplicationClient.Get method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - applicationName - The name of the application. This must be unique within the account.
+//   - options - ApplicationClientGetOptions contains the optional parameters for the ApplicationClient.Get method.
 func (client *ApplicationClient) Get(ctx context.Context, resourceGroupName string, accountName string, applicationName string, options *ApplicationClientGetOptions) (ApplicationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, applicationName, options)
 	if err != nil {
 		return ApplicationClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ApplicationClientGetResponse{}, err
 	}
@@ -213,7 +205,7 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -234,10 +226,11 @@ func (client *ApplicationClient) getHandleResponse(resp *http.Response) (Applica
 }
 
 // NewListPager - Lists all of the applications in the specified account.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// options - ApplicationClientListOptions contains the optional parameters for the ApplicationClient.List method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - options - ApplicationClientListOptions contains the optional parameters for the ApplicationClient.NewListPager method.
 func (client *ApplicationClient) NewListPager(resourceGroupName string, accountName string, options *ApplicationClientListOptions) *runtime.Pager[ApplicationClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationClientListResponse]{
 		More: func(page ApplicationClientListResponse) bool {
@@ -254,7 +247,7 @@ func (client *ApplicationClient) NewListPager(resourceGroupName string, accountN
 			if err != nil {
 				return ApplicationClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ApplicationClientListResponse{}, err
 			}
@@ -281,7 +274,7 @@ func (client *ApplicationClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -306,18 +299,19 @@ func (client *ApplicationClient) listHandleResponse(resp *http.Response) (Applic
 
 // Update - Updates settings for the specified application.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// applicationName - The name of the application. This must be unique within the account.
-// parameters - The parameters for the request.
-// options - ApplicationClientUpdateOptions contains the optional parameters for the ApplicationClient.Update method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - applicationName - The name of the application. This must be unique within the account.
+//   - parameters - The parameters for the request.
+//   - options - ApplicationClientUpdateOptions contains the optional parameters for the ApplicationClient.Update method.
 func (client *ApplicationClient) Update(ctx context.Context, resourceGroupName string, accountName string, applicationName string, parameters Application, options *ApplicationClientUpdateOptions) (ApplicationClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, applicationName, parameters, options)
 	if err != nil {
 		return ApplicationClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ApplicationClientUpdateResponse{}, err
 	}
@@ -346,7 +340,7 @@ func (client *ApplicationClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

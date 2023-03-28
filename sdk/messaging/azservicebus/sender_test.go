@@ -192,7 +192,7 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 	sendAndReceive := func(receiver *Receiver, complete bool) {
 		origSentMsg := &Message{
 			Body: []byte("ResendableMessage"),
-			ApplicationProperties: map[string]interface{}{
+			ApplicationProperties: map[string]any{
 				"Status": "first send",
 			},
 		}
@@ -503,7 +503,7 @@ func TestSender_SendAMQPMessage(t *testing.T) {
 				[]byte("Hello World"),
 			},
 		},
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			"hello": "world",
 		},
 	}, nil)
@@ -555,7 +555,7 @@ func TestSender_SendAMQPMessageWithMultipleByteSlicesInData(t *testing.T) {
 				[]byte("Hello World"),
 				[]byte("And another message!"),
 			}},
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			"hello": "world",
 		},
 	}, nil)
@@ -634,7 +634,7 @@ func TestSender_SendAMQPMessageWithValue(t *testing.T) {
 	for i, value := range values {
 		err = sender.SendAMQPAnnotatedMessage(context.Background(), &AMQPAnnotatedMessage{
 			Body: AMQPAnnotatedMessageBody{Value: value},
-			ApplicationProperties: map[string]interface{}{
+			ApplicationProperties: map[string]any{
 				"index": i,
 			},
 		}, nil)
@@ -676,7 +676,7 @@ func TestSender_SendAMQPMessageWithSequence(t *testing.T) {
 
 		err = sender.SendAMQPAnnotatedMessage(context.Background(), &AMQPAnnotatedMessage{
 			Body: AMQPAnnotatedMessageBody{Sequence: seq},
-			ApplicationProperties: map[string]interface{}{
+			ApplicationProperties: map[string]any{
 				"index": i,
 			},
 		}, nil)

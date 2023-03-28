@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // ConfigurationProfilesClient contains the methods for the ConfigurationProfiles group.
 // Don't use this type directly, use NewConfigurationProfilesClient() instead.
 type ConfigurationProfilesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewConfigurationProfilesClient creates a new instance of ConfigurationProfilesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewConfigurationProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationProfilesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ConfigurationProfilesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ConfigurationProfilesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates a configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// configurationProfileName - Name of the configuration profile.
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// parameters - Parameters supplied to create or update configuration profile.
-// options - ConfigurationProfilesClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfilesClient.CreateOrUpdate
-// method.
+//   - configurationProfileName - Name of the configuration profile.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - parameters - Parameters supplied to create or update configuration profile.
+//   - options - ConfigurationProfilesClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfilesClient.CreateOrUpdate
+//     method.
 func (client *ConfigurationProfilesClient) CreateOrUpdate(ctx context.Context, configurationProfileName string, resourceGroupName string, parameters ConfigurationProfile, options *ConfigurationProfilesClientCreateOrUpdateOptions) (ConfigurationProfilesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, configurationProfileName, resourceGroupName, parameters, options)
 	if err != nil {
 		return ConfigurationProfilesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationProfilesClientCreateOrUpdateResponse{}, err
 	}
@@ -93,7 +83,7 @@ func (client *ConfigurationProfilesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,17 +105,18 @@ func (client *ConfigurationProfilesClient) createOrUpdateHandleResponse(resp *ht
 
 // Delete - Delete a configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// configurationProfileName - Name of the configuration profile
-// options - ConfigurationProfilesClientDeleteOptions contains the optional parameters for the ConfigurationProfilesClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - configurationProfileName - Name of the configuration profile
+//   - options - ConfigurationProfilesClientDeleteOptions contains the optional parameters for the ConfigurationProfilesClient.Delete
+//     method.
 func (client *ConfigurationProfilesClient) Delete(ctx context.Context, resourceGroupName string, configurationProfileName string, options *ConfigurationProfilesClientDeleteOptions) (ConfigurationProfilesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, configurationProfileName, options)
 	if err != nil {
 		return ConfigurationProfilesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationProfilesClientDeleteResponse{}, err
 	}
@@ -150,7 +141,7 @@ func (client *ConfigurationProfilesClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,17 +154,18 @@ func (client *ConfigurationProfilesClient) deleteCreateRequest(ctx context.Conte
 
 // Get - Get information about a configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// configurationProfileName - The configuration profile name.
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - ConfigurationProfilesClientGetOptions contains the optional parameters for the ConfigurationProfilesClient.Get
-// method.
+//   - configurationProfileName - The configuration profile name.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - ConfigurationProfilesClientGetOptions contains the optional parameters for the ConfigurationProfilesClient.Get
+//     method.
 func (client *ConfigurationProfilesClient) Get(ctx context.Context, configurationProfileName string, resourceGroupName string, options *ConfigurationProfilesClientGetOptions) (ConfigurationProfilesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, configurationProfileName, resourceGroupName, options)
 	if err != nil {
 		return ConfigurationProfilesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationProfilesClientGetResponse{}, err
 	}
@@ -198,7 +190,7 @@ func (client *ConfigurationProfilesClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,11 +211,11 @@ func (client *ConfigurationProfilesClient) getHandleResponse(resp *http.Response
 }
 
 // NewListByResourceGroupPager - Retrieve a list of configuration profile within a given resource group
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - ConfigurationProfilesClientListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilesClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - ConfigurationProfilesClientListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilesClient.NewListByResourceGroupPager
+//     method.
 func (client *ConfigurationProfilesClient) NewListByResourceGroupPager(resourceGroupName string, options *ConfigurationProfilesClientListByResourceGroupOptions) *runtime.Pager[ConfigurationProfilesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationProfilesClientListByResourceGroupResponse]{
 		More: func(page ConfigurationProfilesClientListByResourceGroupResponse) bool {
@@ -234,7 +226,7 @@ func (client *ConfigurationProfilesClient) NewListByResourceGroupPager(resourceG
 			if err != nil {
 				return ConfigurationProfilesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ConfigurationProfilesClientListByResourceGroupResponse{}, err
 			}
@@ -257,7 +249,7 @@ func (client *ConfigurationProfilesClient) listByResourceGroupCreateRequest(ctx 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -278,10 +270,10 @@ func (client *ConfigurationProfilesClient) listByResourceGroupHandleResponse(res
 }
 
 // NewListBySubscriptionPager - Retrieve a list of configuration profile within a subscription
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// options - ConfigurationProfilesClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilesClient.ListBySubscription
-// method.
+//   - options - ConfigurationProfilesClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilesClient.NewListBySubscriptionPager
+//     method.
 func (client *ConfigurationProfilesClient) NewListBySubscriptionPager(options *ConfigurationProfilesClientListBySubscriptionOptions) *runtime.Pager[ConfigurationProfilesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationProfilesClientListBySubscriptionResponse]{
 		More: func(page ConfigurationProfilesClientListBySubscriptionResponse) bool {
@@ -292,7 +284,7 @@ func (client *ConfigurationProfilesClient) NewListBySubscriptionPager(options *C
 			if err != nil {
 				return ConfigurationProfilesClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ConfigurationProfilesClientListBySubscriptionResponse{}, err
 			}
@@ -311,7 +303,7 @@ func (client *ConfigurationProfilesClient) listBySubscriptionCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -333,18 +325,19 @@ func (client *ConfigurationProfilesClient) listBySubscriptionHandleResponse(resp
 
 // Update - Updates a configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// configurationProfileName - Name of the configuration profile.
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// parameters - Parameters supplied to update configuration profile.
-// options - ConfigurationProfilesClientUpdateOptions contains the optional parameters for the ConfigurationProfilesClient.Update
-// method.
+//   - configurationProfileName - Name of the configuration profile.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - parameters - Parameters supplied to update configuration profile.
+//   - options - ConfigurationProfilesClientUpdateOptions contains the optional parameters for the ConfigurationProfilesClient.Update
+//     method.
 func (client *ConfigurationProfilesClient) Update(ctx context.Context, configurationProfileName string, resourceGroupName string, parameters ConfigurationProfileUpdate, options *ConfigurationProfilesClientUpdateOptions) (ConfigurationProfilesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, configurationProfileName, resourceGroupName, parameters, options)
 	if err != nil {
 		return ConfigurationProfilesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConfigurationProfilesClientUpdateResponse{}, err
 	}
@@ -369,7 +362,7 @@ func (client *ConfigurationProfilesClient) updateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

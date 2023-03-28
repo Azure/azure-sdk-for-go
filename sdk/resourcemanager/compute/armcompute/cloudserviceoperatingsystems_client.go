@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,32 +24,23 @@ import (
 // CloudServiceOperatingSystemsClient contains the methods for the CloudServiceOperatingSystems group.
 // Don't use this type directly, use NewCloudServiceOperatingSystemsClient() instead.
 type CloudServiceOperatingSystemsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCloudServiceOperatingSystemsClient creates a new instance of CloudServiceOperatingSystemsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudServiceOperatingSystemsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CloudServiceOperatingSystemsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CloudServiceOperatingSystemsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -59,17 +48,18 @@ func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azc
 // GetOSFamily - Gets properties of a guest operating system family that can be specified in the XML service configuration
 // (.cscfg) for a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-04
-// location - Name of the location that the OS family pertains to.
-// osFamilyName - Name of the OS family.
-// options - CloudServiceOperatingSystemsClientGetOSFamilyOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSFamily
-// method.
+//   - location - Name of the location that the OS family pertains to.
+//   - osFamilyName - Name of the OS family.
+//   - options - CloudServiceOperatingSystemsClientGetOSFamilyOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSFamily
+//     method.
 func (client *CloudServiceOperatingSystemsClient) GetOSFamily(ctx context.Context, location string, osFamilyName string, options *CloudServiceOperatingSystemsClientGetOSFamilyOptions) (CloudServiceOperatingSystemsClientGetOSFamilyResponse, error) {
 	req, err := client.getOSFamilyCreateRequest(ctx, location, osFamilyName, options)
 	if err != nil {
 		return CloudServiceOperatingSystemsClientGetOSFamilyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CloudServiceOperatingSystemsClientGetOSFamilyResponse{}, err
 	}
@@ -94,7 +84,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,17 +107,18 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyHandleResponse(resp
 // GetOSVersion - Gets properties of a guest operating system version that can be specified in the XML service configuration
 // (.cscfg) for a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-04
-// location - Name of the location that the OS version pertains to.
-// osVersionName - Name of the OS version.
-// options - CloudServiceOperatingSystemsClientGetOSVersionOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSVersion
-// method.
+//   - location - Name of the location that the OS version pertains to.
+//   - osVersionName - Name of the OS version.
+//   - options - CloudServiceOperatingSystemsClientGetOSVersionOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSVersion
+//     method.
 func (client *CloudServiceOperatingSystemsClient) GetOSVersion(ctx context.Context, location string, osVersionName string, options *CloudServiceOperatingSystemsClientGetOSVersionOptions) (CloudServiceOperatingSystemsClientGetOSVersionResponse, error) {
 	req, err := client.getOSVersionCreateRequest(ctx, location, osVersionName, options)
 	if err != nil {
 		return CloudServiceOperatingSystemsClientGetOSVersionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CloudServiceOperatingSystemsClientGetOSVersionResponse{}, err
 	}
@@ -152,7 +143,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -175,10 +166,11 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(res
 // NewListOSFamiliesPager - Gets a list of all guest operating system families available to be specified in the XML service
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS Families. Do this till nextLink is null to fetch all the OS Families.
+//
 // Generated from API version 2022-09-04
-// location - Name of the location that the OS families pertain to.
-// options - CloudServiceOperatingSystemsClientListOSFamiliesOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSFamilies
-// method.
+//   - location - Name of the location that the OS families pertain to.
+//   - options - CloudServiceOperatingSystemsClientListOSFamiliesOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.NewListOSFamiliesPager
+//     method.
 func (client *CloudServiceOperatingSystemsClient) NewListOSFamiliesPager(location string, options *CloudServiceOperatingSystemsClientListOSFamiliesOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSFamiliesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CloudServiceOperatingSystemsClientListOSFamiliesResponse]{
 		More: func(page CloudServiceOperatingSystemsClientListOSFamiliesResponse) bool {
@@ -195,7 +187,7 @@ func (client *CloudServiceOperatingSystemsClient) NewListOSFamiliesPager(locatio
 			if err != nil {
 				return CloudServiceOperatingSystemsClientListOSFamiliesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CloudServiceOperatingSystemsClientListOSFamiliesResponse{}, err
 			}
@@ -218,7 +210,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -241,10 +233,11 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(r
 // NewListOSVersionsPager - Gets a list of all guest operating system versions available to be specified in the XML service
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS versions. Do this till nextLink is null to fetch all the OS versions.
+//
 // Generated from API version 2022-09-04
-// location - Name of the location that the OS versions pertain to.
-// options - CloudServiceOperatingSystemsClientListOSVersionsOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSVersions
-// method.
+//   - location - Name of the location that the OS versions pertain to.
+//   - options - CloudServiceOperatingSystemsClientListOSVersionsOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.NewListOSVersionsPager
+//     method.
 func (client *CloudServiceOperatingSystemsClient) NewListOSVersionsPager(location string, options *CloudServiceOperatingSystemsClientListOSVersionsOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSVersionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CloudServiceOperatingSystemsClientListOSVersionsResponse]{
 		More: func(page CloudServiceOperatingSystemsClientListOSVersionsResponse) bool {
@@ -261,7 +254,7 @@ func (client *CloudServiceOperatingSystemsClient) NewListOSVersionsPager(locatio
 			if err != nil {
 				return CloudServiceOperatingSystemsClientListOSVersionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CloudServiceOperatingSystemsClientListOSVersionsResponse{}, err
 			}
@@ -284,7 +277,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSVersionsCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

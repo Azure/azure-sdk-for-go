@@ -236,7 +236,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -358,7 +358,7 @@ type ReportResourcePatch struct {
 	Properties *ReportProperties `json:"properties,omitempty"`
 }
 
-// ReportsClientListOptions contains the optional parameters for the ReportsClient.List method.
+// ReportsClientListOptions contains the optional parameters for the ReportsClient.NewListPager method.
 type ReportsClientListOptions struct {
 	// The offerGuid which mapping to the reports.
 	OfferGUID *string
@@ -479,7 +479,7 @@ type SnapshotResourceList struct {
 	Value []*SnapshotResource `json:"value,omitempty" azure:"ro"`
 }
 
-// SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
+// SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.NewListPager method.
 type SnapshotsClientListOptions struct {
 	// The offerGuid which mapping to the reports.
 	OfferGUID *string

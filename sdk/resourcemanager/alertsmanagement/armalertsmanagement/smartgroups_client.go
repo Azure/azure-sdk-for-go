@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,47 +25,39 @@ import (
 // SmartGroupsClient contains the methods for the SmartGroups group.
 // Don't use this type directly, use NewSmartGroupsClient() instead.
 type SmartGroupsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSmartGroupsClient creates a new instance of SmartGroupsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSmartGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SmartGroupsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SmartGroupsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SmartGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // ChangeState - Change the state of a Smart Group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-05-preview
-// smartGroupID - Smart group unique id.
-// newState - New state of the alert.
-// options - SmartGroupsClientChangeStateOptions contains the optional parameters for the SmartGroupsClient.ChangeState method.
+//   - smartGroupID - Smart group unique id.
+//   - newState - New state of the alert.
+//   - options - SmartGroupsClientChangeStateOptions contains the optional parameters for the SmartGroupsClient.ChangeState method.
 func (client *SmartGroupsClient) ChangeState(ctx context.Context, smartGroupID string, newState AlertState, options *SmartGroupsClientChangeStateOptions) (SmartGroupsClientChangeStateResponse, error) {
 	req, err := client.changeStateCreateRequest(ctx, smartGroupID, newState, options)
 	if err != nil {
 		return SmartGroupsClientChangeStateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SmartGroupsClientChangeStateResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *SmartGroupsClient) changeStateCreateRequest(ctx context.Context, s
 		return nil, errors.New("parameter smartGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{smartGroupId}", url.PathEscape(smartGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -113,9 +103,9 @@ func (client *SmartGroupsClient) changeStateHandleResponse(resp *http.Response) 
 }
 
 // NewGetAllPager - List all the Smart Groups within a specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-05-preview
-// options - SmartGroupsClientGetAllOptions contains the optional parameters for the SmartGroupsClient.GetAll method.
+//   - options - SmartGroupsClientGetAllOptions contains the optional parameters for the SmartGroupsClient.NewGetAllPager method.
 func (client *SmartGroupsClient) NewGetAllPager(options *SmartGroupsClientGetAllOptions) *runtime.Pager[SmartGroupsClientGetAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SmartGroupsClientGetAllResponse]{
 		More: func(page SmartGroupsClientGetAllResponse) bool {
@@ -132,7 +122,7 @@ func (client *SmartGroupsClient) NewGetAllPager(options *SmartGroupsClientGetAll
 			if err != nil {
 				return SmartGroupsClientGetAllResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SmartGroupsClientGetAllResponse{}, err
 			}
@@ -151,7 +141,7 @@ func (client *SmartGroupsClient) getAllCreateRequest(ctx context.Context, option
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -206,15 +196,16 @@ func (client *SmartGroupsClient) getAllHandleResponse(resp *http.Response) (Smar
 
 // GetByID - Get information related to a specific Smart Group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-05-preview
-// smartGroupID - Smart group unique id.
-// options - SmartGroupsClientGetByIDOptions contains the optional parameters for the SmartGroupsClient.GetByID method.
+//   - smartGroupID - Smart group unique id.
+//   - options - SmartGroupsClientGetByIDOptions contains the optional parameters for the SmartGroupsClient.GetByID method.
 func (client *SmartGroupsClient) GetByID(ctx context.Context, smartGroupID string, options *SmartGroupsClientGetByIDOptions) (SmartGroupsClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, smartGroupID, options)
 	if err != nil {
 		return SmartGroupsClientGetByIDResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SmartGroupsClientGetByIDResponse{}, err
 	}
@@ -235,7 +226,7 @@ func (client *SmartGroupsClient) getByIDCreateRequest(ctx context.Context, smart
 		return nil, errors.New("parameter smartGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{smartGroupId}", url.PathEscape(smartGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -260,15 +251,16 @@ func (client *SmartGroupsClient) getByIDHandleResponse(resp *http.Response) (Sma
 
 // GetHistory - Get the history a smart group, which captures any Smart Group state changes (New/Acknowledged/Closed) .
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-05-preview
-// smartGroupID - Smart group unique id.
-// options - SmartGroupsClientGetHistoryOptions contains the optional parameters for the SmartGroupsClient.GetHistory method.
+//   - smartGroupID - Smart group unique id.
+//   - options - SmartGroupsClientGetHistoryOptions contains the optional parameters for the SmartGroupsClient.GetHistory method.
 func (client *SmartGroupsClient) GetHistory(ctx context.Context, smartGroupID string, options *SmartGroupsClientGetHistoryOptions) (SmartGroupsClientGetHistoryResponse, error) {
 	req, err := client.getHistoryCreateRequest(ctx, smartGroupID, options)
 	if err != nil {
 		return SmartGroupsClientGetHistoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SmartGroupsClientGetHistoryResponse{}, err
 	}
@@ -289,7 +281,7 @@ func (client *SmartGroupsClient) getHistoryCreateRequest(ctx context.Context, sm
 		return nil, errors.New("parameter smartGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{smartGroupId}", url.PathEscape(smartGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,48 +25,40 @@ import (
 // LocationClient contains the methods for the Location group.
 // Don't use this type directly, use NewLocationClient() instead.
 type LocationClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewLocationClient creates a new instance of LocationClient with the specified values.
-// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".LocationClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &LocationClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CheckNameAvailability - Checks whether the Batch account name is available in the specified region.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// locationName - The desired region for the name check.
-// parameters - Properties needed to check the availability of a name.
-// options - LocationClientCheckNameAvailabilityOptions contains the optional parameters for the LocationClient.CheckNameAvailability
-// method.
+//   - locationName - The desired region for the name check.
+//   - parameters - Properties needed to check the availability of a name.
+//   - options - LocationClientCheckNameAvailabilityOptions contains the optional parameters for the LocationClient.CheckNameAvailability
+//     method.
 func (client *LocationClient) CheckNameAvailability(ctx context.Context, locationName string, parameters CheckNameAvailabilityParameters, options *LocationClientCheckNameAvailabilityOptions) (LocationClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, locationName, parameters, options)
 	if err != nil {
 		return LocationClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocationClientCheckNameAvailabilityResponse{}, err
 	}
@@ -89,7 +79,7 @@ func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,15 +101,16 @@ func (client *LocationClient) checkNameAvailabilityHandleResponse(resp *http.Res
 
 // GetQuotas - Gets the Batch service quotas for the specified subscription at the given location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// locationName - The region for which to retrieve Batch service quotas.
-// options - LocationClientGetQuotasOptions contains the optional parameters for the LocationClient.GetQuotas method.
+//   - locationName - The region for which to retrieve Batch service quotas.
+//   - options - LocationClientGetQuotasOptions contains the optional parameters for the LocationClient.GetQuotas method.
 func (client *LocationClient) GetQuotas(ctx context.Context, locationName string, options *LocationClientGetQuotasOptions) (LocationClientGetQuotasResponse, error) {
 	req, err := client.getQuotasCreateRequest(ctx, locationName, options)
 	if err != nil {
 		return LocationClientGetQuotasResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LocationClientGetQuotasResponse{}, err
 	}
@@ -140,7 +131,7 @@ func (client *LocationClient) getQuotasCreateRequest(ctx context.Context, locati
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,10 +153,11 @@ func (client *LocationClient) getQuotasHandleResponse(resp *http.Response) (Loca
 
 // NewListSupportedCloudServiceSKUsPager - Gets the list of Batch supported Cloud Service VM sizes available at the given
 // location.
+//
 // Generated from API version 2022-10-01
-// locationName - The region for which to retrieve Batch service supported SKUs.
-// options - LocationClientListSupportedCloudServiceSKUsOptions contains the optional parameters for the LocationClient.ListSupportedCloudServiceSKUs
-// method.
+//   - locationName - The region for which to retrieve Batch service supported SKUs.
+//   - options - LocationClientListSupportedCloudServiceSKUsOptions contains the optional parameters for the LocationClient.NewListSupportedCloudServiceSKUsPager
+//     method.
 func (client *LocationClient) NewListSupportedCloudServiceSKUsPager(locationName string, options *LocationClientListSupportedCloudServiceSKUsOptions) *runtime.Pager[LocationClientListSupportedCloudServiceSKUsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LocationClientListSupportedCloudServiceSKUsResponse]{
 		More: func(page LocationClientListSupportedCloudServiceSKUsResponse) bool {
@@ -182,7 +174,7 @@ func (client *LocationClient) NewListSupportedCloudServiceSKUsPager(locationName
 			if err != nil {
 				return LocationClientListSupportedCloudServiceSKUsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LocationClientListSupportedCloudServiceSKUsResponse{}, err
 			}
@@ -205,7 +197,7 @@ func (client *LocationClient) listSupportedCloudServiceSKUsCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,10 +225,11 @@ func (client *LocationClient) listSupportedCloudServiceSKUsHandleResponse(resp *
 
 // NewListSupportedVirtualMachineSKUsPager - Gets the list of Batch supported Virtual Machine VM sizes available at the given
 // location.
+//
 // Generated from API version 2022-10-01
-// locationName - The region for which to retrieve Batch service supported SKUs.
-// options - LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.ListSupportedVirtualMachineSKUs
-// method.
+//   - locationName - The region for which to retrieve Batch service supported SKUs.
+//   - options - LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.NewListSupportedVirtualMachineSKUsPager
+//     method.
 func (client *LocationClient) NewListSupportedVirtualMachineSKUsPager(locationName string, options *LocationClientListSupportedVirtualMachineSKUsOptions) *runtime.Pager[LocationClientListSupportedVirtualMachineSKUsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LocationClientListSupportedVirtualMachineSKUsResponse]{
 		More: func(page LocationClientListSupportedVirtualMachineSKUsResponse) bool {
@@ -253,7 +246,7 @@ func (client *LocationClient) NewListSupportedVirtualMachineSKUsPager(locationNa
 			if err != nil {
 				return LocationClientListSupportedVirtualMachineSKUsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LocationClientListSupportedVirtualMachineSKUsResponse{}, err
 			}
@@ -276,7 +269,7 @@ func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

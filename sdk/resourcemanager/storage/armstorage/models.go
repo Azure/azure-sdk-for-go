@@ -606,7 +606,8 @@ type AccountsClientListAccountSASOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup method.
+// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
+// method.
 type AccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -617,7 +618,7 @@ type AccountsClientListKeysOptions struct {
 	Expand *string
 }
 
-// AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
+// AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
 type AccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -782,7 +783,7 @@ type BlobContainersClientLeaseOptions struct {
 	Parameters *LeaseContainerRequest
 }
 
-// BlobContainersClientListOptions contains the optional parameters for the BlobContainersClient.List method.
+// BlobContainersClientListOptions contains the optional parameters for the BlobContainersClient.NewListPager method.
 type BlobContainersClientListOptions struct {
 	// Optional. When specified, only container names starting with the filter will be listed.
 	Filter *string
@@ -824,7 +825,8 @@ type BlobInventoryPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BlobInventoryPoliciesClientListOptions contains the optional parameters for the BlobInventoryPoliciesClient.List method.
+// BlobInventoryPoliciesClientListOptions contains the optional parameters for the BlobInventoryPoliciesClient.NewListPager
+// method.
 type BlobInventoryPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1053,7 +1055,7 @@ type BlobServicesClientGetServicePropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BlobServicesClientListOptions contains the optional parameters for the BlobServicesClient.List method.
+// BlobServicesClientListOptions contains the optional parameters for the BlobServicesClient.NewListPager method.
 type BlobServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1284,7 +1286,7 @@ type DeletedAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.List method.
+// DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.NewListPager method.
 type DeletedAccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1404,7 +1406,7 @@ type EncryptionScopesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EncryptionScopesClientListOptions contains the optional parameters for the EncryptionScopesClient.List method.
+// EncryptionScopesClientListOptions contains the optional parameters for the EncryptionScopesClient.NewListPager method.
 type EncryptionScopesClientListOptions struct {
 	// Optional. When specified, only encryption scope names starting with the filter will be listed.
 	Filter *string
@@ -1702,7 +1704,7 @@ type FileSharesClientLeaseOptions struct {
 	XMSSnapshot *string
 }
 
-// FileSharesClientListOptions contains the optional parameters for the FileSharesClient.List method.
+// FileSharesClientListOptions contains the optional parameters for the FileSharesClient.NewListPager method.
 type FileSharesClientListOptions struct {
 	// Optional, used to expand the properties within share's properties. Valid values are: deleted, snapshots. Should be passed
 	// as a string with delimiter ','
@@ -2161,7 +2163,7 @@ type LocalUsersClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocalUsersClientListOptions contains the optional parameters for the LocalUsersClient.List method.
+// LocalUsersClientListOptions contains the optional parameters for the LocalUsersClient.NewListPager method.
 type LocalUsersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2407,7 +2409,7 @@ type ObjectReplicationPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectReplicationPoliciesClientListOptions contains the optional parameters for the ObjectReplicationPoliciesClient.List
+// ObjectReplicationPoliciesClientListOptions contains the optional parameters for the ObjectReplicationPoliciesClient.NewListPager
 // method.
 type ObjectReplicationPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2516,7 +2518,7 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2584,7 +2586,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2707,7 +2709,7 @@ type QueueClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QueueClientListOptions contains the optional parameters for the QueueClient.List method.
+// QueueClientListOptions contains the optional parameters for the QueueClient.NewListPager method.
 type QueueClientListOptions struct {
 	// Optional, When specified, only the queues with a name starting with the given filter will be listed.
 	Filter *string
@@ -2887,7 +2889,7 @@ type SKUListResult struct {
 	Value []*SKUInformation `json:"value,omitempty" azure:"ro"`
 }
 
-// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 type SKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3069,7 +3071,7 @@ type TableClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TableClientListOptions contains the optional parameters for the TableClient.List method.
+// TableClientListOptions contains the optional parameters for the TableClient.NewListPager method.
 type TableClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3251,7 +3253,7 @@ type UsageName struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
+// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.NewListByLocationPager method.
 type UsagesClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }

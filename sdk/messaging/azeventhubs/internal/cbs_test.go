@@ -32,7 +32,7 @@ func TestNegotiateClaimWithCloseTimeout(t *testing.T) {
 			tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
 			mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
-				response.ApplicationProperties = map[string]interface{}{
+				response.ApplicationProperties = map[string]any{
 					"status-code": int32(200),
 				}
 			})
@@ -85,7 +85,7 @@ func TestNegotiateClaimWithAuthFailure(t *testing.T) {
 	mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
 		// this is the kind of error you get if your connection string is inconsistent
 		// (ie, you tamper with the shared key, etc..)
-		response.ApplicationProperties = map[string]interface{}{
+		response.ApplicationProperties = map[string]any{
 			"status-code":        int32(401),
 			"status-description": "InvalidSignature: The token has an invalid signature.",
 			"error-condition":    "com.microsoft:auth-failed",
@@ -117,7 +117,7 @@ func TestNegotiateClaimSuccess(t *testing.T) {
 	receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout)
 
 	mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
-		response.ApplicationProperties = map[string]interface{}{
+		response.ApplicationProperties = map[string]any{
 			"status-code": int32(200),
 		}
 	})

@@ -29,14 +29,14 @@ type AlertProcessingRulesClientGetByNameResponse struct {
 	XMSRequestID *string
 }
 
-// AlertProcessingRulesClientListByResourceGroupResponse contains the response from method AlertProcessingRulesClient.ListByResourceGroup.
+// AlertProcessingRulesClientListByResourceGroupResponse contains the response from method AlertProcessingRulesClient.NewListByResourceGroupPager.
 type AlertProcessingRulesClientListByResourceGroupResponse struct {
 	AlertProcessingRulesList
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
 }
 
-// AlertProcessingRulesClientListBySubscriptionResponse contains the response from method AlertProcessingRulesClient.ListBySubscription.
+// AlertProcessingRulesClientListBySubscriptionResponse contains the response from method AlertProcessingRulesClient.NewListBySubscriptionPager.
 type AlertProcessingRulesClientListBySubscriptionResponse struct {
 	AlertProcessingRulesList
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
@@ -55,7 +55,7 @@ type AlertsClientChangeStateResponse struct {
 	Alert
 }
 
-// AlertsClientGetAllResponse contains the response from method AlertsClient.GetAll.
+// AlertsClientGetAllResponse contains the response from method AlertsClient.NewGetAllPager.
 type AlertsClientGetAllResponse struct {
 	AlertsList
 }
@@ -80,7 +80,7 @@ type AlertsClientMetaDataResponse struct {
 	AlertsMetaData
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationsList
 }
@@ -92,7 +92,7 @@ type SmartGroupsClientChangeStateResponse struct {
 	XMSRequestID *string
 }
 
-// SmartGroupsClientGetAllResponse contains the response from method SmartGroupsClient.GetAll.
+// SmartGroupsClientGetAllResponse contains the response from method SmartGroupsClient.NewGetAllPager.
 type SmartGroupsClientGetAllResponse struct {
 	SmartGroupsList
 }

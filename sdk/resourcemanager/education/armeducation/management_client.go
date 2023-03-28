@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -23,44 +21,36 @@ import (
 // ManagementClient contains the methods for the EducationManagementClient group.
 // Don't use this type directly, use NewManagementClient() instead.
 type ManagementClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewManagementClient creates a new instance of ManagementClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewManagementClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ManagementClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ManagementClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // RedeemInvitationCode - Redeem invite code to join a redeemable lab
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// parameters - Request parameters to provide redeem code.
-// options - ManagementClientRedeemInvitationCodeOptions contains the optional parameters for the ManagementClient.RedeemInvitationCode
-// method.
+//   - parameters - Request parameters to provide redeem code.
+//   - options - ManagementClientRedeemInvitationCodeOptions contains the optional parameters for the ManagementClient.RedeemInvitationCode
+//     method.
 func (client *ManagementClient) RedeemInvitationCode(ctx context.Context, parameters RedeemRequest, options *ManagementClientRedeemInvitationCodeOptions) (ManagementClientRedeemInvitationCodeResponse, error) {
 	req, err := client.redeemInvitationCodeCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return ManagementClientRedeemInvitationCodeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementClientRedeemInvitationCodeResponse{}, err
 	}
@@ -73,7 +63,7 @@ func (client *ManagementClient) RedeemInvitationCode(ctx context.Context, parame
 // redeemInvitationCodeCreateRequest creates the RedeemInvitationCode request.
 func (client *ManagementClient) redeemInvitationCodeCreateRequest(ctx context.Context, parameters RedeemRequest, options *ManagementClientRedeemInvitationCodeOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Education/redeemInvitationCode"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

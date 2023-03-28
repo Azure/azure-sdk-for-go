@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,43 +24,35 @@ import (
 // StudentLabsClient contains the methods for the StudentLabs group.
 // Don't use this type directly, use NewStudentLabsClient() instead.
 type StudentLabsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewStudentLabsClient creates a new instance of StudentLabsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewStudentLabsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*StudentLabsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".StudentLabsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &StudentLabsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Get the details for a specified lab associated with the student lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// studentLabName - Student lab name.
-// options - StudentLabsClientGetOptions contains the optional parameters for the StudentLabsClient.Get method.
+//   - studentLabName - Student lab name.
+//   - options - StudentLabsClientGetOptions contains the optional parameters for the StudentLabsClient.Get method.
 func (client *StudentLabsClient) Get(ctx context.Context, studentLabName string, options *StudentLabsClientGetOptions) (StudentLabsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, studentLabName, options)
 	if err != nil {
 		return StudentLabsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StudentLabsClientGetResponse{}, err
 	}
@@ -79,7 +69,7 @@ func (client *StudentLabsClient) getCreateRequest(ctx context.Context, studentLa
 		return nil, errors.New("parameter studentLabName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{studentLabName}", url.PathEscape(studentLabName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -100,9 +90,9 @@ func (client *StudentLabsClient) getHandleResponse(resp *http.Response) (Student
 }
 
 // NewListAllPager - Get a list of all labs associated with the caller of the API.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// options - StudentLabsClientListAllOptions contains the optional parameters for the StudentLabsClient.ListAll method.
+//   - options - StudentLabsClientListAllOptions contains the optional parameters for the StudentLabsClient.NewListAllPager method.
 func (client *StudentLabsClient) NewListAllPager(options *StudentLabsClientListAllOptions) *runtime.Pager[StudentLabsClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[StudentLabsClientListAllResponse]{
 		More: func(page StudentLabsClientListAllResponse) bool {
@@ -119,7 +109,7 @@ func (client *StudentLabsClient) NewListAllPager(options *StudentLabsClientListA
 			if err != nil {
 				return StudentLabsClientListAllResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StudentLabsClientListAllResponse{}, err
 			}
@@ -134,7 +124,7 @@ func (client *StudentLabsClient) NewListAllPager(options *StudentLabsClientListA
 // listAllCreateRequest creates the ListAll request.
 func (client *StudentLabsClient) listAllCreateRequest(ctx context.Context, options *StudentLabsClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Education/studentLabs"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

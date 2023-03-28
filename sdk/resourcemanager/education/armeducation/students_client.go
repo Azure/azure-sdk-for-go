@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,28 +25,19 @@ import (
 // StudentsClient contains the methods for the Students group.
 // Don't use this type directly, use NewStudentsClient() instead.
 type StudentsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewStudentsClient creates a new instance of StudentsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewStudentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*StudentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".StudentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &StudentsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -56,19 +45,20 @@ func NewStudentsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // CreateOrUpdate - Create and add a new student to the specified lab or update the details of an existing student in a lab.
 // Note the student must have a valid tenant to accept the lab after they have been added to lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// studentAlias - Student alias.
-// parameters - Request parameters that are provided to update student properties.
-// options - StudentsClientCreateOrUpdateOptions contains the optional parameters for the StudentsClient.CreateOrUpdate method.
+//   - billingAccountName - Billing account name.
+//   - billingProfileName - Billing profile name.
+//   - invoiceSectionName - Invoice section name.
+//   - studentAlias - Student alias.
+//   - parameters - Request parameters that are provided to update student properties.
+//   - options - StudentsClientCreateOrUpdateOptions contains the optional parameters for the StudentsClient.CreateOrUpdate method.
 func (client *StudentsClient) CreateOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, studentAlias string, parameters StudentDetails, options *StudentsClientCreateOrUpdateOptions) (StudentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters, options)
 	if err != nil {
 		return StudentsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StudentsClientCreateOrUpdateResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *StudentsClient) createOrUpdateCreateRequest(ctx context.Context, b
 		return nil, errors.New("parameter studentAlias cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{studentAlias}", url.PathEscape(studentAlias))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,18 +109,19 @@ func (client *StudentsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Delete the specified student based on the student alias.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// studentAlias - Student alias.
-// options - StudentsClientDeleteOptions contains the optional parameters for the StudentsClient.Delete method.
+//   - billingAccountName - Billing account name.
+//   - billingProfileName - Billing profile name.
+//   - invoiceSectionName - Invoice section name.
+//   - studentAlias - Student alias.
+//   - options - StudentsClientDeleteOptions contains the optional parameters for the StudentsClient.Delete method.
 func (client *StudentsClient) Delete(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, studentAlias string, options *StudentsClientDeleteOptions) (StudentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, studentAlias, options)
 	if err != nil {
 		return StudentsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StudentsClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *StudentsClient) deleteCreateRequest(ctx context.Context, billingAc
 		return nil, errors.New("parameter studentAlias cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{studentAlias}", url.PathEscape(studentAlias))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,18 +163,19 @@ func (client *StudentsClient) deleteCreateRequest(ctx context.Context, billingAc
 
 // Get - Get the details for a specific student in the specified lab by student alias
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// studentAlias - Student alias.
-// options - StudentsClientGetOptions contains the optional parameters for the StudentsClient.Get method.
+//   - billingAccountName - Billing account name.
+//   - billingProfileName - Billing profile name.
+//   - invoiceSectionName - Invoice section name.
+//   - studentAlias - Student alias.
+//   - options - StudentsClientGetOptions contains the optional parameters for the StudentsClient.Get method.
 func (client *StudentsClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, studentAlias string, options *StudentsClientGetOptions) (StudentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, studentAlias, options)
 	if err != nil {
 		return StudentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StudentsClientGetResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *StudentsClient) getCreateRequest(ctx context.Context, billingAccou
 		return nil, errors.New("parameter studentAlias cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{studentAlias}", url.PathEscape(studentAlias))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,12 +225,12 @@ func (client *StudentsClient) getHandleResponse(resp *http.Response) (StudentsCl
 }
 
 // NewListPager - Get a list of details about students that are associated with the specified lab.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// options - StudentsClientListOptions contains the optional parameters for the StudentsClient.List method.
+//   - billingAccountName - Billing account name.
+//   - billingProfileName - Billing profile name.
+//   - invoiceSectionName - Invoice section name.
+//   - options - StudentsClientListOptions contains the optional parameters for the StudentsClient.NewListPager method.
 func (client *StudentsClient) NewListPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *StudentsClientListOptions) *runtime.Pager[StudentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[StudentsClientListResponse]{
 		More: func(page StudentsClientListResponse) bool {
@@ -255,7 +247,7 @@ func (client *StudentsClient) NewListPager(billingAccountName string, billingPro
 			if err != nil {
 				return StudentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StudentsClientListResponse{}, err
 			}
@@ -282,7 +274,7 @@ func (client *StudentsClient) listCreateRequest(ctx context.Context, billingAcco
 		return nil, errors.New("parameter invoiceSectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

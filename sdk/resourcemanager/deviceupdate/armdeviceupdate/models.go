@@ -108,12 +108,14 @@ type AccountsClientHeadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup method.
+// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
+// method.
 type AccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription method.
+// AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.NewListBySubscriptionPager
+// method.
 type AccountsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -177,7 +179,7 @@ type DiagnosticStorageProperties struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -335,7 +337,7 @@ type InstancesClientHeadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InstancesClientListByAccountOptions contains the optional parameters for the InstancesClient.ListByAccount method.
+// InstancesClientListByAccountOptions contains the optional parameters for the InstancesClient.NewListByAccountPager method.
 type InstancesClientListByAccountOptions struct {
 	// placeholder for future optional parameters
 }
@@ -427,7 +429,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -497,7 +499,7 @@ type PrivateEndpointConnectionProxiesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionProxiesClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.ListByAccount
+// PrivateEndpointConnectionProxiesClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.NewListByAccountPager
 // method.
 type PrivateEndpointConnectionProxiesClientListByAccountOptions struct {
 	// placeholder for future optional parameters
@@ -590,7 +592,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByAccount
+// PrivateEndpointConnectionsClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByAccountPager
 // method.
 type PrivateEndpointConnectionsClientListByAccountOptions struct {
 	// placeholder for future optional parameters
@@ -640,7 +642,7 @@ type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesClientListByAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByAccount
+// PrivateLinkResourcesClientListByAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByAccountPager
 // method.
 type PrivateLinkResourcesClientListByAccountOptions struct {
 	// placeholder for future optional parameters

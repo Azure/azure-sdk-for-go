@@ -9,12 +9,12 @@
 
 package armdeviceupdate
 
-// AccountsClientCreateResponse contains the response from method AccountsClient.Create.
+// AccountsClientCreateResponse contains the response from method AccountsClient.BeginCreate.
 type AccountsClientCreateResponse struct {
 	Account
 }
 
-// AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
+// AccountsClientDeleteResponse contains the response from method AccountsClient.BeginDelete.
 type AccountsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -30,17 +30,17 @@ type AccountsClientHeadResponse struct {
 	Success bool
 }
 
-// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.ListByResourceGroup.
+// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.NewListByResourceGroupPager.
 type AccountsClientListByResourceGroupResponse struct {
 	AccountList
 }
 
-// AccountsClientListBySubscriptionResponse contains the response from method AccountsClient.ListBySubscription.
+// AccountsClientListBySubscriptionResponse contains the response from method AccountsClient.NewListBySubscriptionPager.
 type AccountsClientListBySubscriptionResponse struct {
 	AccountList
 }
 
-// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+// AccountsClientUpdateResponse contains the response from method AccountsClient.BeginUpdate.
 type AccountsClientUpdateResponse struct {
 	Account
 }
@@ -50,12 +50,12 @@ type ClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResponse
 }
 
-// InstancesClientCreateResponse contains the response from method InstancesClient.Create.
+// InstancesClientCreateResponse contains the response from method InstancesClient.BeginCreate.
 type InstancesClientCreateResponse struct {
 	Instance
 }
 
-// InstancesClientDeleteResponse contains the response from method InstancesClient.Delete.
+// InstancesClientDeleteResponse contains the response from method InstancesClient.BeginDelete.
 type InstancesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -71,7 +71,7 @@ type InstancesClientHeadResponse struct {
 	Success bool
 }
 
-// InstancesClientListByAccountResponse contains the response from method InstancesClient.ListByAccount.
+// InstancesClientListByAccountResponse contains the response from method InstancesClient.NewListByAccountPager.
 type InstancesClientListByAccountResponse struct {
 	InstanceList
 }
@@ -81,17 +81,17 @@ type InstancesClientUpdateResponse struct {
 	Instance
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionProxiesClient.CreateOrUpdate.
+// PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionProxiesClient.BeginCreateOrUpdate.
 type PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse struct {
 	PrivateEndpointConnectionProxy
 }
 
-// PrivateEndpointConnectionProxiesClientDeleteResponse contains the response from method PrivateEndpointConnectionProxiesClient.Delete.
+// PrivateEndpointConnectionProxiesClientDeleteResponse contains the response from method PrivateEndpointConnectionProxiesClient.BeginDelete.
 type PrivateEndpointConnectionProxiesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -101,7 +101,7 @@ type PrivateEndpointConnectionProxiesClientGetResponse struct {
 	PrivateEndpointConnectionProxy
 }
 
-// PrivateEndpointConnectionProxiesClientListByAccountResponse contains the response from method PrivateEndpointConnectionProxiesClient.ListByAccount.
+// PrivateEndpointConnectionProxiesClientListByAccountResponse contains the response from method PrivateEndpointConnectionProxiesClient.NewListByAccountPager.
 type PrivateEndpointConnectionProxiesClientListByAccountResponse struct {
 	PrivateEndpointConnectionProxyListResult
 }
@@ -116,12 +116,12 @@ type PrivateEndpointConnectionProxiesClientValidateResponse struct {
 	// placeholder for future response values
 }
 
-// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.
 type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -131,7 +131,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListByAccountResponse contains the response from method PrivateEndpointConnectionsClient.ListByAccount.
+// PrivateEndpointConnectionsClientListByAccountResponse contains the response from method PrivateEndpointConnectionsClient.NewListByAccountPager.
 type PrivateEndpointConnectionsClientListByAccountResponse struct {
 	PrivateEndpointConnectionListResult
 }
@@ -141,7 +141,7 @@ type PrivateLinkResourcesClientGetResponse struct {
 	GroupInformation
 }
 
-// PrivateLinkResourcesClientListByAccountResponse contains the response from method PrivateLinkResourcesClient.ListByAccount.
+// PrivateLinkResourcesClientListByAccountResponse contains the response from method PrivateLinkResourcesClient.NewListByAccountPager.
 type PrivateLinkResourcesClientListByAccountResponse struct {
 	PrivateLinkResourceListResult
 }

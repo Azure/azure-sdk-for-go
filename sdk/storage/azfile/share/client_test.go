@@ -910,7 +910,6 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetStatsNegative() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
 }
 
-// TODO: uncomment this test after directory and file clients are added
 func (s *ShareUnrecordedTestsSuite) TestSetAndGetStatistics() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -988,6 +987,81 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNonDefault() {
 		}
 	}
 	_require.True(foundSnapshot)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := svcClient.NewShareClient(shareName)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+
+	// create a file in the base share.
+	dirClient := shareClient.NewRootDirectoryClient()
+	_require.NoError(err)
+
+	fClient := dirClient.NewFileClient("myfile")
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	// Create share snapshot, the snapshot contains the create file.
+	snapshotShare, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+
+	// Delete file in base share.
+	_, err = fClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+
+	// To produce a share SAS (as opposed to a file SAS), assign to FilePermissions using
+	// ShareSASPermissions and make sure the DirectoryAndFilePath field is "" (the default).
+	perms := sas.SharePermissions{Read: true, Write: true}
+
+	// Restore file from share snapshot.
+	// Create a SAS.
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ShareName:   shareName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	// Build a file snapshot URL.
+	fileParts, err := sas.ParseURL(fClient.URL())
+	_require.NoError(err)
+	fileParts.ShareSnapshot = *snapshotShare.Snapshot
+	fileParts.SAS = sasQueryParams
+	sourceURL := fileParts.String()
+
+	// Before restore
+	_, err = fClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	// Do restore.
+	_, err = fClient.StartCopyFromURL(context.Background(), sourceURL, nil)
+	_require.NoError(err)
+
+	time.Sleep(2 * time.Second)
+
+	// After restore
+	_, err = fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = shareClient.Delete(context.Background(), &share.DeleteOptions{
+		ShareSnapshot: snapshotShare.Snapshot,
+	})
+	_require.NoError(err)
 }
 
 func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNegativeShareNotExist() {

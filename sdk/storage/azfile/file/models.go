@@ -58,7 +58,6 @@ type ShareFileRange = generated.FileRange
 // CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {
 	// The default value is 'None' for Attributes and 'now' for CreationTime and LastWriteTime fields in file.SMBProperties.
-	// TODO: Change the types of creation time and last write time to string from time.Time to include values like 'now', 'preserve', etc.
 	SMBProperties *SMBProperties
 	// The default value is 'inherit' for Permission field in file.Permissions.
 	Permissions           *Permissions
@@ -135,7 +134,6 @@ type SetHTTPHeadersOptions struct {
 	// above the specified byte value are cleared.
 	FileContentLength *int64
 	// The default value is 'preserve' for Attributes, CreationTime and LastWriteTime fields in file.SMBProperties.
-	// TODO: Change the types of creation time and last write time to string from time.Time to include values like 'now', 'preserve', etc.
 	SMBProperties *SMBProperties
 	// The default value is 'preserve' for Permission field in file.Permissions.
 	Permissions *Permissions
@@ -316,17 +314,13 @@ type ResizeOptions struct {
 }
 
 func (o *ResizeOptions) format(contentLength int64) (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
-	opts *generated.FileClientSetHTTPHeadersOptions, fileHTTPHeaders *generated.ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) {
+	opts *generated.FileClientSetHTTPHeadersOptions, leaseAccessConditions *LeaseAccessConditions) {
 	fileAttributes, fileCreationTime, fileLastWriteTime = shared.DefaultPreserveString, shared.DefaultPreserveString, shared.DefaultPreserveString
 
 	opts = &generated.FileClientSetHTTPHeadersOptions{
 		FileContentLength: &contentLength,
 		FilePermission:    to.Ptr(shared.DefaultPreserveString),
 	}
-
-	// TODO: check if the below two statements can be removed, since default value of pointer is nil
-	fileHTTPHeaders = nil
-	leaseAccessConditions = nil
 
 	if o != nil {
 		leaseAccessConditions = o.LeaseAccessConditions

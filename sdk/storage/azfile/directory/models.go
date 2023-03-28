@@ -24,7 +24,6 @@ type SharedKeyCredential = exported.SharedKeyCredential
 // CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {
 	// The default value is 'Directory' for Attributes and 'now' for CreationTime and LastWriteTime fields in file.SMBProperties.
-	// TODO: Change the types of creation time and last write time to string from time.Time to include values like 'now', 'preserve', etc.
 	FileSMBProperties *file.SMBProperties
 	// The default value is 'inherit' for Permission field in file.Permissions.
 	FilePermissions *file.Permissions
@@ -86,7 +85,6 @@ func (o *GetPropertiesOptions) format() *generated.DirectoryClientGetPropertiesO
 // SetPropertiesOptions contains the optional parameters for the Client.SetProperties method.
 type SetPropertiesOptions struct {
 	// The default value is 'preserve' for Attributes, CreationTime and LastWriteTime fields in file.SMBProperties.
-	// TODO: Change the types of creation time and last write time to string from time.Time to include values like 'now', 'preserve', etc.
 	FileSMBProperties *file.SMBProperties
 	// The default value is 'preserve' for Permission field in file.Permissions.
 	FilePermissions *file.Permissions

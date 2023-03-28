@@ -324,13 +324,13 @@ type ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions struct 
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupsClientListByResourceGroupOptions contains the optional parameters for the ContainerGroupsClient.ListByResourceGroup
+// ContainerGroupsClientListByResourceGroupOptions contains the optional parameters for the ContainerGroupsClient.NewListByResourceGroupPager
 // method.
 type ContainerGroupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupsClientListOptions contains the optional parameters for the ContainerGroupsClient.List method.
+// ContainerGroupsClientListOptions contains the optional parameters for the ContainerGroupsClient.NewListPager method.
 type ContainerGroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -505,10 +505,10 @@ type DeploymentExtensionSpecProperties struct {
 	Version *string `json:"version,omitempty"`
 
 	// Protected settings for the extension.
-	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings any `json:"protectedSettings,omitempty"`
 
 	// Settings for the extension.
-	Settings interface{} `json:"settings,omitempty"`
+	Settings any `json:"settings,omitempty"`
 }
 
 // EncryptionProperties - The container group encryption properties.
@@ -678,17 +678,19 @@ type InitContainerPropertiesDefinitionInstanceView struct {
 	RestartCount *int32 `json:"restartCount,omitempty" azure:"ro"`
 }
 
-// LocationClientListCachedImagesOptions contains the optional parameters for the LocationClient.ListCachedImages method.
+// LocationClientListCachedImagesOptions contains the optional parameters for the LocationClient.NewListCachedImagesPager
+// method.
 type LocationClientListCachedImagesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationClientListCapabilitiesOptions contains the optional parameters for the LocationClient.ListCapabilities method.
+// LocationClientListCapabilitiesOptions contains the optional parameters for the LocationClient.NewListCapabilitiesPager
+// method.
 type LocationClientListCapabilitiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationClientListUsageOptions contains the optional parameters for the LocationClient.ListUsage method.
+// LocationClientListUsageOptions contains the optional parameters for the LocationClient.NewListUsagePager method.
 type LocationClientListUsageOptions struct {
 	// placeholder for future optional parameters
 }
@@ -729,7 +731,7 @@ type Operation struct {
 	Origin *ContainerInstanceOperationsOrigin `json:"origin,omitempty"`
 
 	// The additional properties.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 }
 
 // OperationDisplay - The display information of the operation.
@@ -756,7 +758,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -884,7 +886,7 @@ type Volume struct {
 	AzureFile *AzureFileVolume `json:"azureFile,omitempty"`
 
 	// The empty directory volume.
-	EmptyDir interface{} `json:"emptyDir,omitempty"`
+	EmptyDir any `json:"emptyDir,omitempty"`
 
 	// The git repo volume.
 	GitRepo *GitRepoVolume `json:"gitRepo,omitempty"`

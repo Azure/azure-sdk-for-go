@@ -24,7 +24,7 @@ type AMQPReceiver interface {
 	ModifyMessage(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error
 
 	LinkName() string
-	LinkSourceFilterValue(name string) interface{}
+	LinkSourceFilterValue(name string) any
 
 	// wrapper only functions,
 
@@ -193,7 +193,7 @@ func (rw *AMQPReceiverWrapper) LinkName() string {
 	return rw.inner.LinkName()
 }
 
-func (rw *AMQPReceiverWrapper) LinkSourceFilterValue(name string) interface{} {
+func (rw *AMQPReceiverWrapper) LinkSourceFilterValue(name string) any {
 	return rw.inner.LinkSourceFilterValue(name)
 }
 

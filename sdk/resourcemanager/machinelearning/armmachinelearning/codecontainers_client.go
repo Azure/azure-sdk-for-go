@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // CodeContainersClient contains the methods for the CodeContainers group.
 // Don't use this type directly, use NewCodeContainersClient() instead.
 type CodeContainersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCodeContainersClient creates a new instance of CodeContainersClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCodeContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CodeContainersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CodeContainersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CodeContainersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Container name. This is case-sensitive.
-// body - Container entity to create or update.
-// options - CodeContainersClientCreateOrUpdateOptions contains the optional parameters for the CodeContainersClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name. This is case-sensitive.
+//   - body - Container entity to create or update.
+//   - options - CodeContainersClientCreateOrUpdateOptions contains the optional parameters for the CodeContainersClient.CreateOrUpdate
+//     method.
 func (client *CodeContainersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, body CodeContainer, options *CodeContainersClientCreateOrUpdateOptions) (CodeContainersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, name, body, options)
 	if err != nil {
 		return CodeContainersClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CodeContainersClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *CodeContainersClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *CodeContainersClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Delete container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Container name. This is case-sensitive.
-// options - CodeContainersClientDeleteOptions contains the optional parameters for the CodeContainersClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name. This is case-sensitive.
+//   - options - CodeContainersClientDeleteOptions contains the optional parameters for the CodeContainersClient.Delete method.
 func (client *CodeContainersClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *CodeContainersClientDeleteOptions) (CodeContainersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, name, options)
 	if err != nil {
 		return CodeContainersClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CodeContainersClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *CodeContainersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,17 +163,18 @@ func (client *CodeContainersClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Get container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Container name. This is case-sensitive.
-// options - CodeContainersClientGetOptions contains the optional parameters for the CodeContainersClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name. This is case-sensitive.
+//   - options - CodeContainersClientGetOptions contains the optional parameters for the CodeContainersClient.Get method.
 func (client *CodeContainersClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *CodeContainersClientGetOptions) (CodeContainersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, name, options)
 	if err != nil {
 		return CodeContainersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CodeContainersClientGetResponse{}, err
 	}
@@ -211,7 +203,7 @@ func (client *CodeContainersClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,10 +224,11 @@ func (client *CodeContainersClient) getHandleResponse(resp *http.Response) (Code
 }
 
 // NewListPager - List containers.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// options - CodeContainersClientListOptions contains the optional parameters for the CodeContainersClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - options - CodeContainersClientListOptions contains the optional parameters for the CodeContainersClient.NewListPager method.
 func (client *CodeContainersClient) NewListPager(resourceGroupName string, workspaceName string, options *CodeContainersClientListOptions) *runtime.Pager[CodeContainersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CodeContainersClientListResponse]{
 		More: func(page CodeContainersClientListResponse) bool {
@@ -252,7 +245,7 @@ func (client *CodeContainersClient) NewListPager(resourceGroupName string, works
 			if err != nil {
 				return CodeContainersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CodeContainersClientListResponse{}, err
 			}
@@ -279,7 +272,7 @@ func (client *CodeContainersClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

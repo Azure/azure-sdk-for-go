@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,51 +25,43 @@ import (
 // ComponentVersionsClient contains the methods for the ComponentVersions group.
 // Don't use this type directly, use NewComponentVersionsClient() instead.
 type ComponentVersionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewComponentVersionsClient creates a new instance of ComponentVersionsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewComponentVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComponentVersionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ComponentVersionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ComponentVersionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Container name.
-// version - Version identifier.
-// body - Version entity to create or update.
-// options - ComponentVersionsClientCreateOrUpdateOptions contains the optional parameters for the ComponentVersionsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name.
+//   - version - Version identifier.
+//   - body - Version entity to create or update.
+//   - options - ComponentVersionsClientCreateOrUpdateOptions contains the optional parameters for the ComponentVersionsClient.CreateOrUpdate
+//     method.
 func (client *ComponentVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body ComponentVersion, options *ComponentVersionsClientCreateOrUpdateOptions) (ComponentVersionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, name, version, body, options)
 	if err != nil {
 		return ComponentVersionsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ComponentVersionsClientCreateOrUpdateResponse{}, err
 	}
@@ -104,7 +94,7 @@ func (client *ComponentVersionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter version cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,19 +116,20 @@ func (client *ComponentVersionsClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Container name.
-// version - Version identifier.
-// options - ComponentVersionsClientDeleteOptions contains the optional parameters for the ComponentVersionsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name.
+//   - version - Version identifier.
+//   - options - ComponentVersionsClientDeleteOptions contains the optional parameters for the ComponentVersionsClient.Delete
+//     method.
 func (client *ComponentVersionsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, options *ComponentVersionsClientDeleteOptions) (ComponentVersionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, name, version, options)
 	if err != nil {
 		return ComponentVersionsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ComponentVersionsClientDeleteResponse{}, err
 	}
@@ -171,7 +162,7 @@ func (client *ComponentVersionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter version cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -184,18 +175,19 @@ func (client *ComponentVersionsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Get version.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Container name.
-// version - Version identifier.
-// options - ComponentVersionsClientGetOptions contains the optional parameters for the ComponentVersionsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name.
+//   - version - Version identifier.
+//   - options - ComponentVersionsClientGetOptions contains the optional parameters for the ComponentVersionsClient.Get method.
 func (client *ComponentVersionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, options *ComponentVersionsClientGetOptions) (ComponentVersionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, name, version, options)
 	if err != nil {
 		return ComponentVersionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ComponentVersionsClientGetResponse{}, err
 	}
@@ -228,7 +220,7 @@ func (client *ComponentVersionsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter version cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,11 +241,13 @@ func (client *ComponentVersionsClient) getHandleResponse(resp *http.Response) (C
 }
 
 // NewListPager - List component versions.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Component name.
-// options - ComponentVersionsClientListOptions contains the optional parameters for the ComponentVersionsClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Component name.
+//   - options - ComponentVersionsClientListOptions contains the optional parameters for the ComponentVersionsClient.NewListPager
+//     method.
 func (client *ComponentVersionsClient) NewListPager(resourceGroupName string, workspaceName string, name string, options *ComponentVersionsClientListOptions) *runtime.Pager[ComponentVersionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ComponentVersionsClientListResponse]{
 		More: func(page ComponentVersionsClientListResponse) bool {
@@ -270,7 +264,7 @@ func (client *ComponentVersionsClient) NewListPager(resourceGroupName string, wo
 			if err != nil {
 				return ComponentVersionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ComponentVersionsClientListResponse{}, err
 			}
@@ -301,7 +295,7 @@ func (client *ComponentVersionsClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

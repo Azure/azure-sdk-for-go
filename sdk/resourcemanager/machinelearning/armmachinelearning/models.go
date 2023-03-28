@@ -279,7 +279,7 @@ type AmlComputeProperties struct {
 	OSType *OsType `json:"osType,omitempty"`
 
 	// A property bag containing additional properties.
-	PropertyBag interface{} `json:"propertyBag,omitempty"`
+	PropertyBag any `json:"propertyBag,omitempty"`
 
 	// State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes
 	// of the cluster. Enabled - Indicates that the public ssh port is open on all
@@ -987,7 +987,7 @@ type BatchDeploymentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BatchDeploymentsClientListOptions contains the optional parameters for the BatchDeploymentsClient.List method.
+// BatchDeploymentsClientListOptions contains the optional parameters for the BatchDeploymentsClient.NewListPager method.
 type BatchDeploymentsClientListOptions struct {
 	// Ordering of list.
 	OrderBy *string
@@ -1103,7 +1103,7 @@ type BatchEndpointsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BatchEndpointsClientListOptions contains the optional parameters for the BatchEndpointsClient.List method.
+// BatchEndpointsClientListOptions contains the optional parameters for the BatchEndpointsClient.NewListPager method.
 type BatchEndpointsClientListOptions struct {
 	// Number of endpoints to be retrieved in a page of results.
 	Count *int32
@@ -1371,7 +1371,7 @@ type CodeContainersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CodeContainersClientListOptions contains the optional parameters for the CodeContainersClient.List method.
+// CodeContainersClientListOptions contains the optional parameters for the CodeContainersClient.NewListPager method.
 type CodeContainersClientListOptions struct {
 	// Continuation token for pagination.
 	Skip *string
@@ -1440,7 +1440,7 @@ type CodeVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CodeVersionsClientListOptions contains the optional parameters for the CodeVersionsClient.List method.
+// CodeVersionsClientListOptions contains the optional parameters for the CodeVersionsClient.NewListPager method.
 type CodeVersionsClientListOptions struct {
 	// Ordering of list.
 	OrderBy *string
@@ -1456,7 +1456,7 @@ type ColumnTransformer struct {
 	Fields []*string `json:"fields,omitempty"`
 
 	// Different properties to be passed to transformer. Input expected is dictionary of key,value pairs in JSON format.
-	Parameters interface{} `json:"parameters,omitempty"`
+	Parameters any `json:"parameters,omitempty"`
 }
 
 // CommandJob - Command job definition.
@@ -1523,7 +1523,7 @@ type CommandJob struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Input parameters.
-	Parameters interface{} `json:"parameters,omitempty" azure:"ro"`
+	Parameters any `json:"parameters,omitempty" azure:"ro"`
 
 	// READ-ONLY; Status of the job.
 	Status *JobStatus `json:"status,omitempty" azure:"ro"`
@@ -1629,7 +1629,7 @@ type ComponentContainersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComponentContainersClientListOptions contains the optional parameters for the ComponentContainersClient.List method.
+// ComponentContainersClientListOptions contains the optional parameters for the ComponentContainersClient.NewListPager method.
 type ComponentContainersClientListOptions struct {
 	// View type for including/excluding (for example) archived entities.
 	ListViewType *ListViewType
@@ -1658,7 +1658,7 @@ type ComponentVersion struct {
 // ComponentVersionProperties - Definition of a component version: defines resources that span component types.
 type ComponentVersionProperties struct {
 	// Defines Component definition details.
-	ComponentSpec interface{} `json:"componentSpec,omitempty"`
+	ComponentSpec any `json:"componentSpec,omitempty"`
 
 	// The asset description text.
 	Description *string `json:"description,omitempty"`
@@ -1701,7 +1701,7 @@ type ComponentVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComponentVersionsClientListOptions contains the optional parameters for the ComponentVersionsClient.List method.
+// ComponentVersionsClientListOptions contains the optional parameters for the ComponentVersionsClient.NewListPager method.
 type ComponentVersionsClientListOptions struct {
 	// View type for including/excluding (for example) archived entities.
 	ListViewType *ListViewType
@@ -1806,12 +1806,12 @@ type ComputeClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComputeClientListNodesOptions contains the optional parameters for the ComputeClient.ListNodes method.
+// ComputeClientListNodesOptions contains the optional parameters for the ComputeClient.NewListNodesPager method.
 type ComputeClientListNodesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComputeClientListOptions contains the optional parameters for the ComputeClient.List method.
+// ComputeClientListOptions contains the optional parameters for the ComputeClient.NewListPager method.
 type ComputeClientListOptions struct {
 	// Continuation token for pagination.
 	Skip *string
@@ -1906,7 +1906,7 @@ type ComputeInstanceContainer struct {
 	Network *Network `json:"network,omitempty"`
 
 	// READ-ONLY; services of this containers.
-	Services []interface{} `json:"services,omitempty" azure:"ro"`
+	Services []any `json:"services,omitempty" azure:"ro"`
 }
 
 // ComputeInstanceCreatedBy - Describes information on user who created this ComputeInstance.
@@ -2412,7 +2412,7 @@ type DataContainersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataContainersClientListOptions contains the optional parameters for the DataContainersClient.List method.
+// DataContainersClientListOptions contains the optional parameters for the DataContainersClient.NewListPager method.
 type DataContainersClientListOptions struct {
 	// View type for including/excluding (for example) archived entities.
 	ListViewType *ListViewType
@@ -2629,7 +2629,7 @@ type DataVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataVersionsClientListOptions contains the optional parameters for the DataVersionsClient.List method.
+// DataVersionsClientListOptions contains the optional parameters for the DataVersionsClient.NewListPager method.
 type DataVersionsClientListOptions struct {
 	// [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for including/excluding (for example) archived
 	// entities.
@@ -2847,7 +2847,7 @@ type DatastoresClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatastoresClientListOptions contains the optional parameters for the DatastoresClient.List method.
+// DatastoresClientListOptions contains the optional parameters for the DatastoresClient.NewListPager method.
 type DatastoresClientListOptions struct {
 	// Maximum number of results to return.
 	Count *int32
@@ -2903,36 +2903,36 @@ type DeploymentResourceConfiguration struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 
 	// Additional properties bag.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties map[string]any `json:"properties,omitempty"`
 }
 
 type DiagnoseRequestProperties struct {
 	// Setting for diagnosing dependent application insights
-	ApplicationInsights map[string]interface{} `json:"applicationInsights,omitempty"`
+	ApplicationInsights map[string]any `json:"applicationInsights,omitempty"`
 
 	// Setting for diagnosing dependent container registry
-	ContainerRegistry map[string]interface{} `json:"containerRegistry,omitempty"`
+	ContainerRegistry map[string]any `json:"containerRegistry,omitempty"`
 
 	// Setting for diagnosing dns resolution
-	DNSResolution map[string]interface{} `json:"dnsResolution,omitempty"`
+	DNSResolution map[string]any `json:"dnsResolution,omitempty"`
 
 	// Setting for diagnosing dependent key vault
-	KeyVault map[string]interface{} `json:"keyVault,omitempty"`
+	KeyVault map[string]any `json:"keyVault,omitempty"`
 
 	// Setting for diagnosing network security group
-	Nsg map[string]interface{} `json:"nsg,omitempty"`
+	Nsg map[string]any `json:"nsg,omitempty"`
 
 	// Setting for diagnosing unclassified category of problems
-	Others map[string]interface{} `json:"others,omitempty"`
+	Others map[string]any `json:"others,omitempty"`
 
 	// Setting for diagnosing resource lock
-	ResourceLock map[string]interface{} `json:"resourceLock,omitempty"`
+	ResourceLock map[string]any `json:"resourceLock,omitempty"`
 
 	// Setting for diagnosing dependent storage account
-	StorageAccount map[string]interface{} `json:"storageAccount,omitempty"`
+	StorageAccount map[string]any `json:"storageAccount,omitempty"`
 
 	// Setting for diagnosing user defined routing
-	Udr map[string]interface{} `json:"udr,omitempty"`
+	Udr map[string]any `json:"udr,omitempty"`
 }
 
 type DiagnoseResponseResult struct {
@@ -3105,7 +3105,7 @@ type EndpointScheduleAction struct {
 	ActionType *ScheduleActionType `json:"actionType,omitempty"`
 
 	// REQUIRED; [Required] Defines Schedule action definition details.
-	EndpointInvocationDefinition interface{} `json:"endpointInvocationDefinition,omitempty"`
+	EndpointInvocationDefinition any `json:"endpointInvocationDefinition,omitempty"`
 }
 
 // GetScheduleActionBase implements the ScheduleActionBaseClassification interface for type EndpointScheduleAction.
@@ -3179,7 +3179,8 @@ type EnvironmentContainersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentContainersClientListOptions contains the optional parameters for the EnvironmentContainersClient.List method.
+// EnvironmentContainersClientListOptions contains the optional parameters for the EnvironmentContainersClient.NewListPager
+// method.
 type EnvironmentContainersClientListOptions struct {
 	// View type for including/excluding (for example) archived entities.
 	ListViewType *ListViewType
@@ -3269,7 +3270,7 @@ type EnvironmentVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentVersionsClientListOptions contains the optional parameters for the EnvironmentVersionsClient.List method.
+// EnvironmentVersionsClientListOptions contains the optional parameters for the EnvironmentVersionsClient.NewListPager method.
 type EnvironmentVersionsClientListOptions struct {
 	// View type for including/excluding (for example) archived entities.
 	ListViewType *ListViewType
@@ -3284,7 +3285,7 @@ type EnvironmentVersionsClientListOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -4872,7 +4873,7 @@ type JobResourceConfiguration struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 
 	// Additional properties bag.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties map[string]any `json:"properties,omitempty"`
 
 	// Size of the docker container's shared memory block. This should be in the format of (number)(unit) where number as to be
 	// greater than 0 and the unit can be one of b(bytes), k(kilobytes), m(megabytes),
@@ -4938,7 +4939,7 @@ type JobsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+// JobsClientListOptions contains the optional parameters for the JobsClient.NewListPager method.
 type JobsClientListOptions struct {
 	// Type of job to be returned.
 	JobType *string
@@ -5550,7 +5551,7 @@ type ModelContainersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ModelContainersClientListOptions contains the optional parameters for the ModelContainersClient.List method.
+// ModelContainersClientListOptions contains the optional parameters for the ModelContainersClient.NewListPager method.
 type ModelContainersClientListOptions struct {
 	// Maximum number of results to return.
 	Count *int32
@@ -5632,7 +5633,7 @@ type ModelVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ModelVersionsClientListOptions contains the optional parameters for the ModelVersionsClient.List method.
+// ModelVersionsClientListOptions contains the optional parameters for the ModelVersionsClient.NewListPager method.
 type ModelVersionsClientListOptions struct {
 	// Model description.
 	Description *string
@@ -5967,7 +5968,7 @@ type OnlineDeploymentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OnlineDeploymentsClientListOptions contains the optional parameters for the OnlineDeploymentsClient.List method.
+// OnlineDeploymentsClientListOptions contains the optional parameters for the OnlineDeploymentsClient.NewListPager method.
 type OnlineDeploymentsClientListOptions struct {
 	// Ordering of list.
 	OrderBy *string
@@ -5977,7 +5978,8 @@ type OnlineDeploymentsClientListOptions struct {
 	Top *int32
 }
 
-// OnlineDeploymentsClientListSKUsOptions contains the optional parameters for the OnlineDeploymentsClient.ListSKUs method.
+// OnlineDeploymentsClientListSKUsOptions contains the optional parameters for the OnlineDeploymentsClient.NewListSKUsPager
+// method.
 type OnlineDeploymentsClientListSKUsOptions struct {
 	// Number of Skus to be retrieved in a page of results.
 	Count *int32
@@ -6102,7 +6104,7 @@ type OnlineEndpointsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OnlineEndpointsClientListOptions contains the optional parameters for the OnlineEndpointsClient.List method.
+// OnlineEndpointsClientListOptions contains the optional parameters for the OnlineEndpointsClient.NewListPager method.
 type OnlineEndpointsClientListOptions struct {
 	// EndpointComputeType to be filtered by.
 	ComputeType *EndpointComputeType
@@ -6152,7 +6154,7 @@ type OnlineScaleSettings struct {
 // GetOnlineScaleSettings implements the OnlineScaleSettingsClassification interface for type OnlineScaleSettings.
 func (o *OnlineScaleSettings) GetOnlineScaleSettings() *OnlineScaleSettings { return o }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -6237,7 +6239,7 @@ type PartialManagedServiceIdentity struct {
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
 	// The dictionary values can be empty objects ({}) in
 	// requests.
-	UserAssignedIdentities map[string]interface{} `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]any `json:"userAssignedIdentities,omitempty"`
 }
 
 // PartialMinimalTrackedResource - Strictly used in update requests.
@@ -6329,7 +6331,7 @@ type PipelineJob struct {
 	IsArchived *bool `json:"isArchived,omitempty"`
 
 	// Jobs construct the Pipeline Job.
-	Jobs map[string]interface{} `json:"jobs,omitempty"`
+	Jobs map[string]any `json:"jobs,omitempty"`
 
 	// Outputs for the pipeline job
 	Outputs map[string]JobOutputClassification `json:"outputs,omitempty"`
@@ -6341,7 +6343,7 @@ type PipelineJob struct {
 	Services map[string]*JobService `json:"services,omitempty"`
 
 	// Pipeline settings, for things like ContinueRunOnStepFailure etc.
-	Settings interface{} `json:"settings,omitempty"`
+	Settings any `json:"settings,omitempty"`
 
 	// ARM resource ID of source job.
 	SourceJobID *string `json:"sourceJobId,omitempty"`
@@ -6446,7 +6448,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -6576,7 +6578,7 @@ type QuotaUpdateParameters struct {
 	Value []*QuotaBaseProperties `json:"value,omitempty"`
 }
 
-// QuotasClientListOptions contains the optional parameters for the QuotasClient.List method.
+// QuotasClientListOptions contains the optional parameters for the QuotasClient.NewListPager method.
 type QuotasClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -6800,7 +6802,7 @@ type ResourceConfiguration struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 
 	// Additional properties bag.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties map[string]any `json:"properties,omitempty"`
 }
 
 // ResourceID - Represents a resource ID. For example, for a subnet, it is the resource URL for the subnet.
@@ -7130,7 +7132,7 @@ type SchedulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SchedulesClientListOptions contains the optional parameters for the SchedulesClient.List method.
+// SchedulesClientListOptions contains the optional parameters for the SchedulesClient.NewListPager method.
 type SchedulesClientListOptions struct {
 	// Status filter for schedule.
 	ListViewType *ScheduleListViewType
@@ -7261,7 +7263,7 @@ type SharedPrivateLinkResourceProperty struct {
 // StackEnsembleSettings - Advances setting to customize StackEnsemble run.
 type StackEnsembleSettings struct {
 	// Optional parameters to pass to the initializer of the meta-learner.
-	StackMetaLearnerKWargs interface{} `json:"stackMetaLearnerKWargs,omitempty"`
+	StackMetaLearnerKWargs any `json:"stackMetaLearnerKWargs,omitempty"`
 
 	// Specifies the proportion of the training set (when choosing train and validation type of training) to be reserved for training
 	// the meta-learner. Default value is 0.2.
@@ -7284,7 +7286,7 @@ type SweepJob struct {
 
 	// REQUIRED; [Required] A dictionary containing each parameter and its distribution. The dictionary key is the name of the
 	// parameter
-	SearchSpace interface{} `json:"searchSpace,omitempty"`
+	SearchSpace any `json:"searchSpace,omitempty"`
 
 	// REQUIRED; [Required] Trial component definition.
 	Trial *TrialComponent `json:"trial,omitempty"`
@@ -8160,7 +8162,7 @@ type UsageName struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
+// UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 type UsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -8507,7 +8509,8 @@ type WorkspaceConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceConnectionsClientListOptions contains the optional parameters for the WorkspaceConnectionsClient.List method.
+// WorkspaceConnectionsClientListOptions contains the optional parameters for the WorkspaceConnectionsClient.NewListPager
+// method.
 type WorkspaceConnectionsClientListOptions struct {
 	// Category of the workspace connection.
 	Category *string
@@ -8515,7 +8518,7 @@ type WorkspaceConnectionsClientListOptions struct {
 	Target *string
 }
 
-// WorkspaceFeaturesClientListOptions contains the optional parameters for the WorkspaceFeaturesClient.List method.
+// WorkspaceFeaturesClientListOptions contains the optional parameters for the WorkspaceFeaturesClient.NewListPager method.
 type WorkspaceFeaturesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -8697,14 +8700,14 @@ type WorkspacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.ListByResourceGroup
+// WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.NewListByResourceGroupPager
 // method.
 type WorkspacesClientListByResourceGroupOptions struct {
 	// Continuation token for pagination.
 	Skip *string
 }
 
-// WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.ListBySubscription
+// WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.NewListBySubscriptionPager
 // method.
 type WorkspacesClientListBySubscriptionOptions struct {
 	// Continuation token for pagination.

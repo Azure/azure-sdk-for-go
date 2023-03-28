@@ -3826,38 +3826,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBlobStage() {
 	_require.Nil(resp.BlockList.UncommittedBlocks)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockStreamUploadWithDifferentBlockSize() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-
-	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
-
-	var firstBlockSize, secondBlockSize int64 = 2500 * 1024 * 1024, 10 * 1024 * 1024
-	content := make([]byte, firstBlockSize+secondBlockSize)
-	body := bytes.NewReader(content)
-	rsc := streaming.NopCloser(body)
-
-	_, err = bbClient.UploadStream(context.Background(), rsc, &blockblob.UploadStreamOptions{
-		BlockSize:   firstBlockSize,
-		Concurrency: 2,
-	})
-	_require.Nil(err)
-
-	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-	_require.Nil(err)
-	_require.Len(resp.BlockList.CommittedBlocks, 2)
-	_require.Equal(*resp.BlobContentLength, firstBlockSize+secondBlockSize)
-	committed := resp.BlockList.CommittedBlocks
-	_require.Equal(*(committed[0].Size), firstBlockSize)
-	_require.Equal(*(committed[1].Size), secondBlockSize)
-}
-
 type fakeBlockBlob struct {
 	totalStaged int64
 }

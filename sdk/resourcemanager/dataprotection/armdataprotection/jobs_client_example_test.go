@@ -24,11 +24,11 @@ func ExampleJobsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewJobsClient("62b829ee-7936-40c9-a1c9-47a93f9f3965", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("BugBash1", "BugBashVaultForCCYv11", nil)
+	pager := clientFactory.NewJobsClient().NewListPager("BugBash1", "BugBashVaultForCCYv11", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -173,11 +173,11 @@ func ExampleJobsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewJobsClient("62b829ee-7936-40c9-a1c9-47a93f9f3965", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "BugBash1", "BugBashVaultForCCYv11", "3c60cb49-63e8-4b21-b9bd-26277b3fdfae", nil)
+	res, err := clientFactory.NewJobsClient().Get(ctx, "BugBash1", "BugBashVaultForCCYv11", "3c60cb49-63e8-4b21-b9bd-26277b3fdfae", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

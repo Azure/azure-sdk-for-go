@@ -25,11 +25,11 @@ func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetResourcesInSubscriptionPager(nil)
+	pager := clientFactory.NewResourceGuardsClient().NewGetResourcesInSubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -78,11 +78,11 @@ func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetResourcesInResourceGroupPager("SampleResourceGroup", nil)
+	pager := clientFactory.NewResourceGuardsClient().NewGetResourcesInResourceGroupPager("SampleResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -131,11 +131,11 @@ func ExampleResourceGuardsClient_Put() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Put(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.ResourceGuardResource{
+	res, err := clientFactory.NewResourceGuardsClient().Put(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.ResourceGuardResource{
 		Location: to.Ptr("WestUS"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("val1"),
@@ -181,11 +181,11 @@ func ExampleResourceGuardsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "SampleResourceGroup", "swaggerExample", nil)
+	res, err := clientFactory.NewResourceGuardsClient().Get(ctx, "SampleResourceGroup", "swaggerExample", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -226,11 +226,11 @@ func ExampleResourceGuardsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "SampleResourceGroup", "swaggerExample", nil)
+	_, err = clientFactory.NewResourceGuardsClient().Delete(ctx, "SampleResourceGroup", "swaggerExample", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -243,11 +243,11 @@ func ExampleResourceGuardsClient_Patch() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Patch(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.PatchResourceGuardInput{
+	res, err := clientFactory.NewResourceGuardsClient().Patch(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.PatchResourceGuardInput{
 		Tags: map[string]*string{
 			"newKey": to.Ptr("newVal"),
 		},
@@ -290,11 +290,11 @@ func ExampleResourceGuardsClient_NewGetDisableSoftDeleteRequestsObjectsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetDisableSoftDeleteRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
+	pager := clientFactory.NewResourceGuardsClient().NewGetDisableSoftDeleteRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -323,11 +323,11 @@ func ExampleResourceGuardsClient_NewGetDeleteResourceGuardProxyRequestsObjectsPa
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetDeleteResourceGuardProxyRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
+	pager := clientFactory.NewResourceGuardsClient().NewGetDeleteResourceGuardProxyRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -356,11 +356,11 @@ func ExampleResourceGuardsClient_NewGetBackupSecurityPINRequestsObjectsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetBackupSecurityPINRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
+	pager := clientFactory.NewResourceGuardsClient().NewGetBackupSecurityPINRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -389,11 +389,11 @@ func ExampleResourceGuardsClient_NewGetDeleteProtectedItemRequestsObjectsPager()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetDeleteProtectedItemRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
+	pager := clientFactory.NewResourceGuardsClient().NewGetDeleteProtectedItemRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -422,11 +422,11 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectionPolicyRequestsObjectsPage
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetUpdateProtectionPolicyRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
+	pager := clientFactory.NewResourceGuardsClient().NewGetUpdateProtectionPolicyRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -455,11 +455,11 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectedItemRequestsObjectsPager()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetUpdateProtectedItemRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
+	pager := clientFactory.NewResourceGuardsClient().NewGetUpdateProtectedItemRequestsObjectsPager("SampleResourceGroup", "swaggerExample", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -488,11 +488,11 @@ func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDefaultDisableSoftDeleteRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultDisableSoftDeleteRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -513,11 +513,11 @@ func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObjec
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDefaultDeleteResourceGuardProxyRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultDeleteResourceGuardProxyRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -538,11 +538,11 @@ func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDefaultBackupSecurityPINRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultBackupSecurityPINRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -563,11 +563,11 @@ func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDefaultDeleteProtectedItemRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultDeleteProtectedItemRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -588,11 +588,11 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject(
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDefaultUpdateProtectionPolicyRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultUpdateProtectionPolicyRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -613,11 +613,11 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectedItemRequestsObject() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewResourceGuardsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDefaultUpdateProtectedItemRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
+	res, err := clientFactory.NewResourceGuardsClient().GetDefaultUpdateProtectedItemRequestsObject(ctx, "SampleResourceGroup", "swaggerExample", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

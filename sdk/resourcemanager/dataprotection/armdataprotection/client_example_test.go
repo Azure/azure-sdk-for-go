@@ -25,11 +25,11 @@ func ExampleClient_CheckFeatureSupport() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckFeatureSupport(ctx, "WestUS", &armdataprotection.FeatureValidationRequest{
+	res, err := clientFactory.NewClient().CheckFeatureSupport(ctx, "WestUS", &armdataprotection.FeatureValidationRequest{
 		ObjectType:  to.Ptr("FeatureValidationRequest"),
 		FeatureType: to.Ptr(armdataprotection.FeatureTypeDataSourceType),
 	}, nil)

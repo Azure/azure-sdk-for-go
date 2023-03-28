@@ -27,11 +27,11 @@ func ExampleBackupPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupPoliciesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("000pikumar", "PrivatePreviewVault", nil)
+	pager := clientFactory.NewBackupPoliciesClient().NewListPager("000pikumar", "PrivatePreviewVault", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -142,11 +142,11 @@ func ExampleBackupPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupPoliciesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "000pikumar", "PrivatePreviewVault", "OSSDBPolicy", nil)
+	res, err := clientFactory.NewBackupPoliciesClient().Get(ctx, "000pikumar", "PrivatePreviewVault", "OSSDBPolicy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -249,11 +249,11 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupPoliciesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "000pikumar", "PrivatePreviewVault", "OSSDBPolicy", armdataprotection.BaseBackupPolicyResource{
+	res, err := clientFactory.NewBackupPoliciesClient().CreateOrUpdate(ctx, "000pikumar", "PrivatePreviewVault", "OSSDBPolicy", armdataprotection.BaseBackupPolicyResource{
 		Properties: &armdataprotection.BackupPolicy{
 			DatasourceTypes: []*string{
 				to.Ptr("OssDB")},
@@ -437,11 +437,11 @@ func ExampleBackupPoliciesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupPoliciesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "000pikumar", "PrivatePreviewVault", "OSSDBPolicy", nil)
+	_, err = clientFactory.NewBackupPoliciesClient().Delete(ctx, "000pikumar", "PrivatePreviewVault", "OSSDBPolicy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

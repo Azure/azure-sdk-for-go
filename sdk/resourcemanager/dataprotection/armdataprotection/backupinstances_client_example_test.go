@@ -25,11 +25,11 @@ func ExampleBackupInstancesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("000pikumar", "PratikPrivatePreviewVault1", nil)
+	pager := clientFactory.NewBackupInstancesClient().NewListPager("000pikumar", "PratikPrivatePreviewVault1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -91,11 +91,11 @@ func ExampleBackupInstancesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", nil)
+	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -149,11 +149,11 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.BackupInstanceResource{
+	poller, err := clientFactory.NewBackupInstancesClient().BeginCreateOrUpdate(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.BackupInstanceResource{
 		Tags: map[string]*string{
 			"key1": to.Ptr("val1"),
 		},
@@ -264,11 +264,11 @@ func ExampleBackupInstancesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", nil)
+	poller, err := clientFactory.NewBackupInstancesClient().BeginDelete(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -285,11 +285,11 @@ func ExampleBackupInstancesClient_BeginAdhocBackup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginAdhocBackup(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.TriggerBackupRequest{
+	poller, err := clientFactory.NewBackupInstancesClient().BeginAdhocBackup(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.TriggerBackupRequest{
 		BackupRuleOptions: &armdataprotection.AdHocBackupRuleOptions{
 			RuleName: to.Ptr("BackupWeekly"),
 			TriggerOption: &armdataprotection.AdhocBackupTriggerOption{
@@ -320,11 +320,11 @@ func ExampleBackupInstancesClient_BeginValidateForBackup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginValidateForBackup(ctx, "000pikumar", "PratikPrivatePreviewVault1", armdataprotection.ValidateForBackupRequest{
+	poller, err := clientFactory.NewBackupInstancesClient().BeginValidateForBackup(ctx, "000pikumar", "PratikPrivatePreviewVault1", armdataprotection.ValidateForBackupRequest{
 		BackupInstance: &armdataprotection.BackupInstance{
 			DataSourceInfo: &armdataprotection.Datasource{
 				DatasourceType:   to.Ptr("OssDB"),
@@ -381,11 +381,11 @@ func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetBackupInstanceOperationResult(ctx, "SampleResourceGroup", "swaggerExample", "testInstance1", "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==", nil)
+	res, err := clientFactory.NewBackupInstancesClient().GetBackupInstanceOperationResult(ctx, "SampleResourceGroup", "swaggerExample", "testInstance1", "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -436,11 +436,11 @@ func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginTriggerRehydrate(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.AzureBackupRehydrationRequest{
+	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRehydrate(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.AzureBackupRehydrationRequest{
 		RecoveryPointID:              to.Ptr("hardcodedRP"),
 		RehydrationPriority:          to.Ptr(armdataprotection.RehydrationPriorityHigh),
 		RehydrationRetentionDuration: to.Ptr("7D"),
@@ -461,11 +461,11 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestore() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginTriggerRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
+	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
 		ObjectType: to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
 		RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
 			ObjectType:      to.Ptr("RestoreTargetInfo"),
@@ -524,11 +524,11 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreAsFiles() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginTriggerRestore(ctx, "000pikumar", "PrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
+	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
 		ObjectType: to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
 		RestoreTargetInfo: &armdataprotection.RestoreFilesTargetInfo{
 			ObjectType:      to.Ptr("RestoreFilesTargetInfo"),
@@ -567,11 +567,11 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithRehydrat
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginTriggerRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRestoreWithRehydrationRequest{
+	poller, err := clientFactory.NewBackupInstancesClient().BeginTriggerRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", &armdataprotection.AzureBackupRestoreWithRehydrationRequest{
 		ObjectType: to.Ptr("AzureBackupRestoreWithRehydrationRequest"),
 		RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
 			ObjectType:      to.Ptr("RestoreTargetInfo"),
@@ -625,11 +625,11 @@ func ExampleBackupInstancesClient_BeginResumeBackups() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResumeBackups(ctx, "testrg", "testvault", "testbi", nil)
+	poller, err := clientFactory.NewBackupInstancesClient().BeginResumeBackups(ctx, "testrg", "testvault", "testbi", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -646,11 +646,11 @@ func ExampleBackupInstancesClient_BeginResumeProtection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResumeProtection(ctx, "testrg", "testvault", "testbi", nil)
+	poller, err := clientFactory.NewBackupInstancesClient().BeginResumeProtection(ctx, "testrg", "testvault", "testbi", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -667,11 +667,11 @@ func ExampleBackupInstancesClient_BeginStopProtection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStopProtection(ctx, "testrg", "testvault", "testbi", nil)
+	poller, err := clientFactory.NewBackupInstancesClient().BeginStopProtection(ctx, "testrg", "testvault", "testbi", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -688,11 +688,11 @@ func ExampleBackupInstancesClient_BeginSuspendBackups() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginSuspendBackups(ctx, "testrg", "testvault", "testbi", nil)
+	poller, err := clientFactory.NewBackupInstancesClient().BeginSuspendBackups(ctx, "testrg", "testvault", "testbi", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -709,11 +709,11 @@ func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginSyncBackupInstance(ctx, "testrg", "testvault", "testbi", armdataprotection.SyncBackupInstanceRequest{
+	poller, err := clientFactory.NewBackupInstancesClient().BeginSyncBackupInstance(ctx, "testrg", "testvault", "testbi", armdataprotection.SyncBackupInstanceRequest{
 		SyncType: to.Ptr(armdataprotection.SyncTypeDefault),
 	}, nil)
 	if err != nil {
@@ -732,11 +732,11 @@ func ExampleBackupInstancesClient_BeginValidateForRestore() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginValidateForRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.ValidateRestoreRequestObject{
+	poller, err := clientFactory.NewBackupInstancesClient().BeginValidateForRestore(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.ValidateRestoreRequestObject{
 		RestoreRequestObject: &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
 			ObjectType: to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
 			RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{

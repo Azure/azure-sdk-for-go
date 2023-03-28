@@ -19,12 +19,12 @@ type AppsClientCheckSubdomainAvailabilityResponse struct {
 	AppAvailabilityInfo
 }
 
-// AppsClientCreateOrUpdateResponse contains the response from method AppsClient.CreateOrUpdate.
+// AppsClientCreateOrUpdateResponse contains the response from method AppsClient.BeginCreateOrUpdate.
 type AppsClientCreateOrUpdateResponse struct {
 	App
 }
 
-// AppsClientDeleteResponse contains the response from method AppsClient.Delete.
+// AppsClientDeleteResponse contains the response from method AppsClient.BeginDelete.
 type AppsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -34,37 +34,37 @@ type AppsClientGetResponse struct {
 	App
 }
 
-// AppsClientListByResourceGroupResponse contains the response from method AppsClient.ListByResourceGroup.
+// AppsClientListByResourceGroupResponse contains the response from method AppsClient.NewListByResourceGroupPager.
 type AppsClientListByResourceGroupResponse struct {
 	AppListResult
 }
 
-// AppsClientListBySubscriptionResponse contains the response from method AppsClient.ListBySubscription.
+// AppsClientListBySubscriptionResponse contains the response from method AppsClient.NewListBySubscriptionPager.
 type AppsClientListBySubscriptionResponse struct {
 	AppListResult
 }
 
-// AppsClientListTemplatesResponse contains the response from method AppsClient.ListTemplates.
+// AppsClientListTemplatesResponse contains the response from method AppsClient.NewListTemplatesPager.
 type AppsClientListTemplatesResponse struct {
 	AppTemplatesResult
 }
 
-// AppsClientUpdateResponse contains the response from method AppsClient.Update.
+// AppsClientUpdateResponse contains the response from method AppsClient.BeginUpdate.
 type AppsClientUpdateResponse struct {
 	// placeholder for future response values
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.Create.
+// PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreate.
 type PrivateEndpointConnectionsClientCreateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -74,7 +74,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }
@@ -84,7 +84,7 @@ type PrivateLinksClientGetResponse struct {
 	PrivateLinkResource
 }
 
-// PrivateLinksClientListResponse contains the response from method PrivateLinksClient.List.
+// PrivateLinksClientListResponse contains the response from method PrivateLinksClient.NewListPager.
 type PrivateLinksClientListResponse struct {
 	PrivateLinkResourceListResult
 }

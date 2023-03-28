@@ -85,7 +85,7 @@ func (m *MockNamespaceForAMQPLinks) Close(ctx context.Context, permanently bool)
 }
 
 // Close indicates an expected call of Close.
-func (mr *MockNamespaceForAMQPLinksMockRecorder) Close(ctx, permanently interface{}) *gomock.Call {
+func (mr *MockNamespaceForAMQPLinksMockRecorder) Close(ctx, permanently any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockNamespaceForAMQPLinks)(nil).Close), ctx, permanently)
 }
@@ -99,7 +99,7 @@ func (m *MockNamespaceForAMQPLinks) GetEntityAudience(entityPath string) string 
 }
 
 // GetEntityAudience indicates an expected call of GetEntityAudience.
-func (mr *MockNamespaceForAMQPLinksMockRecorder) GetEntityAudience(entityPath interface{}) *gomock.Call {
+func (mr *MockNamespaceForAMQPLinksMockRecorder) GetEntityAudience(entityPath any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntityAudience", reflect.TypeOf((*MockNamespaceForAMQPLinks)(nil).GetEntityAudience), entityPath)
 }
@@ -115,7 +115,7 @@ func (m *MockNamespaceForAMQPLinks) NegotiateClaim(ctx context.Context, entityPa
 }
 
 // NegotiateClaim indicates an expected call of NegotiateClaim.
-func (mr *MockNamespaceForAMQPLinksMockRecorder) NegotiateClaim(ctx, entityPath interface{}) *gomock.Call {
+func (mr *MockNamespaceForAMQPLinksMockRecorder) NegotiateClaim(ctx, entityPath any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NegotiateClaim", reflect.TypeOf((*MockNamespaceForAMQPLinks)(nil).NegotiateClaim), ctx, entityPath)
 }
@@ -131,7 +131,7 @@ func (m *MockNamespaceForAMQPLinks) NewAMQPSession(ctx context.Context) (amqpwra
 }
 
 // NewAMQPSession indicates an expected call of NewAMQPSession.
-func (mr *MockNamespaceForAMQPLinksMockRecorder) NewAMQPSession(ctx interface{}) *gomock.Call {
+func (mr *MockNamespaceForAMQPLinksMockRecorder) NewAMQPSession(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewAMQPSession", reflect.TypeOf((*MockNamespaceForAMQPLinks)(nil).NewAMQPSession), ctx)
 }
@@ -147,7 +147,7 @@ func (m *MockNamespaceForAMQPLinks) NewRPCLink(ctx context.Context, managementPa
 }
 
 // NewRPCLink indicates an expected call of NewRPCLink.
-func (mr *MockNamespaceForAMQPLinksMockRecorder) NewRPCLink(ctx, managementPath interface{}) *gomock.Call {
+func (mr *MockNamespaceForAMQPLinksMockRecorder) NewRPCLink(ctx, managementPath any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewRPCLink", reflect.TypeOf((*MockNamespaceForAMQPLinks)(nil).NewRPCLink), ctx, managementPath)
 }
@@ -161,7 +161,7 @@ func (m *MockNamespaceForAMQPLinks) Recover(ctx context.Context, clientRevision 
 }
 
 // Recover indicates an expected call of Recover.
-func (mr *MockNamespaceForAMQPLinksMockRecorder) Recover(ctx, clientRevision interface{}) *gomock.Call {
+func (mr *MockNamespaceForAMQPLinksMockRecorder) Recover(ctx, clientRevision any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Recover", reflect.TypeOf((*MockNamespaceForAMQPLinks)(nil).Recover), ctx, clientRevision)
 }

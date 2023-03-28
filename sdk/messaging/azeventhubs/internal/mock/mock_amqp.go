@@ -49,7 +49,7 @@ func (m *MockAMQPReceiver) AcceptMessage(ctx context.Context, msg *amqp.Message)
 }
 
 // AcceptMessage indicates an expected call of AcceptMessage.
-func (mr *MockAMQPReceiverMockRecorder) AcceptMessage(ctx, msg interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverMockRecorder) AcceptMessage(ctx, msg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AcceptMessage", reflect.TypeOf((*MockAMQPReceiver)(nil).AcceptMessage), ctx, msg)
 }
@@ -77,7 +77,7 @@ func (m *MockAMQPReceiver) IssueCredit(credit uint32) error {
 }
 
 // IssueCredit indicates an expected call of IssueCredit.
-func (mr *MockAMQPReceiverMockRecorder) IssueCredit(credit interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverMockRecorder) IssueCredit(credit any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IssueCredit", reflect.TypeOf((*MockAMQPReceiver)(nil).IssueCredit), credit)
 }
@@ -97,15 +97,15 @@ func (mr *MockAMQPReceiverMockRecorder) LinkName() *gomock.Call {
 }
 
 // LinkSourceFilterValue mocks base method.
-func (m *MockAMQPReceiver) LinkSourceFilterValue(name string) interface{} {
+func (m *MockAMQPReceiver) LinkSourceFilterValue(name string) any {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "LinkSourceFilterValue", name)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].(any)
 	return ret0
 }
 
 // LinkSourceFilterValue indicates an expected call of LinkSourceFilterValue.
-func (mr *MockAMQPReceiverMockRecorder) LinkSourceFilterValue(name interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverMockRecorder) LinkSourceFilterValue(name any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LinkSourceFilterValue", reflect.TypeOf((*MockAMQPReceiver)(nil).LinkSourceFilterValue), name)
 }
@@ -119,7 +119,7 @@ func (m *MockAMQPReceiver) ModifyMessage(ctx context.Context, msg *amqp.Message,
 }
 
 // ModifyMessage indicates an expected call of ModifyMessage.
-func (mr *MockAMQPReceiverMockRecorder) ModifyMessage(ctx, msg, options interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverMockRecorder) ModifyMessage(ctx, msg, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ModifyMessage", reflect.TypeOf((*MockAMQPReceiver)(nil).ModifyMessage), ctx, msg, options)
 }
@@ -148,7 +148,7 @@ func (m *MockAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 }
 
 // Receive indicates an expected call of Receive.
-func (mr *MockAMQPReceiverMockRecorder) Receive(ctx interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverMockRecorder) Receive(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Receive", reflect.TypeOf((*MockAMQPReceiver)(nil).Receive), ctx)
 }
@@ -162,7 +162,7 @@ func (m *MockAMQPReceiver) RejectMessage(ctx context.Context, msg *amqp.Message,
 }
 
 // RejectMessage indicates an expected call of RejectMessage.
-func (mr *MockAMQPReceiverMockRecorder) RejectMessage(ctx, msg, e interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverMockRecorder) RejectMessage(ctx, msg, e any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RejectMessage", reflect.TypeOf((*MockAMQPReceiver)(nil).RejectMessage), ctx, msg, e)
 }
@@ -176,7 +176,7 @@ func (m *MockAMQPReceiver) ReleaseMessage(ctx context.Context, msg *amqp.Message
 }
 
 // ReleaseMessage indicates an expected call of ReleaseMessage.
-func (mr *MockAMQPReceiverMockRecorder) ReleaseMessage(ctx, msg interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverMockRecorder) ReleaseMessage(ctx, msg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReleaseMessage", reflect.TypeOf((*MockAMQPReceiver)(nil).ReleaseMessage), ctx, msg)
 }
@@ -213,7 +213,7 @@ func (m *MockAMQPReceiverCloser) AcceptMessage(ctx context.Context, msg *amqp.Me
 }
 
 // AcceptMessage indicates an expected call of AcceptMessage.
-func (mr *MockAMQPReceiverCloserMockRecorder) AcceptMessage(ctx, msg interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverCloserMockRecorder) AcceptMessage(ctx, msg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AcceptMessage", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).AcceptMessage), ctx, msg)
 }
@@ -227,7 +227,7 @@ func (m *MockAMQPReceiverCloser) Close(ctx context.Context) error {
 }
 
 // Close indicates an expected call of Close.
-func (mr *MockAMQPReceiverCloserMockRecorder) Close(ctx interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverCloserMockRecorder) Close(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).Close), ctx)
 }
@@ -255,7 +255,7 @@ func (m *MockAMQPReceiverCloser) IssueCredit(credit uint32) error {
 }
 
 // IssueCredit indicates an expected call of IssueCredit.
-func (mr *MockAMQPReceiverCloserMockRecorder) IssueCredit(credit interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverCloserMockRecorder) IssueCredit(credit any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IssueCredit", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).IssueCredit), credit)
 }
@@ -275,15 +275,15 @@ func (mr *MockAMQPReceiverCloserMockRecorder) LinkName() *gomock.Call {
 }
 
 // LinkSourceFilterValue mocks base method.
-func (m *MockAMQPReceiverCloser) LinkSourceFilterValue(name string) interface{} {
+func (m *MockAMQPReceiverCloser) LinkSourceFilterValue(name string) any {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "LinkSourceFilterValue", name)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].(any)
 	return ret0
 }
 
 // LinkSourceFilterValue indicates an expected call of LinkSourceFilterValue.
-func (mr *MockAMQPReceiverCloserMockRecorder) LinkSourceFilterValue(name interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverCloserMockRecorder) LinkSourceFilterValue(name any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LinkSourceFilterValue", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).LinkSourceFilterValue), name)
 }
@@ -297,7 +297,7 @@ func (m *MockAMQPReceiverCloser) ModifyMessage(ctx context.Context, msg *amqp.Me
 }
 
 // ModifyMessage indicates an expected call of ModifyMessage.
-func (mr *MockAMQPReceiverCloserMockRecorder) ModifyMessage(ctx, msg, options interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverCloserMockRecorder) ModifyMessage(ctx, msg, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ModifyMessage", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).ModifyMessage), ctx, msg, options)
 }
@@ -326,7 +326,7 @@ func (m *MockAMQPReceiverCloser) Receive(ctx context.Context) (*amqp.Message, er
 }
 
 // Receive indicates an expected call of Receive.
-func (mr *MockAMQPReceiverCloserMockRecorder) Receive(ctx interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverCloserMockRecorder) Receive(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Receive", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).Receive), ctx)
 }
@@ -340,7 +340,7 @@ func (m *MockAMQPReceiverCloser) RejectMessage(ctx context.Context, msg *amqp.Me
 }
 
 // RejectMessage indicates an expected call of RejectMessage.
-func (mr *MockAMQPReceiverCloserMockRecorder) RejectMessage(ctx, msg, e interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverCloserMockRecorder) RejectMessage(ctx, msg, e any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RejectMessage", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).RejectMessage), ctx, msg, e)
 }
@@ -354,7 +354,7 @@ func (m *MockAMQPReceiverCloser) ReleaseMessage(ctx context.Context, msg *amqp.M
 }
 
 // ReleaseMessage indicates an expected call of ReleaseMessage.
-func (mr *MockAMQPReceiverCloserMockRecorder) ReleaseMessage(ctx, msg interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverCloserMockRecorder) ReleaseMessage(ctx, msg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReleaseMessage", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).ReleaseMessage), ctx, msg)
 }
@@ -419,7 +419,7 @@ func (m *MockAMQPSender) Send(ctx context.Context, msg *amqp.Message) error {
 }
 
 // Send indicates an expected call of Send.
-func (mr *MockAMQPSenderMockRecorder) Send(ctx, msg interface{}) *gomock.Call {
+func (mr *MockAMQPSenderMockRecorder) Send(ctx, msg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Send", reflect.TypeOf((*MockAMQPSender)(nil).Send), ctx, msg)
 }
@@ -456,7 +456,7 @@ func (m *MockAMQPSenderCloser) Close(ctx context.Context) error {
 }
 
 // Close indicates an expected call of Close.
-func (mr *MockAMQPSenderCloserMockRecorder) Close(ctx interface{}) *gomock.Call {
+func (mr *MockAMQPSenderCloserMockRecorder) Close(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockAMQPSenderCloser)(nil).Close), ctx)
 }
@@ -498,7 +498,7 @@ func (m *MockAMQPSenderCloser) Send(ctx context.Context, msg *amqp.Message) erro
 }
 
 // Send indicates an expected call of Send.
-func (mr *MockAMQPSenderCloserMockRecorder) Send(ctx, msg interface{}) *gomock.Call {
+func (mr *MockAMQPSenderCloserMockRecorder) Send(ctx, msg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Send", reflect.TypeOf((*MockAMQPSenderCloser)(nil).Send), ctx, msg)
 }
@@ -535,7 +535,7 @@ func (m *MockAMQPSession) Close(ctx context.Context) error {
 }
 
 // Close indicates an expected call of Close.
-func (mr *MockAMQPSessionMockRecorder) Close(ctx interface{}) *gomock.Call {
+func (mr *MockAMQPSessionMockRecorder) Close(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockAMQPSession)(nil).Close), ctx)
 }
@@ -550,7 +550,7 @@ func (m *MockAMQPSession) NewReceiver(ctx context.Context, source string, opts *
 }
 
 // NewReceiver indicates an expected call of NewReceiver.
-func (mr *MockAMQPSessionMockRecorder) NewReceiver(ctx, source, opts interface{}) *gomock.Call {
+func (mr *MockAMQPSessionMockRecorder) NewReceiver(ctx, source, opts any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewReceiver", reflect.TypeOf((*MockAMQPSession)(nil).NewReceiver), ctx, source, opts)
 }
@@ -565,7 +565,7 @@ func (m *MockAMQPSession) NewSender(ctx context.Context, target string, opts *am
 }
 
 // NewSender indicates an expected call of NewSender.
-func (mr *MockAMQPSessionMockRecorder) NewSender(ctx, target, opts interface{}) *gomock.Call {
+func (mr *MockAMQPSessionMockRecorder) NewSender(ctx, target, opts any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewSender", reflect.TypeOf((*MockAMQPSession)(nil).NewSender), ctx, target, opts)
 }
@@ -617,7 +617,7 @@ func (m *MockAMQPClient) NewSession(ctx context.Context, opts *amqp.SessionOptio
 }
 
 // NewSession indicates an expected call of NewSession.
-func (mr *MockAMQPClientMockRecorder) NewSession(ctx, opts interface{}) *gomock.Call {
+func (mr *MockAMQPClientMockRecorder) NewSession(ctx, opts any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewSession", reflect.TypeOf((*MockAMQPClient)(nil).NewSession), ctx, opts)
 }
@@ -654,7 +654,7 @@ func (m *MockRPCLink) Close(ctx context.Context) error {
 }
 
 // Close indicates an expected call of Close.
-func (mr *MockRPCLinkMockRecorder) Close(ctx interface{}) *gomock.Call {
+func (mr *MockRPCLinkMockRecorder) Close(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockRPCLink)(nil).Close), ctx)
 }
@@ -683,7 +683,7 @@ func (m *MockRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPC
 }
 
 // RPC indicates an expected call of RPC.
-func (mr *MockRPCLinkMockRecorder) RPC(ctx, msg interface{}) *gomock.Call {
+func (mr *MockRPCLinkMockRecorder) RPC(ctx, msg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RPC", reflect.TypeOf((*MockRPCLink)(nil).RPC), ctx, msg)
 }

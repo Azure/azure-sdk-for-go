@@ -102,7 +102,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 
 		err = mb.AddEventData(&EventData{
 			Body: []byte("small body"),
-			Properties: map[string]interface{}{
+			Properties: map[string]any{
 				"small": "value",
 			},
 		}, nil)
@@ -123,7 +123,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 
 		err = mb.AddEventData(&EventData{
 			Body: []byte("small body"),
-			Properties: map[string]interface{}{
+			Properties: map[string]any{
 				"hello":      "world",
 				"anInt":      100,
 				"aFLoat":     100.1,

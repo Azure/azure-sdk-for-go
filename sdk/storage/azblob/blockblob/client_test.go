@@ -587,7 +587,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 	_require.Nil(err)
 }
 
-func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcClient *service.Client) (*container.Client, *blockblob.Client, *blockblob.Client, *bytes.Reader, time.Time) {
+func setUpPutBlobFromURLTest(s *BlockBlobUnrecordedTestsSuite, testName string, _require *require.Assertions, svcClient *service.Client) (*container.Client, *blockblob.Client, *blockblob.Client, string) {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 
@@ -607,18 +607,6 @@ func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcC
 	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_require.Nil(err)
 
-	return containerClient, srcBBClient, destBBClient, body, expiryTime
-}
-
-func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURL() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	containerClient, srcBlob, destBlob, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	if err != nil {
 		s.T().Fatal("Couldn't fetch credential because " + err.Error())
@@ -632,40 +620,35 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURL() {
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
 
-	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+	srcBlobParts, _ := blob.ParseURL(srcBBClient.URL())
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
+
+	return containerClient, srcBBClient, destBBClient, srcBlobURLWithSAS
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, _, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, nil)
 	_require.NotNil(pbResp)
 	_require.NoError(err)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, srcBlob, destBlob, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-
-	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	if err != nil {
-		s.T().Fatal("Couldn't fetch credential because " + err.Error())
-	}
-
-	sasQueryParams, err := sas.AccountSignatureValues{
-		Protocol:      sas.ProtocolHTTPS,
-		ExpiryTime:    expiryTime,
-		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.SignWithSharedKey(credential)
-	_require.Nil(err)
-
-	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
-	srcBlobParts.SAS = sasQueryParams
-	srcBlobURLWithSAS := srcBlobParts.String()
 
 	options := blockblob.UploadBlobFromURLOptions{
 		Tags:        testcommon.BasicBlobTagsMap,
@@ -695,25 +678,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlWithCPK() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, srcBlob, destBlob, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-
-	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	if err != nil {
-		s.T().Fatal("Couldn't fetch credential because " + err.Error())
-	}
-
-	sasQueryParams, err := sas.AccountSignatureValues{
-		Protocol:      sas.ProtocolHTTPS,
-		ExpiryTime:    expiryTime,
-		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.SignWithSharedKey(credential)
-	_require.Nil(err)
-
-	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
-	srcBlobParts.SAS = sasQueryParams
-	srcBlobURLWithSAS := srcBlobParts.String()
 
 	options := blockblob.UploadBlobFromURLOptions{
 		CPKInfo: &testcommon.TestCPKByValue,
@@ -739,11 +705,13 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	containerClient, _, destBlob, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	bbName := testcommon.GenerateBlobName(testName)
 	srcBlob := testcommon.CreateNewBlockBlobWithCPK(context.Background(), _require, bbName, containerClient, nil, &encryptionScope)
+	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	if err != nil {
@@ -787,7 +755,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	r, sourceData := testcommon.GenerateData(contentSize)
 	sourceDataMD5Value := md5.Sum(sourceData)
 
-	containerClient, _, destBlob, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	containerClient, srcBlob, destBlob, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
@@ -795,11 +763,11 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 		s.T().Fatal("Couldn't fetch credential because " + err.Error())
 	}
 
-	srcBlob := containerClient.NewBlockBlobClient("srcBlob")
-
 	_, err = srcBlob.Upload(context.Background(), r, nil)
 	_require.Nil(err)
 
+	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
 	// Get source blob url with SAS for UploadBlobFromURL.
 	sasQueryParams, err := sas.AccountSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
@@ -832,6 +800,349 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	}
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options2)
 	_require.NotNil(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	resp, err := srcBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		SourceModifiedAccessConditions: &blob.SourceModifiedAccessConditions{
+			SourceIfMatch: resp.ETag,
+		},
+	}
+
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.Nil(err)
+
+	_, err = destBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, _, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	randomEtag := azcore.ETag("a")
+	accessConditions := blob.SourceModifiedAccessConditions{
+		SourceIfMatch: &randomEtag,
+	}
+	options := blockblob.UploadBlobFromURLOptions{
+		SourceModifiedAccessConditions: &accessConditions,
+	}
+
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.SourceConditionNotMet)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	_, err = srcBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		SourceModifiedAccessConditions: &blob.SourceModifiedAccessConditions{
+			SourceIfNoneMatch: to.Ptr(azcore.ETag("a")),
+		},
+	}
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.Nil(err)
+
+	_, err = destBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	resp, err := srcBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		SourceModifiedAccessConditions: &blob.SourceModifiedAccessConditions{
+			SourceIfNoneMatch: resp.ETag,
+		},
+	}
+
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CannotVerifyCopySource)
+	_require.ErrorContains(err, "304")
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.Nil(err)
+
+	_, err = destBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
+	options := blockblob.UploadBlobFromURLOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.Nil(err)
+
+	_, err = destBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromUrlDestIfMatchTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, _, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	resp, err := destBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
+		},
+	}
+
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.Nil(err)
+
+	resp, err = destBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, _, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	resp, err := destBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
+		},
+	}
+	metadata := make(map[string]*string)
+	metadata["bla"] = to.Ptr("bla")
+	_, err = destBlob.SetMetadata(context.Background(), metadata, nil)
+	_require.Nil(err)
+
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, _, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	resp, err := destBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	}
+
+	_, err = destBlob.SetMetadata(context.Background(), nil, nil) // SetMetadata chances the blob's etag
+	_require.Nil(err)
+
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.Nil(err)
+
+	resp, err = destBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, _, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	resp, err := destBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	}
+
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLCopySourceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	_, err = srcBlob.SetTier(context.Background(), testcommon.CoolAccessTier, nil)
+	_require.Nil(err)
+
+	resp, err := srcBlob.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(resp.AccessTier, to.Ptr("Cool"))
+
+	// CopySourceBlobProperties is true by default, trying false here
+	options := blockblob.UploadBlobFromURLOptions{
+		CopySourceBlobProperties: to.Ptr(false),
+	}
+
+	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NoError(err)
+	_require.NotNil(pbResp)
+
+	resp, err = destBlob.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotEqual(resp.AccessTier, to.Ptr("Cool"))
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {

@@ -84,15 +84,13 @@ type UploadBlobFromURLOptions struct {
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
 	Metadata map[string]*string
 
-	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
+	// Optional. Specifies the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 []byte
 
 	// Optional. Indicates the tier to be set on the blob.
 	Tier *blob.AccessTier
 
-	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 []byte
-
+	// Additional optional headers
 	HTTPHeaders                    *blob.HTTPHeaders
 	AccessConditions               *blob.AccessConditions
 	CPKInfo                        *blob.CPKInfo
@@ -114,7 +112,6 @@ func (o *UploadBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFr
 		Metadata:                 o.Metadata,
 		SourceContentMD5:         o.SourceContentMD5,
 		Tier:                     o.Tier,
-		TransactionalContentMD5:  o.TransactionalContentMD5,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)

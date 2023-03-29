@@ -3,11 +3,9 @@
 ## 0.9.0 (Unreleased)
 
 ### Features Added
-* Upgraded to api version 7.4
 
 ### Breaking Changes
 * Moved module from `sdk/keyvault/azadmin` to `sdk/security/keyvault/azadmin`
-* Renamed `ActionType` to `CertificatePolicyAction`
 
 ### Bugs Fixed
 

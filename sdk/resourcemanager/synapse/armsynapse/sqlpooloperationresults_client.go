@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // SQLPoolOperationResultsClient contains the methods for the SQLPoolOperationResults group.
 // Don't use this type directly, use NewSQLPoolOperationResultsClient() instead.
 type SQLPoolOperationResultsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSQLPoolOperationResultsClient creates a new instance of SQLPoolOperationResultsClient with the specified values.
@@ -36,21 +33,13 @@ type SQLPoolOperationResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSQLPoolOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLPoolOperationResultsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SQLPoolOperationResultsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SQLPoolOperationResultsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *SQLPoolOperationResultsClient) BeginGetLocationHeaderResult(ctx co
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SQLPoolOperationResultsClientGetLocationHeaderResultResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SQLPoolOperationResultsClientGetLocationHeaderResultResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[SQLPoolOperationResultsClientGetLocationHeaderResultResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SQLPoolOperationResultsClientGetLocationHeaderResultResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *SQLPoolOperationResultsClient) getLocationHeaderResult(ctx context
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +108,7 @@ func (client *SQLPoolOperationResultsClient) getLocationHeaderResultCreateReques
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

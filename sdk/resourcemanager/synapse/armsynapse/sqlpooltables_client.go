@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // SQLPoolTablesClient contains the methods for the SQLPoolTables group.
 // Don't use this type directly, use NewSQLPoolTablesClient() instead.
 type SQLPoolTablesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSQLPoolTablesClient creates a new instance of SQLPoolTablesClient with the specified values.
@@ -36,21 +33,13 @@ type SQLPoolTablesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSQLPoolTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLPoolTablesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SQLPoolTablesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SQLPoolTablesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *SQLPoolTablesClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SQLPoolTablesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolTablesClientGetResponse{}, err
 	}
@@ -107,7 +96,7 @@ func (client *SQLPoolTablesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +141,7 @@ func (client *SQLPoolTablesClient) NewListBySchemaPager(resourceGroupName string
 			if err != nil {
 				return SQLPoolTablesClientListBySchemaResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SQLPoolTablesClientListBySchemaResponse{}, err
 			}
@@ -187,7 +176,7 @@ func (client *SQLPoolTablesClient) listBySchemaCreateRequest(ctx context.Context
 		return nil, errors.New("parameter schemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

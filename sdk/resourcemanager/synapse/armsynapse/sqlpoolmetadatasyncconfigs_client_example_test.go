@@ -25,11 +25,11 @@ func ExampleSQLPoolMetadataSyncConfigsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolMetadataSyncConfigsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", nil)
+	res, err := clientFactory.NewSQLPoolMetadataSyncConfigsClient().Get(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -53,11 +53,11 @@ func ExampleSQLPoolMetadataSyncConfigsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolMetadataSyncConfigsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Create(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", armsynapse.MetadataSyncConfig{
+	res, err := clientFactory.NewSQLPoolMetadataSyncConfigsClient().Create(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", armsynapse.MetadataSyncConfig{
 		Properties: &armsynapse.MetadataSyncConfigProperties{
 			Enabled: to.Ptr(true),
 		},

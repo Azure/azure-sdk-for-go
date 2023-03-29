@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // WorkspaceManagedSQLServerEncryptionProtectorClient contains the methods for the WorkspaceManagedSQLServerEncryptionProtector group.
 // Don't use this type directly, use NewWorkspaceManagedSQLServerEncryptionProtectorClient() instead.
 type WorkspaceManagedSQLServerEncryptionProtectorClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkspaceManagedSQLServerEncryptionProtectorClient creates a new instance of WorkspaceManagedSQLServerEncryptionProtectorClient with the specified values.
@@ -36,21 +33,13 @@ type WorkspaceManagedSQLServerEncryptionProtectorClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWorkspaceManagedSQLServerEncryptionProtectorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceManagedSQLServerEncryptionProtectorClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkspaceManagedSQLServerEncryptionProtectorClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkspaceManagedSQLServerEncryptionProtectorClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) BeginCreateOrU
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) createOrUpdate
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,7 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) createOrUpdate
 		return nil, errors.New("parameter encryptionProtectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{encryptionProtectorName}", url.PathEscape(string(encryptionProtectorName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +129,7 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) Get(ctx contex
 	if err != nil {
 		return WorkspaceManagedSQLServerEncryptionProtectorClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkspaceManagedSQLServerEncryptionProtectorClientGetResponse{}, err
 	}
@@ -169,7 +158,7 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) getCreateReque
 		return nil, errors.New("parameter encryptionProtectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{encryptionProtectorName}", url.PathEscape(string(encryptionProtectorName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +201,7 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) NewListPager(r
 			if err != nil {
 				return WorkspaceManagedSQLServerEncryptionProtectorClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkspaceManagedSQLServerEncryptionProtectorClientListResponse{}, err
 			}
@@ -239,7 +228,7 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) listCreateRequ
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -274,9 +263,9 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) BeginRevalidat
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -289,7 +278,7 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) revalidate(ctx
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -318,7 +307,7 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) revalidateCrea
 		return nil, errors.New("parameter encryptionProtectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{encryptionProtectorName}", url.PathEscape(string(encryptionProtectorName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

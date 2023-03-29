@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // AzureADOnlyAuthenticationsClient contains the methods for the AzureADOnlyAuthentications group.
 // Don't use this type directly, use NewAzureADOnlyAuthenticationsClient() instead.
 type AzureADOnlyAuthenticationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAzureADOnlyAuthenticationsClient creates a new instance of AzureADOnlyAuthenticationsClient with the specified values.
@@ -36,21 +33,13 @@ type AzureADOnlyAuthenticationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureADOnlyAuthenticationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AzureADOnlyAuthenticationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AzureADOnlyAuthenticationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,11 +60,11 @@ func (client *AzureADOnlyAuthenticationsClient) BeginCreate(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AzureADOnlyAuthenticationsClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AzureADOnlyAuthenticationsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AzureADOnlyAuthenticationsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AzureADOnlyAuthenticationsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -88,7 +77,7 @@ func (client *AzureADOnlyAuthenticationsClient) create(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +106,7 @@ func (client *AzureADOnlyAuthenticationsClient) createCreateRequest(ctx context.
 		return nil, errors.New("parameter azureADOnlyAuthenticationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureADOnlyAuthenticationName}", url.PathEscape(string(azureADOnlyAuthenticationName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +131,7 @@ func (client *AzureADOnlyAuthenticationsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return AzureADOnlyAuthenticationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AzureADOnlyAuthenticationsClientGetResponse{}, err
 	}
@@ -171,7 +160,7 @@ func (client *AzureADOnlyAuthenticationsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter azureADOnlyAuthenticationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureADOnlyAuthenticationName}", url.PathEscape(string(azureADOnlyAuthenticationName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -214,7 +203,7 @@ func (client *AzureADOnlyAuthenticationsClient) NewListPager(resourceGroupName s
 			if err != nil {
 				return AzureADOnlyAuthenticationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AzureADOnlyAuthenticationsClientListResponse{}, err
 			}
@@ -241,7 +230,7 @@ func (client *AzureADOnlyAuthenticationsClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

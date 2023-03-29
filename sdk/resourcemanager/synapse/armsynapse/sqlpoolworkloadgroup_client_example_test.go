@@ -25,11 +25,11 @@ func ExampleSQLPoolWorkloadGroupClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolWorkloadGroupClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "smallrc", nil)
+	res, err := clientFactory.NewSQLPoolWorkloadGroupClient().Get(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "smallrc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -58,11 +58,11 @@ func ExampleSQLPoolWorkloadGroupClient_BeginCreateOrUpdate_createAWorkloadGroupW
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolWorkloadGroupClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "smallrc", armsynapse.WorkloadGroup{
+	poller, err := clientFactory.NewSQLPoolWorkloadGroupClient().BeginCreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "smallrc", armsynapse.WorkloadGroup{
 		Properties: &armsynapse.WorkloadGroupProperties{
 			Importance:                   to.Ptr("normal"),
 			MaxResourcePercent:           to.Ptr[int32](100),
@@ -104,11 +104,11 @@ func ExampleSQLPoolWorkloadGroupClient_BeginCreateOrUpdate_createAWorkloadGroupW
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolWorkloadGroupClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "smallrc", armsynapse.WorkloadGroup{
+	poller, err := clientFactory.NewSQLPoolWorkloadGroupClient().BeginCreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "smallrc", armsynapse.WorkloadGroup{
 		Properties: &armsynapse.WorkloadGroupProperties{
 			MaxResourcePercent:           to.Ptr[int32](100),
 			MinResourcePercent:           to.Ptr[int32](0),
@@ -147,11 +147,11 @@ func ExampleSQLPoolWorkloadGroupClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolWorkloadGroupClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "wlm_workloadgroup", nil)
+	poller, err := clientFactory.NewSQLPoolWorkloadGroupClient().BeginDelete(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "wlm_workloadgroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -168,11 +168,11 @@ func ExampleSQLPoolWorkloadGroupClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolWorkloadGroupClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", nil)
+	pager := clientFactory.NewSQLPoolWorkloadGroupClient().NewListPager("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

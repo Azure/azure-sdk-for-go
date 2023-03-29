@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // SQLPoolSensitivityLabelsClient contains the methods for the SQLPoolSensitivityLabels group.
 // Don't use this type directly, use NewSQLPoolSensitivityLabelsClient() instead.
 type SQLPoolSensitivityLabelsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSQLPoolSensitivityLabelsClient creates a new instance of SQLPoolSensitivityLabelsClient with the specified values.
@@ -37,21 +34,13 @@ type SQLPoolSensitivityLabelsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSQLPoolSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLPoolSensitivityLabelsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SQLPoolSensitivityLabelsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SQLPoolSensitivityLabelsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -74,7 +63,7 @@ func (client *SQLPoolSensitivityLabelsClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
@@ -116,7 +105,7 @@ func (client *SQLPoolSensitivityLabelsClient) createOrUpdateCreateRequest(ctx co
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{columnName}", url.PathEscape(columnName))
 	urlPath = strings.ReplaceAll(urlPath, "{sensitivityLabelSource}", url.PathEscape("current"))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +142,7 @@ func (client *SQLPoolSensitivityLabelsClient) Delete(ctx context.Context, resour
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientDeleteResponse{}, err
 	}
@@ -195,7 +184,7 @@ func (client *SQLPoolSensitivityLabelsClient) deleteCreateRequest(ctx context.Co
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{columnName}", url.PathEscape(columnName))
 	urlPath = strings.ReplaceAll(urlPath, "{sensitivityLabelSource}", url.PathEscape("current"))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +211,7 @@ func (client *SQLPoolSensitivityLabelsClient) DisableRecommendation(ctx context.
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientDisableRecommendationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientDisableRecommendationResponse{}, err
 	}
@@ -264,7 +253,7 @@ func (client *SQLPoolSensitivityLabelsClient) disableRecommendationCreateRequest
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{columnName}", url.PathEscape(columnName))
 	urlPath = strings.ReplaceAll(urlPath, "{sensitivityLabelSource}", url.PathEscape("recommended"))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -292,7 +281,7 @@ func (client *SQLPoolSensitivityLabelsClient) EnableRecommendation(ctx context.C
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientEnableRecommendationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientEnableRecommendationResponse{}, err
 	}
@@ -334,7 +323,7 @@ func (client *SQLPoolSensitivityLabelsClient) enableRecommendationCreateRequest(
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{columnName}", url.PathEscape(columnName))
 	urlPath = strings.ReplaceAll(urlPath, "{sensitivityLabelSource}", url.PathEscape("recommended"))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -362,7 +351,7 @@ func (client *SQLPoolSensitivityLabelsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientGetResponse{}, err
 	}
@@ -407,7 +396,7 @@ func (client *SQLPoolSensitivityLabelsClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter sensitivityLabelSource cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sensitivityLabelSource}", url.PathEscape(string(sensitivityLabelSource)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -451,7 +440,7 @@ func (client *SQLPoolSensitivityLabelsClient) NewListCurrentPager(resourceGroupN
 			if err != nil {
 				return SQLPoolSensitivityLabelsClientListCurrentResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SQLPoolSensitivityLabelsClientListCurrentResponse{}, err
 			}
@@ -482,7 +471,7 @@ func (client *SQLPoolSensitivityLabelsClient) listCurrentCreateRequest(ctx conte
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -529,7 +518,7 @@ func (client *SQLPoolSensitivityLabelsClient) NewListRecommendedPager(resourceGr
 			if err != nil {
 				return SQLPoolSensitivityLabelsClientListRecommendedResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SQLPoolSensitivityLabelsClientListRecommendedResponse{}, err
 			}
@@ -560,7 +549,7 @@ func (client *SQLPoolSensitivityLabelsClient) listRecommendedCreateRequest(ctx c
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -603,7 +592,7 @@ func (client *SQLPoolSensitivityLabelsClient) Update(ctx context.Context, resour
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolSensitivityLabelsClientUpdateResponse{}, err
 	}
@@ -632,7 +621,7 @@ func (client *SQLPoolSensitivityLabelsClient) updateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

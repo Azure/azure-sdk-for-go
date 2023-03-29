@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // WorkspaceManagedSQLServerBlobAuditingPoliciesClient contains the methods for the WorkspaceManagedSQLServerBlobAuditingPolicies group.
 // Don't use this type directly, use NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient() instead.
 type WorkspaceManagedSQLServerBlobAuditingPoliciesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient creates a new instance of WorkspaceManagedSQLServerBlobAuditingPoliciesClient with the specified values.
@@ -36,21 +33,13 @@ type WorkspaceManagedSQLServerBlobAuditingPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceManagedSQLServerBlobAuditingPoliciesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkspaceManagedSQLServerBlobAuditingPoliciesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkspaceManagedSQLServerBlobAuditingPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) BeginCreateOr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) createOrUpdat
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,7 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) createOrUpdat
 		return nil, errors.New("parameter blobAuditingPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape(string(blobAuditingPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +129,7 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) Get(ctx conte
 	if err != nil {
 		return WorkspaceManagedSQLServerBlobAuditingPoliciesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkspaceManagedSQLServerBlobAuditingPoliciesClientGetResponse{}, err
 	}
@@ -169,7 +158,7 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) getCreateRequ
 		return nil, errors.New("parameter blobAuditingPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape(string(blobAuditingPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +201,7 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) NewListByWork
 			if err != nil {
 				return WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse{}, err
 			}
@@ -239,7 +228,7 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) listByWorkspa
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

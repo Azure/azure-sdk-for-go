@@ -24,11 +24,11 @@ func ExampleSQLPoolOperationResultsClient_BeginGetLocationHeaderResult() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolOperationResultsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetLocationHeaderResult(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", "fedcba98-7654-4210-fedc-ba9876543210", nil)
+	poller, err := clientFactory.NewSQLPoolOperationResultsClient().BeginGetLocationHeaderResult(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", "fedcba98-7654-4210-fedc-ba9876543210", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

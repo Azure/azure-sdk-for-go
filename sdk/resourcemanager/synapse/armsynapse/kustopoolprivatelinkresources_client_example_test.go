@@ -24,11 +24,11 @@ func ExampleKustoPoolPrivateLinkResourcesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolPrivateLinkResourcesClient("7a587823-959d-4ad0-85bd-cf2a7cef436a", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("DP-900", "synapse-ws-ebi-data", "dataexplorerpool900", nil)
+	pager := clientFactory.NewKustoPoolPrivateLinkResourcesClient().NewListPager("DP-900", "synapse-ws-ebi-data", "dataexplorerpool900", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

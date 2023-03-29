@@ -17,6 +17,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"testing"
+	"time"
 )
 
 func Test(t *testing.T) {
@@ -86,6 +87,39 @@ func (l *LeaseRecordedTestsSuite) TestShareAcquireLease() {
 	_require.NoError(err)
 }
 
+func (l *LeaseRecordedTestsSuite) TestNegativeShareAcquireMultipleLease() {
+	_require := require.New(l.T())
+	testName := l.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(l.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	shareLeaseClient0, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+
+	shareLeaseClient1, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+		LeaseID: proposedLeaseIDs[1],
+	})
+
+	ctx := context.Background()
+	acquireLeaseResponse0, err := shareLeaseClient0.Acquire(ctx, int32(60), nil)
+	_require.NoError(err)
+	_require.NotNil(acquireLeaseResponse0.LeaseID)
+	_require.EqualValues(*acquireLeaseResponse0.LeaseID, *shareLeaseClient0.LeaseID())
+
+	// acquiring lease for the second time returns LeaseAlreadyPresent error
+	_, err = shareLeaseClient1.Acquire(ctx, int32(60), nil)
+	_require.Error(err)
+
+	_, err = shareLeaseClient0.Release(ctx, nil)
+	_require.NoError(err)
+}
+
 func (l *LeaseRecordedTestsSuite) TestShareDeleteShareWithoutLeaseId() {
 	_require := require.New(l.T())
 	testName := l.T().Name()
@@ -95,6 +129,7 @@ func (l *LeaseRecordedTestsSuite) TestShareDeleteShareWithoutLeaseId() {
 
 	shareName := testcommon.GenerateShareName(testName)
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
 	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
@@ -125,6 +160,7 @@ func (l *LeaseRecordedTestsSuite) TestShareReleaseLease() {
 
 	shareName := testcommon.GenerateShareName(testName)
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
 	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
@@ -169,6 +205,110 @@ func (l *LeaseRecordedTestsSuite) TestShareRenewLease() {
 
 	_, err = shareLeaseClient.Renew(ctx, nil)
 	_require.NoError(err)
+
+	_, err = shareLeaseClient.Release(ctx, nil)
+	_require.NoError(err)
+}
+
+func (l *LeaseRecordedTestsSuite) TestShareBreakLeaseDefault() {
+	_require := require.New(l.T())
+	testName := l.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(l.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+
+	ctx := context.Background()
+	acquireLeaseResponse, err := shareLeaseClient.Acquire(ctx, int32(60), nil)
+	_require.NoError(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(*acquireLeaseResponse.LeaseID, *shareLeaseClient.LeaseID())
+
+	bResp, err := shareLeaseClient.Break(ctx, nil)
+	_require.NoError(err)
+	_require.NotNil(bResp.LeaseTime)
+
+	_, err = shareClient.Delete(ctx, nil)
+	_require.Error(err)
+
+	_, err = shareLeaseClient.Release(ctx, nil)
+	_require.NoError(err)
+}
+
+func (l *LeaseRecordedTestsSuite) TestShareBreakLeaseNonDefault() {
+	_require := require.New(l.T())
+	testName := l.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(l.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+
+	ctx := context.Background()
+	acquireLeaseResponse, err := shareLeaseClient.Acquire(ctx, int32(60), nil)
+	_require.NoError(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(*acquireLeaseResponse.LeaseID, *shareLeaseClient.LeaseID())
+
+	bResp, err := shareLeaseClient.Break(ctx, &lease.ShareBreakOptions{
+		BreakPeriod: to.Ptr((int32)(5)),
+	})
+	_require.NoError(err)
+	_require.NotNil(bResp.LeaseTime)
+
+	_, err = shareClient.Delete(ctx, nil)
+	_require.Error(err)
+
+	// wait for lease to expire
+	time.Sleep(6 * time.Second)
+
+	_, err = shareClient.Delete(ctx, nil)
+	_require.NoError(err)
+}
+
+func (l *LeaseRecordedTestsSuite) TestNegativeShareBreakRenewLease() {
+	_require := require.New(l.T())
+	testName := l.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(l.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+
+	ctx := context.Background()
+	acquireLeaseResponse, err := shareLeaseClient.Acquire(ctx, int32(60), nil)
+	_require.NoError(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(*acquireLeaseResponse.LeaseID, *shareLeaseClient.LeaseID())
+
+	bResp, err := shareLeaseClient.Break(ctx, &lease.ShareBreakOptions{
+		BreakPeriod: to.Ptr((int32)(5)),
+	})
+	_require.NoError(err)
+	_require.NotNil(bResp.LeaseTime)
+
+	// renewing broken lease returns error
+	_, err = shareLeaseClient.Renew(ctx, nil)
+	_require.Error(err)
 
 	_, err = shareLeaseClient.Release(ctx, nil)
 	_require.NoError(err)
@@ -247,6 +387,49 @@ func (l *LeaseRecordedTestsSuite) TestFileAcquireLease() {
 	_require.Error(err)
 
 	_, err = fileLeaseClient.Release(ctx, nil)
+	_require.NoError(err)
+}
+
+func (l *LeaseRecordedTestsSuite) TestNegativeFileAcquireMultipleLease() {
+	_require := require.New(l.T())
+	testName := l.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(l.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	ctx := context.Background()
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+	_, err = fileClient.Create(ctx, 0, nil)
+	_require.NoError(err)
+
+	fileLeaseClient0, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.NoError(err)
+
+	fileLeaseClient1, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+		LeaseID: proposedLeaseIDs[1],
+	})
+	_require.NoError(err)
+
+	acquireLeaseResponse, err := fileLeaseClient0.Acquire(ctx, nil)
+	_require.NoError(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, fileLeaseClient0.LeaseID())
+
+	// acquiring lease for the second time returns LeaseAlreadyPresent error
+	_, err = fileLeaseClient1.Acquire(ctx, nil)
+	_require.Error(err)
+
+	_, err = fileClient.Delete(ctx, nil)
+	_require.Error(err)
+
+	_, err = fileLeaseClient0.Release(ctx, nil)
 	_require.NoError(err)
 }
 
@@ -410,4 +593,41 @@ func (l *LeaseRecordedTestsSuite) TestNegativeFileDeleteAfterReleaseLease() {
 		},
 	})
 	_require.Error(err)
+}
+
+func (l *LeaseRecordedTestsSuite) TestFileBreakLease() {
+	_require := require.New(l.T())
+	testName := l.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(l.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	ctx := context.Background()
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+	_, err = fileClient.Create(ctx, 0, nil)
+	_require.NoError(err)
+
+	fileLeaseClient, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.NoError(err)
+
+	acquireLeaseResponse, err := fileLeaseClient.Acquire(ctx, nil)
+	_require.NoError(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, fileLeaseClient.LeaseID())
+
+	_, err = fileClient.Delete(ctx, nil)
+	_require.Error(err)
+
+	_, err = fileLeaseClient.Break(ctx, nil)
+	_require.NoError(err)
+
+	_, err = fileClient.Delete(ctx, nil)
+	_require.NoError(err)
 }

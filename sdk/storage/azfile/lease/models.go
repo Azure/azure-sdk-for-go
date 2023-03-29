@@ -76,7 +76,7 @@ func (o *ShareAcquireOptions) format(proposedLeaseID *string) *generated.ShareCl
 
 // ShareBreakOptions contains the optional parameters for the ShareClient.Break method.
 type ShareBreakOptions struct {
-	// For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This
+	// For a break operation, this is the proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This
 	// break period is only used if it is shorter than the time remaining on the
 	// lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has
 	// expired, but the lease may be held for longer than the break period. If this

@@ -59,17 +59,17 @@ type ImportKeyResponse struct {
 	KeyBundle
 }
 
-// ListDeletedKeysResponse contains the response from method Client.ListDeletedKeys.
+// ListDeletedKeysResponse contains the response from method Client.NewListDeletedKeysPager.
 type ListDeletedKeysResponse struct {
 	DeletedKeyListResult
 }
 
-// ListKeyVersionsResponse contains the response from method Client.ListKeyVersions.
+// ListKeyVersionsResponse contains the response from method Client.NewListKeyVersionsPager.
 type ListKeyVersionsResponse struct {
 	KeyListResult
 }
 
-// ListKeysResponse contains the response from method Client.ListKeys.
+// ListKeysResponse contains the response from method Client.NewListKeysPager.
 type ListKeysResponse struct {
 	KeyListResult
 }

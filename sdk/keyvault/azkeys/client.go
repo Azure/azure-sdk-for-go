@@ -12,6 +12,7 @@ package azkeys
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -21,10 +22,10 @@ import (
 )
 
 // Client contains the methods for the Client group.
-// Don't use this type directly, use NewClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type Client struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
 }
 
 // BackupKey - The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does
@@ -38,15 +39,16 @@ type Client struct {
 // geographical area. For example, a backup from the US geographical area cannot be restored in an EU geographical area. This
 // operation requires the key/backup permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key.
-// options - BackupKeyOptions contains the optional parameters for the Client.BackupKey method.
+//   - name - The name of the key.
+//   - options - BackupKeyOptions contains the optional parameters for the Client.BackupKey method.
 func (client *Client) BackupKey(ctx context.Context, name string, options *BackupKeyOptions) (BackupKeyResponse, error) {
 	req, err := client.backupKeyCreateRequest(ctx, name, options)
 	if err != nil {
 		return BackupKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BackupKeyResponse{}, err
 	}
@@ -87,16 +89,17 @@ func (client *Client) backupKeyHandleResponse(resp *http.Response) (BackupKeyRes
 // Azure Key Vault creates a new version of the key. It requires the keys/create
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name for the new key. The system will generate the version name for the new key.
-// parameters - The parameters to create a key.
-// options - CreateKeyOptions contains the optional parameters for the Client.CreateKey method.
+//   - name - The name for the new key. The system will generate the version name for the new key.
+//   - parameters - The parameters to create a key.
+//   - options - CreateKeyOptions contains the optional parameters for the Client.CreateKey method.
 func (client *Client) CreateKey(ctx context.Context, name string, parameters CreateKeyParameters, options *CreateKeyOptions) (CreateKeyResponse, error) {
 	req, err := client.createKeyCreateRequest(ctx, name, parameters, options)
 	if err != nil {
 		return CreateKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CreateKeyResponse{}, err
 	}
@@ -142,17 +145,18 @@ func (client *Client) createKeyHandleResponse(resp *http.Response) (CreateKeyRes
 // the ciphertext using an HMAC, for example. See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode
 // for more information.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key.
-// version - The version of the key.
-// parameters - The parameters for the decryption operation.
-// options - DecryptOptions contains the optional parameters for the Client.Decrypt method.
+//   - name - The name of the key.
+//   - version - The version of the key.
+//   - parameters - The parameters for the decryption operation.
+//   - options - DecryptOptions contains the optional parameters for the Client.Decrypt method.
 func (client *Client) Decrypt(ctx context.Context, name string, version string, parameters KeyOperationsParameters, options *DecryptOptions) (DecryptResponse, error) {
 	req, err := client.decryptCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
 		return DecryptResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DecryptResponse{}, err
 	}
@@ -194,15 +198,16 @@ func (client *Client) decryptHandleResponse(resp *http.Response) (DecryptRespons
 // cryptographic material associated with the key, which means the key is not usable for
 // Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the keys/delete permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key to delete.
-// options - DeleteKeyOptions contains the optional parameters for the Client.DeleteKey method.
+//   - name - The name of the key to delete.
+//   - options - DeleteKeyOptions contains the optional parameters for the Client.DeleteKey method.
 func (client *Client) DeleteKey(ctx context.Context, name string, options *DeleteKeyOptions) (DeleteKeyResponse, error) {
 	req, err := client.deleteKeyCreateRequest(ctx, name, options)
 	if err != nil {
 		return DeleteKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeleteKeyResponse{}, err
 	}
@@ -247,17 +252,18 @@ func (client *Client) deleteKeyHandleResponse(resp *http.Response) (DeleteKeyRes
 // for callers that have a key-reference but do not have access to the
 // public key material. This operation requires the keys/encrypt permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key.
-// version - The version of the key.
-// parameters - The parameters for the encryption operation.
-// options - EncryptOptions contains the optional parameters for the Client.Encrypt method.
+//   - name - The name of the key.
+//   - version - The version of the key.
+//   - parameters - The parameters for the encryption operation.
+//   - options - EncryptOptions contains the optional parameters for the Client.Encrypt method.
 func (client *Client) Encrypt(ctx context.Context, name string, version string, parameters KeyOperationsParameters, options *EncryptOptions) (EncryptResponse, error) {
 	req, err := client.encryptCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
 		return EncryptResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EncryptResponse{}, err
 	}
@@ -299,15 +305,16 @@ func (client *Client) encryptHandleResponse(resp *http.Response) (EncryptRespons
 // invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This
 // operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key.
-// options - GetDeletedKeyOptions contains the optional parameters for the Client.GetDeletedKey method.
+//   - name - The name of the key.
+//   - options - GetDeletedKeyOptions contains the optional parameters for the Client.GetDeletedKey method.
 func (client *Client) GetDeletedKey(ctx context.Context, name string, options *GetDeletedKeyOptions) (GetDeletedKeyResponse, error) {
 	req, err := client.getDeletedKeyCreateRequest(ctx, name, options)
 	if err != nil {
 		return GetDeletedKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GetDeletedKeyResponse{}, err
 	}
@@ -347,17 +354,18 @@ func (client *Client) getDeletedKeyHandleResponse(resp *http.Response) (GetDelet
 // GetKey - The get key operation is applicable to all key types. If the requested key is symmetric, then no key material
 // is released in the response. This operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key to get.
-// version - Adding the version parameter retrieves a specific version of a key. This URI fragment is optional. If not specified,
-// the latest version of the key is returned.
-// options - GetKeyOptions contains the optional parameters for the Client.GetKey method.
+//   - name - The name of the key to get.
+//   - version - Adding the version parameter retrieves a specific version of a key. This URI fragment is optional. If not specified,
+//     the latest version of the key is returned.
+//   - options - GetKeyOptions contains the optional parameters for the Client.GetKey method.
 func (client *Client) GetKey(ctx context.Context, name string, version string, options *GetKeyOptions) (GetKeyResponse, error) {
 	req, err := client.getKeyCreateRequest(ctx, name, version, options)
 	if err != nil {
 		return GetKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GetKeyResponse{}, err
 	}
@@ -398,15 +406,16 @@ func (client *Client) getKeyHandleResponse(resp *http.Response) (GetKeyResponse,
 // GetKeyRotationPolicy - The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key
 // vault. This operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key in a given key vault.
-// options - GetKeyRotationPolicyOptions contains the optional parameters for the Client.GetKeyRotationPolicy method.
+//   - name - The name of the key in a given key vault.
+//   - options - GetKeyRotationPolicyOptions contains the optional parameters for the Client.GetKeyRotationPolicy method.
 func (client *Client) GetKeyRotationPolicy(ctx context.Context, name string, options *GetKeyRotationPolicyOptions) (GetKeyRotationPolicyResponse, error) {
 	req, err := client.getKeyRotationPolicyCreateRequest(ctx, name, options)
 	if err != nil {
 		return GetKeyRotationPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GetKeyRotationPolicyResponse{}, err
 	}
@@ -445,15 +454,16 @@ func (client *Client) getKeyRotationPolicyHandleResponse(resp *http.Response) (G
 
 // GetRandomBytes - Get the requested number of bytes containing random values from a managed HSM.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// parameters - The request object to get random bytes.
-// options - GetRandomBytesOptions contains the optional parameters for the Client.GetRandomBytes method.
+//   - parameters - The request object to get random bytes.
+//   - options - GetRandomBytesOptions contains the optional parameters for the Client.GetRandomBytes method.
 func (client *Client) GetRandomBytes(ctx context.Context, parameters GetRandomBytesRequest, options *GetRandomBytesOptions) (GetRandomBytesResponse, error) {
 	req, err := client.getRandomBytesCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return GetRandomBytesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GetRandomBytesResponse{}, err
 	}
@@ -490,16 +500,17 @@ func (client *Client) getRandomBytesHandleResponse(resp *http.Response) (GetRand
 // exists, Azure Key Vault creates a new version of the key. This operation requires the
 // keys/import permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - Name for the imported key.
-// parameters - The parameters to import a key.
-// options - ImportKeyOptions contains the optional parameters for the Client.ImportKey method.
+//   - name - Name for the imported key.
+//   - parameters - The parameters to import a key.
+//   - options - ImportKeyOptions contains the optional parameters for the Client.ImportKey method.
 func (client *Client) ImportKey(ctx context.Context, name string, parameters ImportKeyParameters, options *ImportKeyOptions) (ImportKeyResponse, error) {
 	req, err := client.importKeyCreateRequest(ctx, name, parameters, options)
 	if err != nil {
 		return ImportKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ImportKeyResponse{}, err
 	}
@@ -541,9 +552,9 @@ func (client *Client) importKeyHandleResponse(resp *http.Response) (ImportKeyRes
 // operation is applicable for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return
 // an error if invoked on a non soft-delete enabled vault. This operation
 // requires the keys/list permission.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// options - ListDeletedKeysOptions contains the optional parameters for the Client.ListDeletedKeys method.
+//   - options - ListDeletedKeysOptions contains the optional parameters for the Client.NewListDeletedKeysPager method.
 func (client *Client) NewListDeletedKeysPager(options *ListDeletedKeysOptions) *runtime.Pager[ListDeletedKeysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListDeletedKeysResponse]{
 		More: func(page ListDeletedKeysResponse) bool {
@@ -560,7 +571,7 @@ func (client *Client) NewListDeletedKeysPager(options *ListDeletedKeysOptions) *
 			if err != nil {
 				return ListDeletedKeysResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ListDeletedKeysResponse{}, err
 			}
@@ -600,10 +611,10 @@ func (client *Client) listDeletedKeysHandleResponse(resp *http.Response) (ListDe
 
 // NewListKeyVersionsPager - The full key identifier, attributes, and tags are provided in the response. This operation requires
 // the keys/list permission.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key.
-// options - ListKeyVersionsOptions contains the optional parameters for the Client.ListKeyVersions method.
+//   - name - The name of the key.
+//   - options - ListKeyVersionsOptions contains the optional parameters for the Client.NewListKeyVersionsPager method.
 func (client *Client) NewListKeyVersionsPager(name string, options *ListKeyVersionsOptions) *runtime.Pager[ListKeyVersionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListKeyVersionsResponse]{
 		More: func(page ListKeyVersionsResponse) bool {
@@ -620,7 +631,7 @@ func (client *Client) NewListKeyVersionsPager(name string, options *ListKeyVersi
 			if err != nil {
 				return ListKeyVersionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ListKeyVersionsResponse{}, err
 			}
@@ -666,9 +677,9 @@ func (client *Client) listKeyVersionsHandleResponse(resp *http.Response) (ListKe
 // of a stored key. The LIST operation is applicable to all key types, however only the base key
 // identifier, attributes, and tags are provided in the response. Individual versions of a key are not listed in the response.
 // This operation requires the keys/list permission.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// options - ListKeysOptions contains the optional parameters for the Client.ListKeys method.
+//   - options - ListKeysOptions contains the optional parameters for the Client.NewListKeysPager method.
 func (client *Client) NewListKeysPager(options *ListKeysOptions) *runtime.Pager[ListKeysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListKeysResponse]{
 		More: func(page ListKeysResponse) bool {
@@ -685,7 +696,7 @@ func (client *Client) NewListKeysPager(options *ListKeysOptions) *runtime.Pager[
 			if err != nil {
 				return ListKeysResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ListKeysResponse{}, err
 			}
@@ -727,15 +738,16 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ListKeysRespo
 // be invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault.
 // This operation requires the keys/purge permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key
-// options - PurgeDeletedKeyOptions contains the optional parameters for the Client.PurgeDeletedKey method.
+//   - name - The name of the key
+//   - options - PurgeDeletedKeyOptions contains the optional parameters for the Client.PurgeDeletedKey method.
 func (client *Client) PurgeDeletedKey(ctx context.Context, name string, options *PurgeDeletedKeyOptions) (PurgeDeletedKeyResponse, error) {
 	req, err := client.purgeDeletedKeyCreateRequest(ctx, name, options)
 	if err != nil {
 		return PurgeDeletedKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PurgeDeletedKeyResponse{}, err
 	}
@@ -768,15 +780,16 @@ func (client *Client) purgeDeletedKeyCreateRequest(ctx context.Context, name str
 // key will return an error. Consider this the inverse of the delete operation on soft-delete enabled vaults. This operation
 // requires the keys/recover permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the deleted key.
-// options - RecoverDeletedKeyOptions contains the optional parameters for the Client.RecoverDeletedKey method.
+//   - name - The name of the deleted key.
+//   - options - RecoverDeletedKeyOptions contains the optional parameters for the Client.RecoverDeletedKey method.
 func (client *Client) RecoverDeletedKey(ctx context.Context, name string, options *RecoverDeletedKeyOptions) (RecoverDeletedKeyResponse, error) {
 	req, err := client.recoverDeletedKeyCreateRequest(ctx, name, options)
 	if err != nil {
 		return RecoverDeletedKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecoverDeletedKeyResponse{}, err
 	}
@@ -816,17 +829,18 @@ func (client *Client) recoverDeletedKeyHandleResponse(resp *http.Response) (Reco
 // Release - The release key operation is applicable to all key types. The target key must be marked exportable. This operation
 // requires the keys/release permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key to get.
-// version - Adding the version parameter retrieves a specific version of a key.
-// parameters - The parameters for the key release operation.
-// options - ReleaseOptions contains the optional parameters for the Client.Release method.
+//   - name - The name of the key to get.
+//   - version - Adding the version parameter retrieves a specific version of a key.
+//   - parameters - The parameters for the key release operation.
+//   - options - ReleaseOptions contains the optional parameters for the Client.Release method.
 func (client *Client) Release(ctx context.Context, name string, version string, parameters ReleaseParameters, options *ReleaseOptions) (ReleaseResponse, error) {
 	req, err := client.releaseCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
 		return ReleaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReleaseResponse{}, err
 	}
@@ -874,15 +888,16 @@ func (client *Client) releaseHandleResponse(resp *http.Response) (ReleaseRespons
 // must be owned by the same Microsoft Azure Subscription as the source Key Vault
 // The user must have RESTORE permission in the target Key Vault. This operation requires the keys/restore permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// parameters - The parameters to restore the key.
-// options - RestoreKeyOptions contains the optional parameters for the Client.RestoreKey method.
+//   - parameters - The parameters to restore the key.
+//   - options - RestoreKeyOptions contains the optional parameters for the Client.RestoreKey method.
 func (client *Client) RestoreKey(ctx context.Context, parameters RestoreKeyParameters, options *RestoreKeyOptions) (RestoreKeyResponse, error) {
 	req, err := client.restoreKeyCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return RestoreKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RestoreKeyResponse{}, err
 	}
@@ -917,15 +932,16 @@ func (client *Client) restoreKeyHandleResponse(resp *http.Response) (RestoreKeyR
 
 // RotateKey - The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of key to be rotated. The system will generate a new version in the specified key.
-// options - RotateKeyOptions contains the optional parameters for the Client.RotateKey method.
+//   - name - The name of key to be rotated. The system will generate a new version in the specified key.
+//   - options - RotateKeyOptions contains the optional parameters for the Client.RotateKey method.
 func (client *Client) RotateKey(ctx context.Context, name string, options *RotateKeyOptions) (RotateKeyResponse, error) {
 	req, err := client.rotateKeyCreateRequest(ctx, name, options)
 	if err != nil {
 		return RotateKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RotateKeyResponse{}, err
 	}
@@ -965,17 +981,18 @@ func (client *Client) rotateKeyHandleResponse(resp *http.Response) (RotateKeyRes
 // Sign - The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation
 // uses the private portion of the key. This operation requires the keys/sign permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key.
-// version - The version of the key.
-// parameters - The parameters for the signing operation.
-// options - SignOptions contains the optional parameters for the Client.Sign method.
+//   - name - The name of the key.
+//   - version - The version of the key.
+//   - parameters - The parameters for the signing operation.
+//   - options - SignOptions contains the optional parameters for the Client.Sign method.
 func (client *Client) Sign(ctx context.Context, name string, version string, parameters SignParameters, options *SignOptions) (SignResponse, error) {
 	req, err := client.signCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
 		return SignResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SignResponse{}, err
 	}
@@ -1018,17 +1035,18 @@ func (client *Client) signHandleResponse(resp *http.Response) (SignResponse, err
 // symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires the keys/unwrapKey
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key.
-// version - The version of the key.
-// parameters - The parameters for the key operation.
-// options - UnwrapKeyOptions contains the optional parameters for the Client.UnwrapKey method.
+//   - name - The name of the key.
+//   - version - The version of the key.
+//   - parameters - The parameters for the key operation.
+//   - options - UnwrapKeyOptions contains the optional parameters for the Client.UnwrapKey method.
 func (client *Client) UnwrapKey(ctx context.Context, name string, version string, parameters KeyOperationsParameters, options *UnwrapKeyOptions) (UnwrapKeyResponse, error) {
 	req, err := client.unwrapKeyCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
 		return UnwrapKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UnwrapKeyResponse{}, err
 	}
@@ -1069,17 +1087,18 @@ func (client *Client) unwrapKeyHandleResponse(resp *http.Response) (UnwrapKeyRes
 // UpdateKey - In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material
 // of a key itself cannot be changed. This operation requires the keys/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of key to update.
-// version - The version of the key to update.
-// parameters - The parameters of the key to update.
-// options - UpdateKeyOptions contains the optional parameters for the Client.UpdateKey method.
+//   - name - The name of key to update.
+//   - version - The version of the key to update.
+//   - parameters - The parameters of the key to update.
+//   - options - UpdateKeyOptions contains the optional parameters for the Client.UpdateKey method.
 func (client *Client) UpdateKey(ctx context.Context, name string, version string, parameters UpdateKeyParameters, options *UpdateKeyOptions) (UpdateKeyResponse, error) {
 	req, err := client.updateKeyCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
 		return UpdateKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UpdateKeyResponse{}, err
 	}
@@ -1120,17 +1139,18 @@ func (client *Client) updateKeyHandleResponse(resp *http.Response) (UpdateKeyRes
 // UpdateKeyRotationPolicy - Set specified members in the key policy. Leave others as undefined. This operation requires the
 // keys/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key in the given vault.
-// keyRotationPolicy - The policy for the key.
-// options - UpdateKeyRotationPolicyOptions contains the optional parameters for the Client.UpdateKeyRotationPolicy
-// method.
+//   - name - The name of the key in the given vault.
+//   - keyRotationPolicy - The policy for the key.
+//   - options - UpdateKeyRotationPolicyOptions contains the optional parameters for the Client.UpdateKeyRotationPolicy
+//     method.
 func (client *Client) UpdateKeyRotationPolicy(ctx context.Context, name string, keyRotationPolicy KeyRotationPolicy, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
 	req, err := client.updateKeyRotationPolicyCreateRequest(ctx, name, keyRotationPolicy, options)
 	if err != nil {
 		return UpdateKeyRotationPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UpdateKeyRotationPolicyResponse{}, err
 	}
@@ -1173,17 +1193,18 @@ func (client *Client) updateKeyRotationPolicyHandleResponse(resp *http.Response)
 // a key-reference and not the public portion of the key. This operation requires
 // the keys/verify permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key.
-// version - The version of the key.
-// parameters - The parameters for verify operations.
-// options - VerifyOptions contains the optional parameters for the Client.Verify method.
+//   - name - The name of the key.
+//   - version - The version of the key.
+//   - parameters - The parameters for verify operations.
+//   - options - VerifyOptions contains the optional parameters for the Client.Verify method.
 func (client *Client) Verify(ctx context.Context, name string, version string, parameters VerifyParameters, options *VerifyOptions) (VerifyResponse, error) {
 	req, err := client.verifyCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
 		return VerifyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VerifyResponse{}, err
 	}
@@ -1228,17 +1249,18 @@ func (client *Client) verifyHandleResponse(resp *http.Response) (VerifyResponse,
 // callers that have a key-reference but do not have access to the public key material. This operation requires the keys/wrapKey
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.3
-// name - The name of the key.
-// version - The version of the key.
-// parameters - The parameters for wrap operation.
-// options - WrapKeyOptions contains the optional parameters for the Client.WrapKey method.
+//   - name - The name of the key.
+//   - version - The version of the key.
+//   - parameters - The parameters for wrap operation.
+//   - options - WrapKeyOptions contains the optional parameters for the Client.WrapKey method.
 func (client *Client) WrapKey(ctx context.Context, name string, version string, parameters KeyOperationsParameters, options *WrapKeyOptions) (WrapKeyResponse, error) {
 	req, err := client.wrapKeyCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
 		return WrapKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WrapKeyResponse{}, err
 	}

@@ -12,7 +12,7 @@ output-folder: ../azkeys
 override-client-name: Client
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.43"
+use: "@autorest/go@4.0.0-preview.46"
 version: "^3.0.0"
 
 directive:
@@ -101,11 +101,6 @@ directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(a \*?Attributes\).*\{\s(?:.+\s)+\}\s/g, "");
-
-  # delete generated constructor
-  - from: client.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func NewClient.+\{\s(?:.+\s)+\}\s/, "");
 
   # delete the version path param check (version == "" is legal for Key Vault but indescribable by OpenAPI)
   - from: client.go

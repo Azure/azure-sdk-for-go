@@ -126,7 +126,7 @@ func ExampleClient_UpdateKeyRotationPolicy() {
 		LifetimeActions: []*azkeys.LifetimeActions{
 			{
 				Action: &azkeys.LifetimeActionsType{
-					Type: to.Ptr(azkeys.ActionTypeRotate),
+					Type: to.Ptr(azkeys.KeyRotationPolicyActionRotate),
 				},
 				Trigger: &azkeys.LifetimeActionsTrigger{
 					TimeAfterCreate: to.Ptr("P18M"),

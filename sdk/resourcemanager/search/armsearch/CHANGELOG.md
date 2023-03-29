@@ -1,5 +1,21 @@
 # Release History
 
+## 2.0.0 (2023-03-31)
+### Breaking Changes
+
+- Struct `CloudError` has been removed
+- Struct `CloudErrorBody` has been removed
+- Struct `ListQueryKeysResult` has been removed
+- Struct `PrivateEndpointConnectionListResult` has been removed
+- Struct `PrivateLinkResourcesResult` has been removed
+- Struct `ServiceListResult` has been removed
+- Struct `SharedPrivateLinkResourceListResult` has been removed
+
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+
+
 ## 1.0.0 (2022-05-17)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

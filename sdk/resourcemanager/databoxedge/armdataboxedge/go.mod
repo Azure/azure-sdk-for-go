@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge
 
 go 1.18
 

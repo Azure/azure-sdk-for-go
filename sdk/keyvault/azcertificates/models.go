@@ -32,6 +32,7 @@ type AdministratorDetails struct {
 	Phone *string `json:"phone,omitempty"`
 }
 
+
 // BackupCertificateResult - The backup certificate result, containing the backup blob.
 type BackupCertificateResult struct {
 	// READ-ONLY; The backup blob containing the backed up certificate.
@@ -56,8 +57,8 @@ type CertificateAttributes struct {
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
-	// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
-	// only the system can purge the certificate, at the end of the retention interval.
+// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
+// only the system can purge the certificate, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
@@ -109,7 +110,7 @@ type CertificateIssuerListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of certificate issuers in the key vault along with a link to the next page
-	// of certificate issuers.
+// of certificate issuers.
 	Value []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -134,7 +135,7 @@ type CertificateListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of
-	// certificates.
+// certificates.
 	Value []*CertificateItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -257,19 +258,19 @@ type ImportCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListCertificateIssuersOptions contains the optional parameters for the Client.ListCertificateIssuers method.
+// ListCertificateIssuersOptions contains the optional parameters for the Client.NewListCertificateIssuersPager method.
 type ListCertificateIssuersOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// ListCertificateVersionsOptions contains the optional parameters for the Client.ListCertificateVersions method.
+// ListCertificateVersionsOptions contains the optional parameters for the Client.NewListCertificateVersionsPager method.
 type ListCertificateVersionsOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// ListCertificatesOptions contains the optional parameters for the Client.ListCertificates method.
+// ListCertificatesOptions contains the optional parameters for the Client.NewListCertificatesPager method.
 type ListCertificatesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
@@ -277,7 +278,7 @@ type ListCertificatesOptions struct {
 	MaxResults *int32
 }
 
-// ListDeletedCertificatesOptions contains the optional parameters for the Client.ListDeletedCertificates method.
+// ListDeletedCertificatesOptions contains the optional parameters for the Client.NewListDeletedCertificatesPager method.
 type ListDeletedCertificatesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
@@ -438,7 +439,7 @@ type DeletedCertificateListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page
-	// of deleted certificates
+// of deleted certificates
 	Value []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -457,7 +458,7 @@ type Error struct {
 // ImportCertificateParameters - The certificate import parameters.
 type ImportCertificateParameters struct {
 	// REQUIRED; Base64 encoded representation of the certificate object to import. This certificate needs to contain the private
-	// key.
+// key.
 	Base64EncodedCertificate *string `json:"value,omitempty"`
 
 	// The attributes of the certificate (optional).
@@ -542,6 +543,7 @@ type KeyProperties struct {
 	ReuseKey *bool `json:"reuse_key,omitempty"`
 }
 
+
 // LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
 type LifetimeAction struct {
 	// The action that will be executed.
@@ -614,7 +616,7 @@ type SubjectAlternativeNames struct {
 // Trigger - A condition to be satisfied for an action to be executed.
 type Trigger struct {
 	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths
-	// is 36, then value should be between 1 and 972 (36 * 27).
+// is 36, then value should be between 1 and 972 (36 * 27).
 	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
 
 	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
@@ -671,3 +673,4 @@ type X509CertificateProperties struct {
 	// The duration that the certificate is valid in months.
 	ValidityInMonths *int32 `json:"validity_months,omitempty"`
 }
+

@@ -309,7 +309,7 @@ type KeyAttributes struct {
 	// Expiry date in UTC.
 	Expires *time.Time `json:"exp,omitempty"`
 
-	// Indicates if the private key can be exported. Release policy must be provided when creating the 1st version of an exportable
+	// Indicates if the private key can be exported. Release policy must be provided when creating the first version of an exportable
 	// key.
 	Exportable *bool `json:"exportable,omitempty"`
 
@@ -485,7 +485,7 @@ type LifetimeActionsTrigger struct {
 // LifetimeActionsType - The action that will be executed.
 type LifetimeActionsType struct {
 	// The type of the action.
-	Type *ActionType `json:"type,omitempty"`
+	Type *KeyRotationPolicyAction `json:"type,omitempty"`
 }
 
 // RandomBytes - The get random bytes response object containing the bytes.

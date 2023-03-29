@@ -3,8 +3,10 @@
 ## 0.9.1 (Unreleased)
 
 ### Features Added
+* Upgraded to api version 7.4
 
 ### Breaking Changes
+* Renamed `ActionType` to `KeyRotationPolicyAction`
 
 ### Bugs Fixed
 

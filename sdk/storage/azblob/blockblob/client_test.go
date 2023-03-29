@@ -14,6 +14,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -1143,6 +1144,33 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLCopySourceFalse() {
 	resp, err = destBlob.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotEqual(resp.AccessTier, to.Ptr("Cool"))
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// Getting OAuth
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	containerClient, _, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Getting token
+	token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{})
+	_require.NoError(err)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		CopySourceAuthorization: to.Ptr(token.Token),
+	}
+
+	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NoError(err)
+	_require.NotNil(pbResp)
+
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {

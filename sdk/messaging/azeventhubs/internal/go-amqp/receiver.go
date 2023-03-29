@@ -90,7 +90,6 @@ func (r *Receiver) Prefetched() *Message {
 	}
 
 	debug.Log(3, "RX (Receiver): prefetched delivery ID %d", msg.deliveryID)
-	msg.rcvr = r
 
 	if msg.settled {
 		r.onSettlement(1)
@@ -121,7 +120,6 @@ func (r *Receiver) Receive(ctx context.Context, opts *ReceiveOptions) (*Message,
 		msg := q.Dequeue()
 		debug.Assert(msg != nil)
 		debug.Log(3, "RX (Receiver): received delivery ID %d", msg.deliveryID)
-		msg.rcvr = r
 		r.messagesQ.Release(q)
 		if msg.settled {
 			r.onSettlement(1)

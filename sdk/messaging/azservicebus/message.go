@@ -312,9 +312,9 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 // newReceivedMessage creates a received message from an AMQP message.
 // NOTE: this converter assumes that the Body of this message will be the first
 // serialized byte array in the Data section of the messsage.
-func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
+func newReceivedMessage(amqpMsg *amqp.Message, receivingLinkName string) *ReceivedMessage {
 	msg := &ReceivedMessage{
-		RawAMQPMessage: newAMQPAnnotatedMessage(amqpMsg),
+		RawAMQPMessage: newAMQPAnnotatedMessage(amqpMsg, receivingLinkName),
 		State:          MessageStateActive,
 	}
 

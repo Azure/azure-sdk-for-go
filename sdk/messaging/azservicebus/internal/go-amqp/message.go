@@ -102,9 +102,8 @@ type Message struct {
 	// encryption details).
 	Footer Annotations
 
-	rcvr       *Receiver // the receiving link
-	deliveryID uint32    // used when sending disposition
-	settled    bool      // whether transfer was settled by sender
+	deliveryID uint32 // used when sending disposition
+	settled    bool   // whether transfer was settled by sender
 }
 
 // NewMessage returns a *Message with data as the payload.
@@ -125,14 +124,6 @@ func (m *Message) GetData() []byte {
 		return nil
 	}
 	return m.Data[0]
-}
-
-// LinkName returns the receiving link name or the empty string.
-func (m *Message) LinkName() string {
-	if m.rcvr != nil {
-		return m.rcvr.l.key.name
-	}
-	return ""
 }
 
 // MarshalBinary encodes the message into binary form.

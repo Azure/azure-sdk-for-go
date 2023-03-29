@@ -229,7 +229,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		}
 
 		for _, amqpMsg := range amqpMessages {
-			receivedMsg := newReceivedMessage(amqpMsg)
+			receivedMsg := newReceivedMessage(amqpMsg, lwid.Receiver.LinkName())
 			receivedMsg.deferred = true
 
 			receivedMessages = append(receivedMessages, receivedMsg)
@@ -279,7 +279,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 		receivedMessages = make([]*ReceivedMessage, len(messages))
 
 		for i := 0; i < len(messages); i++ {
-			receivedMessages[i] = newReceivedMessage(messages[i])
+			receivedMessages[i] = newReceivedMessage(messages[i], links.Receiver.LinkName())
 		}
 
 		if len(receivedMessages) > 0 && updateInternalSequenceNumber {
@@ -440,7 +440,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	var receivedMessages []*ReceivedMessage
 
 	for _, msg := range result.Messages {
-		receivedMessages = append(receivedMessages, newReceivedMessage(msg))
+		receivedMessages = append(receivedMessages, newReceivedMessage(msg, linksWithID.Receiver.LinkName()))
 	}
 
 	return receivedMessages, nil

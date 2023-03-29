@@ -222,7 +222,7 @@ func copyAnnotations(src map[any]any) amqp.Annotations {
 	return dest
 }
 
-func newAMQPAnnotatedMessage(goAMQPMessage *amqp.Message) *AMQPAnnotatedMessage {
+func newAMQPAnnotatedMessage(goAMQPMessage *amqp.Message, receivingLinkName string) *AMQPAnnotatedMessage {
 	var header *AMQPAnnotatedMessageHeader
 
 	if goAMQPMessage.Header != nil {
@@ -273,7 +273,7 @@ func newAMQPAnnotatedMessage(goAMQPMessage *amqp.Message) *AMQPAnnotatedMessage 
 		DeliveryTag:         goAMQPMessage.DeliveryTag,
 		Footer:              footer,
 		Header:              header,
-		linkName:            goAMQPMessage.LinkName(),
+		linkName:            receivingLinkName,
 		Properties:          properties,
 		inner:               goAMQPMessage,
 	}

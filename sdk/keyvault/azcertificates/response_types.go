@@ -143,4 +143,3 @@ type UpdateCertificatePolicyResponse struct {
 type UpdateCertificateResponse struct {
 	CertificateBundle
 }
-

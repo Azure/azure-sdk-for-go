@@ -677,7 +677,7 @@ func (client *Client) importCertificateHandleResponse(resp *http.Response) (Impo
 // Generated from API version 7.4
 //   - options - ListCertificateIssuersOptions contains the optional parameters for the Client.NewListCertificateIssuersPager
 //     method.
-func (client *Client) NewListCertificateIssuersPager(options *ListCertificateIssuersOptions) (*runtime.Pager[ListCertificateIssuersResponse]) {
+func (client *Client) NewListCertificateIssuersPager(options *ListCertificateIssuersOptions) *runtime.Pager[ListCertificateIssuersResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListCertificateIssuersResponse]{
 		More: func(page ListCertificateIssuersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -738,7 +738,7 @@ func (client *Client) listCertificateIssuersHandleResponse(resp *http.Response) 
 //   - certificateName - The name of the certificate.
 //   - options - ListCertificateVersionsOptions contains the optional parameters for the Client.NewListCertificateVersionsPager
 //     method.
-func (client *Client) NewListCertificateVersionsPager(certificateName string, options *ListCertificateVersionsOptions) (*runtime.Pager[ListCertificateVersionsResponse]) {
+func (client *Client) NewListCertificateVersionsPager(certificateName string, options *ListCertificateVersionsOptions) *runtime.Pager[ListCertificateVersionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListCertificateVersionsResponse]{
 		More: func(page ListCertificateVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -801,7 +801,7 @@ func (client *Client) listCertificateVersionsHandleResponse(resp *http.Response)
 //
 // Generated from API version 7.4
 //   - options - ListCertificatesOptions contains the optional parameters for the Client.NewListCertificatesPager method.
-func (client *Client) NewListCertificatesPager(options *ListCertificatesOptions) (*runtime.Pager[ListCertificatesResponse]) {
+func (client *Client) NewListCertificatesPager(options *ListCertificatesOptions) *runtime.Pager[ListCertificatesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListCertificatesResponse]{
 		More: func(page ListCertificatesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -866,7 +866,7 @@ func (client *Client) listCertificatesHandleResponse(resp *http.Response) (ListC
 // Generated from API version 7.4
 //   - options - ListDeletedCertificatesOptions contains the optional parameters for the Client.NewListDeletedCertificatesPager
 //     method.
-func (client *Client) NewListDeletedCertificatesPager(options *ListDeletedCertificatesOptions) (*runtime.Pager[ListDeletedCertificatesResponse]) {
+func (client *Client) NewListDeletedCertificatesPager(options *ListDeletedCertificatesOptions) *runtime.Pager[ListDeletedCertificatesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListDeletedCertificatesResponse]{
 		More: func(page ListDeletedCertificatesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1413,4 +1413,3 @@ func (client *Client) updateCertificatePolicyHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
-

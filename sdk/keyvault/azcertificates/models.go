@@ -32,7 +32,6 @@ type AdministratorDetails struct {
 	Phone *string `json:"phone,omitempty"`
 }
 
-
 // BackupCertificateResult - The backup certificate result, containing the backup blob.
 type BackupCertificateResult struct {
 	// READ-ONLY; The backup blob containing the backed up certificate.
@@ -57,8 +56,8 @@ type CertificateAttributes struct {
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
-// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
-// only the system can purge the certificate, at the end of the retention interval.
+	// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
+	// only the system can purge the certificate, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
@@ -110,7 +109,7 @@ type CertificateIssuerListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of certificate issuers in the key vault along with a link to the next page
-// of certificate issuers.
+	// of certificate issuers.
 	Value []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -135,7 +134,7 @@ type CertificateListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of
-// certificates.
+	// certificates.
 	Value []*CertificateItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -439,7 +438,7 @@ type DeletedCertificateListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page
-// of deleted certificates
+	// of deleted certificates
 	Value []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -458,7 +457,7 @@ type Error struct {
 // ImportCertificateParameters - The certificate import parameters.
 type ImportCertificateParameters struct {
 	// REQUIRED; Base64 encoded representation of the certificate object to import. This certificate needs to contain the private
-// key.
+	// key.
 	Base64EncodedCertificate *string `json:"value,omitempty"`
 
 	// The attributes of the certificate (optional).
@@ -531,7 +530,7 @@ type KeyProperties struct {
 	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
 
 	// Indicates if the private key can be exported. Release policy must be provided when creating the first version of an exportable
-// key.
+	// key.
 	Exportable *bool `json:"exportable,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -543,7 +542,6 @@ type KeyProperties struct {
 	// Indicates if the same key pair will be used on certificate renewal.
 	ReuseKey *bool `json:"reuse_key,omitempty"`
 }
-
 
 // LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
 type LifetimeAction struct {
@@ -617,7 +615,7 @@ type SubjectAlternativeNames struct {
 // Trigger - A condition to be satisfied for an action to be executed.
 type Trigger struct {
 	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths
-// is 36, then value should be between 1 and 972 (36 * 27).
+	// is 36, then value should be between 1 and 972 (36 * 27).
 	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
 
 	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
@@ -674,4 +672,3 @@ type X509CertificateProperties struct {
 	// The duration that the certificate is valid in months.
 	ValidityInMonths *int32 `json:"validity_months,omitempty"`
 }
-

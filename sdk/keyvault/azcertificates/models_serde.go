@@ -34,8 +34,8 @@ func (a *Action) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "action_type":
-				err = unpopulate(val, "ActionType", &a.ActionType)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ActionType", &a.ActionType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -64,17 +64,17 @@ func (a *AdministratorDetails) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "email":
-				err = unpopulate(val, "EmailAddress", &a.EmailAddress)
-				delete(rawMsg, key)
+			err = unpopulate(val, "EmailAddress", &a.EmailAddress)
+			delete(rawMsg, key)
 		case "first_name":
-				err = unpopulate(val, "FirstName", &a.FirstName)
-				delete(rawMsg, key)
+			err = unpopulate(val, "FirstName", &a.FirstName)
+			delete(rawMsg, key)
 		case "last_name":
-				err = unpopulate(val, "LastName", &a.LastName)
-				delete(rawMsg, key)
+			err = unpopulate(val, "LastName", &a.LastName)
+			delete(rawMsg, key)
 		case "phone":
-				err = unpopulate(val, "Phone", &a.Phone)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Phone", &a.Phone)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -82,8 +82,6 @@ func (a *AdministratorDetails) UnmarshalJSON(data []byte) error {
 	}
 	return nil
 }
-
-
 
 // MarshalJSON implements the json.Marshaller interface for type BackupCertificateResult.
 func (b BackupCertificateResult) MarshalJSON() ([]byte, error) {
@@ -103,7 +101,7 @@ func (b *BackupCertificateResult) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &b.Value, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", b, err)
@@ -135,26 +133,26 @@ func (c *CertificateAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-				err = unpopulateTimeUnix(val, "Created", &c.Created)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, "Created", &c.Created)
+			delete(rawMsg, key)
 		case "enabled":
-				err = unpopulate(val, "Enabled", &c.Enabled)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Enabled", &c.Enabled)
+			delete(rawMsg, key)
 		case "exp":
-				err = unpopulateTimeUnix(val, "Expires", &c.Expires)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, "Expires", &c.Expires)
+			delete(rawMsg, key)
 		case "nbf":
-				err = unpopulateTimeUnix(val, "NotBefore", &c.NotBefore)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, "NotBefore", &c.NotBefore)
+			delete(rawMsg, key)
 		case "recoverableDays":
-				err = unpopulate(val, "RecoverableDays", &c.RecoverableDays)
-				delete(rawMsg, key)
+			err = unpopulate(val, "RecoverableDays", &c.RecoverableDays)
+			delete(rawMsg, key)
 		case "recoveryLevel":
-				err = unpopulate(val, "RecoveryLevel", &c.RecoveryLevel)
-				delete(rawMsg, key)
+			err = unpopulate(val, "RecoveryLevel", &c.RecoveryLevel)
+			delete(rawMsg, key)
 		case "updated":
-				err = unpopulateTimeUnix(val, "Updated", &c.Updated)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, "Updated", &c.Updated)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -188,32 +186,32 @@ func (c *CertificateBundle) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "Attributes", &c.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Attributes", &c.Attributes)
+			delete(rawMsg, key)
 		case "cer":
 			err = runtime.DecodeByteArray(string(val), &c.CER, runtime.Base64StdFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "contentType":
-				err = unpopulate(val, "ContentType", &c.ContentType)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ContentType", &c.ContentType)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, "ID", &c.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ID", &c.ID)
+			delete(rawMsg, key)
 		case "kid":
-				err = unpopulate(val, "KID", &c.KID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "KID", &c.KID)
+			delete(rawMsg, key)
 		case "policy":
-				err = unpopulate(val, "Policy", &c.Policy)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Policy", &c.Policy)
+			delete(rawMsg, key)
 		case "sid":
-				err = unpopulate(val, "SID", &c.SID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "SID", &c.SID)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, "Tags", &c.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Tags", &c.Tags)
+			delete(rawMsg, key)
 		case "x5t":
 			err = runtime.DecodeByteArray(string(val), &c.X509Thumbprint, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -240,11 +238,11 @@ func (c *CertificateIssuerItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-				err = unpopulate(val, "ID", &c.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ID", &c.ID)
+			delete(rawMsg, key)
 		case "provider":
-				err = unpopulate(val, "Provider", &c.Provider)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Provider", &c.Provider)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -271,11 +269,11 @@ func (c *CertificateIssuerListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-				err = unpopulate(val, "NextLink", &c.NextLink)
-				delete(rawMsg, key)
+			err = unpopulate(val, "NextLink", &c.NextLink)
+			delete(rawMsg, key)
 		case "value":
-				err = unpopulate(val, "Value", &c.Value)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Value", &c.Value)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -304,17 +302,17 @@ func (c *CertificateItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "Attributes", &c.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Attributes", &c.Attributes)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, "ID", &c.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ID", &c.ID)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, "Tags", &c.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Tags", &c.Tags)
+			delete(rawMsg, key)
 		case "x5t":
 			err = runtime.DecodeByteArray(string(val), &c.X509Thumbprint, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -341,11 +339,11 @@ func (c *CertificateListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-				err = unpopulate(val, "NextLink", &c.NextLink)
-				delete(rawMsg, key)
+			err = unpopulate(val, "NextLink", &c.NextLink)
+			delete(rawMsg, key)
 		case "value":
-				err = unpopulate(val, "Value", &c.Value)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Value", &c.Value)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -380,31 +378,31 @@ func (c *CertificateOperation) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "csr":
 			err = runtime.DecodeByteArray(string(val), &c.CSR, runtime.Base64StdFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "cancellation_requested":
-				err = unpopulate(val, "CancellationRequested", &c.CancellationRequested)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CancellationRequested", &c.CancellationRequested)
+			delete(rawMsg, key)
 		case "error":
-				err = unpopulate(val, "Error", &c.Error)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Error", &c.Error)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, "ID", &c.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ID", &c.ID)
+			delete(rawMsg, key)
 		case "issuer":
-				err = unpopulate(val, "IssuerParameters", &c.IssuerParameters)
-				delete(rawMsg, key)
+			err = unpopulate(val, "IssuerParameters", &c.IssuerParameters)
+			delete(rawMsg, key)
 		case "request_id":
-				err = unpopulate(val, "RequestID", &c.RequestID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "RequestID", &c.RequestID)
+			delete(rawMsg, key)
 		case "status":
-				err = unpopulate(val, "Status", &c.Status)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Status", &c.Status)
+			delete(rawMsg, key)
 		case "status_details":
-				err = unpopulate(val, "StatusDetails", &c.StatusDetails)
-				delete(rawMsg, key)
+			err = unpopulate(val, "StatusDetails", &c.StatusDetails)
+			delete(rawMsg, key)
 		case "target":
-				err = unpopulate(val, "Target", &c.Target)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Target", &c.Target)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -436,26 +434,26 @@ func (c *CertificatePolicy) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "Attributes", &c.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Attributes", &c.Attributes)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, "ID", &c.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ID", &c.ID)
+			delete(rawMsg, key)
 		case "issuer":
-				err = unpopulate(val, "IssuerParameters", &c.IssuerParameters)
-				delete(rawMsg, key)
+			err = unpopulate(val, "IssuerParameters", &c.IssuerParameters)
+			delete(rawMsg, key)
 		case "key_props":
-				err = unpopulate(val, "KeyProperties", &c.KeyProperties)
-				delete(rawMsg, key)
+			err = unpopulate(val, "KeyProperties", &c.KeyProperties)
+			delete(rawMsg, key)
 		case "lifetime_actions":
-				err = unpopulate(val, "LifetimeActions", &c.LifetimeActions)
-				delete(rawMsg, key)
+			err = unpopulate(val, "LifetimeActions", &c.LifetimeActions)
+			delete(rawMsg, key)
 		case "secret_props":
-				err = unpopulate(val, "SecretProperties", &c.SecretProperties)
-				delete(rawMsg, key)
+			err = unpopulate(val, "SecretProperties", &c.SecretProperties)
+			delete(rawMsg, key)
 		case "x509_props":
-				err = unpopulate(val, "X509CertificateProperties", &c.X509CertificateProperties)
-				delete(rawMsg, key)
+			err = unpopulate(val, "X509CertificateProperties", &c.X509CertificateProperties)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -483,14 +481,14 @@ func (c *Contact) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "email":
-				err = unpopulate(val, "EmailAddress", &c.EmailAddress)
-				delete(rawMsg, key)
+			err = unpopulate(val, "EmailAddress", &c.EmailAddress)
+			delete(rawMsg, key)
 		case "name":
-				err = unpopulate(val, "Name", &c.Name)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Name", &c.Name)
+			delete(rawMsg, key)
 		case "phone":
-				err = unpopulate(val, "Phone", &c.Phone)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Phone", &c.Phone)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -517,11 +515,11 @@ func (c *Contacts) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "contacts":
-				err = unpopulate(val, "ContactList", &c.ContactList)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ContactList", &c.ContactList)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, "ID", &c.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ID", &c.ID)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -549,14 +547,14 @@ func (c *CreateCertificateParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "CertificateAttributes", &c.CertificateAttributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CertificateAttributes", &c.CertificateAttributes)
+			delete(rawMsg, key)
 		case "policy":
-				err = unpopulate(val, "CertificatePolicy", &c.CertificatePolicy)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CertificatePolicy", &c.CertificatePolicy)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, "Tags", &c.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Tags", &c.Tags)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -593,41 +591,41 @@ func (d *DeletedCertificateBundle) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "Attributes", &d.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Attributes", &d.Attributes)
+			delete(rawMsg, key)
 		case "cer":
 			err = runtime.DecodeByteArray(string(val), &d.CER, runtime.Base64StdFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "contentType":
-				err = unpopulate(val, "ContentType", &d.ContentType)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ContentType", &d.ContentType)
+			delete(rawMsg, key)
 		case "deletedDate":
-				err = unpopulateTimeUnix(val, "DeletedDate", &d.DeletedDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, "DeletedDate", &d.DeletedDate)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, "ID", &d.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ID", &d.ID)
+			delete(rawMsg, key)
 		case "kid":
-				err = unpopulate(val, "KID", &d.KID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "KID", &d.KID)
+			delete(rawMsg, key)
 		case "policy":
-				err = unpopulate(val, "Policy", &d.Policy)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Policy", &d.Policy)
+			delete(rawMsg, key)
 		case "recoveryId":
-				err = unpopulate(val, "RecoveryID", &d.RecoveryID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "RecoveryID", &d.RecoveryID)
+			delete(rawMsg, key)
 		case "sid":
-				err = unpopulate(val, "SID", &d.SID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "SID", &d.SID)
+			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-				err = unpopulateTimeUnix(val, "ScheduledPurgeDate", &d.ScheduledPurgeDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, "ScheduledPurgeDate", &d.ScheduledPurgeDate)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, "Tags", &d.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Tags", &d.Tags)
+			delete(rawMsg, key)
 		case "x5t":
 			err = runtime.DecodeByteArray(string(val), &d.X509Thumbprint, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", d, err)
@@ -659,26 +657,26 @@ func (d *DeletedCertificateItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "Attributes", &d.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Attributes", &d.Attributes)
+			delete(rawMsg, key)
 		case "deletedDate":
-				err = unpopulateTimeUnix(val, "DeletedDate", &d.DeletedDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, "DeletedDate", &d.DeletedDate)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, "ID", &d.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ID", &d.ID)
+			delete(rawMsg, key)
 		case "recoveryId":
-				err = unpopulate(val, "RecoveryID", &d.RecoveryID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "RecoveryID", &d.RecoveryID)
+			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-				err = unpopulateTimeUnix(val, "ScheduledPurgeDate", &d.ScheduledPurgeDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, "ScheduledPurgeDate", &d.ScheduledPurgeDate)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, "Tags", &d.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Tags", &d.Tags)
+			delete(rawMsg, key)
 		case "x5t":
 			err = runtime.DecodeByteArray(string(val), &d.X509Thumbprint, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", d, err)
@@ -705,11 +703,11 @@ func (d *DeletedCertificateListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-				err = unpopulate(val, "NextLink", &d.NextLink)
-				delete(rawMsg, key)
+			err = unpopulate(val, "NextLink", &d.NextLink)
+			delete(rawMsg, key)
 		case "value":
-				err = unpopulate(val, "Value", &d.Value)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Value", &d.Value)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", d, err)
@@ -737,14 +735,14 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "code":
-				err = unpopulate(val, "Code", &e.Code)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Code", &e.Code)
+			delete(rawMsg, key)
 		case "innererror":
-				err = unpopulate(val, "InnerError", &e.InnerError)
-				delete(rawMsg, key)
+			err = unpopulate(val, "InnerError", &e.InnerError)
+			delete(rawMsg, key)
 		case "message":
-				err = unpopulate(val, "Message", &e.Message)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Message", &e.Message)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -774,20 +772,20 @@ func (i *ImportCertificateParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "value":
-				err = unpopulate(val, "Base64EncodedCertificate", &i.Base64EncodedCertificate)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Base64EncodedCertificate", &i.Base64EncodedCertificate)
+			delete(rawMsg, key)
 		case "attributes":
-				err = unpopulate(val, "CertificateAttributes", &i.CertificateAttributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CertificateAttributes", &i.CertificateAttributes)
+			delete(rawMsg, key)
 		case "policy":
-				err = unpopulate(val, "CertificatePolicy", &i.CertificatePolicy)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CertificatePolicy", &i.CertificatePolicy)
+			delete(rawMsg, key)
 		case "pwd":
-				err = unpopulate(val, "Password", &i.Password)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Password", &i.Password)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, "Tags", &i.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Tags", &i.Tags)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", i, err)
@@ -815,14 +813,14 @@ func (i *IssuerAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-				err = unpopulateTimeUnix(val, "Created", &i.Created)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, "Created", &i.Created)
+			delete(rawMsg, key)
 		case "enabled":
-				err = unpopulate(val, "Enabled", &i.Enabled)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Enabled", &i.Enabled)
+			delete(rawMsg, key)
 		case "updated":
-				err = unpopulateTimeUnix(val, "Updated", &i.Updated)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, "Updated", &i.Updated)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", i, err)
@@ -852,20 +850,20 @@ func (i *IssuerBundle) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "Attributes", &i.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Attributes", &i.Attributes)
+			delete(rawMsg, key)
 		case "credentials":
-				err = unpopulate(val, "Credentials", &i.Credentials)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Credentials", &i.Credentials)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, "ID", &i.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ID", &i.ID)
+			delete(rawMsg, key)
 		case "org_details":
-				err = unpopulate(val, "OrganizationDetails", &i.OrganizationDetails)
-				delete(rawMsg, key)
+			err = unpopulate(val, "OrganizationDetails", &i.OrganizationDetails)
+			delete(rawMsg, key)
 		case "provider":
-				err = unpopulate(val, "Provider", &i.Provider)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Provider", &i.Provider)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", i, err)
@@ -892,11 +890,11 @@ func (i *IssuerCredentials) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "account_id":
-				err = unpopulate(val, "AccountID", &i.AccountID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "AccountID", &i.AccountID)
+			delete(rawMsg, key)
 		case "pwd":
-				err = unpopulate(val, "Password", &i.Password)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Password", &i.Password)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", i, err)
@@ -924,14 +922,14 @@ func (i *IssuerParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "cert_transparency":
-				err = unpopulate(val, "CertificateTransparency", &i.CertificateTransparency)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CertificateTransparency", &i.CertificateTransparency)
+			delete(rawMsg, key)
 		case "cty":
-				err = unpopulate(val, "CertificateType", &i.CertificateType)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CertificateType", &i.CertificateType)
+			delete(rawMsg, key)
 		case "name":
-				err = unpopulate(val, "Name", &i.Name)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Name", &i.Name)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", i, err)
@@ -961,20 +959,20 @@ func (k *KeyProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "crv":
-				err = unpopulate(val, "Curve", &k.Curve)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Curve", &k.Curve)
+			delete(rawMsg, key)
 		case "exportable":
-				err = unpopulate(val, "Exportable", &k.Exportable)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Exportable", &k.Exportable)
+			delete(rawMsg, key)
 		case "key_size":
-				err = unpopulate(val, "KeySize", &k.KeySize)
-				delete(rawMsg, key)
+			err = unpopulate(val, "KeySize", &k.KeySize)
+			delete(rawMsg, key)
 		case "kty":
-				err = unpopulate(val, "KeyType", &k.KeyType)
-				delete(rawMsg, key)
+			err = unpopulate(val, "KeyType", &k.KeyType)
+			delete(rawMsg, key)
 		case "reuse_key":
-				err = unpopulate(val, "ReuseKey", &k.ReuseKey)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ReuseKey", &k.ReuseKey)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", k, err)
@@ -982,8 +980,6 @@ func (k *KeyProperties) UnmarshalJSON(data []byte) error {
 	}
 	return nil
 }
-
-
 
 // MarshalJSON implements the json.Marshaller interface for type LifetimeAction.
 func (l LifetimeAction) MarshalJSON() ([]byte, error) {
@@ -1003,11 +999,11 @@ func (l *LifetimeAction) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "action":
-				err = unpopulate(val, "Action", &l.Action)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Action", &l.Action)
+			delete(rawMsg, key)
 		case "trigger":
-				err = unpopulate(val, "Trigger", &l.Trigger)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Trigger", &l.Trigger)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", l, err)
@@ -1035,14 +1031,14 @@ func (m *MergeCertificateParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "CertificateAttributes", &m.CertificateAttributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CertificateAttributes", &m.CertificateAttributes)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, "Tags", &m.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Tags", &m.Tags)
+			delete(rawMsg, key)
 		case "x5c":
-				err = unpopulate(val, "X509Certificates", &m.X509Certificates)
-				delete(rawMsg, key)
+			err = unpopulate(val, "X509Certificates", &m.X509Certificates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", m, err)
@@ -1069,11 +1065,11 @@ func (o *OrganizationDetails) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "admin_details":
-				err = unpopulate(val, "AdminDetails", &o.AdminDetails)
-				delete(rawMsg, key)
+			err = unpopulate(val, "AdminDetails", &o.AdminDetails)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, "ID", &o.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ID", &o.ID)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", o, err)
@@ -1100,7 +1096,7 @@ func (r *RestoreCertificateParameters) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &r.CertificateBundleBackup, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -1126,8 +1122,8 @@ func (s *SecretProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "contentType":
-				err = unpopulate(val, "ContentType", &s.ContentType)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ContentType", &s.ContentType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -1156,17 +1152,17 @@ func (s *SetCertificateIssuerParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "Attributes", &s.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Attributes", &s.Attributes)
+			delete(rawMsg, key)
 		case "credentials":
-				err = unpopulate(val, "Credentials", &s.Credentials)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Credentials", &s.Credentials)
+			delete(rawMsg, key)
 		case "org_details":
-				err = unpopulate(val, "OrganizationDetails", &s.OrganizationDetails)
-				delete(rawMsg, key)
+			err = unpopulate(val, "OrganizationDetails", &s.OrganizationDetails)
+			delete(rawMsg, key)
 		case "provider":
-				err = unpopulate(val, "Provider", &s.Provider)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Provider", &s.Provider)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -1194,14 +1190,14 @@ func (s *SubjectAlternativeNames) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "dns_names":
-				err = unpopulate(val, "DNSNames", &s.DNSNames)
-				delete(rawMsg, key)
+			err = unpopulate(val, "DNSNames", &s.DNSNames)
+			delete(rawMsg, key)
 		case "emails":
-				err = unpopulate(val, "Emails", &s.Emails)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Emails", &s.Emails)
+			delete(rawMsg, key)
 		case "upns":
-				err = unpopulate(val, "UPNs", &s.UPNs)
-				delete(rawMsg, key)
+			err = unpopulate(val, "UPNs", &s.UPNs)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -1228,11 +1224,11 @@ func (t *Trigger) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "days_before_expiry":
-				err = unpopulate(val, "DaysBeforeExpiry", &t.DaysBeforeExpiry)
-				delete(rawMsg, key)
+			err = unpopulate(val, "DaysBeforeExpiry", &t.DaysBeforeExpiry)
+			delete(rawMsg, key)
 		case "lifetime_percentage":
-				err = unpopulate(val, "LifetimePercentage", &t.LifetimePercentage)
-				delete(rawMsg, key)
+			err = unpopulate(val, "LifetimePercentage", &t.LifetimePercentage)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", t, err)
@@ -1261,17 +1257,17 @@ func (u *UpdateCertificateIssuerParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "Attributes", &u.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Attributes", &u.Attributes)
+			delete(rawMsg, key)
 		case "credentials":
-				err = unpopulate(val, "Credentials", &u.Credentials)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Credentials", &u.Credentials)
+			delete(rawMsg, key)
 		case "org_details":
-				err = unpopulate(val, "OrganizationDetails", &u.OrganizationDetails)
-				delete(rawMsg, key)
+			err = unpopulate(val, "OrganizationDetails", &u.OrganizationDetails)
+			delete(rawMsg, key)
 		case "provider":
-				err = unpopulate(val, "Provider", &u.Provider)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Provider", &u.Provider)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", u, err)
@@ -1297,8 +1293,8 @@ func (u *UpdateCertificateOperationParameter) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "cancellation_requested":
-				err = unpopulate(val, "CancellationRequested", &u.CancellationRequested)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CancellationRequested", &u.CancellationRequested)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", u, err)
@@ -1326,14 +1322,14 @@ func (u *UpdateCertificateParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, "CertificateAttributes", &u.CertificateAttributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CertificateAttributes", &u.CertificateAttributes)
+			delete(rawMsg, key)
 		case "policy":
-				err = unpopulate(val, "CertificatePolicy", &u.CertificatePolicy)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CertificatePolicy", &u.CertificatePolicy)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, "Tags", &u.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Tags", &u.Tags)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", u, err)
@@ -1363,20 +1359,20 @@ func (x *X509CertificateProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "ekus":
-				err = unpopulate(val, "EKUs", &x.EKUs)
-				delete(rawMsg, key)
+			err = unpopulate(val, "EKUs", &x.EKUs)
+			delete(rawMsg, key)
 		case "key_usage":
-				err = unpopulate(val, "KeyUsage", &x.KeyUsage)
-				delete(rawMsg, key)
+			err = unpopulate(val, "KeyUsage", &x.KeyUsage)
+			delete(rawMsg, key)
 		case "subject":
-				err = unpopulate(val, "Subject", &x.Subject)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Subject", &x.Subject)
+			delete(rawMsg, key)
 		case "sans":
-				err = unpopulate(val, "SubjectAlternativeNames", &x.SubjectAlternativeNames)
-				delete(rawMsg, key)
+			err = unpopulate(val, "SubjectAlternativeNames", &x.SubjectAlternativeNames)
+			delete(rawMsg, key)
 		case "validity_months":
-				err = unpopulate(val, "ValidityInMonths", &x.ValidityInMonths)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ValidityInMonths", &x.ValidityInMonths)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", x, err)
@@ -1414,4 +1410,3 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
-

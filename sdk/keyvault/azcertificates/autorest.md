@@ -122,4 +122,9 @@ directive:
   - from: client.go
   - where: $
   - transform: return $.replace(/certificate((?:Name|Policy|Version)) string/g, (match) => { return match[0].toLowerCase() + match.substr(1); })
+
+  # add doc comment
+  - from: swagger-document
+    where: $.definitions.X509CertificateProperties.properties.key_usage.items
+    transform: $["description"] = "Defines how the certificate's key may be used."
 ```

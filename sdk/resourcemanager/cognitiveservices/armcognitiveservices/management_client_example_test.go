@@ -25,11 +25,11 @@ func ExampleManagementClient_CheckSKUAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewManagementClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckSKUAvailability(ctx, "westus", armcognitiveservices.CheckSKUAvailabilityParameter{
+	res, err := clientFactory.NewManagementClient().CheckSKUAvailability(ctx, "westus", armcognitiveservices.CheckSKUAvailabilityParameter{
 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
 		Kind: to.Ptr("Face"),
 		SKUs: []*string{
@@ -59,11 +59,11 @@ func ExampleManagementClient_CheckDomainAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewManagementClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckDomainAvailability(ctx, armcognitiveservices.CheckDomainAvailabilityParameter{
+	res, err := clientFactory.NewManagementClient().CheckDomainAvailability(ctx, armcognitiveservices.CheckDomainAvailabilityParameter{
 		Type:          to.Ptr("Microsoft.CognitiveServices/accounts"),
 		SubdomainName: to.Ptr("contosodemoapp1"),
 	}, nil)

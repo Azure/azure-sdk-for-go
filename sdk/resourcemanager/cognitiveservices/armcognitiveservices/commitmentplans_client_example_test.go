@@ -25,11 +25,11 @@ func ExampleCommitmentPlansClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("subscriptionId", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroupName", "accountName", nil)
+	pager := clientFactory.NewCommitmentPlansClient().NewListPager("resourceGroupName", "accountName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,11 +66,11 @@ func ExampleCommitmentPlansClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("subscriptionId", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroupName", "accountName", "commitmentPlanName", nil)
+	res, err := clientFactory.NewCommitmentPlansClient().Get(ctx, "resourceGroupName", "accountName", "commitmentPlanName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -99,11 +99,11 @@ func ExampleCommitmentPlansClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("subscriptionId", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "resourceGroupName", "accountName", "commitmentPlanName", armcognitiveservices.CommitmentPlan{
+	res, err := clientFactory.NewCommitmentPlansClient().CreateOrUpdate(ctx, "resourceGroupName", "accountName", "commitmentPlanName", armcognitiveservices.CommitmentPlan{
 		Properties: &armcognitiveservices.CommitmentPlanProperties{
 			AutoRenew: to.Ptr(true),
 			Current: &armcognitiveservices.CommitmentPeriod{
@@ -141,11 +141,11 @@ func ExampleCommitmentPlansClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("subscriptionId", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resourceGroupName", "accountName", "commitmentPlanName", nil)
+	poller, err := clientFactory.NewCommitmentPlansClient().BeginDelete(ctx, "resourceGroupName", "accountName", "commitmentPlanName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -162,11 +162,11 @@ func ExampleCommitmentPlansClient_BeginCreateOrUpdatePlan() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdatePlan(ctx, "resourceGroupName", "commitmentPlanName", armcognitiveservices.CommitmentPlan{
+	poller, err := clientFactory.NewCommitmentPlansClient().BeginCreateOrUpdatePlan(ctx, "resourceGroupName", "commitmentPlanName", armcognitiveservices.CommitmentPlan{
 		Kind:     to.Ptr("SpeechServices"),
 		Location: to.Ptr("West US"),
 		Properties: &armcognitiveservices.CommitmentPlanProperties{
@@ -219,11 +219,11 @@ func ExampleCommitmentPlansClient_BeginUpdatePlan() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdatePlan(ctx, "resourceGroupName", "commitmentPlanName", armcognitiveservices.PatchResourceTagsAndSKU{
+	poller, err := clientFactory.NewCommitmentPlansClient().BeginUpdatePlan(ctx, "resourceGroupName", "commitmentPlanName", armcognitiveservices.PatchResourceTagsAndSKU{
 		Tags: map[string]*string{
 			"name": to.Ptr("value"),
 		},
@@ -269,11 +269,11 @@ func ExampleCommitmentPlansClient_BeginDeletePlan() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeletePlan(ctx, "resourceGroupName", "commitmentPlanName", nil)
+	poller, err := clientFactory.NewCommitmentPlansClient().BeginDeletePlan(ctx, "resourceGroupName", "commitmentPlanName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -290,11 +290,11 @@ func ExampleCommitmentPlansClient_GetPlan() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetPlan(ctx, "resourceGroupName", "commitmentPlanName", nil)
+	res, err := clientFactory.NewCommitmentPlansClient().GetPlan(ctx, "resourceGroupName", "commitmentPlanName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -329,11 +329,11 @@ func ExampleCommitmentPlansClient_NewListPlansByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPlansByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewCommitmentPlansClient().NewListPlansByResourceGroupPager("resourceGroupName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -376,11 +376,11 @@ func ExampleCommitmentPlansClient_NewListPlansBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPlansBySubscriptionPager(nil)
+	pager := clientFactory.NewCommitmentPlansClient().NewListPlansBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -423,11 +423,11 @@ func ExampleCommitmentPlansClient_NewListAssociationsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAssociationsPager("resourceGroupName", "commitmentPlanName", nil)
+	pager := clientFactory.NewCommitmentPlansClient().NewListAssociationsPager("resourceGroupName", "commitmentPlanName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -459,11 +459,11 @@ func ExampleCommitmentPlansClient_GetAssociation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAssociation(ctx, "resourceGroupName", "commitmentPlanName", "commitmentPlanAssociationName", nil)
+	res, err := clientFactory.NewCommitmentPlansClient().GetAssociation(ctx, "resourceGroupName", "commitmentPlanName", "commitmentPlanAssociationName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -487,11 +487,11 @@ func ExampleCommitmentPlansClient_BeginCreateOrUpdateAssociation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdateAssociation(ctx, "resourceGroupName", "commitmentPlanName", "commitmentPlanAssociationName", armcognitiveservices.CommitmentPlanAccountAssociation{
+	poller, err := clientFactory.NewCommitmentPlansClient().BeginCreateOrUpdateAssociation(ctx, "resourceGroupName", "commitmentPlanName", "commitmentPlanAssociationName", armcognitiveservices.CommitmentPlanAccountAssociation{
 		Properties: &armcognitiveservices.CommitmentPlanAccountAssociationProperties{
 			AccountID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName"),
 		},
@@ -523,11 +523,11 @@ func ExampleCommitmentPlansClient_BeginDeleteAssociation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteAssociation(ctx, "resourceGroupName", "commitmentPlanName", "commitmentPlanAssociationName", nil)
+	poller, err := clientFactory.NewCommitmentPlansClient().BeginDeleteAssociation(ctx, "resourceGroupName", "commitmentPlanName", "commitmentPlanAssociationName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

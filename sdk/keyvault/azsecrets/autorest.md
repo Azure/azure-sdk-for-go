@@ -6,7 +6,7 @@ These settings apply only when `--go` is specified on the command line.
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/e2ef44b87405b412403ccb005bfb3975411adf60/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/secrets.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/secrets.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
 openapi-type: "data-plane"
@@ -63,11 +63,6 @@ directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(a \*?Attributes\).*\{\s(?:.+\s)+\}\s/g, "");
-
-  # delete generated constructor
-  - from: client.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func NewClient.+\{\s(?:.+\s)+\}\s/, "");
 
   # delete the version path param check (version == "" is legal for Key Vault but indescribable by OpenAPI)
   - from: client.go

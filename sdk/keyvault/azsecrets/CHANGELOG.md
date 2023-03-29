@@ -3,6 +3,7 @@
 ## 0.11.1 (Unreleased)
 
 ### Features Added
+* upgraded to version 7.4
 
 ### Breaking Changes
 

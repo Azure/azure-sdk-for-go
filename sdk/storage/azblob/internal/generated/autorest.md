@@ -427,5 +427,11 @@ directive:
       replace (/req\.Raw\(\)\.Header\[\"If-Modified-Since\"\]\s+=\s+\[\]string\{modifiedAccessConditions\.IfModifiedSince\.Format\(time\.RFC1123\)\}/g, 
       `req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}`).
       replace (/req\.Raw\(\)\.Header\[\"If-Unmodified-Since\"\]\s+=\s+\[\]string\{modifiedAccessConditions\.IfUnmodifiedSince\.Format\(time\.RFC1123\)\}/g, 
-      `req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}`);
+      `req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}`).
+      replace (/req\.Raw\(\)\.Header\[\"x-ms-source-if-modified-since\"\]\s+=\s+\[\]string\{sourceModifiedAccessConditions\.SourceIfModifiedSince\.Format\(time\.RFC1123\)\}/g, 
+      `req.Raw().Header["x-ms-source-if-modified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfModifiedSince).In(gmt).Format(time.RFC1123)}`).
+      replace (/req\.Raw\(\)\.Header\[\"x-ms-source-if-unmodified-since\"\]\s+=\s+\[\]string\{sourceModifiedAccessConditions\.SourceIfUnmodifiedSince\.Format\(time\.RFC1123\)\}/g, 
+      `req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).In(gmt).Format(time.RFC1123)}`).
+      replace (/req\.Raw\(\)\.Header\[\"x-ms-immutability-policy-until-date\"\]\s+=\s+\[\]string\{options\.ImmutabilityPolicyExpiry\.Format\(time\.RFC1123\)\}/g, 
+      `req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{(*options.ImmutabilityPolicyExpiry).In(gmt).Format(time.RFC1123)}`);
       

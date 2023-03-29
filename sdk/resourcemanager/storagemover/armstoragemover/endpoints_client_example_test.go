@@ -25,11 +25,11 @@ func ExampleEndpointsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewEndpointsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("examples-rg", "examples-storageMoverName", nil)
+	pager := clientFactory.NewEndpointsClient().NewListPager("examples-rg", "examples-storageMoverName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -87,11 +87,11 @@ func ExampleEndpointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewEndpointsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", nil)
+	res, err := clientFactory.NewEndpointsClient().Get(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -118,11 +118,11 @@ func ExampleEndpointsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewEndpointsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.Endpoint{
+	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.Endpoint{
 		Properties: &armstoragemover.AzureStorageBlobContainerEndpointProperties{
 			Description:              to.Ptr("Example Storage Container Endpoint Description"),
 			EndpointType:             to.Ptr(armstoragemover.EndpointTypeAzureStorageBlobContainer),
@@ -156,11 +156,11 @@ func ExampleEndpointsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewEndpointsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.EndpointBaseUpdateParameters{
+	res, err := clientFactory.NewEndpointsClient().Update(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.EndpointBaseUpdateParameters{
 		Properties: &armstoragemover.EndpointBaseUpdateProperties{
 			Description: to.Ptr("Updated Endpoint Description"),
 		},
@@ -191,11 +191,11 @@ func ExampleEndpointsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewEndpointsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", nil)
+	poller, err := clientFactory.NewEndpointsClient().BeginDelete(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

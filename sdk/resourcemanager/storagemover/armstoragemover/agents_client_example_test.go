@@ -25,11 +25,11 @@ func ExampleAgentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewAgentsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("examples-rg", "examples-storageMoverName", nil)
+	pager := clientFactory.NewAgentsClient().NewListPager("examples-rg", "examples-storageMoverName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -132,11 +132,11 @@ func ExampleAgentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewAgentsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "examples-rg", "examples-storageMoverName", "examples-agentName", nil)
+	res, err := clientFactory.NewAgentsClient().Get(ctx, "examples-rg", "examples-storageMoverName", "examples-agentName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -177,11 +177,11 @@ func ExampleAgentsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewAgentsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-agentName", armstoragemover.Agent{
+	res, err := clientFactory.NewAgentsClient().CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-agentName", armstoragemover.Agent{
 		Properties: &armstoragemover.AgentProperties{
 			Description:   to.Ptr("Example Agent Description"),
 			ArcResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.HybridCompute/machines/examples-hybridComputeName"),
@@ -215,11 +215,11 @@ func ExampleAgentsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewAgentsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "examples-rg", "examples-storageMoverName", "examples-agentName", armstoragemover.AgentUpdateParameters{
+	res, err := clientFactory.NewAgentsClient().Update(ctx, "examples-rg", "examples-storageMoverName", "examples-agentName", armstoragemover.AgentUpdateParameters{
 		Properties: &armstoragemover.AgentUpdateProperties{
 			Description: to.Ptr("Updated Agent Description"),
 		},
@@ -256,11 +256,11 @@ func ExampleAgentsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewAgentsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "examples-rg", "examples-storageMoverName", "examples-agentName", nil)
+	poller, err := clientFactory.NewAgentsClient().BeginDelete(ctx, "examples-rg", "examples-storageMoverName", "examples-agentName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

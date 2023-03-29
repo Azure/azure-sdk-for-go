@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate
 
 go 1.18
 

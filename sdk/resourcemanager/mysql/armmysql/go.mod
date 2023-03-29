@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql
 
 go 1.18
 

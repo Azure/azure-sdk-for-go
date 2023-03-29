@@ -8,6 +8,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"os"
 	"sync"
 	"time"
@@ -37,15 +38,41 @@ type WorkloadIdentityCredentialOptions struct {
 	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
 	// application is registered.
 	AdditionallyAllowedTenants []string
+	// ClientID of the service principal. Defaults to the value of the environment variable AZURE_CLIENT_ID.
+	ClientID string
 	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
 	DisableInstanceDiscovery bool
+	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
+	TenantID string
+	// TokenFilePath is the path a file containing the workload identity token. Defaults to the value of the
+	// environment variable AZURE_FEDERATED_TOKEN_FILE.
+	TokenFilePath string
 }
 
-// NewWorkloadIdentityCredential constructs a WorkloadIdentityCredential. tenantID and clientID specify the identity the credential authenticates.
-// file is a path to a file containing a Kubernetes service account token that authenticates the identity.
-func NewWorkloadIdentityCredential(tenantID, clientID, file string, options *WorkloadIdentityCredentialOptions) (*WorkloadIdentityCredential, error) {
+// NewWorkloadIdentityCredential constructs a WorkloadIdentityCredential. Service principal configuration is read
+// from environment variables as set by the Azure workload identity webhook. Set options to override those values.
+func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (*WorkloadIdentityCredential, error) {
 	if options == nil {
 		options = &WorkloadIdentityCredentialOptions{}
+	}
+	ok := false
+	clientID := options.ClientID
+	if clientID == "" {
+		if clientID, ok = os.LookupEnv(azureClientID); !ok {
+			return nil, errors.New("no client ID specified. Check pod configuration or set ClientID in the options")
+		}
+	}
+	file := options.TokenFilePath
+	if file == "" {
+		if file, ok = os.LookupEnv(azureFederatedTokenFile); !ok {
+			return nil, errors.New("no token file specified. Check pod configuration or set TokenFilePath in the options")
+		}
+	}
+	tenantID := options.TenantID
+	if tenantID == "" {
+		if tenantID, ok = os.LookupEnv(azureTenantID); !ok {
+			return nil, errors.New("no tenant ID specified. Check pod configuration or set TenantID in the options")
+		}
 	}
 	w := WorkloadIdentityCredential{file: file, mtx: &sync.RWMutex{}}
 	caco := ClientAssertionCredentialOptions{

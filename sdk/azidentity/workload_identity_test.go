@@ -23,7 +23,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
 )
@@ -71,8 +70,13 @@ func TestWorkloadIdentityCredential_Live(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			co, stop := initRecording(t)
 			defer stop()
-			o := WorkloadIdentityCredentialOptions{ClientOptions: co, DisableInstanceDiscovery: b}
-			cred, err := NewWorkloadIdentityCredential(liveSP.tenantID, liveSP.clientID, f, &o)
+			cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+				ClientID:                 liveSP.clientID,
+				ClientOptions:            co,
+				DisableInstanceDiscovery: b,
+				TenantID:                 liveSP.tenantID,
+				TokenFilePath:            f,
+			})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -86,7 +90,7 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 	if err := os.WriteFile(tempFile, []byte(tokenValue), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
 	}
-	validateReq := func(req *http.Request) bool {
+	sts := mockSTS{tenant: fakeTenantID, tokenRequestCallback: func(req *http.Request) {
 		if err := req.ParseForm(); err != nil {
 			t.Error(err)
 		}
@@ -103,18 +107,13 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 		if actual := strings.Split(req.URL.Path, "/")[1]; actual != fakeTenantID {
 			t.Errorf(`unexpected tenant "%s"`, actual)
 		}
-		return true
-	}
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
-	opts := WorkloadIdentityCredentialOptions{
-		ClientOptions: policy.ClientOptions{Transport: srv},
-	}
-	cred, err := NewWorkloadIdentityCredential(fakeTenantID, fakeClientID, tempFile, &opts)
+	}}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:      fakeClientID,
+		ClientOptions: policy.ClientOptions{Transport: &sts},
+		TenantID:      fakeTenantID,
+		TokenFilePath: tempFile,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -124,7 +123,7 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 	tokenReqs := 0
 	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
-	validateReq := func(req *http.Request) bool {
+	sts := mockSTS{tenant: fakeTenantID, tokenRequestCallback: func(req *http.Request) {
 		if err := req.ParseForm(); err != nil {
 			t.Error(err)
 		}
@@ -134,20 +133,13 @@ func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 			t.Errorf(`expected assertion "%d", got "%s"`, tokenReqs, actual[0])
 		}
 		tokenReqs++
-		return true
-	}
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
-	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
-	opts := WorkloadIdentityCredentialOptions{
-		ClientOptions: policy.ClientOptions{Transport: srv},
-	}
-	cred, err := NewWorkloadIdentityCredential(fakeTenantID, fakeClientID, tempFile, &opts)
+	}}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:      fakeClientID,
+		ClientOptions: policy.ClientOptions{Transport: &sts},
+		TenantID:      fakeTenantID,
+		TokenFilePath: tempFile,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -165,5 +157,84 @@ func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 	}
 	if tokenReqs != 2 {
 		t.Fatalf("expected 2 token requests, got %d", tokenReqs)
+	}
+}
+
+func TestTestWorkloadIdentityCredential_IncompleteConfig(t *testing.T) {
+	f := filepath.Join(t.TempDir(), t.Name())
+	for _, env := range []map[string]string{
+		{},
+
+		{azureClientID: fakeClientID},
+		{azureFederatedTokenFile: f},
+		{azureTenantID: fakeTenantID},
+
+		{azureClientID: fakeClientID, azureTenantID: fakeTenantID},
+		{azureClientID: fakeClientID, azureFederatedTokenFile: f},
+		{azureTenantID: fakeTenantID, azureFederatedTokenFile: f},
+	} {
+		t.Run("", func(t *testing.T) {
+			for k, v := range env {
+				t.Setenv(k, v)
+			}
+			if _, err := NewWorkloadIdentityCredential(nil); err == nil {
+				t.Fatal("expected an error")
+			}
+		})
+	}
+}
+
+func TestWorkloadIdentityCredential_Options(t *testing.T) {
+	clientID := "not-" + fakeClientID
+	tenantID := "not-" + fakeTenantID
+	wrongFile := filepath.Join(t.TempDir(), "wrong")
+	rightFile := filepath.Join(t.TempDir(), "right")
+	if err := os.WriteFile(rightFile, []byte(tokenValue), os.ModePerm); err != nil {
+		t.Fatal(err)
+	}
+	sts := mockSTS{
+		tenant: tenantID,
+		tokenRequestCallback: func(req *http.Request) {
+			if err := req.ParseForm(); err != nil {
+				t.Error(err)
+			}
+			if actual, ok := req.PostForm["client_assertion"]; !ok {
+				t.Error("expected a client_assertion")
+			} else if len(actual) != 1 || actual[0] != tokenValue {
+				t.Errorf(`unexpected assertion "%s"`, actual[0])
+			}
+			if actual, ok := req.PostForm["client_id"]; !ok {
+				t.Error("expected a client_id")
+			} else if len(actual) != 1 || actual[0] != clientID {
+				t.Errorf(`unexpected assertion "%s"`, actual[0])
+			}
+			if actual := strings.Split(req.URL.Path, "/")[1]; actual != tenantID {
+				t.Errorf(`unexpected tenant "%s"`, actual)
+			}
+		},
+	}
+	// options should override environment variables
+	for k, v := range map[string]string{
+		azureClientID:           fakeClientID,
+		azureFederatedTokenFile: wrongFile,
+		azureTenantID:           fakeTenantID,
+	} {
+		t.Setenv(k, v)
+	}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:      clientID,
+		ClientOptions: policy.ClientOptions{Transport: &sts},
+		TenantID:      tenantID,
+		TokenFilePath: rightFile,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf("unexpected token %q", tk.Token)
 	}
 }

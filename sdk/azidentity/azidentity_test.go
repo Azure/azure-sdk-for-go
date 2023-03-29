@@ -393,8 +393,13 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 			{
 				name: credNameWorkloadIdentity,
 				ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
-					o := WorkloadIdentityCredentialOptions{AdditionallyAllowedTenants: test.allowed, ClientOptions: co}
-					return NewWorkloadIdentityCredential(fakeTenantID, fakeClientID, af, &o)
+					return NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+						AdditionallyAllowedTenants: test.allowed,
+						ClientID:                   fakeClientID,
+						ClientOptions:              co,
+						TenantID:                   fakeTenantID,
+						TokenFilePath:              af,
+					})
 				},
 			},
 			{

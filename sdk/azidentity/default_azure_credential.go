@@ -79,36 +79,20 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	}
 
 	// workload identity requires values for AZURE_AUTHORITY_HOST, AZURE_CLIENT_ID, AZURE_FEDERATED_TOKEN_FILE, AZURE_TENANT_ID
-	haveWorkloadConfig := false
-	clientID, haveClientID := os.LookupEnv(azureClientID)
-	if haveClientID {
-		if file, ok := os.LookupEnv(azureFederatedTokenFile); ok {
-			if _, ok := os.LookupEnv(azureAuthorityHost); ok {
-				if tenantID, ok := os.LookupEnv(azureTenantID); ok {
-					haveWorkloadConfig = true
-					workloadCred, err := NewWorkloadIdentityCredential(tenantID, clientID, file, &WorkloadIdentityCredentialOptions{
-						AdditionallyAllowedTenants: additionalTenants,
-						ClientOptions:              options.ClientOptions,
-						DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
-					})
-					if err == nil {
-						creds = append(creds, workloadCred)
-					} else {
-						errorMessages = append(errorMessages, credNameWorkloadIdentity+": "+err.Error())
-						creds = append(creds, &defaultCredentialErrorReporter{credType: credNameWorkloadIdentity, err: err})
-					}
-				}
-			}
-		}
-	}
-	if !haveWorkloadConfig {
-		err := errors.New("missing environment variables for workload identity. Check webhook and pod configuration")
+	wic, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		AdditionallyAllowedTenants: additionalTenants,
+		ClientOptions:              options.ClientOptions,
+		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
+	})
+	if err == nil {
+		creds = append(creds, wic)
+	} else {
+		errorMessages = append(errorMessages, credNameWorkloadIdentity+": "+err.Error())
 		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameWorkloadIdentity, err: err})
 	}
-
 	o := &ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions}
-	if haveClientID {
-		o.ID = ClientID(clientID)
+	if ID, ok := os.LookupEnv(azureClientID); ok {
+		o.ID = ClientID(ID)
 	}
 	miCred, err := NewManagedIdentityCredential(o)
 	if err == nil {

@@ -24,7 +24,7 @@ type MockReceiver struct {
 
 	// InternalReceive will receive from our default mock. Useful if you want to
 	// change the default EXPECT() for AMQPReceiver.Receive().
-	InternalReceive func(ctx context.Context) (*amqp.Message, error)
+	InternalReceive func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error)
 
 	// InternalIssueCredit will issue credit for our default mock. Useful if you
 	// want to change the default EXPECT() for AMQPReceiver.IssueCredit().
@@ -91,7 +91,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 	var credits uint32
 	var q *Queue
 
-	rcvr.InternalReceive = func(ctx context.Context) (*amqp.Message, error) {
+	rcvr.InternalReceive = func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 		m, err := q.Receive(ctx, rcvr.LinkEvent(), rcvr.Status)
 
 		if err != nil {
@@ -122,7 +122,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 		q = md.upsertQueue(source)
 	}
 
-	rcvr.EXPECT().Receive(gomock.Any()).DoAndReturn(rcvr.InternalReceive).AnyTimes()
+	rcvr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(rcvr.InternalReceive).AnyTimes()
 
 	rcvr.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
 		md.Events.CloseLink(rcvr.LinkEvent())
@@ -133,7 +133,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 		case <-sess.Status.Done():
 			return sess.Status.Err()
 		default:
-			rcvr.Status.CloseWithError(amqp.ErrLinkClosed)
+			rcvr.Status.CloseWithError(&amqp.LinkError{})
 		}
 
 		return nil
@@ -161,7 +161,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 
 	rcvr.EXPECT().Prefetched().Return((*amqp.Message)(nil)).AnyTimes()
 
-	if opts.ManualCredits {
+	if opts.Credit == -1 {
 		rcvr.EXPECT().IssueCredit(gomock.Any()).DoAndReturn(rcvr.InternalIssueCredit).AnyTimes()
 	} else {
 		// assume unlimited credits for this receiver - the AMQP stack is going to take care of replenishing credits.

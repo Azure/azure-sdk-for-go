@@ -127,15 +127,25 @@ func TestNewClientWithWebsockets(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	// NOTE: This error is coming from the `nhooyr.io/websocket` package. There's an
-	// open discussion here:
-	//   https://github.com/nhooyr/websocket/discussions/380
-	//
-	// The frame it's waiting for (at this point) is the other half of the websocket CLOSE handshake.
-	// I wireshark'd this and confirmed that the frame does arrive, it's just not read by the local
-	// package. In this context, since the connection has already shut down, this is harmless.
-	var expectedErr = "failed to close WebSocket: failed to read frame header: EOF"
-	require.EqualError(t, client.Close(context.Background()), expectedErr)
+	const (
+		// NOTE: This error is coming from the `nhooyr.io/websocket` package. There's an
+		// open discussion here:
+		//   https://github.com/nhooyr/websocket/discussions/380
+		//
+		// The frame it's waiting for (at this point) is the other half of the websocket CLOSE handshake.
+		// I wireshark'd this and confirmed that the frame does arrive, it's just not read by the local
+		// package. In this context, since the connection has already shut down, this is harmless.
+		expectedWSErr1 = "failed to close WebSocket: failed to read frame header: EOF"
+
+		// in addition, the returned error on close doesn't implement net.ErrClosed so we can also see this.
+		// https://github.com/nhooyr/websocket/issues/286
+		expectedWSErr2 = "failed to read: WebSocket closed: sent close frame: status = StatusNormalClosure and reason = \"\""
+	)
+	err = client.Close(context.Background())
+	require.Error(t, err)
+	if es := err.Error(); es != expectedWSErr1 && es != expectedWSErr2 {
+		t.Fatalf("unexpected error %v", err)
+	}
 }
 
 func TestNewClientUsingSharedAccessSignature(t *testing.T) {

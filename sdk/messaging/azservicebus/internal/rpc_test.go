@@ -223,14 +223,14 @@ func (tester *rpcTester) AcceptMessage(ctx context.Context, msg *amqp.Message) e
 	return nil
 }
 
-func (tester *rpcTester) Receive(ctx context.Context) (*amqp.Message, error) {
+func (tester *rpcTester) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 	resp := <-tester.ResponsesCh
 	return resp.M, resp.E
 }
 
 // sender functions
 
-func (tester *rpcTester) Send(ctx context.Context, msg *amqp.Message) error {
+func (tester *rpcTester) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
 	require.NotEmpty(tester.t, msg.Properties.MessageID)
 
 	// we'll let the payload dictate the response
@@ -263,7 +263,7 @@ func (tester *rpcTester) Send(ctx context.Context, msg *amqp.Message) error {
 // routed through our rpcTester. It's 100% a test only thing.
 const rpcTesterProperty = "test-resps"
 
-var exampleServerBusyError error = &amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:server-busy")}
+var exampleServerBusyError error = &amqp.Error{Condition: amqp.ErrCond("com.microsoft:server-busy")}
 
 var exampleUncorrelatedMessage = &amqp.Message{
 	Value: "response from service",

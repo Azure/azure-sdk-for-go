@@ -24,7 +24,7 @@ func TestNewConnection(t *testing.T) {
 	require.NoError(t, err)
 
 	rcvr, err := sess.NewReceiver(context.Background(), "testqueue", &amqp.ReceiverOptions{
-		ManualCredits: true,
+		Credit: -1,
 	})
 	require.NoError(t, err)
 
@@ -33,13 +33,13 @@ func TestNewConnection(t *testing.T) {
 
 	err = sender.Send(context.Background(), &amqp.Message{
 		Value: []byte("hello"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	err = rcvr.IssueCredit(1)
 	require.NoError(t, err)
 
-	msg, err := rcvr.Receive(context.Background())
+	msg, err := rcvr.Receive(context.Background(), nil)
 	require.NoError(t, err)
 	require.Equal(t, []byte("hello"), msg.Value)
 }
@@ -66,12 +66,12 @@ func TestClosingConnectionClosesChildren(t *testing.T) {
 	// TODO: non-deterministic
 	time.Sleep(time.Second)
 
-	msg, err := rcvr.Receive(context.Background())
+	msg, err := rcvr.Receive(context.Background(), nil)
 	require.Nil(t, msg)
 
-	var connErr *amqp.ConnectionError
+	var connErr *amqp.ConnError
 	require.ErrorAs(t, err, &connErr)
 
-	err = sender.Send(context.Background(), &amqp.Message{})
+	err = sender.Send(context.Background(), &amqp.Message{}, nil)
 	require.ErrorAs(t, err, &connErr)
 }

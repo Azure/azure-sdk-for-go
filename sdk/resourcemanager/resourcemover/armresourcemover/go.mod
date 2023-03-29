@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover
 
 go 1.18
 

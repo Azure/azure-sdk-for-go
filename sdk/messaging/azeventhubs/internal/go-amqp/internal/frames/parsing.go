@@ -1,11 +1,13 @@
 // Copyright (C) 2017 Kale Blankenship
 // Portions Copyright (c) Microsoft Corporation
+
 package frames
 
 import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"math"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/buffer"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/encoding"
@@ -127,4 +129,34 @@ func ParseBody(r *buffer.Buffer) (FrameBody, error) {
 	default:
 		return nil, fmt.Errorf("unknown performative type %02x", pType)
 	}
+}
+
+// Write encodes fr into buf.
+// split out from conn.WriteFrame for testing purposes.
+func Write(buf *buffer.Buffer, fr Frame) error {
+	// write header
+	buf.Append([]byte{
+		0, 0, 0, 0, // size, overwrite later
+		2,              // doff, see frameHeader.DataOffset comment
+		uint8(fr.Type), // frame type
+	})
+	buf.AppendUint16(fr.Channel) // channel
+
+	// write AMQP frame body
+	err := encoding.Marshal(buf, fr.Body)
+	if err != nil {
+		return err
+	}
+
+	// validate size
+	if uint(buf.Len()) > math.MaxUint32 {
+		return errors.New("frame too large")
+	}
+
+	// retrieve raw bytes
+	bufBytes := buf.Bytes()
+
+	// write correct size
+	binary.BigEndian.PutUint32(bufBytes, uint32(len(bufBytes)))
+	return nil
 }

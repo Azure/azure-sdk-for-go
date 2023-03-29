@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Kale Blankenship
 // Portions Copyright (c) Microsoft Corporation
+
 package amqp
 
 import (
@@ -34,7 +35,7 @@ type Message struct {
 	// The delivery-annotations section is used for delivery-specific non-standard
 	// properties at the head of the message. Delivery annotations convey information
 	// from the sending peer to the receiving peer.
-	DeliveryAnnotations encoding.Annotations
+	DeliveryAnnotations Annotations
 	// If the recipient does not understand the annotation it cannot be acted upon
 	// and its effects (such as any implied propagation) cannot be acted upon.
 	// Annotations might be specific to one implementation, or common to multiple
@@ -50,7 +51,7 @@ type Message struct {
 
 	// The message-annotations section is used for properties of the message which
 	// are aimed at the infrastructure.
-	Annotations encoding.Annotations
+	Annotations Annotations
 	// The message-annotations section is used for properties of the message which
 	// are aimed at the infrastructure and SHOULD be propagated across every
 	// delivery step. Message annotations convey information about the message.
@@ -78,7 +79,7 @@ type Message struct {
 	// The application-properties section is a part of the bare message used for
 	// structured application data. Intermediaries can use the data within this
 	// structure for the purposes of filtering or routing.
-	ApplicationProperties map[string]interface{}
+	ApplicationProperties map[string]any
 	// The keys of this map are restricted to be of type string (which excludes
 	// the possibility of a null key) and the values are restricted to be of
 	// simple types only, that is, excluding map, list, and array types.
@@ -89,26 +90,21 @@ type Message struct {
 
 	// Value payload.
 	// An amqp-value section contains a single AMQP value.
-	Value interface{}
+	Value any
 
 	// Sequence will contain AMQP sequence sections from the body of the message.
 	// An amqp-sequence section contains an AMQP sequence.
-	Sequence [][]interface{}
+	Sequence [][]any
 
 	// The footer section is used for details about the message or delivery which
 	// can only be calculated or evaluated once the whole bare message has been
 	// constructed or seen (for example message hashes, HMACs, signatures and
 	// encryption details).
-	Footer encoding.Annotations
+	Footer Annotations
 
-	// Mark the message as settled when LinkSenderSettle is ModeMixed.
-	//
-	// This field is ignored when LinkSenderSettle is not ModeMixed.
-	SendSettled bool
-
-	link       *link  // the receiving link
-	deliveryID uint32 // used when sending disposition
-	settled    bool   // whether transfer was settled by sender
+	rcvr       *Receiver // the receiving link
+	deliveryID uint32    // used when sending disposition
+	settled    bool      // whether transfer was settled by sender
 }
 
 // NewMessage returns a *Message with data as the payload.
@@ -133,8 +129,8 @@ func (m *Message) GetData() []byte {
 
 // LinkName returns the receiving link name or the empty string.
 func (m *Message) LinkName() string {
-	if m.link != nil {
-		return m.link.Key.name
+	if m.rcvr != nil {
+		return m.rcvr.l.key.name
 	}
 	return ""
 }
@@ -144,10 +140,6 @@ func (m *Message) MarshalBinary() ([]byte, error) {
 	buf := &buffer.Buffer{}
 	err := m.Marshal(buf)
 	return buf.Detach(), err
-}
-
-func (m *Message) shouldSendDisposition() bool {
-	return !m.settled
 }
 
 func (m *Message) Marshal(wr *buffer.Buffer) error {
@@ -244,7 +236,7 @@ func (m *Message) Unmarshal(r *buffer.Buffer) error {
 		}
 
 		var (
-			section interface{}
+			section any
 			// section header is read from r before
 			// unmarshaling section is set to true
 			discardHeader = true
@@ -283,7 +275,7 @@ func (m *Message) Unmarshal(r *buffer.Buffer) error {
 		case encoding.TypeCodeAMQPSequence:
 			r.Skip(int(headerLength))
 
-			var data []interface{}
+			var data []any
 			err = encoding.Unmarshal(r, &data)
 			if err != nil {
 				return err
@@ -367,7 +359,7 @@ type (
 	// - amqp.UUID: <type name="message-id-uuid" class="restricted" source="uuid" provides="message-id"/>
 	// - []byte:    <type name="message-id-binary" class="restricted" source="binary" provides="message-id"/>
 	// - string:    <type name="message-id-string" class="restricted" source="string" provides="message-id"/>
-	MessageID = interface{}
+	MessageID = any
 
 	// AMQPSymbol corresponds to the 'symbol' type in the AMQP spec.
 	// <type name="symbol" class="primitive"/>
@@ -526,4 +518,5 @@ func (p *MessageProperties) Unmarshal(r *buffer.Buffer) error {
 // String keys are encoded as AMQP Symbols.
 type Annotations = encoding.Annotations
 
+// UUID is a 128 bit identifier as defined in RFC 4122.
 type UUID = encoding.UUID

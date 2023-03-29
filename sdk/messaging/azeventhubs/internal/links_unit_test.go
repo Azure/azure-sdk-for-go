@@ -53,13 +53,13 @@ func TestLinks_LinkStale(t *testing.T) {
 
 	// we'll recover first, but our lwid (after this recovery) is stale since
 	// the link cache will be updated after this is done.
-	err = links.RecoverIfNeeded(context.Background(), "0", staleLWID, &amqp.DetachError{})
+	err = links.RecoverIfNeeded(context.Background(), "0", staleLWID, &amqp.LinkError{})
 	require.NoError(t, err)
 	require.Nil(t, links.links["0"], "closed link is removed from the cache")
 	require.Equal(t, 1, receivers[0].CloseCalled, "original receiver is closed, and replaced")
 
 	// trying to recover again is a no-op (if nothing is in the cache)
-	err = links.RecoverIfNeeded(context.Background(), "0", staleLWID, &amqp.DetachError{})
+	err = links.RecoverIfNeeded(context.Background(), "0", staleLWID, &amqp.LinkError{})
 	require.NoError(t, err)
 	require.Nil(t, links.links["0"], "closed link is removed from the cache")
 	require.Equal(t, 1, receivers[0].CloseCalled, "original receiver is closed, and replaced")
@@ -73,7 +73,7 @@ func TestLinks_LinkStale(t *testing.T) {
 	require.NotNil(t, newLWID)
 	require.Equal(t, (*links.links["0"].Link).LinkName(), newLWID.Link.LinkName(), "cache contains the newly created link for partition 0")
 
-	err = links.RecoverIfNeeded(context.Background(), "0", staleLWID, &amqp.DetachError{})
+	err = links.RecoverIfNeeded(context.Background(), "0", staleLWID, &amqp.LinkError{})
 	require.NoError(t, err)
 	require.Equal(t, 0, receivers[0].CloseCalled, "receiver is NOT closed - we didn't need to replace it since the lwid with the error was stale")
 }
@@ -100,7 +100,7 @@ func TestLinks_LinkRecoveryOnly(t *testing.T) {
 	require.NotNil(t, lwid)
 	require.NotNil(t, links.links["0"], "cache contains the newly created link for partition 0")
 
-	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.DetachError{})
+	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.LinkError{})
 	require.NoError(t, err)
 	require.Nil(t, links.links["0"], "cache will no longer a link for partition 0")
 
@@ -151,12 +151,12 @@ func TestLinks_ConnectionRecovery(t *testing.T) {
 	// if the connection has closed in response to an error then it'll propagate it's error to
 	// the children, including receivers. Which means closing the receiver here will _also_ return
 	// a connection error.
-	receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).Return(&amqp.ConnectionError{})
+	receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).Return(&amqp.ConnError{})
 
 	ns.EXPECT().Recover(mock.NotCancelledAndHasTimeout, gomock.Any()).Return(nil)
 
 	// initiate a connection level recovery
-	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.ConnectionError{})
+	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.ConnError{})
 	require.NoError(t, err)
 
 	// we still cleanup what we can (including cancelling our background negotiate claim loop)
@@ -200,7 +200,7 @@ func TestLinks_closeWithTimeout(t *testing.T) {
 
 			// purposefully recover with what should be a link level recovery. However, the Close() failing
 			// means we end up "upgrading" to a connection reset instead.
-			err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.DetachError{})
+			err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.LinkError{})
 			require.ErrorIs(t, err, errConnResetNeeded)
 
 			// the error that comes back when the link times out being closed can only
@@ -243,7 +243,7 @@ func TestLinks_linkRecoveryOnly(t *testing.T) {
 	lwid, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)
 
-	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.DetachError{})
+	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.LinkError{})
 	require.NoError(t, err)
 
 	// we still cleanup what we can (including cancelling our background negotiate claim loop)

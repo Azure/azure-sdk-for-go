@@ -1,4 +1,5 @@
 // Copyright (c) Microsoft Corporation
+
 package amqp
 
 import (
@@ -7,7 +8,7 @@ import (
 	"sync"
 )
 
-type manualCreditor struct {
+type creditor struct {
 	mu sync.Mutex
 
 	// future values for the next flow frame.
@@ -19,11 +20,13 @@ type manualCreditor struct {
 	drained chan struct{}
 }
 
-var errLinkDraining = errors.New("link is currently draining, no credits can be added")
-var errAlreadyDraining = errors.New("drain already in process")
+var (
+	errLinkDraining    = errors.New("link is currently draining, no credits can be added")
+	errAlreadyDraining = errors.New("drain already in process")
+)
 
 // EndDrain ends the current drain, unblocking any active Drain calls.
-func (mc *manualCreditor) EndDrain() {
+func (mc *creditor) EndDrain() {
 	mc.mu.Lock()
 	defer mc.mu.Unlock()
 
@@ -40,7 +43,7 @@ func (mc *manualCreditor) EndDrain() {
 //	(drain: true, credits: 0) if a flow is needed (drain)
 //	(drain: false, credits > 0) if a flow is needed (issue credit)
 //	(drain: false, credits == 0) if no flow needed.
-func (mc *manualCreditor) FlowBits(currentCredits uint32) (bool, uint32) {
+func (mc *creditor) FlowBits(currentCredits uint32) (bool, uint32) {
 	mc.mu.Lock()
 	defer mc.mu.Unlock()
 
@@ -67,7 +70,9 @@ func (mc *manualCreditor) FlowBits(currentCredits uint32) (bool, uint32) {
 }
 
 // Drain initiates a drain and blocks until EndDrain is called.
-func (mc *manualCreditor) Drain(ctx context.Context, l *link) error {
+// If the context's deadline expires or is cancelled before the operation
+// completes, the drain might not have happened.
+func (mc *creditor) Drain(ctx context.Context, r *Receiver) error {
 	mc.mu.Lock()
 
 	if mc.drained != nil {
@@ -82,12 +87,18 @@ func (mc *manualCreditor) Drain(ctx context.Context, l *link) error {
 
 	mc.mu.Unlock()
 
+	// cause mux() to check our flow conditions.
+	select {
+	case r.receiverReady <- struct{}{}:
+	default:
+	}
+
 	// send drain, wait for responding flow frame
 	select {
 	case <-drained:
 		return nil
-	case <-l.Detached:
-		return &DetachError{RemoteError: l.detachError}
+	case <-r.l.done:
+		return r.l.doneErr
 	case <-ctx.Done():
 		return ctx.Err()
 	}
@@ -95,7 +106,7 @@ func (mc *manualCreditor) Drain(ctx context.Context, l *link) error {
 
 // IssueCredit queues up additional credits to be requested at the next
 // call of FlowBits()
-func (mc *manualCreditor) IssueCredit(credits uint32) error {
+func (mc *creditor) IssueCredit(credits uint32) error {
 	mc.mu.Lock()
 	defer mc.mu.Unlock()
 

@@ -383,7 +383,7 @@ func TestRetryLogging(t *testing.T) {
 				azlog.Writef("TestFunc", "Attempt %d, resetting", args.I)
 				args.ResetAttempts()
 				reset = true
-				return &amqp.DetachError{}
+				return &amqp.LinkError{}
 			}
 
 			if reset {
@@ -393,8 +393,8 @@ func TestRetryLogging(t *testing.T) {
 
 			return errors.New("custom fatal error")
 		}, func(err error) bool {
-			var de amqp.DetachError
-			return errors.Is(err, &de)
+			var de *amqp.LinkError
+			return !errors.As(err, &de)
 		})
 		require.Nil(t, err)
 
@@ -402,7 +402,7 @@ func TestRetryLogging(t *testing.T) {
 			"[TestFunc  ] Attempt 0, within test func",
 			"[TestFunc  ] Attempt 0, resetting",
 			"[testLogEvent] (test_operation) Resetting retry attempts",
-			"[testLogEvent] (test_operation) Retry attempt -1 returned retryable error: link detached, reason: *Error(nil)",
+			"[testLogEvent] (test_operation) Retry attempt -1 returned retryable error: amqp: link closed",
 			"[TestFunc  ] Attempt 0, within test func",
 			"[TestFunc  ] Attempt 0, return nil",
 		}, normalizeRetryLogLines(logs))

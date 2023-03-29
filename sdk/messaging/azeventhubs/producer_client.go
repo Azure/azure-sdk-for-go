@@ -162,7 +162,7 @@ type SendEventDataBatchOptions struct {
 // SendEventDataBatch sends an event data batch to Event Hubs.
 func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDataBatch, options *SendEventDataBatchOptions) error {
 	err := pc.links.Retry(ctx, exported.EventProducer, "SendEventDataBatch", getPartitionID(batch.partitionID), pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
-		return lwid.Link.Send(ctx, batch.toAMQPMessage())
+		return lwid.Link.Send(ctx, batch.toAMQPMessage(), nil)
 	})
 	return internal.TransformError(err)
 }
@@ -211,9 +211,8 @@ func (pc *ProducerClient) getEntityPath(partitionID string) string {
 
 func (pc *ProducerClient) newEventHubProducerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (amqpwrap.AMQPSenderCloser, error) {
 	sender, err := session.NewSender(ctx, entityPath, &amqp.SenderOptions{
-		SettlementMode:              to.Ptr(amqp.ModeMixed),
-		RequestedReceiverSettleMode: to.Ptr(amqp.ModeFirst),
-		IgnoreDispositionErrors:     true,
+		SettlementMode:              to.Ptr(amqp.SenderSettleModeMixed),
+		RequestedReceiverSettleMode: to.Ptr(amqp.ReceiverSettleModeFirst),
 	})
 
 	if err != nil {

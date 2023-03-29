@@ -25,11 +25,11 @@ func ExampleBackupVaultsClient_NewGetInSubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupVaultsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetInSubscriptionPager(nil)
+	pager := clientFactory.NewBackupVaultsClient().NewGetInSubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -93,11 +93,11 @@ func ExampleBackupVaultsClient_NewGetInResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupVaultsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetInResourceGroupPager("SampleResourceGroup", nil)
+	pager := clientFactory.NewBackupVaultsClient().NewGetInResourceGroupPager("SampleResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -168,11 +168,11 @@ func ExampleBackupVaultsClient_Get_getBackupVault() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupVaultsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "SampleResourceGroup", "swaggerExample", nil)
+	res, err := clientFactory.NewBackupVaultsClient().Get(ctx, "SampleResourceGroup", "swaggerExample", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -213,11 +213,11 @@ func ExampleBackupVaultsClient_Get_getBackupVaultWithMsi() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupVaultsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "SampleResourceGroup", "swaggerExample", nil)
+	res, err := clientFactory.NewBackupVaultsClient().Get(ctx, "SampleResourceGroup", "swaggerExample", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -255,11 +255,11 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVault() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupVaultsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.BackupVaultResource{
+	poller, err := clientFactory.NewBackupVaultsClient().BeginCreateOrUpdate(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.BackupVaultResource{
 		Location: to.Ptr("WestUS"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("val1"),
@@ -324,11 +324,11 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithMsi() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupVaultsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.BackupVaultResource{
+	poller, err := clientFactory.NewBackupVaultsClient().BeginCreateOrUpdate(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.BackupVaultResource{
 		Location: to.Ptr("WestUS"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("val1"),
@@ -395,11 +395,11 @@ func ExampleBackupVaultsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupVaultsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "SampleResourceGroup", "swaggerExample", nil)
+	poller, err := clientFactory.NewBackupVaultsClient().BeginDelete(ctx, "SampleResourceGroup", "swaggerExample", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -416,11 +416,11 @@ func ExampleBackupVaultsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupVaultsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.PatchResourceRequestInput{
+	poller, err := clientFactory.NewBackupVaultsClient().BeginUpdate(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.PatchResourceRequestInput{
 		Properties: &armdataprotection.PatchBackupVaultInput{
 			MonitoringSettings: &armdataprotection.MonitoringSettings{
 				AzureMonitorAlertSettings: &armdataprotection.AzureMonitorAlertSettings{
@@ -473,11 +473,11 @@ func ExampleBackupVaultsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupVaultsClient("0b352192-dcac-4cc7-992e-a96190ccc68c", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "SampleResourceGroup", "westus", armdataprotection.CheckNameAvailabilityRequest{
+	res, err := clientFactory.NewBackupVaultsClient().CheckNameAvailability(ctx, "SampleResourceGroup", "westus", armdataprotection.CheckNameAvailabilityRequest{
 		Name: to.Ptr("swaggerExample"),
 		Type: to.Ptr("Microsoft.DataProtection/BackupVaults"),
 	}, nil)

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // BackupInstancesClient contains the methods for the BackupInstances group.
 // Don't use this type directly, use NewBackupInstancesClient() instead.
 type BackupInstancesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewBackupInstancesClient creates a new instance of BackupInstancesClient with the specified values.
@@ -36,21 +33,13 @@ type BackupInstancesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstancesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".BackupInstancesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &BackupInstancesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *BackupInstancesClient) BeginAdhocBackup(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientAdhocBackupResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientAdhocBackupResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientAdhocBackupResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientAdhocBackupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *BackupInstancesClient) adhocBackup(ctx context.Context, resourceGr
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +101,7 @@ func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -139,9 +128,9 @@ func (client *BackupInstancesClient) BeginCreateOrUpdate(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -154,7 +143,7 @@ func (client *BackupInstancesClient) createOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +169,7 @@ func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -206,9 +195,9 @@ func (client *BackupInstancesClient) BeginDelete(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -221,7 +210,7 @@ func (client *BackupInstancesClient) deleteOperation(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -247,7 +236,7 @@ func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -271,7 +260,7 @@ func (client *BackupInstancesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return BackupInstancesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BackupInstancesClientGetResponse{}, err
 	}
@@ -297,7 +286,7 @@ func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -331,7 +320,7 @@ func (client *BackupInstancesClient) GetBackupInstanceOperationResult(ctx contex
 	if err != nil {
 		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
 	}
@@ -361,7 +350,7 @@ func (client *BackupInstancesClient) getBackupInstanceOperationResultCreateReque
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -404,7 +393,7 @@ func (client *BackupInstancesClient) NewListPager(resourceGroupName string, vaul
 			if err != nil {
 				return BackupInstancesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return BackupInstancesClientListResponse{}, err
 			}
@@ -428,7 +417,7 @@ func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -463,9 +452,9 @@ func (client *BackupInstancesClient) BeginResumeBackups(ctx context.Context, res
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientResumeBackupsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientResumeBackupsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientResumeBackupsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientResumeBackupsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -478,7 +467,7 @@ func (client *BackupInstancesClient) resumeBackups(ctx context.Context, resource
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -504,7 +493,7 @@ func (client *BackupInstancesClient) resumeBackupsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -530,9 +519,9 @@ func (client *BackupInstancesClient) BeginResumeProtection(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientResumeProtectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientResumeProtectionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientResumeProtectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientResumeProtectionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -545,7 +534,7 @@ func (client *BackupInstancesClient) resumeProtection(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -571,7 +560,7 @@ func (client *BackupInstancesClient) resumeProtectionCreateRequest(ctx context.C
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -597,9 +586,9 @@ func (client *BackupInstancesClient) BeginStopProtection(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientStopProtectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientStopProtectionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientStopProtectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientStopProtectionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -612,7 +601,7 @@ func (client *BackupInstancesClient) stopProtection(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -638,7 +627,7 @@ func (client *BackupInstancesClient) stopProtectionCreateRequest(ctx context.Con
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -665,9 +654,9 @@ func (client *BackupInstancesClient) BeginSuspendBackups(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientSuspendBackupsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientSuspendBackupsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientSuspendBackupsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientSuspendBackupsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -681,7 +670,7 @@ func (client *BackupInstancesClient) suspendBackups(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -707,7 +696,7 @@ func (client *BackupInstancesClient) suspendBackupsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -735,9 +724,9 @@ func (client *BackupInstancesClient) BeginSyncBackupInstance(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientSyncBackupInstanceResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientSyncBackupInstanceResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientSyncBackupInstanceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientSyncBackupInstanceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -751,7 +740,7 @@ func (client *BackupInstancesClient) syncBackupInstance(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -777,7 +766,7 @@ func (client *BackupInstancesClient) syncBackupInstanceCreateRequest(ctx context
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -804,9 +793,9 @@ func (client *BackupInstancesClient) BeginTriggerRehydrate(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientTriggerRehydrateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientTriggerRehydrateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientTriggerRehydrateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientTriggerRehydrateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -819,7 +808,7 @@ func (client *BackupInstancesClient) triggerRehydrate(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -845,7 +834,7 @@ func (client *BackupInstancesClient) triggerRehydrateCreateRequest(ctx context.C
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -872,9 +861,9 @@ func (client *BackupInstancesClient) BeginTriggerRestore(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientTriggerRestoreResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientTriggerRestoreResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientTriggerRestoreResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientTriggerRestoreResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -887,7 +876,7 @@ func (client *BackupInstancesClient) triggerRestore(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -913,7 +902,7 @@ func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Con
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -939,9 +928,9 @@ func (client *BackupInstancesClient) BeginValidateForBackup(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientValidateForBackupResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientValidateForBackupResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientValidateForBackupResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientValidateForBackupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -954,7 +943,7 @@ func (client *BackupInstancesClient) validateForBackup(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -976,7 +965,7 @@ func (client *BackupInstancesClient) validateForBackupCreateRequest(ctx context.
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1003,9 +992,9 @@ func (client *BackupInstancesClient) BeginValidateForRestore(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[BackupInstancesClientValidateForRestoreResponse](resp, client.pl, nil)
+		return runtime.NewPoller[BackupInstancesClientValidateForRestoreResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupInstancesClientValidateForRestoreResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupInstancesClientValidateForRestoreResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1018,7 +1007,7 @@ func (client *BackupInstancesClient) validateForRestore(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1044,7 +1033,7 @@ func (client *BackupInstancesClient) validateForRestoreCreateRequest(ctx context
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

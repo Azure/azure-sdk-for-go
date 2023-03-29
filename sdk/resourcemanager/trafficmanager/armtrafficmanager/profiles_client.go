@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,47 +24,39 @@ import (
 // ProfilesClient contains the methods for the Profiles group.
 // Don't use this type directly, use NewProfilesClient() instead.
 type ProfilesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewProfilesClient creates a new instance of ProfilesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProfilesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ProfilesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProfilesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CheckTrafficManagerRelativeDNSNameAvailability - Checks the availability of a Traffic Manager Relative DNS name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01-preview
-// parameters - The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability operation.
-// options - ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions contains the optional parameters for the
-// ProfilesClient.CheckTrafficManagerRelativeDNSNameAvailability method.
+//   - parameters - The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability operation.
+//   - options - ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions contains the optional parameters for the
+//     ProfilesClient.CheckTrafficManagerRelativeDNSNameAvailability method.
 func (client *ProfilesClient) CheckTrafficManagerRelativeDNSNameAvailability(ctx context.Context, parameters CheckTrafficManagerRelativeDNSNameAvailabilityParameters, options *ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions) (ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse, error) {
 	req, err := client.checkTrafficManagerRelativeDNSNameAvailabilityCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, err
 	}
@@ -79,7 +69,7 @@ func (client *ProfilesClient) CheckTrafficManagerRelativeDNSNameAvailability(ctx
 // checkTrafficManagerRelativeDNSNameAvailabilityCreateRequest creates the CheckTrafficManagerRelativeDNSNameAvailability request.
 func (client *ProfilesClient) checkTrafficManagerRelativeDNSNameAvailabilityCreateRequest(ctx context.Context, parameters CheckTrafficManagerRelativeDNSNameAvailabilityParameters, options *ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Network/checkTrafficManagerNameAvailability"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -101,17 +91,18 @@ func (client *ProfilesClient) checkTrafficManagerRelativeDNSNameAvailabilityHand
 
 // CreateOrUpdate - Create or update a Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// profileName - The name of the Traffic Manager profile.
-// parameters - The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
-// options - ProfilesClientCreateOrUpdateOptions contains the optional parameters for the ProfilesClient.CreateOrUpdate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - The name of the Traffic Manager profile.
+//   - parameters - The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
+//   - options - ProfilesClientCreateOrUpdateOptions contains the optional parameters for the ProfilesClient.CreateOrUpdate method.
 func (client *ProfilesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesClientCreateOrUpdateOptions) (ProfilesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, profileName, parameters, options)
 	if err != nil {
 		return ProfilesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProfilesClientCreateOrUpdateResponse{}, err
 	}
@@ -136,7 +127,7 @@ func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,16 +149,17 @@ func (client *ProfilesClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes a Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// profileName - The name of the Traffic Manager profile to be deleted.
-// options - ProfilesClientDeleteOptions contains the optional parameters for the ProfilesClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - The name of the Traffic Manager profile to be deleted.
+//   - options - ProfilesClientDeleteOptions contains the optional parameters for the ProfilesClient.Delete method.
 func (client *ProfilesClient) Delete(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientDeleteOptions) (ProfilesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
 		return ProfilesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProfilesClientDeleteResponse{}, err
 	}
@@ -192,7 +184,7 @@ func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -214,16 +206,17 @@ func (client *ProfilesClient) deleteHandleResponse(resp *http.Response) (Profile
 
 // Get - Gets a Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// profileName - The name of the Traffic Manager profile.
-// options - ProfilesClientGetOptions contains the optional parameters for the ProfilesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - The name of the Traffic Manager profile.
+//   - options - ProfilesClientGetOptions contains the optional parameters for the ProfilesClient.Get method.
 func (client *ProfilesClient) Get(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientGetOptions) (ProfilesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
 		return ProfilesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProfilesClientGetResponse{}, err
 	}
@@ -248,7 +241,7 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,10 +262,11 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 }
 
 // NewListByResourceGroupPager - Lists all Traffic Manager profiles within a resource group.
+//
 // Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - ProfilesClientListByResourceGroupOptions contains the optional parameters for the ProfilesClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - ProfilesClientListByResourceGroupOptions contains the optional parameters for the ProfilesClient.NewListByResourceGroupPager
+//     method.
 func (client *ProfilesClient) NewListByResourceGroupPager(resourceGroupName string, options *ProfilesClientListByResourceGroupOptions) *runtime.Pager[ProfilesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProfilesClientListByResourceGroupResponse]{
 		More: func(page ProfilesClientListByResourceGroupResponse) bool {
@@ -283,7 +277,7 @@ func (client *ProfilesClient) NewListByResourceGroupPager(resourceGroupName stri
 			if err != nil {
 				return ProfilesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProfilesClientListByResourceGroupResponse{}, err
 			}
@@ -306,7 +300,7 @@ func (client *ProfilesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -327,9 +321,10 @@ func (client *ProfilesClient) listByResourceGroupHandleResponse(resp *http.Respo
 }
 
 // NewListBySubscriptionPager - Lists all Traffic Manager profiles within a subscription.
+//
 // Generated from API version 2022-04-01-preview
-// options - ProfilesClientListBySubscriptionOptions contains the optional parameters for the ProfilesClient.ListBySubscription
-// method.
+//   - options - ProfilesClientListBySubscriptionOptions contains the optional parameters for the ProfilesClient.NewListBySubscriptionPager
+//     method.
 func (client *ProfilesClient) NewListBySubscriptionPager(options *ProfilesClientListBySubscriptionOptions) *runtime.Pager[ProfilesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProfilesClientListBySubscriptionResponse]{
 		More: func(page ProfilesClientListBySubscriptionResponse) bool {
@@ -340,7 +335,7 @@ func (client *ProfilesClient) NewListBySubscriptionPager(options *ProfilesClient
 			if err != nil {
 				return ProfilesClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProfilesClientListBySubscriptionResponse{}, err
 			}
@@ -359,7 +354,7 @@ func (client *ProfilesClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -381,17 +376,18 @@ func (client *ProfilesClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // Update - Update a Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// profileName - The name of the Traffic Manager profile.
-// parameters - The Traffic Manager profile parameters supplied to the Update operation.
-// options - ProfilesClientUpdateOptions contains the optional parameters for the ProfilesClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - The name of the Traffic Manager profile.
+//   - parameters - The Traffic Manager profile parameters supplied to the Update operation.
+//   - options - ProfilesClientUpdateOptions contains the optional parameters for the ProfilesClient.Update method.
 func (client *ProfilesClient) Update(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesClientUpdateOptions) (ProfilesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, parameters, options)
 	if err != nil {
 		return ProfilesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProfilesClientUpdateResponse{}, err
 	}
@@ -416,7 +412,7 @@ func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

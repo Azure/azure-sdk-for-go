@@ -59,12 +59,12 @@ type ProfilesClientGetResponse struct {
 	Profile
 }
 
-// ProfilesClientListByResourceGroupResponse contains the response from method ProfilesClient.ListByResourceGroup.
+// ProfilesClientListByResourceGroupResponse contains the response from method ProfilesClient.NewListByResourceGroupPager.
 type ProfilesClientListByResourceGroupResponse struct {
 	ProfileListResult
 }
 
-// ProfilesClientListBySubscriptionResponse contains the response from method ProfilesClient.ListBySubscription.
+// ProfilesClientListBySubscriptionResponse contains the response from method ProfilesClient.NewListBySubscriptionPager.
 type ProfilesClientListBySubscriptionResponse struct {
 	ProfileListResult
 }

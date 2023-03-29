@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole
 
 go 1.18
 

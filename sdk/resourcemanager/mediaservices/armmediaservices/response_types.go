@@ -24,7 +24,7 @@ type AccountFiltersClientGetResponse struct {
 	AccountFilter
 }
 
-// AccountFiltersClientListResponse contains the response from method AccountFiltersClient.List.
+// AccountFiltersClientListResponse contains the response from method AccountFiltersClient.NewListPager.
 type AccountFiltersClientListResponse struct {
 	AccountFilterCollection
 }
@@ -49,7 +49,7 @@ type AssetFiltersClientGetResponse struct {
 	AssetFilter
 }
 
-// AssetFiltersClientListResponse contains the response from method AssetFiltersClient.List.
+// AssetFiltersClientListResponse contains the response from method AssetFiltersClient.NewListPager.
 type AssetFiltersClientListResponse struct {
 	AssetFilterCollection
 }
@@ -102,7 +102,7 @@ type AssetsClientListContainerSasResponse struct {
 	AssetContainerSas
 }
 
-// AssetsClientListResponse contains the response from method AssetsClient.List.
+// AssetsClientListResponse contains the response from method AssetsClient.NewListPager.
 type AssetsClientListResponse struct {
 	AssetCollection
 }
@@ -117,7 +117,7 @@ type AssetsClientUpdateResponse struct {
 	Asset
 }
 
-// ClientCreateOrUpdateResponse contains the response from method Client.CreateOrUpdate.
+// ClientCreateOrUpdateResponse contains the response from method Client.BeginCreateOrUpdate.
 type ClientCreateOrUpdateResponse struct {
 	MediaService
 }
@@ -132,7 +132,7 @@ type ClientGetResponse struct {
 	MediaService
 }
 
-// ClientListBySubscriptionResponse contains the response from method Client.ListBySubscription.
+// ClientListBySubscriptionResponse contains the response from method Client.NewListBySubscriptionPager.
 type ClientListBySubscriptionResponse struct {
 	MediaServiceCollection
 }
@@ -142,7 +142,7 @@ type ClientListEdgePoliciesResponse struct {
 	EdgePolicies
 }
 
-// ClientListResponse contains the response from method Client.List.
+// ClientListResponse contains the response from method Client.NewListPager.
 type ClientListResponse struct {
 	MediaServiceCollection
 }
@@ -152,7 +152,7 @@ type ClientSyncStorageKeysResponse struct {
 	// placeholder for future response values
 }
 
-// ClientUpdateResponse contains the response from method Client.Update.
+// ClientUpdateResponse contains the response from method Client.BeginUpdate.
 type ClientUpdateResponse struct {
 	MediaService
 }
@@ -177,7 +177,7 @@ type ContentKeyPoliciesClientGetResponse struct {
 	ContentKeyPolicy
 }
 
-// ContentKeyPoliciesClientListResponse contains the response from method ContentKeyPoliciesClient.List.
+// ContentKeyPoliciesClientListResponse contains the response from method ContentKeyPoliciesClient.NewListPager.
 type ContentKeyPoliciesClientListResponse struct {
 	ContentKeyPolicyCollection
 }
@@ -207,7 +207,7 @@ type JobsClientGetResponse struct {
 	Job
 }
 
-// JobsClientListResponse contains the response from method JobsClient.List.
+// JobsClientListResponse contains the response from method JobsClient.NewListPager.
 type JobsClientListResponse struct {
 	JobCollection
 }
@@ -217,7 +217,7 @@ type JobsClientUpdateResponse struct {
 	Job
 }
 
-// LiveEventsClientAllocateResponse contains the response from method LiveEventsClient.Allocate.
+// LiveEventsClientAllocateResponse contains the response from method LiveEventsClient.BeginAllocate.
 type LiveEventsClientAllocateResponse struct {
 	// placeholder for future response values
 }
@@ -227,12 +227,12 @@ type LiveEventsClientAsyncOperationResponse struct {
 	AsyncOperationResult
 }
 
-// LiveEventsClientCreateResponse contains the response from method LiveEventsClient.Create.
+// LiveEventsClientCreateResponse contains the response from method LiveEventsClient.BeginCreate.
 type LiveEventsClientCreateResponse struct {
 	LiveEvent
 }
 
-// LiveEventsClientDeleteResponse contains the response from method LiveEventsClient.Delete.
+// LiveEventsClientDeleteResponse contains the response from method LiveEventsClient.BeginDelete.
 type LiveEventsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -242,7 +242,7 @@ type LiveEventsClientGetResponse struct {
 	LiveEvent
 }
 
-// LiveEventsClientListResponse contains the response from method LiveEventsClient.List.
+// LiveEventsClientListResponse contains the response from method LiveEventsClient.NewListPager.
 type LiveEventsClientListResponse struct {
 	LiveEventListResult
 }
@@ -252,22 +252,22 @@ type LiveEventsClientOperationLocationResponse struct {
 	LiveEvent
 }
 
-// LiveEventsClientResetResponse contains the response from method LiveEventsClient.Reset.
+// LiveEventsClientResetResponse contains the response from method LiveEventsClient.BeginReset.
 type LiveEventsClientResetResponse struct {
 	// placeholder for future response values
 }
 
-// LiveEventsClientStartResponse contains the response from method LiveEventsClient.Start.
+// LiveEventsClientStartResponse contains the response from method LiveEventsClient.BeginStart.
 type LiveEventsClientStartResponse struct {
 	// placeholder for future response values
 }
 
-// LiveEventsClientStopResponse contains the response from method LiveEventsClient.Stop.
+// LiveEventsClientStopResponse contains the response from method LiveEventsClient.BeginStop.
 type LiveEventsClientStopResponse struct {
 	// placeholder for future response values
 }
 
-// LiveEventsClientUpdateResponse contains the response from method LiveEventsClient.Update.
+// LiveEventsClientUpdateResponse contains the response from method LiveEventsClient.BeginUpdate.
 type LiveEventsClientUpdateResponse struct {
 	LiveEvent
 }
@@ -277,12 +277,12 @@ type LiveOutputsClientAsyncOperationResponse struct {
 	AsyncOperationResult
 }
 
-// LiveOutputsClientCreateResponse contains the response from method LiveOutputsClient.Create.
+// LiveOutputsClientCreateResponse contains the response from method LiveOutputsClient.BeginCreate.
 type LiveOutputsClientCreateResponse struct {
 	LiveOutput
 }
 
-// LiveOutputsClientDeleteResponse contains the response from method LiveOutputsClient.Delete.
+// LiveOutputsClientDeleteResponse contains the response from method LiveOutputsClient.BeginDelete.
 type LiveOutputsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -292,7 +292,7 @@ type LiveOutputsClientGetResponse struct {
 	LiveOutput
 }
 
-// LiveOutputsClientListResponse contains the response from method LiveOutputsClient.List.
+// LiveOutputsClientListResponse contains the response from method LiveOutputsClient.NewListPager.
 type LiveOutputsClientListResponse struct {
 	LiveOutputListResult
 }
@@ -365,12 +365,12 @@ type StreamingEndpointsClientAsyncOperationResponse struct {
 	AsyncOperationResult
 }
 
-// StreamingEndpointsClientCreateResponse contains the response from method StreamingEndpointsClient.Create.
+// StreamingEndpointsClientCreateResponse contains the response from method StreamingEndpointsClient.BeginCreate.
 type StreamingEndpointsClientCreateResponse struct {
 	StreamingEndpoint
 }
 
-// StreamingEndpointsClientDeleteResponse contains the response from method StreamingEndpointsClient.Delete.
+// StreamingEndpointsClientDeleteResponse contains the response from method StreamingEndpointsClient.BeginDelete.
 type StreamingEndpointsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -380,7 +380,7 @@ type StreamingEndpointsClientGetResponse struct {
 	StreamingEndpoint
 }
 
-// StreamingEndpointsClientListResponse contains the response from method StreamingEndpointsClient.List.
+// StreamingEndpointsClientListResponse contains the response from method StreamingEndpointsClient.NewListPager.
 type StreamingEndpointsClientListResponse struct {
 	StreamingEndpointListResult
 }
@@ -395,22 +395,22 @@ type StreamingEndpointsClientSKUsResponse struct {
 	StreamingEndpointSKUInfoListResult
 }
 
-// StreamingEndpointsClientScaleResponse contains the response from method StreamingEndpointsClient.Scale.
+// StreamingEndpointsClientScaleResponse contains the response from method StreamingEndpointsClient.BeginScale.
 type StreamingEndpointsClientScaleResponse struct {
 	// placeholder for future response values
 }
 
-// StreamingEndpointsClientStartResponse contains the response from method StreamingEndpointsClient.Start.
+// StreamingEndpointsClientStartResponse contains the response from method StreamingEndpointsClient.BeginStart.
 type StreamingEndpointsClientStartResponse struct {
 	// placeholder for future response values
 }
 
-// StreamingEndpointsClientStopResponse contains the response from method StreamingEndpointsClient.Stop.
+// StreamingEndpointsClientStopResponse contains the response from method StreamingEndpointsClient.BeginStop.
 type StreamingEndpointsClientStopResponse struct {
 	// placeholder for future response values
 }
 
-// StreamingEndpointsClientUpdateResponse contains the response from method StreamingEndpointsClient.Update.
+// StreamingEndpointsClientUpdateResponse contains the response from method StreamingEndpointsClient.BeginUpdate.
 type StreamingEndpointsClientUpdateResponse struct {
 	StreamingEndpoint
 }
@@ -440,7 +440,7 @@ type StreamingLocatorsClientListPathsResponse struct {
 	ListPathsResponse
 }
 
-// StreamingLocatorsClientListResponse contains the response from method StreamingLocatorsClient.List.
+// StreamingLocatorsClientListResponse contains the response from method StreamingLocatorsClient.NewListPager.
 type StreamingLocatorsClientListResponse struct {
 	StreamingLocatorCollection
 }
@@ -460,17 +460,17 @@ type StreamingPoliciesClientGetResponse struct {
 	StreamingPolicy
 }
 
-// StreamingPoliciesClientListResponse contains the response from method StreamingPoliciesClient.List.
+// StreamingPoliciesClientListResponse contains the response from method StreamingPoliciesClient.NewListPager.
 type StreamingPoliciesClientListResponse struct {
 	StreamingPolicyCollection
 }
 
-// TracksClientCreateOrUpdateResponse contains the response from method TracksClient.CreateOrUpdate.
+// TracksClientCreateOrUpdateResponse contains the response from method TracksClient.BeginCreateOrUpdate.
 type TracksClientCreateOrUpdateResponse struct {
 	AssetTrack
 }
 
-// TracksClientDeleteResponse contains the response from method TracksClient.Delete.
+// TracksClientDeleteResponse contains the response from method TracksClient.BeginDelete.
 type TracksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -480,17 +480,17 @@ type TracksClientGetResponse struct {
 	AssetTrack
 }
 
-// TracksClientListResponse contains the response from method TracksClient.List.
+// TracksClientListResponse contains the response from method TracksClient.NewListPager.
 type TracksClientListResponse struct {
 	AssetTrackCollection
 }
 
-// TracksClientUpdateResponse contains the response from method TracksClient.Update.
+// TracksClientUpdateResponse contains the response from method TracksClient.BeginUpdate.
 type TracksClientUpdateResponse struct {
 	AssetTrack
 }
 
-// TracksClientUpdateTrackDataResponse contains the response from method TracksClient.UpdateTrackData.
+// TracksClientUpdateTrackDataResponse contains the response from method TracksClient.BeginUpdateTrackData.
 type TracksClientUpdateTrackDataResponse struct {
 	// placeholder for future response values
 }
@@ -510,7 +510,7 @@ type TransformsClientGetResponse struct {
 	Transform
 }
 
-// TransformsClientListResponse contains the response from method TransformsClient.List.
+// TransformsClientListResponse contains the response from method TransformsClient.NewListPager.
 type TransformsClientListResponse struct {
 	TransformCollection
 }

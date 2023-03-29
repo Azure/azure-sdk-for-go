@@ -11,7 +11,7 @@ package armtimeseriesinsights
 
 const (
 	moduleName    = "armtimeseriesinsights"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v1.1.0"
 )
 
 // AccessPolicyRole - A role defining the data plane operations that a principal can perform on a Time Series Insights client.

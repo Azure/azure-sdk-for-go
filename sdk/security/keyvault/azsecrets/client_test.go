@@ -8,9 +8,12 @@ package azsecrets_test
 
 import (
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net"
+	"net/http"
 	"strings"
 	"testing"
 	"time"
@@ -91,6 +94,120 @@ func TestBackupRestore(t *testing.T) {
 
 func TestCRUD(t *testing.T) {
 	client := startTest(t)
+
+	name := createRandomName(t, "secret")
+	value := createRandomName(t, "value")
+
+	setParams := azsecrets.SetSecretParameters{
+		ContentType: to.Ptr("big secret"),
+		SecretAttributes: &azsecrets.SecretAttributes{
+			Enabled:   to.Ptr(true),
+			NotBefore: to.Ptr(time.Date(2030, 1, 1, 1, 1, 1, 0, time.UTC)),
+		},
+		Tags:  map[string]*string{"tag": to.Ptr("value")},
+		Value: &value,
+	}
+	testSerde(t, &setParams)
+	setResp, err := client.SetSecret(context.Background(), name, setParams, nil)
+	require.NoError(t, err)
+	require.Equal(t, setParams.ContentType, setResp.ContentType)
+	require.Equal(t, setParams.SecretAttributes.Enabled, setResp.Attributes.Enabled)
+	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), setResp.Attributes.NotBefore.Unix())
+	require.Equal(t, setParams.Tags, setResp.Tags)
+	require.Equal(t, setParams.Value, setResp.Value)
+	require.Equal(t, name, setResp.ID.Name())
+	require.NotEmpty(t, setResp.ID.Version())
+	testSerde(t, &setResp.SecretBundle)
+
+	getResp, err := client.GetSecret(context.Background(), setResp.ID.Name(), "", nil)
+	require.NoError(t, err)
+	require.Equal(t, setParams.ContentType, getResp.ContentType)
+	require.NotNil(t, setResp.ID)
+	require.Equal(t, setResp.ID, getResp.ID)
+	require.Equal(t, setResp.ID.Name(), getResp.ID.Name())
+	require.Equal(t, setResp.ID.Version(), getResp.ID.Version())
+	require.Equal(t, setParams.SecretAttributes.Enabled, getResp.Attributes.Enabled)
+	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), getResp.Attributes.NotBefore.Unix())
+	require.Equal(t, setParams.Tags, getResp.Tags)
+	require.Equal(t, setParams.Value, getResp.Value)
+
+	updateParams := azsecrets.UpdateSecretParameters{
+		SecretAttributes: &azsecrets.SecretAttributes{
+			Expires: to.Ptr(time.Date(2040, 1, 1, 1, 1, 1, 0, time.UTC)),
+		},
+	}
+	testSerde(t, &updateParams)
+	updateResp, err := client.UpdateSecret(context.Background(), name, setResp.ID.Version(), updateParams, nil)
+	require.NoError(t, err)
+	require.Equal(t, setParams.ContentType, updateResp.ContentType)
+	require.Equal(t, setResp.ID, updateResp.ID)
+	require.Equal(t, setParams.SecretAttributes.Enabled, updateResp.Attributes.Enabled)
+	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), updateResp.Attributes.NotBefore.Unix())
+	require.Equal(t, setParams.Tags, updateResp.Tags)
+	require.Equal(t, setResp.ID.Version(), updateResp.ID.Version())
+
+	deleteResp, err := client.DeleteSecret(context.Background(), name, nil)
+	require.NoError(t, err)
+	require.Equal(t, setParams.ContentType, deleteResp.ContentType)
+	require.Equal(t, setResp.ID, deleteResp.ID)
+	require.Equal(t, setParams.SecretAttributes.Enabled, deleteResp.Attributes.Enabled)
+	require.Equal(t, updateParams.SecretAttributes.Expires.Unix(), deleteResp.Attributes.Expires.Unix())
+	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), deleteResp.Attributes.NotBefore.Unix())
+	require.Equal(t, setParams.Tags, deleteResp.Tags)
+	require.Equal(t, name, deleteResp.ID.Name())
+	require.Equal(t, updateResp.ID.Version(), deleteResp.ID.Version())
+	testSerde(t, &deleteResp.DeletedSecretBundle)
+	pollStatus(t, 404, func() error {
+		_, err := client.GetDeletedSecret(context.Background(), name, nil)
+		return err
+	})
+
+	getDeletedResp, err := client.GetDeletedSecret(context.Background(), name, nil)
+	require.NoError(t, err)
+	require.Equal(t, setParams.ContentType, getDeletedResp.ContentType)
+	require.Equal(t, setParams.SecretAttributes.Enabled, getDeletedResp.Attributes.Enabled)
+	require.Equal(t, updateParams.SecretAttributes.Expires.Unix(), getDeletedResp.Attributes.Expires.Unix())
+	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), getDeletedResp.Attributes.NotBefore.Unix())
+	require.Equal(t, setParams.Tags, getDeletedResp.Tags)
+	require.Equal(t, name, getDeletedResp.ID.Name())
+	require.Equal(t, setResp.ID.Version(), getDeletedResp.ID.Version())
+
+	_, err = client.PurgeDeletedSecret(context.Background(), name, nil)
+	require.NoError(t, err)
+}
+
+func TestCRUDIPv6(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skip()
+	}
+
+	ipv6Client := &http.Client{
+		Transport: &http.Transport{
+			Proxy: http.ProxyFromEnvironment,
+			DialContext: func(ctx context.Context, _, addr string) (net.Conn, error) {
+				dialer := net.Dialer{
+					Timeout:   30 * time.Second,
+					KeepAlive: 30 * time.Second,
+				}
+				return dialer.DialContext(ctx, "tcp6", addr)
+			},
+			ForceAttemptHTTP2:     true,
+			MaxIdleConns:          100,
+			IdleConnTimeout:       90 * time.Second,
+			TLSHandshakeTimeout:   10 * time.Second,
+			ExpectContinueTimeout: 1 * time.Second,
+			TLSClientConfig: &tls.Config{
+				MinVersion: tls.VersionTLS12,
+			},
+		},
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, credential, &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: ipv6Client,
+		},
+	})
+	require.NoError(t, err)
 
 	name := createRandomName(t, "secret")
 	value := createRandomName(t, "value")

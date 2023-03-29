@@ -1,11 +1,5 @@
 # Release History
 
-## 0.6.0 (2023-03-31)
-### Features Added
-
-- New struct `ClientFactory` which is a client factory used to create any client in this module
-
-
 ## 0.5.1 (2022-11-23)
 
 Deprecated: The service backing this library is retired on November 30th, 2022. At that point, this library will no longer work. Please migrate to Azure Monitor Log Alerts API in module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor.

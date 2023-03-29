@@ -9,19 +9,19 @@
 
 package azcertificates
 
-// ActionType - The type of the action.
-type ActionType string
+// CertificatePolicyAction - The type of the action.
+type CertificatePolicyAction string
 
 const (
-	ActionTypeEmailContacts ActionType = "EmailContacts"
-	ActionTypeAutoRenew     ActionType = "AutoRenew"
+	CertificatePolicyActionEmailContacts CertificatePolicyAction = "EmailContacts"
+	CertificatePolicyActionAutoRenew     CertificatePolicyAction = "AutoRenew"
 )
 
-// PossibleActionTypeValues returns the possible values for the ActionType const type.
-func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
-		ActionTypeEmailContacts,
-		ActionTypeAutoRenew,
+// PossibleCertificatePolicyActionValues returns the possible values for the CertificatePolicyAction const type.
+func PossibleCertificatePolicyActionValues() []CertificatePolicyAction {
+	return []CertificatePolicyAction{
+		CertificatePolicyActionEmailContacts,
+		CertificatePolicyActionAutoRenew,
 	}
 }
 

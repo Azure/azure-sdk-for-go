@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // AzureDevOpsOrgClient contains the methods for the AzureDevOpsOrg group.
 // Don't use this type directly, use NewAzureDevOpsOrgClient() instead.
 type AzureDevOpsOrgClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAzureDevOpsOrgClient creates a new instance of AzureDevOpsOrgClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAzureDevOpsOrgClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureDevOpsOrgClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AzureDevOpsOrgClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AzureDevOpsOrgClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an Azure DevOps Org.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// azureDevOpsConnectorName - Name of the AzureDevOps Connector.
-// azureDevOpsOrgName - Name of the AzureDevOps Org.
-// azureDevOpsOrg - Azure DevOps Org resource payload.
-// options - AzureDevOpsOrgClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureDevOpsOrgClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureDevOpsConnectorName - Name of the AzureDevOps Connector.
+//   - azureDevOpsOrgName - Name of the AzureDevOps Org.
+//   - azureDevOpsOrg - Azure DevOps Org resource payload.
+//   - options - AzureDevOpsOrgClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureDevOpsOrgClient.BeginCreateOrUpdate
+//     method.
 func (client *AzureDevOpsOrgClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, azureDevOpsOrg AzureDevOpsOrg, options *AzureDevOpsOrgClientBeginCreateOrUpdateOptions) (*runtime.Poller[AzureDevOpsOrgClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsOrg, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AzureDevOpsOrgClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AzureDevOpsOrgClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AzureDevOpsOrgClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AzureDevOpsOrgClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an Azure DevOps Org.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
 func (client *AzureDevOpsOrgClient) createOrUpdate(ctx context.Context, resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, azureDevOpsOrg AzureDevOpsOrg, options *AzureDevOpsOrgClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsOrg, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +106,7 @@ func (client *AzureDevOpsOrgClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter azureDevOpsOrgName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureDevOpsOrgName}", url.PathEscape(azureDevOpsOrgName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,17 +119,18 @@ func (client *AzureDevOpsOrgClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // Get - Returns a monitored AzureDevOps Org resource for a given ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// azureDevOpsConnectorName - Name of the AzureDevOps Connector.
-// azureDevOpsOrgName - Name of the AzureDevOps Org.
-// options - AzureDevOpsOrgClientGetOptions contains the optional parameters for the AzureDevOpsOrgClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureDevOpsConnectorName - Name of the AzureDevOps Connector.
+//   - azureDevOpsOrgName - Name of the AzureDevOps Org.
+//   - options - AzureDevOpsOrgClientGetOptions contains the optional parameters for the AzureDevOpsOrgClient.Get method.
 func (client *AzureDevOpsOrgClient) Get(ctx context.Context, resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, options *AzureDevOpsOrgClientGetOptions) (AzureDevOpsOrgClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, options)
 	if err != nil {
 		return AzureDevOpsOrgClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AzureDevOpsOrgClientGetResponse{}, err
 	}
@@ -167,7 +159,7 @@ func (client *AzureDevOpsOrgClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter azureDevOpsOrgName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureDevOpsOrgName}", url.PathEscape(azureDevOpsOrgName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,9 +179,9 @@ func (client *AzureDevOpsOrgClient) getHandleResponse(resp *http.Response) (Azur
 	return result, nil
 }
 
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// azureDevOpsConnectorName - Name of the AzureDevOps Connector.
-// options - AzureDevOpsOrgClientListOptions contains the optional parameters for the AzureDevOpsOrgClient.List method.
+// - resourceGroupName - The name of the resource group. The name is case insensitive.
+// - azureDevOpsConnectorName - Name of the AzureDevOps Connector.
+// - options - AzureDevOpsOrgClientListOptions contains the optional parameters for the AzureDevOpsOrgClient.NewListPager method.
 func (client *AzureDevOpsOrgClient) NewListPager(resourceGroupName string, azureDevOpsConnectorName string, options *AzureDevOpsOrgClientListOptions) *runtime.Pager[AzureDevOpsOrgClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AzureDevOpsOrgClientListResponse]{
 		More: func(page AzureDevOpsOrgClientListResponse) bool {
@@ -206,7 +198,7 @@ func (client *AzureDevOpsOrgClient) NewListPager(resourceGroupName string, azure
 			if err != nil {
 				return AzureDevOpsOrgClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AzureDevOpsOrgClientListResponse{}, err
 			}
@@ -233,7 +225,7 @@ func (client *AzureDevOpsOrgClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter azureDevOpsConnectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureDevOpsConnectorName}", url.PathEscape(azureDevOpsConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -255,34 +247,36 @@ func (client *AzureDevOpsOrgClient) listHandleResponse(resp *http.Response) (Azu
 
 // BeginUpdate - Update monitored AzureDevOps Org details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// azureDevOpsConnectorName - Name of the AzureDevOps Connector.
-// azureDevOpsOrgName - Name of the AzureDevOps Org.
-// azureDevOpsOrg - Azure DevOps Org resource payload.
-// options - AzureDevOpsOrgClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsOrgClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureDevOpsConnectorName - Name of the AzureDevOps Connector.
+//   - azureDevOpsOrgName - Name of the AzureDevOps Org.
+//   - azureDevOpsOrg - Azure DevOps Org resource payload.
+//   - options - AzureDevOpsOrgClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsOrgClient.BeginUpdate
+//     method.
 func (client *AzureDevOpsOrgClient) BeginUpdate(ctx context.Context, resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, azureDevOpsOrg AzureDevOpsOrg, options *AzureDevOpsOrgClientBeginUpdateOptions) (*runtime.Poller[AzureDevOpsOrgClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsOrg, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AzureDevOpsOrgClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AzureDevOpsOrgClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AzureDevOpsOrgClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AzureDevOpsOrgClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update monitored AzureDevOps Org details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
 func (client *AzureDevOpsOrgClient) update(ctx context.Context, resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, azureDevOpsOrg AzureDevOpsOrg, options *AzureDevOpsOrgClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsOrg, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -311,7 +305,7 @@ func (client *AzureDevOpsOrgClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter azureDevOpsOrgName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureDevOpsOrgName}", url.PathEscape(azureDevOpsOrgName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

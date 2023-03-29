@@ -57,11 +57,10 @@ func (f *FileClient) LeaseID() *string {
 }
 
 // Acquire operation can be used to request a new lease.
-// The lease duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
-func (f *FileClient) Acquire(ctx context.Context, duration int32, options *FileAcquireOptions) (FileAcquireResponse, error) {
+func (f *FileClient) Acquire(ctx context.Context, options *FileAcquireOptions) (FileAcquireResponse, error) {
 	opts := options.format(f.LeaseID())
-	resp, err := f.generated().AcquireLease(ctx, duration, opts)
+	resp, err := f.generated().AcquireLease(ctx, (int32)(-1), opts)
 	return resp, err
 }
 

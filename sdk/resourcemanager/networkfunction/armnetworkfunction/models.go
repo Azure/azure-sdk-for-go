@@ -59,13 +59,13 @@ type AzureTrafficCollectorPropertiesFormat struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// AzureTrafficCollectorsByResourceGroupClientListOptions contains the optional parameters for the AzureTrafficCollectorsByResourceGroupClient.List
+// AzureTrafficCollectorsByResourceGroupClientListOptions contains the optional parameters for the AzureTrafficCollectorsByResourceGroupClient.NewListPager
 // method.
 type AzureTrafficCollectorsByResourceGroupClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureTrafficCollectorsBySubscriptionClientListOptions contains the optional parameters for the AzureTrafficCollectorsBySubscriptionClient.List
+// AzureTrafficCollectorsBySubscriptionClientListOptions contains the optional parameters for the AzureTrafficCollectorsBySubscriptionClient.NewListPager
 // method.
 type AzureTrafficCollectorsBySubscriptionClientListOptions struct {
 	// placeholder for future optional parameters
@@ -96,7 +96,7 @@ type AzureTrafficCollectorsClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListOperationsOptions contains the optional parameters for the Client.ListOperations method.
+// ClientListOperationsOptions contains the optional parameters for the Client.NewListOperationsPager method.
 type ClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -120,7 +120,7 @@ type CollectorPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CollectorPoliciesClientListOptions contains the optional parameters for the CollectorPoliciesClient.List method.
+// CollectorPoliciesClientListOptions contains the optional parameters for the CollectorPoliciesClient.NewListPager method.
 type CollectorPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }

@@ -7,6 +7,6 @@
 package internal
 
 const (
-	ModuleName    = "hybrid20200901"
+	ModuleName    = "p20200901"
 	ModuleVersion = "v0.1.0"
 )

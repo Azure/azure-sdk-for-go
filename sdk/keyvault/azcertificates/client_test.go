@@ -621,7 +621,7 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 		LifetimeActions: []*azcertificates.LifetimeAction{
 			{
 				Action: &azcertificates.Action{
-					ActionType: to.Ptr(azcertificates.ActionTypeEmailContacts),
+					ActionType: to.Ptr(azcertificates.CertificatePolicyActionEmailContacts),
 				},
 				Trigger: &azcertificates.Trigger{
 					LifetimePercentage: to.Ptr(int32(98)),

@@ -4,7 +4,7 @@
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/37cd8dfac3c570a24bb645b31c012d12efb760df/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/certificates.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/certificates.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates
 openapi-type: "data-plane"

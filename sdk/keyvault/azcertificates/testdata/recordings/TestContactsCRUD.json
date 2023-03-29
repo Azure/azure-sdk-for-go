@@ -1,13 +1,13 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakevault.local/certificates/contacts?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/contacts?api-version=7.4",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -15,16 +15,16 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:38:06 GMT",
+        "Date": "Thu, 23 Mar 2023 20:56:40 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "81d203f8-147c-4418-bda9-1ec897beb731"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "0abe230c-4c46-4f86-b126-5f162db15cf8"
       },
       "ResponseBody": {
         "error": {
@@ -34,7 +34,7 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/contacts?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/contacts?api-version=7.4",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -42,7 +42,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "134",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "contacts": [
@@ -63,15 +63,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "187",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:38:07 GMT",
+        "Date": "Thu, 23 Mar 2023 20:56:40 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "a6f356f7-be6a-4f74-b6d9-d8bc1bbfee86"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "d548186e-6629-4efc-ade2-ec6b3c3cd615"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/contacts",
@@ -90,13 +90,13 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/contacts?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/contacts?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -104,15 +104,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "187",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:38:07 GMT",
+        "Date": "Thu, 23 Mar 2023 20:56:40 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "0b2ad5d6-9917-421b-a4bc-329ef6df8205"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "abcc4489-1e57-4abc-b71b-66332a7b8c6f"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/contacts",
@@ -131,13 +131,13 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/contacts?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/contacts?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -145,15 +145,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "187",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:38:08 GMT",
+        "Date": "Thu, 23 Mar 2023 20:56:40 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "504eb6cf-bc33-4087-803e-3a4c988f64f7"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "bdc00257-753d-4000-b947-ec3460d7f8a6"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/contacts",

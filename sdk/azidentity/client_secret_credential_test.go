@@ -8,10 +8,15 @@ package azidentity
 
 import (
 	"context"
+	"crypto/tls"
+	"net"
+	"net/http"
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
@@ -50,6 +55,52 @@ func TestClientSecretCredential_Live(t *testing.T) {
 			opts, stop := initRecording(t)
 			defer stop()
 			o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disabledID}
+			cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, &o)
+			if err != nil {
+				t.Fatalf("failed to construct credential: %v", err)
+			}
+			testGetTokenSuccess(t, cred)
+		})
+	}
+}
+
+func TestClientSecretCredential_Live_IPv6(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skip()
+	}
+
+	ipv6Client := &http.Client{
+		Transport: &http.Transport{
+			Proxy: http.ProxyFromEnvironment,
+			DialContext: func(ctx context.Context, _, addr string) (net.Conn, error) {
+				dialer := net.Dialer{
+					Timeout:   30 * time.Second,
+					KeepAlive: 30 * time.Second,
+				}
+				return dialer.DialContext(ctx, "tcp6", addr)
+			},
+			ForceAttemptHTTP2:     true,
+			MaxIdleConns:          100,
+			IdleConnTimeout:       90 * time.Second,
+			TLSHandshakeTimeout:   10 * time.Second,
+			ExpectContinueTimeout: 1 * time.Second,
+			TLSClientConfig: &tls.Config{
+				MinVersion: tls.VersionTLS12,
+			},
+		},
+	}
+
+	for _, disabledID := range []bool{true, false} {
+		name := "default options"
+		if disabledID {
+			name = "instance discovery disabled"
+		}
+		t.Run(name, func(t *testing.T) {
+			o := ClientSecretCredentialOptions{
+				ClientOptions: azcore.ClientOptions{
+					Transport: ipv6Client,
+				},
+				DisableInstanceDiscovery: disabledID}
 			cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, &o)
 			if err != nil {
 				t.Fatalf("failed to construct credential: %v", err)

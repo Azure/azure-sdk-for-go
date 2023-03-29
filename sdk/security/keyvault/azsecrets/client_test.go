@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
@@ -202,7 +203,17 @@ func TestCRUDIPv6(t *testing.T) {
 		},
 	}
 
-	client, err := azsecrets.NewClient(vaultURL, credential, &azsecrets.ClientOptions{
+	tenantID := lookupEnvVar("AZSECRETS_TENANT_ID")
+	clientID := lookupEnvVar("AZSECRETS_CLIENT_ID")
+	secret := lookupEnvVar("AZSECRETS_CLIENT_SECRET")
+	ipv6cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, &azidentity.ClientSecretCredentialOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: ipv6Client,
+		},
+	})
+	require.NoError(t, err)
+
+	client, err := azsecrets.NewClient(vaultURL, ipv6cred, &azsecrets.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ipv6Client,
 		},

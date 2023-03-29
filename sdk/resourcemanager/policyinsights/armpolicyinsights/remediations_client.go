@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,48 +25,40 @@ import (
 // RemediationsClient contains the methods for the Remediations group.
 // Don't use this type directly, use NewRemediationsClient() instead.
 type RemediationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRemediationsClient creates a new instance of RemediationsClient with the specified values.
-// subscriptionID - Microsoft Azure subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Microsoft Azure subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRemediationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RemediationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RemediationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RemediationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CancelAtManagementGroup - Cancels a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// managementGroupID - Management group ID.
-// remediationName - The name of the remediation.
-// options - RemediationsClientCancelAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CancelAtManagementGroup
-// method.
+//   - managementGroupID - Management group ID.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientCancelAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CancelAtManagementGroup
+//     method.
 func (client *RemediationsClient) CancelAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientCancelAtManagementGroupOptions) (RemediationsClientCancelAtManagementGroupResponse, error) {
 	req, err := client.cancelAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, options)
 	if err != nil {
 		return RemediationsClientCancelAtManagementGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientCancelAtManagementGroupResponse{}, err
 	}
@@ -90,7 +80,7 @@ func (client *RemediationsClient) cancelAtManagementGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -112,17 +102,18 @@ func (client *RemediationsClient) cancelAtManagementGroupHandleResponse(resp *ht
 
 // CancelAtResource - Cancel a remediation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// resourceID - Resource ID.
-// remediationName - The name of the remediation.
-// options - RemediationsClientCancelAtResourceOptions contains the optional parameters for the RemediationsClient.CancelAtResource
-// method.
+//   - resourceID - Resource ID.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientCancelAtResourceOptions contains the optional parameters for the RemediationsClient.CancelAtResource
+//     method.
 func (client *RemediationsClient) CancelAtResource(ctx context.Context, resourceID string, remediationName string, options *RemediationsClientCancelAtResourceOptions) (RemediationsClientCancelAtResourceResponse, error) {
 	req, err := client.cancelAtResourceCreateRequest(ctx, resourceID, remediationName, options)
 	if err != nil {
 		return RemediationsClientCancelAtResourceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientCancelAtResourceResponse{}, err
 	}
@@ -140,7 +131,7 @@ func (client *RemediationsClient) cancelAtResourceCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,17 +153,18 @@ func (client *RemediationsClient) cancelAtResourceHandleResponse(resp *http.Resp
 
 // CancelAtResourceGroup - Cancels a remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// resourceGroupName - Resource group name.
-// remediationName - The name of the remediation.
-// options - RemediationsClientCancelAtResourceGroupOptions contains the optional parameters for the RemediationsClient.CancelAtResourceGroup
-// method.
+//   - resourceGroupName - Resource group name.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientCancelAtResourceGroupOptions contains the optional parameters for the RemediationsClient.CancelAtResourceGroup
+//     method.
 func (client *RemediationsClient) CancelAtResourceGroup(ctx context.Context, resourceGroupName string, remediationName string, options *RemediationsClientCancelAtResourceGroupOptions) (RemediationsClientCancelAtResourceGroupResponse, error) {
 	req, err := client.cancelAtResourceGroupCreateRequest(ctx, resourceGroupName, remediationName, options)
 	if err != nil {
 		return RemediationsClientCancelAtResourceGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientCancelAtResourceGroupResponse{}, err
 	}
@@ -197,7 +189,7 @@ func (client *RemediationsClient) cancelAtResourceGroupCreateRequest(ctx context
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,16 +211,17 @@ func (client *RemediationsClient) cancelAtResourceGroupHandleResponse(resp *http
 
 // CancelAtSubscription - Cancels a remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// remediationName - The name of the remediation.
-// options - RemediationsClientCancelAtSubscriptionOptions contains the optional parameters for the RemediationsClient.CancelAtSubscription
-// method.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientCancelAtSubscriptionOptions contains the optional parameters for the RemediationsClient.CancelAtSubscription
+//     method.
 func (client *RemediationsClient) CancelAtSubscription(ctx context.Context, remediationName string, options *RemediationsClientCancelAtSubscriptionOptions) (RemediationsClientCancelAtSubscriptionResponse, error) {
 	req, err := client.cancelAtSubscriptionCreateRequest(ctx, remediationName, options)
 	if err != nil {
 		return RemediationsClientCancelAtSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientCancelAtSubscriptionResponse{}, err
 	}
@@ -249,7 +242,7 @@ func (client *RemediationsClient) cancelAtSubscriptionCreateRequest(ctx context.
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -271,18 +264,19 @@ func (client *RemediationsClient) cancelAtSubscriptionHandleResponse(resp *http.
 
 // CreateOrUpdateAtManagementGroup - Creates or updates a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// managementGroupID - Management group ID.
-// remediationName - The name of the remediation.
-// parameters - The remediation parameters.
-// options - RemediationsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtManagementGroup
-// method.
+//   - managementGroupID - Management group ID.
+//   - remediationName - The name of the remediation.
+//   - parameters - The remediation parameters.
+//   - options - RemediationsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtManagementGroup
+//     method.
 func (client *RemediationsClient) CreateOrUpdateAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtManagementGroupOptions) (RemediationsClientCreateOrUpdateAtManagementGroupResponse, error) {
 	req, err := client.createOrUpdateAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, parameters, options)
 	if err != nil {
 		return RemediationsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
@@ -304,7 +298,7 @@ func (client *RemediationsClient) createOrUpdateAtManagementGroupCreateRequest(c
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -326,18 +320,19 @@ func (client *RemediationsClient) createOrUpdateAtManagementGroupHandleResponse(
 
 // CreateOrUpdateAtResource - Creates or updates a remediation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// resourceID - Resource ID.
-// remediationName - The name of the remediation.
-// parameters - The remediation parameters.
-// options - RemediationsClientCreateOrUpdateAtResourceOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtResource
-// method.
+//   - resourceID - Resource ID.
+//   - remediationName - The name of the remediation.
+//   - parameters - The remediation parameters.
+//   - options - RemediationsClientCreateOrUpdateAtResourceOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtResource
+//     method.
 func (client *RemediationsClient) CreateOrUpdateAtResource(ctx context.Context, resourceID string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtResourceOptions) (RemediationsClientCreateOrUpdateAtResourceResponse, error) {
 	req, err := client.createOrUpdateAtResourceCreateRequest(ctx, resourceID, remediationName, parameters, options)
 	if err != nil {
 		return RemediationsClientCreateOrUpdateAtResourceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientCreateOrUpdateAtResourceResponse{}, err
 	}
@@ -355,7 +350,7 @@ func (client *RemediationsClient) createOrUpdateAtResourceCreateRequest(ctx cont
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -377,18 +372,19 @@ func (client *RemediationsClient) createOrUpdateAtResourceHandleResponse(resp *h
 
 // CreateOrUpdateAtResourceGroup - Creates or updates a remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// resourceGroupName - Resource group name.
-// remediationName - The name of the remediation.
-// parameters - The remediation parameters.
-// options - RemediationsClientCreateOrUpdateAtResourceGroupOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtResourceGroup
-// method.
+//   - resourceGroupName - Resource group name.
+//   - remediationName - The name of the remediation.
+//   - parameters - The remediation parameters.
+//   - options - RemediationsClientCreateOrUpdateAtResourceGroupOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtResourceGroup
+//     method.
 func (client *RemediationsClient) CreateOrUpdateAtResourceGroup(ctx context.Context, resourceGroupName string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtResourceGroupOptions) (RemediationsClientCreateOrUpdateAtResourceGroupResponse, error) {
 	req, err := client.createOrUpdateAtResourceGroupCreateRequest(ctx, resourceGroupName, remediationName, parameters, options)
 	if err != nil {
 		return RemediationsClientCreateOrUpdateAtResourceGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientCreateOrUpdateAtResourceGroupResponse{}, err
 	}
@@ -413,7 +409,7 @@ func (client *RemediationsClient) createOrUpdateAtResourceGroupCreateRequest(ctx
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -435,17 +431,18 @@ func (client *RemediationsClient) createOrUpdateAtResourceGroupHandleResponse(re
 
 // CreateOrUpdateAtSubscription - Creates or updates a remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// remediationName - The name of the remediation.
-// parameters - The remediation parameters.
-// options - RemediationsClientCreateOrUpdateAtSubscriptionOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtSubscription
-// method.
+//   - remediationName - The name of the remediation.
+//   - parameters - The remediation parameters.
+//   - options - RemediationsClientCreateOrUpdateAtSubscriptionOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtSubscription
+//     method.
 func (client *RemediationsClient) CreateOrUpdateAtSubscription(ctx context.Context, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtSubscriptionOptions) (RemediationsClientCreateOrUpdateAtSubscriptionResponse, error) {
 	req, err := client.createOrUpdateAtSubscriptionCreateRequest(ctx, remediationName, parameters, options)
 	if err != nil {
 		return RemediationsClientCreateOrUpdateAtSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientCreateOrUpdateAtSubscriptionResponse{}, err
 	}
@@ -466,7 +463,7 @@ func (client *RemediationsClient) createOrUpdateAtSubscriptionCreateRequest(ctx 
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -488,17 +485,18 @@ func (client *RemediationsClient) createOrUpdateAtSubscriptionHandleResponse(res
 
 // DeleteAtManagementGroup - Deletes an existing remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// managementGroupID - Management group ID.
-// remediationName - The name of the remediation.
-// options - RemediationsClientDeleteAtManagementGroupOptions contains the optional parameters for the RemediationsClient.DeleteAtManagementGroup
-// method.
+//   - managementGroupID - Management group ID.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientDeleteAtManagementGroupOptions contains the optional parameters for the RemediationsClient.DeleteAtManagementGroup
+//     method.
 func (client *RemediationsClient) DeleteAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientDeleteAtManagementGroupOptions) (RemediationsClientDeleteAtManagementGroupResponse, error) {
 	req, err := client.deleteAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, options)
 	if err != nil {
 		return RemediationsClientDeleteAtManagementGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientDeleteAtManagementGroupResponse{}, err
 	}
@@ -520,7 +518,7 @@ func (client *RemediationsClient) deleteAtManagementGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -542,17 +540,18 @@ func (client *RemediationsClient) deleteAtManagementGroupHandleResponse(resp *ht
 
 // DeleteAtResource - Deletes an existing remediation at individual resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// resourceID - Resource ID.
-// remediationName - The name of the remediation.
-// options - RemediationsClientDeleteAtResourceOptions contains the optional parameters for the RemediationsClient.DeleteAtResource
-// method.
+//   - resourceID - Resource ID.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientDeleteAtResourceOptions contains the optional parameters for the RemediationsClient.DeleteAtResource
+//     method.
 func (client *RemediationsClient) DeleteAtResource(ctx context.Context, resourceID string, remediationName string, options *RemediationsClientDeleteAtResourceOptions) (RemediationsClientDeleteAtResourceResponse, error) {
 	req, err := client.deleteAtResourceCreateRequest(ctx, resourceID, remediationName, options)
 	if err != nil {
 		return RemediationsClientDeleteAtResourceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientDeleteAtResourceResponse{}, err
 	}
@@ -570,7 +569,7 @@ func (client *RemediationsClient) deleteAtResourceCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -592,17 +591,18 @@ func (client *RemediationsClient) deleteAtResourceHandleResponse(resp *http.Resp
 
 // DeleteAtResourceGroup - Deletes an existing remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// resourceGroupName - Resource group name.
-// remediationName - The name of the remediation.
-// options - RemediationsClientDeleteAtResourceGroupOptions contains the optional parameters for the RemediationsClient.DeleteAtResourceGroup
-// method.
+//   - resourceGroupName - Resource group name.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientDeleteAtResourceGroupOptions contains the optional parameters for the RemediationsClient.DeleteAtResourceGroup
+//     method.
 func (client *RemediationsClient) DeleteAtResourceGroup(ctx context.Context, resourceGroupName string, remediationName string, options *RemediationsClientDeleteAtResourceGroupOptions) (RemediationsClientDeleteAtResourceGroupResponse, error) {
 	req, err := client.deleteAtResourceGroupCreateRequest(ctx, resourceGroupName, remediationName, options)
 	if err != nil {
 		return RemediationsClientDeleteAtResourceGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientDeleteAtResourceGroupResponse{}, err
 	}
@@ -627,7 +627,7 @@ func (client *RemediationsClient) deleteAtResourceGroupCreateRequest(ctx context
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -649,16 +649,17 @@ func (client *RemediationsClient) deleteAtResourceGroupHandleResponse(resp *http
 
 // DeleteAtSubscription - Deletes an existing remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// remediationName - The name of the remediation.
-// options - RemediationsClientDeleteAtSubscriptionOptions contains the optional parameters for the RemediationsClient.DeleteAtSubscription
-// method.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientDeleteAtSubscriptionOptions contains the optional parameters for the RemediationsClient.DeleteAtSubscription
+//     method.
 func (client *RemediationsClient) DeleteAtSubscription(ctx context.Context, remediationName string, options *RemediationsClientDeleteAtSubscriptionOptions) (RemediationsClientDeleteAtSubscriptionResponse, error) {
 	req, err := client.deleteAtSubscriptionCreateRequest(ctx, remediationName, options)
 	if err != nil {
 		return RemediationsClientDeleteAtSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientDeleteAtSubscriptionResponse{}, err
 	}
@@ -679,7 +680,7 @@ func (client *RemediationsClient) deleteAtSubscriptionCreateRequest(ctx context.
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -701,17 +702,18 @@ func (client *RemediationsClient) deleteAtSubscriptionHandleResponse(resp *http.
 
 // GetAtManagementGroup - Gets an existing remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// managementGroupID - Management group ID.
-// remediationName - The name of the remediation.
-// options - RemediationsClientGetAtManagementGroupOptions contains the optional parameters for the RemediationsClient.GetAtManagementGroup
-// method.
+//   - managementGroupID - Management group ID.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientGetAtManagementGroupOptions contains the optional parameters for the RemediationsClient.GetAtManagementGroup
+//     method.
 func (client *RemediationsClient) GetAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientGetAtManagementGroupOptions) (RemediationsClientGetAtManagementGroupResponse, error) {
 	req, err := client.getAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, options)
 	if err != nil {
 		return RemediationsClientGetAtManagementGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientGetAtManagementGroupResponse{}, err
 	}
@@ -733,7 +735,7 @@ func (client *RemediationsClient) getAtManagementGroupCreateRequest(ctx context.
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -755,17 +757,18 @@ func (client *RemediationsClient) getAtManagementGroupHandleResponse(resp *http.
 
 // GetAtResource - Gets an existing remediation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// resourceID - Resource ID.
-// remediationName - The name of the remediation.
-// options - RemediationsClientGetAtResourceOptions contains the optional parameters for the RemediationsClient.GetAtResource
-// method.
+//   - resourceID - Resource ID.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientGetAtResourceOptions contains the optional parameters for the RemediationsClient.GetAtResource
+//     method.
 func (client *RemediationsClient) GetAtResource(ctx context.Context, resourceID string, remediationName string, options *RemediationsClientGetAtResourceOptions) (RemediationsClientGetAtResourceResponse, error) {
 	req, err := client.getAtResourceCreateRequest(ctx, resourceID, remediationName, options)
 	if err != nil {
 		return RemediationsClientGetAtResourceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientGetAtResourceResponse{}, err
 	}
@@ -783,7 +786,7 @@ func (client *RemediationsClient) getAtResourceCreateRequest(ctx context.Context
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -805,17 +808,18 @@ func (client *RemediationsClient) getAtResourceHandleResponse(resp *http.Respons
 
 // GetAtResourceGroup - Gets an existing remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// resourceGroupName - Resource group name.
-// remediationName - The name of the remediation.
-// options - RemediationsClientGetAtResourceGroupOptions contains the optional parameters for the RemediationsClient.GetAtResourceGroup
-// method.
+//   - resourceGroupName - Resource group name.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientGetAtResourceGroupOptions contains the optional parameters for the RemediationsClient.GetAtResourceGroup
+//     method.
 func (client *RemediationsClient) GetAtResourceGroup(ctx context.Context, resourceGroupName string, remediationName string, options *RemediationsClientGetAtResourceGroupOptions) (RemediationsClientGetAtResourceGroupResponse, error) {
 	req, err := client.getAtResourceGroupCreateRequest(ctx, resourceGroupName, remediationName, options)
 	if err != nil {
 		return RemediationsClientGetAtResourceGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientGetAtResourceGroupResponse{}, err
 	}
@@ -840,7 +844,7 @@ func (client *RemediationsClient) getAtResourceGroupCreateRequest(ctx context.Co
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -862,16 +866,17 @@ func (client *RemediationsClient) getAtResourceGroupHandleResponse(resp *http.Re
 
 // GetAtSubscription - Gets an existing remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-10-01
-// remediationName - The name of the remediation.
-// options - RemediationsClientGetAtSubscriptionOptions contains the optional parameters for the RemediationsClient.GetAtSubscription
-// method.
+//   - remediationName - The name of the remediation.
+//   - options - RemediationsClientGetAtSubscriptionOptions contains the optional parameters for the RemediationsClient.GetAtSubscription
+//     method.
 func (client *RemediationsClient) GetAtSubscription(ctx context.Context, remediationName string, options *RemediationsClientGetAtSubscriptionOptions) (RemediationsClientGetAtSubscriptionResponse, error) {
 	req, err := client.getAtSubscriptionCreateRequest(ctx, remediationName, options)
 	if err != nil {
 		return RemediationsClientGetAtSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RemediationsClientGetAtSubscriptionResponse{}, err
 	}
@@ -892,7 +897,7 @@ func (client *RemediationsClient) getAtSubscriptionCreateRequest(ctx context.Con
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -913,13 +918,14 @@ func (client *RemediationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 }
 
 // NewListDeploymentsAtManagementGroupPager - Gets all deployments for a remediation at management group scope.
+//
 // Generated from API version 2021-10-01
-// managementGroupID - Management group ID.
-// remediationName - The name of the remediation.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtManagementGroup
-// method.
+//   - managementGroupID - Management group ID.
+//   - remediationName - The name of the remediation.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtManagementGroupPager
+//     method.
 func (client *RemediationsClient) NewListDeploymentsAtManagementGroupPager(managementGroupID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtManagementGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtManagementGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListDeploymentsAtManagementGroupResponse]{
 		More: func(page RemediationsClientListDeploymentsAtManagementGroupResponse) bool {
@@ -936,7 +942,7 @@ func (client *RemediationsClient) NewListDeploymentsAtManagementGroupPager(manag
 			if err != nil {
 				return RemediationsClientListDeploymentsAtManagementGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RemediationsClientListDeploymentsAtManagementGroupResponse{}, err
 			}
@@ -960,7 +966,7 @@ func (client *RemediationsClient) listDeploymentsAtManagementGroupCreateRequest(
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -984,13 +990,14 @@ func (client *RemediationsClient) listDeploymentsAtManagementGroupHandleResponse
 }
 
 // NewListDeploymentsAtResourcePager - Gets all deployments for a remediation at resource scope.
+//
 // Generated from API version 2021-10-01
-// resourceID - Resource ID.
-// remediationName - The name of the remediation.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - RemediationsClientListDeploymentsAtResourceOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResource
-// method.
+//   - resourceID - Resource ID.
+//   - remediationName - The name of the remediation.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - RemediationsClientListDeploymentsAtResourceOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtResourcePager
+//     method.
 func (client *RemediationsClient) NewListDeploymentsAtResourcePager(resourceID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListDeploymentsAtResourceResponse]{
 		More: func(page RemediationsClientListDeploymentsAtResourceResponse) bool {
@@ -1007,7 +1014,7 @@ func (client *RemediationsClient) NewListDeploymentsAtResourcePager(resourceID s
 			if err != nil {
 				return RemediationsClientListDeploymentsAtResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RemediationsClientListDeploymentsAtResourceResponse{}, err
 			}
@@ -1027,7 +1034,7 @@ func (client *RemediationsClient) listDeploymentsAtResourceCreateRequest(ctx con
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1051,13 +1058,14 @@ func (client *RemediationsClient) listDeploymentsAtResourceHandleResponse(resp *
 }
 
 // NewListDeploymentsAtResourceGroupPager - Gets all deployments for a remediation at resource group scope.
+//
 // Generated from API version 2021-10-01
-// resourceGroupName - Resource group name.
-// remediationName - The name of the remediation.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - RemediationsClientListDeploymentsAtResourceGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResourceGroup
-// method.
+//   - resourceGroupName - Resource group name.
+//   - remediationName - The name of the remediation.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - RemediationsClientListDeploymentsAtResourceGroupOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtResourceGroupPager
+//     method.
 func (client *RemediationsClient) NewListDeploymentsAtResourceGroupPager(resourceGroupName string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListDeploymentsAtResourceGroupResponse]{
 		More: func(page RemediationsClientListDeploymentsAtResourceGroupResponse) bool {
@@ -1074,7 +1082,7 @@ func (client *RemediationsClient) NewListDeploymentsAtResourceGroupPager(resourc
 			if err != nil {
 				return RemediationsClientListDeploymentsAtResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RemediationsClientListDeploymentsAtResourceGroupResponse{}, err
 			}
@@ -1101,7 +1109,7 @@ func (client *RemediationsClient) listDeploymentsAtResourceGroupCreateRequest(ct
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1125,12 +1133,13 @@ func (client *RemediationsClient) listDeploymentsAtResourceGroupHandleResponse(r
 }
 
 // NewListDeploymentsAtSubscriptionPager - Gets all deployments for a remediation at subscription scope.
+//
 // Generated from API version 2021-10-01
-// remediationName - The name of the remediation.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - RemediationsClientListDeploymentsAtSubscriptionOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtSubscription
-// method.
+//   - remediationName - The name of the remediation.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - RemediationsClientListDeploymentsAtSubscriptionOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtSubscriptionPager
+//     method.
 func (client *RemediationsClient) NewListDeploymentsAtSubscriptionPager(remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtSubscriptionOptions) *runtime.Pager[RemediationsClientListDeploymentsAtSubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListDeploymentsAtSubscriptionResponse]{
 		More: func(page RemediationsClientListDeploymentsAtSubscriptionResponse) bool {
@@ -1147,7 +1156,7 @@ func (client *RemediationsClient) NewListDeploymentsAtSubscriptionPager(remediat
 			if err != nil {
 				return RemediationsClientListDeploymentsAtSubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RemediationsClientListDeploymentsAtSubscriptionResponse{}, err
 			}
@@ -1170,7 +1179,7 @@ func (client *RemediationsClient) listDeploymentsAtSubscriptionCreateRequest(ctx
 		return nil, errors.New("parameter remediationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{remediationName}", url.PathEscape(remediationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1194,12 +1203,13 @@ func (client *RemediationsClient) listDeploymentsAtSubscriptionHandleResponse(re
 }
 
 // NewListForManagementGroupPager - Gets all remediations for the management group.
+//
 // Generated from API version 2021-10-01
-// managementGroupID - Management group ID.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - RemediationsClientListForManagementGroupOptions contains the optional parameters for the RemediationsClient.ListForManagementGroup
-// method.
+//   - managementGroupID - Management group ID.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - RemediationsClientListForManagementGroupOptions contains the optional parameters for the RemediationsClient.NewListForManagementGroupPager
+//     method.
 func (client *RemediationsClient) NewListForManagementGroupPager(managementGroupID string, queryOptions *QueryOptions, options *RemediationsClientListForManagementGroupOptions) *runtime.Pager[RemediationsClientListForManagementGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListForManagementGroupResponse]{
 		More: func(page RemediationsClientListForManagementGroupResponse) bool {
@@ -1216,7 +1226,7 @@ func (client *RemediationsClient) NewListForManagementGroupPager(managementGroup
 			if err != nil {
 				return RemediationsClientListForManagementGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RemediationsClientListForManagementGroupResponse{}, err
 			}
@@ -1236,7 +1246,7 @@ func (client *RemediationsClient) listForManagementGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1263,12 +1273,13 @@ func (client *RemediationsClient) listForManagementGroupHandleResponse(resp *htt
 }
 
 // NewListForResourcePager - Gets all remediations for a resource.
+//
 // Generated from API version 2021-10-01
-// resourceID - Resource ID.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - RemediationsClientListForResourceOptions contains the optional parameters for the RemediationsClient.ListForResource
-// method.
+//   - resourceID - Resource ID.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - RemediationsClientListForResourceOptions contains the optional parameters for the RemediationsClient.NewListForResourcePager
+//     method.
 func (client *RemediationsClient) NewListForResourcePager(resourceID string, queryOptions *QueryOptions, options *RemediationsClientListForResourceOptions) *runtime.Pager[RemediationsClientListForResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListForResourceResponse]{
 		More: func(page RemediationsClientListForResourceResponse) bool {
@@ -1285,7 +1296,7 @@ func (client *RemediationsClient) NewListForResourcePager(resourceID string, que
 			if err != nil {
 				return RemediationsClientListForResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RemediationsClientListForResourceResponse{}, err
 			}
@@ -1301,7 +1312,7 @@ func (client *RemediationsClient) NewListForResourcePager(resourceID string, que
 func (client *RemediationsClient) listForResourceCreateRequest(ctx context.Context, resourceID string, queryOptions *QueryOptions, options *RemediationsClientListForResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/remediations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1328,12 +1339,13 @@ func (client *RemediationsClient) listForResourceHandleResponse(resp *http.Respo
 }
 
 // NewListForResourceGroupPager - Gets all remediations for the subscription.
+//
 // Generated from API version 2021-10-01
-// resourceGroupName - Resource group name.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - RemediationsClientListForResourceGroupOptions contains the optional parameters for the RemediationsClient.ListForResourceGroup
-// method.
+//   - resourceGroupName - Resource group name.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - RemediationsClientListForResourceGroupOptions contains the optional parameters for the RemediationsClient.NewListForResourceGroupPager
+//     method.
 func (client *RemediationsClient) NewListForResourceGroupPager(resourceGroupName string, queryOptions *QueryOptions, options *RemediationsClientListForResourceGroupOptions) *runtime.Pager[RemediationsClientListForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListForResourceGroupResponse]{
 		More: func(page RemediationsClientListForResourceGroupResponse) bool {
@@ -1350,7 +1362,7 @@ func (client *RemediationsClient) NewListForResourceGroupPager(resourceGroupName
 			if err != nil {
 				return RemediationsClientListForResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RemediationsClientListForResourceGroupResponse{}, err
 			}
@@ -1373,7 +1385,7 @@ func (client *RemediationsClient) listForResourceGroupCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1400,11 +1412,12 @@ func (client *RemediationsClient) listForResourceGroupHandleResponse(resp *http.
 }
 
 // NewListForSubscriptionPager - Gets all remediations for the subscription.
+//
 // Generated from API version 2021-10-01
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - RemediationsClientListForSubscriptionOptions contains the optional parameters for the RemediationsClient.ListForSubscription
-// method.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - RemediationsClientListForSubscriptionOptions contains the optional parameters for the RemediationsClient.NewListForSubscriptionPager
+//     method.
 func (client *RemediationsClient) NewListForSubscriptionPager(queryOptions *QueryOptions, options *RemediationsClientListForSubscriptionOptions) *runtime.Pager[RemediationsClientListForSubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RemediationsClientListForSubscriptionResponse]{
 		More: func(page RemediationsClientListForSubscriptionResponse) bool {
@@ -1421,7 +1434,7 @@ func (client *RemediationsClient) NewListForSubscriptionPager(queryOptions *Quer
 			if err != nil {
 				return RemediationsClientListForSubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RemediationsClientListForSubscriptionResponse{}, err
 			}
@@ -1440,7 +1453,7 @@ func (client *RemediationsClient) listForSubscriptionCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

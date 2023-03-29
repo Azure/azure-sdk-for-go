@@ -9,17 +9,17 @@
 
 package armpolicyinsights
 
-// AttestationsClientCreateOrUpdateAtResourceGroupResponse contains the response from method AttestationsClient.CreateOrUpdateAtResourceGroup.
+// AttestationsClientCreateOrUpdateAtResourceGroupResponse contains the response from method AttestationsClient.BeginCreateOrUpdateAtResourceGroup.
 type AttestationsClientCreateOrUpdateAtResourceGroupResponse struct {
 	Attestation
 }
 
-// AttestationsClientCreateOrUpdateAtResourceResponse contains the response from method AttestationsClient.CreateOrUpdateAtResource.
+// AttestationsClientCreateOrUpdateAtResourceResponse contains the response from method AttestationsClient.BeginCreateOrUpdateAtResource.
 type AttestationsClientCreateOrUpdateAtResourceResponse struct {
 	Attestation
 }
 
-// AttestationsClientCreateOrUpdateAtSubscriptionResponse contains the response from method AttestationsClient.CreateOrUpdateAtSubscription.
+// AttestationsClientCreateOrUpdateAtSubscriptionResponse contains the response from method AttestationsClient.BeginCreateOrUpdateAtSubscription.
 type AttestationsClientCreateOrUpdateAtSubscriptionResponse struct {
 	Attestation
 }
@@ -54,17 +54,17 @@ type AttestationsClientGetAtSubscriptionResponse struct {
 	Attestation
 }
 
-// AttestationsClientListForResourceGroupResponse contains the response from method AttestationsClient.ListForResourceGroup.
+// AttestationsClientListForResourceGroupResponse contains the response from method AttestationsClient.NewListForResourceGroupPager.
 type AttestationsClientListForResourceGroupResponse struct {
 	AttestationListResult
 }
 
-// AttestationsClientListForResourceResponse contains the response from method AttestationsClient.ListForResource.
+// AttestationsClientListForResourceResponse contains the response from method AttestationsClient.NewListForResourcePager.
 type AttestationsClientListForResourceResponse struct {
 	AttestationListResult
 }
 
-// AttestationsClientListForSubscriptionResponse contains the response from method AttestationsClient.ListForSubscription.
+// AttestationsClientListForSubscriptionResponse contains the response from method AttestationsClient.NewListForSubscriptionPager.
 type AttestationsClientListForSubscriptionResponse struct {
 	AttestationListResult
 }
@@ -74,42 +74,42 @@ type OperationsClientListResponse struct {
 	OperationsListResults
 }
 
-// PolicyEventsClientListQueryResultsForManagementGroupResponse contains the response from method PolicyEventsClient.ListQueryResultsForManagementGroup.
+// PolicyEventsClientListQueryResultsForManagementGroupResponse contains the response from method PolicyEventsClient.NewListQueryResultsForManagementGroupPager.
 type PolicyEventsClientListQueryResultsForManagementGroupResponse struct {
 	PolicyEventsQueryResults
 }
 
-// PolicyEventsClientListQueryResultsForPolicyDefinitionResponse contains the response from method PolicyEventsClient.ListQueryResultsForPolicyDefinition.
+// PolicyEventsClientListQueryResultsForPolicyDefinitionResponse contains the response from method PolicyEventsClient.NewListQueryResultsForPolicyDefinitionPager.
 type PolicyEventsClientListQueryResultsForPolicyDefinitionResponse struct {
 	PolicyEventsQueryResults
 }
 
-// PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse contains the response from method PolicyEventsClient.ListQueryResultsForPolicySetDefinition.
+// PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse contains the response from method PolicyEventsClient.NewListQueryResultsForPolicySetDefinitionPager.
 type PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse struct {
 	PolicyEventsQueryResults
 }
 
-// PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse contains the response from method PolicyEventsClient.ListQueryResultsForResourceGroupLevelPolicyAssignment.
+// PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse contains the response from method PolicyEventsClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager.
 type PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse struct {
 	PolicyEventsQueryResults
 }
 
-// PolicyEventsClientListQueryResultsForResourceGroupResponse contains the response from method PolicyEventsClient.ListQueryResultsForResourceGroup.
+// PolicyEventsClientListQueryResultsForResourceGroupResponse contains the response from method PolicyEventsClient.NewListQueryResultsForResourceGroupPager.
 type PolicyEventsClientListQueryResultsForResourceGroupResponse struct {
 	PolicyEventsQueryResults
 }
 
-// PolicyEventsClientListQueryResultsForResourceResponse contains the response from method PolicyEventsClient.ListQueryResultsForResource.
+// PolicyEventsClientListQueryResultsForResourceResponse contains the response from method PolicyEventsClient.NewListQueryResultsForResourcePager.
 type PolicyEventsClientListQueryResultsForResourceResponse struct {
 	PolicyEventsQueryResults
 }
 
-// PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse contains the response from method PolicyEventsClient.ListQueryResultsForSubscriptionLevelPolicyAssignment.
+// PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse contains the response from method PolicyEventsClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager.
 type PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse struct {
 	PolicyEventsQueryResults
 }
 
-// PolicyEventsClientListQueryResultsForSubscriptionResponse contains the response from method PolicyEventsClient.ListQueryResultsForSubscription.
+// PolicyEventsClientListQueryResultsForSubscriptionResponse contains the response from method PolicyEventsClient.NewListQueryResultsForSubscriptionPager.
 type PolicyEventsClientListQueryResultsForSubscriptionResponse struct {
 	PolicyEventsQueryResults
 }
@@ -119,7 +119,7 @@ type PolicyMetadataClientGetResourceResponse struct {
 	PolicyMetadata
 }
 
-// PolicyMetadataClientListResponse contains the response from method PolicyMetadataClient.List.
+// PolicyMetadataClientListResponse contains the response from method PolicyMetadataClient.NewListPager.
 type PolicyMetadataClientListResponse struct {
 	PolicyMetadataCollection
 }
@@ -139,42 +139,42 @@ type PolicyRestrictionsClientCheckAtSubscriptionScopeResponse struct {
 	CheckRestrictionsResult
 }
 
-// PolicyStatesClientListQueryResultsForManagementGroupResponse contains the response from method PolicyStatesClient.ListQueryResultsForManagementGroup.
+// PolicyStatesClientListQueryResultsForManagementGroupResponse contains the response from method PolicyStatesClient.NewListQueryResultsForManagementGroupPager.
 type PolicyStatesClientListQueryResultsForManagementGroupResponse struct {
 	PolicyStatesQueryResults
 }
 
-// PolicyStatesClientListQueryResultsForPolicyDefinitionResponse contains the response from method PolicyStatesClient.ListQueryResultsForPolicyDefinition.
+// PolicyStatesClientListQueryResultsForPolicyDefinitionResponse contains the response from method PolicyStatesClient.NewListQueryResultsForPolicyDefinitionPager.
 type PolicyStatesClientListQueryResultsForPolicyDefinitionResponse struct {
 	PolicyStatesQueryResults
 }
 
-// PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse contains the response from method PolicyStatesClient.ListQueryResultsForPolicySetDefinition.
+// PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse contains the response from method PolicyStatesClient.NewListQueryResultsForPolicySetDefinitionPager.
 type PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse struct {
 	PolicyStatesQueryResults
 }
 
-// PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse contains the response from method PolicyStatesClient.ListQueryResultsForResourceGroupLevelPolicyAssignment.
+// PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse contains the response from method PolicyStatesClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager.
 type PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse struct {
 	PolicyStatesQueryResults
 }
 
-// PolicyStatesClientListQueryResultsForResourceGroupResponse contains the response from method PolicyStatesClient.ListQueryResultsForResourceGroup.
+// PolicyStatesClientListQueryResultsForResourceGroupResponse contains the response from method PolicyStatesClient.NewListQueryResultsForResourceGroupPager.
 type PolicyStatesClientListQueryResultsForResourceGroupResponse struct {
 	PolicyStatesQueryResults
 }
 
-// PolicyStatesClientListQueryResultsForResourceResponse contains the response from method PolicyStatesClient.ListQueryResultsForResource.
+// PolicyStatesClientListQueryResultsForResourceResponse contains the response from method PolicyStatesClient.NewListQueryResultsForResourcePager.
 type PolicyStatesClientListQueryResultsForResourceResponse struct {
 	PolicyStatesQueryResults
 }
 
-// PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse contains the response from method PolicyStatesClient.ListQueryResultsForSubscriptionLevelPolicyAssignment.
+// PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse contains the response from method PolicyStatesClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager.
 type PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse struct {
 	PolicyStatesQueryResults
 }
 
-// PolicyStatesClientListQueryResultsForSubscriptionResponse contains the response from method PolicyStatesClient.ListQueryResultsForSubscription.
+// PolicyStatesClientListQueryResultsForSubscriptionResponse contains the response from method PolicyStatesClient.NewListQueryResultsForSubscriptionPager.
 type PolicyStatesClientListQueryResultsForSubscriptionResponse struct {
 	PolicyStatesQueryResults
 }
@@ -219,32 +219,32 @@ type PolicyStatesClientSummarizeForSubscriptionResponse struct {
 	SummarizeResults
 }
 
-// PolicyStatesClientTriggerResourceGroupEvaluationResponse contains the response from method PolicyStatesClient.TriggerResourceGroupEvaluation.
+// PolicyStatesClientTriggerResourceGroupEvaluationResponse contains the response from method PolicyStatesClient.BeginTriggerResourceGroupEvaluation.
 type PolicyStatesClientTriggerResourceGroupEvaluationResponse struct {
 	// placeholder for future response values
 }
 
-// PolicyStatesClientTriggerSubscriptionEvaluationResponse contains the response from method PolicyStatesClient.TriggerSubscriptionEvaluation.
+// PolicyStatesClientTriggerSubscriptionEvaluationResponse contains the response from method PolicyStatesClient.BeginTriggerSubscriptionEvaluation.
 type PolicyStatesClientTriggerSubscriptionEvaluationResponse struct {
 	// placeholder for future response values
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse contains the response from method PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup.
+// PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse contains the response from method PolicyTrackedResourcesClient.NewListQueryResultsForManagementGroupPager.
 type PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse struct {
 	PolicyTrackedResourcesQueryResults
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse contains the response from method PolicyTrackedResourcesClient.ListQueryResultsForResourceGroup.
+// PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse contains the response from method PolicyTrackedResourcesClient.NewListQueryResultsForResourceGroupPager.
 type PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse struct {
 	PolicyTrackedResourcesQueryResults
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForResourceResponse contains the response from method PolicyTrackedResourcesClient.ListQueryResultsForResource.
+// PolicyTrackedResourcesClientListQueryResultsForResourceResponse contains the response from method PolicyTrackedResourcesClient.NewListQueryResultsForResourcePager.
 type PolicyTrackedResourcesClientListQueryResultsForResourceResponse struct {
 	PolicyTrackedResourcesQueryResults
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse contains the response from method PolicyTrackedResourcesClient.ListQueryResultsForSubscription.
+// PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse contains the response from method PolicyTrackedResourcesClient.NewListQueryResultsForSubscriptionPager.
 type PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse struct {
 	PolicyTrackedResourcesQueryResults
 }
@@ -329,42 +329,42 @@ type RemediationsClientGetAtSubscriptionResponse struct {
 	Remediation
 }
 
-// RemediationsClientListDeploymentsAtManagementGroupResponse contains the response from method RemediationsClient.ListDeploymentsAtManagementGroup.
+// RemediationsClientListDeploymentsAtManagementGroupResponse contains the response from method RemediationsClient.NewListDeploymentsAtManagementGroupPager.
 type RemediationsClientListDeploymentsAtManagementGroupResponse struct {
 	RemediationDeploymentsListResult
 }
 
-// RemediationsClientListDeploymentsAtResourceGroupResponse contains the response from method RemediationsClient.ListDeploymentsAtResourceGroup.
+// RemediationsClientListDeploymentsAtResourceGroupResponse contains the response from method RemediationsClient.NewListDeploymentsAtResourceGroupPager.
 type RemediationsClientListDeploymentsAtResourceGroupResponse struct {
 	RemediationDeploymentsListResult
 }
 
-// RemediationsClientListDeploymentsAtResourceResponse contains the response from method RemediationsClient.ListDeploymentsAtResource.
+// RemediationsClientListDeploymentsAtResourceResponse contains the response from method RemediationsClient.NewListDeploymentsAtResourcePager.
 type RemediationsClientListDeploymentsAtResourceResponse struct {
 	RemediationDeploymentsListResult
 }
 
-// RemediationsClientListDeploymentsAtSubscriptionResponse contains the response from method RemediationsClient.ListDeploymentsAtSubscription.
+// RemediationsClientListDeploymentsAtSubscriptionResponse contains the response from method RemediationsClient.NewListDeploymentsAtSubscriptionPager.
 type RemediationsClientListDeploymentsAtSubscriptionResponse struct {
 	RemediationDeploymentsListResult
 }
 
-// RemediationsClientListForManagementGroupResponse contains the response from method RemediationsClient.ListForManagementGroup.
+// RemediationsClientListForManagementGroupResponse contains the response from method RemediationsClient.NewListForManagementGroupPager.
 type RemediationsClientListForManagementGroupResponse struct {
 	RemediationListResult
 }
 
-// RemediationsClientListForResourceGroupResponse contains the response from method RemediationsClient.ListForResourceGroup.
+// RemediationsClientListForResourceGroupResponse contains the response from method RemediationsClient.NewListForResourceGroupPager.
 type RemediationsClientListForResourceGroupResponse struct {
 	RemediationListResult
 }
 
-// RemediationsClientListForResourceResponse contains the response from method RemediationsClient.ListForResource.
+// RemediationsClientListForResourceResponse contains the response from method RemediationsClient.NewListForResourcePager.
 type RemediationsClientListForResourceResponse struct {
 	RemediationListResult
 }
 
-// RemediationsClientListForSubscriptionResponse contains the response from method RemediationsClient.ListForSubscription.
+// RemediationsClientListForSubscriptionResponse contains the response from method RemediationsClient.NewListForSubscriptionPager.
 type RemediationsClientListForSubscriptionResponse struct {
 	RemediationListResult
 }

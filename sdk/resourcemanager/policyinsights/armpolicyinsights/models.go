@@ -68,7 +68,7 @@ type AttestationProperties struct {
 	ExpiresOn *time.Time `json:"expiresOn,omitempty"`
 
 	// Additional metadata for this attestation
-	Metadata interface{} `json:"metadata,omitempty"`
+	Metadata any `json:"metadata,omitempty"`
 
 	// The person responsible for setting the state of the resource. This value is typically an Azure Active Directory object
 	// ID.
@@ -142,18 +142,19 @@ type AttestationsClientGetAtSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.ListForResourceGroup
+// AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.NewListForResourceGroupPager
 // method.
 type AttestationsClientListForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttestationsClientListForResourceOptions contains the optional parameters for the AttestationsClient.ListForResource method.
+// AttestationsClientListForResourceOptions contains the optional parameters for the AttestationsClient.NewListForResourcePager
+// method.
 type AttestationsClientListForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttestationsClientListForSubscriptionOptions contains the optional parameters for the AttestationsClient.ListForSubscription
+// AttestationsClientListForSubscriptionOptions contains the optional parameters for the AttestationsClient.NewListForSubscriptionPager
 // method.
 type AttestationsClientListForSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -182,7 +183,7 @@ type CheckRestrictionsRequest struct {
 type CheckRestrictionsResourceDetails struct {
 	// REQUIRED; The resource content. This should include whatever properties are already known and can be a partial set of all
 	// resource properties.
-	ResourceContent interface{} `json:"resourceContent,omitempty"`
+	ResourceContent any `json:"resourceContent,omitempty"`
 
 	// The api-version of the resource content.
 	APIVersion *string `json:"apiVersion,omitempty"`
@@ -220,7 +221,7 @@ type ComplianceDetail struct {
 // ComponentEventDetails - Component event details.
 type ComponentEventDetails struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Component Id.
 	ID *string `json:"id,omitempty"`
@@ -247,7 +248,7 @@ type ComponentEventDetails struct {
 // ComponentStateDetails - Component state details.
 type ComponentStateDetails struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Component compliance state.
 	ComplianceState *string `json:"complianceState,omitempty"`
@@ -343,7 +344,7 @@ type ExpressionEvaluationDetails struct {
 	Expression *string `json:"expression,omitempty"`
 
 	// Value of the expression.
-	ExpressionValue interface{} `json:"expressionValue,omitempty"`
+	ExpressionValue any `json:"expressionValue,omitempty"`
 
 	// Operator to compare the expression value and the target value.
 	Operator *string `json:"operator,omitempty"`
@@ -355,7 +356,7 @@ type ExpressionEvaluationDetails struct {
 	Result *string `json:"result,omitempty"`
 
 	// Target value to be compared with the expression value.
-	TargetValue interface{} `json:"targetValue,omitempty"`
+	TargetValue any `json:"targetValue,omitempty"`
 
 	// READ-ONLY; The kind of expression that was evaluated.
 	ExpressionKind *string `json:"expressionKind,omitempty" azure:"ro"`
@@ -523,7 +524,7 @@ type PolicyEvaluationResult struct {
 // PolicyEvent - Policy event record.
 type PolicyEvent struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Compliance state of the resource.
 	ComplianceState *string `json:"complianceState,omitempty"`
@@ -619,49 +620,49 @@ type PolicyEvent struct {
 	Timestamp *time.Time `json:"timestamp,omitempty"`
 }
 
-// PolicyEventsClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForManagementGroup
+// PolicyEventsClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForManagementGroupPager
 // method.
 type PolicyEventsClientListQueryResultsForManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyEventsClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForPolicyDefinition
+// PolicyEventsClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForPolicyDefinitionPager
 // method.
 type PolicyEventsClientListQueryResultsForPolicyDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForPolicySetDefinition
+// PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForPolicySetDefinitionPager
 // method.
 type PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters for the
-// PolicyEventsClient.ListQueryResultsForResourceGroupLevelPolicyAssignment method.
+// PolicyEventsClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager method.
 type PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyEventsClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForResourceGroup
+// PolicyEventsClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForResourceGroupPager
 // method.
 type PolicyEventsClientListQueryResultsForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyEventsClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForResource
+// PolicyEventsClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForResourcePager
 // method.
 type PolicyEventsClientListQueryResultsForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters for the
-// PolicyEventsClient.ListQueryResultsForSubscriptionLevelPolicyAssignment method.
+// PolicyEventsClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager method.
 type PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyEventsClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForSubscription
+// PolicyEventsClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForSubscriptionPager
 // method.
 type PolicyEventsClientListQueryResultsForSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -711,7 +712,7 @@ type PolicyMetadataClientGetResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.List method.
+// PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.NewListPager method.
 type PolicyMetadataClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -737,7 +738,7 @@ type PolicyMetadataProperties struct {
 	Description *string `json:"description,omitempty" azure:"ro"`
 
 	// READ-ONLY; Additional metadata.
-	Metadata interface{} `json:"metadata,omitempty" azure:"ro"`
+	Metadata any `json:"metadata,omitempty" azure:"ro"`
 
 	// READ-ONLY; The policy metadata identifier.
 	MetadataID *string `json:"metadataId,omitempty" azure:"ro"`
@@ -761,7 +762,7 @@ type PolicyMetadataSlimProperties struct {
 	Category *string `json:"category,omitempty" azure:"ro"`
 
 	// READ-ONLY; Additional metadata.
-	Metadata interface{} `json:"metadata,omitempty" azure:"ro"`
+	Metadata any `json:"metadata,omitempty" azure:"ro"`
 
 	// READ-ONLY; The policy metadata identifier.
 	MetadataID *string `json:"metadataId,omitempty" azure:"ro"`
@@ -809,7 +810,7 @@ type PolicyRestrictionsClientCheckAtSubscriptionScopeOptions struct {
 // PolicyState - Policy state record.
 type PolicyState struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Compliance state of the resource.
 	ComplianceState *string `json:"complianceState,omitempty"`
@@ -929,49 +930,49 @@ type PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions struct {
 	ResumeToken string
 }
 
-// PolicyStatesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForManagementGroup
+// PolicyStatesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForManagementGroupPager
 // method.
 type PolicyStatesClientListQueryResultsForManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyStatesClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForPolicyDefinition
+// PolicyStatesClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForPolicyDefinitionPager
 // method.
 type PolicyStatesClientListQueryResultsForPolicyDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForPolicySetDefinition
+// PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForPolicySetDefinitionPager
 // method.
 type PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters for the
-// PolicyStatesClient.ListQueryResultsForResourceGroupLevelPolicyAssignment method.
+// PolicyStatesClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager method.
 type PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyStatesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForResourceGroup
+// PolicyStatesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForResourceGroupPager
 // method.
 type PolicyStatesClientListQueryResultsForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyStatesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForResource
+// PolicyStatesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForResourcePager
 // method.
 type PolicyStatesClientListQueryResultsForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters for the
-// PolicyStatesClient.ListQueryResultsForSubscriptionLevelPolicyAssignment method.
+// PolicyStatesClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager method.
 type PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyStatesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForSubscription
+// PolicyStatesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForSubscriptionPager
 // method.
 type PolicyStatesClientListQueryResultsForSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1058,25 +1059,25 @@ type PolicyTrackedResource struct {
 	TrackedResourceID *string `json:"trackedResourceId,omitempty" azure:"ro"`
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForManagementGroupPager
 // method.
 type PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForResourceGroup
+// PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForResourceGroupPager
 // method.
 type PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForResource
+// PolicyTrackedResourcesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForResourcePager
 // method.
 type PolicyTrackedResourcesClientListQueryResultsForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForSubscription
+// PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForSubscriptionPager
 // method.
 type PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1358,48 +1359,49 @@ type RemediationsClientGetAtSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtManagementGroup
+// RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtManagementGroupPager
 // method.
 type RemediationsClientListDeploymentsAtManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListDeploymentsAtResourceGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResourceGroup
+// RemediationsClientListDeploymentsAtResourceGroupOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtResourceGroupPager
 // method.
 type RemediationsClientListDeploymentsAtResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListDeploymentsAtResourceOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResource
+// RemediationsClientListDeploymentsAtResourceOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtResourcePager
 // method.
 type RemediationsClientListDeploymentsAtResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListDeploymentsAtSubscriptionOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtSubscription
+// RemediationsClientListDeploymentsAtSubscriptionOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtSubscriptionPager
 // method.
 type RemediationsClientListDeploymentsAtSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListForManagementGroupOptions contains the optional parameters for the RemediationsClient.ListForManagementGroup
+// RemediationsClientListForManagementGroupOptions contains the optional parameters for the RemediationsClient.NewListForManagementGroupPager
 // method.
 type RemediationsClientListForManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListForResourceGroupOptions contains the optional parameters for the RemediationsClient.ListForResourceGroup
+// RemediationsClientListForResourceGroupOptions contains the optional parameters for the RemediationsClient.NewListForResourceGroupPager
 // method.
 type RemediationsClientListForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListForResourceOptions contains the optional parameters for the RemediationsClient.ListForResource method.
+// RemediationsClientListForResourceOptions contains the optional parameters for the RemediationsClient.NewListForResourcePager
+// method.
 type RemediationsClientListForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListForSubscriptionOptions contains the optional parameters for the RemediationsClient.ListForSubscription
+// RemediationsClientListForSubscriptionOptions contains the optional parameters for the RemediationsClient.NewListForSubscriptionPager
 // method.
 type RemediationsClientListForSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1520,7 +1522,7 @@ type TrackedResourceModificationDetails struct {
 // TypedErrorInfo - Scenario specific error details.
 type TypedErrorInfo struct {
 	// READ-ONLY; The scenario specific error details.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of included error details.
 	Type *string `json:"type,omitempty" azure:"ro"`

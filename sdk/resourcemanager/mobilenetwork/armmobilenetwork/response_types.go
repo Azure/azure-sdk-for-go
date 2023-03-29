@@ -9,12 +9,12 @@
 
 package armmobilenetwork
 
-// AttachedDataNetworksClientCreateOrUpdateResponse contains the response from method AttachedDataNetworksClient.CreateOrUpdate.
+// AttachedDataNetworksClientCreateOrUpdateResponse contains the response from method AttachedDataNetworksClient.BeginCreateOrUpdate.
 type AttachedDataNetworksClientCreateOrUpdateResponse struct {
 	AttachedDataNetwork
 }
 
-// AttachedDataNetworksClientDeleteResponse contains the response from method AttachedDataNetworksClient.Delete.
+// AttachedDataNetworksClientDeleteResponse contains the response from method AttachedDataNetworksClient.BeginDelete.
 type AttachedDataNetworksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,7 +24,7 @@ type AttachedDataNetworksClientGetResponse struct {
 	AttachedDataNetwork
 }
 
-// AttachedDataNetworksClientListByPacketCoreDataPlaneResponse contains the response from method AttachedDataNetworksClient.ListByPacketCoreDataPlane.
+// AttachedDataNetworksClientListByPacketCoreDataPlaneResponse contains the response from method AttachedDataNetworksClient.NewListByPacketCoreDataPlanePager.
 type AttachedDataNetworksClientListByPacketCoreDataPlaneResponse struct {
 	AttachedDataNetworkListResult
 }
@@ -34,12 +34,12 @@ type AttachedDataNetworksClientUpdateTagsResponse struct {
 	AttachedDataNetwork
 }
 
-// DataNetworksClientCreateOrUpdateResponse contains the response from method DataNetworksClient.CreateOrUpdate.
+// DataNetworksClientCreateOrUpdateResponse contains the response from method DataNetworksClient.BeginCreateOrUpdate.
 type DataNetworksClientCreateOrUpdateResponse struct {
 	DataNetwork
 }
 
-// DataNetworksClientDeleteResponse contains the response from method DataNetworksClient.Delete.
+// DataNetworksClientDeleteResponse contains the response from method DataNetworksClient.BeginDelete.
 type DataNetworksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -49,7 +49,7 @@ type DataNetworksClientGetResponse struct {
 	DataNetwork
 }
 
-// DataNetworksClientListByMobileNetworkResponse contains the response from method DataNetworksClient.ListByMobileNetwork.
+// DataNetworksClientListByMobileNetworkResponse contains the response from method DataNetworksClient.NewListByMobileNetworkPager.
 type DataNetworksClientListByMobileNetworkResponse struct {
 	DataNetworkListResult
 }
@@ -59,12 +59,12 @@ type DataNetworksClientUpdateTagsResponse struct {
 	DataNetwork
 }
 
-// MobileNetworksClientCreateOrUpdateResponse contains the response from method MobileNetworksClient.CreateOrUpdate.
+// MobileNetworksClientCreateOrUpdateResponse contains the response from method MobileNetworksClient.BeginCreateOrUpdate.
 type MobileNetworksClientCreateOrUpdateResponse struct {
 	MobileNetwork
 }
 
-// MobileNetworksClientDeleteResponse contains the response from method MobileNetworksClient.Delete.
+// MobileNetworksClientDeleteResponse contains the response from method MobileNetworksClient.BeginDelete.
 type MobileNetworksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -74,12 +74,12 @@ type MobileNetworksClientGetResponse struct {
 	MobileNetwork
 }
 
-// MobileNetworksClientListByResourceGroupResponse contains the response from method MobileNetworksClient.ListByResourceGroup.
+// MobileNetworksClientListByResourceGroupResponse contains the response from method MobileNetworksClient.NewListByResourceGroupPager.
 type MobileNetworksClientListByResourceGroupResponse struct {
 	ListResult
 }
 
-// MobileNetworksClientListBySubscriptionResponse contains the response from method MobileNetworksClient.ListBySubscription.
+// MobileNetworksClientListBySubscriptionResponse contains the response from method MobileNetworksClient.NewListBySubscriptionPager.
 type MobileNetworksClientListBySubscriptionResponse struct {
 	ListResult
 }
@@ -89,7 +89,7 @@ type MobileNetworksClientUpdateTagsResponse struct {
 	MobileNetwork
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationList
 }
@@ -99,22 +99,22 @@ type PacketCoreControlPlaneVersionsClientGetResponse struct {
 	PacketCoreControlPlaneVersion
 }
 
-// PacketCoreControlPlaneVersionsClientListResponse contains the response from method PacketCoreControlPlaneVersionsClient.List.
+// PacketCoreControlPlaneVersionsClientListResponse contains the response from method PacketCoreControlPlaneVersionsClient.NewListPager.
 type PacketCoreControlPlaneVersionsClientListResponse struct {
 	PacketCoreControlPlaneVersionListResult
 }
 
-// PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse contains the response from method PacketCoreControlPlanesClient.CollectDiagnosticsPackage.
+// PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse contains the response from method PacketCoreControlPlanesClient.BeginCollectDiagnosticsPackage.
 type PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse struct {
 	AsyncOperationStatus
 }
 
-// PacketCoreControlPlanesClientCreateOrUpdateResponse contains the response from method PacketCoreControlPlanesClient.CreateOrUpdate.
+// PacketCoreControlPlanesClientCreateOrUpdateResponse contains the response from method PacketCoreControlPlanesClient.BeginCreateOrUpdate.
 type PacketCoreControlPlanesClientCreateOrUpdateResponse struct {
 	PacketCoreControlPlane
 }
 
-// PacketCoreControlPlanesClientDeleteResponse contains the response from method PacketCoreControlPlanesClient.Delete.
+// PacketCoreControlPlanesClientDeleteResponse contains the response from method PacketCoreControlPlanesClient.BeginDelete.
 type PacketCoreControlPlanesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -124,22 +124,22 @@ type PacketCoreControlPlanesClientGetResponse struct {
 	PacketCoreControlPlane
 }
 
-// PacketCoreControlPlanesClientListByResourceGroupResponse contains the response from method PacketCoreControlPlanesClient.ListByResourceGroup.
+// PacketCoreControlPlanesClientListByResourceGroupResponse contains the response from method PacketCoreControlPlanesClient.NewListByResourceGroupPager.
 type PacketCoreControlPlanesClientListByResourceGroupResponse struct {
 	PacketCoreControlPlaneListResult
 }
 
-// PacketCoreControlPlanesClientListBySubscriptionResponse contains the response from method PacketCoreControlPlanesClient.ListBySubscription.
+// PacketCoreControlPlanesClientListBySubscriptionResponse contains the response from method PacketCoreControlPlanesClient.NewListBySubscriptionPager.
 type PacketCoreControlPlanesClientListBySubscriptionResponse struct {
 	PacketCoreControlPlaneListResult
 }
 
-// PacketCoreControlPlanesClientReinstallResponse contains the response from method PacketCoreControlPlanesClient.Reinstall.
+// PacketCoreControlPlanesClientReinstallResponse contains the response from method PacketCoreControlPlanesClient.BeginReinstall.
 type PacketCoreControlPlanesClientReinstallResponse struct {
 	AsyncOperationStatus
 }
 
-// PacketCoreControlPlanesClientRollbackResponse contains the response from method PacketCoreControlPlanesClient.Rollback.
+// PacketCoreControlPlanesClientRollbackResponse contains the response from method PacketCoreControlPlanesClient.BeginRollback.
 type PacketCoreControlPlanesClientRollbackResponse struct {
 	AsyncOperationStatus
 }
@@ -149,12 +149,12 @@ type PacketCoreControlPlanesClientUpdateTagsResponse struct {
 	PacketCoreControlPlane
 }
 
-// PacketCoreDataPlanesClientCreateOrUpdateResponse contains the response from method PacketCoreDataPlanesClient.CreateOrUpdate.
+// PacketCoreDataPlanesClientCreateOrUpdateResponse contains the response from method PacketCoreDataPlanesClient.BeginCreateOrUpdate.
 type PacketCoreDataPlanesClientCreateOrUpdateResponse struct {
 	PacketCoreDataPlane
 }
 
-// PacketCoreDataPlanesClientDeleteResponse contains the response from method PacketCoreDataPlanesClient.Delete.
+// PacketCoreDataPlanesClientDeleteResponse contains the response from method PacketCoreDataPlanesClient.BeginDelete.
 type PacketCoreDataPlanesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -164,7 +164,7 @@ type PacketCoreDataPlanesClientGetResponse struct {
 	PacketCoreDataPlane
 }
 
-// PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse contains the response from method PacketCoreDataPlanesClient.ListByPacketCoreControlPlane.
+// PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse contains the response from method PacketCoreDataPlanesClient.NewListByPacketCoreControlPlanePager.
 type PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse struct {
 	PacketCoreDataPlaneListResult
 }
@@ -174,12 +174,12 @@ type PacketCoreDataPlanesClientUpdateTagsResponse struct {
 	PacketCoreDataPlane
 }
 
-// ServicesClientCreateOrUpdateResponse contains the response from method ServicesClient.CreateOrUpdate.
+// ServicesClientCreateOrUpdateResponse contains the response from method ServicesClient.BeginCreateOrUpdate.
 type ServicesClientCreateOrUpdateResponse struct {
 	Service
 }
 
-// ServicesClientDeleteResponse contains the response from method ServicesClient.Delete.
+// ServicesClientDeleteResponse contains the response from method ServicesClient.BeginDelete.
 type ServicesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -189,7 +189,7 @@ type ServicesClientGetResponse struct {
 	Service
 }
 
-// ServicesClientListByMobileNetworkResponse contains the response from method ServicesClient.ListByMobileNetwork.
+// ServicesClientListByMobileNetworkResponse contains the response from method ServicesClient.NewListByMobileNetworkPager.
 type ServicesClientListByMobileNetworkResponse struct {
 	ServiceListResult
 }
@@ -199,12 +199,12 @@ type ServicesClientUpdateTagsResponse struct {
 	Service
 }
 
-// SimGroupsClientCreateOrUpdateResponse contains the response from method SimGroupsClient.CreateOrUpdate.
+// SimGroupsClientCreateOrUpdateResponse contains the response from method SimGroupsClient.BeginCreateOrUpdate.
 type SimGroupsClientCreateOrUpdateResponse struct {
 	SimGroup
 }
 
-// SimGroupsClientDeleteResponse contains the response from method SimGroupsClient.Delete.
+// SimGroupsClientDeleteResponse contains the response from method SimGroupsClient.BeginDelete.
 type SimGroupsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -214,12 +214,12 @@ type SimGroupsClientGetResponse struct {
 	SimGroup
 }
 
-// SimGroupsClientListByResourceGroupResponse contains the response from method SimGroupsClient.ListByResourceGroup.
+// SimGroupsClientListByResourceGroupResponse contains the response from method SimGroupsClient.NewListByResourceGroupPager.
 type SimGroupsClientListByResourceGroupResponse struct {
 	SimGroupListResult
 }
 
-// SimGroupsClientListBySubscriptionResponse contains the response from method SimGroupsClient.ListBySubscription.
+// SimGroupsClientListBySubscriptionResponse contains the response from method SimGroupsClient.NewListBySubscriptionPager.
 type SimGroupsClientListBySubscriptionResponse struct {
 	SimGroupListResult
 }
@@ -229,12 +229,12 @@ type SimGroupsClientUpdateTagsResponse struct {
 	SimGroup
 }
 
-// SimPoliciesClientCreateOrUpdateResponse contains the response from method SimPoliciesClient.CreateOrUpdate.
+// SimPoliciesClientCreateOrUpdateResponse contains the response from method SimPoliciesClient.BeginCreateOrUpdate.
 type SimPoliciesClientCreateOrUpdateResponse struct {
 	SimPolicy
 }
 
-// SimPoliciesClientDeleteResponse contains the response from method SimPoliciesClient.Delete.
+// SimPoliciesClientDeleteResponse contains the response from method SimPoliciesClient.BeginDelete.
 type SimPoliciesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -244,7 +244,7 @@ type SimPoliciesClientGetResponse struct {
 	SimPolicy
 }
 
-// SimPoliciesClientListByMobileNetworkResponse contains the response from method SimPoliciesClient.ListByMobileNetwork.
+// SimPoliciesClientListByMobileNetworkResponse contains the response from method SimPoliciesClient.NewListByMobileNetworkPager.
 type SimPoliciesClientListByMobileNetworkResponse struct {
 	SimPolicyListResult
 }
@@ -254,27 +254,27 @@ type SimPoliciesClientUpdateTagsResponse struct {
 	SimPolicy
 }
 
-// SimsClientBulkDeleteResponse contains the response from method SimsClient.BulkDelete.
+// SimsClientBulkDeleteResponse contains the response from method SimsClient.BeginBulkDelete.
 type SimsClientBulkDeleteResponse struct {
 	AsyncOperationStatus
 }
 
-// SimsClientBulkUploadEncryptedResponse contains the response from method SimsClient.BulkUploadEncrypted.
+// SimsClientBulkUploadEncryptedResponse contains the response from method SimsClient.BeginBulkUploadEncrypted.
 type SimsClientBulkUploadEncryptedResponse struct {
 	AsyncOperationStatus
 }
 
-// SimsClientBulkUploadResponse contains the response from method SimsClient.BulkUpload.
+// SimsClientBulkUploadResponse contains the response from method SimsClient.BeginBulkUpload.
 type SimsClientBulkUploadResponse struct {
 	AsyncOperationStatus
 }
 
-// SimsClientCreateOrUpdateResponse contains the response from method SimsClient.CreateOrUpdate.
+// SimsClientCreateOrUpdateResponse contains the response from method SimsClient.BeginCreateOrUpdate.
 type SimsClientCreateOrUpdateResponse struct {
 	Sim
 }
 
-// SimsClientDeleteResponse contains the response from method SimsClient.Delete.
+// SimsClientDeleteResponse contains the response from method SimsClient.BeginDelete.
 type SimsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -284,17 +284,17 @@ type SimsClientGetResponse struct {
 	Sim
 }
 
-// SimsClientListByGroupResponse contains the response from method SimsClient.ListByGroup.
+// SimsClientListByGroupResponse contains the response from method SimsClient.NewListByGroupPager.
 type SimsClientListByGroupResponse struct {
 	SimListResult
 }
 
-// SitesClientCreateOrUpdateResponse contains the response from method SitesClient.CreateOrUpdate.
+// SitesClientCreateOrUpdateResponse contains the response from method SitesClient.BeginCreateOrUpdate.
 type SitesClientCreateOrUpdateResponse struct {
 	Site
 }
 
-// SitesClientDeleteResponse contains the response from method SitesClient.Delete.
+// SitesClientDeleteResponse contains the response from method SitesClient.BeginDelete.
 type SitesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -304,7 +304,7 @@ type SitesClientGetResponse struct {
 	Site
 }
 
-// SitesClientListByMobileNetworkResponse contains the response from method SitesClient.ListByMobileNetwork.
+// SitesClientListByMobileNetworkResponse contains the response from method SitesClient.NewListByMobileNetworkPager.
 type SitesClientListByMobileNetworkResponse struct {
 	SiteListResult
 }
@@ -314,12 +314,12 @@ type SitesClientUpdateTagsResponse struct {
 	Site
 }
 
-// SlicesClientCreateOrUpdateResponse contains the response from method SlicesClient.CreateOrUpdate.
+// SlicesClientCreateOrUpdateResponse contains the response from method SlicesClient.BeginCreateOrUpdate.
 type SlicesClientCreateOrUpdateResponse struct {
 	Slice
 }
 
-// SlicesClientDeleteResponse contains the response from method SlicesClient.Delete.
+// SlicesClientDeleteResponse contains the response from method SlicesClient.BeginDelete.
 type SlicesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -329,7 +329,7 @@ type SlicesClientGetResponse struct {
 	Slice
 }
 
-// SlicesClientListByMobileNetworkResponse contains the response from method SlicesClient.ListByMobileNetwork.
+// SlicesClientListByMobileNetworkResponse contains the response from method SlicesClient.NewListByMobileNetworkPager.
 type SlicesClientListByMobileNetworkResponse struct {
 	SliceListResult
 }

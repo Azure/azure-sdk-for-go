@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // AttachedDataNetworksClient contains the methods for the AttachedDataNetworks group.
 // Don't use this type directly, use NewAttachedDataNetworksClient() instead.
 type AttachedDataNetworksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAttachedDataNetworksClient creates a new instance of AttachedDataNetworksClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAttachedDataNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedDataNetworksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AttachedDataNetworksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AttachedDataNetworksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,38 +47,40 @@ func NewAttachedDataNetworksClient(subscriptionID string, credential azcore.Toke
 // BeginCreateOrUpdate - Creates or updates an attached data network. Must be created in the same location as its parent packet
 // core data plane.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// packetCoreDataPlaneName - The name of the packet core data plane.
-// attachedDataNetworkName - The name of the attached data network.
-// parameters - Parameters supplied to the create or update attached data network operation.
-// options - AttachedDataNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDataNetworksClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - packetCoreDataPlaneName - The name of the packet core data plane.
+//   - attachedDataNetworkName - The name of the attached data network.
+//   - parameters - Parameters supplied to the create or update attached data network operation.
+//   - options - AttachedDataNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDataNetworksClient.BeginCreateOrUpdate
+//     method.
 func (client *AttachedDataNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, parameters AttachedDataNetwork, options *AttachedDataNetworksClientBeginCreateOrUpdateOptions) (*runtime.Poller[AttachedDataNetworksClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AttachedDataNetworksClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AttachedDataNetworksClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AttachedDataNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AttachedDataNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an attached data network. Must be created in the same location as its parent packet
 // core data plane.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *AttachedDataNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, parameters AttachedDataNetwork, options *AttachedDataNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +113,7 @@ func (client *AttachedDataNetworksClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter attachedDataNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attachedDataNetworkName}", url.PathEscape(attachedDataNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,36 +126,38 @@ func (client *AttachedDataNetworksClient) createOrUpdateCreateRequest(ctx contex
 
 // BeginDelete - Deletes the specified attached data network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// packetCoreDataPlaneName - The name of the packet core data plane.
-// attachedDataNetworkName - The name of the attached data network.
-// options - AttachedDataNetworksClientBeginDeleteOptions contains the optional parameters for the AttachedDataNetworksClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - packetCoreDataPlaneName - The name of the packet core data plane.
+//   - attachedDataNetworkName - The name of the attached data network.
+//   - options - AttachedDataNetworksClientBeginDeleteOptions contains the optional parameters for the AttachedDataNetworksClient.BeginDelete
+//     method.
 func (client *AttachedDataNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, options *AttachedDataNetworksClientBeginDeleteOptions) (*runtime.Poller[AttachedDataNetworksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AttachedDataNetworksClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AttachedDataNetworksClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AttachedDataNetworksClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AttachedDataNetworksClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the specified attached data network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *AttachedDataNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, options *AttachedDataNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -197,7 +190,7 @@ func (client *AttachedDataNetworksClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter attachedDataNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attachedDataNetworkName}", url.PathEscape(attachedDataNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -210,19 +203,20 @@ func (client *AttachedDataNetworksClient) deleteCreateRequest(ctx context.Contex
 
 // Get - Gets information about the specified attached data network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// packetCoreDataPlaneName - The name of the packet core data plane.
-// attachedDataNetworkName - The name of the attached data network.
-// options - AttachedDataNetworksClientGetOptions contains the optional parameters for the AttachedDataNetworksClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - packetCoreDataPlaneName - The name of the packet core data plane.
+//   - attachedDataNetworkName - The name of the attached data network.
+//   - options - AttachedDataNetworksClientGetOptions contains the optional parameters for the AttachedDataNetworksClient.Get
+//     method.
 func (client *AttachedDataNetworksClient) Get(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, options *AttachedDataNetworksClientGetOptions) (AttachedDataNetworksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, options)
 	if err != nil {
 		return AttachedDataNetworksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AttachedDataNetworksClientGetResponse{}, err
 	}
@@ -255,7 +249,7 @@ func (client *AttachedDataNetworksClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter attachedDataNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attachedDataNetworkName}", url.PathEscape(attachedDataNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -276,12 +270,13 @@ func (client *AttachedDataNetworksClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByPacketCoreDataPlanePager - Gets all the attached data networks associated with a packet core data plane.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// packetCoreDataPlaneName - The name of the packet core data plane.
-// options - AttachedDataNetworksClientListByPacketCoreDataPlaneOptions contains the optional parameters for the AttachedDataNetworksClient.ListByPacketCoreDataPlane
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - packetCoreDataPlaneName - The name of the packet core data plane.
+//   - options - AttachedDataNetworksClientListByPacketCoreDataPlaneOptions contains the optional parameters for the AttachedDataNetworksClient.NewListByPacketCoreDataPlanePager
+//     method.
 func (client *AttachedDataNetworksClient) NewListByPacketCoreDataPlanePager(resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *AttachedDataNetworksClientListByPacketCoreDataPlaneOptions) *runtime.Pager[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse]{
 		More: func(page AttachedDataNetworksClientListByPacketCoreDataPlaneResponse) bool {
@@ -298,7 +293,7 @@ func (client *AttachedDataNetworksClient) NewListByPacketCoreDataPlanePager(reso
 			if err != nil {
 				return AttachedDataNetworksClientListByPacketCoreDataPlaneResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AttachedDataNetworksClientListByPacketCoreDataPlaneResponse{}, err
 			}
@@ -329,7 +324,7 @@ func (client *AttachedDataNetworksClient) listByPacketCoreDataPlaneCreateRequest
 		return nil, errors.New("parameter packetCoreDataPlaneName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packetCoreDataPlaneName}", url.PathEscape(packetCoreDataPlaneName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -351,20 +346,21 @@ func (client *AttachedDataNetworksClient) listByPacketCoreDataPlaneHandleRespons
 
 // UpdateTags - Updates an attached data network tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// packetCoreDataPlaneName - The name of the packet core data plane.
-// attachedDataNetworkName - The name of the attached data network.
-// parameters - Parameters supplied to update attached data network tags.
-// options - AttachedDataNetworksClientUpdateTagsOptions contains the optional parameters for the AttachedDataNetworksClient.UpdateTags
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - packetCoreDataPlaneName - The name of the packet core data plane.
+//   - attachedDataNetworkName - The name of the attached data network.
+//   - parameters - Parameters supplied to update attached data network tags.
+//   - options - AttachedDataNetworksClientUpdateTagsOptions contains the optional parameters for the AttachedDataNetworksClient.UpdateTags
+//     method.
 func (client *AttachedDataNetworksClient) UpdateTags(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, attachedDataNetworkName string, parameters TagsObject, options *AttachedDataNetworksClientUpdateTagsOptions) (AttachedDataNetworksClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, parameters, options)
 	if err != nil {
 		return AttachedDataNetworksClientUpdateTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AttachedDataNetworksClientUpdateTagsResponse{}, err
 	}
@@ -397,7 +393,7 @@ func (client *AttachedDataNetworksClient) updateTagsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter attachedDataNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attachedDataNetworkName}", url.PathEscape(attachedDataNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

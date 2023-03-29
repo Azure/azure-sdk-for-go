@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,49 +25,41 @@ import (
 // MetadataClient contains the methods for the Metadata group.
 // Don't use this type directly, use NewMetadataClient() instead.
 type MetadataClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewMetadataClient creates a new instance of MetadataClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetadataClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MetadataClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MetadataClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Create a Metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// metadataName - The Metadata name.
-// metadata - Metadata resource.
-// options - MetadataClientCreateOptions contains the optional parameters for the MetadataClient.Create method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - metadataName - The Metadata name.
+//   - metadata - Metadata resource.
+//   - options - MetadataClientCreateOptions contains the optional parameters for the MetadataClient.Create method.
 func (client *MetadataClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, metadata MetadataModel, options *MetadataClientCreateOptions) (MetadataClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, metadataName, metadata, options)
 	if err != nil {
 		return MetadataClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MetadataClientCreateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *MetadataClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter metadataName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{metadataName}", url.PathEscape(metadataName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *MetadataClient) createHandleResponse(resp *http.Response) (Metadat
 
 // Delete - Delete a Metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// metadataName - The Metadata name.
-// options - MetadataClientDeleteOptions contains the optional parameters for the MetadataClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - metadataName - The Metadata name.
+//   - options - MetadataClientDeleteOptions contains the optional parameters for the MetadataClient.Delete method.
 func (client *MetadataClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, options *MetadataClientDeleteOptions) (MetadataClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, metadataName, options)
 	if err != nil {
 		return MetadataClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MetadataClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *MetadataClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter metadataName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{metadataName}", url.PathEscape(metadataName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,17 +163,18 @@ func (client *MetadataClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Get a Metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// metadataName - The Metadata name.
-// options - MetadataClientGetOptions contains the optional parameters for the MetadataClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - metadataName - The Metadata name.
+//   - options - MetadataClientGetOptions contains the optional parameters for the MetadataClient.Get method.
 func (client *MetadataClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, options *MetadataClientGetOptions) (MetadataClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, metadataName, options)
 	if err != nil {
 		return MetadataClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MetadataClientGetResponse{}, err
 	}
@@ -211,7 +203,7 @@ func (client *MetadataClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter metadataName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{metadataName}", url.PathEscape(metadataName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,10 +224,11 @@ func (client *MetadataClient) getHandleResponse(resp *http.Response) (MetadataCl
 }
 
 // NewListPager - List of all metadata
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - MetadataClientListOptions contains the optional parameters for the MetadataClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - MetadataClientListOptions contains the optional parameters for the MetadataClient.NewListPager method.
 func (client *MetadataClient) NewListPager(resourceGroupName string, workspaceName string, options *MetadataClientListOptions) *runtime.Pager[MetadataClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MetadataClientListResponse]{
 		More: func(page MetadataClientListResponse) bool {
@@ -252,7 +245,7 @@ func (client *MetadataClient) NewListPager(resourceGroupName string, workspaceNa
 			if err != nil {
 				return MetadataClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MetadataClientListResponse{}, err
 			}
@@ -279,7 +272,7 @@ func (client *MetadataClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -313,18 +306,19 @@ func (client *MetadataClient) listHandleResponse(resp *http.Response) (MetadataC
 
 // Update - Update an existing Metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// metadataName - The Metadata name.
-// metadataPatch - Partial metadata request.
-// options - MetadataClientUpdateOptions contains the optional parameters for the MetadataClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - metadataName - The Metadata name.
+//   - metadataPatch - Partial metadata request.
+//   - options - MetadataClientUpdateOptions contains the optional parameters for the MetadataClient.Update method.
 func (client *MetadataClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, metadataPatch MetadataPatch, options *MetadataClientUpdateOptions) (MetadataClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, metadataName, metadataPatch, options)
 	if err != nil {
 		return MetadataClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MetadataClientUpdateResponse{}, err
 	}
@@ -353,7 +347,7 @@ func (client *MetadataClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter metadataName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{metadataName}", url.PathEscape(metadataName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

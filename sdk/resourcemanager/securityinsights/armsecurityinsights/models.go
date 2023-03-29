@@ -265,7 +265,7 @@ type AccountEntityProperties struct {
 	AccountName *string `json:"accountName,omitempty" azure:"ro"`
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The fully qualified domain DNS name.
 	DNSDomain *string `json:"dnsDomain,omitempty" azure:"ro"`
@@ -375,7 +375,7 @@ type ActionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ActionsClientListByAlertRuleOptions contains the optional parameters for the ActionsClient.ListByAlertRule method.
+// ActionsClientListByAlertRuleOptions contains the optional parameters for the ActionsClient.NewListByAlertRulePager method.
 type ActionsClientListByAlertRuleOptions struct {
 	// placeholder for future optional parameters
 }
@@ -699,7 +699,7 @@ type AlertRuleTemplatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertRuleTemplatesClientListOptions contains the optional parameters for the AlertRuleTemplatesClient.List method.
+// AlertRuleTemplatesClientListOptions contains the optional parameters for the AlertRuleTemplatesClient.NewListPager method.
 type AlertRuleTemplatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -728,7 +728,7 @@ type AlertRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertRulesClientListOptions contains the optional parameters for the AlertRulesClient.List method.
+// AlertRulesClientListOptions contains the optional parameters for the AlertRulesClient.NewListPager method.
 type AlertRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -851,7 +851,7 @@ type AnomalySecurityMLAnalyticsSettingsProperties struct {
 	AnomalySettingsVersion *int32 `json:"anomalySettingsVersion,omitempty"`
 
 	// The customizable observations of the AnomalySecurityMLAnalyticsSettings.
-	CustomizableObservations interface{} `json:"customizableObservations,omitempty"`
+	CustomizableObservations any `json:"customizableObservations,omitempty"`
 
 	// The description of the SecurityMLAnalyticsSettings.
 	Description *string `json:"description,omitempty"`
@@ -1107,7 +1107,7 @@ type AutomationRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AutomationRulesClientListOptions contains the optional parameters for the AutomationRulesClient.List method.
+// AutomationRulesClientListOptions contains the optional parameters for the AutomationRulesClient.NewListPager method.
 type AutomationRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1316,7 +1316,7 @@ func (a *AzureResourceEntity) GetEntity() *Entity {
 // AzureResourceEntityProperties - AzureResource entity property bag.
 type AzureResourceEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
@@ -1470,7 +1470,7 @@ type BookmarkRelationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BookmarkRelationsClientListOptions contains the optional parameters for the BookmarkRelationsClient.List method.
+// BookmarkRelationsClientListOptions contains the optional parameters for the BookmarkRelationsClient.NewListPager method.
 type BookmarkRelationsClientListOptions struct {
 	// Filters the results, based on a Boolean condition. Optional.
 	Filter *string
@@ -1536,7 +1536,7 @@ type BookmarksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BookmarksClientListOptions contains the optional parameters for the BookmarksClient.List method.
+// BookmarksClientListOptions contains the optional parameters for the BookmarksClient.NewListPager method.
 type BookmarksClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1605,7 +1605,7 @@ func (c *CloudApplicationEntity) GetEntity() *Entity {
 // CloudApplicationEntityProperties - CloudApplication entity property bag.
 type CloudApplicationEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The technical identifier of the application.
 	AppID *int32 `json:"appId,omitempty" azure:"ro"`
@@ -1674,7 +1674,7 @@ type CodelessConnectorPollingAuthProperties struct {
 	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
 
 	// The query parameters used in authorization request, used in Oauth 2.0 flow
-	AuthorizationEndpointQueryParameters interface{} `json:"authorizationEndpointQueryParameters,omitempty"`
+	AuthorizationEndpointQueryParameters any `json:"authorizationEndpointQueryParameters,omitempty"`
 
 	// Describes the flow name, for example 'AuthCode' for Oauth 2.0
 	FlowName *string `json:"flowName,omitempty"`
@@ -1695,10 +1695,10 @@ type CodelessConnectorPollingAuthProperties struct {
 	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
 
 	// The query headers used in token request, used in Oauth 2.0 flow
-	TokenEndpointHeaders interface{} `json:"tokenEndpointHeaders,omitempty"`
+	TokenEndpointHeaders any `json:"tokenEndpointHeaders,omitempty"`
 
 	// The query parameters used in token request, used in Oauth 2.0 flow
-	TokenEndpointQueryParameters interface{} `json:"tokenEndpointQueryParameters,omitempty"`
+	TokenEndpointQueryParameters any `json:"tokenEndpointQueryParameters,omitempty"`
 }
 
 // CodelessConnectorPollingConfigProperties - Config to describe the polling config for API poller connector
@@ -1767,10 +1767,10 @@ type CodelessConnectorPollingRequestProperties struct {
 	EndTimeAttributeName *string `json:"endTimeAttributeName,omitempty"`
 
 	// Describe the headers sent in the poll request
-	Headers interface{} `json:"headers,omitempty"`
+	Headers any `json:"headers,omitempty"`
 
 	// Describe the query parameters sent in the poll request
-	QueryParameters interface{} `json:"queryParameters,omitempty"`
+	QueryParameters any `json:"queryParameters,omitempty"`
 
 	// For advanced scenarios for example user name/password embedded in nested JSON payload
 	QueryParametersTemplate *string `json:"queryParametersTemplate,omitempty"`
@@ -1933,7 +1933,7 @@ func (c *CodelessUIDataConnector) GetDataConnector() *DataConnector {
 // ConnectedEntity - Expansion result connected entities
 type ConnectedEntity struct {
 	// key-value pairs for a connected entity mapping
-	AdditionalData interface{} `json:"additionalData,omitempty"`
+	AdditionalData any `json:"additionalData,omitempty"`
 
 	// Entity Id of the connected entity
 	TargetEntityID *string `json:"targetEntityId,omitempty"`
@@ -2016,7 +2016,7 @@ func (d *DNSEntity) GetEntity() *Entity {
 // DNSEntityProperties - Dns entity property bag.
 type DNSEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; An ip entity id for the dns server resolving the request
 	DNSServerIPEntityID *string `json:"dnsServerIpEntityId,omitempty" azure:"ro"`
@@ -2099,8 +2099,8 @@ type DataConnectorConnectBody struct {
 	OutputStream *string `json:"outputStream,omitempty"`
 
 	// The user password in the audit log server.
-	Password                     *string       `json:"password,omitempty"`
-	RequestConfigUserInputValues []interface{} `json:"requestConfigUserInputValues,omitempty"`
+	Password                     *string `json:"password,omitempty"`
+	RequestConfigUserInputValues []any   `json:"requestConfigUserInputValues,omitempty"`
 
 	// The user name in the audit log server.
 	UserName *string `json:"userName,omitempty"`
@@ -2185,7 +2185,7 @@ type DataConnectorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataConnectorsClientListOptions contains the optional parameters for the DataConnectorsClient.List method.
+// DataConnectorsClientListOptions contains the optional parameters for the DataConnectorsClient.NewListPager method.
 type DataConnectorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2484,7 +2484,7 @@ type EntitiesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EntitiesClientListOptions contains the optional parameters for the EntitiesClient.List method.
+// EntitiesClientListOptions contains the optional parameters for the EntitiesClient.NewListPager method.
 type EntitiesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2499,7 +2499,7 @@ type EntitiesGetTimelineClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EntitiesRelationsClientListOptions contains the optional parameters for the EntitiesRelationsClient.List method.
+// EntitiesRelationsClientListOptions contains the optional parameters for the EntitiesRelationsClient.NewListPager method.
 type EntitiesRelationsClientListOptions struct {
 	// Filters the results, based on a Boolean condition. Optional.
 	Filter *string
@@ -2591,7 +2591,7 @@ type EntityAnalyticsProperties struct {
 // EntityEdges - The edge that connects the entity to the other entity.
 type EntityEdges struct {
 	// A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty"`
+	AdditionalData map[string]any `json:"additionalData,omitempty"`
 
 	// The target entity Id.
 	TargetEntityID *string `json:"targetEntityId,omitempty"`
@@ -2717,7 +2717,7 @@ type EntityQueriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EntityQueriesClientListOptions contains the optional parameters for the EntityQueriesClient.List method.
+// EntityQueriesClientListOptions contains the optional parameters for the EntityQueriesClient.NewListPager method.
 type EntityQueriesClientListOptions struct {
 	// The entity query kind we want to fetch
 	Kind *Enum13
@@ -2841,7 +2841,8 @@ type EntityQueryTemplatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EntityQueryTemplatesClientListOptions contains the optional parameters for the EntityQueryTemplatesClient.List method.
+// EntityQueryTemplatesClientListOptions contains the optional parameters for the EntityQueryTemplatesClient.NewListPager
+// method.
 type EntityQueryTemplatesClientListOptions struct {
 	// The entity template query kind we want to fetch
 	Kind *Enum15
@@ -3064,7 +3065,7 @@ func (f *FileEntity) GetEntity() *Entity {
 // FileEntityProperties - File entity property bag.
 type FileEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The full path to the file.
 	Directory *string `json:"directory,omitempty" azure:"ro"`
@@ -3118,7 +3119,7 @@ func (f *FileHashEntity) GetEntity() *Entity {
 // FileHashEntityProperties - FileHash entity property bag.
 type FileHashEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The hash algorithm type.
 	Algorithm *FileHashAlgorithm `json:"algorithm,omitempty" azure:"ro"`
@@ -3216,7 +3217,7 @@ type FileImportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FileImportsClientListOptions contains the optional parameters for the FileImportsClient.List method.
+// FileImportsClientListOptions contains the optional parameters for the FileImportsClient.NewListPager method.
 type FileImportsClientListOptions struct {
 	// Filters the results, based on a Boolean condition. Optional.
 	Filter *string
@@ -3597,7 +3598,7 @@ type HostEntityProperties struct {
 	OSFamily *OSFamily `json:"osFamily,omitempty"`
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The azure resource id of the VM.
 	AzureID *string `json:"azureID,omitempty" azure:"ro"`
@@ -3697,7 +3698,7 @@ type HuntingBookmarkProperties struct {
 	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
@@ -3739,7 +3740,7 @@ func (i *IPEntity) GetEntity() *Entity {
 // IPEntityProperties - Ip entity property bag.
 type IPEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The IP address as string, e.g. 127.0.0.1 (either in Ipv4 or Ipv6)
 	Address *string `json:"address,omitempty" azure:"ro"`
@@ -3878,7 +3879,7 @@ type IncidentCommentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IncidentCommentsClientListOptions contains the optional parameters for the IncidentCommentsClient.List method.
+// IncidentCommentsClientListOptions contains the optional parameters for the IncidentCommentsClient.NewListPager method.
 type IncidentCommentsClientListOptions struct {
 	// Filters the results, based on a Boolean condition. Optional.
 	Filter *string
@@ -4072,7 +4073,7 @@ type IncidentRelationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IncidentRelationsClientListOptions contains the optional parameters for the IncidentRelationsClient.List method.
+// IncidentRelationsClientListOptions contains the optional parameters for the IncidentRelationsClient.NewListPager method.
 type IncidentRelationsClientListOptions struct {
 	// Filters the results, based on a Boolean condition. Optional.
 	Filter *string
@@ -4121,7 +4122,7 @@ type IncidentsClientListEntitiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IncidentsClientListOptions contains the optional parameters for the IncidentsClient.List method.
+// IncidentsClientListOptions contains the optional parameters for the IncidentsClient.NewListPager method.
 type IncidentsClientListOptions struct {
 	// Filters the results, based on a Boolean condition. Optional.
 	Filter *string
@@ -4177,7 +4178,7 @@ type InsightQueryItemProperties struct {
 	BaseQuery *string `json:"baseQuery,omitempty"`
 
 	// The insight chart query.
-	ChartQuery interface{} `json:"chartQuery,omitempty"`
+	ChartQuery any `json:"chartQuery,omitempty"`
 
 	// Data types for template
 	DataTypes []*EntityQueryItemPropertiesDataTypesItem `json:"dataTypes,omitempty"`
@@ -4192,7 +4193,7 @@ type InsightQueryItemProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// The query applied only to entities matching to all filters
-	EntitiesFilter interface{} `json:"entitiesFilter,omitempty"`
+	EntitiesFilter any `json:"entitiesFilter,omitempty"`
 
 	// The type of the entity
 	InputEntityType *EntityType `json:"inputEntityType,omitempty"`
@@ -4295,7 +4296,7 @@ type InstructionStepsInstructionsItem struct {
 	Type *SettingType `json:"type,omitempty"`
 
 	// The parameters for the setting
-	Parameters interface{} `json:"parameters,omitempty"`
+	Parameters any `json:"parameters,omitempty"`
 }
 
 // IoTCheckRequirements - Represents IoT requirements check request.
@@ -4403,7 +4404,7 @@ type IoTDeviceEntityProperties struct {
 	Importance *DeviceImportance `json:"importance,omitempty"`
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The ID of the IoT Device in the IoT Hub
 	DeviceID *string `json:"deviceId,omitempty" azure:"ro"`
@@ -4954,7 +4955,7 @@ func (m *MailClusterEntity) GetEntity() *Entity {
 // MailClusterEntityProperties - Mail cluster entity property bag.
 type MailClusterEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The cluster group
 	ClusterGroup *string `json:"clusterGroup,omitempty" azure:"ro"`
@@ -4972,13 +4973,13 @@ type MailClusterEntityProperties struct {
 	ClusterSourceType *string `json:"clusterSourceType,omitempty" azure:"ro"`
 
 	// READ-ONLY; Count of mail messages by DeliveryStatus string representation
-	CountByDeliveryStatus interface{} `json:"countByDeliveryStatus,omitempty" azure:"ro"`
+	CountByDeliveryStatus any `json:"countByDeliveryStatus,omitempty" azure:"ro"`
 
 	// READ-ONLY; Count of mail messages by ProtectionStatus string representation
-	CountByProtectionStatus interface{} `json:"countByProtectionStatus,omitempty" azure:"ro"`
+	CountByProtectionStatus any `json:"countByProtectionStatus,omitempty" azure:"ro"`
 
 	// READ-ONLY; Count of mail messages by ThreatType string representation
-	CountByThreatType interface{} `json:"countByThreatType,omitempty" azure:"ro"`
+	CountByThreatType any `json:"countByThreatType,omitempty" azure:"ro"`
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
@@ -5065,7 +5066,7 @@ type MailMessageEntityProperties struct {
 	DeliveryLocation *DeliveryLocation `json:"deliveryLocation,omitempty"`
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The File entity ids of this mail message's attachments
 	FileEntityIDs []*string `json:"fileEntityIds,omitempty" azure:"ro"`
@@ -5159,7 +5160,7 @@ func (m *MailboxEntity) GetEntity() *Entity {
 // MailboxEntityProperties - Mailbox entity property bag.
 type MailboxEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The mailbox's display name
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
@@ -5214,7 +5215,7 @@ func (m *MalwareEntity) GetEntity() *Entity {
 // MalwareEntityProperties - Malware entity property bag.
 type MalwareEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The malware category by the vendor, e.g. Trojan
 	Category *string `json:"category,omitempty" azure:"ro"`
@@ -5275,7 +5276,7 @@ type MetadataClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MetadataClientListOptions contains the optional parameters for the MetadataClient.List method.
+// MetadataClientListOptions contains the optional parameters for the MetadataClient.NewListPager method.
 type MetadataClientListOptions struct {
 	// Filters the results, based on a Boolean condition. Optional.
 	Filter *string
@@ -5715,7 +5716,7 @@ func (n *NicEntity) GetEntity() *Entity {
 // NicEntityProperties - Nic entity property bag.
 type NicEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
@@ -6096,7 +6097,7 @@ type OfficeConsentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OfficeConsentsClientListOptions contains the optional parameters for the OfficeConsentsClient.List method.
+// OfficeConsentsClientListOptions contains the optional parameters for the OfficeConsentsClient.NewListPager method.
 type OfficeConsentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -6352,7 +6353,7 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -6449,7 +6450,7 @@ type ProcessEntityProperties struct {
 	AccountEntityID *string `json:"accountEntityId,omitempty" azure:"ro"`
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The command line used to create the process
 	CommandLine *string `json:"commandLine,omitempty" azure:"ro"`
@@ -6589,7 +6590,7 @@ func (r *RegistryKeyEntity) GetEntity() *Entity {
 // RegistryKeyEntityProperties - RegistryKey entity property bag.
 type RegistryKeyEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
@@ -6637,7 +6638,7 @@ func (r *RegistryValueEntity) GetEntity() *Entity {
 // RegistryValueEntityProperties - RegistryValue entity property bag.
 type RegistryValueEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
@@ -7003,7 +7004,7 @@ type SecurityAlertProperties struct {
 	Severity *AlertSeverity `json:"severity,omitempty"`
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The display name of the alert.
 	AlertDisplayName *string `json:"alertDisplayName,omitempty" azure:"ro"`
@@ -7062,7 +7063,7 @@ type SecurityAlertProperties struct {
 	RemediationSteps []*string `json:"remediationSteps,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of resource identifiers of the alert.
-	ResourceIdentifiers []interface{} `json:"resourceIdentifiers,omitempty" azure:"ro"`
+	ResourceIdentifiers []any `json:"resourceIdentifiers,omitempty" azure:"ro"`
 
 	// READ-ONLY; The impact start time of the alert (the time of the first event contributing to the alert).
 	StartTimeUTC *time.Time `json:"startTimeUtc,omitempty" azure:"ro"`
@@ -7167,7 +7168,7 @@ func (s *SecurityGroupEntity) GetEntity() *Entity {
 // SecurityGroupEntityProperties - SecurityGroup entity property bag.
 type SecurityGroupEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The group distinguished name
 	DistinguishedName *string `json:"distinguishedName,omitempty" azure:"ro"`
@@ -7236,7 +7237,7 @@ type SecurityMLAnalyticsSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SecurityMLAnalyticsSettingsClientListOptions contains the optional parameters for the SecurityMLAnalyticsSettingsClient.List
+// SecurityMLAnalyticsSettingsClientListOptions contains the optional parameters for the SecurityMLAnalyticsSettingsClient.NewListPager
 // method.
 type SecurityMLAnalyticsSettingsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -7377,7 +7378,7 @@ type SourceControl struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// SourceControlClientListRepositoriesOptions contains the optional parameters for the SourceControlClient.ListRepositories
+// SourceControlClientListRepositoriesOptions contains the optional parameters for the SourceControlClient.NewListRepositoriesPager
 // method.
 type SourceControlClientListRepositoriesOptions struct {
 	// placeholder for future optional parameters
@@ -7437,7 +7438,7 @@ type SourceControlsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SourceControlsClientListOptions contains the optional parameters for the SourceControlsClient.List method.
+// SourceControlsClientListOptions contains the optional parameters for the SourceControlsClient.NewListPager method.
 type SourceControlsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -7477,7 +7478,7 @@ func (s *SubmissionMailEntity) GetEntity() *Entity {
 // SubmissionMailEntityProperties - Submission mail entity property bag.
 type SubmissionMailEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
@@ -7907,7 +7908,7 @@ type ThreatIntelligenceIndicatorClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ThreatIntelligenceIndicatorClientQueryIndicatorsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.QueryIndicators
+// ThreatIntelligenceIndicatorClientQueryIndicatorsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.NewQueryIndicatorsPager
 // method.
 type ThreatIntelligenceIndicatorClientQueryIndicatorsOptions struct {
 	// placeholder for future optional parameters
@@ -7982,7 +7983,7 @@ type ThreatIntelligenceIndicatorProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Extensions map
-	Extensions map[string]interface{} `json:"extensions,omitempty"`
+	Extensions map[string]any `json:"extensions,omitempty"`
 
 	// External ID of threat intelligence entity
 	ExternalID *string `json:"externalId,omitempty"`
@@ -8048,14 +8049,14 @@ type ThreatIntelligenceIndicatorProperties struct {
 	ValidUntil *string `json:"validUntil,omitempty"`
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
 	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
 }
 
-// ThreatIntelligenceIndicatorsClientListOptions contains the optional parameters for the ThreatIntelligenceIndicatorsClient.List
+// ThreatIntelligenceIndicatorsClientListOptions contains the optional parameters for the ThreatIntelligenceIndicatorsClient.NewListPager
 // method.
 type ThreatIntelligenceIndicatorsClientListOptions struct {
 	// Filters the results, based on a Boolean condition. Optional.
@@ -8357,7 +8358,7 @@ func (u *URLEntity) GetEntity() *Entity {
 // URLEntityProperties - Url entity property bag.
 type URLEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
@@ -8484,7 +8485,7 @@ type WatchlistItemList struct {
 // WatchlistItemProperties - Describes watchlist item properties
 type WatchlistItemProperties struct {
 	// REQUIRED; key-value pairs for a watchlist item
-	ItemsKeyValue map[string]interface{} `json:"itemsKeyValue,omitempty"`
+	ItemsKeyValue map[string]any `json:"itemsKeyValue,omitempty"`
 
 	// The time the watchlist item was created
 	Created *time.Time `json:"created,omitempty"`
@@ -8493,7 +8494,7 @@ type WatchlistItemProperties struct {
 	CreatedBy *UserInfo `json:"createdBy,omitempty"`
 
 	// key-value pairs for a watchlist item entity mapping
-	EntityMapping map[string]interface{} `json:"entityMapping,omitempty"`
+	EntityMapping map[string]any `json:"entityMapping,omitempty"`
 
 	// A flag that indicates if the watchlist item is deleted or not
 	IsDeleted *bool `json:"isDeleted,omitempty"`
@@ -8530,7 +8531,7 @@ type WatchlistItemsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WatchlistItemsClientListOptions contains the optional parameters for the WatchlistItemsClient.List method.
+// WatchlistItemsClientListOptions contains the optional parameters for the WatchlistItemsClient.NewListPager method.
 type WatchlistItemsClientListOptions struct {
 	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
 	// the value of the nextLink element will include a skiptoken parameter that
@@ -8632,7 +8633,7 @@ type WatchlistsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WatchlistsClientListOptions contains the optional parameters for the WatchlistsClient.List method.
+// WatchlistsClientListOptions contains the optional parameters for the WatchlistsClient.NewListPager method.
 type WatchlistsClientListOptions struct {
 	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
 	// the value of the nextLink element will include a skiptoken parameter that

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // EntityQueryTemplatesClient contains the methods for the EntityQueryTemplates group.
 // Don't use this type directly, use NewEntityQueryTemplatesClient() instead.
 type EntityQueryTemplatesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewEntityQueryTemplatesClient creates a new instance of EntityQueryTemplatesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEntityQueryTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntityQueryTemplatesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EntityQueryTemplatesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EntityQueryTemplatesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets an entity query.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityQueryTemplateID - entity query template ID
-// options - EntityQueryTemplatesClientGetOptions contains the optional parameters for the EntityQueryTemplatesClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityQueryTemplateID - entity query template ID
+//   - options - EntityQueryTemplatesClientGetOptions contains the optional parameters for the EntityQueryTemplatesClient.Get
+//     method.
 func (client *EntityQueryTemplatesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, entityQueryTemplateID string, options *EntityQueryTemplatesClientGetOptions) (EntityQueryTemplatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, entityQueryTemplateID, options)
 	if err != nil {
 		return EntityQueryTemplatesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EntityQueryTemplatesClientGetResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *EntityQueryTemplatesClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter entityQueryTemplateID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{entityQueryTemplateId}", url.PathEscape(entityQueryTemplateID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -118,11 +108,12 @@ func (client *EntityQueryTemplatesClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - Gets all entity query templates.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - EntityQueryTemplatesClientListOptions contains the optional parameters for the EntityQueryTemplatesClient.List
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - EntityQueryTemplatesClientListOptions contains the optional parameters for the EntityQueryTemplatesClient.NewListPager
+//     method.
 func (client *EntityQueryTemplatesClient) NewListPager(resourceGroupName string, workspaceName string, options *EntityQueryTemplatesClientListOptions) *runtime.Pager[EntityQueryTemplatesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EntityQueryTemplatesClientListResponse]{
 		More: func(page EntityQueryTemplatesClientListResponse) bool {
@@ -139,7 +130,7 @@ func (client *EntityQueryTemplatesClient) NewListPager(resourceGroupName string,
 			if err != nil {
 				return EntityQueryTemplatesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EntityQueryTemplatesClientListResponse{}, err
 			}
@@ -166,7 +157,7 @@ func (client *EntityQueryTemplatesClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

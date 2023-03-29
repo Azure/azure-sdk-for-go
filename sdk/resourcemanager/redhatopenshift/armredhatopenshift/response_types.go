@@ -24,7 +24,7 @@ type MachinePoolsClientGetResponse struct {
 	MachinePool
 }
 
-// MachinePoolsClientListResponse contains the response from method MachinePoolsClient.List.
+// MachinePoolsClientListResponse contains the response from method MachinePoolsClient.NewListPager.
 type MachinePoolsClientListResponse struct {
 	MachinePoolList
 }
@@ -34,12 +34,12 @@ type MachinePoolsClientUpdateResponse struct {
 	MachinePool
 }
 
-// OpenShiftClustersClientCreateOrUpdateResponse contains the response from method OpenShiftClustersClient.CreateOrUpdate.
+// OpenShiftClustersClientCreateOrUpdateResponse contains the response from method OpenShiftClustersClient.BeginCreateOrUpdate.
 type OpenShiftClustersClientCreateOrUpdateResponse struct {
 	OpenShiftCluster
 }
 
-// OpenShiftClustersClientDeleteResponse contains the response from method OpenShiftClustersClient.Delete.
+// OpenShiftClustersClientDeleteResponse contains the response from method OpenShiftClustersClient.BeginDelete.
 type OpenShiftClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -54,7 +54,7 @@ type OpenShiftClustersClientListAdminCredentialsResponse struct {
 	OpenShiftClusterAdminKubeconfig
 }
 
-// OpenShiftClustersClientListByResourceGroupResponse contains the response from method OpenShiftClustersClient.ListByResourceGroup.
+// OpenShiftClustersClientListByResourceGroupResponse contains the response from method OpenShiftClustersClient.NewListByResourceGroupPager.
 type OpenShiftClustersClientListByResourceGroupResponse struct {
 	OpenShiftClusterList
 }
@@ -64,22 +64,22 @@ type OpenShiftClustersClientListCredentialsResponse struct {
 	OpenShiftClusterCredentials
 }
 
-// OpenShiftClustersClientListResponse contains the response from method OpenShiftClustersClient.List.
+// OpenShiftClustersClientListResponse contains the response from method OpenShiftClustersClient.NewListPager.
 type OpenShiftClustersClientListResponse struct {
 	OpenShiftClusterList
 }
 
-// OpenShiftClustersClientUpdateResponse contains the response from method OpenShiftClustersClient.Update.
+// OpenShiftClustersClientUpdateResponse contains the response from method OpenShiftClustersClient.BeginUpdate.
 type OpenShiftClustersClientUpdateResponse struct {
 	OpenShiftCluster
 }
 
-// OpenShiftVersionsClientListResponse contains the response from method OpenShiftVersionsClient.List.
+// OpenShiftVersionsClientListResponse contains the response from method OpenShiftVersionsClient.NewListPager.
 type OpenShiftVersionsClientListResponse struct {
 	OpenShiftVersionList
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationList
 }
@@ -99,7 +99,7 @@ type SecretsClientGetResponse struct {
 	Secret
 }
 
-// SecretsClientListResponse contains the response from method SecretsClient.List.
+// SecretsClientListResponse contains the response from method SecretsClient.NewListPager.
 type SecretsClientListResponse struct {
 	SecretList
 }
@@ -124,7 +124,7 @@ type SyncIdentityProvidersClientGetResponse struct {
 	SyncIdentityProvider
 }
 
-// SyncIdentityProvidersClientListResponse contains the response from method SyncIdentityProvidersClient.List.
+// SyncIdentityProvidersClientListResponse contains the response from method SyncIdentityProvidersClient.NewListPager.
 type SyncIdentityProvidersClientListResponse struct {
 	SyncIdentityProviderList
 }
@@ -149,7 +149,7 @@ type SyncSetsClientGetResponse struct {
 	SyncSet
 }
 
-// SyncSetsClientListResponse contains the response from method SyncSetsClient.List.
+// SyncSetsClientListResponse contains the response from method SyncSetsClient.NewListPager.
 type SyncSetsClientListResponse struct {
 	SyncSetList
 }

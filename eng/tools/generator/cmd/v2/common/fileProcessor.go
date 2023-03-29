@@ -246,69 +246,98 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 	return ioutil.WriteFile(path, []byte(contents), 0644)
 }
 
+const (
+	Stable = iota + 1
+	Beta
+	FirstStable
+	FirstBeta
+	StableBreakingChange
+	BetaBreakingChange
+)
+
+var versionLabels = map[int]string{
+	Stable:               "stable",
+	Beta:                 "beta",
+	FirstStable:          "first stable",
+	FirstBeta:            "first beta",
+	StableBreakingChange: "stable,breaking-change",
+	BetaBreakingChange:   "beta,breaking-change",
+}
+
 // calculate new version by changelog using semver package
-func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, error) {
+func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, int, error) {
 	version, err := semver.NewVersion(previousVersion)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	log.Printf("Lastest version is: %s", version.String())
 
 	var newVersion semver.Version
+	var vl int
 	if version.Major() == 0 {
 		// preview version calculation
 		if !isCurrentPreview {
 			tempVersion, err := semver.NewVersion("1.0.0")
 			if err != nil {
-				return nil, err
+				return nil, 0, err
 			}
 			newVersion = *tempVersion
+			vl = FirstStable
 		} else if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()
+			vl = Beta
 		} else {
 			newVersion = version.IncPatch()
+			vl = Beta
 		}
 	} else {
 		if isCurrentPreview {
 			if strings.Contains(previousVersion, "beta") {
 				betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
 				if err != nil {
-					return nil, err
+					return nil, 0, err
 				}
 				newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1))
 				if err != nil {
-					return nil, err
+					return nil, 0, err
 				}
+				vl = Beta
 			} else {
 				if changelog.HasBreakingChanges() {
 					newVersion = version.IncMajor()
+					vl = BetaBreakingChange
 				} else if changelog.Modified.HasAdditiveChanges() {
 					newVersion = version.IncMinor()
+					vl = Beta
 				} else {
 					newVersion = version.IncPatch()
+					vl = Beta
 				}
 				newVersion, err = newVersion.SetPrerelease("beta.1")
 				if err != nil {
-					return nil, err
+					return nil, 0, err
 				}
 			}
 		} else {
 			if strings.Contains(previousVersion, "beta") {
-				return nil, fmt.Errorf("must have stable previous version")
+				return nil, 0, fmt.Errorf("must have stable previous version")
 			}
 			// release version calculation
 			if changelog.HasBreakingChanges() {
 				newVersion = version.IncMajor()
+				vl = StableBreakingChange
 			} else if changelog.Modified.HasAdditiveChanges() {
 				newVersion = version.IncMinor()
+				vl = Stable
 			} else {
 				newVersion = version.IncPatch()
+				vl = Stable
 			}
 		}
 	}
 
 	log.Printf("New version is: %s", newVersion.String())
-	return &newVersion, nil
+	return &newVersion, vl, nil
 }
 
 // add new changelog md to changelog file

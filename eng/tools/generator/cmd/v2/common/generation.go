@@ -37,6 +37,7 @@ type GenerateResult struct {
 	PackageAbsPath string
 	Changelog      model.Changelog
 	ChangelogMD    string
+	VersionLabels  string
 }
 
 type GenerateParam struct {
@@ -225,6 +226,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	log.Printf("filter changelog...")
 	FilterChangelog(changelog, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter)
 
+	var vl int
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
 		if err = ReplaceNewClientNamePlaceholder(packagePath, newExports); err != nil {
@@ -242,6 +244,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			}
 		}
 
+		vl = FirstBeta
 		if !isCurrentPreview {
 			version, err = semver.NewVersion("1.0.0")
 			if err != nil {
@@ -257,6 +260,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			if err = ReplaceVersion(packagePath, version.String()); err != nil {
 				return nil, err
 			}
+			vl = FirstStable
 		}
 
 		return &GenerateResult{
@@ -266,11 +270,12 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
 			ChangelogMD:    changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
+			VersionLabels:  versionLabels[vl],
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
 		if generateParam.SpecficVersion == "" {
-			version, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
+			version, vl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
 			if err != nil {
 				return nil, err
 			}
@@ -312,6 +317,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
 			ChangelogMD:    changelogMd + "\n" + changelog.GetChangeSummary(),
+			VersionLabels:  versionLabels[vl],
 		}, nil
 	}
 }

@@ -7,6 +7,7 @@ package amqpwrap
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
@@ -95,7 +96,7 @@ func (w *AMQPClientWrapper) NewSession(ctx context.Context, opts *amqp.SessionOp
 	sess, err := w.Inner.NewSession(ctx, opts)
 
 	if err != nil {
-		return nil, err
+		return nil, translateError(err)
 	}
 
 	return &AMQPSessionWrapper{
@@ -108,14 +109,18 @@ type AMQPSessionWrapper struct {
 }
 
 func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
-	return w.Inner.Close(ctx)
+	if err := w.Inner.Close(ctx); err != nil {
+		return translateError(err)
+	}
+
+	return nil
 }
 
 func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
 	receiver, err := w.Inner.NewReceiver(ctx, source, opts)
 
 	if err != nil {
-		return nil, err
+		return nil, translateError(err)
 	}
 
 	return &AMQPReceiverWrapper{inner: receiver}, nil
@@ -125,7 +130,7 @@ func (w *AMQPSessionWrapper) NewSender(ctx context.Context, target string, opts 
 	sender, err := w.Inner.NewSender(ctx, target, opts)
 
 	if err != nil {
-		return nil, err
+		return nil, translateError(err)
 	}
 
 	return sender, nil
@@ -198,5 +203,43 @@ func (rw *AMQPReceiverWrapper) LinkSourceFilterValue(name string) any {
 }
 
 func (rw *AMQPReceiverWrapper) Close(ctx context.Context) error {
-	return rw.inner.Close(ctx)
+	if err := rw.inner.Close(ctx); err != nil {
+		return translateError(err)
+	}
+
+	return nil
 }
+
+type AMQPSenderWrapper struct {
+	inner *amqp.Sender
+}
+
+func (sw *AMQPSenderWrapper) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
+	return sw.inner.Send(ctx, msg, o)
+}
+
+func (sw *AMQPSenderWrapper) MaxMessageSize() uint64 {
+	return sw.inner.MaxMessageSize()
+}
+
+func (sw *AMQPSenderWrapper) LinkName() string {
+	return sw.inner.LinkName()
+}
+
+func (sw *AMQPSenderWrapper) Close(ctx context.Context) error {
+	if err := sw.inner.Close(ctx); err != nil {
+		return translateError(err)
+	}
+
+	return nil
+}
+
+func translateError(err error) error {
+	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		return ErrConnResetNeeded
+	}
+
+	return err
+}
+
+var ErrConnResetNeeded = errors.New("connection must be reset, link/connection state may be inconsistent")

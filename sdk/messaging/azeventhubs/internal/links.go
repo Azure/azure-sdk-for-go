@@ -104,7 +104,7 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 				// if we failed to close a link then something odd is going on with
 				// our connection or the user has cancelled. Let the next attempt to use
 				// the connection recover it.
-				return errConnResetNeeded
+				return amqpwrap.ErrConnResetNeeded
 			}
 
 			// we don't need to propagate this error - it'll just be the link detach error or whatever

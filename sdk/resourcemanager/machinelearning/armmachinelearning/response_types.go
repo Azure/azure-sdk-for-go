@@ -9,12 +9,12 @@
 
 package armmachinelearning
 
-// BatchDeploymentsClientCreateOrUpdateResponse contains the response from method BatchDeploymentsClient.CreateOrUpdate.
+// BatchDeploymentsClientCreateOrUpdateResponse contains the response from method BatchDeploymentsClient.BeginCreateOrUpdate.
 type BatchDeploymentsClientCreateOrUpdateResponse struct {
 	BatchDeployment
 }
 
-// BatchDeploymentsClientDeleteResponse contains the response from method BatchDeploymentsClient.Delete.
+// BatchDeploymentsClientDeleteResponse contains the response from method BatchDeploymentsClient.BeginDelete.
 type BatchDeploymentsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,22 +24,22 @@ type BatchDeploymentsClientGetResponse struct {
 	BatchDeployment
 }
 
-// BatchDeploymentsClientListResponse contains the response from method BatchDeploymentsClient.List.
+// BatchDeploymentsClientListResponse contains the response from method BatchDeploymentsClient.NewListPager.
 type BatchDeploymentsClientListResponse struct {
 	BatchDeploymentTrackedResourceArmPaginatedResult
 }
 
-// BatchDeploymentsClientUpdateResponse contains the response from method BatchDeploymentsClient.Update.
+// BatchDeploymentsClientUpdateResponse contains the response from method BatchDeploymentsClient.BeginUpdate.
 type BatchDeploymentsClientUpdateResponse struct {
 	BatchDeployment
 }
 
-// BatchEndpointsClientCreateOrUpdateResponse contains the response from method BatchEndpointsClient.CreateOrUpdate.
+// BatchEndpointsClientCreateOrUpdateResponse contains the response from method BatchEndpointsClient.BeginCreateOrUpdate.
 type BatchEndpointsClientCreateOrUpdateResponse struct {
 	BatchEndpoint
 }
 
-// BatchEndpointsClientDeleteResponse contains the response from method BatchEndpointsClient.Delete.
+// BatchEndpointsClientDeleteResponse contains the response from method BatchEndpointsClient.BeginDelete.
 type BatchEndpointsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -54,12 +54,12 @@ type BatchEndpointsClientListKeysResponse struct {
 	EndpointAuthKeys
 }
 
-// BatchEndpointsClientListResponse contains the response from method BatchEndpointsClient.List.
+// BatchEndpointsClientListResponse contains the response from method BatchEndpointsClient.NewListPager.
 type BatchEndpointsClientListResponse struct {
 	BatchEndpointTrackedResourceArmPaginatedResult
 }
 
-// BatchEndpointsClientUpdateResponse contains the response from method BatchEndpointsClient.Update.
+// BatchEndpointsClientUpdateResponse contains the response from method BatchEndpointsClient.BeginUpdate.
 type BatchEndpointsClientUpdateResponse struct {
 	BatchEndpoint
 }
@@ -79,7 +79,7 @@ type CodeContainersClientGetResponse struct {
 	CodeContainer
 }
 
-// CodeContainersClientListResponse contains the response from method CodeContainersClient.List.
+// CodeContainersClientListResponse contains the response from method CodeContainersClient.NewListPager.
 type CodeContainersClientListResponse struct {
 	CodeContainerResourceArmPaginatedResult
 }
@@ -99,7 +99,7 @@ type CodeVersionsClientGetResponse struct {
 	CodeVersion
 }
 
-// CodeVersionsClientListResponse contains the response from method CodeVersionsClient.List.
+// CodeVersionsClientListResponse contains the response from method CodeVersionsClient.NewListPager.
 type CodeVersionsClientListResponse struct {
 	CodeVersionResourceArmPaginatedResult
 }
@@ -119,7 +119,7 @@ type ComponentContainersClientGetResponse struct {
 	ComponentContainer
 }
 
-// ComponentContainersClientListResponse contains the response from method ComponentContainersClient.List.
+// ComponentContainersClientListResponse contains the response from method ComponentContainersClient.NewListPager.
 type ComponentContainersClientListResponse struct {
 	ComponentContainerResourceArmPaginatedResult
 }
@@ -139,17 +139,17 @@ type ComponentVersionsClientGetResponse struct {
 	ComponentVersion
 }
 
-// ComponentVersionsClientListResponse contains the response from method ComponentVersionsClient.List.
+// ComponentVersionsClientListResponse contains the response from method ComponentVersionsClient.NewListPager.
 type ComponentVersionsClientListResponse struct {
 	ComponentVersionResourceArmPaginatedResult
 }
 
-// ComputeClientCreateOrUpdateResponse contains the response from method ComputeClient.CreateOrUpdate.
+// ComputeClientCreateOrUpdateResponse contains the response from method ComputeClient.BeginCreateOrUpdate.
 type ComputeClientCreateOrUpdateResponse struct {
 	ComputeResource
 }
 
-// ComputeClientDeleteResponse contains the response from method ComputeClient.Delete.
+// ComputeClientDeleteResponse contains the response from method ComputeClient.BeginDelete.
 type ComputeClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -174,32 +174,32 @@ func (c *ComputeClientListKeysResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ComputeClientListNodesResponse contains the response from method ComputeClient.ListNodes.
+// ComputeClientListNodesResponse contains the response from method ComputeClient.NewListNodesPager.
 type ComputeClientListNodesResponse struct {
 	AmlComputeNodesInformation
 }
 
-// ComputeClientListResponse contains the response from method ComputeClient.List.
+// ComputeClientListResponse contains the response from method ComputeClient.NewListPager.
 type ComputeClientListResponse struct {
 	PaginatedComputeResourcesList
 }
 
-// ComputeClientRestartResponse contains the response from method ComputeClient.Restart.
+// ComputeClientRestartResponse contains the response from method ComputeClient.BeginRestart.
 type ComputeClientRestartResponse struct {
 	// placeholder for future response values
 }
 
-// ComputeClientStartResponse contains the response from method ComputeClient.Start.
+// ComputeClientStartResponse contains the response from method ComputeClient.BeginStart.
 type ComputeClientStartResponse struct {
 	// placeholder for future response values
 }
 
-// ComputeClientStopResponse contains the response from method ComputeClient.Stop.
+// ComputeClientStopResponse contains the response from method ComputeClient.BeginStop.
 type ComputeClientStopResponse struct {
 	// placeholder for future response values
 }
 
-// ComputeClientUpdateResponse contains the response from method ComputeClient.Update.
+// ComputeClientUpdateResponse contains the response from method ComputeClient.BeginUpdate.
 type ComputeClientUpdateResponse struct {
 	ComputeResource
 }
@@ -219,7 +219,7 @@ type DataContainersClientGetResponse struct {
 	DataContainer
 }
 
-// DataContainersClientListResponse contains the response from method DataContainersClient.List.
+// DataContainersClientListResponse contains the response from method DataContainersClient.NewListPager.
 type DataContainersClientListResponse struct {
 	DataContainerResourceArmPaginatedResult
 }
@@ -239,7 +239,7 @@ type DataVersionsClientGetResponse struct {
 	DataVersionBase
 }
 
-// DataVersionsClientListResponse contains the response from method DataVersionsClient.List.
+// DataVersionsClientListResponse contains the response from method DataVersionsClient.NewListPager.
 type DataVersionsClientListResponse struct {
 	DataVersionBaseResourceArmPaginatedResult
 }
@@ -259,7 +259,7 @@ type DatastoresClientGetResponse struct {
 	Datastore
 }
 
-// DatastoresClientListResponse contains the response from method DatastoresClient.List.
+// DatastoresClientListResponse contains the response from method DatastoresClient.NewListPager.
 type DatastoresClientListResponse struct {
 	DatastoreResourceArmPaginatedResult
 }
@@ -294,7 +294,7 @@ type EnvironmentContainersClientGetResponse struct {
 	EnvironmentContainer
 }
 
-// EnvironmentContainersClientListResponse contains the response from method EnvironmentContainersClient.List.
+// EnvironmentContainersClientListResponse contains the response from method EnvironmentContainersClient.NewListPager.
 type EnvironmentContainersClientListResponse struct {
 	EnvironmentContainerResourceArmPaginatedResult
 }
@@ -314,12 +314,12 @@ type EnvironmentVersionsClientGetResponse struct {
 	EnvironmentVersion
 }
 
-// EnvironmentVersionsClientListResponse contains the response from method EnvironmentVersionsClient.List.
+// EnvironmentVersionsClientListResponse contains the response from method EnvironmentVersionsClient.NewListPager.
 type EnvironmentVersionsClientListResponse struct {
 	EnvironmentVersionResourceArmPaginatedResult
 }
 
-// JobsClientCancelResponse contains the response from method JobsClient.Cancel.
+// JobsClientCancelResponse contains the response from method JobsClient.BeginCancel.
 type JobsClientCancelResponse struct {
 	// placeholder for future response values
 }
@@ -329,7 +329,7 @@ type JobsClientCreateOrUpdateResponse struct {
 	JobBase
 }
 
-// JobsClientDeleteResponse contains the response from method JobsClient.Delete.
+// JobsClientDeleteResponse contains the response from method JobsClient.BeginDelete.
 type JobsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -339,7 +339,7 @@ type JobsClientGetResponse struct {
 	JobBase
 }
 
-// JobsClientListResponse contains the response from method JobsClient.List.
+// JobsClientListResponse contains the response from method JobsClient.NewListPager.
 type JobsClientListResponse struct {
 	JobBaseResourceArmPaginatedResult
 }
@@ -359,7 +359,7 @@ type ModelContainersClientGetResponse struct {
 	ModelContainer
 }
 
-// ModelContainersClientListResponse contains the response from method ModelContainersClient.List.
+// ModelContainersClientListResponse contains the response from method ModelContainersClient.NewListPager.
 type ModelContainersClientListResponse struct {
 	ModelContainerResourceArmPaginatedResult
 }
@@ -379,17 +379,17 @@ type ModelVersionsClientGetResponse struct {
 	ModelVersion
 }
 
-// ModelVersionsClientListResponse contains the response from method ModelVersionsClient.List.
+// ModelVersionsClientListResponse contains the response from method ModelVersionsClient.NewListPager.
 type ModelVersionsClientListResponse struct {
 	ModelVersionResourceArmPaginatedResult
 }
 
-// OnlineDeploymentsClientCreateOrUpdateResponse contains the response from method OnlineDeploymentsClient.CreateOrUpdate.
+// OnlineDeploymentsClientCreateOrUpdateResponse contains the response from method OnlineDeploymentsClient.BeginCreateOrUpdate.
 type OnlineDeploymentsClientCreateOrUpdateResponse struct {
 	OnlineDeployment
 }
 
-// OnlineDeploymentsClientDeleteResponse contains the response from method OnlineDeploymentsClient.Delete.
+// OnlineDeploymentsClientDeleteResponse contains the response from method OnlineDeploymentsClient.BeginDelete.
 type OnlineDeploymentsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -404,27 +404,27 @@ type OnlineDeploymentsClientGetResponse struct {
 	OnlineDeployment
 }
 
-// OnlineDeploymentsClientListResponse contains the response from method OnlineDeploymentsClient.List.
+// OnlineDeploymentsClientListResponse contains the response from method OnlineDeploymentsClient.NewListPager.
 type OnlineDeploymentsClientListResponse struct {
 	OnlineDeploymentTrackedResourceArmPaginatedResult
 }
 
-// OnlineDeploymentsClientListSKUsResponse contains the response from method OnlineDeploymentsClient.ListSKUs.
+// OnlineDeploymentsClientListSKUsResponse contains the response from method OnlineDeploymentsClient.NewListSKUsPager.
 type OnlineDeploymentsClientListSKUsResponse struct {
 	SKUResourceArmPaginatedResult
 }
 
-// OnlineDeploymentsClientUpdateResponse contains the response from method OnlineDeploymentsClient.Update.
+// OnlineDeploymentsClientUpdateResponse contains the response from method OnlineDeploymentsClient.BeginUpdate.
 type OnlineDeploymentsClientUpdateResponse struct {
 	OnlineDeployment
 }
 
-// OnlineEndpointsClientCreateOrUpdateResponse contains the response from method OnlineEndpointsClient.CreateOrUpdate.
+// OnlineEndpointsClientCreateOrUpdateResponse contains the response from method OnlineEndpointsClient.BeginCreateOrUpdate.
 type OnlineEndpointsClientCreateOrUpdateResponse struct {
 	OnlineEndpoint
 }
 
-// OnlineEndpointsClientDeleteResponse contains the response from method OnlineEndpointsClient.Delete.
+// OnlineEndpointsClientDeleteResponse contains the response from method OnlineEndpointsClient.BeginDelete.
 type OnlineEndpointsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -444,22 +444,22 @@ type OnlineEndpointsClientListKeysResponse struct {
 	EndpointAuthKeys
 }
 
-// OnlineEndpointsClientListResponse contains the response from method OnlineEndpointsClient.List.
+// OnlineEndpointsClientListResponse contains the response from method OnlineEndpointsClient.NewListPager.
 type OnlineEndpointsClientListResponse struct {
 	OnlineEndpointTrackedResourceArmPaginatedResult
 }
 
-// OnlineEndpointsClientRegenerateKeysResponse contains the response from method OnlineEndpointsClient.RegenerateKeys.
+// OnlineEndpointsClientRegenerateKeysResponse contains the response from method OnlineEndpointsClient.BeginRegenerateKeys.
 type OnlineEndpointsClientRegenerateKeysResponse struct {
 	// placeholder for future response values
 }
 
-// OnlineEndpointsClientUpdateResponse contains the response from method OnlineEndpointsClient.Update.
+// OnlineEndpointsClientUpdateResponse contains the response from method OnlineEndpointsClient.BeginUpdate.
 type OnlineEndpointsClientUpdateResponse struct {
 	OnlineEndpoint
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	AmlOperationListResult
 }
@@ -479,7 +479,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }
@@ -489,7 +489,7 @@ type PrivateLinkResourcesClientListResponse struct {
 	PrivateLinkResourceListResult
 }
 
-// QuotasClientListResponse contains the response from method QuotasClient.List.
+// QuotasClientListResponse contains the response from method QuotasClient.NewListPager.
 type QuotasClientListResponse struct {
 	ListWorkspaceQuotas
 }
@@ -499,12 +499,12 @@ type QuotasClientUpdateResponse struct {
 	UpdateWorkspaceQuotasResult
 }
 
-// SchedulesClientCreateOrUpdateResponse contains the response from method SchedulesClient.CreateOrUpdate.
+// SchedulesClientCreateOrUpdateResponse contains the response from method SchedulesClient.BeginCreateOrUpdate.
 type SchedulesClientCreateOrUpdateResponse struct {
 	Schedule
 }
 
-// SchedulesClientDeleteResponse contains the response from method SchedulesClient.Delete.
+// SchedulesClientDeleteResponse contains the response from method SchedulesClient.BeginDelete.
 type SchedulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -514,12 +514,12 @@ type SchedulesClientGetResponse struct {
 	Schedule
 }
 
-// SchedulesClientListResponse contains the response from method SchedulesClient.List.
+// SchedulesClientListResponse contains the response from method SchedulesClient.NewListPager.
 type SchedulesClientListResponse struct {
 	ScheduleResourceArmPaginatedResult
 }
 
-// UsagesClientListResponse contains the response from method UsagesClient.List.
+// UsagesClientListResponse contains the response from method UsagesClient.NewListPager.
 type UsagesClientListResponse struct {
 	ListUsagesResult
 }
@@ -544,27 +544,27 @@ type WorkspaceConnectionsClientGetResponse struct {
 	WorkspaceConnectionPropertiesV2BasicResource
 }
 
-// WorkspaceConnectionsClientListResponse contains the response from method WorkspaceConnectionsClient.List.
+// WorkspaceConnectionsClientListResponse contains the response from method WorkspaceConnectionsClient.NewListPager.
 type WorkspaceConnectionsClientListResponse struct {
 	WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult
 }
 
-// WorkspaceFeaturesClientListResponse contains the response from method WorkspaceFeaturesClient.List.
+// WorkspaceFeaturesClientListResponse contains the response from method WorkspaceFeaturesClient.NewListPager.
 type WorkspaceFeaturesClientListResponse struct {
 	ListAmlUserFeatureResult
 }
 
-// WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.CreateOrUpdate.
+// WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.BeginCreateOrUpdate.
 type WorkspacesClientCreateOrUpdateResponse struct {
 	Workspace
 }
 
-// WorkspacesClientDeleteResponse contains the response from method WorkspacesClient.Delete.
+// WorkspacesClientDeleteResponse contains the response from method WorkspacesClient.BeginDelete.
 type WorkspacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// WorkspacesClientDiagnoseResponse contains the response from method WorkspacesClient.Diagnose.
+// WorkspacesClientDiagnoseResponse contains the response from method WorkspacesClient.BeginDiagnose.
 type WorkspacesClientDiagnoseResponse struct {
 	DiagnoseResponseResult
 }
@@ -574,12 +574,12 @@ type WorkspacesClientGetResponse struct {
 	Workspace
 }
 
-// WorkspacesClientListByResourceGroupResponse contains the response from method WorkspacesClient.ListByResourceGroup.
+// WorkspacesClientListByResourceGroupResponse contains the response from method WorkspacesClient.NewListByResourceGroupPager.
 type WorkspacesClientListByResourceGroupResponse struct {
 	WorkspaceListResult
 }
 
-// WorkspacesClientListBySubscriptionResponse contains the response from method WorkspacesClient.ListBySubscription.
+// WorkspacesClientListBySubscriptionResponse contains the response from method WorkspacesClient.NewListBySubscriptionPager.
 type WorkspacesClientListBySubscriptionResponse struct {
 	WorkspaceListResult
 }
@@ -609,17 +609,17 @@ type WorkspacesClientListStorageAccountKeysResponse struct {
 	ListStorageAccountKeysResult
 }
 
-// WorkspacesClientPrepareNotebookResponse contains the response from method WorkspacesClient.PrepareNotebook.
+// WorkspacesClientPrepareNotebookResponse contains the response from method WorkspacesClient.BeginPrepareNotebook.
 type WorkspacesClientPrepareNotebookResponse struct {
 	NotebookResourceInfo
 }
 
-// WorkspacesClientResyncKeysResponse contains the response from method WorkspacesClient.ResyncKeys.
+// WorkspacesClientResyncKeysResponse contains the response from method WorkspacesClient.BeginResyncKeys.
 type WorkspacesClientResyncKeysResponse struct {
 	// placeholder for future response values
 }
 
-// WorkspacesClientUpdateResponse contains the response from method WorkspacesClient.Update.
+// WorkspacesClientUpdateResponse contains the response from method WorkspacesClient.BeginUpdate.
 type WorkspacesClientUpdateResponse struct {
 	Workspace
 }

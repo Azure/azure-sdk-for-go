@@ -1,30 +1,16 @@
 # Release History
 
-## 2.0.0 (2023-03-30)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-
+## 1.3.0 (2023-03-31)
 ### Features Added
 
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 - New enum type `ImmutabilityState` with values `ImmutabilityStateDisabled`, `ImmutabilityStateLocked`, `ImmutabilityStateUnlocked`
 - New enum type `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`
 - New enum type `VaultSubResourceType` with values `VaultSubResourceTypeAzureBackup`, `VaultSubResourceTypeAzureBackupSecondary`, `VaultSubResourceTypeAzureSiteRecovery`
 - New function `*Client.Capabilities(context.Context, string, ResourceCapabilities, *ClientCapabilitiesOptions) (ClientCapabilitiesResponse, error)`
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
-- New function `*ClientFactory.NewClient() *Client`
-- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
-- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
-- New function `*ClientFactory.NewRegisteredIdentitiesClient() *RegisteredIdentitiesClient`
-- New function `*ClientFactory.NewReplicationUsagesClient() *ReplicationUsagesClient`
-- New function `*ClientFactory.NewUsagesClient() *UsagesClient`
-- New function `*ClientFactory.NewVaultCertificatesClient() *VaultCertificatesClient`
-- New function `*ClientFactory.NewVaultExtendedInfoClient() *VaultExtendedInfoClient`
-- New function `*ClientFactory.NewVaultsClient() *VaultsClient`
 - New struct `CapabilitiesProperties`
 - New struct `CapabilitiesResponse`
 - New struct `CapabilitiesResponseProperties`
-- New struct `ClientFactory`
 - New struct `DNSZone`
 - New struct `DNSZoneResponse`
 - New struct `ImmutabilitySettings`

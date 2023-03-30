@@ -11,7 +11,7 @@ package armrecoveryservices
 
 const (
 	moduleName    = "armrecoveryservices"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v1.3.0"
 )
 
 type AlertsState string

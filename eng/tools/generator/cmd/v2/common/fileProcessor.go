@@ -28,7 +28,6 @@ const (
 	swagger_md_module_name_prefix     = "module-name: "
 )
 
-// pull request labels
 type PullRequestLabel string
 
 const (
@@ -39,24 +38,6 @@ const (
 	StableBreakingChangeLabel PullRequestLabel = "stable,breaking-change"
 	BetaBreakingChangeLabel   PullRequestLabel = "beta,breaking-change"
 )
-
-//const (
-//	Stable = iota + 1
-//	Beta
-//	FirstStable
-//	FirstBeta
-//	StableBreakingChange
-//	BetaBreakingChange
-//)
-//
-//var pullRequestLabels = map[int]string{
-//	Stable:               "stable",
-//	Beta:                 "beta",
-//	FirstStable:          "first stable",
-//	FirstBeta:            "first beta",
-//	StableBreakingChange: "stable,breaking-change",
-//	BetaBreakingChange:   "beta,breaking-change",
-//}
 
 var (
 	v2BeginRegex                    = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")

@@ -15,7 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/CheckNameAvailability_Available.json
@@ -25,11 +25,11 @@ func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenNoR
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservices.NewClient("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	clientFactory, err := armrecoveryservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "resGroupFoo", "westus", armrecoveryservices.CheckNameAvailabilityParameters{
+	res, err := clientFactory.NewClient().CheckNameAvailability(ctx, "resGroupFoo", "westus", armrecoveryservices.CheckNameAvailabilityParameters{
 		Name: to.Ptr("swaggerExample"),
 		Type: to.Ptr("Microsoft.RecoveryServices/Vaults"),
 	}, nil)
@@ -51,11 +51,11 @@ func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenRes
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservices.NewClient("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	clientFactory, err := armrecoveryservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "resGroupBar", "westus", armrecoveryservices.CheckNameAvailabilityParameters{
+	res, err := clientFactory.NewClient().CheckNameAvailability(ctx, "resGroupBar", "westus", armrecoveryservices.CheckNameAvailabilityParameters{
 		Name: to.Ptr("swaggerExample2"),
 		Type: to.Ptr("Microsoft.RecoveryServices/Vaults"),
 	}, nil)
@@ -79,11 +79,11 @@ func ExampleClient_Capabilities() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservices.NewClient("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	clientFactory, err := armrecoveryservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Capabilities(ctx, "westus", armrecoveryservices.ResourceCapabilities{
+	res, err := clientFactory.NewClient().Capabilities(ctx, "westus", armrecoveryservices.ResourceCapabilities{
 		Type: to.Ptr("Microsoft.RecoveryServices/Vaults"),
 		Properties: &armrecoveryservices.CapabilitiesProperties{
 			DNSZones: []*armrecoveryservices.DNSZone{

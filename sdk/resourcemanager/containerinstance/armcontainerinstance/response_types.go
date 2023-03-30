@@ -9,12 +9,12 @@
 
 package armcontainerinstance
 
-// ContainerGroupsClientCreateOrUpdateResponse contains the response from method ContainerGroupsClient.CreateOrUpdate.
+// ContainerGroupsClientCreateOrUpdateResponse contains the response from method ContainerGroupsClient.BeginCreateOrUpdate.
 type ContainerGroupsClientCreateOrUpdateResponse struct {
 	ContainerGroup
 }
 
-// ContainerGroupsClientDeleteResponse contains the response from method ContainerGroupsClient.Delete.
+// ContainerGroupsClientDeleteResponse contains the response from method ContainerGroupsClient.BeginDelete.
 type ContainerGroupsClientDeleteResponse struct {
 	ContainerGroup
 }
@@ -30,22 +30,22 @@ type ContainerGroupsClientGetResponse struct {
 	ContainerGroup
 }
 
-// ContainerGroupsClientListByResourceGroupResponse contains the response from method ContainerGroupsClient.ListByResourceGroup.
+// ContainerGroupsClientListByResourceGroupResponse contains the response from method ContainerGroupsClient.NewListByResourceGroupPager.
 type ContainerGroupsClientListByResourceGroupResponse struct {
 	ContainerGroupListResult
 }
 
-// ContainerGroupsClientListResponse contains the response from method ContainerGroupsClient.List.
+// ContainerGroupsClientListResponse contains the response from method ContainerGroupsClient.NewListPager.
 type ContainerGroupsClientListResponse struct {
 	ContainerGroupListResult
 }
 
-// ContainerGroupsClientRestartResponse contains the response from method ContainerGroupsClient.Restart.
+// ContainerGroupsClientRestartResponse contains the response from method ContainerGroupsClient.BeginRestart.
 type ContainerGroupsClientRestartResponse struct {
 	// placeholder for future response values
 }
 
-// ContainerGroupsClientStartResponse contains the response from method ContainerGroupsClient.Start.
+// ContainerGroupsClientStartResponse contains the response from method ContainerGroupsClient.BeginStart.
 type ContainerGroupsClientStartResponse struct {
 	// placeholder for future response values
 }
@@ -75,27 +75,27 @@ type ContainersClientListLogsResponse struct {
 	Logs
 }
 
-// LocationClientListCachedImagesResponse contains the response from method LocationClient.ListCachedImages.
+// LocationClientListCachedImagesResponse contains the response from method LocationClient.NewListCachedImagesPager.
 type LocationClientListCachedImagesResponse struct {
 	CachedImagesListResult
 }
 
-// LocationClientListCapabilitiesResponse contains the response from method LocationClient.ListCapabilities.
+// LocationClientListCapabilitiesResponse contains the response from method LocationClient.NewListCapabilitiesPager.
 type LocationClientListCapabilitiesResponse struct {
 	CapabilitiesListResult
 }
 
-// LocationClientListUsageResponse contains the response from method LocationClient.ListUsage.
+// LocationClientListUsageResponse contains the response from method LocationClient.NewListUsagePager.
 type LocationClientListUsageResponse struct {
 	UsageListResult
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// SubnetServiceAssociationLinkClientDeleteResponse contains the response from method SubnetServiceAssociationLinkClient.Delete.
+// SubnetServiceAssociationLinkClientDeleteResponse contains the response from method SubnetServiceAssociationLinkClient.BeginDelete.
 type SubnetServiceAssociationLinkClientDeleteResponse struct {
 	// placeholder for future response values
 }

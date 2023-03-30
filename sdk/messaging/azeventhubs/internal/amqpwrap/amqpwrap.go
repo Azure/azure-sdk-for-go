@@ -96,7 +96,7 @@ func (w *AMQPClientWrapper) NewSession(ctx context.Context, opts *amqp.SessionOp
 	sess, err := w.Inner.NewSession(ctx, opts)
 
 	if err != nil {
-		return nil, translateError(err)
+		return nil, handleNewOrCloseError(err)
 	}
 
 	return &AMQPSessionWrapper{
@@ -110,7 +110,7 @@ type AMQPSessionWrapper struct {
 
 func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
 	if err := w.Inner.Close(ctx); err != nil {
-		return translateError(err)
+		return handleNewOrCloseError(err)
 	}
 
 	return nil
@@ -120,7 +120,7 @@ func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, source string, opt
 	receiver, err := w.Inner.NewReceiver(ctx, source, opts)
 
 	if err != nil {
-		return nil, translateError(err)
+		return nil, handleNewOrCloseError(err)
 	}
 
 	return &AMQPReceiverWrapper{inner: receiver}, nil
@@ -130,7 +130,7 @@ func (w *AMQPSessionWrapper) NewSender(ctx context.Context, target string, opts 
 	sender, err := w.Inner.NewSender(ctx, target, opts)
 
 	if err != nil {
-		return nil, translateError(err)
+		return nil, handleNewOrCloseError(err)
 	}
 
 	return sender, nil
@@ -204,7 +204,7 @@ func (rw *AMQPReceiverWrapper) LinkSourceFilterValue(name string) any {
 
 func (rw *AMQPReceiverWrapper) Close(ctx context.Context) error {
 	if err := rw.inner.Close(ctx); err != nil {
-		return translateError(err)
+		return handleNewOrCloseError(err)
 	}
 
 	return nil
@@ -228,14 +228,16 @@ func (sw *AMQPSenderWrapper) LinkName() string {
 
 func (sw *AMQPSenderWrapper) Close(ctx context.Context) error {
 	if err := sw.inner.Close(ctx); err != nil {
-		return translateError(err)
+		return handleNewOrCloseError(err)
 	}
 
 	return nil
 }
 
-func translateError(err error) error {
+func handleNewOrCloseError(err error) error {
 	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		// we treat this a bit differently when creating or closing entities. The big concern here is
+		// that failing to cleanup stray 
 		return ErrConnResetNeeded
 	}
 

@@ -29,23 +29,34 @@ const (
 )
 
 // pull request labels
+type PullRequestLabel string
+
 const (
-	Stable = iota + 1
-	Beta
-	FirstStable
-	FirstBeta
-	StableBreakingChange
-	BetaBreakingChange
+	StableLabel               PullRequestLabel = "stable"
+	BetaLabel                 PullRequestLabel = "beta"
+	FirstStableLabel          PullRequestLabel = "first stable"
+	FirstBetaLabel            PullRequestLabel = "first beta"
+	StableBreakingChangeLabel PullRequestLabel = "stable,breaking-change"
+	BetaBreakingChangeLabel   PullRequestLabel = "beta,breaking-change"
 )
 
-var pullRequestLabels = map[int]string{
-	Stable:               "stable",
-	Beta:                 "beta",
-	FirstStable:          "first stable",
-	FirstBeta:            "first beta",
-	StableBreakingChange: "stable,breaking-change",
-	BetaBreakingChange:   "beta,breaking-change",
-}
+//const (
+//	Stable = iota + 1
+//	Beta
+//	FirstStable
+//	FirstBeta
+//	StableBreakingChange
+//	BetaBreakingChange
+//)
+//
+//var pullRequestLabels = map[int]string{
+//	Stable:               "stable",
+//	Beta:                 "beta",
+//	FirstStable:          "first stable",
+//	FirstBeta:            "first beta",
+//	StableBreakingChange: "stable,breaking-change",
+//	BetaBreakingChange:   "beta,breaking-change",
+//}
 
 var (
 	v2BeginRegex                    = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
@@ -266,73 +277,73 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 }
 
 // calculate new version by changelog using semver package
-func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, int, error) {
+func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
 	version, err := semver.NewVersion(previousVersion)
 	if err != nil {
-		return nil, 0, err
+		return nil, "", err
 	}
 	log.Printf("Lastest version is: %s", version.String())
 
 	var newVersion semver.Version
-	var prl int
+	var prl PullRequestLabel
 	if version.Major() == 0 {
 		// preview version calculation
 		if !isCurrentPreview {
 			tempVersion, err := semver.NewVersion("1.0.0")
 			if err != nil {
-				return nil, 0, err
+				return nil, "", err
 			}
 			newVersion = *tempVersion
-			prl = FirstStable
+			prl = FirstStableLabel
 		} else if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()
-			prl = Beta
+			prl = BetaLabel
 		} else {
 			newVersion = version.IncPatch()
-			prl = Beta
+			prl = BetaLabel
 		}
 	} else {
 		if isCurrentPreview {
 			if strings.Contains(previousVersion, "beta") {
 				betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
 				if err != nil {
-					return nil, 0, err
+					return nil, "", err
 				}
 				newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1))
 				if err != nil {
-					return nil, 0, err
+					return nil, "", err
 				}
-				prl = Beta
+				prl = BetaLabel
 			} else {
 				if changelog.HasBreakingChanges() {
 					newVersion = version.IncMajor()
-					prl = BetaBreakingChange
+					prl = BetaBreakingChangeLabel
 				} else if changelog.Modified.HasAdditiveChanges() {
 					newVersion = version.IncMinor()
-					prl = Beta
+					prl = BetaLabel
 				} else {
 					newVersion = version.IncPatch()
-					prl = Beta
+					prl = BetaLabel
 				}
 				newVersion, err = newVersion.SetPrerelease("beta.1")
 				if err != nil {
-					return nil, 0, err
+					return nil, "", err
 				}
 			}
 		} else {
 			if strings.Contains(previousVersion, "beta") {
-				return nil, 0, fmt.Errorf("must have stable previous version")
+				return nil, "", fmt.Errorf("must have stable previous version")
 			}
 			// release version calculation
 			if changelog.HasBreakingChanges() {
 				newVersion = version.IncMajor()
-				prl = StableBreakingChange
+				prl = StableBreakingChangeLabel
 			} else if changelog.Modified.HasAdditiveChanges() {
 				newVersion = version.IncMinor()
-				prl = Stable
+				prl = StableLabel
 			} else {
 				newVersion = version.IncPatch()
-				prl = Stable
+				prl = StableLabel
 			}
 		}
 	}

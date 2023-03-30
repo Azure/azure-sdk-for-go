@@ -194,17 +194,17 @@ type AppsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsClientListByResourceGroupOptions contains the optional parameters for the AppsClient.ListByResourceGroup method.
+// AppsClientListByResourceGroupOptions contains the optional parameters for the AppsClient.NewListByResourceGroupPager method.
 type AppsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsClientListBySubscriptionOptions contains the optional parameters for the AppsClient.ListBySubscription method.
+// AppsClientListBySubscriptionOptions contains the optional parameters for the AppsClient.NewListBySubscriptionPager method.
 type AppsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsClientListTemplatesOptions contains the optional parameters for the AppsClient.ListTemplates method.
+// AppsClientListTemplatesOptions contains the optional parameters for the AppsClient.NewListTemplatesPager method.
 type AppsClientListTemplatesOptions struct {
 	// placeholder for future optional parameters
 }
@@ -212,7 +212,7 @@ type AppsClientListTemplatesOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -282,7 +282,7 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty" azure:"ro"`
 
 	// READ-ONLY; Additional descriptions for the operation.
-	Properties interface{} `json:"properties,omitempty" azure:"ro"`
+	Properties any `json:"properties,omitempty" azure:"ro"`
 }
 
 // OperationDisplay - The object that represents the operation.
@@ -319,7 +319,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -389,7 +389,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -449,7 +449,7 @@ type PrivateLinksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinksClientListOptions contains the optional parameters for the PrivateLinksClient.List method.
+// PrivateLinksClientListOptions contains the optional parameters for the PrivateLinksClient.NewListPager method.
 type PrivateLinksClientListOptions struct {
 	// placeholder for future optional parameters
 }

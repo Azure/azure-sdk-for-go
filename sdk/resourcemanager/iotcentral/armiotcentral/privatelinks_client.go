@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // PrivateLinksClient contains the methods for the PrivateLinks group.
 // Don't use this type directly, use NewPrivateLinksClient() instead.
 type PrivateLinksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPrivateLinksClient creates a new instance of PrivateLinksClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPrivateLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PrivateLinksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PrivateLinksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get a private link resource of a IoT Central Application.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-11-01-preview
-// resourceGroupName - The name of the resource group that contains the IoT Central application.
-// resourceName - The ARM resource name of the IoT Central application.
-// groupID - The private link resource name.
-// options - PrivateLinksClientGetOptions contains the optional parameters for the PrivateLinksClient.Get method.
+//   - resourceGroupName - The name of the resource group that contains the IoT Central application.
+//   - resourceName - The ARM resource name of the IoT Central application.
+//   - groupID - The private link resource name.
+//   - options - PrivateLinksClientGetOptions contains the optional parameters for the PrivateLinksClient.Get method.
 func (client *PrivateLinksClient) Get(ctx context.Context, resourceGroupName string, resourceName string, groupID string, options *PrivateLinksClientGetOptions) (PrivateLinksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, groupID, options)
 	if err != nil {
 		return PrivateLinksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PrivateLinksClientGetResponse{}, err
 	}
@@ -96,7 +86,7 @@ func (client *PrivateLinksClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter groupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,11 +107,11 @@ func (client *PrivateLinksClient) getHandleResponse(resp *http.Response) (Privat
 }
 
 // NewListPager - Get all private link resources of a IoT Central Application.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-11-01-preview
-// resourceGroupName - The name of the resource group that contains the IoT Central application.
-// resourceName - The ARM resource name of the IoT Central application.
-// options - PrivateLinksClientListOptions contains the optional parameters for the PrivateLinksClient.List method.
+//   - resourceGroupName - The name of the resource group that contains the IoT Central application.
+//   - resourceName - The ARM resource name of the IoT Central application.
+//   - options - PrivateLinksClientListOptions contains the optional parameters for the PrivateLinksClient.NewListPager method.
 func (client *PrivateLinksClient) NewListPager(resourceGroupName string, resourceName string, options *PrivateLinksClientListOptions) *runtime.Pager[PrivateLinksClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinksClientListResponse]{
 		More: func(page PrivateLinksClientListResponse) bool {
@@ -132,7 +122,7 @@ func (client *PrivateLinksClient) NewListPager(resourceGroupName string, resourc
 			if err != nil {
 				return PrivateLinksClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PrivateLinksClientListResponse{}, err
 			}
@@ -159,7 +149,7 @@ func (client *PrivateLinksClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -19,7 +19,7 @@ import (
 
 // MarshalJSON implements the json.Marshaller interface for type BackupSecretResult.
 func (b BackupSecretResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateByteArray(objectMap, "value", b.Value, runtime.Base64URLFormat)
 	return json.Marshal(objectMap)
 }
@@ -46,7 +46,7 @@ func (b *BackupSecretResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DeletedSecretBundle.
 func (d DeletedSecretBundle) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "attributes", d.Attributes)
 	populate(objectMap, "contentType", d.ContentType)
 	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
@@ -109,7 +109,7 @@ func (d *DeletedSecretBundle) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DeletedSecretItem.
 func (d DeletedSecretItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "attributes", d.Attributes)
 	populate(objectMap, "contentType", d.ContentType)
 	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
@@ -164,7 +164,7 @@ func (d *DeletedSecretItem) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DeletedSecretListResult.
 func (d DeletedSecretListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", d.NextLink)
 	populate(objectMap, "value", d.Value)
 	return json.Marshal(objectMap)
@@ -195,7 +195,7 @@ func (d *DeletedSecretListResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RestoreSecretParameters.
 func (r RestoreSecretParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateByteArray(objectMap, "value", r.SecretBundleBackup, runtime.Base64URLFormat)
 	return json.Marshal(objectMap)
 }
@@ -222,7 +222,7 @@ func (r *RestoreSecretParameters) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SecretAttributes.
 func (s SecretAttributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeUnix(objectMap, "created", s.Created)
 	populate(objectMap, "enabled", s.Enabled)
 	populateTimeUnix(objectMap, "exp", s.Expires)
@@ -273,7 +273,7 @@ func (s *SecretAttributes) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SecretBundle.
 func (s SecretBundle) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "attributes", s.Attributes)
 	populate(objectMap, "contentType", s.ContentType)
 	populate(objectMap, "id", s.ID)
@@ -324,7 +324,7 @@ func (s *SecretBundle) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SecretItem.
 func (s SecretItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "attributes", s.Attributes)
 	populate(objectMap, "contentType", s.ContentType)
 	populate(objectMap, "id", s.ID)
@@ -367,7 +367,7 @@ func (s *SecretItem) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SecretListResult.
 func (s SecretListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", s.NextLink)
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
@@ -398,7 +398,7 @@ func (s *SecretListResult) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SetSecretParameters.
 func (s SetSecretParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "contentType", s.ContentType)
 	populate(objectMap, "attributes", s.SecretAttributes)
 	populate(objectMap, "tags", s.Tags)
@@ -437,7 +437,7 @@ func (s *SetSecretParameters) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateSecretParameters.
 func (u UpdateSecretParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "contentType", u.ContentType)
 	populate(objectMap, "attributes", u.SecretAttributes)
 	populate(objectMap, "tags", u.Tags)
@@ -470,7 +470,7 @@ func (u *UpdateSecretParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
+func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
 	} else if azcore.IsNullValue(v) {
@@ -480,7 +480,7 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
+func populateByteArray(m map[string]any, k string, b []byte, f runtime.Base64Encoding) {
 	if azcore.IsNullValue(b) {
 		m[k] = nil
 	} else if len(b) == 0 {
@@ -490,7 +490,7 @@ func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.B
 	}
 }
 
-func unpopulate(data json.RawMessage, fn string, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil {
 		return nil
 	}

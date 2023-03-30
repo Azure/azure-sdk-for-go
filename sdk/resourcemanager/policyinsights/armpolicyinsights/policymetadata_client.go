@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,44 +23,36 @@ import (
 // PolicyMetadataClient contains the methods for the PolicyMetadata group.
 // Don't use this type directly, use NewPolicyMetadataClient() instead.
 type PolicyMetadataClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewPolicyMetadataClient creates a new instance of PolicyMetadataClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPolicyMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyMetadataClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PolicyMetadataClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PolicyMetadataClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // GetResource - Get policy metadata resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// resourceName - The name of the policy metadata resource.
-// options - PolicyMetadataClientGetResourceOptions contains the optional parameters for the PolicyMetadataClient.GetResource
-// method.
+//   - resourceName - The name of the policy metadata resource.
+//   - options - PolicyMetadataClientGetResourceOptions contains the optional parameters for the PolicyMetadataClient.GetResource
+//     method.
 func (client *PolicyMetadataClient) GetResource(ctx context.Context, resourceName string, options *PolicyMetadataClientGetResourceOptions) (PolicyMetadataClientGetResourceResponse, error) {
 	req, err := client.getResourceCreateRequest(ctx, resourceName, options)
 	if err != nil {
 		return PolicyMetadataClientGetResourceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PolicyMetadataClientGetResourceResponse{}, err
 	}
@@ -76,7 +66,7 @@ func (client *PolicyMetadataClient) GetResource(ctx context.Context, resourceNam
 func (client *PolicyMetadataClient) getResourceCreateRequest(ctx context.Context, resourceName string, options *PolicyMetadataClientGetResourceOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.PolicyInsights/policyMetadata/{resourceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", resourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,10 +87,11 @@ func (client *PolicyMetadataClient) getResourceHandleResponse(resp *http.Respons
 }
 
 // NewListPager - Get a list of the policy metadata resources.
+//
 // Generated from API version 2019-10-01
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.List method.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.NewListPager method.
 func (client *PolicyMetadataClient) NewListPager(queryOptions *QueryOptions, options *PolicyMetadataClientListOptions) *runtime.Pager[PolicyMetadataClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PolicyMetadataClientListResponse]{
 		More: func(page PolicyMetadataClientListResponse) bool {
@@ -117,7 +108,7 @@ func (client *PolicyMetadataClient) NewListPager(queryOptions *QueryOptions, opt
 			if err != nil {
 				return PolicyMetadataClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PolicyMetadataClientListResponse{}, err
 			}
@@ -132,7 +123,7 @@ func (client *PolicyMetadataClient) NewListPager(queryOptions *QueryOptions, opt
 // listCreateRequest creates the List request.
 func (client *PolicyMetadataClient) listCreateRequest(ctx context.Context, queryOptions *QueryOptions, options *PolicyMetadataClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.PolicyInsights/policyMetadata"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

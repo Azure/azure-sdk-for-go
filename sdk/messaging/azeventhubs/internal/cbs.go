@@ -51,11 +51,6 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 		defer cancel()
 
 		if err := link.Close(ctx); err != nil {
-			if IsCancelError(err) {
-				azlog.Writef(exported.EventAuth, "Failed closing claim link because it was cancelled. Connection will need to be reset")
-				return amqpwrap.ErrConnResetNeeded
-			}
-
 			azlog.Writef(exported.EventAuth, "Failed closing claim link: %s", err.Error())
 			return err
 		}

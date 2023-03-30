@@ -65,8 +65,8 @@ func (f *FileRecordedTestsSuite) TestFileNewFileClient() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
 	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -107,7 +107,9 @@ func (f *FileRecordedTestsSuite) TestFileCreateUsingSharedKey() {
 	fileName := testcommon.GenerateFileName(testName)
 	fileURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName + "/" + dirName + "/" + fileName
 
-	fileClient, err := file.NewClientWithSharedKeyCredential(fileURL, cred, nil)
+	options := &file.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	fileClient, err := file.NewClientWithSharedKeyCredential(fileURL, cred, options)
 	_require.NoError(err)
 
 	// creating file where directory does not exist gives ParentNotFound error
@@ -143,7 +145,9 @@ func (f *FileRecordedTestsSuite) TestFileCreateUsingConnectionString() {
 
 	dirName := testcommon.GenerateDirectoryName(testName)
 	fileName := testcommon.GenerateFileName(testName)
-	fileClient1, err := file.NewClientFromConnectionString(*connString, shareName, fileName, nil)
+	options := &file.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	fileClient1, err := file.NewClientFromConnectionString(*connString, shareName, fileName, options)
 	_require.NoError(err)
 
 	resp, err := fileClient1.Create(context.Background(), 1024, nil)
@@ -156,7 +160,7 @@ func (f *FileRecordedTestsSuite) TestFileCreateUsingConnectionString() {
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
 
 	filePath := dirName + "/" + fileName
-	fileClient2, err := file.NewClientFromConnectionString(*connString, shareName, filePath, nil)
+	fileClient2, err := file.NewClientFromConnectionString(*connString, shareName, filePath, options)
 	_require.NoError(err)
 
 	_, err = fileClient2.Create(context.Background(), 1024, nil)
@@ -167,7 +171,7 @@ func (f *FileRecordedTestsSuite) TestFileCreateUsingConnectionString() {
 
 	// using '\' as path separator
 	filePath = dirName + "\\" + fileName
-	fileClient3, err := file.NewClientFromConnectionString(*connString, shareName, filePath, nil)
+	fileClient3, err := file.NewClientFromConnectionString(*connString, shareName, filePath, options)
 	_require.NoError(err)
 
 	resp, err = fileClient3.Create(context.Background(), 1024, nil)

@@ -9,12 +9,12 @@
 
 package armextendedlocation
 
-// CustomLocationsClientCreateOrUpdateResponse contains the response from method CustomLocationsClient.CreateOrUpdate.
+// CustomLocationsClientCreateOrUpdateResponse contains the response from method CustomLocationsClient.BeginCreateOrUpdate.
 type CustomLocationsClientCreateOrUpdateResponse struct {
 	CustomLocation
 }
 
-// CustomLocationsClientDeleteResponse contains the response from method CustomLocationsClient.Delete.
+// CustomLocationsClientDeleteResponse contains the response from method CustomLocationsClient.BeginDelete.
 type CustomLocationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -29,22 +29,22 @@ type CustomLocationsClientGetResponse struct {
 	CustomLocation
 }
 
-// CustomLocationsClientListByResourceGroupResponse contains the response from method CustomLocationsClient.ListByResourceGroup.
+// CustomLocationsClientListByResourceGroupResponse contains the response from method CustomLocationsClient.NewListByResourceGroupPager.
 type CustomLocationsClientListByResourceGroupResponse struct {
 	CustomLocationListResult
 }
 
-// CustomLocationsClientListBySubscriptionResponse contains the response from method CustomLocationsClient.ListBySubscription.
+// CustomLocationsClientListBySubscriptionResponse contains the response from method CustomLocationsClient.NewListBySubscriptionPager.
 type CustomLocationsClientListBySubscriptionResponse struct {
 	CustomLocationListResult
 }
 
-// CustomLocationsClientListEnabledResourceTypesResponse contains the response from method CustomLocationsClient.ListEnabledResourceTypes.
+// CustomLocationsClientListEnabledResourceTypesResponse contains the response from method CustomLocationsClient.NewListEnabledResourceTypesPager.
 type CustomLocationsClientListEnabledResourceTypesResponse struct {
 	EnabledResourceTypesListResult
 }
 
-// CustomLocationsClientListOperationsResponse contains the response from method CustomLocationsClient.ListOperations.
+// CustomLocationsClientListOperationsResponse contains the response from method CustomLocationsClient.NewListOperationsPager.
 type CustomLocationsClientListOperationsResponse struct {
 	CustomLocationOperationsList
 }
@@ -54,7 +54,7 @@ type CustomLocationsClientUpdateResponse struct {
 	CustomLocation
 }
 
-// ResourceSyncRulesClientCreateOrUpdateResponse contains the response from method ResourceSyncRulesClient.CreateOrUpdate.
+// ResourceSyncRulesClientCreateOrUpdateResponse contains the response from method ResourceSyncRulesClient.BeginCreateOrUpdate.
 type ResourceSyncRulesClientCreateOrUpdateResponse struct {
 	ResourceSyncRule
 }
@@ -69,12 +69,12 @@ type ResourceSyncRulesClientGetResponse struct {
 	ResourceSyncRule
 }
 
-// ResourceSyncRulesClientListByCustomLocationIDResponse contains the response from method ResourceSyncRulesClient.ListByCustomLocationID.
+// ResourceSyncRulesClientListByCustomLocationIDResponse contains the response from method ResourceSyncRulesClient.NewListByCustomLocationIDPager.
 type ResourceSyncRulesClientListByCustomLocationIDResponse struct {
 	ResourceSyncRuleListResult
 }
 
-// ResourceSyncRulesClientUpdateResponse contains the response from method ResourceSyncRulesClient.Update.
+// ResourceSyncRulesClientUpdateResponse contains the response from method ResourceSyncRulesClient.BeginUpdate.
 type ResourceSyncRulesClientUpdateResponse struct {
 	ResourceSyncRule
 }

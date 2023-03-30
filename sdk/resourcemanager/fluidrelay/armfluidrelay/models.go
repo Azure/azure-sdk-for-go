@@ -66,7 +66,7 @@ type ContainersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainersClientListByFluidRelayServersOptions contains the optional parameters for the ContainersClient.ListByFluidRelayServers
+// ContainersClientListByFluidRelayServersOptions contains the optional parameters for the ContainersClient.NewListByFluidRelayServersPager
 // method.
 type ContainersClientListByFluidRelayServersOptions struct {
 	// placeholder for future optional parameters
@@ -117,7 +117,7 @@ type Endpoints struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -199,7 +199,7 @@ type OperationResult struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -334,12 +334,14 @@ type ServersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.ListByResourceGroup method.
+// ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.NewListByResourceGroupPager
+// method.
 type ServersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersClientListBySubscriptionOptions contains the optional parameters for the ServersClient.ListBySubscription method.
+// ServersClientListBySubscriptionOptions contains the optional parameters for the ServersClient.NewListBySubscriptionPager
+// method.
 type ServersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }

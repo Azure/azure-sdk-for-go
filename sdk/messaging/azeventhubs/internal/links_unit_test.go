@@ -195,7 +195,7 @@ func TestLinks_closeWithTimeout(t *testing.T) {
 			// the user "cancels"
 			receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).DoAndReturn(func(ctx context.Context) error {
 				<-ctx.Done()
-				return amqpwrap.ErrConnResetNeeded
+				return amqpwrap.HandleNewOrCloseError(ctx.Err())
 			})
 
 			// purposefully recover with what should be a link level recovery. However, the Close() failing

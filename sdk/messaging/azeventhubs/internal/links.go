@@ -99,12 +99,8 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 		err := l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName())
 
 		if err != nil {
-			if IsCancelError(err) {
-				azlog.Writef(exported.EventConn, "(%s) Link close was cancelled, connection will reset on next recovery", lwid.String())
-				// if we failed to close a link then something odd is going on with
-				// our connection or the user has cancelled. Let the next attempt to use
-				// the connection recover it.
-				return amqpwrap.ErrConnResetNeeded
+			if rk := GetRecoveryKind(err); rk == RecoveryKindConn {
+				return err
 			}
 
 			// we don't need to propagate this error - it'll just be the link detach error or whatever

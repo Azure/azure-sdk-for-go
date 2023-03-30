@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/mock"
@@ -54,7 +55,7 @@ func TestNegotiateClaimWithCloseTimeout(t *testing.T) {
 			// active.
 			receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).DoAndReturn(func(ctx context.Context) error {
 				<-ctx.Done()
-				return errToReturn
+				return amqpwrap.HandleNewOrCloseError(ctx.Err())
 			})
 
 			err := NegotiateClaim(context.Background(), "audience", client, tp, mock.NewContextWithTimeoutForTests)

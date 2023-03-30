@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // IngestionSettingsClient contains the methods for the IngestionSettings group.
 // Don't use this type directly, use NewIngestionSettingsClient() instead.
 type IngestionSettingsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewIngestionSettingsClient creates a new instance of IngestionSettingsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIngestionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IngestionSettingsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".IngestionSettingsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &IngestionSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Create setting for ingesting security data and logs to correlate with resources associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-01-15-preview
-// ingestionSettingName - Name of the ingestion setting
-// ingestionSetting - Ingestion setting object
-// options - IngestionSettingsClientCreateOptions contains the optional parameters for the IngestionSettingsClient.Create
-// method.
+//   - ingestionSettingName - Name of the ingestion setting
+//   - ingestionSetting - Ingestion setting object
+//   - options - IngestionSettingsClientCreateOptions contains the optional parameters for the IngestionSettingsClient.Create
+//     method.
 func (client *IngestionSettingsClient) Create(ctx context.Context, ingestionSettingName string, ingestionSetting IngestionSetting, options *IngestionSettingsClientCreateOptions) (IngestionSettingsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, ingestionSettingName, ingestionSetting, options)
 	if err != nil {
 		return IngestionSettingsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IngestionSettingsClientCreateResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *IngestionSettingsClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter ingestionSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ingestionSettingName}", url.PathEscape(ingestionSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,16 +100,17 @@ func (client *IngestionSettingsClient) createHandleResponse(resp *http.Response)
 
 // Delete - Deletes the ingestion settings for this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-01-15-preview
-// ingestionSettingName - Name of the ingestion setting
-// options - IngestionSettingsClientDeleteOptions contains the optional parameters for the IngestionSettingsClient.Delete
-// method.
+//   - ingestionSettingName - Name of the ingestion setting
+//   - options - IngestionSettingsClientDeleteOptions contains the optional parameters for the IngestionSettingsClient.Delete
+//     method.
 func (client *IngestionSettingsClient) Delete(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientDeleteOptions) (IngestionSettingsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, ingestionSettingName, options)
 	if err != nil {
 		return IngestionSettingsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IngestionSettingsClientDeleteResponse{}, err
 	}
@@ -140,7 +131,7 @@ func (client *IngestionSettingsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter ingestionSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ingestionSettingName}", url.PathEscape(ingestionSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,15 +144,16 @@ func (client *IngestionSettingsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Settings for ingesting security data and logs to correlate with resources associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-01-15-preview
-// ingestionSettingName - Name of the ingestion setting
-// options - IngestionSettingsClientGetOptions contains the optional parameters for the IngestionSettingsClient.Get method.
+//   - ingestionSettingName - Name of the ingestion setting
+//   - options - IngestionSettingsClientGetOptions contains the optional parameters for the IngestionSettingsClient.Get method.
 func (client *IngestionSettingsClient) Get(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientGetOptions) (IngestionSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, ingestionSettingName, options)
 	if err != nil {
 		return IngestionSettingsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IngestionSettingsClientGetResponse{}, err
 	}
@@ -182,7 +174,7 @@ func (client *IngestionSettingsClient) getCreateRequest(ctx context.Context, ing
 		return nil, errors.New("parameter ingestionSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ingestionSettingName}", url.PathEscape(ingestionSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -203,8 +195,10 @@ func (client *IngestionSettingsClient) getHandleResponse(resp *http.Response) (I
 }
 
 // NewListPager - Settings for ingesting security data and logs to correlate with resources associated with the subscription.
+//
 // Generated from API version 2021-01-15-preview
-// options - IngestionSettingsClientListOptions contains the optional parameters for the IngestionSettingsClient.List method.
+//   - options - IngestionSettingsClientListOptions contains the optional parameters for the IngestionSettingsClient.NewListPager
+//     method.
 func (client *IngestionSettingsClient) NewListPager(options *IngestionSettingsClientListOptions) *runtime.Pager[IngestionSettingsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IngestionSettingsClientListResponse]{
 		More: func(page IngestionSettingsClientListResponse) bool {
@@ -221,7 +215,7 @@ func (client *IngestionSettingsClient) NewListPager(options *IngestionSettingsCl
 			if err != nil {
 				return IngestionSettingsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return IngestionSettingsClientListResponse{}, err
 			}
@@ -240,7 +234,7 @@ func (client *IngestionSettingsClient) listCreateRequest(ctx context.Context, op
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,16 +256,17 @@ func (client *IngestionSettingsClient) listHandleResponse(resp *http.Response) (
 
 // ListConnectionStrings - Connection strings for ingesting security scan logs and data.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-01-15-preview
-// ingestionSettingName - Name of the ingestion setting
-// options - IngestionSettingsClientListConnectionStringsOptions contains the optional parameters for the IngestionSettingsClient.ListConnectionStrings
-// method.
+//   - ingestionSettingName - Name of the ingestion setting
+//   - options - IngestionSettingsClientListConnectionStringsOptions contains the optional parameters for the IngestionSettingsClient.ListConnectionStrings
+//     method.
 func (client *IngestionSettingsClient) ListConnectionStrings(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientListConnectionStringsOptions) (IngestionSettingsClientListConnectionStringsResponse, error) {
 	req, err := client.listConnectionStringsCreateRequest(ctx, ingestionSettingName, options)
 	if err != nil {
 		return IngestionSettingsClientListConnectionStringsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IngestionSettingsClientListConnectionStringsResponse{}, err
 	}
@@ -292,7 +287,7 @@ func (client *IngestionSettingsClient) listConnectionStringsCreateRequest(ctx co
 		return nil, errors.New("parameter ingestionSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ingestionSettingName}", url.PathEscape(ingestionSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -314,16 +309,17 @@ func (client *IngestionSettingsClient) listConnectionStringsHandleResponse(resp 
 
 // ListTokens - Returns the token that is used for correlating ingested telemetry with the resources in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-01-15-preview
-// ingestionSettingName - Name of the ingestion setting
-// options - IngestionSettingsClientListTokensOptions contains the optional parameters for the IngestionSettingsClient.ListTokens
-// method.
+//   - ingestionSettingName - Name of the ingestion setting
+//   - options - IngestionSettingsClientListTokensOptions contains the optional parameters for the IngestionSettingsClient.ListTokens
+//     method.
 func (client *IngestionSettingsClient) ListTokens(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientListTokensOptions) (IngestionSettingsClientListTokensResponse, error) {
 	req, err := client.listTokensCreateRequest(ctx, ingestionSettingName, options)
 	if err != nil {
 		return IngestionSettingsClientListTokensResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IngestionSettingsClientListTokensResponse{}, err
 	}
@@ -344,7 +340,7 @@ func (client *IngestionSettingsClient) listTokensCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter ingestionSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ingestionSettingName}", url.PathEscape(ingestionSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

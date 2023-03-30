@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,38 +24,30 @@ import (
 // GovernanceRuleClient contains the methods for the GovernanceRule group.
 // Don't use this type directly, use NewGovernanceRuleClient() instead.
 type GovernanceRuleClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewGovernanceRuleClient creates a new instance of GovernanceRuleClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGovernanceRuleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GovernanceRuleClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GovernanceRuleClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GovernanceRuleClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Get a list of all relevant governanceRules over a subscription level scope
+//
 // Generated from API version 2022-01-01-preview
-// options - GovernanceRuleClientListOptions contains the optional parameters for the GovernanceRuleClient.List method.
+//   - options - GovernanceRuleClientListOptions contains the optional parameters for the GovernanceRuleClient.NewListPager method.
 func (client *GovernanceRuleClient) NewListPager(options *GovernanceRuleClientListOptions) *runtime.Pager[GovernanceRuleClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GovernanceRuleClientListResponse]{
 		More: func(page GovernanceRuleClientListResponse) bool {
@@ -74,7 +64,7 @@ func (client *GovernanceRuleClient) NewListPager(options *GovernanceRuleClientLi
 			if err != nil {
 				return GovernanceRuleClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GovernanceRuleClientListResponse{}, err
 			}
@@ -93,7 +83,7 @@ func (client *GovernanceRuleClient) listCreateRequest(ctx context.Context, optio
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

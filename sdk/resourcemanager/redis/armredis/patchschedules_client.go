@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,51 +24,43 @@ import (
 // PatchSchedulesClient contains the methods for the PatchSchedules group.
 // Don't use this type directly, use NewPatchSchedulesClient() instead.
 type PatchSchedulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPatchSchedulesClient creates a new instance of PatchSchedulesClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PatchSchedulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PatchSchedulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PatchSchedulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or replace the patching schedule for Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// defaultParam - Default string modeled as parameter for auto generation to work correctly.
-// parameters - Parameters to set the patching schedule for Redis cache.
-// options - PatchSchedulesClientCreateOrUpdateOptions contains the optional parameters for the PatchSchedulesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - defaultParam - Default string modeled as parameter for auto generation to work correctly.
+//   - parameters - Parameters to set the patching schedule for Redis cache.
+//   - options - PatchSchedulesClientCreateOrUpdateOptions contains the optional parameters for the PatchSchedulesClient.CreateOrUpdate
+//     method.
 func (client *PatchSchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, defaultParam DefaultName, parameters PatchSchedule, options *PatchSchedulesClientCreateOrUpdateOptions) (PatchSchedulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, defaultParam, parameters, options)
 	if err != nil {
 		return PatchSchedulesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PatchSchedulesClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *PatchSchedulesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,17 +111,18 @@ func (client *PatchSchedulesClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes the patching schedule of a redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the redis cache.
-// defaultParam - Default string modeled as parameter for auto generation to work correctly.
-// options - PatchSchedulesClientDeleteOptions contains the optional parameters for the PatchSchedulesClient.Delete method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the redis cache.
+//   - defaultParam - Default string modeled as parameter for auto generation to work correctly.
+//   - options - PatchSchedulesClientDeleteOptions contains the optional parameters for the PatchSchedulesClient.Delete method.
 func (client *PatchSchedulesClient) Delete(ctx context.Context, resourceGroupName string, name string, defaultParam DefaultName, options *PatchSchedulesClientDeleteOptions) (PatchSchedulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, defaultParam, options)
 	if err != nil {
 		return PatchSchedulesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PatchSchedulesClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *PatchSchedulesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,17 +164,18 @@ func (client *PatchSchedulesClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets the patching schedule of a redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the redis cache.
-// defaultParam - Default string modeled as parameter for auto generation to work correctly.
-// options - PatchSchedulesClientGetOptions contains the optional parameters for the PatchSchedulesClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the redis cache.
+//   - defaultParam - Default string modeled as parameter for auto generation to work correctly.
+//   - options - PatchSchedulesClientGetOptions contains the optional parameters for the PatchSchedulesClient.Get method.
 func (client *PatchSchedulesClient) Get(ctx context.Context, resourceGroupName string, name string, defaultParam DefaultName, options *PatchSchedulesClientGetOptions) (PatchSchedulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, defaultParam, options)
 	if err != nil {
 		return PatchSchedulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PatchSchedulesClientGetResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *PatchSchedulesClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,11 +225,12 @@ func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (Patc
 }
 
 // NewListByRedisResourcePager - Gets all patch schedules in the specified redis cache (there is only one).
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// cacheName - The name of the Redis cache.
-// options - PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.ListByRedisResource
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - cacheName - The name of the Redis cache.
+//   - options - PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.NewListByRedisResourcePager
+//     method.
 func (client *PatchSchedulesClient) NewListByRedisResourcePager(resourceGroupName string, cacheName string, options *PatchSchedulesClientListByRedisResourceOptions) *runtime.Pager[PatchSchedulesClientListByRedisResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PatchSchedulesClientListByRedisResourceResponse]{
 		More: func(page PatchSchedulesClientListByRedisResourceResponse) bool {
@@ -254,7 +247,7 @@ func (client *PatchSchedulesClient) NewListByRedisResourcePager(resourceGroupNam
 			if err != nil {
 				return PatchSchedulesClientListByRedisResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PatchSchedulesClientListByRedisResourceResponse{}, err
 			}
@@ -281,7 +274,7 @@ func (client *PatchSchedulesClient) listByRedisResourceCreateRequest(ctx context
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,47 +24,39 @@ import (
 // AlertsSuppressionRulesClient contains the methods for the AlertsSuppressionRules group.
 // Don't use this type directly, use NewAlertsSuppressionRulesClient() instead.
 type AlertsSuppressionRulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAlertsSuppressionRulesClient creates a new instance of AlertsSuppressionRulesClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAlertsSuppressionRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsSuppressionRulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AlertsSuppressionRulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AlertsSuppressionRulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Delete - Delete dismiss alert rule for this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-01-01-preview
-// alertsSuppressionRuleName - The unique name of the suppression alert rule
-// options - AlertsSuppressionRulesClientDeleteOptions contains the optional parameters for the AlertsSuppressionRulesClient.Delete
-// method.
+//   - alertsSuppressionRuleName - The unique name of the suppression alert rule
+//   - options - AlertsSuppressionRulesClientDeleteOptions contains the optional parameters for the AlertsSuppressionRulesClient.Delete
+//     method.
 func (client *AlertsSuppressionRulesClient) Delete(ctx context.Context, alertsSuppressionRuleName string, options *AlertsSuppressionRulesClientDeleteOptions) (AlertsSuppressionRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, alertsSuppressionRuleName, options)
 	if err != nil {
 		return AlertsSuppressionRulesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertsSuppressionRulesClientDeleteResponse{}, err
 	}
@@ -87,7 +77,7 @@ func (client *AlertsSuppressionRulesClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter alertsSuppressionRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertsSuppressionRuleName}", url.PathEscape(alertsSuppressionRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -100,16 +90,17 @@ func (client *AlertsSuppressionRulesClient) deleteCreateRequest(ctx context.Cont
 
 // Get - Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-01-01-preview
-// alertsSuppressionRuleName - The unique name of the suppression alert rule
-// options - AlertsSuppressionRulesClientGetOptions contains the optional parameters for the AlertsSuppressionRulesClient.Get
-// method.
+//   - alertsSuppressionRuleName - The unique name of the suppression alert rule
+//   - options - AlertsSuppressionRulesClientGetOptions contains the optional parameters for the AlertsSuppressionRulesClient.Get
+//     method.
 func (client *AlertsSuppressionRulesClient) Get(ctx context.Context, alertsSuppressionRuleName string, options *AlertsSuppressionRulesClientGetOptions) (AlertsSuppressionRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, alertsSuppressionRuleName, options)
 	if err != nil {
 		return AlertsSuppressionRulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertsSuppressionRulesClientGetResponse{}, err
 	}
@@ -130,7 +121,7 @@ func (client *AlertsSuppressionRulesClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter alertsSuppressionRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertsSuppressionRuleName}", url.PathEscape(alertsSuppressionRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,9 +142,10 @@ func (client *AlertsSuppressionRulesClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListPager - List of all the dismiss rules for the given subscription
+//
 // Generated from API version 2019-01-01-preview
-// options - AlertsSuppressionRulesClientListOptions contains the optional parameters for the AlertsSuppressionRulesClient.List
-// method.
+//   - options - AlertsSuppressionRulesClientListOptions contains the optional parameters for the AlertsSuppressionRulesClient.NewListPager
+//     method.
 func (client *AlertsSuppressionRulesClient) NewListPager(options *AlertsSuppressionRulesClientListOptions) *runtime.Pager[AlertsSuppressionRulesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertsSuppressionRulesClientListResponse]{
 		More: func(page AlertsSuppressionRulesClientListResponse) bool {
@@ -170,7 +162,7 @@ func (client *AlertsSuppressionRulesClient) NewListPager(options *AlertsSuppress
 			if err != nil {
 				return AlertsSuppressionRulesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AlertsSuppressionRulesClientListResponse{}, err
 			}
@@ -189,7 +181,7 @@ func (client *AlertsSuppressionRulesClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -214,17 +206,18 @@ func (client *AlertsSuppressionRulesClient) listHandleResponse(resp *http.Respon
 
 // Update - Update existing rule or create new rule if it doesn't exist
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-01-01-preview
-// alertsSuppressionRuleName - The unique name of the suppression alert rule
-// alertsSuppressionRule - Suppression rule object
-// options - AlertsSuppressionRulesClientUpdateOptions contains the optional parameters for the AlertsSuppressionRulesClient.Update
-// method.
+//   - alertsSuppressionRuleName - The unique name of the suppression alert rule
+//   - alertsSuppressionRule - Suppression rule object
+//   - options - AlertsSuppressionRulesClientUpdateOptions contains the optional parameters for the AlertsSuppressionRulesClient.Update
+//     method.
 func (client *AlertsSuppressionRulesClient) Update(ctx context.Context, alertsSuppressionRuleName string, alertsSuppressionRule AlertsSuppressionRule, options *AlertsSuppressionRulesClientUpdateOptions) (AlertsSuppressionRulesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, alertsSuppressionRuleName, alertsSuppressionRule, options)
 	if err != nil {
 		return AlertsSuppressionRulesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertsSuppressionRulesClientUpdateResponse{}, err
 	}
@@ -245,7 +238,7 @@ func (client *AlertsSuppressionRulesClient) updateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter alertsSuppressionRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertsSuppressionRuleName}", url.PathEscape(alertsSuppressionRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

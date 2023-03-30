@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // AutoProvisioningSettingsClient contains the methods for the AutoProvisioningSettings group.
 // Don't use this type directly, use NewAutoProvisioningSettingsClient() instead.
 type AutoProvisioningSettingsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAutoProvisioningSettingsClient creates a new instance of AutoProvisioningSettingsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAutoProvisioningSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutoProvisioningSettingsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AutoProvisioningSettingsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AutoProvisioningSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Details of a specific setting
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-08-01-preview
-// settingName - Auto provisioning setting key
-// setting - Auto provisioning setting key
-// options - AutoProvisioningSettingsClientCreateOptions contains the optional parameters for the AutoProvisioningSettingsClient.Create
-// method.
+//   - settingName - Auto provisioning setting key
+//   - setting - Auto provisioning setting key
+//   - options - AutoProvisioningSettingsClientCreateOptions contains the optional parameters for the AutoProvisioningSettingsClient.Create
+//     method.
 func (client *AutoProvisioningSettingsClient) Create(ctx context.Context, settingName string, setting AutoProvisioningSetting, options *AutoProvisioningSettingsClientCreateOptions) (AutoProvisioningSettingsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, settingName, setting, options)
 	if err != nil {
 		return AutoProvisioningSettingsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AutoProvisioningSettingsClientCreateResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Co
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape(settingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,16 +100,17 @@ func (client *AutoProvisioningSettingsClient) createHandleResponse(resp *http.Re
 
 // Get - Details of a specific setting
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-08-01-preview
-// settingName - Auto provisioning setting key
-// options - AutoProvisioningSettingsClientGetOptions contains the optional parameters for the AutoProvisioningSettingsClient.Get
-// method.
+//   - settingName - Auto provisioning setting key
+//   - options - AutoProvisioningSettingsClientGetOptions contains the optional parameters for the AutoProvisioningSettingsClient.Get
+//     method.
 func (client *AutoProvisioningSettingsClient) Get(ctx context.Context, settingName string, options *AutoProvisioningSettingsClientGetOptions) (AutoProvisioningSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, settingName, options)
 	if err != nil {
 		return AutoProvisioningSettingsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AutoProvisioningSettingsClientGetResponse{}, err
 	}
@@ -140,7 +131,7 @@ func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape(settingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,9 +152,10 @@ func (client *AutoProvisioningSettingsClient) getHandleResponse(resp *http.Respo
 }
 
 // NewListPager - Exposes the auto provisioning settings of the subscriptions
+//
 // Generated from API version 2017-08-01-preview
-// options - AutoProvisioningSettingsClientListOptions contains the optional parameters for the AutoProvisioningSettingsClient.List
-// method.
+//   - options - AutoProvisioningSettingsClientListOptions contains the optional parameters for the AutoProvisioningSettingsClient.NewListPager
+//     method.
 func (client *AutoProvisioningSettingsClient) NewListPager(options *AutoProvisioningSettingsClientListOptions) *runtime.Pager[AutoProvisioningSettingsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AutoProvisioningSettingsClientListResponse]{
 		More: func(page AutoProvisioningSettingsClientListResponse) bool {
@@ -180,7 +172,7 @@ func (client *AutoProvisioningSettingsClient) NewListPager(options *AutoProvisio
 			if err != nil {
 				return AutoProvisioningSettingsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AutoProvisioningSettingsClientListResponse{}, err
 			}
@@ -199,7 +191,7 @@ func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

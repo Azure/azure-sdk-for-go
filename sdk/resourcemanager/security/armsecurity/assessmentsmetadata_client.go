@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // AssessmentsMetadataClient contains the methods for the AssessmentsMetadata group.
 // Don't use this type directly, use NewAssessmentsMetadataClient() instead.
 type AssessmentsMetadataClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAssessmentsMetadataClient creates a new instance of AssessmentsMetadataClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAssessmentsMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssessmentsMetadataClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AssessmentsMetadataClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AssessmentsMetadataClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateInSubscription - Create metadata information on an assessment type in a specific subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-01
-// assessmentMetadataName - The Assessment Key - Unique key for the assessment type
-// assessmentMetadata - AssessmentMetadata object
-// options - AssessmentsMetadataClientCreateInSubscriptionOptions contains the optional parameters for the AssessmentsMetadataClient.CreateInSubscription
-// method.
+//   - assessmentMetadataName - The Assessment Key - Unique key for the assessment type
+//   - assessmentMetadata - AssessmentMetadata object
+//   - options - AssessmentsMetadataClientCreateInSubscriptionOptions contains the optional parameters for the AssessmentsMetadataClient.CreateInSubscription
+//     method.
 func (client *AssessmentsMetadataClient) CreateInSubscription(ctx context.Context, assessmentMetadataName string, assessmentMetadata AssessmentMetadataResponse, options *AssessmentsMetadataClientCreateInSubscriptionOptions) (AssessmentsMetadataClientCreateInSubscriptionResponse, error) {
 	req, err := client.createInSubscriptionCreateRequest(ctx, assessmentMetadataName, assessmentMetadata, options)
 	if err != nil {
 		return AssessmentsMetadataClientCreateInSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssessmentsMetadataClientCreateInSubscriptionResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *AssessmentsMetadataClient) createInSubscriptionCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,16 +101,17 @@ func (client *AssessmentsMetadataClient) createInSubscriptionHandleResponse(resp
 // DeleteInSubscription - Delete metadata information on an assessment type in a specific subscription, will cause the deletion
 // of all the assessments of that type in that subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-01
-// assessmentMetadataName - The Assessment Key - Unique key for the assessment type
-// options - AssessmentsMetadataClientDeleteInSubscriptionOptions contains the optional parameters for the AssessmentsMetadataClient.DeleteInSubscription
-// method.
+//   - assessmentMetadataName - The Assessment Key - Unique key for the assessment type
+//   - options - AssessmentsMetadataClientDeleteInSubscriptionOptions contains the optional parameters for the AssessmentsMetadataClient.DeleteInSubscription
+//     method.
 func (client *AssessmentsMetadataClient) DeleteInSubscription(ctx context.Context, assessmentMetadataName string, options *AssessmentsMetadataClientDeleteInSubscriptionOptions) (AssessmentsMetadataClientDeleteInSubscriptionResponse, error) {
 	req, err := client.deleteInSubscriptionCreateRequest(ctx, assessmentMetadataName, options)
 	if err != nil {
 		return AssessmentsMetadataClientDeleteInSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssessmentsMetadataClientDeleteInSubscriptionResponse{}, err
 	}
@@ -141,7 +132,7 @@ func (client *AssessmentsMetadataClient) deleteInSubscriptionCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -154,15 +145,16 @@ func (client *AssessmentsMetadataClient) deleteInSubscriptionCreateRequest(ctx c
 
 // Get - Get metadata information on an assessment type
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-01
-// assessmentMetadataName - The Assessment Key - Unique key for the assessment type
-// options - AssessmentsMetadataClientGetOptions contains the optional parameters for the AssessmentsMetadataClient.Get method.
+//   - assessmentMetadataName - The Assessment Key - Unique key for the assessment type
+//   - options - AssessmentsMetadataClientGetOptions contains the optional parameters for the AssessmentsMetadataClient.Get method.
 func (client *AssessmentsMetadataClient) Get(ctx context.Context, assessmentMetadataName string, options *AssessmentsMetadataClientGetOptions) (AssessmentsMetadataClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, assessmentMetadataName, options)
 	if err != nil {
 		return AssessmentsMetadataClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssessmentsMetadataClientGetResponse{}, err
 	}
@@ -179,7 +171,7 @@ func (client *AssessmentsMetadataClient) getCreateRequest(ctx context.Context, a
 		return nil, errors.New("parameter assessmentMetadataName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assessmentMetadataName}", url.PathEscape(assessmentMetadataName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -201,16 +193,17 @@ func (client *AssessmentsMetadataClient) getHandleResponse(resp *http.Response) 
 
 // GetInSubscription - Get metadata information on an assessment type in a specific subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-01
-// assessmentMetadataName - The Assessment Key - Unique key for the assessment type
-// options - AssessmentsMetadataClientGetInSubscriptionOptions contains the optional parameters for the AssessmentsMetadataClient.GetInSubscription
-// method.
+//   - assessmentMetadataName - The Assessment Key - Unique key for the assessment type
+//   - options - AssessmentsMetadataClientGetInSubscriptionOptions contains the optional parameters for the AssessmentsMetadataClient.GetInSubscription
+//     method.
 func (client *AssessmentsMetadataClient) GetInSubscription(ctx context.Context, assessmentMetadataName string, options *AssessmentsMetadataClientGetInSubscriptionOptions) (AssessmentsMetadataClientGetInSubscriptionResponse, error) {
 	req, err := client.getInSubscriptionCreateRequest(ctx, assessmentMetadataName, options)
 	if err != nil {
 		return AssessmentsMetadataClientGetInSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssessmentsMetadataClientGetInSubscriptionResponse{}, err
 	}
@@ -231,7 +224,7 @@ func (client *AssessmentsMetadataClient) getInSubscriptionCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -252,9 +245,10 @@ func (client *AssessmentsMetadataClient) getInSubscriptionHandleResponse(resp *h
 }
 
 // NewListPager - Get metadata information on all assessment types
+//
 // Generated from API version 2021-06-01
-// options - AssessmentsMetadataClientListOptions contains the optional parameters for the AssessmentsMetadataClient.List
-// method.
+//   - options - AssessmentsMetadataClientListOptions contains the optional parameters for the AssessmentsMetadataClient.NewListPager
+//     method.
 func (client *AssessmentsMetadataClient) NewListPager(options *AssessmentsMetadataClientListOptions) *runtime.Pager[AssessmentsMetadataClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssessmentsMetadataClientListResponse]{
 		More: func(page AssessmentsMetadataClientListResponse) bool {
@@ -271,7 +265,7 @@ func (client *AssessmentsMetadataClient) NewListPager(options *AssessmentsMetada
 			if err != nil {
 				return AssessmentsMetadataClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AssessmentsMetadataClientListResponse{}, err
 			}
@@ -286,7 +280,7 @@ func (client *AssessmentsMetadataClient) NewListPager(options *AssessmentsMetada
 // listCreateRequest creates the List request.
 func (client *AssessmentsMetadataClient) listCreateRequest(ctx context.Context, options *AssessmentsMetadataClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Security/assessmentMetadata"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,9 +301,10 @@ func (client *AssessmentsMetadataClient) listHandleResponse(resp *http.Response)
 }
 
 // NewListBySubscriptionPager - Get metadata information on all assessment types in a specific subscription
+//
 // Generated from API version 2021-06-01
-// options - AssessmentsMetadataClientListBySubscriptionOptions contains the optional parameters for the AssessmentsMetadataClient.ListBySubscription
-// method.
+//   - options - AssessmentsMetadataClientListBySubscriptionOptions contains the optional parameters for the AssessmentsMetadataClient.NewListBySubscriptionPager
+//     method.
 func (client *AssessmentsMetadataClient) NewListBySubscriptionPager(options *AssessmentsMetadataClientListBySubscriptionOptions) *runtime.Pager[AssessmentsMetadataClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssessmentsMetadataClientListBySubscriptionResponse]{
 		More: func(page AssessmentsMetadataClientListBySubscriptionResponse) bool {
@@ -326,7 +321,7 @@ func (client *AssessmentsMetadataClient) NewListBySubscriptionPager(options *Ass
 			if err != nil {
 				return AssessmentsMetadataClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AssessmentsMetadataClientListBySubscriptionResponse{}, err
 			}
@@ -345,7 +340,7 @@ func (client *AssessmentsMetadataClient) listBySubscriptionCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

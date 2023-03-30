@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // TablesClient contains the methods for the Tables group.
 // Don't use this type directly, use NewTablesClient() instead.
 type TablesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTablesClient creates a new instance of TablesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TablesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TablesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TablesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Update or Create a Log Analytics workspace table.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// tableName - The name of the table.
-// parameters - The parameters required to update table properties.
-// options - TablesClientBeginCreateOrUpdateOptions contains the optional parameters for the TablesClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - tableName - The name of the table.
+//   - parameters - The parameters required to update table properties.
+//   - options - TablesClientBeginCreateOrUpdateOptions contains the optional parameters for the TablesClient.BeginCreateOrUpdate
+//     method.
 func (client *TablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters Table, options *TablesClientBeginCreateOrUpdateOptions) (*runtime.Poller[TablesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, tableName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[TablesClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TablesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[TablesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TablesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Update or Create a Log Analytics workspace table.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
 func (client *TablesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters Table, options *TablesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, tableName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +106,7 @@ func (client *TablesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,34 +119,36 @@ func (client *TablesClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // BeginDelete - Delete a Log Analytics workspace table.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// tableName - The name of the table.
-// options - TablesClientBeginDeleteOptions contains the optional parameters for the TablesClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - tableName - The name of the table.
+//   - options - TablesClientBeginDeleteOptions contains the optional parameters for the TablesClient.BeginDelete method.
 func (client *TablesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *TablesClientBeginDeleteOptions) (*runtime.Poller[TablesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, tableName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[TablesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TablesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[TablesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TablesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete a Log Analytics workspace table.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
 func (client *TablesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *TablesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, tableName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -184,7 +177,7 @@ func (client *TablesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -197,17 +190,18 @@ func (client *TablesClient) deleteCreateRequest(ctx context.Context, resourceGro
 
 // Get - Gets a Log Analytics workspace table.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// tableName - The name of the table.
-// options - TablesClientGetOptions contains the optional parameters for the TablesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - tableName - The name of the table.
+//   - options - TablesClientGetOptions contains the optional parameters for the TablesClient.Get method.
 func (client *TablesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *TablesClientGetOptions) (TablesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, tableName, options)
 	if err != nil {
 		return TablesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TablesClientGetResponse{}, err
 	}
@@ -236,7 +230,7 @@ func (client *TablesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -257,11 +251,12 @@ func (client *TablesClient) getHandleResponse(resp *http.Response) (TablesClient
 }
 
 // NewListByWorkspacePager - Gets all the tables for the specified Log Analytics workspace.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - TablesClientListByWorkspaceOptions contains the optional parameters for the TablesClient.ListByWorkspace method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - TablesClientListByWorkspaceOptions contains the optional parameters for the TablesClient.NewListByWorkspacePager
+//     method.
 func (client *TablesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *TablesClientListByWorkspaceOptions) *runtime.Pager[TablesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TablesClientListByWorkspaceResponse]{
 		More: func(page TablesClientListByWorkspaceResponse) bool {
@@ -272,7 +267,7 @@ func (client *TablesClient) NewListByWorkspacePager(resourceGroupName string, wo
 			if err != nil {
 				return TablesClientListByWorkspaceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TablesClientListByWorkspaceResponse{}, err
 			}
@@ -299,7 +294,7 @@ func (client *TablesClient) listByWorkspaceCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -322,17 +317,18 @@ func (client *TablesClient) listByWorkspaceHandleResponse(resp *http.Response) (
 // Migrate - Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
 // Data Collection Rule-based Custom Logs.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// tableName - The name of the table.
-// options - TablesClientMigrateOptions contains the optional parameters for the TablesClient.Migrate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - tableName - The name of the table.
+//   - options - TablesClientMigrateOptions contains the optional parameters for the TablesClient.Migrate method.
 func (client *TablesClient) Migrate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *TablesClientMigrateOptions) (TablesClientMigrateResponse, error) {
 	req, err := client.migrateCreateRequest(ctx, resourceGroupName, workspaceName, tableName, options)
 	if err != nil {
 		return TablesClientMigrateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TablesClientMigrateResponse{}, err
 	}
@@ -361,7 +357,7 @@ func (client *TablesClient) migrateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -374,35 +370,37 @@ func (client *TablesClient) migrateCreateRequest(ctx context.Context, resourceGr
 
 // BeginUpdate - Update a Log Analytics workspace table.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// tableName - The name of the table.
-// parameters - The parameters required to update table properties.
-// options - TablesClientBeginUpdateOptions contains the optional parameters for the TablesClient.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - tableName - The name of the table.
+//   - parameters - The parameters required to update table properties.
+//   - options - TablesClientBeginUpdateOptions contains the optional parameters for the TablesClient.BeginUpdate method.
 func (client *TablesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters Table, options *TablesClientBeginUpdateOptions) (*runtime.Poller[TablesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, workspaceName, tableName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[TablesClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TablesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[TablesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TablesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update a Log Analytics workspace table.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
 func (client *TablesClient) update(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters Table, options *TablesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, tableName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -431,7 +429,7 @@ func (client *TablesClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // SimGroupsClient contains the methods for the SimGroups group.
 // Don't use this type directly, use NewSimGroupsClient() instead.
 type SimGroupsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSimGroupsClient creates a new instance of SimGroupsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSimGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SimGroupsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SimGroupsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SimGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a SIM group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// simGroupName - The name of the SIM Group.
-// parameters - Parameters supplied to the create or update SIM group operation.
-// options - SimGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the SimGroupsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - simGroupName - The name of the SIM Group.
+//   - parameters - Parameters supplied to the create or update SIM group operation.
+//   - options - SimGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the SimGroupsClient.BeginCreateOrUpdate
+//     method.
 func (client *SimGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, simGroupName string, parameters SimGroup, options *SimGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SimGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, simGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SimGroupsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SimGroupsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SimGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SimGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a SIM group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *SimGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, simGroupName string, parameters SimGroup, options *SimGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, simGroupName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +101,7 @@ func (client *SimGroupsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter simGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{simGroupName}", url.PathEscape(simGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,33 +114,35 @@ func (client *SimGroupsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // BeginDelete - Deletes the specified SIM group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// simGroupName - The name of the SIM Group.
-// options - SimGroupsClientBeginDeleteOptions contains the optional parameters for the SimGroupsClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - simGroupName - The name of the SIM Group.
+//   - options - SimGroupsClientBeginDeleteOptions contains the optional parameters for the SimGroupsClient.BeginDelete method.
 func (client *SimGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, simGroupName string, options *SimGroupsClientBeginDeleteOptions) (*runtime.Poller[SimGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, simGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SimGroupsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SimGroupsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SimGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SimGroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the specified SIM group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *SimGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, simGroupName string, options *SimGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, simGroupName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +167,7 @@ func (client *SimGroupsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter simGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{simGroupName}", url.PathEscape(simGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,16 +180,17 @@ func (client *SimGroupsClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Gets information about the specified SIM group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// simGroupName - The name of the SIM Group.
-// options - SimGroupsClientGetOptions contains the optional parameters for the SimGroupsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - simGroupName - The name of the SIM Group.
+//   - options - SimGroupsClientGetOptions contains the optional parameters for the SimGroupsClient.Get method.
 func (client *SimGroupsClient) Get(ctx context.Context, resourceGroupName string, simGroupName string, options *SimGroupsClientGetOptions) (SimGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, simGroupName, options)
 	if err != nil {
 		return SimGroupsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SimGroupsClientGetResponse{}, err
 	}
@@ -221,7 +215,7 @@ func (client *SimGroupsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter simGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{simGroupName}", url.PathEscape(simGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,10 +236,11 @@ func (client *SimGroupsClient) getHandleResponse(resp *http.Response) (SimGroups
 }
 
 // NewListByResourceGroupPager - Gets all the SIM groups in a resource group.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - SimGroupsClientListByResourceGroupOptions contains the optional parameters for the SimGroupsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - SimGroupsClientListByResourceGroupOptions contains the optional parameters for the SimGroupsClient.NewListByResourceGroupPager
+//     method.
 func (client *SimGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *SimGroupsClientListByResourceGroupOptions) *runtime.Pager[SimGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SimGroupsClientListByResourceGroupResponse]{
 		More: func(page SimGroupsClientListByResourceGroupResponse) bool {
@@ -262,7 +257,7 @@ func (client *SimGroupsClient) NewListByResourceGroupPager(resourceGroupName str
 			if err != nil {
 				return SimGroupsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SimGroupsClientListByResourceGroupResponse{}, err
 			}
@@ -285,7 +280,7 @@ func (client *SimGroupsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -306,9 +301,10 @@ func (client *SimGroupsClient) listByResourceGroupHandleResponse(resp *http.Resp
 }
 
 // NewListBySubscriptionPager - Gets all the SIM groups in a subscription.
+//
 // Generated from API version 2022-11-01
-// options - SimGroupsClientListBySubscriptionOptions contains the optional parameters for the SimGroupsClient.ListBySubscription
-// method.
+//   - options - SimGroupsClientListBySubscriptionOptions contains the optional parameters for the SimGroupsClient.NewListBySubscriptionPager
+//     method.
 func (client *SimGroupsClient) NewListBySubscriptionPager(options *SimGroupsClientListBySubscriptionOptions) *runtime.Pager[SimGroupsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SimGroupsClientListBySubscriptionResponse]{
 		More: func(page SimGroupsClientListBySubscriptionResponse) bool {
@@ -325,7 +321,7 @@ func (client *SimGroupsClient) NewListBySubscriptionPager(options *SimGroupsClie
 			if err != nil {
 				return SimGroupsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SimGroupsClientListBySubscriptionResponse{}, err
 			}
@@ -344,7 +340,7 @@ func (client *SimGroupsClient) listBySubscriptionCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -366,17 +362,18 @@ func (client *SimGroupsClient) listBySubscriptionHandleResponse(resp *http.Respo
 
 // UpdateTags - Updates SIM group tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// simGroupName - The name of the SIM Group.
-// parameters - Parameters supplied to update SIM group tags.
-// options - SimGroupsClientUpdateTagsOptions contains the optional parameters for the SimGroupsClient.UpdateTags method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - simGroupName - The name of the SIM Group.
+//   - parameters - Parameters supplied to update SIM group tags.
+//   - options - SimGroupsClientUpdateTagsOptions contains the optional parameters for the SimGroupsClient.UpdateTags method.
 func (client *SimGroupsClient) UpdateTags(ctx context.Context, resourceGroupName string, simGroupName string, parameters TagsObject, options *SimGroupsClientUpdateTagsOptions) (SimGroupsClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, simGroupName, parameters, options)
 	if err != nil {
 		return SimGroupsClientUpdateTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SimGroupsClientUpdateTagsResponse{}, err
 	}
@@ -401,7 +398,7 @@ func (client *SimGroupsClient) updateTagsCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter simGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{simGroupName}", url.PathEscape(simGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

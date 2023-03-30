@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,28 +22,19 @@ import (
 // SystemAssignedIdentitiesClient contains the methods for the SystemAssignedIdentities group.
 // Don't use this type directly, use NewSystemAssignedIdentitiesClient() instead.
 type SystemAssignedIdentitiesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewSystemAssignedIdentitiesClient creates a new instance of SystemAssignedIdentitiesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSystemAssignedIdentitiesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SystemAssignedIdentitiesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SystemAssignedIdentitiesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SystemAssignedIdentitiesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -62,7 +51,7 @@ func (client *SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, sc
 	if err != nil {
 		return SystemAssignedIdentitiesClientGetByScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SystemAssignedIdentitiesClientGetByScopeResponse{}, err
 	}
@@ -76,7 +65,7 @@ func (client *SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, sc
 func (client *SystemAssignedIdentitiesClient) getByScopeCreateRequest(ctx context.Context, scope string, options *SystemAssignedIdentitiesClientGetByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.ManagedIdentity/identities/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

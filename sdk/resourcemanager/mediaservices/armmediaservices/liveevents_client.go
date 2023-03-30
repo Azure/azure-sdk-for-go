@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,64 +25,57 @@ import (
 // LiveEventsClient contains the methods for the LiveEvents group.
 // Don't use this type directly, use NewLiveEventsClient() instead.
 type LiveEventsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewLiveEventsClient creates a new instance of LiveEventsClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLiveEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LiveEventsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".LiveEventsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &LiveEventsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginAllocate - A live event is in StandBy state after allocation completes, and is ready to start.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// options - LiveEventsClientBeginAllocateOptions contains the optional parameters for the LiveEventsClient.BeginAllocate
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginAllocateOptions contains the optional parameters for the LiveEventsClient.BeginAllocate
+//     method.
 func (client *LiveEventsClient) BeginAllocate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginAllocateOptions) (*runtime.Poller[LiveEventsClientAllocateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.allocate(ctx, resourceGroupName, accountName, liveEventName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[LiveEventsClientAllocateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LiveEventsClientAllocateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[LiveEventsClientAllocateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LiveEventsClientAllocateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Allocate - A live event is in StandBy state after allocation completes, and is ready to start.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LiveEventsClient) allocate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginAllocateOptions) (*http.Response, error) {
 	req, err := client.allocateCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +104,7 @@ func (client *LiveEventsClient) allocateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter liveEventName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,18 +117,19 @@ func (client *LiveEventsClient) allocateCreateRequest(ctx context.Context, resou
 
 // AsyncOperation - Get a live event operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// operationID - The ID of an ongoing async operation.
-// options - LiveEventsClientAsyncOperationOptions contains the optional parameters for the LiveEventsClient.AsyncOperation
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - operationID - The ID of an ongoing async operation.
+//   - options - LiveEventsClientAsyncOperationOptions contains the optional parameters for the LiveEventsClient.AsyncOperation
+//     method.
 func (client *LiveEventsClient) AsyncOperation(ctx context.Context, resourceGroupName string, accountName string, operationID string, options *LiveEventsClientAsyncOperationOptions) (LiveEventsClientAsyncOperationResponse, error) {
 	req, err := client.asyncOperationCreateRequest(ctx, resourceGroupName, accountName, operationID, options)
 	if err != nil {
 		return LiveEventsClientAsyncOperationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LiveEventsClientAsyncOperationResponse{}, err
 	}
@@ -166,7 +158,7 @@ func (client *LiveEventsClient) asyncOperationCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -188,33 +180,35 @@ func (client *LiveEventsClient) asyncOperationHandleResponse(resp *http.Response
 
 // BeginCreate - Creates a new live event.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// parameters - Live event properties needed for creation.
-// options - LiveEventsClientBeginCreateOptions contains the optional parameters for the LiveEventsClient.BeginCreate method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - parameters - Live event properties needed for creation.
+//   - options - LiveEventsClientBeginCreateOptions contains the optional parameters for the LiveEventsClient.BeginCreate method.
 func (client *LiveEventsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginCreateOptions) (*runtime.Poller[LiveEventsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[LiveEventsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LiveEventsClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[LiveEventsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LiveEventsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Creates a new live event.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LiveEventsClient) create(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +237,7 @@ func (client *LiveEventsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter liveEventName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -259,32 +253,34 @@ func (client *LiveEventsClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Deletes a live event.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// options - LiveEventsClientBeginDeleteOptions contains the optional parameters for the LiveEventsClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginDeleteOptions contains the optional parameters for the LiveEventsClient.BeginDelete method.
 func (client *LiveEventsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginDeleteOptions) (*runtime.Poller[LiveEventsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, liveEventName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[LiveEventsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LiveEventsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[LiveEventsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LiveEventsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a live event.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LiveEventsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -313,7 +309,7 @@ func (client *LiveEventsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter liveEventName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -326,17 +322,18 @@ func (client *LiveEventsClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets properties of a live event.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// options - LiveEventsClientGetOptions contains the optional parameters for the LiveEventsClient.Get method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientGetOptions contains the optional parameters for the LiveEventsClient.Get method.
 func (client *LiveEventsClient) Get(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientGetOptions) (LiveEventsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 	if err != nil {
 		return LiveEventsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LiveEventsClientGetResponse{}, err
 	}
@@ -365,7 +362,7 @@ func (client *LiveEventsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter liveEventName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -386,10 +383,11 @@ func (client *LiveEventsClient) getHandleResponse(resp *http.Response) (LiveEven
 }
 
 // NewListPager - Lists all the live events in the account.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// options - LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.List method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - options - LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.NewListPager method.
 func (client *LiveEventsClient) NewListPager(resourceGroupName string, accountName string, options *LiveEventsClientListOptions) *runtime.Pager[LiveEventsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LiveEventsClientListResponse]{
 		More: func(page LiveEventsClientListResponse) bool {
@@ -406,7 +404,7 @@ func (client *LiveEventsClient) NewListPager(resourceGroupName string, accountNa
 			if err != nil {
 				return LiveEventsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LiveEventsClientListResponse{}, err
 			}
@@ -433,7 +431,7 @@ func (client *LiveEventsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -455,19 +453,20 @@ func (client *LiveEventsClient) listHandleResponse(resp *http.Response) (LiveEve
 
 // OperationLocation - Get a live event operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// operationID - The ID of an ongoing async operation.
-// options - LiveEventsClientOperationLocationOptions contains the optional parameters for the LiveEventsClient.OperationLocation
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - operationID - The ID of an ongoing async operation.
+//   - options - LiveEventsClientOperationLocationOptions contains the optional parameters for the LiveEventsClient.OperationLocation
+//     method.
 func (client *LiveEventsClient) OperationLocation(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, operationID string, options *LiveEventsClientOperationLocationOptions) (LiveEventsClientOperationLocationResponse, error) {
 	req, err := client.operationLocationCreateRequest(ctx, resourceGroupName, accountName, liveEventName, operationID, options)
 	if err != nil {
 		return LiveEventsClientOperationLocationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LiveEventsClientOperationLocationResponse{}, err
 	}
@@ -500,7 +499,7 @@ func (client *LiveEventsClient) operationLocationCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -524,20 +523,21 @@ func (client *LiveEventsClient) operationLocationHandleResponse(resp *http.Respo
 // and will be started again. All assets used by the live outputs and streaming locators
 // created on these assets are unaffected.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// options - LiveEventsClientBeginResetOptions contains the optional parameters for the LiveEventsClient.BeginReset method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginResetOptions contains the optional parameters for the LiveEventsClient.BeginReset method.
 func (client *LiveEventsClient) BeginReset(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginResetOptions) (*runtime.Poller[LiveEventsClientResetResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.reset(ctx, resourceGroupName, accountName, liveEventName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[LiveEventsClientResetResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LiveEventsClientResetResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[LiveEventsClientResetResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LiveEventsClientResetResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -545,13 +545,14 @@ func (client *LiveEventsClient) BeginReset(ctx context.Context, resourceGroupNam
 // will be started again. All assets used by the live outputs and streaming locators
 // created on these assets are unaffected.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LiveEventsClient) reset(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginResetOptions) (*http.Response, error) {
 	req, err := client.resetCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -580,7 +581,7 @@ func (client *LiveEventsClient) resetCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter liveEventName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -593,32 +594,34 @@ func (client *LiveEventsClient) resetCreateRequest(ctx context.Context, resource
 
 // BeginStart - A live event in Stopped or StandBy state will be in Running state after the start operation completes.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// options - LiveEventsClientBeginStartOptions contains the optional parameters for the LiveEventsClient.BeginStart method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginStartOptions contains the optional parameters for the LiveEventsClient.BeginStart method.
 func (client *LiveEventsClient) BeginStart(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginStartOptions) (*runtime.Poller[LiveEventsClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, accountName, liveEventName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[LiveEventsClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LiveEventsClientStartResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[LiveEventsClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LiveEventsClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Start - A live event in Stopped or StandBy state will be in Running state after the start operation completes.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LiveEventsClient) start(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -647,7 +650,7 @@ func (client *LiveEventsClient) startCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter liveEventName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -660,33 +663,35 @@ func (client *LiveEventsClient) startCreateRequest(ctx context.Context, resource
 
 // BeginStop - Stops a running live event.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// parameters - LiveEvent stop parameters
-// options - LiveEventsClientBeginStopOptions contains the optional parameters for the LiveEventsClient.BeginStop method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - parameters - LiveEvent stop parameters
+//   - options - LiveEventsClientBeginStopOptions contains the optional parameters for the LiveEventsClient.BeginStop method.
 func (client *LiveEventsClient) BeginStop(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEventActionInput, options *LiveEventsClientBeginStopOptions) (*runtime.Poller[LiveEventsClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[LiveEventsClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LiveEventsClientStopResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[LiveEventsClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LiveEventsClientStopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Stop - Stops a running live event.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LiveEventsClient) stop(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEventActionInput, options *LiveEventsClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -715,7 +720,7 @@ func (client *LiveEventsClient) stopCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter liveEventName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -728,33 +733,35 @@ func (client *LiveEventsClient) stopCreateRequest(ctx context.Context, resourceG
 
 // BeginUpdate - Updates settings on an existing live event.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// parameters - Live event properties needed for patch.
-// options - LiveEventsClientBeginUpdateOptions contains the optional parameters for the LiveEventsClient.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - parameters - Live event properties needed for patch.
+//   - options - LiveEventsClientBeginUpdateOptions contains the optional parameters for the LiveEventsClient.BeginUpdate method.
 func (client *LiveEventsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginUpdateOptions) (*runtime.Poller[LiveEventsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[LiveEventsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LiveEventsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[LiveEventsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LiveEventsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Updates settings on an existing live event.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *LiveEventsClient) update(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -783,7 +790,7 @@ func (client *LiveEventsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter liveEventName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

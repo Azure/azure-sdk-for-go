@@ -15,7 +15,7 @@ func unmarshalClipTimeClassification(rawMsg json.RawMessage) (ClipTimeClassifica
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -35,7 +35,7 @@ func unmarshalCodecClassification(rawMsg json.RawMessage) (CodecClassification, 
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func unmarshalContentKeyPolicyConfigurationClassification(rawMsg json.RawMessage
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -118,7 +118,7 @@ func unmarshalContentKeyPolicyPlayReadyContentKeyLocationClassification(rawMsg j
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -138,7 +138,7 @@ func unmarshalContentKeyPolicyRestrictionClassification(rawMsg json.RawMessage) 
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -160,7 +160,7 @@ func unmarshalContentKeyPolicyRestrictionTokenKeyClassification(rawMsg json.RawM
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func unmarshalFormatClassification(rawMsg json.RawMessage) (FormatClassification
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -248,7 +248,7 @@ func unmarshalInputDefinitionClassification(rawMsg json.RawMessage) (InputDefini
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -289,7 +289,7 @@ func unmarshalJobInputClassification(rawMsg json.RawMessage) (JobInputClassifica
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -334,7 +334,7 @@ func unmarshalJobInputClipClassification(rawMsg json.RawMessage) (JobInputClipCl
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -373,7 +373,7 @@ func unmarshalJobOutputClassification(rawMsg json.RawMessage) (JobOutputClassifi
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -410,7 +410,7 @@ func unmarshalOverlayClassification(rawMsg json.RawMessage) (OverlayClassificati
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -449,7 +449,7 @@ func unmarshalPresetClassification(rawMsg json.RawMessage) (PresetClassification
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -475,7 +475,7 @@ func unmarshalTrackBaseClassification(rawMsg json.RawMessage) (TrackBaseClassifi
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -497,7 +497,7 @@ func unmarshalTrackDescriptorClassification(rawMsg json.RawMessage) (TrackDescri
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

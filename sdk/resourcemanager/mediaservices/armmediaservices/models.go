@@ -135,7 +135,7 @@ type AccountFiltersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountFiltersClientListOptions contains the optional parameters for the AccountFiltersClient.List method.
+// AccountFiltersClientListOptions contains the optional parameters for the AccountFiltersClient.NewListPager method.
 type AccountFiltersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -289,7 +289,7 @@ type AssetFiltersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetFiltersClientListOptions contains the optional parameters for the AssetFiltersClient.List method.
+// AssetFiltersClientListOptions contains the optional parameters for the AssetFiltersClient.NewListPager method.
 type AssetFiltersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -441,7 +441,7 @@ type AssetsClientListContainerSasOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetsClientListOptions contains the optional parameters for the AssetsClient.List method.
+// AssetsClientListOptions contains the optional parameters for the AssetsClient.NewListPager method.
 type AssetsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -752,7 +752,7 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+// ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 type ClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -762,7 +762,7 @@ type ClientListEdgePoliciesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListOptions contains the optional parameters for the Client.List method.
+// ClientListOptions contains the optional parameters for the Client.NewListPager method.
 type ClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -869,7 +869,7 @@ type ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.List method.
+// ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.NewListPager method.
 type ContentKeyPoliciesClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -1565,7 +1565,7 @@ type EnvelopeEncryption struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -2650,7 +2650,7 @@ type JobsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+// JobsClientListOptions contains the optional parameters for the JobsClient.NewListPager method.
 type JobsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -3147,7 +3147,7 @@ type LiveEventsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.List method.
+// LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.NewListPager method.
 type LiveEventsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3251,7 +3251,7 @@ type LiveOutputsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.List method.
+// LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.NewListPager method.
 type LiveOutputsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4372,7 +4372,7 @@ type StreamingEndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.List method.
+// StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.NewListPager method.
 type StreamingEndpointsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4500,7 +4500,7 @@ type StreamingLocatorsClientListContentKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.List method.
+// StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.NewListPager method.
 type StreamingLocatorsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -4543,7 +4543,7 @@ type StreamingPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.List method.
+// StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.NewListPager method.
 type StreamingPoliciesClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -4824,7 +4824,7 @@ type TracksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TracksClientListOptions contains the optional parameters for the TracksClient.List method.
+// TracksClientListOptions contains the optional parameters for the TracksClient.NewListPager method.
 type TracksClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4905,7 +4905,7 @@ type TransformsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TransformsClientListOptions contains the optional parameters for the TransformsClient.List method.
+// TransformsClientListOptions contains the optional parameters for the TransformsClient.NewListPager method.
 type TransformsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string

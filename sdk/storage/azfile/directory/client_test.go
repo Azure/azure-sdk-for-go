@@ -60,12 +60,12 @@ type DirectoryUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirNewDirectoryClient() {
+func (d *DirectoryRecordedTestsSuite) TestDirNewDirectoryClient() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -83,12 +83,12 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirNewDirectoryClient() {
 	_require.Equal(subDirClient.URL(), correctURL)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirCreateFileURL() {
+func (d *DirectoryRecordedTestsSuite) TestDirCreateFileURL() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -106,7 +106,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirCreateFileURL() {
 	_require.Equal(fileClient.URL(), correctURL)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateUsingSharedKey() {
+func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateUsingSharedKey() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -122,7 +122,10 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateUsingSharedKey() {
 
 	dirName := testcommon.GenerateDirectoryName(testName)
 	dirURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName + "/" + dirName
-	dirClient, err := directory.NewClientWithSharedKeyCredential(dirURL, cred, nil)
+
+	options := &directory.ClientOptions{}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClientWithSharedKeyCredential(dirURL, cred, options)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
@@ -135,7 +138,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateUsingSharedKey() {
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateUsingConnectionString() {
+func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateUsingConnectionString() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -150,7 +153,9 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateUsingConnectionString
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
 	dirName := testcommon.GenerateDirectoryName(testName)
-	dirClient, err := directory.NewClientFromConnectionString(*connString, shareName, dirName, nil)
+	options := &directory.ClientOptions{}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClientFromConnectionString(*connString, shareName, dirName, options)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
@@ -164,7 +169,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateUsingConnectionString
 
 	innerDirName1 := "innerdir1"
 	dirPath := dirName + "/" + innerDirName1
-	dirClient1, err := directory.NewClientFromConnectionString(*connString, shareName, dirPath, nil)
+	dirClient1, err := directory.NewClientFromConnectionString(*connString, shareName, dirPath, options)
 	_require.NoError(err)
 
 	resp, err = dirClient1.Create(context.Background(), nil)
@@ -176,7 +181,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateUsingConnectionString
 	innerDirName2 := "innerdir2"
 	// using '\' as path separator between directories
 	dirPath = dirName + "\\" + innerDirName1 + "\\" + innerDirName2
-	dirClient2, err := directory.NewClientFromConnectionString(*connString, shareName, dirPath, nil)
+	dirClient2, err := directory.NewClientFromConnectionString(*connString, shareName, dirPath, options)
 	_require.NoError(err)
 
 	resp, err = dirClient2.Create(context.Background(), nil)
@@ -186,7 +191,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateUsingConnectionString
 	_require.Equal(resp.FileCreationTime.IsZero(), false)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateNegativeMultiLevel() {
+func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateNegativeMultiLevel() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -203,7 +208,9 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateNegativeMultiLevel() 
 	dirName := testcommon.GenerateDirectoryName(testName)
 	// dirPath where parent dir does not exist
 	dirPath := "a/b/c/d/" + dirName
-	dirClient, err := directory.NewClientFromConnectionString(*connString, shareName, dirPath, nil)
+	options := &directory.ClientOptions{}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClientFromConnectionString(*connString, shareName, dirPath, options)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
@@ -269,7 +276,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryClientUsingSAS() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteDefault() {
+func (d *DirectoryRecordedTestsSuite) TestDirCreateDeleteDefault() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -414,7 +421,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNonDefault() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirCreateNegativePermissions() {
+func (d *DirectoryRecordedTestsSuite) TestDirCreateNegativePermissions() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -445,7 +452,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirCreateNegativePermissions() {
 	_require.Error(err)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirCreateNegativeAttributes() {
+func (d *DirectoryRecordedTestsSuite) TestDirCreateNegativeAttributes() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -467,7 +474,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirCreateNegativeAttributes() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidHeaderValue)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNegativeMultiLevelDir() {
+func (d *DirectoryRecordedTestsSuite) TestDirCreateDeleteNegativeMultiLevelDir() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -510,7 +517,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNegativeMultiLevelDir
 	_require.NoError(err)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirCreateEndWithSlash() {
+func (d *DirectoryRecordedTestsSuite) TestDirCreateEndWithSlash() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -535,7 +542,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirCreateEndWithSlash() {
 	_require.NoError(err)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirGetSetMetadataDefault() {
+func (d *DirectoryRecordedTestsSuite) TestDirGetSetMetadataDefault() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -568,7 +575,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirGetSetMetadataDefault() {
 	_require.Len(gResp.Metadata, 0)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirGetSetMetadataNonDefault() {
+func (d *DirectoryRecordedTestsSuite) TestDirGetSetMetadataNonDefault() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -608,7 +615,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirGetSetMetadataNonDefault() {
 	_require.EqualValues(gResp.Metadata, md)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirSetMetadataNegative() {
+func (d *DirectoryRecordedTestsSuite) TestDirSetMetadataNegative() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -632,7 +639,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirSetMetadataNegative() {
 	_require.Error(err)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirGetPropertiesNegative() {
+func (d *DirectoryRecordedTestsSuite) TestDirGetPropertiesNegative() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -650,7 +657,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirGetPropertiesNegative() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirGetPropertiesWithBaseDirectory() {
+func (d *DirectoryRecordedTestsSuite) TestDirGetPropertiesWithBaseDirectory() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -675,7 +682,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirGetPropertiesWithBaseDirectory() 
 	_require.NotNil(gResp.IsServerEncrypted)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirGetSetMetadataMergeAndReplace() {
+func (d *DirectoryRecordedTestsSuite) TestDirGetSetMetadataMergeAndReplace() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -732,10 +739,10 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirGetSetMetadataMergeAndReplace() {
 	_require.EqualValues(gResp.Metadata, md2)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestSASDirectoryClientNoKey() {
+func (d *DirectoryRecordedTestsSuite) TestSASDirectoryClientNoKey() {
 	_require := require.New(d.T())
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
 	testName := d.T().Name()
 	shareName := testcommon.GenerateShareName(testName)
@@ -755,12 +762,11 @@ func (d *DirectoryUnrecordedTestsSuite) TestSASDirectoryClientNoKey() {
 	_require.Equal(err, fileerror.MissingSharedKeyCredential)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestSASDirectoryClientSignNegative() {
+func (d *DirectoryRecordedTestsSuite) TestSASDirectoryClientSignNegative() {
 	_require := require.New(d.T())
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
-	accountKey, err := testcommon.GetRequiredEnv(testcommon.AccountKeyEnvVar)
-	_require.NoError(err)
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+	_require.Greater(len(accountKey), 0)
 
 	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)

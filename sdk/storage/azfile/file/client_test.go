@@ -1004,10 +1004,10 @@ func (f *FileRecordedTestsSuite) TestCreateMaximumSizeFileShare() {
 	_require.NoError(err)
 }
 
-func (f *FileUnrecordedTestsSuite) TestSASFileClientNoKey() {
+func (f *FileRecordedTestsSuite) TestSASFileClientNoKey() {
 	_require := require.New(f.T())
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
 	testName := f.T().Name()
 	shareName := testcommon.GenerateShareName(testName)
@@ -1027,12 +1027,11 @@ func (f *FileUnrecordedTestsSuite) TestSASFileClientNoKey() {
 	_require.Equal(err, fileerror.MissingSharedKeyCredential)
 }
 
-func (f *FileUnrecordedTestsSuite) TestSASDirectoryClientSignNegative() {
+func (f *FileRecordedTestsSuite) TestSASFileClientSignNegative() {
 	_require := require.New(f.T())
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
-	accountKey, err := testcommon.GetRequiredEnv(testcommon.AccountKeyEnvVar)
-	_require.NoError(err)
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+	_require.Greater(len(accountKey), 0)
 
 	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)

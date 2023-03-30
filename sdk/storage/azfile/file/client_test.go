@@ -61,7 +61,7 @@ type FileUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileNewFileClient() {
+func (f *FileRecordedTestsSuite) TestFileNewFileClient() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -89,7 +89,7 @@ func (f *FileUnrecordedTestsSuite) TestFileNewFileClient() {
 	_require.Equal(rootFileClient.URL(), correctURL)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileCreateUsingSharedKey() {
+func (f *FileRecordedTestsSuite) TestFileCreateUsingSharedKey() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -127,7 +127,7 @@ func (f *FileUnrecordedTestsSuite) TestFileCreateUsingSharedKey() {
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileCreateUsingConnectionString() {
+func (f *FileRecordedTestsSuite) TestFileCreateUsingConnectionString() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -222,7 +222,7 @@ func (f *FileUnrecordedTestsSuite) TestFileClientUsingSAS() {
 	_require.Equal(resp.FileCreationTime.IsZero(), false)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileCreateDeleteDefault() {
+func (f *FileRecordedTestsSuite) TestFileCreateDeleteDefault() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -276,7 +276,7 @@ func (f *FileUnrecordedTestsSuite) TestFileCreateDeleteDefault() {
 	_require.Equal(delResp.Date.IsZero(), false)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
+func (f *FileRecordedTestsSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -303,7 +303,7 @@ func (f *FileUnrecordedTestsSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
 	}
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileCreateNonDefaultHTTPHeaders() {
+func (f *FileRecordedTestsSuite) TestFileCreateNonDefaultHTTPHeaders() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
@@ -338,7 +338,7 @@ func (f *FileUnrecordedTestsSuite) TestFileCreateNonDefaultHTTPHeaders() {
 	_require.Nil(resp.ContentMD5)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileCreateNegativeMetadataInvalid() {
+func (f *FileRecordedTestsSuite) TestFileCreateNegativeMetadataInvalid() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -387,7 +387,7 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 		HTTPHeaders: &file.HTTPHeaders{
 			ContentType:        to.Ptr("text/html"),
 			ContentEncoding:    to.Ptr("gzip"),
-			ContentLanguage:    to.Ptr("tr,en"),
+			ContentLanguage:    to.Ptr("en"),
 			ContentMD5:         testMd5,
 			CacheControl:       to.Ptr("no-transform"),
 			ContentDisposition: to.Ptr("attachment"),
@@ -428,7 +428,7 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.NotNil(getResp.IsServerEncrypted)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFilePreservePermissions() {
+func (f *FileRecordedTestsSuite) TestFilePreservePermissions() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -444,6 +444,7 @@ func (f *FileUnrecordedTestsSuite) TestFilePreservePermissions() {
 			Permission: &testcommon.SampleSDDL,
 		},
 	})
+	_require.NoError(err)
 
 	// Grab the original perm key before we set file headers.
 	getResp, err := fClient.GetProperties(context.Background(), nil)
@@ -462,7 +463,7 @@ func (f *FileUnrecordedTestsSuite) TestFilePreservePermissions() {
 		HTTPHeaders: &file.HTTPHeaders{
 			ContentType:        to.Ptr("text/html"),
 			ContentEncoding:    to.Ptr("gzip"),
-			ContentLanguage:    to.Ptr("tr,en"),
+			ContentLanguage:    to.Ptr("en"),
 			ContentMD5:         testMd5,
 			CacheControl:       to.Ptr("no-transform"),
 			ContentDisposition: to.Ptr("attachment"),
@@ -506,7 +507,7 @@ func (f *FileUnrecordedTestsSuite) TestFilePreservePermissions() {
 	_require.NotNil(getResp.IsServerEncrypted)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesSnapshot() {
+func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesSnapshot() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -531,7 +532,7 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesSnapshot() {
 		HTTPHeaders: &file.HTTPHeaders{
 			ContentType:        to.Ptr("text/html"),
 			ContentEncoding:    to.Ptr("gzip"),
-			ContentLanguage:    to.Ptr("tr,en"),
+			ContentLanguage:    to.Ptr("en"),
 			ContentMD5:         testMd5,
 			CacheControl:       to.Ptr("no-transform"),
 			ContentDisposition: to.Ptr("attachment"),
@@ -583,7 +584,7 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesSnapshot() {
 	_require.EqualValues(getResp.Metadata, metadata)
 }
 
-func (f *FileUnrecordedTestsSuite) TestGetSetMetadataNonDefault() {
+func (f *FileRecordedTestsSuite) TestGetSetMetadataNonDefault() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -621,7 +622,7 @@ func (f *FileUnrecordedTestsSuite) TestGetSetMetadataNonDefault() {
 	_require.EqualValues(getResp.Metadata, metadata)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileSetMetadataNil() {
+func (f *FileRecordedTestsSuite) TestFileSetMetadataNil() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -654,7 +655,7 @@ func (f *FileUnrecordedTestsSuite) TestFileSetMetadataNil() {
 	_require.Len(resp2.Metadata, 0)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileSetMetadataDefaultEmpty() {
+func (f *FileRecordedTestsSuite) TestFileSetMetadataDefaultEmpty() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -689,7 +690,7 @@ func (f *FileUnrecordedTestsSuite) TestFileSetMetadataDefaultEmpty() {
 	_require.Len(resp2.Metadata, 0)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileSetMetadataInvalidField() {
+func (f *FileRecordedTestsSuite) TestFileSetMetadataInvalidField() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -831,7 +832,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyMetadataEmpty() {
 	_require.Len(resp2.Metadata, 0)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopyNegativeMetadataInvalidField() {
+func (f *FileRecordedTestsSuite) TestFileStartCopyNegativeMetadataInvalidField() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -853,7 +854,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyNegativeMetadataInvalidField
 	_require.Error(err)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceNonExistent() {
+func (f *FileRecordedTestsSuite) TestFileStartCopySourceNonExistent() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -870,7 +871,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceNonExistent() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileAbortCopyNoCopyStarted() {
+func (f *FileRecordedTestsSuite) TestFileAbortCopyNoCopyStarted() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -886,7 +887,7 @@ func (f *FileUnrecordedTestsSuite) TestFileAbortCopyNoCopyStarted() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidQueryParameterValue)
 }
 
-func (f *FileUnrecordedTestsSuite) TestResizeFile() {
+func (f *FileRecordedTestsSuite) TestResizeFile() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -912,7 +913,7 @@ func (f *FileUnrecordedTestsSuite) TestResizeFile() {
 	_require.Equal(*gResp.ContentLength, int64(4096))
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileResizeZero() {
+func (f *FileRecordedTestsSuite) TestFileResizeZero() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -934,7 +935,7 @@ func (f *FileUnrecordedTestsSuite) TestFileResizeZero() {
 	_require.Equal(*resp.ContentLength, int64(0))
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileResizeInvalidSizeNegative() {
+func (f *FileRecordedTestsSuite) TestFileResizeInvalidSizeNegative() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -953,7 +954,7 @@ func (f *FileUnrecordedTestsSuite) TestFileResizeInvalidSizeNegative() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.OutOfRangeInput)
 }
 
-func (f *FileUnrecordedTestsSuite) TestNegativeFileSizeMoreThanShareQuota() {
+func (f *FileRecordedTestsSuite) TestNegativeFileSizeMoreThanShareQuota() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
@@ -976,7 +977,7 @@ func (f *FileUnrecordedTestsSuite) TestNegativeFileSizeMoreThanShareQuota() {
 	_require.Error(err)
 }
 
-func (f *FileUnrecordedTestsSuite) TestCreateMaximumSizeFileShare() {
+func (f *FileRecordedTestsSuite) TestCreateMaximumSizeFileShare() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
@@ -1049,6 +1050,8 @@ func (f *FileUnrecordedTestsSuite) TestSASDirectoryClientSignNegative() {
 	_, err = fileClient.GetSASURL(permissions, expiry, nil)
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
+
+// TODO: Add tests for different options of StartCopyFromURL()
 
 // TODO: Add tests for upload and download methods
 

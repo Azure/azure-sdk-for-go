@@ -199,6 +199,7 @@ type StartCopyFromURLOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+// TODO: discuss on the types of FileAttributes, FileCreationTime and FileLastWriteTime in CopyFileSMBInfo.
 func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOptions, *generated.CopyFileSMBInfo, *generated.LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil, nil

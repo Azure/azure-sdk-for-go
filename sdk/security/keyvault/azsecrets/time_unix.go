@@ -37,7 +37,7 @@ func (t timeUnix) String() string {
 	return fmt.Sprintf("%d", time.Time(t).Unix())
 }
 
-func populateTimeUnix(m map[string]interface{}, k string, t *time.Time) {
+func populateTimeUnix(m map[string]any, k string, t *time.Time) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {

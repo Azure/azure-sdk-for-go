@@ -37,12 +37,13 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	vaultURL = strings.TrimSuffix(os.Getenv("AZURE_KEYVAULT_URL"), "/")
-	if vaultURL == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
+	vaultURL = fakeVaultURL
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		if u, ok := os.LookupEnv("AZURE_KEYVAULT_URL"); ok && u != "" {
+			vaultURL = strings.TrimSuffix(u, "/")
+		} else {
 			panic("no value for AZURE_KEYVAULT_URL")
 		}
-		vaultURL = fakeVaultURL
 	}
 	err := recording.ResetProxy(nil)
 	if err != nil {

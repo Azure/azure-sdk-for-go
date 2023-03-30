@@ -11,6 +11,8 @@
 
 ### Bugs Fixed
 
+* Fixed time formatting for the conditional request headers. Fixes [#20475](https://github.com/Azure/azure-sdk-for-go/issues/20475).
+
 ### Other Changes
 
 ## 1.0.0 (2023-02-07)

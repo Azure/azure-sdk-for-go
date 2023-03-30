@@ -81,11 +81,38 @@ type RPCResponse struct {
 	Message     *amqp.Message
 }
 
+type goamqpConn interface {
+	NewSession(ctx context.Context, opts *amqp.SessionOptions) (*amqp.Session, error)
+	Close() error
+}
+
+type goamqpSession interface {
+	Close(ctx context.Context) error
+	NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (*amqp.Receiver, error)
+	NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (*amqp.Sender, error)
+}
+
+type goamqpReceiver interface {
+	IssueCredit(credit uint32) error
+	Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error)
+	Prefetched() *amqp.Message
+
+	// settlement functions
+	AcceptMessage(ctx context.Context, msg *amqp.Message) error
+	RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error
+	ReleaseMessage(ctx context.Context, msg *amqp.Message) error
+	ModifyMessage(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error
+
+	LinkName() string
+	LinkSourceFilterValue(name string) any
+	Close(ctx context.Context) error
+}
+
 // AMQPClientWrapper is a simple interface, implemented by *AMQPClientWrapper
 // It exists only so we can return AMQPSession, which itself only exists so we can
 // return interfaces for AMQPSender and AMQPReceiver from AMQPSession.
 type AMQPClientWrapper struct {
-	Inner *amqp.Conn
+	Inner goamqpConn
 }
 
 func (w *AMQPClientWrapper) Close() error {
@@ -105,7 +132,7 @@ func (w *AMQPClientWrapper) NewSession(ctx context.Context, opts *amqp.SessionOp
 }
 
 type AMQPSessionWrapper struct {
-	Inner *amqp.Session
+	Inner goamqpSession
 }
 
 func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
@@ -137,7 +164,7 @@ func (w *AMQPSessionWrapper) NewSender(ctx context.Context, target string, opts 
 }
 
 type AMQPReceiverWrapper struct {
-	inner   *amqp.Receiver
+	inner   goamqpReceiver
 	credits uint32
 }
 
@@ -211,7 +238,7 @@ func (rw *AMQPReceiverWrapper) Close(ctx context.Context) error {
 }
 
 type AMQPSenderWrapper struct {
-	inner *amqp.Sender
+	inner AMQPSenderCloser
 }
 
 func (sw *AMQPSenderWrapper) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {

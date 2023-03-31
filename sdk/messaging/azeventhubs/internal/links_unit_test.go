@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -162,6 +163,57 @@ func TestLinks_ConnectionRecovery(t *testing.T) {
 	// we still cleanup what we can (including cancelling our background negotiate claim loop)
 	require.ErrorIs(t, context.Canceled, negotiateClaimCtx.Err())
 	require.Empty(t, links.links, "link is removed")
+}
+
+func TestLinks_LinkRecoveryUpgradedToConnectionRecovery(t *testing.T) {
+	connectionRecoverCalled := 0
+
+	fakeNS := &FakeNSForPartClient{
+		RecoverFn: func(ctx context.Context, clientRevision uint64) error {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			default:
+				connectionRecoverCalled++
+				return nil
+			}
+		},
+	}
+
+	getLogsFn := test.CaptureLogsForTest()
+
+	var nextID int
+	var receivers []*FakeAMQPReceiver
+
+	links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
+		return fmt.Sprintf("part:%s", partitionID)
+	},
+		func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (*FakeAMQPReceiver, error) {
+			nextID++
+			receivers = append(receivers, &FakeAMQPReceiver{
+				NameForLink: fmt.Sprintf("Link%d", nextID),
+				CloseError:  amqpwrap.ErrConnResetNeeded, // simulate a connection level failure
+			})
+			return receivers[len(receivers)-1], nil
+		})
+
+	lwid, err := links.GetLink(context.Background(), "0")
+	require.NoError(t, err)
+	require.NotNil(t, lwid)
+	require.NotNil(t, links.links["0"], "cache contains the newly created link for partition 0")
+
+	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.LinkError{})
+	require.NoError(t, err)
+	require.Nil(t, links.links["0"], "cache will no longer a link for partition 0")
+	require.Equal(t, 1, connectionRecoverCalled, "Connection was recovered since link.Close() returned a connection level error")
+
+	logs := getLogsFn()
+
+	require.Equal(t, logs, []string{
+		"[azeh.Conn] Creating link for partition ID '0'",
+		"[azeh.Conn] (c:1,l:Link1,p:0): Succesfully created link for partition ID '0'",
+		"[azeh.Conn] (c:1,l:Link1,p:0) Error when cleaning up old link for link recovery: connection must be reset, link/connection state may be inconsistent",
+		"[azeh.Conn] Upgrading to connection reset for recovery instead of link. Link closing has timed out."})
 }
 
 func TestLinks_closeWithTimeout(t *testing.T) {

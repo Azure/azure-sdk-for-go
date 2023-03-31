@@ -96,16 +96,17 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 		ctx, cancel := l.contextWithTimeoutFn(ctx, defaultCloseTimeout)
 		defer cancel()
 
-		err := l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName())
-
-		if err != nil {
-			if rk := GetRecoveryKind(err); rk == RecoveryKindConn {
-				return err
-			}
-
-			// we don't need to propagate this error - it'll just be the link detach error or whatever
-			// caused the link to detach (for instance, if the Event Hub itself has been Disabled).
+		if err := l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName()); err != nil {
 			azlog.Writef(exported.EventConn, "(%s) Error when cleaning up old link for link recovery: %s", lwid.String(), err)
+
+			if GetRecoveryKind(err) == RecoveryKindConn {
+				log.Writef(exported.EventConn, "Upgrading to connection reset for recovery instead of link. Link closing has timed out.")
+
+				if err := l.ns.Recover(ctx, lwid.ConnID); err != nil {
+					log.Writef(exported.EventConn, "failed to recover connection: %s", err.Error())
+					return err
+				}
+			}
 		}
 
 		return nil

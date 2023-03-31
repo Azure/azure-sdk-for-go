@@ -60,11 +60,11 @@ type ServiceUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestAccountNewServiceURLValidName() {
+func (s *ServiceRecordedTestsSuite) TestAccountNewServiceURLValidName() {
 	_require := require.New(s.T())
 
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -73,12 +73,12 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountNewServiceURLValidName() {
 	_require.Equal(svcClient.URL(), correctURL)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestAccountNewShareURLValidName() {
+func (s *ServiceRecordedTestsSuite) TestAccountNewShareURLValidName() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -91,7 +91,7 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountNewShareURLValidName() {
 	_require.Equal(shareClient.URL(), correctURL)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
+func (s *ServiceRecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 
 	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
@@ -102,7 +102,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require.NotNil(resp.RequestID)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestAccountProperties() {
+func (s *ServiceRecordedTestsSuite) TestAccountProperties() {
 	_require := require.New(s.T())
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -172,7 +172,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountHourMetrics() {
 	_require.NoError(err)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestAccountListSharesNonDefault() {
+func (s *ServiceRecordedTestsSuite) TestAccountListSharesNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -316,10 +316,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientRestoreShare() {
 	_require.Equal(sharesCnt, 1)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
+func (s *ServiceRecordedTestsSuite) TestSASServiceClientNoKey() {
 	_require := require.New(s.T())
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
 	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.file.core.windows.net/", accountName), nil)
 	_require.NoError(err)
@@ -341,12 +341,11 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
 	_require.Equal(err, fileerror.MissingSharedKeyCredential)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
+func (s *ServiceRecordedTestsSuite) TestSASServiceClientSignNegative() {
 	_require := require.New(s.T())
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
-	accountKey, err := testcommon.GetRequiredEnv(testcommon.AccountKeyEnvVar)
-	_require.NoError(err)
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+	_require.Greater(len(accountKey), 0)
 
 	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)

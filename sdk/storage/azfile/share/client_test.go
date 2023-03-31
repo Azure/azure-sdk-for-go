@@ -438,7 +438,9 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetAccessPolicyNonDefault() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	now := time.Now().UTC().Truncate(10000 * time.Millisecond) // Enough resolution
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+	now := currTime.UTC().Truncate(10000 * time.Millisecond) // Enough resolution
 	expiryTIme := now.Add(5 * time.Minute).UTC()
 	pS := share.AccessPolicyPermission{
 		Read:   true,
@@ -494,7 +496,9 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetAccessPolicyNonDefaultMultiple(
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	now := time.Now().UTC().Truncate(10000 * time.Millisecond) // Enough resolution
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+	now := currTime.UTC().Truncate(10000 * time.Millisecond) // Enough resolution
 	expiryTIme := now.Add(5 * time.Minute).UTC()
 	permission := share.AccessPolicyPermission{
 		Read:  true,
@@ -551,7 +555,9 @@ func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyMoreThanFive() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	now := time.Now().UTC().Truncate(10000 * time.Millisecond) // Enough resolution
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+	now := currTime.UTC().Truncate(10000 * time.Millisecond) // Enough resolution
 	expiryTIme := now.Add(5 * time.Minute).UTC()
 	permission := share.AccessPolicyPermission{
 		Read:   true,
@@ -637,7 +643,9 @@ func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyNonDefaultDeleteAndMod
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	start := time.Now().UTC().Truncate(10000 * time.Millisecond)
+	currTime, err := time.Parse(time.UnixDate, "Thu Mar 30 20:00:00 GMT 2023")
+	_require.NoError(err)
+	start := currTime.UTC().Truncate(10000 * time.Millisecond)
 	expiry := start.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
 	permissions := make([]*share.SignedIdentifier, 2)
@@ -685,7 +693,9 @@ func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyDeleteAllPolicies() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	start := time.Now().UTC()
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+	start := currTime.UTC()
 	expiry := start.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
 	permissions := make([]*share.SignedIdentifier, 2)
@@ -728,7 +738,9 @@ func (s *ShareRecordedTestsSuite) TestShareSetPermissionsNegativeInvalidPolicyTi
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
 	// Swap start and expiry
-	expiry := time.Now().UTC()
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+	expiry := currTime.UTC()
 	start := expiry.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
 	permissions := make([]*share.SignedIdentifier, 2)
@@ -769,7 +781,9 @@ func (s *ShareRecordedTestsSuite) TestShareSetPermissionsNegative() {
 	for i := 0; i < 65; i++ {
 		id += "a"
 	}
-	expiry := time.Now().UTC()
+	currTime, err := time.Parse(time.UnixDate, "Wed Mar 29 20:00:00 GMT 2023")
+	_require.NoError(err)
+	expiry := currTime.UTC()
 	start := expiry.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
 	permissions := make([]*share.SignedIdentifier, 2)
@@ -993,7 +1007,7 @@ func (s *ShareRecordedTestsSuite) TestShareCreateSnapshotNonDefault() {
 	_require.True(foundSnapshot)
 }
 
-func (s *ShareRecordedTestsSuite) TestShareCreateSnapshotDefault() {
+func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1172,7 +1186,10 @@ func (s *ShareRecordedTestsSuite) TestShareCreateSnapshotNegativeSnapshotOfSnaps
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
 
-	snapshotClient, err := shareClient.WithSnapshot(time.Now().UTC().String())
+	snapTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+
+	snapshotClient, err := shareClient.WithSnapshot(snapTime.UTC().String())
 	_require.NoError(err)
 
 	cResp, err := snapshotClient.CreateSnapshot(context.Background(), nil)

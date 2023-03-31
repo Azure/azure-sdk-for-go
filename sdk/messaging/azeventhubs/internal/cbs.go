@@ -60,7 +60,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 
 	token, err := provider.GetToken(audience)
 	if err != nil {
-		azlog.Writef(exported.EventAuth, "Failed to get token from provider")
+		azlog.Writef(exported.EventAuth, "Failed to get token from provider: %s", err)
 		return closeLink(ctx, err)
 	}
 
@@ -77,7 +77,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 	}
 
 	if _, err := link.RPC(ctx, msg); err != nil {
-		azlog.Writef(exported.EventAuth, "Failed to send/receive RPC message")
+		azlog.Writef(exported.EventAuth, "Failed to send/receive RPC message: %s", err)
 		return closeLink(ctx, err)
 	}
 

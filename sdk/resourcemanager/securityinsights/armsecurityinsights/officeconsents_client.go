@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // OfficeConsentsClient contains the methods for the OfficeConsents group.
 // Don't use this type directly, use NewOfficeConsentsClient() instead.
 type OfficeConsentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewOfficeConsentsClient creates a new instance of OfficeConsentsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOfficeConsentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OfficeConsentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".OfficeConsentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &OfficeConsentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Delete - Delete the office365 consent.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// consentID - consent ID
-// options - OfficeConsentsClientDeleteOptions contains the optional parameters for the OfficeConsentsClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - consentID - consent ID
+//   - options - OfficeConsentsClientDeleteOptions contains the optional parameters for the OfficeConsentsClient.Delete method.
 func (client *OfficeConsentsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, consentID string, options *OfficeConsentsClientDeleteOptions) (OfficeConsentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, consentID, options)
 	if err != nil {
 		return OfficeConsentsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return OfficeConsentsClientDeleteResponse{}, err
 	}
@@ -96,7 +86,7 @@ func (client *OfficeConsentsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter consentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{consentId}", url.PathEscape(consentID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,17 +99,18 @@ func (client *OfficeConsentsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets an office365 consent.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// consentID - consent ID
-// options - OfficeConsentsClientGetOptions contains the optional parameters for the OfficeConsentsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - consentID - consent ID
+//   - options - OfficeConsentsClientGetOptions contains the optional parameters for the OfficeConsentsClient.Get method.
 func (client *OfficeConsentsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, consentID string, options *OfficeConsentsClientGetOptions) (OfficeConsentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, consentID, options)
 	if err != nil {
 		return OfficeConsentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return OfficeConsentsClientGetResponse{}, err
 	}
@@ -148,7 +139,7 @@ func (client *OfficeConsentsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter consentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{consentId}", url.PathEscape(consentID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,10 +160,11 @@ func (client *OfficeConsentsClient) getHandleResponse(resp *http.Response) (Offi
 }
 
 // NewListPager - Gets all office365 consents.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - OfficeConsentsClientListOptions contains the optional parameters for the OfficeConsentsClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - OfficeConsentsClientListOptions contains the optional parameters for the OfficeConsentsClient.NewListPager method.
 func (client *OfficeConsentsClient) NewListPager(resourceGroupName string, workspaceName string, options *OfficeConsentsClientListOptions) *runtime.Pager[OfficeConsentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OfficeConsentsClientListResponse]{
 		More: func(page OfficeConsentsClientListResponse) bool {
@@ -189,7 +181,7 @@ func (client *OfficeConsentsClient) NewListPager(resourceGroupName string, works
 			if err != nil {
 				return OfficeConsentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return OfficeConsentsClientListResponse{}, err
 			}
@@ -216,7 +208,7 @@ func (client *OfficeConsentsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

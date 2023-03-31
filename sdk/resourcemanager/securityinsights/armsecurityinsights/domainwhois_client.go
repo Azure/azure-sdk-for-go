@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,47 +24,39 @@ import (
 // DomainWhoisClient contains the methods for the DomainWhois group.
 // Don't use this type directly, use NewDomainWhoisClient() instead.
 type DomainWhoisClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDomainWhoisClient creates a new instance of DomainWhoisClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDomainWhoisClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DomainWhoisClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DomainWhoisClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DomainWhoisClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get whois information for a single domain name
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// domain - Domain name to be enriched
-// options - DomainWhoisClientGetOptions contains the optional parameters for the DomainWhoisClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - domain - Domain name to be enriched
+//   - options - DomainWhoisClientGetOptions contains the optional parameters for the DomainWhoisClient.Get method.
 func (client *DomainWhoisClient) Get(ctx context.Context, resourceGroupName string, domain string, options *DomainWhoisClientGetOptions) (DomainWhoisClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, domain, options)
 	if err != nil {
 		return DomainWhoisClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DomainWhoisClientGetResponse{}, err
 	}
@@ -87,7 +77,7 @@ func (client *DomainWhoisClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // BookmarkClient contains the methods for the Bookmark group.
 // Don't use this type directly, use NewBookmarkClient() instead.
 type BookmarkClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewBookmarkClient creates a new instance of BookmarkClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewBookmarkClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BookmarkClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".BookmarkClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &BookmarkClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Expand - Expand an bookmark
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// bookmarkID - Bookmark ID
-// parameters - The parameters required to execute an expand operation on the given bookmark.
-// options - BookmarkClientExpandOptions contains the optional parameters for the BookmarkClient.Expand method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - bookmarkID - Bookmark ID
+//   - parameters - The parameters required to execute an expand operation on the given bookmark.
+//   - options - BookmarkClientExpandOptions contains the optional parameters for the BookmarkClient.Expand method.
 func (client *BookmarkClient) Expand(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, parameters BookmarkExpandParameters, options *BookmarkClientExpandOptions) (BookmarkClientExpandResponse, error) {
 	req, err := client.expandCreateRequest(ctx, resourceGroupName, workspaceName, bookmarkID, parameters, options)
 	if err != nil {
 		return BookmarkClientExpandResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BookmarkClientExpandResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *BookmarkClient) expandCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter bookmarkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bookmarkId}", url.PathEscape(bookmarkID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

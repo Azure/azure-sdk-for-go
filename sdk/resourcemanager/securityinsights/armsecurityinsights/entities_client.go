@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // EntitiesClient contains the methods for the Entities group.
 // Don't use this type directly, use NewEntitiesClient() instead.
 type EntitiesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewEntitiesClient creates a new instance of EntitiesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEntitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntitiesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EntitiesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EntitiesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Expand - Expands an entity.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityID - entity ID
-// parameters - The parameters required to execute an expand operation on the given entity.
-// options - EntitiesClientExpandOptions contains the optional parameters for the EntitiesClient.Expand method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityID - entity ID
+//   - parameters - The parameters required to execute an expand operation on the given entity.
+//   - options - EntitiesClientExpandOptions contains the optional parameters for the EntitiesClient.Expand method.
 func (client *EntitiesClient) Expand(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, parameters EntityExpandParameters, options *EntitiesClientExpandOptions) (EntitiesClientExpandResponse, error) {
 	req, err := client.expandCreateRequest(ctx, resourceGroupName, workspaceName, entityID, parameters, options)
 	if err != nil {
 		return EntitiesClientExpandResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EntitiesClientExpandResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *EntitiesClient) expandCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter entityID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{entityId}", url.PathEscape(entityID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,17 +109,18 @@ func (client *EntitiesClient) expandHandleResponse(resp *http.Response) (Entitie
 
 // Get - Gets an entity.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityID - entity ID
-// options - EntitiesClientGetOptions contains the optional parameters for the EntitiesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityID - entity ID
+//   - options - EntitiesClientGetOptions contains the optional parameters for the EntitiesClient.Get method.
 func (client *EntitiesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, options *EntitiesClientGetOptions) (EntitiesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, entityID, options)
 	if err != nil {
 		return EntitiesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EntitiesClientGetResponse{}, err
 	}
@@ -158,7 +149,7 @@ func (client *EntitiesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter entityID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{entityId}", url.PathEscape(entityID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -180,18 +171,19 @@ func (client *EntitiesClient) getHandleResponse(resp *http.Response) (EntitiesCl
 
 // GetInsights - Execute Insights for an entity.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityID - entity ID
-// parameters - The parameters required to execute insights on the given entity.
-// options - EntitiesClientGetInsightsOptions contains the optional parameters for the EntitiesClient.GetInsights method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityID - entity ID
+//   - parameters - The parameters required to execute insights on the given entity.
+//   - options - EntitiesClientGetInsightsOptions contains the optional parameters for the EntitiesClient.GetInsights method.
 func (client *EntitiesClient) GetInsights(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, parameters EntityGetInsightsParameters, options *EntitiesClientGetInsightsOptions) (EntitiesClientGetInsightsResponse, error) {
 	req, err := client.getInsightsCreateRequest(ctx, resourceGroupName, workspaceName, entityID, parameters, options)
 	if err != nil {
 		return EntitiesClientGetInsightsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EntitiesClientGetInsightsResponse{}, err
 	}
@@ -220,7 +212,7 @@ func (client *EntitiesClient) getInsightsCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter entityID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{entityId}", url.PathEscape(entityID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -241,10 +233,11 @@ func (client *EntitiesClient) getInsightsHandleResponse(resp *http.Response) (En
 }
 
 // NewListPager - Gets all entities.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - EntitiesClientListOptions contains the optional parameters for the EntitiesClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - EntitiesClientListOptions contains the optional parameters for the EntitiesClient.NewListPager method.
 func (client *EntitiesClient) NewListPager(resourceGroupName string, workspaceName string, options *EntitiesClientListOptions) *runtime.Pager[EntitiesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EntitiesClientListResponse]{
 		More: func(page EntitiesClientListResponse) bool {
@@ -261,7 +254,7 @@ func (client *EntitiesClient) NewListPager(resourceGroupName string, workspaceNa
 			if err != nil {
 				return EntitiesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EntitiesClientListResponse{}, err
 			}
@@ -288,7 +281,7 @@ func (client *EntitiesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,18 +303,19 @@ func (client *EntitiesClient) listHandleResponse(resp *http.Response) (EntitiesC
 
 // Queries - Get Insights and Activities for an entity.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityID - entity ID
-// kind - The Kind parameter for queries
-// options - EntitiesClientQueriesOptions contains the optional parameters for the EntitiesClient.Queries method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityID - entity ID
+//   - kind - The Kind parameter for queries
+//   - options - EntitiesClientQueriesOptions contains the optional parameters for the EntitiesClient.Queries method.
 func (client *EntitiesClient) Queries(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, kind EntityItemQueryKind, options *EntitiesClientQueriesOptions) (EntitiesClientQueriesResponse, error) {
 	req, err := client.queriesCreateRequest(ctx, resourceGroupName, workspaceName, entityID, kind, options)
 	if err != nil {
 		return EntitiesClientQueriesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EntitiesClientQueriesResponse{}, err
 	}
@@ -350,7 +344,7 @@ func (client *EntitiesClient) queriesCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter entityID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{entityId}", url.PathEscape(entityID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

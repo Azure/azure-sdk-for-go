@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // SourceControlsClient contains the methods for the SourceControls group.
 // Don't use this type directly, use NewSourceControlsClient() instead.
 type SourceControlsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSourceControlsClient creates a new instance of SourceControlsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSourceControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SourceControlsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SourceControlsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Creates a source control.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// sourceControlID - Source control Id
-// sourceControl - The SourceControl
-// options - SourceControlsClientCreateOptions contains the optional parameters for the SourceControlsClient.Create method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - sourceControlID - Source control Id
+//   - sourceControl - The SourceControl
+//   - options - SourceControlsClientCreateOptions contains the optional parameters for the SourceControlsClient.Create method.
 func (client *SourceControlsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, sourceControl SourceControl, options *SourceControlsClientCreateOptions) (SourceControlsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, sourceControlID, sourceControl, options)
 	if err != nil {
 		return SourceControlsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SourceControlsClientCreateResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *SourceControlsClient) createCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter sourceControlID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sourceControlId}", url.PathEscape(sourceControlID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,17 +109,18 @@ func (client *SourceControlsClient) createHandleResponse(resp *http.Response) (S
 
 // Delete - Delete a source control.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// sourceControlID - Source control Id
-// options - SourceControlsClientDeleteOptions contains the optional parameters for the SourceControlsClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - sourceControlID - Source control Id
+//   - options - SourceControlsClientDeleteOptions contains the optional parameters for the SourceControlsClient.Delete method.
 func (client *SourceControlsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, options *SourceControlsClientDeleteOptions) (SourceControlsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, sourceControlID, options)
 	if err != nil {
 		return SourceControlsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SourceControlsClientDeleteResponse{}, err
 	}
@@ -158,7 +149,7 @@ func (client *SourceControlsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter sourceControlID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sourceControlId}", url.PathEscape(sourceControlID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,17 +162,18 @@ func (client *SourceControlsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets a source control byt its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// sourceControlID - Source control Id
-// options - SourceControlsClientGetOptions contains the optional parameters for the SourceControlsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - sourceControlID - Source control Id
+//   - options - SourceControlsClientGetOptions contains the optional parameters for the SourceControlsClient.Get method.
 func (client *SourceControlsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, options *SourceControlsClientGetOptions) (SourceControlsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sourceControlID, options)
 	if err != nil {
 		return SourceControlsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SourceControlsClientGetResponse{}, err
 	}
@@ -210,7 +202,7 @@ func (client *SourceControlsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter sourceControlID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sourceControlId}", url.PathEscape(sourceControlID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,10 +223,11 @@ func (client *SourceControlsClient) getHandleResponse(resp *http.Response) (Sour
 }
 
 // NewListPager - Gets all source controls, without source control items.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - SourceControlsClientListOptions contains the optional parameters for the SourceControlsClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - SourceControlsClientListOptions contains the optional parameters for the SourceControlsClient.NewListPager method.
 func (client *SourceControlsClient) NewListPager(resourceGroupName string, workspaceName string, options *SourceControlsClientListOptions) *runtime.Pager[SourceControlsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SourceControlsClientListResponse]{
 		More: func(page SourceControlsClientListResponse) bool {
@@ -251,7 +244,7 @@ func (client *SourceControlsClient) NewListPager(resourceGroupName string, works
 			if err != nil {
 				return SourceControlsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SourceControlsClientListResponse{}, err
 			}
@@ -278,7 +271,7 @@ func (client *SourceControlsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // EntityRelationsClient contains the methods for the EntityRelations group.
 // Don't use this type directly, use NewEntityRelationsClient() instead.
 type EntityRelationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewEntityRelationsClient creates a new instance of EntityRelationsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEntityRelationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntityRelationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EntityRelationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EntityRelationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // GetRelation - Gets an entity relation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityID - entity ID
-// relationName - Relation Name
-// options - EntityRelationsClientGetRelationOptions contains the optional parameters for the EntityRelationsClient.GetRelation
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityID - entity ID
+//   - relationName - Relation Name
+//   - options - EntityRelationsClientGetRelationOptions contains the optional parameters for the EntityRelationsClient.GetRelation
+//     method.
 func (client *EntityRelationsClient) GetRelation(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, relationName string, options *EntityRelationsClientGetRelationOptions) (EntityRelationsClientGetRelationResponse, error) {
 	req, err := client.getRelationCreateRequest(ctx, resourceGroupName, workspaceName, entityID, relationName, options)
 	if err != nil {
 		return EntityRelationsClientGetRelationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EntityRelationsClientGetRelationResponse{}, err
 	}
@@ -102,7 +92,7 @@ func (client *EntityRelationsClient) getRelationCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter relationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{relationName}", url.PathEscape(relationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

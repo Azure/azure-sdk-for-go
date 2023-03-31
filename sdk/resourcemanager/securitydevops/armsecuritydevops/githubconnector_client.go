@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // GitHubConnectorClient contains the methods for the GitHubConnector group.
 // Don't use this type directly, use NewGitHubConnectorClient() instead.
 type GitHubConnectorClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewGitHubConnectorClient creates a new instance of GitHubConnectorClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGitHubConnectorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GitHubConnectorClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GitHubConnectorClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GitHubConnectorClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a monitored GitHub Connector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// gitHubConnectorName - Name of the GitHub Connector.
-// gitHubConnector - Connector resource payload.
-// options - GitHubConnectorClientBeginCreateOrUpdateOptions contains the optional parameters for the GitHubConnectorClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - gitHubConnectorName - Name of the GitHub Connector.
+//   - gitHubConnector - Connector resource payload.
+//   - options - GitHubConnectorClientBeginCreateOrUpdateOptions contains the optional parameters for the GitHubConnectorClient.BeginCreateOrUpdate
+//     method.
 func (client *GitHubConnectorClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gitHubConnectorName string, gitHubConnector GitHubConnector, options *GitHubConnectorClientBeginCreateOrUpdateOptions) (*runtime.Poller[GitHubConnectorClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, gitHubConnectorName, gitHubConnector, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[GitHubConnectorClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GitHubConnectorClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[GitHubConnectorClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GitHubConnectorClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a monitored GitHub Connector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
 func (client *GitHubConnectorClient) createOrUpdate(ctx context.Context, resourceGroupName string, gitHubConnectorName string, gitHubConnector GitHubConnector, options *GitHubConnectorClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, gitHubConnectorName, gitHubConnector, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +101,7 @@ func (client *GitHubConnectorClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter gitHubConnectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gitHubConnectorName}", url.PathEscape(gitHubConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,32 +114,34 @@ func (client *GitHubConnectorClient) createOrUpdateCreateRequest(ctx context.Con
 
 // BeginDelete - Delete monitored GitHub Connector details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// gitHubConnectorName - Name of the GitHub Connector.
-// options - GitHubConnectorClientBeginDeleteOptions contains the optional parameters for the GitHubConnectorClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - gitHubConnectorName - Name of the GitHub Connector.
+//   - options - GitHubConnectorClientBeginDeleteOptions contains the optional parameters for the GitHubConnectorClient.BeginDelete
+//     method.
 func (client *GitHubConnectorClient) BeginDelete(ctx context.Context, resourceGroupName string, gitHubConnectorName string, options *GitHubConnectorClientBeginDeleteOptions) (*runtime.Poller[GitHubConnectorClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, gitHubConnectorName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GitHubConnectorClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GitHubConnectorClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GitHubConnectorClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GitHubConnectorClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete monitored GitHub Connector details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
 func (client *GitHubConnectorClient) deleteOperation(ctx context.Context, resourceGroupName string, gitHubConnectorName string, options *GitHubConnectorClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, gitHubConnectorName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +166,7 @@ func (client *GitHubConnectorClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter gitHubConnectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gitHubConnectorName}", url.PathEscape(gitHubConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,16 +179,17 @@ func (client *GitHubConnectorClient) deleteCreateRequest(ctx context.Context, re
 
 // Get - Returns a monitored GitHub Connector resource for a given ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// gitHubConnectorName - Name of the GitHub Connector.
-// options - GitHubConnectorClientGetOptions contains the optional parameters for the GitHubConnectorClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - gitHubConnectorName - Name of the GitHub Connector.
+//   - options - GitHubConnectorClientGetOptions contains the optional parameters for the GitHubConnectorClient.Get method.
 func (client *GitHubConnectorClient) Get(ctx context.Context, resourceGroupName string, gitHubConnectorName string, options *GitHubConnectorClientGetOptions) (GitHubConnectorClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, gitHubConnectorName, options)
 	if err != nil {
 		return GitHubConnectorClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GitHubConnectorClientGetResponse{}, err
 	}
@@ -220,7 +214,7 @@ func (client *GitHubConnectorClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter gitHubConnectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gitHubConnectorName}", url.PathEscape(gitHubConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -240,9 +234,9 @@ func (client *GitHubConnectorClient) getHandleResponse(resp *http.Response) (Git
 	return result, nil
 }
 
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - GitHubConnectorClientListByResourceGroupOptions contains the optional parameters for the GitHubConnectorClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - GitHubConnectorClientListByResourceGroupOptions contains the optional parameters for the GitHubConnectorClient.NewListByResourceGroupPager
+//     method.
 func (client *GitHubConnectorClient) NewListByResourceGroupPager(resourceGroupName string, options *GitHubConnectorClientListByResourceGroupOptions) *runtime.Pager[GitHubConnectorClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GitHubConnectorClientListByResourceGroupResponse]{
 		More: func(page GitHubConnectorClientListByResourceGroupResponse) bool {
@@ -259,7 +253,7 @@ func (client *GitHubConnectorClient) NewListByResourceGroupPager(resourceGroupNa
 			if err != nil {
 				return GitHubConnectorClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GitHubConnectorClientListByResourceGroupResponse{}, err
 			}
@@ -282,7 +276,7 @@ func (client *GitHubConnectorClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -303,9 +297,10 @@ func (client *GitHubConnectorClient) listByResourceGroupHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - Returns a list of monitored GitHub Connectors.
+//
 // Generated from API version 2022-09-01-preview
-// options - GitHubConnectorClientListBySubscriptionOptions contains the optional parameters for the GitHubConnectorClient.ListBySubscription
-// method.
+//   - options - GitHubConnectorClientListBySubscriptionOptions contains the optional parameters for the GitHubConnectorClient.NewListBySubscriptionPager
+//     method.
 func (client *GitHubConnectorClient) NewListBySubscriptionPager(options *GitHubConnectorClientListBySubscriptionOptions) *runtime.Pager[GitHubConnectorClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GitHubConnectorClientListBySubscriptionResponse]{
 		More: func(page GitHubConnectorClientListBySubscriptionResponse) bool {
@@ -322,7 +317,7 @@ func (client *GitHubConnectorClient) NewListBySubscriptionPager(options *GitHubC
 			if err != nil {
 				return GitHubConnectorClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GitHubConnectorClientListBySubscriptionResponse{}, err
 			}
@@ -341,7 +336,7 @@ func (client *GitHubConnectorClient) listBySubscriptionCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -363,33 +358,35 @@ func (client *GitHubConnectorClient) listBySubscriptionHandleResponse(resp *http
 
 // BeginUpdate - Update monitored GitHub Connector details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// gitHubConnectorName - Name of the GitHub Connector.
-// gitHubConnector - Connector resource payload.
-// options - GitHubConnectorClientBeginUpdateOptions contains the optional parameters for the GitHubConnectorClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - gitHubConnectorName - Name of the GitHub Connector.
+//   - gitHubConnector - Connector resource payload.
+//   - options - GitHubConnectorClientBeginUpdateOptions contains the optional parameters for the GitHubConnectorClient.BeginUpdate
+//     method.
 func (client *GitHubConnectorClient) BeginUpdate(ctx context.Context, resourceGroupName string, gitHubConnectorName string, gitHubConnector GitHubConnector, options *GitHubConnectorClientBeginUpdateOptions) (*runtime.Poller[GitHubConnectorClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, gitHubConnectorName, gitHubConnector, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GitHubConnectorClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GitHubConnectorClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GitHubConnectorClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GitHubConnectorClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update monitored GitHub Connector details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
 func (client *GitHubConnectorClient) update(ctx context.Context, resourceGroupName string, gitHubConnectorName string, gitHubConnector GitHubConnector, options *GitHubConnectorClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, gitHubConnectorName, gitHubConnector, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -414,7 +411,7 @@ func (client *GitHubConnectorClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter gitHubConnectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gitHubConnectorName}", url.PathEscape(gitHubConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // AutomationRulesClient contains the methods for the AutomationRules group.
 // Don't use this type directly, use NewAutomationRulesClient() instead.
 type AutomationRulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAutomationRulesClient creates a new instance of AutomationRulesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAutomationRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutomationRulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AutomationRulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AutomationRulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// automationRuleID - Automation rule ID
-// options - AutomationRulesClientCreateOrUpdateOptions contains the optional parameters for the AutomationRulesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - automationRuleID - Automation rule ID
+//   - options - AutomationRulesClientCreateOrUpdateOptions contains the optional parameters for the AutomationRulesClient.CreateOrUpdate
+//     method.
 func (client *AutomationRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientCreateOrUpdateOptions) (AutomationRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, automationRuleID, options)
 	if err != nil {
 		return AutomationRulesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AutomationRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *AutomationRulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter automationRuleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationRuleId}", url.PathEscape(automationRuleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,17 +112,18 @@ func (client *AutomationRulesClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Delete the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// automationRuleID - Automation rule ID
-// options - AutomationRulesClientDeleteOptions contains the optional parameters for the AutomationRulesClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - automationRuleID - Automation rule ID
+//   - options - AutomationRulesClientDeleteOptions contains the optional parameters for the AutomationRulesClient.Delete method.
 func (client *AutomationRulesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientDeleteOptions) (AutomationRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, automationRuleID, options)
 	if err != nil {
 		return AutomationRulesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AutomationRulesClientDeleteResponse{}, err
 	}
@@ -161,7 +152,7 @@ func (client *AutomationRulesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter automationRuleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationRuleId}", url.PathEscape(automationRuleID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -183,17 +174,18 @@ func (client *AutomationRulesClient) deleteHandleResponse(resp *http.Response) (
 
 // Get - Gets the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// automationRuleID - Automation rule ID
-// options - AutomationRulesClientGetOptions contains the optional parameters for the AutomationRulesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - automationRuleID - Automation rule ID
+//   - options - AutomationRulesClientGetOptions contains the optional parameters for the AutomationRulesClient.Get method.
 func (client *AutomationRulesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientGetOptions) (AutomationRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, automationRuleID, options)
 	if err != nil {
 		return AutomationRulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AutomationRulesClientGetResponse{}, err
 	}
@@ -222,7 +214,7 @@ func (client *AutomationRulesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter automationRuleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationRuleId}", url.PathEscape(automationRuleID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,10 +235,12 @@ func (client *AutomationRulesClient) getHandleResponse(resp *http.Response) (Aut
 }
 
 // NewListPager - Gets all automation rules.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - AutomationRulesClientListOptions contains the optional parameters for the AutomationRulesClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - AutomationRulesClientListOptions contains the optional parameters for the AutomationRulesClient.NewListPager
+//     method.
 func (client *AutomationRulesClient) NewListPager(resourceGroupName string, workspaceName string, options *AutomationRulesClientListOptions) *runtime.Pager[AutomationRulesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AutomationRulesClientListResponse]{
 		More: func(page AutomationRulesClientListResponse) bool {
@@ -263,7 +257,7 @@ func (client *AutomationRulesClient) NewListPager(resourceGroupName string, work
 			if err != nil {
 				return AutomationRulesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AutomationRulesClientListResponse{}, err
 			}
@@ -290,7 +284,7 @@ func (client *AutomationRulesClient) listCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

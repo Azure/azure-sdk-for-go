@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // ProductSettingsClient contains the methods for the ProductSettings group.
 // Don't use this type directly, use NewProductSettingsClient() instead.
 type ProductSettingsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewProductSettingsClient creates a new instance of ProductSettingsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewProductSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductSettingsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ProductSettingsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProductSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Delete - Delete setting of the product.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// settingsName - The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba
-// options - ProductSettingsClientDeleteOptions contains the optional parameters for the ProductSettingsClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - settingsName - The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba
+//   - options - ProductSettingsClientDeleteOptions contains the optional parameters for the ProductSettingsClient.Delete method.
 func (client *ProductSettingsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, settingsName string, options *ProductSettingsClientDeleteOptions) (ProductSettingsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, settingsName, options)
 	if err != nil {
 		return ProductSettingsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProductSettingsClientDeleteResponse{}, err
 	}
@@ -96,7 +86,7 @@ func (client *ProductSettingsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter settingsName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingsName}", url.PathEscape(settingsName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,17 +99,18 @@ func (client *ProductSettingsClient) deleteCreateRequest(ctx context.Context, re
 
 // Get - Gets a setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// settingsName - The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba
-// options - ProductSettingsClientGetOptions contains the optional parameters for the ProductSettingsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - settingsName - The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba
+//   - options - ProductSettingsClientGetOptions contains the optional parameters for the ProductSettingsClient.Get method.
 func (client *ProductSettingsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, settingsName string, options *ProductSettingsClientGetOptions) (ProductSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, settingsName, options)
 	if err != nil {
 		return ProductSettingsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProductSettingsClientGetResponse{}, err
 	}
@@ -148,7 +139,7 @@ func (client *ProductSettingsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter settingsName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingsName}", url.PathEscape(settingsName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -170,16 +161,17 @@ func (client *ProductSettingsClient) getHandleResponse(resp *http.Response) (Pro
 
 // List - List of all the settings
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - ProductSettingsClientListOptions contains the optional parameters for the ProductSettingsClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - ProductSettingsClientListOptions contains the optional parameters for the ProductSettingsClient.List method.
 func (client *ProductSettingsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *ProductSettingsClientListOptions) (ProductSettingsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
 		return ProductSettingsClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProductSettingsClientListResponse{}, err
 	}
@@ -204,7 +196,7 @@ func (client *ProductSettingsClient) listCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -226,18 +218,19 @@ func (client *ProductSettingsClient) listHandleResponse(resp *http.Response) (Pr
 
 // Update - Updates setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// settingsName - The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba
-// settings - The setting
-// options - ProductSettingsClientUpdateOptions contains the optional parameters for the ProductSettingsClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - settingsName - The setting name. Supports - Anomalies, EyesOn, EntityAnalytics, Ueba
+//   - settings - The setting
+//   - options - ProductSettingsClientUpdateOptions contains the optional parameters for the ProductSettingsClient.Update method.
 func (client *ProductSettingsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, settingsName string, settings SettingsClassification, options *ProductSettingsClientUpdateOptions) (ProductSettingsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, settingsName, settings, options)
 	if err != nil {
 		return ProductSettingsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProductSettingsClientUpdateResponse{}, err
 	}
@@ -266,7 +259,7 @@ func (client *ProductSettingsClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter settingsName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingsName}", url.PathEscape(settingsName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

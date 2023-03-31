@@ -39,7 +39,7 @@ func TestOwnershipLost(t *testing.T) {
 
 func TestGetRecoveryKind(t *testing.T) {
 	require.Equal(t, GetRecoveryKind(nil), RecoveryKindNone)
-	require.Equal(t, GetRecoveryKind(errConnResetNeeded), RecoveryKindConn)
+	require.Equal(t, GetRecoveryKind(amqpwrap.ErrConnResetNeeded), RecoveryKindConn)
 	require.Equal(t, GetRecoveryKind(&amqp.LinkError{}), RecoveryKindLink)
 	require.Equal(t, GetRecoveryKind(context.Canceled), RecoveryKindFatal)
 	require.Equal(t, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusUnauthorized}}), RecoveryKindFatal)

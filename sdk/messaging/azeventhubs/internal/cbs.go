@@ -5,7 +5,6 @@ package internal
 
 import (
 	"context"
-	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -41,7 +40,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 		// to fix this is to restart the connection.
 		if IsNotAllowedError(err) {
 			log.Writef(exported.EventAuth, "Not allowed to open, connection will be reset: %s", err)
-			return errConnResetNeeded
+			return amqpwrap.ErrConnResetNeeded
 		}
 
 		return err
@@ -52,11 +51,6 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 		defer cancel()
 
 		if err := link.Close(ctx); err != nil {
-			if IsCancelError(err) {
-				azlog.Writef(exported.EventAuth, "Failed closing claim link because it was cancelled. Connection will need to be reset")
-				return errConnResetNeeded
-			}
-
 			azlog.Writef(exported.EventAuth, "Failed closing claim link: %s", err.Error())
 			return err
 		}
@@ -89,5 +83,3 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 
 	return closeLink(ctx, nil)
 }
-
-var errConnResetNeeded = errors.New("connection must be reset, link/connection state may be inconsistent")

@@ -195,17 +195,17 @@ func TestLinks_closeWithTimeout(t *testing.T) {
 			// the user "cancels"
 			receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).DoAndReturn(func(ctx context.Context) error {
 				<-ctx.Done()
-				return errToReturn
+				return amqpwrap.HandleNewOrCloseError(ctx.Err())
 			})
 
 			// purposefully recover with what should be a link level recovery. However, the Close() failing
 			// means we end up "upgrading" to a connection reset instead.
 			err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.LinkError{})
-			require.ErrorIs(t, err, errConnResetNeeded)
+			require.ErrorIs(t, err, amqpwrap.ErrConnResetNeeded)
 
 			// the error that comes back when the link times out being closed can only
 			// be fixed by a connection reset.
-			require.Equal(t, RecoveryKindConn, GetRecoveryKind(errConnResetNeeded))
+			require.Equal(t, RecoveryKindConn, GetRecoveryKind(amqpwrap.ErrConnResetNeeded))
 
 			// we still cleanup what we can (including cancelling our background negotiate claim loop)
 			require.ErrorIs(t, context.Canceled, negotiateClaimCtx.Err())

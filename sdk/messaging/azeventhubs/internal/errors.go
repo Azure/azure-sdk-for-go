@@ -158,7 +158,7 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
-	if errors.Is(err, errConnResetNeeded) {
+	if errors.Is(err, amqpwrap.ErrConnResetNeeded) {
 		return RecoveryKindConn
 	}
 

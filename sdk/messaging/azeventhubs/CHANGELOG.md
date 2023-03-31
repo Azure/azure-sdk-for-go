@@ -1,9 +1,10 @@
 # Release History
 
-## 0.6.1 (Unreleased)
+## 1.0.0 (Unreleased)
 
 ### Features Added
 
+- First stable release of the azeventhubs package.
 - Authentication errors are indicated with an `azeventhubs.Error`, with a `Code` of `azeventhubs.ErrorCodeUnauthorizedAccess`. (PR#20450)
 
 ### Breaking Changes

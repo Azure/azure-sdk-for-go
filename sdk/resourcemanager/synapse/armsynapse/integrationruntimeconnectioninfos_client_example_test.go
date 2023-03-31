@@ -24,11 +24,11 @@ func ExampleIntegrationRuntimeConnectionInfosClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimeConnectionInfosClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", nil)
+	res, err := clientFactory.NewIntegrationRuntimeConnectionInfosClient().Get(ctx, "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -27,11 +27,11 @@ func ExampleSQLPoolsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", nil)
+	res, err := clientFactory.NewSQLPoolsClient().Get(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -68,11 +68,11 @@ func ExampleSQLPoolsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", armsynapse.SQLPoolPatchInfo{
+	poller, err := clientFactory.NewSQLPoolsClient().BeginUpdate(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", armsynapse.SQLPoolPatchInfo{
 		Location: to.Ptr("West US 2"),
 		Properties: &armsynapse.SQLPoolResourceProperties{
 			Collation:          to.Ptr(""),
@@ -126,11 +126,11 @@ func ExampleSQLPoolsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", armsynapse.SQLPool{
+	poller, err := clientFactory.NewSQLPoolsClient().BeginCreate(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", armsynapse.SQLPool{
 		Location: to.Ptr("Southeast Asia"),
 		Tags:     map[string]*string{},
 		Properties: &armsynapse.SQLPoolResourceProperties{
@@ -187,11 +187,11 @@ func ExampleSQLPoolsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", nil)
+	poller, err := clientFactory.NewSQLPoolsClient().BeginDelete(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -221,11 +221,11 @@ func ExampleSQLPoolsClient_NewListByWorkspacePager_listSqlAnalyticsPoolsInAWorks
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("sqlcrudtest-6845", "sqlcrudtest-7177", nil)
+	pager := clientFactory.NewSQLPoolsClient().NewListByWorkspacePager("sqlcrudtest-6845", "sqlcrudtest-7177", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -339,11 +339,11 @@ func ExampleSQLPoolsClient_NewListByWorkspacePager_listSqlAnalyticsPoolsInAWorks
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("sqlcrudtest-6845", "sqlcrudtest-7177", nil)
+	pager := clientFactory.NewSQLPoolsClient().NewListByWorkspacePager("sqlcrudtest-6845", "sqlcrudtest-7177", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -385,11 +385,11 @@ func ExampleSQLPoolsClient_BeginPause() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPause(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdwdb", nil)
+	poller, err := clientFactory.NewSQLPoolsClient().BeginPause(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdwdb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -429,11 +429,11 @@ func ExampleSQLPoolsClient_BeginResume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResume(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", nil)
+	poller, err := clientFactory.NewSQLPoolsClient().BeginResume(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -473,11 +473,11 @@ func ExampleSQLPoolsClient_Rename() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Rename(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsynapse.ResourceMoveDefinition{
+	_, err = clientFactory.NewSQLPoolsClient().Rename(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsynapse.ResourceMoveDefinition{
 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Synapse/workspaces/testsvr/sqlPools/newtestdb"),
 	}, nil)
 	if err != nil {

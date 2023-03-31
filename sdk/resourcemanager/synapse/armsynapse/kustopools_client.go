@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // KustoPoolsClient contains the methods for the KustoPools group.
 // Don't use this type directly, use NewKustoPoolsClient() instead.
 type KustoPoolsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewKustoPoolsClient creates a new instance of KustoPoolsClient with the specified values.
@@ -36,21 +33,13 @@ type KustoPoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewKustoPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KustoPoolsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".KustoPoolsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &KustoPoolsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *KustoPoolsClient) BeginAddLanguageExtensions(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[KustoPoolsClientAddLanguageExtensionsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KustoPoolsClientAddLanguageExtensionsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[KustoPoolsClientAddLanguageExtensionsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KustoPoolsClientAddLanguageExtensionsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *KustoPoolsClient) addLanguageExtensions(ctx context.Context, works
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,7 @@ func (client *KustoPoolsClient) addLanguageExtensionsCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +128,7 @@ func (client *KustoPoolsClient) CheckNameAvailability(ctx context.Context, locat
 	if err != nil {
 		return KustoPoolsClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return KustoPoolsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -160,7 +149,7 @@ func (client *KustoPoolsClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -196,9 +185,9 @@ func (client *KustoPoolsClient) BeginCreateOrUpdate(ctx context.Context, workspa
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[KustoPoolsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KustoPoolsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[KustoPoolsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KustoPoolsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -211,7 +200,7 @@ func (client *KustoPoolsClient) createOrUpdate(ctx context.Context, workspaceNam
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -240,7 +229,7 @@ func (client *KustoPoolsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -271,9 +260,9 @@ func (client *KustoPoolsClient) BeginDelete(ctx context.Context, workspaceName s
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[KustoPoolsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KustoPoolsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[KustoPoolsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KustoPoolsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -286,7 +275,7 @@ func (client *KustoPoolsClient) deleteOperation(ctx context.Context, workspaceNa
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -315,7 +304,7 @@ func (client *KustoPoolsClient) deleteCreateRequest(ctx context.Context, workspa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -342,9 +331,9 @@ func (client *KustoPoolsClient) BeginDetachFollowerDatabases(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[KustoPoolsClientDetachFollowerDatabasesResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KustoPoolsClientDetachFollowerDatabasesResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[KustoPoolsClientDetachFollowerDatabasesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KustoPoolsClientDetachFollowerDatabasesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -357,7 +346,7 @@ func (client *KustoPoolsClient) detachFollowerDatabases(ctx context.Context, wor
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -386,7 +375,7 @@ func (client *KustoPoolsClient) detachFollowerDatabasesCreateRequest(ctx context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -410,7 +399,7 @@ func (client *KustoPoolsClient) Get(ctx context.Context, workspaceName string, k
 	if err != nil {
 		return KustoPoolsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return KustoPoolsClientGetResponse{}, err
 	}
@@ -439,7 +428,7 @@ func (client *KustoPoolsClient) getCreateRequest(ctx context.Context, workspaceN
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -472,7 +461,7 @@ func (client *KustoPoolsClient) ListByWorkspace(ctx context.Context, resourceGro
 	if err != nil {
 		return KustoPoolsClientListByWorkspaceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return KustoPoolsClientListByWorkspaceResponse{}, err
 	}
@@ -497,7 +486,7 @@ func (client *KustoPoolsClient) listByWorkspaceCreateRequest(ctx context.Context
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -536,7 +525,7 @@ func (client *KustoPoolsClient) NewListFollowerDatabasesPager(workspaceName stri
 			if err != nil {
 				return KustoPoolsClientListFollowerDatabasesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return KustoPoolsClientListFollowerDatabasesResponse{}, err
 			}
@@ -567,7 +556,7 @@ func (client *KustoPoolsClient) listFollowerDatabasesCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -605,7 +594,7 @@ func (client *KustoPoolsClient) NewListLanguageExtensionsPager(workspaceName str
 			if err != nil {
 				return KustoPoolsClientListLanguageExtensionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return KustoPoolsClientListLanguageExtensionsResponse{}, err
 			}
@@ -636,7 +625,7 @@ func (client *KustoPoolsClient) listLanguageExtensionsCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -670,7 +659,7 @@ func (client *KustoPoolsClient) NewListSKUsPager(options *KustoPoolsClientListSK
 			if err != nil {
 				return KustoPoolsClientListSKUsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return KustoPoolsClientListSKUsResponse{}, err
 			}
@@ -689,7 +678,7 @@ func (client *KustoPoolsClient) listSKUsCreateRequest(ctx context.Context, optio
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -727,7 +716,7 @@ func (client *KustoPoolsClient) NewListSKUsByResourcePager(workspaceName string,
 			if err != nil {
 				return KustoPoolsClientListSKUsByResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return KustoPoolsClientListSKUsByResourceResponse{}, err
 			}
@@ -758,7 +747,7 @@ func (client *KustoPoolsClient) listSKUsByResourceCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -794,9 +783,9 @@ func (client *KustoPoolsClient) BeginRemoveLanguageExtensions(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[KustoPoolsClientRemoveLanguageExtensionsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KustoPoolsClientRemoveLanguageExtensionsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[KustoPoolsClientRemoveLanguageExtensionsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KustoPoolsClientRemoveLanguageExtensionsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -809,7 +798,7 @@ func (client *KustoPoolsClient) removeLanguageExtensions(ctx context.Context, wo
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -838,7 +827,7 @@ func (client *KustoPoolsClient) removeLanguageExtensionsCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -863,9 +852,9 @@ func (client *KustoPoolsClient) BeginStart(ctx context.Context, workspaceName st
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[KustoPoolsClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KustoPoolsClientStartResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[KustoPoolsClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KustoPoolsClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -878,7 +867,7 @@ func (client *KustoPoolsClient) start(ctx context.Context, workspaceName string,
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -907,7 +896,7 @@ func (client *KustoPoolsClient) startCreateRequest(ctx context.Context, workspac
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -932,9 +921,9 @@ func (client *KustoPoolsClient) BeginStop(ctx context.Context, workspaceName str
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[KustoPoolsClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KustoPoolsClientStopResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[KustoPoolsClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KustoPoolsClientStopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -947,7 +936,7 @@ func (client *KustoPoolsClient) stop(ctx context.Context, workspaceName string, 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -976,7 +965,7 @@ func (client *KustoPoolsClient) stopCreateRequest(ctx context.Context, workspace
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1002,9 +991,9 @@ func (client *KustoPoolsClient) BeginUpdate(ctx context.Context, workspaceName s
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[KustoPoolsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KustoPoolsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[KustoPoolsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KustoPoolsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1017,7 +1006,7 @@ func (client *KustoPoolsClient) update(ctx context.Context, workspaceName string
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1046,7 +1035,7 @@ func (client *KustoPoolsClient) updateCreateRequest(ctx context.Context, workspa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +24,38 @@ import (
 // UserMetricsKeysClient contains the methods for the TrafficManagerUserMetricsKeys group.
 // Don't use this type directly, use NewUserMetricsKeysClient() instead.
 type UserMetricsKeysClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewUserMetricsKeysClient creates a new instance of UserMetricsKeysClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewUserMetricsKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UserMetricsKeysClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".UserMetricsKeysClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &UserMetricsKeysClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update a subscription-level key used for Real User Metrics collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01-preview
-// options - UserMetricsKeysClientCreateOrUpdateOptions contains the optional parameters for the UserMetricsKeysClient.CreateOrUpdate
-// method.
+//   - options - UserMetricsKeysClientCreateOrUpdateOptions contains the optional parameters for the UserMetricsKeysClient.CreateOrUpdate
+//     method.
 func (client *UserMetricsKeysClient) CreateOrUpdate(ctx context.Context, options *UserMetricsKeysClientCreateOrUpdateOptions) (UserMetricsKeysClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, options)
 	if err != nil {
 		return UserMetricsKeysClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UserMetricsKeysClientCreateOrUpdateResponse{}, err
 	}
@@ -82,7 +72,7 @@ func (client *UserMetricsKeysClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -104,14 +94,15 @@ func (client *UserMetricsKeysClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Delete a subscription-level key used for Real User Metrics collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01-preview
-// options - UserMetricsKeysClientDeleteOptions contains the optional parameters for the UserMetricsKeysClient.Delete method.
+//   - options - UserMetricsKeysClientDeleteOptions contains the optional parameters for the UserMetricsKeysClient.Delete method.
 func (client *UserMetricsKeysClient) Delete(ctx context.Context, options *UserMetricsKeysClientDeleteOptions) (UserMetricsKeysClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, options)
 	if err != nil {
 		return UserMetricsKeysClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UserMetricsKeysClientDeleteResponse{}, err
 	}
@@ -128,7 +119,7 @@ func (client *UserMetricsKeysClient) deleteCreateRequest(ctx context.Context, op
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,14 +141,15 @@ func (client *UserMetricsKeysClient) deleteHandleResponse(resp *http.Response) (
 
 // Get - Get the subscription-level key used for Real User Metrics collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01-preview
-// options - UserMetricsKeysClientGetOptions contains the optional parameters for the UserMetricsKeysClient.Get method.
+//   - options - UserMetricsKeysClientGetOptions contains the optional parameters for the UserMetricsKeysClient.Get method.
 func (client *UserMetricsKeysClient) Get(ctx context.Context, options *UserMetricsKeysClientGetOptions) (UserMetricsKeysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
 		return UserMetricsKeysClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UserMetricsKeysClientGetResponse{}, err
 	}
@@ -174,7 +166,7 @@ func (client *UserMetricsKeysClient) getCreateRequest(ctx context.Context, optio
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

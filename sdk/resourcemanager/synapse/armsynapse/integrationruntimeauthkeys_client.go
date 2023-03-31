@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // IntegrationRuntimeAuthKeysClient contains the methods for the IntegrationRuntimeAuthKeys group.
 // Don't use this type directly, use NewIntegrationRuntimeAuthKeysClient() instead.
 type IntegrationRuntimeAuthKeysClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewIntegrationRuntimeAuthKeysClient creates a new instance of IntegrationRuntimeAuthKeysClient with the specified values.
@@ -36,21 +33,13 @@ type IntegrationRuntimeAuthKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewIntegrationRuntimeAuthKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationRuntimeAuthKeysClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".IntegrationRuntimeAuthKeysClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &IntegrationRuntimeAuthKeysClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -69,7 +58,7 @@ func (client *IntegrationRuntimeAuthKeysClient) List(ctx context.Context, resour
 	if err != nil {
 		return IntegrationRuntimeAuthKeysClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IntegrationRuntimeAuthKeysClientListResponse{}, err
 	}
@@ -98,7 +87,7 @@ func (client *IntegrationRuntimeAuthKeysClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +122,7 @@ func (client *IntegrationRuntimeAuthKeysClient) Regenerate(ctx context.Context, 
 	if err != nil {
 		return IntegrationRuntimeAuthKeysClientRegenerateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IntegrationRuntimeAuthKeysClientRegenerateResponse{}, err
 	}
@@ -162,7 +151,7 @@ func (client *IntegrationRuntimeAuthKeysClient) regenerateCreateRequest(ctx cont
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

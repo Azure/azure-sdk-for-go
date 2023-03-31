@@ -257,7 +257,10 @@ func (ns *Namespace) Close(permanently bool) error {
 	if ns.client != nil {
 		err := ns.client.Close()
 		ns.client = nil
-		return err
+
+		if err != nil {
+			log.Writef(exported.EventConn, "Failed when closing AMQP connection: %s", err)
+		}
 	}
 
 	return nil

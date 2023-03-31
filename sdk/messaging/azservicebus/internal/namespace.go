@@ -70,7 +70,17 @@ type NamespaceForAMQPLinks interface {
 	NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error)
 	NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error)
 	GetEntityAudience(entityPath string) string
+
+	// Recover destroys the currently held AMQP connection and recreates it, if needed.
+	//
+	// If a new client is actually created (rather than just cached) then the returned bool
+	// will be true. Any links that were created from the original connection will need to
+	// be recreated.
+	//
+	// NOTE: cancelling the context only cancels the initialization of a new AMQP
+	// connection - the previous connection is always closed.
 	Recover(ctx context.Context, clientRevision uint64) (bool, error)
+
 	Close(permanently bool) error
 }
 
@@ -268,9 +278,13 @@ func (ns *Namespace) Check() error {
 var ErrClientClosed = NewErrNonRetriable("client has been closed by user")
 
 // Recover destroys the currently held AMQP connection and recreates it, if needed.
-// If a new is actually created (rather than just cached) then the returned bool
+//
+// If a new client is actually created (rather than just cached) then the returned bool
 // will be true. Any links that were created from the original connection will need to
 // be recreated.
+//
+// NOTE: cancelling the context only cancels the initialization of a new AMQP
+// connection - the previous connection is always closed.
 func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, error) {
 	if err := ns.Check(); err != nil {
 		return false, err

@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
@@ -201,14 +202,19 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 	rk := links.getRecoveryKindFunc(origErr)
 
 	if rk == RecoveryKindLink {
+		ctx, cancel := links.contextWithTimeoutFn(ctx, defaultCloseTimeout)
+		defer cancel()
+
 		if err := links.recoverLink(ctx, theirID); err != nil {
-			if errors.Is(err, errConnResetNeeded) {
-				log.Writef(exported.EventConn, "Connection reset for recovery instead of link. Link closing has timed out.")
+			azlog.Writef(exported.EventConn, "Error when recovering link for recovery: %s", err)
+
+			if GetRecoveryKind(err) == RecoveryKindConn {
+				log.Writef(exported.EventConn, "Upgrading to connection reset for recovery instead of link. Link closing has timed out.")
 
 				if err := links.recoverConnection(ctx, theirID); err != nil {
-					log.Writef(exported.EventConn, "failed to recreate connection: %s", err.Error())
+					log.Writef(exported.EventConn, "failed to recover connection: %s", err.Error())
+					return err
 				}
-				return err
 			} else {
 				log.Writef(exported.EventConn, "failed to recreate link: %s", err.Error())
 				return err
@@ -419,7 +425,7 @@ func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) RecoveryKi
 			//    internally and force or notify that a reset is needed. This will get passed into the next recovery call
 			//    and we'll do the normal recovery logic from there.
 
-			if errors.Is(err, errConnResetNeeded) {
+			if GetRecoveryKind(err) == RecoveryKindConn {
 				log.Writef(exported.EventConn, "Connection closed instead. Link closing has timed out.")
 
 				// if closing leaves us in an indeterminate state we'll go ahead
@@ -452,9 +458,10 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 	// shut down any links we have
 	if err := l.closeWithoutLocking(ctx, false); err != nil {
 		// connection is destabilized since we can't close the link.
-		if errors.Is(err, errConnResetNeeded) {
+		if GetRecoveryKind(err) == RecoveryKindConn {
 			return err
 		}
+
 		// any other error won't affect future links so we can ignore it.
 	}
 
@@ -520,7 +527,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 // closeWithoutLocking closes the links ($management and normal entity links) and cancels the
 // background authentication goroutines.
 //
-// If the context argument is cancelled we return errConnResetNeeded, rather than
+// If the context argument is cancelled we return amqpwrap.ErrConnResetNeeded, rather than
 // context.Err(), as failing to close can leave our connection in an indeterminate
 // state.
 //
@@ -584,7 +591,7 @@ func (l *AMQPLinksImpl) closeWithoutLocking(ctx context.Context, permanent bool)
 	l.Sender, l.Receiver, l.session, l.RPCLink = nil, nil, nil, nil
 
 	if wasCancelled {
-		return errConnResetNeeded
+		return amqpwrap.ErrConnResetNeeded
 	}
 
 	if len(messages) > 0 {

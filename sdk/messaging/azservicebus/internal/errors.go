@@ -378,5 +378,3 @@ func isLockLostError(err error) bool {
 
 	return false
 }
-
-var errConnResetNeeded = errors.New("connection must be reset, link/connection state may be inconsistent")

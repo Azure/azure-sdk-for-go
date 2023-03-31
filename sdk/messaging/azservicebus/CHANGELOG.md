@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Authentication errors could cause unnecessary retries, making calls taking longer to fail. (PR#20447)
+- Recovery now includes internal timeouts and also handles restarting a connection if AMQP primitives aren't closed cleanly.
 
 ## 1.2.1 (2023-03-07)
 

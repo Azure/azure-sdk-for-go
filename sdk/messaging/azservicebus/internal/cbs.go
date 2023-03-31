@@ -24,7 +24,7 @@ const (
 )
 
 // NegotiateClaim attempts to put a token to the $cbs management endpoint to negotiate auth for the given audience
-func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
+func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
 	link, err := NewRPCLink(ctx, RPCLinkArgs{
 		Client:   conn,
 		Address:  cbsAddress,
@@ -37,21 +37,28 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 		// to fix this is to restart the connection.
 		if IsNotAllowedError(err) {
 			log.Writef(exported.EventAuth, "Not allowed to open, connection will be reset: %s", err)
-			return errConnResetNeeded
+			return amqpwrap.ErrConnResetNeeded
 		}
 
 		return err
 	}
 
-	defer func() {
+	closeLink := func(ctx context.Context, origErr error) error {
+		ctx, cancel := contextWithTimeoutFn(ctx, defaultCloseTimeout)
+		defer cancel()
+
 		if err := link.Close(ctx); err != nil {
 			azlog.Writef(exported.EventAuth, "Failed closing claim link: %s", err.Error())
+			return err
 		}
-	}()
+
+		return origErr
+	}
 
 	token, err := provider.GetToken(audience)
 	if err != nil {
-		return err
+		azlog.Writef(exported.EventAuth, "Failed to get token from provider: %s", err)
+		return closeLink(ctx, err)
 	}
 
 	azlog.Writef(exported.EventAuth, "negotiating claim for audience %s with token type %s and expiry of %s", audience, token.TokenType, token.Expiry)
@@ -67,8 +74,9 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 	}
 
 	if _, err := link.RPC(ctx, msg); err != nil {
-		return err
+		azlog.Writef(exported.EventAuth, "Failed to send/receive RPC message: %s", err)
+		return closeLink(ctx, err)
 	}
 
-	return nil
+	return closeLink(ctx, nil)
 }

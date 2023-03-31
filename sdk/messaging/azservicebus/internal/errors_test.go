@@ -207,6 +207,8 @@ func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
 	// unknown errors will just result in a connection recovery
 	rk := GetRecoveryKind(errors.New("Some unknown error"))
 	require.EqualValues(t, RecoveryKindConn, rk, "some unknown error")
+
+	require.Equal(t, RecoveryKindConn, GetRecoveryKind(amqpwrap.ErrConnResetNeeded))
 }
 
 func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {

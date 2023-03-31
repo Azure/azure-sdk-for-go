@@ -358,6 +358,46 @@ func TestNamespaceUpdateClientWithoutLock(t *testing.T) {
 	require.Same(t, origClient, client)
 }
 
+func TestNamespaceCantStopRecoverFromClosingConn(t *testing.T) {
+	numCancels := 0
+	numClients := 0
+
+	ns := &Namespace{
+		newClientFn: func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+			select {
+			case <-ctx.Done():
+				numCancels++
+				return nil, ctx.Err()
+			default:
+				numClients++
+				client := &fakeAMQPClient{}
+				return client, nil
+			}
+		},
+	}
+
+	conn, id, err := ns.GetAMQPClientImpl(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, conn)
+	require.Equal(t, uint64(1), id)
+
+	require.Equal(t, 1, numClients)
+	require.Equal(t, 0, numCancels)
+
+	canceledCtx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	created, err := ns.Recover(canceledCtx, id)
+
+	// two key things:
+	// 1. the old client gets closed, even when the 'ctx' is cancelled.
+	// 2. since the context is cancelled we don't create a new one.
+	require.False(t, created, "No client will be created since the ctx is already cancelled")
+	require.ErrorIs(t, err, context.Canceled)
+	require.Equal(t, 1, numClients, "we did NOT create a new client")
+	require.Equal(t, 1, numCancels, "we cancelled a client creation")
+}
+
 type fakeAMQPClient struct {
 	amqpwrap.AMQPClient
 	closeCalled int

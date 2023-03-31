@@ -100,7 +100,7 @@ type AssociationsInterfaceClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssociationsInterfaceClientListByTrafficControllerOptions contains the optional parameters for the AssociationsInterfaceClient.ListByTrafficController
+// AssociationsInterfaceClientListByTrafficControllerOptions contains the optional parameters for the AssociationsInterfaceClient.NewListByTrafficControllerPager
 // method.
 type AssociationsInterfaceClientListByTrafficControllerOptions struct {
 	// placeholder for future optional parameters
@@ -205,7 +205,7 @@ type FrontendsInterfaceClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FrontendsInterfaceClientListByTrafficControllerOptions contains the optional parameters for the FrontendsInterfaceClient.ListByTrafficController
+// FrontendsInterfaceClientListByTrafficControllerOptions contains the optional parameters for the FrontendsInterfaceClient.NewListByTrafficControllerPager
 // method.
 type FrontendsInterfaceClientListByTrafficControllerOptions struct {
 	// placeholder for future optional parameters
@@ -265,7 +265,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -341,13 +341,13 @@ type TrafficControllerInterfaceClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TrafficControllerInterfaceClientListByResourceGroupOptions contains the optional parameters for the TrafficControllerInterfaceClient.ListByResourceGroup
+// TrafficControllerInterfaceClientListByResourceGroupOptions contains the optional parameters for the TrafficControllerInterfaceClient.NewListByResourceGroupPager
 // method.
 type TrafficControllerInterfaceClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TrafficControllerInterfaceClientListBySubscriptionOptions contains the optional parameters for the TrafficControllerInterfaceClient.ListBySubscription
+// TrafficControllerInterfaceClientListBySubscriptionOptions contains the optional parameters for the TrafficControllerInterfaceClient.NewListBySubscriptionPager
 // method.
 type TrafficControllerInterfaceClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -386,7 +386,7 @@ type TrafficControllerProperties struct {
 // TrafficControllerUpdate - The type used for update operations of the TrafficController.
 type TrafficControllerUpdate struct {
 	// The updatable properties of the TrafficController.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`

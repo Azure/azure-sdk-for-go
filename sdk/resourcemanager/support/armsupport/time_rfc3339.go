@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armservicenetworking
+package armsupport
 
 import (
 	"encoding/json"

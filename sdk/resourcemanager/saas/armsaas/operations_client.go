@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armservicenetworking
+package armsaas
 
 import (
 	"context"
@@ -38,9 +38,9 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 	return client, nil
 }
 
-// NewListPager - List the operations for the provider
+// NewListPager - Gets all SaaS app operations.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2018-03-01-beta
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
@@ -72,13 +72,13 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 
 // listCreateRequest creates the List request.
 func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.ServiceNetworking/operations"
+	urlPath := "/providers/Microsoft.SaaS/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -87,7 +87,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 // listHandleResponse handles the List response.
 func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
 	result := OperationsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppOperationsResponseWithContinuation); err != nil {
 		return OperationsClientListResponse{}, err
 	}
 	return result, nil

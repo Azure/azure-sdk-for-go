@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armservicenetworking
+package armsupport
 
 import (
 	"context"
@@ -38,23 +38,17 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 	return client, nil
 }
 
-// NewListPager - List the operations for the provider
+// NewListPager - This lists all the available Microsoft Support REST API operations.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2020-04-01
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
 		More: func(page OperationsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+			return false
 		},
 		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
+			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return OperationsClientListResponse{}, err
 			}
@@ -72,13 +66,13 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 
 // listCreateRequest creates the List request.
 func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.ServiceNetworking/operations"
+	urlPath := "/providers/Microsoft.Support/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -87,7 +81,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 // listHandleResponse handles the List response.
 func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
 	result := OperationsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsListResult); err != nil {
 		return OperationsClientListResponse{}, err
 	}
 	return result, nil

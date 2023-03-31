@@ -9,12 +9,12 @@
 
 package armsqlvirtualmachine
 
-// AvailabilityGroupListenersClientCreateOrUpdateResponse contains the response from method AvailabilityGroupListenersClient.CreateOrUpdate.
+// AvailabilityGroupListenersClientCreateOrUpdateResponse contains the response from method AvailabilityGroupListenersClient.BeginCreateOrUpdate.
 type AvailabilityGroupListenersClientCreateOrUpdateResponse struct {
 	AvailabilityGroupListener
 }
 
-// AvailabilityGroupListenersClientDeleteResponse contains the response from method AvailabilityGroupListenersClient.Delete.
+// AvailabilityGroupListenersClientDeleteResponse contains the response from method AvailabilityGroupListenersClient.BeginDelete.
 type AvailabilityGroupListenersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,17 +24,17 @@ type AvailabilityGroupListenersClientGetResponse struct {
 	AvailabilityGroupListener
 }
 
-// AvailabilityGroupListenersClientListByGroupResponse contains the response from method AvailabilityGroupListenersClient.ListByGroup.
+// AvailabilityGroupListenersClientListByGroupResponse contains the response from method AvailabilityGroupListenersClient.NewListByGroupPager.
 type AvailabilityGroupListenersClientListByGroupResponse struct {
 	AvailabilityGroupListenerListResult
 }
 
-// GroupsClientCreateOrUpdateResponse contains the response from method GroupsClient.CreateOrUpdate.
+// GroupsClientCreateOrUpdateResponse contains the response from method GroupsClient.BeginCreateOrUpdate.
 type GroupsClientCreateOrUpdateResponse struct {
 	Group
 }
 
-// GroupsClientDeleteResponse contains the response from method GroupsClient.Delete.
+// GroupsClientDeleteResponse contains the response from method GroupsClient.BeginDelete.
 type GroupsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -44,32 +44,32 @@ type GroupsClientGetResponse struct {
 	Group
 }
 
-// GroupsClientListByResourceGroupResponse contains the response from method GroupsClient.ListByResourceGroup.
+// GroupsClientListByResourceGroupResponse contains the response from method GroupsClient.NewListByResourceGroupPager.
 type GroupsClientListByResourceGroupResponse struct {
 	GroupListResult
 }
 
-// GroupsClientListResponse contains the response from method GroupsClient.List.
+// GroupsClientListResponse contains the response from method GroupsClient.NewListPager.
 type GroupsClientListResponse struct {
 	GroupListResult
 }
 
-// GroupsClientUpdateResponse contains the response from method GroupsClient.Update.
+// GroupsClientUpdateResponse contains the response from method GroupsClient.BeginUpdate.
 type GroupsClientUpdateResponse struct {
 	Group
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// SQLVirtualMachinesClientCreateOrUpdateResponse contains the response from method SQLVirtualMachinesClient.CreateOrUpdate.
+// SQLVirtualMachinesClientCreateOrUpdateResponse contains the response from method SQLVirtualMachinesClient.BeginCreateOrUpdate.
 type SQLVirtualMachinesClientCreateOrUpdateResponse struct {
 	SQLVirtualMachine
 }
 
-// SQLVirtualMachinesClientDeleteResponse contains the response from method SQLVirtualMachinesClient.Delete.
+// SQLVirtualMachinesClientDeleteResponse contains the response from method SQLVirtualMachinesClient.BeginDelete.
 type SQLVirtualMachinesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -79,32 +79,32 @@ type SQLVirtualMachinesClientGetResponse struct {
 	SQLVirtualMachine
 }
 
-// SQLVirtualMachinesClientListByResourceGroupResponse contains the response from method SQLVirtualMachinesClient.ListByResourceGroup.
+// SQLVirtualMachinesClientListByResourceGroupResponse contains the response from method SQLVirtualMachinesClient.NewListByResourceGroupPager.
 type SQLVirtualMachinesClientListByResourceGroupResponse struct {
 	ListResult
 }
 
-// SQLVirtualMachinesClientListBySQLVMGroupResponse contains the response from method SQLVirtualMachinesClient.ListBySQLVMGroup.
+// SQLVirtualMachinesClientListBySQLVMGroupResponse contains the response from method SQLVirtualMachinesClient.NewListBySQLVMGroupPager.
 type SQLVirtualMachinesClientListBySQLVMGroupResponse struct {
 	ListResult
 }
 
-// SQLVirtualMachinesClientListResponse contains the response from method SQLVirtualMachinesClient.List.
+// SQLVirtualMachinesClientListResponse contains the response from method SQLVirtualMachinesClient.NewListPager.
 type SQLVirtualMachinesClientListResponse struct {
 	ListResult
 }
 
-// SQLVirtualMachinesClientRedeployResponse contains the response from method SQLVirtualMachinesClient.Redeploy.
+// SQLVirtualMachinesClientRedeployResponse contains the response from method SQLVirtualMachinesClient.BeginRedeploy.
 type SQLVirtualMachinesClientRedeployResponse struct {
 	// placeholder for future response values
 }
 
-// SQLVirtualMachinesClientStartAssessmentResponse contains the response from method SQLVirtualMachinesClient.StartAssessment.
+// SQLVirtualMachinesClientStartAssessmentResponse contains the response from method SQLVirtualMachinesClient.BeginStartAssessment.
 type SQLVirtualMachinesClientStartAssessmentResponse struct {
 	// placeholder for future response values
 }
 
-// SQLVirtualMachinesClientUpdateResponse contains the response from method SQLVirtualMachinesClient.Update.
+// SQLVirtualMachinesClientUpdateResponse contains the response from method SQLVirtualMachinesClient.BeginUpdate.
 type SQLVirtualMachinesClientUpdateResponse struct {
 	SQLVirtualMachine
 }

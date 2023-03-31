@@ -25,11 +25,11 @@ func ExampleStorageMoversClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewStorageMoversClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewStorageMoversClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -116,11 +116,11 @@ func ExampleStorageMoversClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewStorageMoversClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("examples-rg", nil)
+	pager := clientFactory.NewStorageMoversClient().NewListPager("examples-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -207,11 +207,11 @@ func ExampleStorageMoversClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewStorageMoversClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "examples-rg", "examples-storageMoverName", nil)
+	res, err := clientFactory.NewStorageMoversClient().Get(ctx, "examples-rg", "examples-storageMoverName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -248,11 +248,11 @@ func ExampleStorageMoversClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewStorageMoversClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", armstoragemover.StorageMover{
+	res, err := clientFactory.NewStorageMoversClient().CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", armstoragemover.StorageMover{
 		Location: to.Ptr("eastus2"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -298,11 +298,11 @@ func ExampleStorageMoversClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewStorageMoversClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "examples-rg", "examples-storageMoverName", armstoragemover.UpdateParameters{
+	res, err := clientFactory.NewStorageMoversClient().Update(ctx, "examples-rg", "examples-storageMoverName", armstoragemover.UpdateParameters{
 		Properties: &armstoragemover.UpdateProperties{
 			Description: to.Ptr("Updated Storage Mover Description"),
 		},
@@ -343,11 +343,11 @@ func ExampleStorageMoversClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewStorageMoversClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "examples-rg", "examples-storageMoverName", nil)
+	poller, err := clientFactory.NewStorageMoversClient().BeginDelete(ctx, "examples-rg", "examples-storageMoverName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

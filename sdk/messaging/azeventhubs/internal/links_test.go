@@ -101,6 +101,10 @@ func TestLinksRecoverLinkWithConnectionFailure(t *testing.T) {
 	require.NoError(t, err)
 }
 
+// TestLinksRecoverLinkWithConnectionFailureAndExpiredContext checks that we're able to recover
+// after a "partial" recovery, where the user or the passed in context was already cancelled. The
+// recovery, in those cases, should leave us in a state that the next call to GetLinks()
+// will reinstantiate everything.
 func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	ns, links := newLinksForTest(t)
 	defer test.RequireClose(t, links)

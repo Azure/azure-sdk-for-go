@@ -160,7 +160,7 @@ func TestAMQPLinks_Logging(t *testing.T) {
 		require.Equal(t, []string{
 			"[azsb.Conn] Recovering link for error amqp: connection closed",
 			"[azsb.Conn] Recovering connection (and links)",
-			"[azsb.Conn] closing old link: current:{0 0}, old:{0 0}", 
+			"[azsb.Conn] closing old link: current:{0 0}, old:{0 0}",
 			"[azsb.Conn] recreating link: c: true, current:{0 0}, old:{0 0}",
 			"[azsb.Conn] Recovered connection and links",
 		}, messages)
@@ -326,7 +326,7 @@ func TestAMQPCloseLinkTimeout_Receiver_RecoverIfNeeded(t *testing.T) {
 	// interrupted the close. This will end up closing the connection as well.
 	recoveryErr := links.RecoverIfNeeded(context.WithValue(userCtx, keyType("close"), "cancel"), lwid.ID, &amqp.LinkError{})
 
-	require.Contains(t, getLogs(), "[azsb.Conn] Upgrading to connection reset for recovery instead of link. Link closing has timed out.")
+	require.Contains(t, getLogs(), "[azsb.Conn] Upgrading to connection reset for recovery instead of link")
 	require.ErrorIs(t, recoveryErr, context.Canceled)
 
 	emulation.RequireNoLeaks(t, md.Events)

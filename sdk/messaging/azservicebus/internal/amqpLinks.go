@@ -175,6 +175,13 @@ func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision L
 		return nil
 	}
 
+	// best effort close, the connection these were built on is gone.
+	if err := links.closeWithoutLocking(ctx, false); err != nil {
+		if GetRecoveryKind(err) == RecoveryKindConn {
+			return err
+		}
+	}
+
 	err := links.initWithoutLocking(ctx)
 
 	if err != nil {
@@ -193,12 +200,6 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 
 	log.Writef(exported.EventConn, "Recovering link for error %s", origErr.Error())
 
-	select {
-	case <-ctx.Done():
-		return ctx.Err()
-	default:
-	}
-
 	rk := links.getRecoveryKindFunc(origErr)
 
 	if rk == RecoveryKindLink {
@@ -209,7 +210,7 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 			azlog.Writef(exported.EventConn, "Error when recovering link for recovery: %s", err)
 
 			if GetRecoveryKind(err) == RecoveryKindConn {
-				log.Writef(exported.EventConn, "Upgrading to connection reset for recovery instead of link. Link closing has timed out.")
+				log.Writef(exported.EventConn, "Upgrading to connection reset for recovery instead of link")
 
 				if err := links.recoverConnection(ctx, theirID); err != nil {
 					log.Writef(exported.EventConn, "failed to recover connection: %s", err.Error())
@@ -243,6 +244,14 @@ func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirID LinkI
 	links.mu.Lock()
 	defer links.mu.Unlock()
 
+	if theirID.Link == links.id.Link {
+		log.Writef(exported.EventConn, "closing old link: current:%v, old:%v", links.id, theirID)
+
+		// we're clearing out this link because the connection is about to get recreated. So we can
+		// safely ignore any problems here, we're just trying to make sure the state is reset.
+		_ = links.closeWithoutLocking(ctx, false)
+	}
+
 	created, err := links.ns.Recover(ctx, uint64(theirID.Conn))
 
 	if err != nil {
@@ -257,6 +266,10 @@ func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirID LinkI
 	//    so no recovery would be needed)
 	if created || theirID.Link == links.id.Link {
 		log.Writef(exported.EventConn, "recreating link: c: %v, current:%v, old:%v", created, links.id, theirID)
+
+		// best effort close, the connection these were built on is gone.
+		_ = links.closeWithoutLocking(ctx, false)
+
 		if err := links.initWithoutLocking(ctx); err != nil {
 			return err
 		}
@@ -455,16 +468,6 @@ func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) RecoveryKi
 
 // initWithoutLocking will create a new link, unconditionally.
 func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
-	// shut down any links we have
-	if err := l.closeWithoutLocking(ctx, false); err != nil {
-		// connection is destabilized since we can't close the link.
-		if GetRecoveryKind(err) == RecoveryKindConn {
-			return err
-		}
-
-		// any other error won't affect future links so we can ignore it.
-	}
-
 	tmpCancelAuthRefreshLink, _, err := l.ns.NegotiateClaim(ctx, l.entityPath)
 
 	if err != nil {

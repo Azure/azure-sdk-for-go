@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.2 (2023-04-11)
+## 1.3.0 (2023-04-11)
 
 ### Features Added
 
@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 - Authentication errors could cause unnecessary retries, making calls taking longer to fail. (PR#20447)
+- Recovery now includes internal timeouts and also handles restarting a connection if AMQP primitives aren't closed cleanly.
+- Latest go-amqp changes have been merged in with fixes for robustness.
 
 ## 1.2.1 (2023-03-07)
 

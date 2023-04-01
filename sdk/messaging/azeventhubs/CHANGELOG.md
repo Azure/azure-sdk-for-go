@@ -12,6 +12,8 @@
 ### Bugs Fixed
 
 - Authentication errors could cause unnecessary retries, making calls taking longer to fail. (PR#20450)
+- Recovery now includes internal timeouts and also handles restarting a connection if AMQP primitives aren't closed cleanly.
+- Latest go-amqp changes have been merged in with fixes for robustness.
 
 ### Other Changes
 

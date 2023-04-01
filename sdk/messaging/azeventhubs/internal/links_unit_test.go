@@ -213,7 +213,7 @@ func TestLinks_LinkRecoveryUpgradedToConnectionRecovery(t *testing.T) {
 		"[azeh.Conn] Creating link for partition ID '0'",
 		"[azeh.Conn] (c:1,l:Link1,p:0): Succesfully created link for partition ID '0'",
 		"[azeh.Conn] (c:1,l:Link1,p:0) Error when cleaning up old link for link recovery: connection must be reset, link/connection state may be inconsistent",
-		"[azeh.Conn] Upgrading to connection reset for recovery instead of link. Link closing has timed out."})
+		"[azeh.Conn] Upgrading to connection reset for recovery instead of link"})
 }
 
 func TestLinks_closeWithTimeout(t *testing.T) {

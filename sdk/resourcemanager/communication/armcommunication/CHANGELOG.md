@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2023-04-03)
+## 2.0.0 (2023-04-28)
 ### Breaking Changes
 
 - Type of `ServiceProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*CommunicationServicesProvisioningState`
@@ -21,6 +21,7 @@
 
 ### Features Added
 
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 - New enum type `CheckNameAvailabilityReason` with values `CheckNameAvailabilityReasonAlreadyExists`, `CheckNameAvailabilityReasonInvalid`
 - New enum type `CommunicationServicesProvisioningState` with values `CommunicationServicesProvisioningStateCanceled`, `CommunicationServicesProvisioningStateCreating`, `CommunicationServicesProvisioningStateDeleting`, `CommunicationServicesProvisioningStateFailed`, `CommunicationServicesProvisioningStateMoving`, `CommunicationServicesProvisioningStateRunning`, `CommunicationServicesProvisioningStateSucceeded`, `CommunicationServicesProvisioningStateUnknown`, `CommunicationServicesProvisioningStateUpdating`
 - New enum type `DomainManagement` with values `DomainManagementAzureManaged`, `DomainManagementCustomerManaged`, `DomainManagementCustomerManagedInExchangeOnline`
@@ -29,12 +30,6 @@
 - New enum type `UserEngagementTracking` with values `UserEngagementTrackingDisabled`, `UserEngagementTrackingEnabled`
 - New enum type `VerificationStatus` with values `VerificationStatusCancellationRequested`, `VerificationStatusNotStarted`, `VerificationStatusVerificationFailed`, `VerificationStatusVerificationInProgress`, `VerificationStatusVerificationRequested`, `VerificationStatusVerified`
 - New enum type `VerificationType` with values `VerificationTypeDKIM`, `VerificationTypeDKIM2`, `VerificationTypeDMARC`, `VerificationTypeDomain`, `VerificationTypeSPF`
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
-- New function `*ClientFactory.NewDomainsClient() *DomainsClient`
-- New function `*ClientFactory.NewEmailServicesClient() *EmailServicesClient`
-- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
-- New function `*ClientFactory.NewSenderUsernamesClient() *SenderUsernamesClient`
-- New function `*ClientFactory.NewServicesClient() *ServicesClient`
 - New function `NewDomainsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DomainsClient, error)`
 - New function `*DomainsClient.BeginCancelVerification(context.Context, string, string, string, VerificationParameter, *DomainsClientBeginCancelVerificationOptions) (*runtime.Poller[DomainsClientCancelVerificationResponse], error)`
 - New function `*DomainsClient.BeginCreateOrUpdate(context.Context, string, string, string, DomainResource, *DomainsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DomainsClientCreateOrUpdateResponse], error)`
@@ -69,7 +64,6 @@
 - New function `*ServicesClient.Update(context.Context, string, string, ServiceResourceUpdate, *ServicesClientUpdateOptions) (ServicesClientUpdateResponse, error)`
 - New struct `CheckNameAvailabilityRequest`
 - New struct `CheckNameAvailabilityResponse`
-- New struct `ClientFactory`
 - New struct `DNSRecord`
 - New struct `DomainProperties`
 - New struct `DomainPropertiesVerificationRecords`

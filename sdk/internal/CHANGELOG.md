@@ -6,12 +6,6 @@
 * Added package `poller` which exports various LRO helpers to aid in the creation of custom `PollerHandler[T]`.
 * Added package `exported` which contains payload helpers needed by the `poller` package and exported in `azcore`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.2.0 (2023-03-02)
 
 ### Features Added

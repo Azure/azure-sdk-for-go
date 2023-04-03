@@ -15,7 +15,7 @@ func unmarshalAddDisksProviderSpecificInputClassification(rawMsg json.RawMessage
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func unmarshalApplianceSpecificDetailsClassification(rawMsg json.RawMessage) (Ap
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func unmarshalApplyRecoveryPointProviderSpecificInputClassification(rawMsg json.
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func unmarshalConfigurationSettingsClassification(rawMsg json.RawMessage) (Confi
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -101,7 +101,7 @@ func unmarshalCreateProtectionIntentProviderSpecificDetailsClassification(rawMsg
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -119,7 +119,7 @@ func unmarshalDisableProtectionProviderSpecificInputClassification(rawMsg json.R
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -137,7 +137,7 @@ func unmarshalEnableMigrationProviderSpecificInputClassification(rawMsg json.Raw
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -155,7 +155,7 @@ func unmarshalEnableProtectionProviderSpecificInputClassification(rawMsg json.Ra
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func unmarshalEventProviderSpecificDetailsClassification(rawMsg json.RawMessage)
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -217,7 +217,7 @@ func unmarshalEventSpecificDetailsClassification(rawMsg json.RawMessage) (EventS
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -235,7 +235,7 @@ func unmarshalFabricSpecificCreateNetworkMappingInputClassification(rawMsg json.
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -257,7 +257,7 @@ func unmarshalFabricSpecificCreationInputClassification(rawMsg json.RawMessage) 
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -279,7 +279,7 @@ func unmarshalFabricSpecificDetailsClassification(rawMsg json.RawMessage) (Fabri
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -307,7 +307,7 @@ func unmarshalFabricSpecificUpdateNetworkMappingInputClassification(rawMsg json.
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -329,7 +329,7 @@ func unmarshalGroupTaskDetailsClassification(rawMsg json.RawMessage) (GroupTaskD
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -351,7 +351,7 @@ func unmarshalJobDetailsClassification(rawMsg json.RawMessage) (JobDetailsClassi
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -377,7 +377,7 @@ func unmarshalMigrateProviderSpecificInputClassification(rawMsg json.RawMessage)
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -395,7 +395,7 @@ func unmarshalMigrationProviderSpecificSettingsClassification(rawMsg json.RawMes
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -413,7 +413,7 @@ func unmarshalNetworkMappingFabricSpecificSettingsClassification(rawMsg json.Raw
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -435,7 +435,7 @@ func unmarshalPlannedFailoverProviderSpecificFailoverInputClassification(rawMsg 
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -457,7 +457,7 @@ func unmarshalPolicyProviderSpecificDetailsClassification(rawMsg json.RawMessage
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -495,7 +495,7 @@ func unmarshalPolicyProviderSpecificInputClassification(rawMsg json.RawMessage) 
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -531,7 +531,7 @@ func unmarshalProtectionContainerMappingProviderSpecificDetailsClassification(ra
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -553,7 +553,7 @@ func unmarshalProtectionProfileCustomDetailsClassification(rawMsg json.RawMessag
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -573,7 +573,7 @@ func unmarshalProviderSpecificRecoveryPointDetailsClassification(rawMsg json.Raw
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -595,7 +595,7 @@ func unmarshalRecoveryAvailabilitySetCustomDetailsClassification(rawMsg json.Raw
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -613,7 +613,7 @@ func unmarshalRecoveryPlanActionDetailsClassification(rawMsg json.RawMessage) (R
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -635,7 +635,7 @@ func unmarshalRecoveryPlanProviderSpecificDetailsClassification(rawMsg json.RawM
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -672,7 +672,7 @@ func unmarshalRecoveryPlanProviderSpecificFailoverInputClassification(rawMsg jso
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -721,7 +721,7 @@ func unmarshalRecoveryPlanProviderSpecificInputClassification(rawMsg json.RawMes
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -758,7 +758,7 @@ func unmarshalRecoveryProximityPlacementGroupCustomDetailsClassification(rawMsg 
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -776,7 +776,7 @@ func unmarshalRecoveryResourceGroupCustomDetailsClassification(rawMsg json.RawMe
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -794,7 +794,7 @@ func unmarshalRecoveryVirtualNetworkCustomDetailsClassification(rawMsg json.RawM
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -814,7 +814,7 @@ func unmarshalRemoveDisksProviderSpecificInputClassification(rawMsg json.RawMess
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -832,7 +832,7 @@ func unmarshalReplicationProtectionIntentProviderSpecificSettingsClassification(
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -850,7 +850,7 @@ func unmarshalReplicationProviderSpecificContainerCreationInputClassification(ra
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -891,7 +891,7 @@ func unmarshalReplicationProviderSpecificContainerMappingInputClassification(raw
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -911,7 +911,7 @@ func unmarshalReplicationProviderSpecificSettingsClassification(rawMsg json.RawM
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -947,7 +947,7 @@ func unmarshalReplicationProviderSpecificUpdateContainerMappingInputClassificati
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -967,7 +967,7 @@ func unmarshalResumeReplicationProviderSpecificInputClassification(rawMsg json.R
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -985,7 +985,7 @@ func unmarshalResyncProviderSpecificInputClassification(rawMsg json.RawMessage) 
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1003,7 +1003,7 @@ func unmarshalReverseReplicationProviderSpecificInputClassification(rawMsg json.
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1031,7 +1031,7 @@ func unmarshalStorageAccountCustomDetailsClassification(rawMsg json.RawMessage) 
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1049,7 +1049,7 @@ func unmarshalSwitchProtectionProviderSpecificInputClassification(rawMsg json.Ra
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1067,7 +1067,7 @@ func unmarshalSwitchProviderSpecificInputClassification(rawMsg json.RawMessage) 
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1085,7 +1085,7 @@ func unmarshalTaskTypeDetailsClassification(rawMsg json.RawMessage) (TaskTypeDet
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1117,7 +1117,7 @@ func unmarshalTestFailoverProviderSpecificInputClassification(rawMsg json.RawMes
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1143,7 +1143,7 @@ func unmarshalTestMigrateProviderSpecificInputClassification(rawMsg json.RawMess
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1161,7 +1161,7 @@ func unmarshalUnplannedFailoverProviderSpecificInputClassification(rawMsg json.R
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1187,7 +1187,7 @@ func unmarshalUpdateApplianceForReplicationProtectedItemProviderSpecificInputCla
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1205,7 +1205,7 @@ func unmarshalUpdateMigrationItemProviderSpecificInputClassification(rawMsg json
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -1223,7 +1223,7 @@ func unmarshalUpdateReplicationProtectedItemProviderInputClassification(rawMsg j
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

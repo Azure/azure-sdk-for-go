@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,53 +24,41 @@ import (
 // ReplicationNetworksClient contains the methods for the ReplicationNetworks group.
 // Don't use this type directly, use NewReplicationNetworksClient() instead.
 type ReplicationNetworksClient struct {
-	host              string
-	resourceName      string
-	resourceGroupName string
-	subscriptionID    string
-	pl                runtime.Pipeline
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewReplicationNetworksClient creates a new instance of ReplicationNetworksClient with the specified values.
-// resourceName - The name of the recovery services vault.
-// resourceGroupName - The name of the resource group where the recovery services vault is present.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
-func NewReplicationNetworksClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationNetworksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
+func NewReplicationNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationNetworksClient, error) {
+	cl, err := arm.NewClient(moduleName+".ReplicationNetworksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ReplicationNetworksClient{
-		resourceName:      resourceName,
-		resourceGroupName: resourceGroupName,
-		subscriptionID:    subscriptionID,
-		host:              ep,
-		pl:                pl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets the details of a network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// fabricName - Server Id.
-// networkName - Primary network name.
-// options - ReplicationNetworksClientGetOptions contains the optional parameters for the ReplicationNetworksClient.Get method.
-func (client *ReplicationNetworksClient) Get(ctx context.Context, fabricName string, networkName string, options *ReplicationNetworksClientGetOptions) (ReplicationNetworksClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, fabricName, networkName, options)
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - Server Id.
+//   - networkName - Primary network name.
+//   - options - ReplicationNetworksClientGetOptions contains the optional parameters for the ReplicationNetworksClient.Get method.
+func (client *ReplicationNetworksClient) Get(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, networkName string, options *ReplicationNetworksClientGetOptions) (ReplicationNetworksClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, fabricName, networkName, options)
 	if err != nil {
 		return ReplicationNetworksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReplicationNetworksClientGetResponse{}, err
 	}
@@ -83,16 +69,16 @@ func (client *ReplicationNetworksClient) Get(ctx context.Context, fabricName str
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationNetworksClient) getCreateRequest(ctx context.Context, fabricName string, networkName string, options *ReplicationNetworksClientGetOptions) (*policy.Request, error) {
+func (client *ReplicationNetworksClient) getCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, networkName string, options *ReplicationNetworksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -105,7 +91,7 @@ func (client *ReplicationNetworksClient) getCreateRequest(ctx context.Context, f
 		return nil, errors.New("parameter networkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkName}", url.PathEscape(networkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,10 +112,13 @@ func (client *ReplicationNetworksClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Lists the networks available in a vault.
+//
 // Generated from API version 2022-10-01
-// options - ReplicationNetworksClientListOptions contains the optional parameters for the ReplicationNetworksClient.List
-// method.
-func (client *ReplicationNetworksClient) NewListPager(options *ReplicationNetworksClientListOptions) *runtime.Pager[ReplicationNetworksClientListResponse] {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - options - ReplicationNetworksClientListOptions contains the optional parameters for the ReplicationNetworksClient.NewListPager
+//     method.
+func (client *ReplicationNetworksClient) NewListPager(resourceName string, resourceGroupName string, options *ReplicationNetworksClientListOptions) *runtime.Pager[ReplicationNetworksClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationNetworksClientListResponse]{
 		More: func(page ReplicationNetworksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -138,14 +127,14 @@ func (client *ReplicationNetworksClient) NewListPager(options *ReplicationNetwor
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
+				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
 				return ReplicationNetworksClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReplicationNetworksClientListResponse{}, err
 			}
@@ -158,21 +147,21 @@ func (client *ReplicationNetworksClient) NewListPager(options *ReplicationNetwor
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationNetworksClient) listCreateRequest(ctx context.Context, options *ReplicationNetworksClientListOptions) (*policy.Request, error) {
+func (client *ReplicationNetworksClient) listCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, options *ReplicationNetworksClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationNetworks"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -193,11 +182,14 @@ func (client *ReplicationNetworksClient) listHandleResponse(resp *http.Response)
 }
 
 // NewListByReplicationFabricsPager - Lists the networks available for a fabric.
+//
 // Generated from API version 2022-10-01
-// fabricName - Fabric name.
-// options - ReplicationNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationNetworksClient.ListByReplicationFabrics
-// method.
-func (client *ReplicationNetworksClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationNetworksClientListByReplicationFabricsResponse] {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - Fabric name.
+//   - options - ReplicationNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationNetworksClient.NewListByReplicationFabricsPager
+//     method.
+func (client *ReplicationNetworksClient) NewListByReplicationFabricsPager(resourceName string, resourceGroupName string, fabricName string, options *ReplicationNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationNetworksClientListByReplicationFabricsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationNetworksClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationNetworksClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -206,14 +198,14 @@ func (client *ReplicationNetworksClient) NewListByReplicationFabricsPager(fabric
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listByReplicationFabricsCreateRequest(ctx, fabricName, options)
+				req, err = client.listByReplicationFabricsCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
 				return ReplicationNetworksClientListByReplicationFabricsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReplicationNetworksClientListByReplicationFabricsResponse{}, err
 			}
@@ -226,16 +218,16 @@ func (client *ReplicationNetworksClient) NewListByReplicationFabricsPager(fabric
 }
 
 // listByReplicationFabricsCreateRequest creates the ListByReplicationFabrics request.
-func (client *ReplicationNetworksClient) listByReplicationFabricsCreateRequest(ctx context.Context, fabricName string, options *ReplicationNetworksClientListByReplicationFabricsOptions) (*policy.Request, error) {
+func (client *ReplicationNetworksClient) listByReplicationFabricsCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, options *ReplicationNetworksClientListByReplicationFabricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -244,7 +236,7 @@ func (client *ReplicationNetworksClient) listByReplicationFabricsCreateRequest(c
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

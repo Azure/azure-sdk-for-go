@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,54 +24,42 @@ import (
 // ReplicationStorageClassificationsClient contains the methods for the ReplicationStorageClassifications group.
 // Don't use this type directly, use NewReplicationStorageClassificationsClient() instead.
 type ReplicationStorageClassificationsClient struct {
-	host              string
-	resourceName      string
-	resourceGroupName string
-	subscriptionID    string
-	pl                runtime.Pipeline
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewReplicationStorageClassificationsClient creates a new instance of ReplicationStorageClassificationsClient with the specified values.
-// resourceName - The name of the recovery services vault.
-// resourceGroupName - The name of the resource group where the recovery services vault is present.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
-func NewReplicationStorageClassificationsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationStorageClassificationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
+func NewReplicationStorageClassificationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationStorageClassificationsClient, error) {
+	cl, err := arm.NewClient(moduleName+".ReplicationStorageClassificationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ReplicationStorageClassificationsClient{
-		resourceName:      resourceName,
-		resourceGroupName: resourceGroupName,
-		subscriptionID:    subscriptionID,
-		host:              ep,
-		pl:                pl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets the details of the specified storage classification.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// fabricName - Fabric name.
-// storageClassificationName - Storage classification name.
-// options - ReplicationStorageClassificationsClientGetOptions contains the optional parameters for the ReplicationStorageClassificationsClient.Get
-// method.
-func (client *ReplicationStorageClassificationsClient) Get(ctx context.Context, fabricName string, storageClassificationName string, options *ReplicationStorageClassificationsClientGetOptions) (ReplicationStorageClassificationsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, fabricName, storageClassificationName, options)
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - Fabric name.
+//   - storageClassificationName - Storage classification name.
+//   - options - ReplicationStorageClassificationsClientGetOptions contains the optional parameters for the ReplicationStorageClassificationsClient.Get
+//     method.
+func (client *ReplicationStorageClassificationsClient) Get(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, storageClassificationName string, options *ReplicationStorageClassificationsClientGetOptions) (ReplicationStorageClassificationsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, fabricName, storageClassificationName, options)
 	if err != nil {
 		return ReplicationStorageClassificationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReplicationStorageClassificationsClientGetResponse{}, err
 	}
@@ -84,16 +70,16 @@ func (client *ReplicationStorageClassificationsClient) Get(ctx context.Context, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationStorageClassificationsClient) getCreateRequest(ctx context.Context, fabricName string, storageClassificationName string, options *ReplicationStorageClassificationsClientGetOptions) (*policy.Request, error) {
+func (client *ReplicationStorageClassificationsClient) getCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, storageClassificationName string, options *ReplicationStorageClassificationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -106,7 +92,7 @@ func (client *ReplicationStorageClassificationsClient) getCreateRequest(ctx cont
 		return nil, errors.New("parameter storageClassificationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageClassificationName}", url.PathEscape(storageClassificationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,10 +113,13 @@ func (client *ReplicationStorageClassificationsClient) getHandleResponse(resp *h
 }
 
 // NewListPager - Lists the storage classifications in the vault.
+//
 // Generated from API version 2022-10-01
-// options - ReplicationStorageClassificationsClientListOptions contains the optional parameters for the ReplicationStorageClassificationsClient.List
-// method.
-func (client *ReplicationStorageClassificationsClient) NewListPager(options *ReplicationStorageClassificationsClientListOptions) *runtime.Pager[ReplicationStorageClassificationsClientListResponse] {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - options - ReplicationStorageClassificationsClientListOptions contains the optional parameters for the ReplicationStorageClassificationsClient.NewListPager
+//     method.
+func (client *ReplicationStorageClassificationsClient) NewListPager(resourceName string, resourceGroupName string, options *ReplicationStorageClassificationsClientListOptions) *runtime.Pager[ReplicationStorageClassificationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationStorageClassificationsClientListResponse]{
 		More: func(page ReplicationStorageClassificationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -139,14 +128,14 @@ func (client *ReplicationStorageClassificationsClient) NewListPager(options *Rep
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
+				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
 				return ReplicationStorageClassificationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReplicationStorageClassificationsClientListResponse{}, err
 			}
@@ -159,21 +148,21 @@ func (client *ReplicationStorageClassificationsClient) NewListPager(options *Rep
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationStorageClassificationsClient) listCreateRequest(ctx context.Context, options *ReplicationStorageClassificationsClientListOptions) (*policy.Request, error) {
+func (client *ReplicationStorageClassificationsClient) listCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, options *ReplicationStorageClassificationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationStorageClassifications"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,11 +183,14 @@ func (client *ReplicationStorageClassificationsClient) listHandleResponse(resp *
 }
 
 // NewListByReplicationFabricsPager - Lists the storage classifications available in the specified fabric.
+//
 // Generated from API version 2022-10-01
-// fabricName - Site name of interest.
-// options - ReplicationStorageClassificationsClientListByReplicationFabricsOptions contains the optional parameters for the
-// ReplicationStorageClassificationsClient.ListByReplicationFabrics method.
-func (client *ReplicationStorageClassificationsClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationStorageClassificationsClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationStorageClassificationsClientListByReplicationFabricsResponse] {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - Site name of interest.
+//   - options - ReplicationStorageClassificationsClientListByReplicationFabricsOptions contains the optional parameters for the
+//     ReplicationStorageClassificationsClient.NewListByReplicationFabricsPager method.
+func (client *ReplicationStorageClassificationsClient) NewListByReplicationFabricsPager(resourceName string, resourceGroupName string, fabricName string, options *ReplicationStorageClassificationsClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationStorageClassificationsClientListByReplicationFabricsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationStorageClassificationsClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationStorageClassificationsClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -207,14 +199,14 @@ func (client *ReplicationStorageClassificationsClient) NewListByReplicationFabri
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listByReplicationFabricsCreateRequest(ctx, fabricName, options)
+				req, err = client.listByReplicationFabricsCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
 				return ReplicationStorageClassificationsClientListByReplicationFabricsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReplicationStorageClassificationsClientListByReplicationFabricsResponse{}, err
 			}
@@ -227,16 +219,16 @@ func (client *ReplicationStorageClassificationsClient) NewListByReplicationFabri
 }
 
 // listByReplicationFabricsCreateRequest creates the ListByReplicationFabrics request.
-func (client *ReplicationStorageClassificationsClient) listByReplicationFabricsCreateRequest(ctx context.Context, fabricName string, options *ReplicationStorageClassificationsClientListByReplicationFabricsOptions) (*policy.Request, error) {
+func (client *ReplicationStorageClassificationsClient) listByReplicationFabricsCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, options *ReplicationStorageClassificationsClientListByReplicationFabricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -245,7 +237,7 @@ func (client *ReplicationStorageClassificationsClient) listByReplicationFabricsC
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

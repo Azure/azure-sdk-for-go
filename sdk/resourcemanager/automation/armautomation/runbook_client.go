@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,51 +24,43 @@ import (
 // RunbookClient contains the methods for the Runbook group.
 // Don't use this type directly, use NewRunbookClient() instead.
 type RunbookClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRunbookClient creates a new instance of RunbookClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRunbookClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RunbookClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RunbookClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RunbookClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create the runbook identified by runbook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-30
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// runbookName - The runbook name.
-// parameters - The create or update parameters for runbook. Provide either content link for a published runbook or draft,
-// not both.
-// options - RunbookClientCreateOrUpdateOptions contains the optional parameters for the RunbookClient.CreateOrUpdate method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - runbookName - The runbook name.
+//   - parameters - The create or update parameters for runbook. Provide either content link for a published runbook or draft,
+//     not both.
+//   - options - RunbookClientCreateOrUpdateOptions contains the optional parameters for the RunbookClient.CreateOrUpdate method.
 func (client *RunbookClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters RunbookCreateOrUpdateParameters, options *RunbookClientCreateOrUpdateOptions) (RunbookClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, parameters, options)
 	if err != nil {
 		return RunbookClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RunbookClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *RunbookClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,17 +111,18 @@ func (client *RunbookClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - Delete the runbook by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-30
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// runbookName - The runbook name.
-// options - RunbookClientDeleteOptions contains the optional parameters for the RunbookClient.Delete method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - runbookName - The runbook name.
+//   - options - RunbookClientDeleteOptions contains the optional parameters for the RunbookClient.Delete method.
 func (client *RunbookClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientDeleteOptions) (RunbookClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
 		return RunbookClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RunbookClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *RunbookClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,17 +164,18 @@ func (client *RunbookClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // Get - Retrieve the runbook identified by runbook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-30
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// runbookName - The runbook name.
-// options - RunbookClientGetOptions contains the optional parameters for the RunbookClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - runbookName - The runbook name.
+//   - options - RunbookClientGetOptions contains the optional parameters for the RunbookClient.Get method.
 func (client *RunbookClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientGetOptions) (RunbookClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
 		return RunbookClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RunbookClientGetResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *RunbookClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -234,17 +226,18 @@ func (client *RunbookClient) getHandleResponse(resp *http.Response) (RunbookClie
 
 // GetContent - Retrieve the content of runbook identified by runbook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-30
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// runbookName - The runbook name.
-// options - RunbookClientGetContentOptions contains the optional parameters for the RunbookClient.GetContent method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - runbookName - The runbook name.
+//   - options - RunbookClientGetContentOptions contains the optional parameters for the RunbookClient.GetContent method.
 func (client *RunbookClient) GetContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientGetContentOptions) (RunbookClientGetContentResponse, error) {
 	req, err := client.getContentCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
 		return RunbookClientGetContentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RunbookClientGetContentResponse{}, err
 	}
@@ -273,7 +266,7 @@ func (client *RunbookClient) getContentCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -285,12 +278,12 @@ func (client *RunbookClient) getContentCreateRequest(ctx context.Context, resour
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of runbooks.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-30
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - RunbookClientListByAutomationAccountOptions contains the optional parameters for the RunbookClient.ListByAutomationAccount
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - RunbookClientListByAutomationAccountOptions contains the optional parameters for the RunbookClient.NewListByAutomationAccountPager
+//     method.
 func (client *RunbookClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *RunbookClientListByAutomationAccountOptions) *runtime.Pager[RunbookClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RunbookClientListByAutomationAccountResponse]{
 		More: func(page RunbookClientListByAutomationAccountResponse) bool {
@@ -307,7 +300,7 @@ func (client *RunbookClient) NewListByAutomationAccountPager(resourceGroupName s
 			if err != nil {
 				return RunbookClientListByAutomationAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RunbookClientListByAutomationAccountResponse{}, err
 			}
@@ -334,7 +327,7 @@ func (client *RunbookClient) listByAutomationAccountCreateRequest(ctx context.Co
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -356,32 +349,34 @@ func (client *RunbookClient) listByAutomationAccountHandleResponse(resp *http.Re
 
 // BeginPublish - Publish runbook draft.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-30
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// runbookName - The parameters supplied to the publish runbook operation.
-// options - RunbookClientBeginPublishOptions contains the optional parameters for the RunbookClient.BeginPublish method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - runbookName - The parameters supplied to the publish runbook operation.
+//   - options - RunbookClientBeginPublishOptions contains the optional parameters for the RunbookClient.BeginPublish method.
 func (client *RunbookClient) BeginPublish(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientBeginPublishOptions) (*runtime.Poller[RunbookClientPublishResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.publish(ctx, resourceGroupName, automationAccountName, runbookName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[RunbookClientPublishResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RunbookClientPublishResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[RunbookClientPublishResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RunbookClientPublishResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Publish - Publish runbook draft.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-30
 func (client *RunbookClient) publish(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientBeginPublishOptions) (*http.Response, error) {
 	req, err := client.publishCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -410,7 +405,7 @@ func (client *RunbookClient) publishCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -423,18 +418,19 @@ func (client *RunbookClient) publishCreateRequest(ctx context.Context, resourceG
 
 // Update - Update the runbook identified by runbook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-30
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// runbookName - The runbook name.
-// parameters - The update parameters for runbook.
-// options - RunbookClientUpdateOptions contains the optional parameters for the RunbookClient.Update method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - runbookName - The runbook name.
+//   - parameters - The update parameters for runbook.
+//   - options - RunbookClientUpdateOptions contains the optional parameters for the RunbookClient.Update method.
 func (client *RunbookClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters RunbookUpdateParameters, options *RunbookClientUpdateOptions) (RunbookClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, parameters, options)
 	if err != nil {
 		return RunbookClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RunbookClientUpdateResponse{}, err
 	}
@@ -463,7 +459,7 @@ func (client *RunbookClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

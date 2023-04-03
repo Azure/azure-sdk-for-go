@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // AgentRegistrationInformationClient contains the methods for the AgentRegistrationInformation group.
 // Don't use this type directly, use NewAgentRegistrationInformationClient() instead.
 type AgentRegistrationInformationClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAgentRegistrationInformationClient creates a new instance of AgentRegistrationInformationClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAgentRegistrationInformationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentRegistrationInformationClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AgentRegistrationInformationClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AgentRegistrationInformationClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Retrieve the automation agent registration information.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - AgentRegistrationInformationClientGetOptions contains the optional parameters for the AgentRegistrationInformationClient.Get
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - AgentRegistrationInformationClientGetOptions contains the optional parameters for the AgentRegistrationInformationClient.Get
+//     method.
 func (client *AgentRegistrationInformationClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, options *AgentRegistrationInformationClientGetOptions) (AgentRegistrationInformationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 	if err != nil {
 		return AgentRegistrationInformationClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentRegistrationInformationClientGetResponse{}, err
 	}
@@ -93,7 +83,7 @@ func (client *AgentRegistrationInformationClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,18 +105,19 @@ func (client *AgentRegistrationInformationClient) getHandleResponse(resp *http.R
 
 // RegenerateKey - Regenerate a primary or secondary agent registration key
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// parameters - The name of the agent registration key to be regenerated
-// options - AgentRegistrationInformationClientRegenerateKeyOptions contains the optional parameters for the AgentRegistrationInformationClient.RegenerateKey
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - parameters - The name of the agent registration key to be regenerated
+//   - options - AgentRegistrationInformationClientRegenerateKeyOptions contains the optional parameters for the AgentRegistrationInformationClient.RegenerateKey
+//     method.
 func (client *AgentRegistrationInformationClient) RegenerateKey(ctx context.Context, resourceGroupName string, automationAccountName string, parameters AgentRegistrationRegenerateKeyParameter, options *AgentRegistrationInformationClientRegenerateKeyOptions) (AgentRegistrationInformationClientRegenerateKeyResponse, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, automationAccountName, parameters, options)
 	if err != nil {
 		return AgentRegistrationInformationClientRegenerateKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentRegistrationInformationClientRegenerateKeyResponse{}, err
 	}
@@ -151,7 +142,7 @@ func (client *AgentRegistrationInformationClient) regenerateKeyCreateRequest(ctx
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

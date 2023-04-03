@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // DscCompilationJobClient contains the methods for the DscCompilationJob group.
 // Don't use this type directly, use NewDscCompilationJobClient() instead.
 type DscCompilationJobClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDscCompilationJobClient creates a new instance of DscCompilationJobClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDscCompilationJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DscCompilationJobClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DscCompilationJobClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DscCompilationJobClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Creates the Dsc compilation job of the configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// compilationJobName - The DSC configuration Id.
-// parameters - The parameters supplied to the create compilation job operation.
-// options - DscCompilationJobClientBeginCreateOptions contains the optional parameters for the DscCompilationJobClient.BeginCreate
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - compilationJobName - The DSC configuration Id.
+//   - parameters - The parameters supplied to the create compilation job operation.
+//   - options - DscCompilationJobClientBeginCreateOptions contains the optional parameters for the DscCompilationJobClient.BeginCreate
+//     method.
 func (client *DscCompilationJobClient) BeginCreate(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobName string, parameters DscCompilationJobCreateParameters, options *DscCompilationJobClientBeginCreateOptions) (*runtime.Poller[DscCompilationJobClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, automationAccountName, compilationJobName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DscCompilationJobClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DscCompilationJobClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DscCompilationJobClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DscCompilationJobClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Creates the Dsc compilation job of the configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
 func (client *DscCompilationJobClient) create(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobName string, parameters DscCompilationJobCreateParameters, options *DscCompilationJobClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, automationAccountName, compilationJobName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +105,7 @@ func (client *DscCompilationJobClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,17 +118,18 @@ func (client *DscCompilationJobClient) createCreateRequest(ctx context.Context, 
 
 // Get - Retrieve the Dsc configuration compilation job identified by job id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// compilationJobName - The DSC configuration Id.
-// options - DscCompilationJobClientGetOptions contains the optional parameters for the DscCompilationJobClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - compilationJobName - The DSC configuration Id.
+//   - options - DscCompilationJobClientGetOptions contains the optional parameters for the DscCompilationJobClient.Get method.
 func (client *DscCompilationJobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobName string, options *DscCompilationJobClientGetOptions) (DscCompilationJobClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, compilationJobName, options)
 	if err != nil {
 		return DscCompilationJobClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DscCompilationJobClientGetResponse{}, err
 	}
@@ -166,7 +158,7 @@ func (client *DscCompilationJobClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -188,19 +180,20 @@ func (client *DscCompilationJobClient) getHandleResponse(resp *http.Response) (D
 
 // GetStream - Retrieve the job stream identified by job stream id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// jobID - The job id.
-// jobStreamID - The job stream id.
-// options - DscCompilationJobClientGetStreamOptions contains the optional parameters for the DscCompilationJobClient.GetStream
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - jobID - The job id.
+//   - jobStreamID - The job stream id.
+//   - options - DscCompilationJobClientGetStreamOptions contains the optional parameters for the DscCompilationJobClient.GetStream
+//     method.
 func (client *DscCompilationJobClient) GetStream(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string, jobStreamID string, options *DscCompilationJobClientGetStreamOptions) (DscCompilationJobClientGetStreamResponse, error) {
 	req, err := client.getStreamCreateRequest(ctx, resourceGroupName, automationAccountName, jobID, jobStreamID, options)
 	if err != nil {
 		return DscCompilationJobClientGetStreamResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DscCompilationJobClientGetStreamResponse{}, err
 	}
@@ -230,7 +223,7 @@ func (client *DscCompilationJobClient) getStreamCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -251,12 +244,12 @@ func (client *DscCompilationJobClient) getStreamHandleResponse(resp *http.Respon
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of dsc compilation jobs.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - DscCompilationJobClientListByAutomationAccountOptions contains the optional parameters for the DscCompilationJobClient.ListByAutomationAccount
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - DscCompilationJobClientListByAutomationAccountOptions contains the optional parameters for the DscCompilationJobClient.NewListByAutomationAccountPager
+//     method.
 func (client *DscCompilationJobClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *DscCompilationJobClientListByAutomationAccountOptions) *runtime.Pager[DscCompilationJobClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DscCompilationJobClientListByAutomationAccountResponse]{
 		More: func(page DscCompilationJobClientListByAutomationAccountResponse) bool {
@@ -273,7 +266,7 @@ func (client *DscCompilationJobClient) NewListByAutomationAccountPager(resourceG
 			if err != nil {
 				return DscCompilationJobClientListByAutomationAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DscCompilationJobClientListByAutomationAccountResponse{}, err
 			}
@@ -300,7 +293,7 @@ func (client *DscCompilationJobClient) listByAutomationAccountCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

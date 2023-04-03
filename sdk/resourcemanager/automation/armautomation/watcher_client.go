@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // WatcherClient contains the methods for the Watcher group.
 // Don't use this type directly, use NewWatcherClient() instead.
 type WatcherClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWatcherClient creates a new instance of WatcherClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWatcherClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WatcherClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WatcherClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WatcherClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create the watcher identified by watcher name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// watcherName - The watcher name.
-// parameters - The create or update parameters for watcher.
-// options - WatcherClientCreateOrUpdateOptions contains the optional parameters for the WatcherClient.CreateOrUpdate method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - watcherName - The watcher name.
+//   - parameters - The create or update parameters for watcher.
+//   - options - WatcherClientCreateOrUpdateOptions contains the optional parameters for the WatcherClient.CreateOrUpdate method.
 func (client *WatcherClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string, parameters Watcher, options *WatcherClientCreateOrUpdateOptions) (WatcherClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, watcherName, parameters, options)
 	if err != nil {
 		return WatcherClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatcherClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *WatcherClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *WatcherClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - Delete the watcher by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// watcherName - The watcher name.
-// options - WatcherClientDeleteOptions contains the optional parameters for the WatcherClient.Delete method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - watcherName - The watcher name.
+//   - options - WatcherClientDeleteOptions contains the optional parameters for the WatcherClient.Delete method.
 func (client *WatcherClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string, options *WatcherClientDeleteOptions) (WatcherClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, watcherName, options)
 	if err != nil {
 		return WatcherClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatcherClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *WatcherClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,17 +163,18 @@ func (client *WatcherClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // Get - Retrieve the watcher identified by watcher name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// watcherName - The watcher name.
-// options - WatcherClientGetOptions contains the optional parameters for the WatcherClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - watcherName - The watcher name.
+//   - options - WatcherClientGetOptions contains the optional parameters for the WatcherClient.Get method.
 func (client *WatcherClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string, options *WatcherClientGetOptions) (WatcherClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, watcherName, options)
 	if err != nil {
 		return WatcherClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatcherClientGetResponse{}, err
 	}
@@ -211,7 +203,7 @@ func (client *WatcherClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,12 +224,12 @@ func (client *WatcherClient) getHandleResponse(resp *http.Response) (WatcherClie
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of watchers.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - WatcherClientListByAutomationAccountOptions contains the optional parameters for the WatcherClient.ListByAutomationAccount
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - WatcherClientListByAutomationAccountOptions contains the optional parameters for the WatcherClient.NewListByAutomationAccountPager
+//     method.
 func (client *WatcherClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *WatcherClientListByAutomationAccountOptions) *runtime.Pager[WatcherClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WatcherClientListByAutomationAccountResponse]{
 		More: func(page WatcherClientListByAutomationAccountResponse) bool {
@@ -254,7 +246,7 @@ func (client *WatcherClient) NewListByAutomationAccountPager(resourceGroupName s
 			if err != nil {
 				return WatcherClientListByAutomationAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WatcherClientListByAutomationAccountResponse{}, err
 			}
@@ -281,7 +273,7 @@ func (client *WatcherClient) listByAutomationAccountCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -306,17 +298,18 @@ func (client *WatcherClient) listByAutomationAccountHandleResponse(resp *http.Re
 
 // Start - Resume the watcher identified by watcher name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// watcherName - The watcher name.
-// options - WatcherClientStartOptions contains the optional parameters for the WatcherClient.Start method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - watcherName - The watcher name.
+//   - options - WatcherClientStartOptions contains the optional parameters for the WatcherClient.Start method.
 func (client *WatcherClient) Start(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string, options *WatcherClientStartOptions) (WatcherClientStartResponse, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, automationAccountName, watcherName, options)
 	if err != nil {
 		return WatcherClientStartResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatcherClientStartResponse{}, err
 	}
@@ -345,7 +338,7 @@ func (client *WatcherClient) startCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -358,17 +351,18 @@ func (client *WatcherClient) startCreateRequest(ctx context.Context, resourceGro
 
 // Stop - Resume the watcher identified by watcher name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// watcherName - The watcher name.
-// options - WatcherClientStopOptions contains the optional parameters for the WatcherClient.Stop method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - watcherName - The watcher name.
+//   - options - WatcherClientStopOptions contains the optional parameters for the WatcherClient.Stop method.
 func (client *WatcherClient) Stop(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string, options *WatcherClientStopOptions) (WatcherClientStopResponse, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, automationAccountName, watcherName, options)
 	if err != nil {
 		return WatcherClientStopResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatcherClientStopResponse{}, err
 	}
@@ -397,7 +391,7 @@ func (client *WatcherClient) stopCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -410,18 +404,19 @@ func (client *WatcherClient) stopCreateRequest(ctx context.Context, resourceGrou
 
 // Update - Update the watcher identified by watcher name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// watcherName - The watcher name.
-// parameters - The update parameters for watcher.
-// options - WatcherClientUpdateOptions contains the optional parameters for the WatcherClient.Update method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - watcherName - The watcher name.
+//   - parameters - The update parameters for watcher.
+//   - options - WatcherClientUpdateOptions contains the optional parameters for the WatcherClient.Update method.
 func (client *WatcherClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string, parameters WatcherUpdateParameters, options *WatcherClientUpdateOptions) (WatcherClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, watcherName, parameters, options)
 	if err != nil {
 		return WatcherClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatcherClientUpdateResponse{}, err
 	}
@@ -450,7 +445,7 @@ func (client *WatcherClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

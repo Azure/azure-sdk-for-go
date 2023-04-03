@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // JobScheduleClient contains the methods for the JobSchedule group.
 // Don't use this type directly, use NewJobScheduleClient() instead.
 type JobScheduleClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewJobScheduleClient creates a new instance of JobScheduleClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewJobScheduleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobScheduleClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".JobScheduleClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &JobScheduleClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Create a job schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// jobScheduleID - The job schedule name.
-// parameters - The parameters supplied to the create job schedule operation.
-// options - JobScheduleClientCreateOptions contains the optional parameters for the JobScheduleClient.Create method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - jobScheduleID - The job schedule name.
+//   - parameters - The parameters supplied to the create job schedule operation.
+//   - options - JobScheduleClientCreateOptions contains the optional parameters for the JobScheduleClient.Create method.
 func (client *JobScheduleClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, jobScheduleID string, parameters JobScheduleCreateParameters, options *JobScheduleClientCreateOptions) (JobScheduleClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, automationAccountName, jobScheduleID, parameters, options)
 	if err != nil {
 		return JobScheduleClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JobScheduleClientCreateResponse{}, err
 	}
@@ -95,7 +85,7 @@ func (client *JobScheduleClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,17 +107,18 @@ func (client *JobScheduleClient) createHandleResponse(resp *http.Response) (JobS
 
 // Delete - Delete the job schedule identified by job schedule name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// jobScheduleID - The job schedule name.
-// options - JobScheduleClientDeleteOptions contains the optional parameters for the JobScheduleClient.Delete method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - jobScheduleID - The job schedule name.
+//   - options - JobScheduleClientDeleteOptions contains the optional parameters for the JobScheduleClient.Delete method.
 func (client *JobScheduleClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, jobScheduleID string, options *JobScheduleClientDeleteOptions) (JobScheduleClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, jobScheduleID, options)
 	if err != nil {
 		return JobScheduleClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JobScheduleClientDeleteResponse{}, err
 	}
@@ -153,7 +144,7 @@ func (client *JobScheduleClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,17 +157,18 @@ func (client *JobScheduleClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Retrieve the job schedule identified by job schedule name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// jobScheduleID - The job schedule name.
-// options - JobScheduleClientGetOptions contains the optional parameters for the JobScheduleClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - jobScheduleID - The job schedule name.
+//   - options - JobScheduleClientGetOptions contains the optional parameters for the JobScheduleClient.Get method.
 func (client *JobScheduleClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, jobScheduleID string, options *JobScheduleClientGetOptions) (JobScheduleClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, jobScheduleID, options)
 	if err != nil {
 		return JobScheduleClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JobScheduleClientGetResponse{}, err
 	}
@@ -202,7 +194,7 @@ func (client *JobScheduleClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -223,12 +215,12 @@ func (client *JobScheduleClient) getHandleResponse(resp *http.Response) (JobSche
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of job schedules.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - JobScheduleClientListByAutomationAccountOptions contains the optional parameters for the JobScheduleClient.ListByAutomationAccount
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - JobScheduleClientListByAutomationAccountOptions contains the optional parameters for the JobScheduleClient.NewListByAutomationAccountPager
+//     method.
 func (client *JobScheduleClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *JobScheduleClientListByAutomationAccountOptions) *runtime.Pager[JobScheduleClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[JobScheduleClientListByAutomationAccountResponse]{
 		More: func(page JobScheduleClientListByAutomationAccountResponse) bool {
@@ -245,7 +237,7 @@ func (client *JobScheduleClient) NewListByAutomationAccountPager(resourceGroupNa
 			if err != nil {
 				return JobScheduleClientListByAutomationAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return JobScheduleClientListByAutomationAccountResponse{}, err
 			}
@@ -272,7 +264,7 @@ func (client *JobScheduleClient) listByAutomationAccountCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,43 +24,34 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PrivateLinkResourcesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewAutomationPager - Gets the private link resources that need to be created for Automation account.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - PrivateLinkResourcesClientAutomationOptions contains the optional parameters for the PrivateLinkResourcesClient.Automation
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - PrivateLinkResourcesClientAutomationOptions contains the optional parameters for the PrivateLinkResourcesClient.NewAutomationPager
+//     method.
 func (client *PrivateLinkResourcesClient) NewAutomationPager(resourceGroupName string, automationAccountName string, options *PrivateLinkResourcesClientAutomationOptions) *runtime.Pager[PrivateLinkResourcesClientAutomationResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourcesClientAutomationResponse]{
 		More: func(page PrivateLinkResourcesClientAutomationResponse) bool {
@@ -73,7 +62,7 @@ func (client *PrivateLinkResourcesClient) NewAutomationPager(resourceGroupName s
 			if err != nil {
 				return PrivateLinkResourcesClientAutomationResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PrivateLinkResourcesClientAutomationResponse{}, err
 			}
@@ -100,7 +89,7 @@ func (client *PrivateLinkResourcesClient) automationCreateRequest(ctx context.Co
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

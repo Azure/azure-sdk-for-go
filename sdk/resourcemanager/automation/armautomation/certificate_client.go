@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,51 +24,43 @@ import (
 // CertificateClient contains the methods for the Certificate group.
 // Don't use this type directly, use NewCertificateClient() instead.
 type CertificateClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCertificateClient creates a new instance of CertificateClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificateClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CertificateClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CertificateClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create a certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// certificateName - The parameters supplied to the create or update certificate operation.
-// parameters - The parameters supplied to the create or update certificate operation.
-// options - CertificateClientCreateOrUpdateOptions contains the optional parameters for the CertificateClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - certificateName - The parameters supplied to the create or update certificate operation.
+//   - parameters - The parameters supplied to the create or update certificate operation.
+//   - options - CertificateClientCreateOrUpdateOptions contains the optional parameters for the CertificateClient.CreateOrUpdate
+//     method.
 func (client *CertificateClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters CertificateCreateOrUpdateParameters, options *CertificateClientCreateOrUpdateOptions) (CertificateClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, certificateName, parameters, options)
 	if err != nil {
 		return CertificateClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificateClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,17 +111,18 @@ func (client *CertificateClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Delete the certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// certificateName - The name of certificate.
-// options - CertificateClientDeleteOptions contains the optional parameters for the CertificateClient.Delete method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - certificateName - The name of certificate.
+//   - options - CertificateClientDeleteOptions contains the optional parameters for the CertificateClient.Delete method.
 func (client *CertificateClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, options *CertificateClientDeleteOptions) (CertificateClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, certificateName, options)
 	if err != nil {
 		return CertificateClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificateClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,17 +164,18 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Retrieve the certificate identified by certificate name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// certificateName - The name of certificate.
-// options - CertificateClientGetOptions contains the optional parameters for the CertificateClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - certificateName - The name of certificate.
+//   - options - CertificateClientGetOptions contains the optional parameters for the CertificateClient.Get method.
 func (client *CertificateClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, options *CertificateClientGetOptions) (CertificateClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, certificateName, options)
 	if err != nil {
 		return CertificateClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificateClientGetResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,12 +225,12 @@ func (client *CertificateClient) getHandleResponse(resp *http.Response) (Certifi
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of certificates.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - CertificateClientListByAutomationAccountOptions contains the optional parameters for the CertificateClient.ListByAutomationAccount
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - CertificateClientListByAutomationAccountOptions contains the optional parameters for the CertificateClient.NewListByAutomationAccountPager
+//     method.
 func (client *CertificateClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *CertificateClientListByAutomationAccountOptions) *runtime.Pager[CertificateClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CertificateClientListByAutomationAccountResponse]{
 		More: func(page CertificateClientListByAutomationAccountResponse) bool {
@@ -255,7 +247,7 @@ func (client *CertificateClient) NewListByAutomationAccountPager(resourceGroupNa
 			if err != nil {
 				return CertificateClientListByAutomationAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CertificateClientListByAutomationAccountResponse{}, err
 			}
@@ -282,7 +274,7 @@ func (client *CertificateClient) listByAutomationAccountCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -304,18 +296,19 @@ func (client *CertificateClient) listByAutomationAccountHandleResponse(resp *htt
 
 // Update - Update a certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// certificateName - The parameters supplied to the update certificate operation.
-// parameters - The parameters supplied to the update certificate operation.
-// options - CertificateClientUpdateOptions contains the optional parameters for the CertificateClient.Update method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - certificateName - The parameters supplied to the update certificate operation.
+//   - parameters - The parameters supplied to the update certificate operation.
+//   - options - CertificateClientUpdateOptions contains the optional parameters for the CertificateClient.Update method.
 func (client *CertificateClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters CertificateUpdateParameters, options *CertificateClientUpdateOptions) (CertificateClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, certificateName, parameters, options)
 	if err != nil {
 		return CertificateClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificateClientUpdateResponse{}, err
 	}
@@ -344,7 +337,7 @@ func (client *CertificateClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

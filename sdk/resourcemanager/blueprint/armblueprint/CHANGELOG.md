@@ -4,7 +4,6 @@
 ### Breaking Changes
 
 - Struct `ArtifactPropertiesBase` has been removed
-- Struct `CloudError` has been removed
 - Struct `ResourcePropertiesBase` has been removed
 - Struct `SharedBlueprintProperties` has been removed
 

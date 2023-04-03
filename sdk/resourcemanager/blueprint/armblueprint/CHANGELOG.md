@@ -1,12 +1,6 @@
 # Release History
 
 ## 0.6.0 (2023-04-03)
-### Breaking Changes
-
-- Struct `ArtifactPropertiesBase` has been removed
-- Struct `ResourcePropertiesBase` has been removed
-- Struct `SharedBlueprintProperties` has been removed
-
 ### Features Added
 
 - New struct `ClientFactory` which is a client factory used to create any client in this module

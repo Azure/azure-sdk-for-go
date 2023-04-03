@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,47 +25,36 @@ import (
 // SavingsPlanClient contains the methods for the SavingsPlan group.
 // Don't use this type directly, use NewSavingsPlanClient() instead.
 type SavingsPlanClient struct {
-	host   string
-	expand *string
-	pl     runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewSavingsPlanClient creates a new instance of SavingsPlanClient with the specified values.
-// expand - May be used to expand the detail information of some properties.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
-func NewSavingsPlanClient(expand *string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SavingsPlanClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
+func NewSavingsPlanClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SavingsPlanClient, error) {
+	cl, err := arm.NewClient(moduleName+".SavingsPlanClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SavingsPlanClient{
-		expand: expand,
-		host:   ep,
-		pl:     pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Get savings plan.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// savingsPlanOrderID - Order ID of the savings plan
-// savingsPlanID - ID of the savings plan
-// options - SavingsPlanClientGetOptions contains the optional parameters for the SavingsPlanClient.Get method.
+//   - savingsPlanOrderID - Order ID of the savings plan
+//   - savingsPlanID - ID of the savings plan
+//   - options - SavingsPlanClientGetOptions contains the optional parameters for the SavingsPlanClient.Get method.
 func (client *SavingsPlanClient) Get(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, options *SavingsPlanClientGetOptions) (SavingsPlanClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, savingsPlanOrderID, savingsPlanID, options)
 	if err != nil {
 		return SavingsPlanClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SavingsPlanClientGetResponse{}, err
 	}
@@ -88,14 +75,14 @@ func (client *SavingsPlanClient) getCreateRequest(ctx context.Context, savingsPl
 		return nil, errors.New("parameter savingsPlanID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanId}", url.PathEscape(savingsPlanID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-11-01")
-	if client.expand != nil {
-		reqQP.Set("$expand", *client.expand)
+	if options != nil && options.Expand != nil {
+		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -112,9 +99,10 @@ func (client *SavingsPlanClient) getHandleResponse(resp *http.Response) (Savings
 }
 
 // NewListPager - List savings plans in an order.
+//
 // Generated from API version 2022-11-01
-// savingsPlanOrderID - Order ID of the savings plan
-// options - SavingsPlanClientListOptions contains the optional parameters for the SavingsPlanClient.List method.
+//   - savingsPlanOrderID - Order ID of the savings plan
+//   - options - SavingsPlanClientListOptions contains the optional parameters for the SavingsPlanClient.NewListPager method.
 func (client *SavingsPlanClient) NewListPager(savingsPlanOrderID string, options *SavingsPlanClientListOptions) *runtime.Pager[SavingsPlanClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SavingsPlanClientListResponse]{
 		More: func(page SavingsPlanClientListResponse) bool {
@@ -131,7 +119,7 @@ func (client *SavingsPlanClient) NewListPager(savingsPlanOrderID string, options
 			if err != nil {
 				return SavingsPlanClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SavingsPlanClientListResponse{}, err
 			}
@@ -150,7 +138,7 @@ func (client *SavingsPlanClient) listCreateRequest(ctx context.Context, savingsP
 		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,8 +159,9 @@ func (client *SavingsPlanClient) listHandleResponse(resp *http.Response) (Saving
 }
 
 // NewListAllPager - List savings plans.
+//
 // Generated from API version 2022-11-01
-// options - SavingsPlanClientListAllOptions contains the optional parameters for the SavingsPlanClient.ListAll method.
+//   - options - SavingsPlanClientListAllOptions contains the optional parameters for the SavingsPlanClient.NewListAllPager method.
 func (client *SavingsPlanClient) NewListAllPager(options *SavingsPlanClientListAllOptions) *runtime.Pager[SavingsPlanClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SavingsPlanClientListAllResponse]{
 		More: func(page SavingsPlanClientListAllResponse) bool {
@@ -189,7 +178,7 @@ func (client *SavingsPlanClient) NewListAllPager(options *SavingsPlanClientListA
 			if err != nil {
 				return SavingsPlanClientListAllResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SavingsPlanClientListAllResponse{}, err
 			}
@@ -204,7 +193,7 @@ func (client *SavingsPlanClient) NewListAllPager(options *SavingsPlanClientListA
 // listAllCreateRequest creates the ListAll request.
 func (client *SavingsPlanClient) listAllCreateRequest(ctx context.Context, options *SavingsPlanClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlans"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -244,17 +233,18 @@ func (client *SavingsPlanClient) listAllHandleResponse(resp *http.Response) (Sav
 
 // Update - Update savings plan.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// savingsPlanOrderID - Order ID of the savings plan
-// savingsPlanID - ID of the savings plan
-// body - Request body for patching a savings plan order alias
-// options - SavingsPlanClientUpdateOptions contains the optional parameters for the SavingsPlanClient.Update method.
+//   - savingsPlanOrderID - Order ID of the savings plan
+//   - savingsPlanID - ID of the savings plan
+//   - body - Request body for patching a savings plan order alias
+//   - options - SavingsPlanClientUpdateOptions contains the optional parameters for the SavingsPlanClient.Update method.
 func (client *SavingsPlanClient) Update(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateRequest, options *SavingsPlanClientUpdateOptions) (SavingsPlanClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, savingsPlanOrderID, savingsPlanID, body, options)
 	if err != nil {
 		return SavingsPlanClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SavingsPlanClientUpdateResponse{}, err
 	}
@@ -275,7 +265,7 @@ func (client *SavingsPlanClient) updateCreateRequest(ctx context.Context, saving
 		return nil, errors.New("parameter savingsPlanID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanId}", url.PathEscape(savingsPlanID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -300,18 +290,19 @@ func (client *SavingsPlanClient) updateHandleResponse(resp *http.Response) (Savi
 
 // ValidateUpdate - Validate savings plan patch.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// savingsPlanOrderID - Order ID of the savings plan
-// savingsPlanID - ID of the savings plan
-// body - Request body for validating a savings plan patch request
-// options - SavingsPlanClientValidateUpdateOptions contains the optional parameters for the SavingsPlanClient.ValidateUpdate
-// method.
+//   - savingsPlanOrderID - Order ID of the savings plan
+//   - savingsPlanID - ID of the savings plan
+//   - body - Request body for validating a savings plan patch request
+//   - options - SavingsPlanClientValidateUpdateOptions contains the optional parameters for the SavingsPlanClient.ValidateUpdate
+//     method.
 func (client *SavingsPlanClient) ValidateUpdate(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body SavingsPlanUpdateValidateRequest, options *SavingsPlanClientValidateUpdateOptions) (SavingsPlanClientValidateUpdateResponse, error) {
 	req, err := client.validateUpdateCreateRequest(ctx, savingsPlanOrderID, savingsPlanID, body, options)
 	if err != nil {
 		return SavingsPlanClientValidateUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SavingsPlanClientValidateUpdateResponse{}, err
 	}
@@ -332,7 +323,7 @@ func (client *SavingsPlanClient) validateUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter savingsPlanID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanId}", url.PathEscape(savingsPlanID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

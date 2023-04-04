@@ -436,9 +436,10 @@ type TicketsClientGetOptions struct {
 // TicketsClientListOptions contains the optional parameters for the TicketsClient.NewListPager method.
 type TicketsClientListOptions struct {
 	// The filter to apply on the operation. We support 'odata v4.0' filter semantics. Learn more [https://docs.microsoft.com/odata/concepts/queryoptions-overview].
-	// Status filter can only be used with Equals
-	// ('eq') operator. For CreatedDate filter, the supported operators are Greater Than ('gt') and Greater Than or Equals ('ge').
-	// When using both filters, combine them using the logical 'AND'.
+	// Status, ServiceId, and
+	// ProblemClassificationId filters can only be used with Equals ('eq') operator. For CreatedDate filter, the supported operators
+	// are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both
+	// filters, combine them using the logical 'AND'.
 	Filter *string
 	// The number of values to return in the collection. Default is 25 and max is 100.
 	Top *int32

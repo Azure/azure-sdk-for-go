@@ -233,6 +233,7 @@ func CreateContainerCred(ctx context.Context, _require *require.Assertions, cont
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", svcCred.AccountName(), containerName)
 
 	containerClient, err := container.NewClient(containerURL, cred, nil)
+	_require.Nil(err)
 	_, err = containerClient.Create(context.Background(), nil)
 	_require.Nil(err)
 

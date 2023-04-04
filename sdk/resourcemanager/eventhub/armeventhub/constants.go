@@ -11,7 +11,7 @@ package armeventhub
 
 const (
 	moduleName    = "armeventhub"
-	moduleVersion = "v1.1.0-beta.2"
+	moduleVersion = "v1.1.0-beta.3"
 )
 
 type AccessRights string

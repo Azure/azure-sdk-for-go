@@ -14,6 +14,7 @@
 * Added non-conformant LRO terminal states `Cancelled` and `Completed`.
 
 ### Other Changes
+* Updated to latest `internal` module.
 
 ## 1.5.0-beta.1 (2023-03-02)
 

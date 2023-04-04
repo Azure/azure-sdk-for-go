@@ -38,25 +38,6 @@ type CustomLocation struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// CustomLocationFindTargetResourceGroupProperties - The Find Target Resource Group operation request.
-type CustomLocationFindTargetResourceGroupProperties struct {
-	// Labels of the custom resource, this is a map of {key,value} pairs.
-	Labels map[string]*string `json:"labels,omitempty"`
-}
-
-// CustomLocationFindTargetResourceGroupResult - The Find Target Resource Group operation response.
-type CustomLocationFindTargetResourceGroupResult struct {
-	// READ-ONLY; The matching resource sync rule is the particular resource sync rule that matched the match expressions and
-	// labels and had lowest priority. This is the rule responsible for mapping the target resource
-	// to the target resource group.
-	MatchedResourceSyncRule *string `json:"matchedResourceSyncRule,omitempty" azure:"ro"`
-
-	// READ-ONLY; The target resource group of matching resource sync rule. The labels from the request will be used to find out
-	// matching resource sync rule against the selector property of the resource sync rule. The
-	// one with highest priority will be returned if there are multiple matching rules.
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty" azure:"ro"`
-}
-
 // CustomLocationListResult - The List Custom Locations operation response.
 type CustomLocationListResult struct {
 	// READ-ONLY; The URL to use for getting the next set of results.
@@ -150,12 +131,6 @@ type CustomLocationsClientBeginCreateOrUpdateOptions struct {
 type CustomLocationsClientBeginDeleteOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
-}
-
-// CustomLocationsClientFindTargetResourceGroupOptions contains the optional parameters for the CustomLocationsClient.FindTargetResourceGroup
-// method.
-type CustomLocationsClientFindTargetResourceGroupOptions struct {
-	// placeholder for future optional parameters
 }
 
 // CustomLocationsClientGetOptions contains the optional parameters for the CustomLocationsClient.Get method.
@@ -289,18 +264,6 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MatchExpressionsProperties - Resource Sync Rules matchExpression property definition.
-type MatchExpressionsProperties struct {
-	// Key is the label key that the selector applies to.
-	Key *string `json:"key,omitempty"`
-
-	// The Operator field represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
-	Operator *string `json:"operator,omitempty"`
-
-	// The label value
-	Values []*string `json:"values,omitempty"`
-}
-
 // PatchableCustomLocations - The Custom Locations patchable resource definition.
 type PatchableCustomLocations struct {
 	// Identity for the resource.
@@ -308,15 +271,6 @@ type PatchableCustomLocations struct {
 
 	// The Custom Locations patchable properties.
 	Properties *CustomLocationProperties `json:"properties,omitempty"`
-
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// PatchableResourceSyncRule - The Resource Sync Rules patchable resource definition.
-type PatchableResourceSyncRule struct {
-	// The Resource Sync Rules patchable properties.
-	Properties *ResourceSyncRuleProperties `json:"properties,omitempty"`
 
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -345,116 +299,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ResourceSyncRule - Resource Sync Rules definition.
-type ResourceSyncRule struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-
-	// The set of properties specific to a Resource Sync Rule
-	Properties *ResourceSyncRuleProperties `json:"properties,omitempty"`
-
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ResourceSyncRuleListResult - The List Resource Sync Rules operation response.
-type ResourceSyncRuleListResult struct {
-	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of Resource Sync Rules.
-	Value []*ResourceSyncRule `json:"value,omitempty" azure:"ro"`
-}
-
-// ResourceSyncRuleProperties - Properties for a resource sync rule. For an unmapped custom resource, its labels will be used
-// to find out matching resource sync rules using the selector property of the resource sync rule. If this
-// resource sync rule has highest priority among all matching rules, then the unmapped custom resource will be projected to
-// the target resource group associated with this resource sync rule.
-type ResourceSyncRuleProperties struct {
-	// Priority represents a priority of the Resource Sync Rule
-	Priority *int32 `json:"priority,omitempty"`
-
-	// A label selector is composed of two parts, matchLabels and matchExpressions. The first part, matchLabels is a map of {key,value}
-	// pairs. A single {key,value} in the matchLabels map is equivalent to an
-	// element of matchExpressions, whose key field is 'key', the operator is 'In', and the values array contains only 'value'.
-	// The second part, matchExpressions is a list of resource selector requirements.
-	// Valid operators include In, NotIn, Exists, and DoesNotExist. The values set must be non-empty in the case of In and NotIn.
-	// The values set must be empty in the case of Exists and DoesNotExist. All of
-	// the requirements, from both matchLabels and matchExpressions must all be satisfied in order to match.
-	Selector *ResourceSyncRulePropertiesSelector `json:"selector,omitempty"`
-
-	// For an unmapped custom resource, its labels will be used to find matching resource sync rules. If this resource sync rule
-	// is one of the matching rules with highest priority, then the unmapped custom
-	// resource will be projected to the target resource group associated with this resource sync rule. The user creating this
-	// resource sync rule should have write permissions on the target resource group
-	// and this write permission will be validated when creating the resource sync rule.
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
-
-	// READ-ONLY; Provisioning State for the Resource Sync Rule.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// ResourceSyncRulePropertiesSelector - A label selector is composed of two parts, matchLabels and matchExpressions. The first
-// part, matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an
-// element of matchExpressions, whose key field is 'key', the operator is 'In', and the values array contains only 'value'.
-// The second part, matchExpressions is a list of resource selector requirements.
-// Valid operators include In, NotIn, Exists, and DoesNotExist. The values set must be non-empty in the case of In and NotIn.
-// The values set must be empty in the case of Exists and DoesNotExist. All of
-// the requirements, from both matchLabels and matchExpressions must all be satisfied in order to match.
-type ResourceSyncRulePropertiesSelector struct {
-	// MatchExpressions is a list of resource selector requirements. Valid operators include In, NotIn, Exists, and DoesNotExist.
-	// The values set must be non-empty in the case of In and NotIn. The values set
-	// must be empty in the case of Exists and DoesNotExist.
-	MatchExpressions []*MatchExpressionsProperties `json:"matchExpressions,omitempty"`
-
-	// MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions,
-	// whose key field is 'key', the operator is 'In', and the values
-	// array contains only 'value'.
-	MatchLabels map[string]*string `json:"matchLabels,omitempty"`
-}
-
-// ResourceSyncRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceSyncRulesClient.BeginCreateOrUpdate
-// method.
-type ResourceSyncRulesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ResourceSyncRulesClientBeginUpdateOptions contains the optional parameters for the ResourceSyncRulesClient.BeginUpdate
-// method.
-type ResourceSyncRulesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ResourceSyncRulesClientDeleteOptions contains the optional parameters for the ResourceSyncRulesClient.Delete method.
-type ResourceSyncRulesClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceSyncRulesClientGetOptions contains the optional parameters for the ResourceSyncRulesClient.Get method.
-type ResourceSyncRulesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceSyncRulesClientListByCustomLocationIDOptions contains the optional parameters for the ResourceSyncRulesClient.NewListByCustomLocationIDPager
-// method.
-type ResourceSyncRulesClientListByCustomLocationIDOptions struct {
-	// placeholder for future optional parameters
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

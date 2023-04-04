@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // BlobContainersClient contains the methods for the BlobContainers group.
 // Don't use this type directly, use NewBlobContainersClient() instead.
 type BlobContainersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewBlobContainersClient creates a new instance of BlobContainersClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobContainersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".BlobContainersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &BlobContainersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,22 +47,23 @@ func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCrede
 // ClearLegalHold - Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
 // clears out only the specified tags in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// legalHold - The LegalHold property that will be clear from a blob container.
-// options - BlobContainersClientClearLegalHoldOptions contains the optional parameters for the BlobContainersClient.ClearLegalHold
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - legalHold - The LegalHold property that will be clear from a blob container.
+//   - options - BlobContainersClientClearLegalHoldOptions contains the optional parameters for the BlobContainersClient.ClearLegalHold
+//     method.
 func (client *BlobContainersClient) ClearLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClientClearLegalHoldOptions) (BlobContainersClientClearLegalHoldResponse, error) {
 	req, err := client.clearLegalHoldCreateRequest(ctx, resourceGroupName, accountName, containerName, legalHold, options)
 	if err != nil {
 		return BlobContainersClientClearLegalHoldResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientClearLegalHoldResponse{}, err
 	}
@@ -102,7 +92,7 @@ func (client *BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,21 +116,22 @@ func (client *BlobContainersClient) clearLegalHoldHandleResponse(resp *http.Resp
 // metadata and properties for that container. It does not include a list of the blobs
 // contained by the container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// blobContainer - Properties of the blob container to create.
-// options - BlobContainersClientCreateOptions contains the optional parameters for the BlobContainersClient.Create method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - blobContainer - Properties of the blob container to create.
+//   - options - BlobContainersClientCreateOptions contains the optional parameters for the BlobContainersClient.Create method.
 func (client *BlobContainersClient) Create(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersClientCreateOptions) (BlobContainersClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, containerName, blobContainer, options)
 	if err != nil {
 		return BlobContainersClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientCreateResponse{}, err
 	}
@@ -169,7 +160,7 @@ func (client *BlobContainersClient) createCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,21 +183,22 @@ func (client *BlobContainersClient) createHandleResponse(resp *http.Response) (B
 // CreateOrUpdateImmutabilityPolicy - Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given
 // but not required for this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// options - BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions contains the optional parameters for the BlobContainersClient.CreateOrUpdateImmutabilityPolicy
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - options - BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions contains the optional parameters for the BlobContainersClient.CreateOrUpdateImmutabilityPolicy
+//     method.
 func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions) (BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse, error) {
 	req, err := client.createOrUpdateImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse{}, err
 	}
@@ -236,7 +228,7 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -267,20 +259,21 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyHandleRespon
 
 // Delete - Deletes specified container under its account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// options - BlobContainersClientDeleteOptions contains the optional parameters for the BlobContainersClient.Delete method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - options - BlobContainersClientDeleteOptions contains the optional parameters for the BlobContainersClient.Delete method.
 func (client *BlobContainersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientDeleteOptions) (BlobContainersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientDeleteResponse{}, err
 	}
@@ -309,7 +302,7 @@ func (client *BlobContainersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -324,24 +317,25 @@ func (client *BlobContainersClient) deleteCreateRequest(ctx context.Context, res
 // policy is not allowed, the only way is to delete the container after deleting all expired blobs inside the policy locked
 // container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// ifMatch - The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the
-// operation only if the immutability policy already exists. If omitted, this operation will
-// always be applied.
-// options - BlobContainersClientDeleteImmutabilityPolicyOptions contains the optional parameters for the BlobContainersClient.DeleteImmutabilityPolicy
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - ifMatch - The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the
+//     operation only if the immutability policy already exists. If omitted, this operation will
+//     always be applied.
+//   - options - BlobContainersClientDeleteImmutabilityPolicyOptions contains the optional parameters for the BlobContainersClient.DeleteImmutabilityPolicy
+//     method.
 func (client *BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersClientDeleteImmutabilityPolicyOptions) (BlobContainersClientDeleteImmutabilityPolicyResponse, error) {
 	req, err := client.deleteImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
 		return BlobContainersClientDeleteImmutabilityPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientDeleteImmutabilityPolicyResponse{}, err
 	}
@@ -371,7 +365,7 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -398,24 +392,25 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp 
 // ExtendImmutabilityPolicy - Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action
 // allowed on a Locked policy will be this action. ETag in If-Match is required for this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// ifMatch - The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the
-// operation only if the immutability policy already exists. If omitted, this operation will
-// always be applied.
-// options - BlobContainersClientExtendImmutabilityPolicyOptions contains the optional parameters for the BlobContainersClient.ExtendImmutabilityPolicy
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - ifMatch - The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the
+//     operation only if the immutability policy already exists. If omitted, this operation will
+//     always be applied.
+//   - options - BlobContainersClientExtendImmutabilityPolicyOptions contains the optional parameters for the BlobContainersClient.ExtendImmutabilityPolicy
+//     method.
 func (client *BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersClientExtendImmutabilityPolicyOptions) (BlobContainersClientExtendImmutabilityPolicyResponse, error) {
 	req, err := client.extendImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
 		return BlobContainersClientExtendImmutabilityPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientExtendImmutabilityPolicyResponse{}, err
 	}
@@ -444,7 +439,7 @@ func (client *BlobContainersClient) extendImmutabilityPolicyCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -473,20 +468,21 @@ func (client *BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp 
 
 // Get - Gets properties of a specified container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// options - BlobContainersClientGetOptions contains the optional parameters for the BlobContainersClient.Get method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - options - BlobContainersClientGetOptions contains the optional parameters for the BlobContainersClient.Get method.
 func (client *BlobContainersClient) Get(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientGetOptions) (BlobContainersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientGetResponse{}, err
 	}
@@ -515,7 +511,7 @@ func (client *BlobContainersClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -538,21 +534,22 @@ func (client *BlobContainersClient) getHandleResponse(resp *http.Response) (Blob
 // GetImmutabilityPolicy - Gets the existing immutability policy along with the corresponding ETag in response headers and
 // body.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// options - BlobContainersClientGetImmutabilityPolicyOptions contains the optional parameters for the BlobContainersClient.GetImmutabilityPolicy
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - options - BlobContainersClientGetImmutabilityPolicyOptions contains the optional parameters for the BlobContainersClient.GetImmutabilityPolicy
+//     method.
 func (client *BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientGetImmutabilityPolicyOptions) (BlobContainersClientGetImmutabilityPolicyResponse, error) {
 	req, err := client.getImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersClientGetImmutabilityPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientGetImmutabilityPolicyResponse{}, err
 	}
@@ -582,7 +579,7 @@ func (client *BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -611,20 +608,21 @@ func (client *BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *ht
 // Lease - The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration
 // can be 15 to 60 seconds, or can be infinite.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// options - BlobContainersClientLeaseOptions contains the optional parameters for the BlobContainersClient.Lease method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - options - BlobContainersClientLeaseOptions contains the optional parameters for the BlobContainersClient.Lease method.
 func (client *BlobContainersClient) Lease(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientLeaseOptions) (BlobContainersClientLeaseResponse, error) {
 	req, err := client.leaseCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersClientLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientLeaseResponse{}, err
 	}
@@ -653,7 +651,7 @@ func (client *BlobContainersClient) leaseCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -678,11 +676,12 @@ func (client *BlobContainersClient) leaseHandleResponse(resp *http.Response) (Bl
 
 // NewListPager - Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
 // token.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// options - BlobContainersClientListOptions contains the optional parameters for the BlobContainersClient.List method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - options - BlobContainersClientListOptions contains the optional parameters for the BlobContainersClient.NewListPager method.
 func (client *BlobContainersClient) NewListPager(resourceGroupName string, accountName string, options *BlobContainersClientListOptions) *runtime.Pager[BlobContainersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[BlobContainersClientListResponse]{
 		More: func(page BlobContainersClientListResponse) bool {
@@ -699,7 +698,7 @@ func (client *BlobContainersClient) NewListPager(resourceGroupName string, accou
 			if err != nil {
 				return BlobContainersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return BlobContainersClientListResponse{}, err
 			}
@@ -726,7 +725,7 @@ func (client *BlobContainersClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -758,24 +757,25 @@ func (client *BlobContainersClient) listHandleResponse(resp *http.Response) (Blo
 // LockImmutabilityPolicy - Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is ExtendImmutabilityPolicy
 // action. ETag in If-Match is required for this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// ifMatch - The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the
-// operation only if the immutability policy already exists. If omitted, this operation will
-// always be applied.
-// options - BlobContainersClientLockImmutabilityPolicyOptions contains the optional parameters for the BlobContainersClient.LockImmutabilityPolicy
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - ifMatch - The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the
+//     operation only if the immutability policy already exists. If omitted, this operation will
+//     always be applied.
+//   - options - BlobContainersClientLockImmutabilityPolicyOptions contains the optional parameters for the BlobContainersClient.LockImmutabilityPolicy
+//     method.
 func (client *BlobContainersClient) LockImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersClientLockImmutabilityPolicyOptions) (BlobContainersClientLockImmutabilityPolicyResponse, error) {
 	req, err := client.lockImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
 		return BlobContainersClientLockImmutabilityPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientLockImmutabilityPolicyResponse{}, err
 	}
@@ -804,7 +804,7 @@ func (client *BlobContainersClient) lockImmutabilityPolicyCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -832,26 +832,27 @@ func (client *BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *h
 // enabled container. Prerequisites require a container level immutability policy either in locked or
 // unlocked state, Account level versioning must be enabled and there should be no Legal hold on the container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// options - BlobContainersClientBeginObjectLevelWormOptions contains the optional parameters for the BlobContainersClient.BeginObjectLevelWorm
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - options - BlobContainersClientBeginObjectLevelWormOptions contains the optional parameters for the BlobContainersClient.BeginObjectLevelWorm
+//     method.
 func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientBeginObjectLevelWormOptions) (*runtime.Poller[BlobContainersClientObjectLevelWormResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.objectLevelWorm(ctx, resourceGroupName, accountName, containerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[BlobContainersClientObjectLevelWormResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BlobContainersClientObjectLevelWormResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[BlobContainersClientObjectLevelWormResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BlobContainersClientObjectLevelWormResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -859,13 +860,14 @@ func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, re
 // container. Prerequisites require a container level immutability policy either in locked or
 // unlocked state, Account level versioning must be enabled and there should be no Legal hold on the container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
 func (client *BlobContainersClient) objectLevelWorm(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientBeginObjectLevelWormOptions) (*http.Response, error) {
 	req, err := client.objectLevelWormCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -894,7 +896,7 @@ func (client *BlobContainersClient) objectLevelWormCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -908,22 +910,23 @@ func (client *BlobContainersClient) objectLevelWormCreateRequest(ctx context.Con
 // SetLegalHold - Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
 // pattern and does not clear out the existing tags that are not specified in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// legalHold - The LegalHold property that will be set to a blob container.
-// options - BlobContainersClientSetLegalHoldOptions contains the optional parameters for the BlobContainersClient.SetLegalHold
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - legalHold - The LegalHold property that will be set to a blob container.
+//   - options - BlobContainersClientSetLegalHoldOptions contains the optional parameters for the BlobContainersClient.SetLegalHold
+//     method.
 func (client *BlobContainersClient) SetLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClientSetLegalHoldOptions) (BlobContainersClientSetLegalHoldResponse, error) {
 	req, err := client.setLegalHoldCreateRequest(ctx, resourceGroupName, accountName, containerName, legalHold, options)
 	if err != nil {
 		return BlobContainersClientSetLegalHoldResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientSetLegalHoldResponse{}, err
 	}
@@ -952,7 +955,7 @@ func (client *BlobContainersClient) setLegalHoldCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -975,21 +978,22 @@ func (client *BlobContainersClient) setLegalHoldHandleResponse(resp *http.Respon
 // Update - Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged.
 // Update fails if the specified container doesn't already exist.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// containerName - The name of the blob container within the specified storage account. Blob container names must be between
-// 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
-// dash (-) character must be immediately preceded and followed by a letter or number.
-// blobContainer - Properties to update for the blob container.
-// options - BlobContainersClientUpdateOptions contains the optional parameters for the BlobContainersClient.Update method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+//     dash (-) character must be immediately preceded and followed by a letter or number.
+//   - blobContainer - Properties to update for the blob container.
+//   - options - BlobContainersClientUpdateOptions contains the optional parameters for the BlobContainersClient.Update method.
 func (client *BlobContainersClient) Update(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersClientUpdateOptions) (BlobContainersClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, containerName, blobContainer, options)
 	if err != nil {
 		return BlobContainersClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobContainersClientUpdateResponse{}, err
 	}
@@ -1018,7 +1022,7 @@ func (client *BlobContainersClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

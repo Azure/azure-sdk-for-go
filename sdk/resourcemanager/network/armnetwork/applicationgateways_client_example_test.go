@@ -25,11 +25,11 @@ func ExampleApplicationGatewaysClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "appgw", nil)
+	poller, err := clientFactory.NewApplicationGatewaysClient().BeginDelete(ctx, "rg1", "appgw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleApplicationGatewaysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "appgw", nil)
+	res, err := clientFactory.NewApplicationGatewaysClient().Get(ctx, "rg1", "appgw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -424,11 +424,11 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "appgw", armnetwork.ApplicationGateway{
+	poller, err := clientFactory.NewApplicationGatewaysClient().BeginCreateOrUpdate(ctx, "rg1", "appgw", armnetwork.ApplicationGateway{
 		Location: to.Ptr("eastus"),
 		Identity: &armnetwork.ManagedServiceIdentity{
 			Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
@@ -1070,11 +1070,11 @@ func ExampleApplicationGatewaysClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "AppGw", armnetwork.TagsObject{
+	res, err := clientFactory.NewApplicationGatewaysClient().UpdateTags(ctx, "rg1", "AppGw", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -1222,11 +1222,11 @@ func ExampleApplicationGatewaysClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewApplicationGatewaysClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1608,11 +1608,11 @@ func ExampleApplicationGatewaysClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewApplicationGatewaysClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1994,11 +1994,11 @@ func ExampleApplicationGatewaysClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx, "rg1", "appgw", nil)
+	poller, err := clientFactory.NewApplicationGatewaysClient().BeginStart(ctx, "rg1", "appgw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2015,11 +2015,11 @@ func ExampleApplicationGatewaysClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStop(ctx, "rg1", "appgw", nil)
+	poller, err := clientFactory.NewApplicationGatewaysClient().BeginStop(ctx, "rg1", "appgw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2036,11 +2036,11 @@ func ExampleApplicationGatewaysClient_BeginBackendHealth() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginBackendHealth(ctx, "appgw", "appgw", &armnetwork.ApplicationGatewaysClientBeginBackendHealthOptions{Expand: nil})
+	poller, err := clientFactory.NewApplicationGatewaysClient().BeginBackendHealth(ctx, "appgw", "appgw", &armnetwork.ApplicationGatewaysClientBeginBackendHealthOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2099,11 +2099,11 @@ func ExampleApplicationGatewaysClient_BeginBackendHealthOnDemand() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginBackendHealthOnDemand(ctx, "rg1", "appgw", armnetwork.ApplicationGatewayOnDemandProbe{
+	poller, err := clientFactory.NewApplicationGatewaysClient().BeginBackendHealthOnDemand(ctx, "rg1", "appgw", armnetwork.ApplicationGatewayOnDemandProbe{
 		Path: to.Ptr("/"),
 		BackendAddressPool: &armnetwork.SubResource{
 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendaddressPools/MFAnalyticsPool"),
@@ -2153,11 +2153,11 @@ func ExampleApplicationGatewaysClient_ListAvailableServerVariables() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("72f988bf-86f1-41af-91ab-2d7cd0dddd4", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAvailableServerVariables(ctx, nil)
+	res, err := clientFactory.NewApplicationGatewaysClient().ListAvailableServerVariables(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2175,11 +2175,11 @@ func ExampleApplicationGatewaysClient_ListAvailableRequestHeaders() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("72f988bf-86f1-41af-91ab-2d7cd0dddd4", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAvailableRequestHeaders(ctx, nil)
+	res, err := clientFactory.NewApplicationGatewaysClient().ListAvailableRequestHeaders(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2197,11 +2197,11 @@ func ExampleApplicationGatewaysClient_ListAvailableResponseHeaders() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("72f988bf-86f1-41af-91ab-2d7cd0dddd4", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAvailableResponseHeaders(ctx, nil)
+	res, err := clientFactory.NewApplicationGatewaysClient().ListAvailableResponseHeaders(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2219,11 +2219,11 @@ func ExampleApplicationGatewaysClient_ListAvailableWafRuleSets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAvailableWafRuleSets(ctx, nil)
+	res, err := clientFactory.NewApplicationGatewaysClient().ListAvailableWafRuleSets(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2263,11 +2263,11 @@ func ExampleApplicationGatewaysClient_ListAvailableSSLOptions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAvailableSSLOptions(ctx, nil)
+	res, err := clientFactory.NewApplicationGatewaysClient().ListAvailableSSLOptions(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2334,11 +2334,11 @@ func ExampleApplicationGatewaysClient_NewListAvailableSSLPredefinedPoliciesPager
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAvailableSSLPredefinedPoliciesPager(nil)
+	pager := clientFactory.NewApplicationGatewaysClient().NewListAvailableSSLPredefinedPoliciesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2446,11 +2446,11 @@ func ExampleApplicationGatewaysClient_GetSSLPredefinedPolicy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSSLPredefinedPolicy(ctx, "AppGwSslPolicy20150501", nil)
+	res, err := clientFactory.NewApplicationGatewaysClient().GetSSLPredefinedPolicy(ctx, "AppGwSslPolicy20150501", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

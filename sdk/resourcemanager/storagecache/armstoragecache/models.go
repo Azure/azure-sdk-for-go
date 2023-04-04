@@ -69,6 +69,293 @@ type APIOperationPropertiesServiceSpecification struct {
 	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
+// AmlFilesystem - An AML file system instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+type AmlFilesystem struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// The managed identity used by the AML file system, if configured.
+	Identity *AmlFilesystemIdentity `json:"identity,omitempty"`
+
+	// Properties of the AML file system.
+	Properties *AmlFilesystemProperties `json:"properties,omitempty"`
+
+	// SKU for the resource.
+	SKU *SKUName `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// Availability zones for resources. This field should only contain a single element in the array.
+	Zones []*string `json:"zones,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AmlFilesystemArchive - Information about the AML file system archive
+type AmlFilesystemArchive struct {
+	// READ-ONLY; Lustre file system path to archive relative to the file system root. Specify '/' to archive all modified data.
+	FilesystemPath *string `json:"filesystemPath,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status of the archive
+	Status *AmlFilesystemArchiveStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// AmlFilesystemArchiveInfo - Information required to execute the archive operation
+type AmlFilesystemArchiveInfo struct {
+	// Lustre file system path to archive relative to the file system root. Specify '/' to archive all modified data.
+	FilesystemPath *string `json:"filesystemPath,omitempty"`
+}
+
+// AmlFilesystemArchiveStatus - The status of the archive
+type AmlFilesystemArchiveStatus struct {
+	// READ-ONLY; Server-defined error code for the archive operation
+	ErrorCode *string `json:"errorCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; Server-defined error message for the archive operation
+	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time of the last completed archive operation
+	LastCompletionTime *time.Time `json:"lastCompletionTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time the latest archive operation started
+	LastStartedTime *time.Time `json:"lastStartedTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The completion percentage of the archive operation
+	PercentComplete *int32 `json:"percentComplete,omitempty" azure:"ro"`
+
+	// READ-ONLY; The state of the archive operation
+	State *ArchiveStatusType `json:"state,omitempty" azure:"ro"`
+}
+
+// AmlFilesystemCheckSubnetError - The error details provided when the checkAmlFSSubnets call fails.
+type AmlFilesystemCheckSubnetError struct {
+	// The error details for the AML file system's subnet.
+	FilesystemSubnet *AmlFilesystemCheckSubnetErrorFilesystemSubnet `json:"filesystemSubnet,omitempty"`
+}
+
+// AmlFilesystemCheckSubnetErrorFilesystemSubnet - The error details for the AML file system's subnet.
+type AmlFilesystemCheckSubnetErrorFilesystemSubnet struct {
+	// The details of the AML file system subnet check.
+	Message *string `json:"message,omitempty"`
+
+	// The status of the AML file system subnet check.
+	Status *FilesystemSubnetStatusType `json:"status,omitempty"`
+}
+
+// AmlFilesystemEncryptionSettings - AML file system encryption settings.
+type AmlFilesystemEncryptionSettings struct {
+	// Specifies the location of the encryption key in Key Vault.
+	KeyEncryptionKey *KeyVaultKeyReference `json:"keyEncryptionKey,omitempty"`
+}
+
+// AmlFilesystemHealth - An indication of AML file system health. Gives more information about health than just that related
+// to provisioning.
+type AmlFilesystemHealth struct {
+	// List of AML file system health states.
+	State *AmlFilesystemHealthStateType `json:"state,omitempty"`
+
+	// Server-defined error code for the AML file system health
+	StatusCode *string `json:"statusCode,omitempty"`
+
+	// Describes the health state.
+	StatusDescription *string `json:"statusDescription,omitempty"`
+}
+
+// AmlFilesystemHsmSettings - AML file system HSM settings.
+type AmlFilesystemHsmSettings struct {
+	// REQUIRED; Resource ID of storage container used for hydrating the namespace and archiving from the namespace. The resource
+	// provider must have permission to create SAS tokens on the storage account.
+	Container *string `json:"container,omitempty"`
+
+	// REQUIRED; Resource ID of storage container used for logging events and errors. Must be a separate container in the same
+	// storage account as the hydration and archive container. The resource provider must have
+	// permission to create SAS tokens on the storage account.
+	LoggingContainer *string `json:"loggingContainer,omitempty"`
+
+	// Only blobs in the non-logging container that start with this path/prefix get hydrated into the cluster namespace.
+	ImportPrefix *string `json:"importPrefix,omitempty"`
+}
+
+// AmlFilesystemIdentity - Managed Identity properties.
+type AmlFilesystemIdentity struct {
+	// The type of identity used for the resource.
+	Type *AmlFilesystemIdentityType `json:"type,omitempty"`
+
+	// A dictionary where each key is a user assigned identity resource ID, and each key's value is an empty dictionary.
+	UserAssignedIdentities map[string]*UserAssignedIdentitiesValueAutoGenerated `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The principal ID for the user-assigned identity of the resource.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID associated with the resource.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// AmlFilesystemProperties - Properties of the AML file system.
+type AmlFilesystemProperties struct {
+	// REQUIRED; Subnet used for managing the AML file system and for client-facing operations. This subnet should have at least
+	// a /24 subnet mask within the VNET's address space.
+	FilesystemSubnet *string `json:"filesystemSubnet,omitempty"`
+
+	// REQUIRED; Start time of a 30-minute weekly maintenance window.
+	MaintenanceWindow *AmlFilesystemPropertiesMaintenanceWindow `json:"maintenanceWindow,omitempty"`
+
+	// REQUIRED; The size of the AML file system, in TiB. This might be rounded up.
+	StorageCapacityTiB *float32 `json:"storageCapacityTiB,omitempty"`
+
+	// Specifies encryption settings of the AML file system.
+	EncryptionSettings *AmlFilesystemEncryptionSettings `json:"encryptionSettings,omitempty"`
+
+	// Hydration and archive settings and status
+	Hsm *AmlFilesystemPropertiesHsm `json:"hsm,omitempty"`
+
+	// READ-ONLY; Health of the AML file system.
+	Health *AmlFilesystemHealth `json:"health,omitempty" azure:"ro"`
+
+	// READ-ONLY; The version of Lustre running in the AML file system
+	LustreVersion *string `json:"lustreVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The IPv4 address used by clients to mount the AML file system's Lustre Management Service (MGS).
+	MgsAddress *string `json:"mgsAddress,omitempty" azure:"ro"`
+
+	// READ-ONLY; Recommended command to mount the AML file system
+	MountCommand *string `json:"mountCommand,omitempty" azure:"ro"`
+
+	// READ-ONLY; ARM provisioning state.
+	ProvisioningState *AmlFilesystemProvisioningStateType `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Throughput provisioned in MB per sec, calculated as storageCapacityTiB * per-unit storage throughput
+	ThroughputProvisionedMBps *int32 `json:"throughputProvisionedMBps,omitempty" azure:"ro"`
+}
+
+// AmlFilesystemPropertiesHsm - Hydration and archive settings and status
+type AmlFilesystemPropertiesHsm struct {
+	// Specifies HSM settings of the AML file system.
+	Settings *AmlFilesystemHsmSettings `json:"settings,omitempty"`
+
+	// READ-ONLY; Archive status
+	ArchiveStatus []*AmlFilesystemArchive `json:"archiveStatus,omitempty" azure:"ro"`
+}
+
+// AmlFilesystemPropertiesMaintenanceWindow - Start time of a 30-minute weekly maintenance window.
+type AmlFilesystemPropertiesMaintenanceWindow struct {
+	// Day of the week on which the maintenance window will occur.
+	DayOfWeek *MaintenanceDayOfWeekType `json:"dayOfWeek,omitempty"`
+
+	// The time of day (in UTC) to start the maintenance window.
+	TimeOfDayUTC *string `json:"timeOfDayUTC,omitempty"`
+}
+
+// AmlFilesystemSubnetInfo - Information required to validate the subnet that will be used in AML file system create
+type AmlFilesystemSubnetInfo struct {
+	// Subnet used for managing the AML file system and for client-facing operations. This subnet should have at least a /24 subnet
+	// mask within the VNET's address space.
+	FilesystemSubnet *string `json:"filesystemSubnet,omitempty"`
+
+	// Region that the AML file system will be created in.
+	Location *string `json:"location,omitempty"`
+
+	// SKU for the resource.
+	SKU *SKUName `json:"sku,omitempty"`
+
+	// The size of the AML file system, in TiB.
+	StorageCapacityTiB *float32 `json:"storageCapacityTiB,omitempty"`
+}
+
+// AmlFilesystemUpdate - An AML file system update instance.
+type AmlFilesystemUpdate struct {
+	// Properties of the AML file system.
+	Properties *AmlFilesystemUpdateProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// AmlFilesystemUpdateProperties - Properties of the AML file system.
+type AmlFilesystemUpdateProperties struct {
+	// Specifies encryption settings of the AML file system.
+	EncryptionSettings *AmlFilesystemEncryptionSettings `json:"encryptionSettings,omitempty"`
+
+	// Start time of a 30-minute weekly maintenance window.
+	MaintenanceWindow *AmlFilesystemUpdatePropertiesMaintenanceWindow `json:"maintenanceWindow,omitempty"`
+}
+
+// AmlFilesystemUpdatePropertiesMaintenanceWindow - Start time of a 30-minute weekly maintenance window.
+type AmlFilesystemUpdatePropertiesMaintenanceWindow struct {
+	// Day of the week on which the maintenance window will occur.
+	DayOfWeek *MaintenanceDayOfWeekType `json:"dayOfWeek,omitempty"`
+
+	// The time of day (in UTC) to start the maintenance window.
+	TimeOfDayUTC *string `json:"timeOfDayUTC,omitempty"`
+}
+
+// AmlFilesystemsClientArchiveOptions contains the optional parameters for the AmlFilesystemsClient.Archive method.
+type AmlFilesystemsClientArchiveOptions struct {
+	// Information about the archive operation
+	ArchiveInfo *AmlFilesystemArchiveInfo
+}
+
+// AmlFilesystemsClientBeginCreateOrUpdateOptions contains the optional parameters for the AmlFilesystemsClient.BeginCreateOrUpdate
+// method.
+type AmlFilesystemsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AmlFilesystemsClientBeginDeleteOptions contains the optional parameters for the AmlFilesystemsClient.BeginDelete method.
+type AmlFilesystemsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AmlFilesystemsClientBeginUpdateOptions contains the optional parameters for the AmlFilesystemsClient.BeginUpdate method.
+type AmlFilesystemsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AmlFilesystemsClientCancelArchiveOptions contains the optional parameters for the AmlFilesystemsClient.CancelArchive method.
+type AmlFilesystemsClientCancelArchiveOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AmlFilesystemsClientGetOptions contains the optional parameters for the AmlFilesystemsClient.Get method.
+type AmlFilesystemsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AmlFilesystemsClientListByResourceGroupOptions contains the optional parameters for the AmlFilesystemsClient.NewListByResourceGroupPager
+// method.
+type AmlFilesystemsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AmlFilesystemsClientListOptions contains the optional parameters for the AmlFilesystemsClient.NewListPager method.
+type AmlFilesystemsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AmlFilesystemsListResult - Result of the request to list AML file systems. It contains a list of AML file systems and a
+// URL link to get the next set of results.
+type AmlFilesystemsListResult struct {
+	// URL to get the next set of AML file system list results, if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of AML file systems.
+	Value []*AmlFilesystem `json:"value,omitempty"`
+}
+
 // AscOperation - The status of operation.
 type AscOperation struct {
 	// The end time of the operation.
@@ -124,7 +411,7 @@ type BlobNfsTarget struct {
 	WriteBackTimer *int32 `json:"writeBackTimer,omitempty"`
 }
 
-// Cache - A Cache instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+// Cache - A cache instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
 type Cache struct {
 	// The identity of the cache, if configured.
 	Identity *CacheIdentity `json:"identity,omitempty"`
@@ -132,25 +419,25 @@ type Cache struct {
 	// Region name string.
 	Location *string `json:"location,omitempty"`
 
-	// Properties of the Cache.
+	// Properties of the cache.
 	Properties *CacheProperties `json:"properties,omitempty"`
 
-	// SKU for the Cache.
+	// SKU for the cache.
 	SKU *CacheSKU `json:"sku,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; Resource ID of the Cache.
+	// READ-ONLY; Resource ID of the cache.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Name of Cache.
+	// READ-ONLY; Name of cache.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
-	// READ-ONLY; Type of the Cache; Microsoft.StorageCache/Cache
+	// READ-ONLY; Type of the cache; Microsoft.StorageCache/Cache
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -181,12 +468,11 @@ type CacheActiveDirectorySettings struct {
 
 // CacheActiveDirectorySettingsCredentials - Active Directory admin credentials used to join the HPC Cache to a domain.
 type CacheActiveDirectorySettingsCredentials struct {
-	// REQUIRED; Plain text password of the Active Directory domain administrator. This value is stored encrypted and not returned
-	// on response.
-	Password *string `json:"password,omitempty"`
-
 	// REQUIRED; Username of the Active Directory domain administrator. This value is stored encrypted and not returned on response.
 	Username *string `json:"username,omitempty"`
+
+	// Plain text password of the Active Directory domain administrator. This value is stored encrypted and not returned on response.
+	Password *string `json:"password,omitempty"`
 }
 
 // CacheDirectorySettings - Cache Directory Services settings.
@@ -200,16 +486,20 @@ type CacheDirectorySettings struct {
 
 // CacheEncryptionSettings - Cache encryption settings.
 type CacheEncryptionSettings struct {
-	// Specifies the location of the key encryption key in Key Vault.
+	// Specifies the location of the key encryption key in key vault.
 	KeyEncryptionKey *KeyVaultKeyReference `json:"keyEncryptionKey,omitempty"`
 
-	// Specifies whether the service will automatically rotate to the newest version of the key in the Key Vault.
+	// Specifies whether the service will automatically rotate to the newest version of the key in the key vault.
 	RotationToLatestKeyVersionEnabled *bool `json:"rotationToLatestKeyVersionEnabled,omitempty"`
 }
 
-// CacheHealth - An indication of Cache health. Gives more information about health than just that related to provisioning.
+// CacheHealth - An indication of cache health. Gives more information about health than just that related to provisioning.
 type CacheHealth struct {
-	// List of Cache health states.
+	// List of cache health states. Down is when the cluster is not responding. Degraded is when its functioning but has some
+	// alerts. Transitioning when it is creating or deleting. Unknown will be returned
+	// in old api versions when a new value is added in future versions. WaitingForKey is when the create is waiting for the system
+	// assigned identity to be given access to the encryption key in the
+	// encryption settings.
 	State *HealthStateType `json:"state,omitempty"`
 
 	// Describes explanation of state.
@@ -248,13 +538,13 @@ type CacheNetworkSettings struct {
 	// NTP server IP Address or FQDN for the cache to use. The default is time.windows.com.
 	NtpServer *string `json:"ntpServer,omitempty"`
 
-	// READ-ONLY; Array of additional IP addresses used by this Cache.
+	// READ-ONLY; Array of additional IP addresses used by this cache.
 	UtilityAddresses []*string `json:"utilityAddresses,omitempty" azure:"ro"`
 }
 
-// CacheProperties - Properties of the Cache.
+// CacheProperties - Properties of the cache.
 type CacheProperties struct {
-	// The size of this Cache, in GB.
+	// The size of this cache, in GB, when scalingFactor is 1.0. Values depend on the cache SKU - List SKUs [https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP].
 	CacheSizeGB *int32 `json:"cacheSizeGB,omitempty"`
 
 	// Specifies Directory Services settings of the cache.
@@ -266,22 +556,28 @@ type CacheProperties struct {
 	// Specifies network settings of the cache.
 	NetworkSettings *CacheNetworkSettings `json:"networkSettings,omitempty"`
 
+	// Multiplier that sets the current storage and throughput capacity of the cache. Values depend on the cache SKU - List SKUs
+	// [https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP].
+	// Values above 1.0 increase the cache size and throughput - for example, the scaling factor 1.33 gives a cache that's 33%
+	// larger than its base size.
+	ScalingFactor *float64 `json:"scalingFactor,omitempty"`
+
 	// Specifies security settings of the cache.
 	SecuritySettings *CacheSecuritySettings `json:"securitySettings,omitempty"`
 
-	// Subnet used for the Cache.
+	// Subnet used for the cache.
 	Subnet *string `json:"subnet,omitempty"`
 
-	// Upgrade settings of the Cache.
+	// Upgrade settings of the cache.
 	UpgradeSettings *CacheUpgradeSettings `json:"upgradeSettings,omitempty"`
 
 	// Availability zones for resources. This field should only contain a single element in the array.
 	Zones []*string `json:"zones,omitempty"`
 
-	// READ-ONLY; Health of the Cache.
+	// READ-ONLY; Health of the cache.
 	Health *CacheHealth `json:"health,omitempty" azure:"ro"`
 
-	// READ-ONLY; Array of IP addresses that can be used by clients mounting this Cache.
+	// READ-ONLY; Array of IPv4 addresses that can be used by clients mounting this cache.
 	MountAddresses []*string `json:"mountAddresses,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the priming jobs defined in the cache.
@@ -293,13 +589,13 @@ type CacheProperties struct {
 	// READ-ONLY; Specifies the space allocation percentage for each storage target in the cache.
 	SpaceAllocation []*StorageTargetSpaceAllocation `json:"spaceAllocation,omitempty" azure:"ro"`
 
-	// READ-ONLY; Upgrade status of the Cache.
+	// READ-ONLY; Upgrade status of the cache.
 	UpgradeStatus *CacheUpgradeStatus `json:"upgradeStatus,omitempty" azure:"ro"`
 }
 
-// CacheSKU - SKU for the Cache.
+// CacheSKU - SKU for the cache.
 type CacheSKU struct {
-	// SKU name for this Cache.
+	// SKU name for this cache.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -321,15 +617,15 @@ type CacheUpgradeSettings struct {
 	UpgradeScheduleEnabled *bool `json:"upgradeScheduleEnabled,omitempty"`
 }
 
-// CacheUpgradeStatus - Properties describing the software upgrade state of the Cache.
+// CacheUpgradeStatus - Properties describing the software upgrade state of the cache.
 type CacheUpgradeStatus struct {
-	// READ-ONLY; Version string of the firmware currently installed on this Cache.
+	// READ-ONLY; Version string of the firmware currently installed on this cache.
 	CurrentFirmwareVersion *string `json:"currentFirmwareVersion,omitempty" azure:"ro"`
 
-	// READ-ONLY; Time at which the pending firmware update will automatically be installed on the Cache.
+	// READ-ONLY; Time at which the pending firmware update will automatically be installed on the cache.
 	FirmwareUpdateDeadline *time.Time `json:"firmwareUpdateDeadline,omitempty" azure:"ro"`
 
-	// READ-ONLY; True if there is a firmware update ready to install on this Cache. The firmware will automatically be installed
+	// READ-ONLY; True if there is a firmware update ready to install on this cache. The firmware will automatically be installed
 	// after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
 	FirmwareUpdateStatus *FirmwareStatusType `json:"firmwareUpdateStatus,omitempty" azure:"ro"`
 
@@ -497,10 +793,10 @@ type CachesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesListResult - Result of the request to list Caches. It contains a list of Caches and a URL link to get the next set
+// CachesListResult - Result of the request to list caches. It contains a list of caches and a URL link to get the next set
 // of results.
 type CachesListResult struct {
-	// URL to get the next set of Cache list results, if there are any.
+	// URL to get the next set of cache list results, if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// List of Caches.
@@ -546,16 +842,16 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// KeyVaultKeyReference - Describes a reference to Key Vault Key.
+// KeyVaultKeyReference - Describes a reference to key vault key.
 type KeyVaultKeyReference struct {
-	// REQUIRED; The URL referencing a key encryption key in Key Vault.
+	// REQUIRED; The URL referencing a key encryption key in key vault.
 	KeyURL *string `json:"keyUrl,omitempty"`
 
-	// REQUIRED; Describes a resource Id to source Key Vault.
+	// REQUIRED; Describes a resource Id to source key vault.
 	SourceVault *KeyVaultKeyReferenceSourceVault `json:"sourceVault,omitempty"`
 }
 
-// KeyVaultKeyReferenceSourceVault - Describes a resource Id to source Key Vault.
+// KeyVaultKeyReferenceSourceVault - Describes a resource Id to source key vault.
 type KeyVaultKeyReferenceSourceVault struct {
 	// Resource Id.
 	ID *string `json:"id,omitempty"`
@@ -568,6 +864,19 @@ type LogSpecification struct {
 
 	// The name of the log.
 	Name *string `json:"name,omitempty"`
+}
+
+// ManagementClientCheckAmlFSSubnetsOptions contains the optional parameters for the ManagementClient.CheckAmlFSSubnets method.
+type ManagementClientCheckAmlFSSubnetsOptions struct {
+	// Information about the subnets to validate.
+	AmlFilesystemSubnetInfo *AmlFilesystemSubnetInfo
+}
+
+// ManagementClientGetRequiredAmlFSSubnetsSizeOptions contains the optional parameters for the ManagementClient.GetRequiredAmlFSSubnetsSize
+// method.
+type ManagementClientGetRequiredAmlFSSubnetsSizeOptions struct {
+	// Information to determine the number of available IPs a subnet will need to host the AML file system.
+	RequiredAMLFilesystemSubnetsSizeInfo *RequiredAmlFilesystemSubnetsSizeInfo
 }
 
 // MetricDimension - Specifications of the Dimension of metrics.
@@ -614,7 +923,7 @@ type MetricSpecification struct {
 
 // NamespaceJunction - A namespace junction.
 type NamespaceJunction struct {
-	// Namespace path on a Cache for a Storage Target.
+	// Namespace path on a cache for a Storage Target.
 	NamespacePath *string `json:"namespacePath,omitempty"`
 
 	// Name of the access policy applied to this junction.
@@ -719,6 +1028,38 @@ type PrimingJobIDParameter struct {
 	PrimingJobID *string `json:"primingJobId,omitempty"`
 }
 
+// RequiredAmlFilesystemSubnetsSize - Information about the number of available IP addresses that are required for the AML
+// file system.
+type RequiredAmlFilesystemSubnetsSize struct {
+	// The number of available IP addresses that are required for the AML file system.
+	FilesystemSubnetSize *int32 `json:"filesystemSubnetSize,omitempty"`
+}
+
+// RequiredAmlFilesystemSubnetsSizeInfo - Information required to get the number of available IP addresses a subnet should
+// have that will be used in AML file system create
+type RequiredAmlFilesystemSubnetsSizeInfo struct {
+	// SKU for the resource.
+	SKU *SKUName `json:"sku,omitempty"`
+
+	// The size of the AML file system, in TiB.
+	StorageCapacityTiB *float32 `json:"storageCapacityTiB,omitempty"`
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
 // ResourceSKU - A resource SKU.
 type ResourceSKU struct {
 	// A list of capabilities of this SKU, such as throughput or ops/sec.
@@ -761,7 +1102,7 @@ type ResourceSKULocationInfo struct {
 
 // ResourceSKUsResult - The response from the List Cache SKUs operation.
 type ResourceSKUsResult struct {
-	// The URI to fetch the next page of Cache SKUs.
+	// The URI to fetch the next page of cache SKUs.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// READ-ONLY; The list of SKUs available for the subscription.
@@ -815,6 +1156,12 @@ type Restriction struct {
 	// READ-ONLY; The value of restrictions. If the restriction type is set to location, then this would be the different locations
 	// where the SKU is restricted.
 	Values []*string `json:"values,omitempty" azure:"ro"`
+}
+
+// SKUName - SKU for the resource.
+type SKUName struct {
+	// SKU name for this resource.
+	Name *string `json:"name,omitempty"`
 }
 
 // SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
@@ -879,7 +1226,7 @@ type StorageTargetProperties struct {
 	// Properties when targetType is clfs.
 	Clfs *ClfsTarget `json:"clfs,omitempty"`
 
-	// List of Cache namespace junctions to target for namespace associations.
+	// List of cache namespace junctions to target for namespace associations.
 	Junctions []*NamespaceJunction `json:"junctions,omitempty"`
 
 	// Properties when targetType is nfs3.
@@ -898,7 +1245,7 @@ type StorageTargetProperties struct {
 	ProvisioningState *ProvisioningStateType `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// StorageTargetResource - Resource used by a Cache.
+// StorageTargetResource - Resource used by a cache.
 type StorageTargetResource struct {
 	// READ-ONLY; Resource ID of the Storage Target.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -971,7 +1318,7 @@ type StorageTargetsResult struct {
 	// The URI to fetch the next page of Storage Targets.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// The list of Storage Targets defined for the Cache.
+	// The list of Storage Targets defined for the cache.
 	Value []*StorageTarget `json:"value,omitempty"`
 }
 
@@ -994,6 +1341,28 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UnknownTarget - Properties pertaining to the UnknownTarget
@@ -1025,9 +1394,9 @@ type UsageModelsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsageModelsResult - A list of Cache usage models.
+// UsageModelsResult - A list of cache usage models.
 type UsageModelsResult struct {
-	// The URI to fetch the next page of Cache usage models.
+	// The URI to fetch the next page of cache usage models.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// The list of usage models available for the subscription.
@@ -1035,6 +1404,14 @@ type UsageModelsResult struct {
 }
 
 type UserAssignedIdentitiesValue struct {
+	// READ-ONLY; The client ID of the user-assigned identity.
+	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The principal ID of the user-assigned identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+}
+
+type UserAssignedIdentitiesValueAutoGenerated struct {
 	// READ-ONLY; The client ID of the user-assigned identity.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
 

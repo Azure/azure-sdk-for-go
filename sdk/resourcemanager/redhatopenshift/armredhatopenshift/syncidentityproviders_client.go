@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // SyncIdentityProvidersClient contains the methods for the SyncIdentityProviders group.
 // Don't use this type directly, use NewSyncIdentityProvidersClient() instead.
 type SyncIdentityProvidersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSyncIdentityProvidersClient creates a new instance of SyncIdentityProvidersClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSyncIdentityProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SyncIdentityProvidersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SyncIdentityProvidersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SyncIdentityProvidersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - The operation returns properties of a SyncIdentityProvider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the OpenShift cluster resource.
-// childResourceName - The name of the SyncIdentityProvider resource.
-// parameters - The SyncIdentityProvider resource.
-// options - SyncIdentityProvidersClientCreateOrUpdateOptions contains the optional parameters for the SyncIdentityProvidersClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - childResourceName - The name of the SyncIdentityProvider resource.
+//   - parameters - The SyncIdentityProvider resource.
+//   - options - SyncIdentityProvidersClientCreateOrUpdateOptions contains the optional parameters for the SyncIdentityProvidersClient.CreateOrUpdate
+//     method.
 func (client *SyncIdentityProvidersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters SyncIdentityProvider, options *SyncIdentityProvidersClientCreateOrUpdateOptions) (SyncIdentityProvidersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, parameters, options)
 	if err != nil {
 		return SyncIdentityProvidersClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SyncIdentityProvidersClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *SyncIdentityProvidersClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter childResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{childResourceName}", url.PathEscape(childResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,18 +110,19 @@ func (client *SyncIdentityProvidersClient) createOrUpdateHandleResponse(resp *ht
 
 // Delete - The operation returns nothing.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the OpenShift cluster resource.
-// childResourceName - The name of the SyncIdentityProvider resource.
-// options - SyncIdentityProvidersClientDeleteOptions contains the optional parameters for the SyncIdentityProvidersClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - childResourceName - The name of the SyncIdentityProvider resource.
+//   - options - SyncIdentityProvidersClientDeleteOptions contains the optional parameters for the SyncIdentityProvidersClient.Delete
+//     method.
 func (client *SyncIdentityProvidersClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *SyncIdentityProvidersClientDeleteOptions) (SyncIdentityProvidersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, options)
 	if err != nil {
 		return SyncIdentityProvidersClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SyncIdentityProvidersClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *SyncIdentityProvidersClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter childResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{childResourceName}", url.PathEscape(childResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,18 +164,19 @@ func (client *SyncIdentityProvidersClient) deleteCreateRequest(ctx context.Conte
 
 // Get - The operation returns properties of a SyncIdentityProvider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the OpenShift cluster resource.
-// childResourceName - The name of the SyncIdentityProvider resource.
-// options - SyncIdentityProvidersClientGetOptions contains the optional parameters for the SyncIdentityProvidersClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - childResourceName - The name of the SyncIdentityProvider resource.
+//   - options - SyncIdentityProvidersClientGetOptions contains the optional parameters for the SyncIdentityProvidersClient.Get
+//     method.
 func (client *SyncIdentityProvidersClient) Get(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *SyncIdentityProvidersClientGetOptions) (SyncIdentityProvidersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, options)
 	if err != nil {
 		return SyncIdentityProvidersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SyncIdentityProvidersClientGetResponse{}, err
 	}
@@ -213,7 +205,7 @@ func (client *SyncIdentityProvidersClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter childResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{childResourceName}", url.PathEscape(childResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -234,11 +226,12 @@ func (client *SyncIdentityProvidersClient) getHandleResponse(resp *http.Response
 }
 
 // NewListPager - The operation returns properties of each SyncIdentityProvider.
+//
 // Generated from API version 2022-09-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the OpenShift cluster resource.
-// options - SyncIdentityProvidersClientListOptions contains the optional parameters for the SyncIdentityProvidersClient.List
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - options - SyncIdentityProvidersClientListOptions contains the optional parameters for the SyncIdentityProvidersClient.NewListPager
+//     method.
 func (client *SyncIdentityProvidersClient) NewListPager(resourceGroupName string, resourceName string, options *SyncIdentityProvidersClientListOptions) *runtime.Pager[SyncIdentityProvidersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SyncIdentityProvidersClientListResponse]{
 		More: func(page SyncIdentityProvidersClientListResponse) bool {
@@ -255,7 +248,7 @@ func (client *SyncIdentityProvidersClient) NewListPager(resourceGroupName string
 			if err != nil {
 				return SyncIdentityProvidersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SyncIdentityProvidersClientListResponse{}, err
 			}
@@ -282,7 +275,7 @@ func (client *SyncIdentityProvidersClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -304,19 +297,20 @@ func (client *SyncIdentityProvidersClient) listHandleResponse(resp *http.Respons
 
 // Update - The operation returns properties of a SyncIdentityProvider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the OpenShift cluster resource.
-// childResourceName - The name of the SyncIdentityProvider resource.
-// parameters - The SyncIdentityProvider resource.
-// options - SyncIdentityProvidersClientUpdateOptions contains the optional parameters for the SyncIdentityProvidersClient.Update
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - childResourceName - The name of the SyncIdentityProvider resource.
+//   - parameters - The SyncIdentityProvider resource.
+//   - options - SyncIdentityProvidersClientUpdateOptions contains the optional parameters for the SyncIdentityProvidersClient.Update
+//     method.
 func (client *SyncIdentityProvidersClient) Update(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters SyncIdentityProviderUpdate, options *SyncIdentityProvidersClientUpdateOptions) (SyncIdentityProvidersClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, parameters, options)
 	if err != nil {
 		return SyncIdentityProvidersClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SyncIdentityProvidersClientUpdateResponse{}, err
 	}
@@ -345,7 +339,7 @@ func (client *SyncIdentityProvidersClient) updateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter childResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{childResourceName}", url.PathEscape(childResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // EntitiesGetTimelineClient contains the methods for the EntitiesGetTimeline group.
 // Don't use this type directly, use NewEntitiesGetTimelineClient() instead.
 type EntitiesGetTimelineClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewEntitiesGetTimelineClient creates a new instance of EntitiesGetTimelineClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEntitiesGetTimelineClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntitiesGetTimelineClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EntitiesGetTimelineClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EntitiesGetTimelineClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // List - Timeline for an entity.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityID - entity ID
-// parameters - The parameters required to execute an timeline operation on the given entity.
-// options - EntitiesGetTimelineClientListOptions contains the optional parameters for the EntitiesGetTimelineClient.List
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityID - entity ID
+//   - parameters - The parameters required to execute an timeline operation on the given entity.
+//   - options - EntitiesGetTimelineClientListOptions contains the optional parameters for the EntitiesGetTimelineClient.List
+//     method.
 func (client *EntitiesGetTimelineClient) List(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, parameters EntityTimelineParameters, options *EntitiesGetTimelineClientListOptions) (EntitiesGetTimelineClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, entityID, parameters, options)
 	if err != nil {
 		return EntitiesGetTimelineClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EntitiesGetTimelineClientListResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *EntitiesGetTimelineClient) listCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter entityID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{entityId}", url.PathEscape(entityID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -163,25 +163,25 @@ type CustomLocationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsClientListByResourceGroupOptions contains the optional parameters for the CustomLocationsClient.ListByResourceGroup
+// CustomLocationsClientListByResourceGroupOptions contains the optional parameters for the CustomLocationsClient.NewListByResourceGroupPager
 // method.
 type CustomLocationsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsClientListBySubscriptionOptions contains the optional parameters for the CustomLocationsClient.ListBySubscription
+// CustomLocationsClientListBySubscriptionOptions contains the optional parameters for the CustomLocationsClient.NewListBySubscriptionPager
 // method.
 type CustomLocationsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsClientListEnabledResourceTypesOptions contains the optional parameters for the CustomLocationsClient.ListEnabledResourceTypes
+// CustomLocationsClientListEnabledResourceTypesOptions contains the optional parameters for the CustomLocationsClient.NewListEnabledResourceTypesPager
 // method.
 type CustomLocationsClientListEnabledResourceTypesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsClientListOperationsOptions contains the optional parameters for the CustomLocationsClient.ListOperations
+// CustomLocationsClientListOperationsOptions contains the optional parameters for the CustomLocationsClient.NewListOperationsPager
 // method.
 type CustomLocationsClientListOperationsOptions struct {
 	// placeholder for future optional parameters
@@ -246,7 +246,7 @@ type EnabledResourceTypesListResult struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -451,7 +451,7 @@ type ResourceSyncRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceSyncRulesClientListByCustomLocationIDOptions contains the optional parameters for the ResourceSyncRulesClient.ListByCustomLocationID
+// ResourceSyncRulesClientListByCustomLocationIDOptions contains the optional parameters for the ResourceSyncRulesClient.NewListByCustomLocationIDPager
 // method.
 type ResourceSyncRulesClientListByCustomLocationIDOptions struct {
 	// placeholder for future optional parameters

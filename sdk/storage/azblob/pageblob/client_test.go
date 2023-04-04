@@ -4634,3 +4634,23 @@ func (s *PageBlobRecordedTestsSuite) TestUndeletePageBlobSnapshot() {
 	})
 	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
 }
+
+func (s *PageBlobRecordedTestsSuite) TestPageGetAccountInfo() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	pbClient := getPageBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = pbClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.Nil(err)
+
+	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
+	bAccInfo, err := pbClient.GetAccountInfo(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotZero(bAccInfo)
+}

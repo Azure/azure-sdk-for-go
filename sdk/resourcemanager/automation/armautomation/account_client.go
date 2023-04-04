@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // AccountClient contains the methods for the AutomationAccount group.
 // Don't use this type directly, use NewAccountClient() instead.
 type AccountClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAccountClient creates a new instance of AccountClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AccountClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AccountClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-22
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// parameters - Parameters supplied to the create or update automation account.
-// options - AccountClientCreateOrUpdateOptions contains the optional parameters for the AccountClient.CreateOrUpdate method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - parameters - Parameters supplied to the create or update automation account.
+//   - options - AccountClientCreateOrUpdateOptions contains the optional parameters for the AccountClient.CreateOrUpdate method.
 func (client *AccountClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, parameters AccountCreateOrUpdateParameters, options *AccountClientCreateOrUpdateOptions) (AccountClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, parameters, options)
 	if err != nil {
 		return AccountClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountClientCreateOrUpdateResponse{}, err
 	}
@@ -93,7 +83,7 @@ func (client *AccountClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,16 +105,17 @@ func (client *AccountClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - Delete an automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-22
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - AccountClientDeleteOptions contains the optional parameters for the AccountClient.Delete method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - AccountClientDeleteOptions contains the optional parameters for the AccountClient.Delete method.
 func (client *AccountClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, options *AccountClientDeleteOptions) (AccountClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 	if err != nil {
 		return AccountClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountClientDeleteResponse{}, err
 	}
@@ -149,7 +140,7 @@ func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,16 +153,17 @@ func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // Get - Get information about an Automation Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-22
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - AccountClientGetOptions contains the optional parameters for the AccountClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - AccountClientGetOptions contains the optional parameters for the AccountClient.Get method.
 func (client *AccountClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, options *AccountClientGetOptions) (AccountClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 	if err != nil {
 		return AccountClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountClientGetResponse{}, err
 	}
@@ -196,7 +188,7 @@ func (client *AccountClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -217,9 +209,9 @@ func (client *AccountClient) getHandleResponse(resp *http.Response) (AccountClie
 }
 
 // NewListPager - Retrieve a list of accounts within a given subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-22
-// options - AccountClientListOptions contains the optional parameters for the AccountClient.List method.
+//   - options - AccountClientListOptions contains the optional parameters for the AccountClient.NewListPager method.
 func (client *AccountClient) NewListPager(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountClientListResponse]{
 		More: func(page AccountClientListResponse) bool {
@@ -236,7 +228,7 @@ func (client *AccountClient) NewListPager(options *AccountClientListOptions) *ru
 			if err != nil {
 				return AccountClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AccountClientListResponse{}, err
 			}
@@ -255,7 +247,7 @@ func (client *AccountClient) listCreateRequest(ctx context.Context, options *Acc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -276,11 +268,11 @@ func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountCli
 }
 
 // NewListByResourceGroupPager - Retrieve a list of accounts within a given resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-22
-// resourceGroupName - Name of an Azure Resource group.
-// options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.NewListByResourceGroupPager
+//     method.
 func (client *AccountClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountClientListByResourceGroupResponse]{
 		More: func(page AccountClientListByResourceGroupResponse) bool {
@@ -297,7 +289,7 @@ func (client *AccountClient) NewListByResourceGroupPager(resourceGroupName strin
 			if err != nil {
 				return AccountClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AccountClientListByResourceGroupResponse{}, err
 			}
@@ -320,7 +312,7 @@ func (client *AccountClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -342,17 +334,18 @@ func (client *AccountClient) listByResourceGroupHandleResponse(resp *http.Respon
 
 // Update - Update an automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-22
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// parameters - Parameters supplied to the update automation account.
-// options - AccountClientUpdateOptions contains the optional parameters for the AccountClient.Update method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - parameters - Parameters supplied to the update automation account.
+//   - options - AccountClientUpdateOptions contains the optional parameters for the AccountClient.Update method.
 func (client *AccountClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, parameters AccountUpdateParameters, options *AccountClientUpdateOptions) (AccountClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, parameters, options)
 	if err != nil {
 		return AccountClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountClientUpdateResponse{}, err
 	}
@@ -377,7 +370,7 @@ func (client *AccountClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

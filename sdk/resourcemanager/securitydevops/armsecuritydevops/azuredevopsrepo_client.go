@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,69 +24,62 @@ import (
 // AzureDevOpsRepoClient contains the methods for the AzureDevOpsRepo group.
 // Don't use this type directly, use NewAzureDevOpsRepoClient() instead.
 type AzureDevOpsRepoClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAzureDevOpsRepoClient creates a new instance of AzureDevOpsRepoClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAzureDevOpsRepoClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureDevOpsRepoClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AzureDevOpsRepoClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AzureDevOpsRepoClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Updates an Azure DevOps Repo.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// azureDevOpsConnectorName - Name of the AzureDevOps Connector.
-// azureDevOpsOrgName - Name of the AzureDevOps Org.
-// azureDevOpsProjectName - Name of the AzureDevOps Project.
-// azureDevOpsRepoName - Name of the AzureDevOps Repo.
-// azureDevOpsRepo - Azure DevOps Repo resource payload.
-// options - AzureDevOpsRepoClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureDevOpsRepoClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureDevOpsConnectorName - Name of the AzureDevOps Connector.
+//   - azureDevOpsOrgName - Name of the AzureDevOps Org.
+//   - azureDevOpsProjectName - Name of the AzureDevOps Project.
+//   - azureDevOpsRepoName - Name of the AzureDevOps Repo.
+//   - azureDevOpsRepo - Azure DevOps Repo resource payload.
+//   - options - AzureDevOpsRepoClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureDevOpsRepoClient.BeginCreateOrUpdate
+//     method.
 func (client *AzureDevOpsRepoClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, azureDevOpsProjectName string, azureDevOpsRepoName string, azureDevOpsRepo AzureDevOpsRepo, options *AzureDevOpsRepoClientBeginCreateOrUpdateOptions) (*runtime.Poller[AzureDevOpsRepoClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName, azureDevOpsRepoName, azureDevOpsRepo, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AzureDevOpsRepoClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AzureDevOpsRepoClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AzureDevOpsRepoClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AzureDevOpsRepoClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Updates an Azure DevOps Repo.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
 func (client *AzureDevOpsRepoClient) createOrUpdate(ctx context.Context, resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, azureDevOpsProjectName string, azureDevOpsRepoName string, azureDevOpsRepo AzureDevOpsRepo, options *AzureDevOpsRepoClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName, azureDevOpsRepoName, azureDevOpsRepo, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +116,7 @@ func (client *AzureDevOpsRepoClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter azureDevOpsRepoName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureDevOpsRepoName}", url.PathEscape(azureDevOpsRepoName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -138,19 +129,20 @@ func (client *AzureDevOpsRepoClient) createOrUpdateCreateRequest(ctx context.Con
 
 // Get - Returns a monitored AzureDevOps Project resource for a given ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// azureDevOpsConnectorName - Name of the AzureDevOps Connector.
-// azureDevOpsOrgName - Name of the AzureDevOps Org.
-// azureDevOpsProjectName - Name of the AzureDevOps Project.
-// azureDevOpsRepoName - Name of the AzureDevOps Repo.
-// options - AzureDevOpsRepoClientGetOptions contains the optional parameters for the AzureDevOpsRepoClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureDevOpsConnectorName - Name of the AzureDevOps Connector.
+//   - azureDevOpsOrgName - Name of the AzureDevOps Org.
+//   - azureDevOpsProjectName - Name of the AzureDevOps Project.
+//   - azureDevOpsRepoName - Name of the AzureDevOps Repo.
+//   - options - AzureDevOpsRepoClientGetOptions contains the optional parameters for the AzureDevOpsRepoClient.Get method.
 func (client *AzureDevOpsRepoClient) Get(ctx context.Context, resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, azureDevOpsProjectName string, azureDevOpsRepoName string, options *AzureDevOpsRepoClientGetOptions) (AzureDevOpsRepoClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName, azureDevOpsRepoName, options)
 	if err != nil {
 		return AzureDevOpsRepoClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AzureDevOpsRepoClientGetResponse{}, err
 	}
@@ -187,7 +179,7 @@ func (client *AzureDevOpsRepoClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter azureDevOpsRepoName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureDevOpsRepoName}", url.PathEscape(azureDevOpsRepoName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,11 +199,12 @@ func (client *AzureDevOpsRepoClient) getHandleResponse(resp *http.Response) (Azu
 	return result, nil
 }
 
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// azureDevOpsConnectorName - Name of the AzureDevOps Connector.
-// azureDevOpsOrgName - Name of the AzureDevOps Org.
-// azureDevOpsProjectName - Name of the AzureDevOps Project.
-// options - AzureDevOpsRepoClientListOptions contains the optional parameters for the AzureDevOpsRepoClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureDevOpsConnectorName - Name of the AzureDevOps Connector.
+//   - azureDevOpsOrgName - Name of the AzureDevOps Org.
+//   - azureDevOpsProjectName - Name of the AzureDevOps Project.
+//   - options - AzureDevOpsRepoClientListOptions contains the optional parameters for the AzureDevOpsRepoClient.NewListPager
+//     method.
 func (client *AzureDevOpsRepoClient) NewListPager(resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, azureDevOpsProjectName string, options *AzureDevOpsRepoClientListOptions) *runtime.Pager[AzureDevOpsRepoClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AzureDevOpsRepoClientListResponse]{
 		More: func(page AzureDevOpsRepoClientListResponse) bool {
@@ -228,7 +221,7 @@ func (client *AzureDevOpsRepoClient) NewListPager(resourceGroupName string, azur
 			if err != nil {
 				return AzureDevOpsRepoClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AzureDevOpsRepoClientListResponse{}, err
 			}
@@ -263,7 +256,7 @@ func (client *AzureDevOpsRepoClient) listCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter azureDevOpsProjectName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureDevOpsProjectName}", url.PathEscape(azureDevOpsProjectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -283,10 +276,10 @@ func (client *AzureDevOpsRepoClient) listHandleResponse(resp *http.Response) (Az
 	return result, nil
 }
 
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// azureDevOpsConnectorName - Name of the AzureDevOps Connector.
-// options - AzureDevOpsRepoClientListByConnectorOptions contains the optional parameters for the AzureDevOpsRepoClient.ListByConnector
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureDevOpsConnectorName - Name of the AzureDevOps Connector.
+//   - options - AzureDevOpsRepoClientListByConnectorOptions contains the optional parameters for the AzureDevOpsRepoClient.NewListByConnectorPager
+//     method.
 func (client *AzureDevOpsRepoClient) NewListByConnectorPager(resourceGroupName string, azureDevOpsConnectorName string, options *AzureDevOpsRepoClientListByConnectorOptions) *runtime.Pager[AzureDevOpsRepoClientListByConnectorResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AzureDevOpsRepoClientListByConnectorResponse]{
 		More: func(page AzureDevOpsRepoClientListByConnectorResponse) bool {
@@ -303,7 +296,7 @@ func (client *AzureDevOpsRepoClient) NewListByConnectorPager(resourceGroupName s
 			if err != nil {
 				return AzureDevOpsRepoClientListByConnectorResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AzureDevOpsRepoClientListByConnectorResponse{}, err
 			}
@@ -330,7 +323,7 @@ func (client *AzureDevOpsRepoClient) listByConnectorCreateRequest(ctx context.Co
 		return nil, errors.New("parameter azureDevOpsConnectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureDevOpsConnectorName}", url.PathEscape(azureDevOpsConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -352,36 +345,38 @@ func (client *AzureDevOpsRepoClient) listByConnectorHandleResponse(resp *http.Re
 
 // BeginUpdate - Update monitored AzureDevOps Project details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// azureDevOpsConnectorName - Name of the AzureDevOps Connector.
-// azureDevOpsOrgName - Name of the AzureDevOps Org.
-// azureDevOpsProjectName - Name of the AzureDevOps Project.
-// azureDevOpsRepoName - Name of the AzureDevOps Repo.
-// azureDevOpsRepo - Azure DevOps Org resource payload.
-// options - AzureDevOpsRepoClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsRepoClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureDevOpsConnectorName - Name of the AzureDevOps Connector.
+//   - azureDevOpsOrgName - Name of the AzureDevOps Org.
+//   - azureDevOpsProjectName - Name of the AzureDevOps Project.
+//   - azureDevOpsRepoName - Name of the AzureDevOps Repo.
+//   - azureDevOpsRepo - Azure DevOps Org resource payload.
+//   - options - AzureDevOpsRepoClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsRepoClient.BeginUpdate
+//     method.
 func (client *AzureDevOpsRepoClient) BeginUpdate(ctx context.Context, resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, azureDevOpsProjectName string, azureDevOpsRepoName string, azureDevOpsRepo AzureDevOpsRepo, options *AzureDevOpsRepoClientBeginUpdateOptions) (*runtime.Poller[AzureDevOpsRepoClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName, azureDevOpsRepoName, azureDevOpsRepo, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AzureDevOpsRepoClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AzureDevOpsRepoClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AzureDevOpsRepoClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AzureDevOpsRepoClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update monitored AzureDevOps Project details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
 func (client *AzureDevOpsRepoClient) update(ctx context.Context, resourceGroupName string, azureDevOpsConnectorName string, azureDevOpsOrgName string, azureDevOpsProjectName string, azureDevOpsRepoName string, azureDevOpsRepo AzureDevOpsRepo, options *AzureDevOpsRepoClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, azureDevOpsProjectName, azureDevOpsRepoName, azureDevOpsRepo, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -418,7 +413,7 @@ func (client *AzureDevOpsRepoClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter azureDevOpsRepoName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureDevOpsRepoName}", url.PathEscape(azureDevOpsRepoName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -25,11 +25,11 @@ func ExampleScopeConnectionsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewScopeConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "testNetworkManager", "TestScopeConnection", armnetwork.ScopeConnection{
+	res, err := clientFactory.NewScopeConnectionsClient().CreateOrUpdate(ctx, "rg1", "testNetworkManager", "TestScopeConnection", armnetwork.ScopeConnection{
 		Properties: &armnetwork.ScopeConnectionProperties{
 			Description: to.Ptr("This is a scope connection to a cross tenant subscription."),
 			ResourceID:  to.Ptr("subscriptions/f0dc2b34-dfad-40e4-83e0-2309fed8d00b"),
@@ -70,11 +70,11 @@ func ExampleScopeConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewScopeConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testNetworkManager", "TestScopeConnection", nil)
+	res, err := clientFactory.NewScopeConnectionsClient().Get(ctx, "rg1", "testNetworkManager", "TestScopeConnection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -109,11 +109,11 @@ func ExampleScopeConnectionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewScopeConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "rg1", "testNetworkManager", "TestScopeConnection", nil)
+	_, err = clientFactory.NewScopeConnectionsClient().Delete(ctx, "rg1", "testNetworkManager", "TestScopeConnection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -126,11 +126,11 @@ func ExampleScopeConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewScopeConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "testNetworkManager", &armnetwork.ScopeConnectionsClientListOptions{Top: nil,
+	pager := clientFactory.NewScopeConnectionsClient().NewListPager("rg1", "testNetworkManager", &armnetwork.ScopeConnectionsClientListOptions{Top: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {

@@ -163,6 +163,12 @@ func RequireClose[T interface {
 	require.NoErrorf(t, closeable.Close(context.Background()), "%T closes cleanly", closeable)
 }
 
+func RequireNSClose(t *testing.T, closeable interface {
+	Close(ctx context.Context, permanent bool) error
+}) {
+	require.NoError(t, closeable.Close(context.Background(), true))
+}
+
 // RequireContextHasDefaultTimeout checks that the context has a deadline set, and that it's
 // using the right timeout.
 // NOTE: There's some wiggle room since some time will expire before this is called.

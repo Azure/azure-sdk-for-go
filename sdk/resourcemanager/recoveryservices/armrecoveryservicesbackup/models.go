@@ -5364,6 +5364,9 @@ type BMSRPQueryObject struct {
 	// In Get Recovery Point, it tells whether extended information about recovery point is asked.
 	ExtendedInfo *bool `json:"extendedInfo,omitempty"`
 
+	// Flag to indicate whether Soft Deleted RPs should be included/excluded from result.
+	IncludeSoftDeletedRP *bool `json:"includeSoftDeletedRP,omitempty"`
+
 	// Whether the RP can be moved to another tier
 	MoveReadyRPOnly *bool `json:"moveReadyRPOnly,omitempty"`
 
@@ -6574,6 +6577,15 @@ type ExportJobsOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ExtendedLocation - The extended location of Recovery point where VM was present.
+type ExtendedLocation struct {
+	// Name of the extended location.
+	Name *string `json:"name,omitempty"`
+
+	// Type of the extended location. Possible values include: 'EdgeZone'
+	Type *string `json:"type,omitempty"`
+}
+
 // ExtendedProperties - Extended Properties for Azure IaasVM Backup.
 type ExtendedProperties struct {
 	// Extended Properties for Disk Exclusion.
@@ -7037,6 +7049,9 @@ type IaasVMRecoveryPoint struct {
 	// Whether VM is with Managed Disks
 	IsManagedVirtualMachine *bool `json:"isManagedVirtualMachine,omitempty"`
 
+	// This flag denotes if any of the disks in the VM are using Private access network setting
+	IsPrivateAccessEnabledOnAnyDisk *bool `json:"isPrivateAccessEnabledOnAnyDisk,omitempty"`
+
 	// Identifies whether the VM was encrypted when the backup copy is created.
 	IsSourceVMEncrypted *bool `json:"isSourceVMEncrypted,omitempty"`
 
@@ -7069,6 +7084,9 @@ type IaasVMRecoveryPoint struct {
 
 	// Type of the backup copy.
 	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
+
+	// Security Type of the Disk
+	SecurityType *string `json:"securityType,omitempty"`
 
 	// Storage type of the VM whose backup copy is created.
 	SourceVMStorageType *string `json:"sourceVMStorageType,omitempty"`
@@ -7115,6 +7133,9 @@ type IaasVMRestoreRequest struct {
 	// Details needed if the VM was encrypted at the time of backup.
 	EncryptionDetails *EncryptionDetails `json:"encryptionDetails,omitempty"`
 
+	// Target extended location where the VM should be restored, should be null if restore is to be done in public cloud
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// IaaS VM workload specific restore details for restores using managed identity.
 	IdentityBasedRestoreDetails *IdentityBasedRestoreDetails `json:"identityBasedRestoreDetails,omitempty"`
 
@@ -7139,6 +7160,9 @@ type IaasVMRestoreRequest struct {
 	// Flag to denote of an Unmanaged disk VM should be restored with Managed disks.
 	RestoreWithManagedDisks *bool `json:"restoreWithManagedDisks,omitempty"`
 
+	// Stores Secured VM Details
+	SecuredVMDetails *SecuredVMDetails `json:"securedVMDetails,omitempty"`
+
 	// Fully qualified ARM ID of the VM which is being recovered.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 
@@ -7149,6 +7173,9 @@ type IaasVMRestoreRequest struct {
 	// and, for the Azure Resource Manager VMs it would be ARM resource ID used to
 	// represent the subnet.
 	SubnetID *string `json:"subnetId,omitempty"`
+
+	// Specifies target network access settings for disks of VM to be restored,
+	TargetDiskNetworkAccessSettings *TargetDiskNetworkAccessSettings `json:"targetDiskNetworkAccessSettings,omitempty"`
 
 	// Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual
 	// Machines.
@@ -7197,6 +7224,9 @@ type IaasVMRestoreWithRehydrationRequest struct {
 	// Details needed if the VM was encrypted at the time of backup.
 	EncryptionDetails *EncryptionDetails `json:"encryptionDetails,omitempty"`
 
+	// Target extended location where the VM should be restored, should be null if restore is to be done in public cloud
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// IaaS VM workload specific restore details for restores using managed identity.
 	IdentityBasedRestoreDetails *IdentityBasedRestoreDetails `json:"identityBasedRestoreDetails,omitempty"`
 
@@ -7224,6 +7254,9 @@ type IaasVMRestoreWithRehydrationRequest struct {
 	// Flag to denote of an Unmanaged disk VM should be restored with Managed disks.
 	RestoreWithManagedDisks *bool `json:"restoreWithManagedDisks,omitempty"`
 
+	// Stores Secured VM Details
+	SecuredVMDetails *SecuredVMDetails `json:"securedVMDetails,omitempty"`
+
 	// Fully qualified ARM ID of the VM which is being recovered.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 
@@ -7234,6 +7267,9 @@ type IaasVMRestoreWithRehydrationRequest struct {
 	// and, for the Azure Resource Manager VMs it would be ARM resource ID used to
 	// represent the subnet.
 	SubnetID *string `json:"subnetId,omitempty"`
+
+	// Specifies target network access settings for disks of VM to be restored,
+	TargetDiskNetworkAccessSettings *TargetDiskNetworkAccessSettings `json:"targetDiskNetworkAccessSettings,omitempty"`
 
 	// Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual
 	// Machines.
@@ -7257,27 +7293,30 @@ type IaasVMRestoreWithRehydrationRequest struct {
 // GetIaasVMRestoreRequest implements the IaasVMRestoreRequestClassification interface for type IaasVMRestoreWithRehydrationRequest.
 func (i *IaasVMRestoreWithRehydrationRequest) GetIaasVMRestoreRequest() *IaasVMRestoreRequest {
 	return &IaasVMRestoreRequest{
-		RecoveryPointID:              i.RecoveryPointID,
-		RecoveryType:                 i.RecoveryType,
-		SourceResourceID:             i.SourceResourceID,
-		TargetVirtualMachineID:       i.TargetVirtualMachineID,
-		TargetResourceGroupID:        i.TargetResourceGroupID,
-		StorageAccountID:             i.StorageAccountID,
-		VirtualNetworkID:             i.VirtualNetworkID,
-		SubnetID:                     i.SubnetID,
-		TargetDomainNameID:           i.TargetDomainNameID,
-		Region:                       i.Region,
-		AffinityGroup:                i.AffinityGroup,
-		CreateNewCloudService:        i.CreateNewCloudService,
-		OriginalStorageAccountOption: i.OriginalStorageAccountOption,
-		EncryptionDetails:            i.EncryptionDetails,
-		RestoreDiskLunList:           i.RestoreDiskLunList,
-		RestoreWithManagedDisks:      i.RestoreWithManagedDisks,
-		DiskEncryptionSetID:          i.DiskEncryptionSetID,
-		Zones:                        i.Zones,
-		IdentityInfo:                 i.IdentityInfo,
-		IdentityBasedRestoreDetails:  i.IdentityBasedRestoreDetails,
-		ObjectType:                   i.ObjectType,
+		RecoveryPointID:                 i.RecoveryPointID,
+		RecoveryType:                    i.RecoveryType,
+		SourceResourceID:                i.SourceResourceID,
+		TargetVirtualMachineID:          i.TargetVirtualMachineID,
+		TargetResourceGroupID:           i.TargetResourceGroupID,
+		StorageAccountID:                i.StorageAccountID,
+		VirtualNetworkID:                i.VirtualNetworkID,
+		SubnetID:                        i.SubnetID,
+		TargetDomainNameID:              i.TargetDomainNameID,
+		Region:                          i.Region,
+		AffinityGroup:                   i.AffinityGroup,
+		CreateNewCloudService:           i.CreateNewCloudService,
+		OriginalStorageAccountOption:    i.OriginalStorageAccountOption,
+		EncryptionDetails:               i.EncryptionDetails,
+		RestoreDiskLunList:              i.RestoreDiskLunList,
+		RestoreWithManagedDisks:         i.RestoreWithManagedDisks,
+		DiskEncryptionSetID:             i.DiskEncryptionSetID,
+		Zones:                           i.Zones,
+		IdentityInfo:                    i.IdentityInfo,
+		IdentityBasedRestoreDetails:     i.IdentityBasedRestoreDetails,
+		ExtendedLocation:                i.ExtendedLocation,
+		SecuredVMDetails:                i.SecuredVMDetails,
+		TargetDiskNetworkAccessSettings: i.TargetDiskNetworkAccessSettings,
+		ObjectType:                      i.ObjectType,
 	}
 }
 
@@ -8925,6 +8964,9 @@ type RecoveryPointProperties struct {
 	// Expiry time of Recovery Point in UTC.
 	ExpiryTime *string `json:"expiryTime,omitempty"`
 
+	// Bool to indicate whether RP is in soft delete state or not
+	IsSoftDeleted *bool `json:"isSoftDeleted,omitempty"`
+
 	// Rule name tagged on Recovery Point that governs life cycle
 	RuleName *string `json:"ruleName,omitempty"`
 }
@@ -9260,6 +9302,12 @@ type SchedulePolicy struct {
 // GetSchedulePolicy implements the SchedulePolicyClassification interface for type SchedulePolicy.
 func (s *SchedulePolicy) GetSchedulePolicy() *SchedulePolicy { return s }
 
+// SecuredVMDetails - Restore request parameters for Secured VMs
+type SecuredVMDetails struct {
+	// Gets or Sets Disk Encryption Set Id for Secured VM OS Disk
+	SecuredVMOsDiskEncryptionSetID *string `json:"securedVMOsDiskEncryptionSetId,omitempty"`
+}
+
 // SecurityPINsClientGetOptions contains the optional parameters for the SecurityPINsClient.Get method.
 type SecurityPINsClientGetOptions struct {
 	// security pin request
@@ -9377,6 +9425,15 @@ type TargetAFSRestoreInfo struct {
 
 	// Target file share resource ARM ID
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
+}
+
+// TargetDiskNetworkAccessSettings - Specifies target network access settings for disks of VM to be restored.
+type TargetDiskNetworkAccessSettings struct {
+	// Gets or sets the ARM resource ID of the target disk access to be used when TargetDiskNetworkAccessOption is set to TargetDiskNetworkAccessOption.UseNew
+	TargetDiskAccessID *string `json:"targetDiskAccessId,omitempty"`
+
+	// Network access settings to be used for restored disks
+	TargetDiskNetworkAccessOption *TargetDiskNetworkAccessOption `json:"targetDiskNetworkAccessOption,omitempty"`
 }
 
 // TargetRestoreInfo - Details about target workload during restore operation.

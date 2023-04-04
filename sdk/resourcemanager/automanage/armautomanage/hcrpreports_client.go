@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // HCRPReportsClient contains the methods for the HCRPReports group.
 // Don't use this type directly, use NewHCRPReportsClient() instead.
 type HCRPReportsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewHCRPReportsClient creates a new instance of HCRPReportsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewHCRPReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HCRPReportsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".HCRPReportsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &HCRPReportsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get information about a report associated with a configuration profile assignment run
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// machineName - The name of the Arc machine.
-// configurationProfileAssignmentName - The configuration profile assignment name.
-// reportName - The report name.
-// options - HCRPReportsClientGetOptions contains the optional parameters for the HCRPReportsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - machineName - The name of the Arc machine.
+//   - configurationProfileAssignmentName - The configuration profile assignment name.
+//   - reportName - The report name.
+//   - options - HCRPReportsClientGetOptions contains the optional parameters for the HCRPReportsClient.Get method.
 func (client *HCRPReportsClient) Get(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string, reportName string, options *HCRPReportsClientGetOptions) (HCRPReportsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, machineName, configurationProfileAssignmentName, reportName, options)
 	if err != nil {
 		return HCRPReportsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HCRPReportsClientGetResponse{}, err
 	}
@@ -101,7 +91,7 @@ func (client *HCRPReportsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter reportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reportName}", url.PathEscape(reportName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,13 +112,13 @@ func (client *HCRPReportsClient) getHandleResponse(resp *http.Response) (HCRPRep
 }
 
 // NewListByConfigurationProfileAssignmentsPager - Retrieve a list of reports within a given configuration profile assignment
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// machineName - The name of the Arc machine.
-// configurationProfileAssignmentName - The configuration profile assignment name.
-// options - HCRPReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCRPReportsClient.ListByConfigurationProfileAssignments
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - machineName - The name of the Arc machine.
+//   - configurationProfileAssignmentName - The configuration profile assignment name.
+//   - options - HCRPReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCRPReportsClient.NewListByConfigurationProfileAssignmentsPager
+//     method.
 func (client *HCRPReportsClient) NewListByConfigurationProfileAssignmentsPager(resourceGroupName string, machineName string, configurationProfileAssignmentName string, options *HCRPReportsClientListByConfigurationProfileAssignmentsOptions) *runtime.Pager[HCRPReportsClientListByConfigurationProfileAssignmentsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[HCRPReportsClientListByConfigurationProfileAssignmentsResponse]{
 		More: func(page HCRPReportsClientListByConfigurationProfileAssignmentsResponse) bool {
@@ -139,7 +129,7 @@ func (client *HCRPReportsClient) NewListByConfigurationProfileAssignmentsPager(r
 			if err != nil {
 				return HCRPReportsClientListByConfigurationProfileAssignmentsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return HCRPReportsClientListByConfigurationProfileAssignmentsResponse{}, err
 			}
@@ -170,7 +160,7 @@ func (client *HCRPReportsClient) listByConfigurationProfileAssignmentsCreateRequ
 		return nil, errors.New("parameter configurationProfileAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationProfileAssignmentName}", url.PathEscape(configurationProfileAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

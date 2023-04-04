@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksList.json
 func ExampleTasksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup", "myRegistry", nil)
+	pager := clientFactory.NewTasksClient().NewListPager("myResourceGroup", "myRegistry", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -119,18 +119,18 @@ func ExampleTasksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksGet.json
 func ExampleTasksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "myRegistry", "myTask", nil)
+	res, err := clientFactory.NewTasksClient().Get(ctx, "myResourceGroup", "myRegistry", "myTask", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -212,18 +212,18 @@ func ExampleTasksClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksCreate.json
 func ExampleTasksClient_BeginCreate_tasksCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "myRegistry", "mytTask", armcontainerregistry.Task{
+	poller, err := clientFactory.NewTasksClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "mytTask", armcontainerregistry.Task{
 		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"testkey": to.Ptr("value"),
@@ -373,18 +373,18 @@ func ExampleTasksClient_BeginCreate_tasksCreate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksCreate_QuickTask.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksCreate_QuickTask.json
 func ExampleTasksClient_BeginCreate_tasksCreateQuickTask() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "myRegistry", "quicktask", armcontainerregistry.Task{
+	poller, err := clientFactory.NewTasksClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "quicktask", armcontainerregistry.Task{
 		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"testkey": to.Ptr("value"),
@@ -423,18 +423,18 @@ func ExampleTasksClient_BeginCreate_tasksCreateQuickTask() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithSystemAndUserIdentities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithSystemAndUserIdentities.json
 func ExampleTasksClient_BeginCreate_tasksCreateWithSystemAndUserIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "myRegistry", "mytTask", armcontainerregistry.Task{
+	poller, err := clientFactory.NewTasksClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "mytTask", armcontainerregistry.Task{
 		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"testkey": to.Ptr("value"),
@@ -591,18 +591,18 @@ func ExampleTasksClient_BeginCreate_tasksCreateWithSystemAndUserIdentities() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithUserIdentities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithUserIdentities.json
 func ExampleTasksClient_BeginCreate_tasksCreateWithUserIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "myRegistry", "mytTask", armcontainerregistry.Task{
+	poller, err := clientFactory.NewTasksClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "mytTask", armcontainerregistry.Task{
 		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"testkey": to.Ptr("value"),
@@ -762,18 +762,18 @@ func ExampleTasksClient_BeginCreate_tasksCreateWithUserIdentities() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithSystemIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithSystemIdentity.json
 func ExampleTasksClient_BeginCreate_tasksCreateWithUserIdentitiesWithSystemIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "myRegistry", "mytTask", armcontainerregistry.Task{
+	poller, err := clientFactory.NewTasksClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "mytTask", armcontainerregistry.Task{
 		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"testkey": to.Ptr("value"),
@@ -918,18 +918,18 @@ func ExampleTasksClient_BeginCreate_tasksCreateWithUserIdentitiesWithSystemIdent
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksDelete.json
 func ExampleTasksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myResourceGroup", "myRegistry", "myTask", nil)
+	poller, err := clientFactory.NewTasksClient().BeginDelete(ctx, "myResourceGroup", "myRegistry", "myTask", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -939,18 +939,18 @@ func ExampleTasksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksUpdate.json
 func ExampleTasksClient_BeginUpdate_tasksUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myTask", armcontainerregistry.TaskUpdateParameters{
+	poller, err := clientFactory.NewTasksClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myTask", armcontainerregistry.TaskUpdateParameters{
 		Properties: &armcontainerregistry.TaskPropertiesUpdateParameters{
 			AgentConfiguration: &armcontainerregistry.AgentProperties{
 				CPU: to.Ptr[int32](3),
@@ -1082,18 +1082,18 @@ func ExampleTasksClient_BeginUpdate_tasksUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksUpdate_QuickTask.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksUpdate_QuickTask.json
 func ExampleTasksClient_BeginUpdate_tasksUpdateQuickTask() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myRegistry", "quicktask", armcontainerregistry.TaskUpdateParameters{
+	poller, err := clientFactory.NewTasksClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "quicktask", armcontainerregistry.TaskUpdateParameters{
 		Properties: &armcontainerregistry.TaskPropertiesUpdateParameters{
 			LogTemplate: to.Ptr("acr/tasks:{{.Run.OS}}"),
 			Status:      to.Ptr(armcontainerregistry.TaskStatusEnabled),
@@ -1129,18 +1129,18 @@ func ExampleTasksClient_BeginUpdate_tasksUpdateQuickTask() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksUpdate_WithKeyVaultCustomCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksUpdate_WithKeyVaultCustomCredentials.json
 func ExampleTasksClient_BeginUpdate_tasksUpdateWithKeyVaultCustomCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myTask", armcontainerregistry.TaskUpdateParameters{
+	poller, err := clientFactory.NewTasksClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myTask", armcontainerregistry.TaskUpdateParameters{
 		Properties: &armcontainerregistry.TaskPropertiesUpdateParameters{
 			AgentConfiguration: &armcontainerregistry.AgentProperties{
 				CPU: to.Ptr[int32](3),
@@ -1271,18 +1271,18 @@ func ExampleTasksClient_BeginUpdate_tasksUpdateWithKeyVaultCustomCredentials() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksUpdate_WithMSICustomCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksUpdate_WithMSICustomCredentials.json
 func ExampleTasksClient_BeginUpdate_tasksUpdateWithMsiCustomCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myTask", armcontainerregistry.TaskUpdateParameters{
+	poller, err := clientFactory.NewTasksClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myTask", armcontainerregistry.TaskUpdateParameters{
 		Properties: &armcontainerregistry.TaskPropertiesUpdateParameters{
 			AgentConfiguration: &armcontainerregistry.AgentProperties{
 				CPU: to.Ptr[int32](3),
@@ -1403,18 +1403,18 @@ func ExampleTasksClient_BeginUpdate_tasksUpdateWithMsiCustomCredentials() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksUpdate_WithOpaqueCustomCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksUpdate_WithOpaqueCustomCredentials.json
 func ExampleTasksClient_BeginUpdate_tasksUpdateWithOpaqueCustomCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myTask", armcontainerregistry.TaskUpdateParameters{
+	poller, err := clientFactory.NewTasksClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myTask", armcontainerregistry.TaskUpdateParameters{
 		Properties: &armcontainerregistry.TaskPropertiesUpdateParameters{
 			AgentConfiguration: &armcontainerregistry.AgentProperties{
 				CPU: to.Ptr[int32](3),
@@ -1542,18 +1542,18 @@ func ExampleTasksClient_BeginUpdate_tasksUpdateWithOpaqueCustomCredentials() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksGetDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksGetDetails.json
 func ExampleTasksClient_GetDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetDetails(ctx, "myResourceGroup", "myRegistry", "myTask", nil)
+	res, err := clientFactory.NewTasksClient().GetDetails(ctx, "myResourceGroup", "myRegistry", "myTask", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

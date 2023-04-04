@@ -5,7 +5,6 @@ package internal
 
 import (
 	"context"
-	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -41,7 +40,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 		// to fix this is to restart the connection.
 		if IsNotAllowedError(err) {
 			log.Writef(exported.EventAuth, "Not allowed to open, connection will be reset: %s", err)
-			return errConnResetNeeded
+			return amqpwrap.ErrConnResetNeeded
 		}
 
 		return err
@@ -52,11 +51,6 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 		defer cancel()
 
 		if err := link.Close(ctx); err != nil {
-			if IsCancelError(err) {
-				azlog.Writef(exported.EventAuth, "Failed closing claim link because it was cancelled. Connection will need to be reset")
-				return errConnResetNeeded
-			}
-
 			azlog.Writef(exported.EventAuth, "Failed closing claim link: %s", err.Error())
 			return err
 		}
@@ -66,7 +60,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 
 	token, err := provider.GetToken(audience)
 	if err != nil {
-		azlog.Writef(exported.EventAuth, "Failed to get token from provider")
+		azlog.Writef(exported.EventAuth, "Failed to get token from provider: %s", err)
 		return closeLink(ctx, err)
 	}
 
@@ -74,7 +68,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 
 	msg := &amqp.Message{
 		Value: token.Token,
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			cbsOperationKey:  cbsOperationPutToken,
 			cbsTokenTypeKey:  string(token.TokenType),
 			cbsAudienceKey:   audience,
@@ -83,11 +77,9 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 	}
 
 	if _, err := link.RPC(ctx, msg); err != nil {
-		azlog.Writef(exported.EventAuth, "Failed to send/receive RPC message")
+		azlog.Writef(exported.EventAuth, "Failed to send/receive RPC message: %s", err)
 		return closeLink(ctx, err)
 	}
 
 	return closeLink(ctx, nil)
 }
-
-var errConnResetNeeded = errors.New("connection must be reset, link/connection state may be inconsistent")

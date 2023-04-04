@@ -24,11 +24,11 @@ func ExampleResourceNavigationLinksClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewResourceNavigationLinksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "rg1", "vnet", "subnet", nil)
+	res, err := clientFactory.NewResourceNavigationLinksClient().List(ctx, "rg1", "vnet", "subnet", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

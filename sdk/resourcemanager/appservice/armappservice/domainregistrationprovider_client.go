@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -23,38 +21,29 @@ import (
 // DomainRegistrationProviderClient contains the methods for the DomainRegistrationProvider group.
 // Don't use this type directly, use NewDomainRegistrationProviderClient() instead.
 type DomainRegistrationProviderClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewDomainRegistrationProviderClient creates a new instance of DomainRegistrationProviderClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDomainRegistrationProviderClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DomainRegistrationProviderClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DomainRegistrationProviderClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DomainRegistrationProviderClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // NewListOperationsPager - Description for Implements Csm operations Api to exposes the list of available Csm Apis under
 // the resource provider
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - DomainRegistrationProviderClientListOperationsOptions contains the optional parameters for the DomainRegistrationProviderClient.ListOperations
-// method.
+//
+// Generated from API version 2022-09-01
+//   - options - DomainRegistrationProviderClientListOperationsOptions contains the optional parameters for the DomainRegistrationProviderClient.NewListOperationsPager
+//     method.
 func (client *DomainRegistrationProviderClient) NewListOperationsPager(options *DomainRegistrationProviderClientListOperationsOptions) *runtime.Pager[DomainRegistrationProviderClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DomainRegistrationProviderClientListOperationsResponse]{
 		More: func(page DomainRegistrationProviderClientListOperationsResponse) bool {
@@ -71,7 +60,7 @@ func (client *DomainRegistrationProviderClient) NewListOperationsPager(options *
 			if err != nil {
 				return DomainRegistrationProviderClientListOperationsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DomainRegistrationProviderClientListOperationsResponse{}, err
 			}
@@ -86,12 +75,12 @@ func (client *DomainRegistrationProviderClient) NewListOperationsPager(options *
 // listOperationsCreateRequest creates the ListOperations request.
 func (client *DomainRegistrationProviderClient) listOperationsCreateRequest(ctx context.Context, options *DomainRegistrationProviderClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DomainRegistration/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

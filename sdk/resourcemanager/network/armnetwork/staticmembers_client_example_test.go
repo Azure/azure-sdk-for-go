@@ -25,11 +25,11 @@ func ExampleStaticMembersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewStaticMembersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testNetworkManager", "testNetworkGroup", "testStaticMember", nil)
+	res, err := clientFactory.NewStaticMembersClient().Get(ctx, "rg1", "testNetworkManager", "testNetworkGroup", "testStaticMember", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -61,11 +61,11 @@ func ExampleStaticMembersClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewStaticMembersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "testNetworkManager", "testNetworkGroup", "testStaticMember", armnetwork.StaticMember{
+	res, err := clientFactory.NewStaticMembersClient().CreateOrUpdate(ctx, "rg1", "testNetworkManager", "testNetworkGroup", "testStaticMember", armnetwork.StaticMember{
 		Properties: &armnetwork.StaticMemberProperties{
 			ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroup/rg1/providers/Microsoft.Network/virtualnetworks/vnet1"),
 		},
@@ -103,11 +103,11 @@ func ExampleStaticMembersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewStaticMembersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "SampleRG", "TestNM", "testNetworkGroup", "testStaticMember", nil)
+	_, err = clientFactory.NewStaticMembersClient().Delete(ctx, "SampleRG", "TestNM", "testNetworkGroup", "testStaticMember", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -120,11 +120,11 @@ func ExampleStaticMembersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewStaticMembersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "testNetworkManager", "testNetworkGroup", &armnetwork.StaticMembersClientListOptions{Top: nil,
+	pager := clientFactory.NewStaticMembersClient().NewListPager("rg1", "testNetworkManager", "testNetworkGroup", &armnetwork.StaticMembersClientListOptions{Top: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {

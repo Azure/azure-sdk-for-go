@@ -15,8 +15,6 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,47 +25,39 @@ import (
 // HeatMapClient contains the methods for the HeatMap group.
 // Don't use this type directly, use NewHeatMapClient() instead.
 type HeatMapClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewHeatMapClient creates a new instance of HeatMapClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewHeatMapClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HeatMapClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".HeatMapClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &HeatMapClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets latest heatmap for Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// profileName - The name of the Traffic Manager profile.
-// options - HeatMapClientGetOptions contains the optional parameters for the HeatMapClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - The name of the Traffic Manager profile.
+//   - options - HeatMapClientGetOptions contains the optional parameters for the HeatMapClient.Get method.
 func (client *HeatMapClient) Get(ctx context.Context, resourceGroupName string, profileName string, options *HeatMapClientGetOptions) (HeatMapClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
 		return HeatMapClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HeatMapClientGetResponse{}, err
 	}
@@ -93,7 +83,7 @@ func (client *HeatMapClient) getCreateRequest(ctx context.Context, resourceGroup
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
 	urlPath = strings.ReplaceAll(urlPath, "{heatMapType}", url.PathEscape("default"))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

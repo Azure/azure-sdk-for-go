@@ -22,17 +22,17 @@ type AllTrafficFiltersClientListResponse struct {
 	TrafficFilterResponse
 }
 
-// AssociateTrafficFilterClientAssociateResponse contains the response from method AssociateTrafficFilterClient.Associate.
+// AssociateTrafficFilterClientAssociateResponse contains the response from method AssociateTrafficFilterClient.BeginAssociate.
 type AssociateTrafficFilterClientAssociateResponse struct {
 	// placeholder for future response values
 }
 
-// CreateAndAssociateIPFilterClientCreateResponse contains the response from method CreateAndAssociateIPFilterClient.Create.
+// CreateAndAssociateIPFilterClientCreateResponse contains the response from method CreateAndAssociateIPFilterClient.BeginCreate.
 type CreateAndAssociateIPFilterClientCreateResponse struct {
 	// placeholder for future response values
 }
 
-// CreateAndAssociatePLFilterClientCreateResponse contains the response from method CreateAndAssociatePLFilterClient.Create.
+// CreateAndAssociatePLFilterClientCreateResponse contains the response from method CreateAndAssociatePLFilterClient.BeginCreate.
 type CreateAndAssociatePLFilterClientCreateResponse struct {
 	// placeholder for future response values
 }
@@ -47,7 +47,7 @@ type DetachAndDeleteTrafficFilterClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// DetachTrafficFilterClientUpdateResponse contains the response from method DetachTrafficFilterClient.Update.
+// DetachTrafficFilterClientUpdateResponse contains the response from method DetachTrafficFilterClient.BeginUpdate.
 type DetachTrafficFilterClientUpdateResponse struct {
 	// placeholder for future response values
 }
@@ -62,22 +62,22 @@ type ListAssociatedTrafficFiltersClientListResponse struct {
 	TrafficFilterResponse
 }
 
-// MonitorClientUpgradeResponse contains the response from method MonitorClient.Upgrade.
+// MonitorClientUpgradeResponse contains the response from method MonitorClient.BeginUpgrade.
 type MonitorClientUpgradeResponse struct {
 	// placeholder for future response values
 }
 
-// MonitoredResourcesClientListResponse contains the response from method MonitoredResourcesClient.List.
+// MonitoredResourcesClientListResponse contains the response from method MonitoredResourcesClient.NewListPager.
 type MonitoredResourcesClientListResponse struct {
 	MonitoredResourceListResponse
 }
 
-// MonitorsClientCreateResponse contains the response from method MonitorsClient.Create.
+// MonitorsClientCreateResponse contains the response from method MonitorsClient.BeginCreate.
 type MonitorsClientCreateResponse struct {
 	MonitorResource
 }
 
-// MonitorsClientDeleteResponse contains the response from method MonitorsClient.Delete.
+// MonitorsClientDeleteResponse contains the response from method MonitorsClient.BeginDelete.
 type MonitorsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -87,12 +87,12 @@ type MonitorsClientGetResponse struct {
 	MonitorResource
 }
 
-// MonitorsClientListByResourceGroupResponse contains the response from method MonitorsClient.ListByResourceGroup.
+// MonitorsClientListByResourceGroupResponse contains the response from method MonitorsClient.NewListByResourceGroupPager.
 type MonitorsClientListByResourceGroupResponse struct {
 	MonitorResourceListResponse
 }
 
-// MonitorsClientListResponse contains the response from method MonitorsClient.List.
+// MonitorsClientListResponse contains the response from method MonitorsClient.NewListPager.
 type MonitorsClientListResponse struct {
 	MonitorResourceListResponse
 }
@@ -102,7 +102,7 @@ type MonitorsClientUpdateResponse struct {
 	MonitorResource
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -112,7 +112,7 @@ type TagRulesClientCreateOrUpdateResponse struct {
 	MonitoringTagRules
 }
 
-// TagRulesClientDeleteResponse contains the response from method TagRulesClient.Delete.
+// TagRulesClientDeleteResponse contains the response from method TagRulesClient.BeginDelete.
 type TagRulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -122,7 +122,7 @@ type TagRulesClientGetResponse struct {
 	MonitoringTagRules
 }
 
-// TagRulesClientListResponse contains the response from method TagRulesClient.List.
+// TagRulesClientListResponse contains the response from method TagRulesClient.NewListPager.
 type TagRulesClientListResponse struct {
 	MonitoringTagRulesListResponse
 }
@@ -142,7 +142,7 @@ type VMCollectionClientUpdateResponse struct {
 	// placeholder for future response values
 }
 
-// VMHostClientListResponse contains the response from method VMHostClient.List.
+// VMHostClientListResponse contains the response from method VMHostClient.NewListPager.
 type VMHostClientListResponse struct {
 	VMHostListResponse
 }

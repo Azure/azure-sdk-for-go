@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // ReportsClient contains the methods for the Reports group.
 // Don't use this type directly, use NewReportsClient() instead.
 type ReportsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewReportsClient creates a new instance of ReportsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReportsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ReportsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ReportsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get information about a report associated with a configuration profile assignment run
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// configurationProfileAssignmentName - The configuration profile assignment name.
-// reportName - The report name.
-// vmName - The name of the virtual machine.
-// options - ReportsClientGetOptions contains the optional parameters for the ReportsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - configurationProfileAssignmentName - The configuration profile assignment name.
+//   - reportName - The report name.
+//   - vmName - The name of the virtual machine.
+//   - options - ReportsClientGetOptions contains the optional parameters for the ReportsClient.Get method.
 func (client *ReportsClient) Get(ctx context.Context, resourceGroupName string, configurationProfileAssignmentName string, reportName string, vmName string, options *ReportsClientGetOptions) (ReportsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, configurationProfileAssignmentName, reportName, vmName, options)
 	if err != nil {
 		return ReportsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReportsClientGetResponse{}, err
 	}
@@ -101,7 +91,7 @@ func (client *ReportsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,13 +112,13 @@ func (client *ReportsClient) getHandleResponse(resp *http.Response) (ReportsClie
 }
 
 // NewListByConfigurationProfileAssignmentsPager - Retrieve a list of reports within a given configuration profile assignment
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// configurationProfileAssignmentName - The configuration profile assignment name.
-// vmName - The name of the virtual machine.
-// options - ReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the ReportsClient.ListByConfigurationProfileAssignments
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - configurationProfileAssignmentName - The configuration profile assignment name.
+//   - vmName - The name of the virtual machine.
+//   - options - ReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the ReportsClient.NewListByConfigurationProfileAssignmentsPager
+//     method.
 func (client *ReportsClient) NewListByConfigurationProfileAssignmentsPager(resourceGroupName string, configurationProfileAssignmentName string, vmName string, options *ReportsClientListByConfigurationProfileAssignmentsOptions) *runtime.Pager[ReportsClientListByConfigurationProfileAssignmentsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByConfigurationProfileAssignmentsResponse]{
 		More: func(page ReportsClientListByConfigurationProfileAssignmentsResponse) bool {
@@ -139,7 +129,7 @@ func (client *ReportsClient) NewListByConfigurationProfileAssignmentsPager(resou
 			if err != nil {
 				return ReportsClientListByConfigurationProfileAssignmentsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReportsClientListByConfigurationProfileAssignmentsResponse{}, err
 			}
@@ -170,7 +160,7 @@ func (client *ReportsClient) listByConfigurationProfileAssignmentsCreateRequest(
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

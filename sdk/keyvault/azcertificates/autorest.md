@@ -4,7 +4,7 @@
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/37cd8dfac3c570a24bb645b31c012d12efb760df/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/certificates.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/certificates.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates
 openapi-type: "data-plane"
@@ -12,7 +12,7 @@ output-folder: ../azcertificates
 override-client-name: Client
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.43"
+use: "@autorest/go@4.0.0-preview.46"
 version: "^3.0.0"
 
 directive:
@@ -99,11 +99,6 @@ directive:
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(a \*?Attributes\).*\{\s(?:.+\s)+\}\s/g, "");
 
-  # delete generated constructor
-  - from: client.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func NewClient.+\{\s(?:.+\s)+\}\s/, "");
-
   # delete the version path param check (version == "" is legal for Key Vault but indescribable by OpenAPI)
   - from: client.go
     where: $
@@ -127,4 +122,9 @@ directive:
   - from: client.go
   - where: $
   - transform: return $.replace(/certificate((?:Name|Policy|Version)) string/g, (match) => { return match[0].toLowerCase() + match.substr(1); })
+
+  # add doc comment
+  - from: swagger-document
+    where: $.definitions.X509CertificateProperties.properties.key_usage.items
+    transform: $["description"] = "Defines how the certificate's key may be used."
 ```

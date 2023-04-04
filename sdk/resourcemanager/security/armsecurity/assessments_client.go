@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,28 +24,19 @@ import (
 // AssessmentsClient contains the methods for the Assessments group.
 // Don't use this type directly, use NewAssessmentsClient() instead.
 type AssessmentsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewAssessmentsClient creates a new instance of AssessmentsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAssessmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AssessmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AssessmentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AssessmentsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -55,18 +44,19 @@ func NewAssessmentsClient(credential azcore.TokenCredential, options *arm.Client
 // CreateOrUpdate - Create a security assessment on your resource. An assessment metadata that describes this assessment must
 // be predefined with the same name before inserting the assessment result
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-01
-// resourceID - The identifier of the resource.
-// assessmentName - The Assessment Key - Unique key for the assessment type
-// assessment - Calculated assessment on a pre-defined assessment metadata
-// options - AssessmentsClientCreateOrUpdateOptions contains the optional parameters for the AssessmentsClient.CreateOrUpdate
-// method.
+//   - resourceID - The identifier of the resource.
+//   - assessmentName - The Assessment Key - Unique key for the assessment type
+//   - assessment - Calculated assessment on a pre-defined assessment metadata
+//   - options - AssessmentsClientCreateOrUpdateOptions contains the optional parameters for the AssessmentsClient.CreateOrUpdate
+//     method.
 func (client *AssessmentsClient) CreateOrUpdate(ctx context.Context, resourceID string, assessmentName string, assessment Assessment, options *AssessmentsClientCreateOrUpdateOptions) (AssessmentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceID, assessmentName, assessment, options)
 	if err != nil {
 		return AssessmentsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssessmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -84,7 +74,7 @@ func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter assessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -107,16 +97,17 @@ func (client *AssessmentsClient) createOrUpdateHandleResponse(resp *http.Respons
 // Delete - Delete a security assessment on your resource. An assessment metadata that describes this assessment must be predefined
 // with the same name before inserting the assessment result
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-01
-// resourceID - The identifier of the resource.
-// assessmentName - The Assessment Key - Unique key for the assessment type
-// options - AssessmentsClientDeleteOptions contains the optional parameters for the AssessmentsClient.Delete method.
+//   - resourceID - The identifier of the resource.
+//   - assessmentName - The Assessment Key - Unique key for the assessment type
+//   - options - AssessmentsClientDeleteOptions contains the optional parameters for the AssessmentsClient.Delete method.
 func (client *AssessmentsClient) Delete(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsClientDeleteOptions) (AssessmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceID, assessmentName, options)
 	if err != nil {
 		return AssessmentsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssessmentsClientDeleteResponse{}, err
 	}
@@ -134,7 +125,7 @@ func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter assessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,16 +138,17 @@ func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Get a security assessment on your scanned resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-06-01
-// resourceID - The identifier of the resource.
-// assessmentName - The Assessment Key - Unique key for the assessment type
-// options - AssessmentsClientGetOptions contains the optional parameters for the AssessmentsClient.Get method.
+//   - resourceID - The identifier of the resource.
+//   - assessmentName - The Assessment Key - Unique key for the assessment type
+//   - options - AssessmentsClientGetOptions contains the optional parameters for the AssessmentsClient.Get method.
 func (client *AssessmentsClient) Get(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsClientGetOptions) (AssessmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceID, assessmentName, options)
 	if err != nil {
 		return AssessmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssessmentsClientGetResponse{}, err
 	}
@@ -174,7 +166,7 @@ func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceI
 		return nil, errors.New("parameter assessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -198,10 +190,11 @@ func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (Assessm
 }
 
 // NewListPager - Get security assessments on all your scanned resources inside a scope
+//
 // Generated from API version 2021-06-01
-// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
-// (/providers/Microsoft.Management/managementGroups/mgName).
-// options - AssessmentsClientListOptions contains the optional parameters for the AssessmentsClient.List method.
+//   - scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+//     (/providers/Microsoft.Management/managementGroups/mgName).
+//   - options - AssessmentsClientListOptions contains the optional parameters for the AssessmentsClient.NewListPager method.
 func (client *AssessmentsClient) NewListPager(scope string, options *AssessmentsClientListOptions) *runtime.Pager[AssessmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssessmentsClientListResponse]{
 		More: func(page AssessmentsClientListResponse) bool {
@@ -218,7 +211,7 @@ func (client *AssessmentsClient) NewListPager(scope string, options *Assessments
 			if err != nil {
 				return AssessmentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AssessmentsClientListResponse{}, err
 			}
@@ -234,7 +227,7 @@ func (client *AssessmentsClient) NewListPager(scope string, options *Assessments
 func (client *AssessmentsClient) listCreateRequest(ctx context.Context, scope string, options *AssessmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

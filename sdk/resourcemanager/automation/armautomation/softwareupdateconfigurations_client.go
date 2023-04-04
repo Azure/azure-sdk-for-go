@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,51 +24,43 @@ import (
 // SoftwareUpdateConfigurationsClient contains the methods for the SoftwareUpdateConfigurations group.
 // Don't use this type directly, use NewSoftwareUpdateConfigurationsClient() instead.
 type SoftwareUpdateConfigurationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSoftwareUpdateConfigurationsClient creates a new instance of SoftwareUpdateConfigurationsClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSoftwareUpdateConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftwareUpdateConfigurationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SoftwareUpdateConfigurationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SoftwareUpdateConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Create a new software update configuration with the name given in the URI.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-06-01
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// softwareUpdateConfigurationName - The name of the software update configuration to be created.
-// parameters - Request body.
-// options - SoftwareUpdateConfigurationsClientCreateOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.Create
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - softwareUpdateConfigurationName - The name of the software update configuration to be created.
+//   - parameters - Request body.
+//   - options - SoftwareUpdateConfigurationsClientCreateOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.Create
+//     method.
 func (client *SoftwareUpdateConfigurationsClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, softwareUpdateConfigurationName string, parameters SoftwareUpdateConfiguration, options *SoftwareUpdateConfigurationsClientCreateOptions) (SoftwareUpdateConfigurationsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, automationAccountName, softwareUpdateConfigurationName, parameters, options)
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientCreateResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *SoftwareUpdateConfigurationsClient) createCreateRequest(ctx contex
 		return nil, errors.New("parameter softwareUpdateConfigurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{softwareUpdateConfigurationName}", url.PathEscape(softwareUpdateConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,18 +114,19 @@ func (client *SoftwareUpdateConfigurationsClient) createHandleResponse(resp *htt
 
 // Delete - delete a specific software update configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-06-01
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// softwareUpdateConfigurationName - The name of the software update configuration to be created.
-// options - SoftwareUpdateConfigurationsClientDeleteOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.Delete
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - softwareUpdateConfigurationName - The name of the software update configuration to be created.
+//   - options - SoftwareUpdateConfigurationsClientDeleteOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.Delete
+//     method.
 func (client *SoftwareUpdateConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, softwareUpdateConfigurationName string, options *SoftwareUpdateConfigurationsClientDeleteOptions) (SoftwareUpdateConfigurationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, softwareUpdateConfigurationName, options)
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientDeleteResponse{}, err
 	}
@@ -164,7 +155,7 @@ func (client *SoftwareUpdateConfigurationsClient) deleteCreateRequest(ctx contex
 		return nil, errors.New("parameter softwareUpdateConfigurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{softwareUpdateConfigurationName}", url.PathEscape(softwareUpdateConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -180,18 +171,19 @@ func (client *SoftwareUpdateConfigurationsClient) deleteCreateRequest(ctx contex
 
 // GetByName - Get a single software update configuration by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-06-01
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// softwareUpdateConfigurationName - The name of the software update configuration to be created.
-// options - SoftwareUpdateConfigurationsClientGetByNameOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.GetByName
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - softwareUpdateConfigurationName - The name of the software update configuration to be created.
+//   - options - SoftwareUpdateConfigurationsClientGetByNameOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.GetByName
+//     method.
 func (client *SoftwareUpdateConfigurationsClient) GetByName(ctx context.Context, resourceGroupName string, automationAccountName string, softwareUpdateConfigurationName string, options *SoftwareUpdateConfigurationsClientGetByNameOptions) (SoftwareUpdateConfigurationsClientGetByNameResponse, error) {
 	req, err := client.getByNameCreateRequest(ctx, resourceGroupName, automationAccountName, softwareUpdateConfigurationName, options)
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientGetByNameResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientGetByNameResponse{}, err
 	}
@@ -220,7 +212,7 @@ func (client *SoftwareUpdateConfigurationsClient) getByNameCreateRequest(ctx con
 		return nil, errors.New("parameter softwareUpdateConfigurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{softwareUpdateConfigurationName}", url.PathEscape(softwareUpdateConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -245,17 +237,18 @@ func (client *SoftwareUpdateConfigurationsClient) getByNameHandleResponse(resp *
 
 // List - Get all software update configurations for the account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-06-01
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - SoftwareUpdateConfigurationsClientListOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.List
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - SoftwareUpdateConfigurationsClientListOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.List
+//     method.
 func (client *SoftwareUpdateConfigurationsClient) List(ctx context.Context, resourceGroupName string, automationAccountName string, options *SoftwareUpdateConfigurationsClientListOptions) (SoftwareUpdateConfigurationsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientListResponse{}, err
 	}
@@ -280,7 +273,7 @@ func (client *SoftwareUpdateConfigurationsClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

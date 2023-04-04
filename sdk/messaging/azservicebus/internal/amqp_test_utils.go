@@ -135,7 +135,7 @@ func (r *FakeAMQPReceiver) Prefetched() *amqp.Message {
 
 // Receive returns the next result from ReceiveResults or, if the ReceiveResults
 // is empty, will block on ctx.Done().
-func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
+func (r *FakeAMQPReceiver) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 	r.ReceiveCalled++
 
 	select {

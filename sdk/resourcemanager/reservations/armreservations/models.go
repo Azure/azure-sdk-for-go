@@ -315,6 +315,12 @@ type Catalog struct {
 type CatalogMsrp struct {
 	// Amount in pricing currency. Tax not included.
 	P1Y *Price `json:"p1Y,omitempty"`
+
+	// Amount in pricing currency. Tax not included.
+	P3Y *Price `json:"p3Y,omitempty"`
+
+	// Amount in pricing currency. Tax not included.
+	P5Y *Price `json:"p5Y,omitempty"`
 }
 
 // CatalogsResult - The list of catalogs and pagination information.
@@ -605,7 +611,9 @@ type PatchProperties struct {
 	// Type of the Applied Scope.
 	AppliedScopeType *AppliedScopeType `json:"appliedScopeType,omitempty"`
 
-	// List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared.
+	// List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared. This property
+	// will be deprecated and replaced by appliedScopeProperties instead for Single
+	// AppliedScopeType.
 	AppliedScopes []*string `json:"appliedScopes,omitempty"`
 
 	// Turning this on will apply the reservation discount to other VMs in the same VM size group. Only specify for VirtualMachines
@@ -815,7 +823,9 @@ type PurchaseRequestProperties struct {
 	// Type of the Applied Scope.
 	AppliedScopeType *AppliedScopeType `json:"appliedScopeType,omitempty"`
 
-	// List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared.
+	// List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared. This property
+	// will be deprecated and replaced by appliedScopeProperties instead for Single
+	// AppliedScopeType.
 	AppliedScopes []*string `json:"appliedScopes,omitempty"`
 
 	// Represent the billing plans.

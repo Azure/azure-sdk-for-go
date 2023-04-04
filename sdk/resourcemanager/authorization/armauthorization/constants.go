@@ -11,7 +11,7 @@ package armauthorization
 
 const (
 	moduleName    = "armauthorization"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.1.0"
 )
 
 // ApprovalMode - The type of rule

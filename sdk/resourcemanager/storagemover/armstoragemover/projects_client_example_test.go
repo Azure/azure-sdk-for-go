@@ -25,11 +25,11 @@ func ExampleProjectsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewProjectsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("examples-rg", "examples-storageMoverName", nil)
+	pager := clientFactory.NewProjectsClient().NewListPager("examples-rg", "examples-storageMoverName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -77,11 +77,11 @@ func ExampleProjectsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewProjectsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", nil)
+	res, err := clientFactory.NewProjectsClient().Get(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -105,11 +105,11 @@ func ExampleProjectsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewProjectsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", armstoragemover.Project{
+	res, err := clientFactory.NewProjectsClient().CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", armstoragemover.Project{
 		Properties: &armstoragemover.ProjectProperties{
 			Description: to.Ptr("Example Project Description"),
 		},
@@ -137,11 +137,11 @@ func ExampleProjectsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewProjectsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", armstoragemover.ProjectUpdateParameters{
+	res, err := clientFactory.NewProjectsClient().Update(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", armstoragemover.ProjectUpdateParameters{
 		Properties: &armstoragemover.ProjectUpdateProperties{
 			Description: to.Ptr("Example Project Description"),
 		},
@@ -169,11 +169,11 @@ func ExampleProjectsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewProjectsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", nil)
+	poller, err := clientFactory.NewProjectsClient().BeginDelete(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

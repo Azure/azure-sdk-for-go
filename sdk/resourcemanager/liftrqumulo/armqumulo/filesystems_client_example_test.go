@@ -25,11 +25,11 @@ func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscr
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("ulseeqylxb", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewFileSystemsClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -100,11 +100,11 @@ func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscr
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("aaaaaaa", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewFileSystemsClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -148,11 +148,11 @@ func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResou
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("ulseeqylxb", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rgQumulo", nil)
+	pager := clientFactory.NewFileSystemsClient().NewListByResourceGroupPager("rgQumulo", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -223,11 +223,11 @@ func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResou
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("aaaaaaa", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rgQumulo", nil)
+	pager := clientFactory.NewFileSystemsClient().NewListByResourceGroupPager("rgQumulo", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -271,11 +271,11 @@ func ExampleFileSystemsClient_Get_fileSystemsGetMaximumSetGen() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("ulseeqylxb", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", nil)
+	res, err := clientFactory.NewFileSystemsClient().Get(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -338,11 +338,11 @@ func ExampleFileSystemsClient_Get_fileSystemsGetMinimumSetGen() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("aaaaaaa", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rgQumulo", "aaaaaaaaaaaaaaaaa", nil)
+	res, err := clientFactory.NewFileSystemsClient().Get(ctx, "rgQumulo", "aaaaaaaaaaaaaaaaa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -378,11 +378,11 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMaxim
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("ulseeqylxb", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", armqumulo.FileSystemResource{
+	poller, err := clientFactory.NewFileSystemsClient().BeginCreateOrUpdate(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", armqumulo.FileSystemResource{
 		Location: to.Ptr("przdlsmlzsszphnixq"),
 		Tags: map[string]*string{
 			"key6565": to.Ptr("cgdhmupta"),
@@ -481,11 +481,11 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMinim
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("aaaaaaaaaaaaaaaaaaaaaaaa", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rgopenapi", "aaaaaaaa", armqumulo.FileSystemResource{
+	poller, err := clientFactory.NewFileSystemsClient().BeginCreateOrUpdate(ctx, "rgopenapi", "aaaaaaaa", armqumulo.FileSystemResource{
 		Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
 		Properties: &armqumulo.FileSystemResourceProperties{
 			AdminPassword:     to.Ptr("ekceujoecaashtjlsgcymnrdozk"),
@@ -543,11 +543,11 @@ func ExampleFileSystemsClient_Update_fileSystemsUpdateMaximumSetGen() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("ulseeqylxb", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", armqumulo.FileSystemResourceUpdate{
+	res, err := clientFactory.NewFileSystemsClient().Update(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", armqumulo.FileSystemResourceUpdate{
 		Identity: &armqumulo.ManagedServiceIdentity{
 			Type: to.Ptr(armqumulo.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armqumulo.UserAssignedIdentity{
@@ -636,11 +636,11 @@ func ExampleFileSystemsClient_Update_fileSystemsUpdateMinimumSetGen() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("aaaaaaa", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "rgQumulo", "aaaaaaaaaaaaaaaaa", armqumulo.FileSystemResourceUpdate{}, nil)
+	res, err := clientFactory.NewFileSystemsClient().Update(ctx, "rgQumulo", "aaaaaaaaaaaaaaaaa", armqumulo.FileSystemResourceUpdate{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -675,11 +675,11 @@ func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMaximumSetGen() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("ulseeqylxb", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", nil)
+	poller, err := clientFactory.NewFileSystemsClient().BeginDelete(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -696,11 +696,11 @@ func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMinimumSetGen() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armqumulo.NewFileSystemsClient("ulseeqylxb", cred, nil)
+	clientFactory, err := armqumulo.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", nil)
+	poller, err := clientFactory.NewFileSystemsClient().BeginDelete(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

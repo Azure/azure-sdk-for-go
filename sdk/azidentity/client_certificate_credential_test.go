@@ -295,7 +295,7 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 		t.Fatalf("expected AuthenticationFailedError, received %T", err)
 	}
 	if !strings.HasPrefix(err.Error(), credNameCert) {
-		t.Fatal("missing credential type prefix")
+		t.Fatalf("error is missing credential type prefix: %q", err.Error())
 	}
 }
 

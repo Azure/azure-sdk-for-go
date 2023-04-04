@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // CollectorPoliciesClient contains the methods for the CollectorPolicies group.
 // Don't use this type directly, use NewCollectorPoliciesClient() instead.
 type CollectorPoliciesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCollectorPoliciesClient creates a new instance of CollectorPoliciesClient with the specified values.
-// subscriptionID - Azure Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCollectorPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CollectorPoliciesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CollectorPoliciesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CollectorPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a Collector Policy resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// azureTrafficCollectorName - Azure Traffic Collector name
-// collectorPolicyName - Collector Policy Name
-// parameters - The parameters to provide for the created Collector Policy.
-// options - CollectorPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the CollectorPoliciesClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - azureTrafficCollectorName - Azure Traffic Collector name
+//   - collectorPolicyName - Collector Policy Name
+//   - parameters - The parameters to provide for the created Collector Policy.
+//   - options - CollectorPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the CollectorPoliciesClient.BeginCreateOrUpdate
+//     method.
 func (client *CollectorPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, parameters CollectorPolicy, options *CollectorPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CollectorPoliciesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CollectorPoliciesClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CollectorPoliciesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CollectorPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CollectorPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a Collector Policy resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *CollectorPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, parameters CollectorPolicy, options *CollectorPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +106,7 @@ func (client *CollectorPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter collectorPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectorPolicyName}", url.PathEscape(collectorPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,35 +119,37 @@ func (client *CollectorPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 
 // BeginDelete - Deletes a specified Collector Policy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// azureTrafficCollectorName - Azure Traffic Collector name
-// collectorPolicyName - Collector Policy Name
-// options - CollectorPoliciesClientBeginDeleteOptions contains the optional parameters for the CollectorPoliciesClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - azureTrafficCollectorName - Azure Traffic Collector name
+//   - collectorPolicyName - Collector Policy Name
+//   - options - CollectorPoliciesClientBeginDeleteOptions contains the optional parameters for the CollectorPoliciesClient.BeginDelete
+//     method.
 func (client *CollectorPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, options *CollectorPoliciesClientBeginDeleteOptions) (*runtime.Poller[CollectorPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, azureTrafficCollectorName, collectorPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CollectorPoliciesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CollectorPoliciesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CollectorPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CollectorPoliciesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a specified Collector Policy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *CollectorPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, options *CollectorPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, azureTrafficCollectorName, collectorPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +178,7 @@ func (client *CollectorPoliciesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter collectorPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectorPolicyName}", url.PathEscape(collectorPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -198,17 +191,18 @@ func (client *CollectorPoliciesClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Gets the collector policy in a specified Traffic Collector
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// azureTrafficCollectorName - Azure Traffic Collector name
-// collectorPolicyName - Collector Policy Name
-// options - CollectorPoliciesClientGetOptions contains the optional parameters for the CollectorPoliciesClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - azureTrafficCollectorName - Azure Traffic Collector name
+//   - collectorPolicyName - Collector Policy Name
+//   - options - CollectorPoliciesClientGetOptions contains the optional parameters for the CollectorPoliciesClient.Get method.
 func (client *CollectorPoliciesClient) Get(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, options *CollectorPoliciesClientGetOptions) (CollectorPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, azureTrafficCollectorName, collectorPolicyName, options)
 	if err != nil {
 		return CollectorPoliciesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CollectorPoliciesClientGetResponse{}, err
 	}
@@ -237,7 +231,7 @@ func (client *CollectorPoliciesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter collectorPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectorPolicyName}", url.PathEscape(collectorPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -258,10 +252,12 @@ func (client *CollectorPoliciesClient) getHandleResponse(resp *http.Response) (C
 }
 
 // NewListPager - Return list of Collector policies in a Azure Traffic Collector
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// azureTrafficCollectorName - Azure Traffic Collector name
-// options - CollectorPoliciesClientListOptions contains the optional parameters for the CollectorPoliciesClient.List method.
+//   - resourceGroupName - The name of the resource group.
+//   - azureTrafficCollectorName - Azure Traffic Collector name
+//   - options - CollectorPoliciesClientListOptions contains the optional parameters for the CollectorPoliciesClient.NewListPager
+//     method.
 func (client *CollectorPoliciesClient) NewListPager(resourceGroupName string, azureTrafficCollectorName string, options *CollectorPoliciesClientListOptions) *runtime.Pager[CollectorPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CollectorPoliciesClientListResponse]{
 		More: func(page CollectorPoliciesClientListResponse) bool {
@@ -278,7 +274,7 @@ func (client *CollectorPoliciesClient) NewListPager(resourceGroupName string, az
 			if err != nil {
 				return CollectorPoliciesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CollectorPoliciesClientListResponse{}, err
 			}
@@ -305,7 +301,7 @@ func (client *CollectorPoliciesClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter azureTrafficCollectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureTrafficCollectorName}", url.PathEscape(azureTrafficCollectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -327,19 +323,20 @@ func (client *CollectorPoliciesClient) listHandleResponse(resp *http.Response) (
 
 // UpdateTags - Updates the specified Collector Policy tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// azureTrafficCollectorName - Azure Traffic Collector name
-// collectorPolicyName - Collector Policy Name
-// parameters - Parameters supplied to update Collector Policy tags.
-// options - CollectorPoliciesClientUpdateTagsOptions contains the optional parameters for the CollectorPoliciesClient.UpdateTags
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - azureTrafficCollectorName - Azure Traffic Collector name
+//   - collectorPolicyName - Collector Policy Name
+//   - parameters - Parameters supplied to update Collector Policy tags.
+//   - options - CollectorPoliciesClientUpdateTagsOptions contains the optional parameters for the CollectorPoliciesClient.UpdateTags
+//     method.
 func (client *CollectorPoliciesClient) UpdateTags(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, parameters TagsObject, options *CollectorPoliciesClientUpdateTagsOptions) (CollectorPoliciesClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, options)
 	if err != nil {
 		return CollectorPoliciesClientUpdateTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CollectorPoliciesClientUpdateTagsResponse{}, err
 	}
@@ -368,7 +365,7 @@ func (client *CollectorPoliciesClient) updateTagsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter collectorPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectorPolicyName}", url.PathEscape(collectorPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

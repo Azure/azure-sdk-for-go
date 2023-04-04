@@ -97,9 +97,9 @@ func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSess
 	linkOptions := createLinkOptions(r.inner.receiveMode)
 
 	if r.sessionID == nil {
-		linkOptions.Filters = append(linkOptions.Filters, amqp.LinkFilterSource(sessionFilterName, code, nil))
+		linkOptions.Filters = append(linkOptions.Filters, amqp.NewLinkFilter(sessionFilterName, code, nil))
 	} else {
-		linkOptions.Filters = append(linkOptions.Filters, amqp.LinkFilterSource(sessionFilterName, code, r.sessionID))
+		linkOptions.Filters = append(linkOptions.Filters, amqp.NewLinkFilter(sessionFilterName, code, r.sessionID))
 	}
 
 	if r.acceptNextTimeout > 0 {

@@ -25,11 +25,11 @@ func ExampleKustoPoolDatabasesClient_NewListByKustoPoolPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByKustoPoolPager("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", nil)
+	pager := clientFactory.NewKustoPoolDatabasesClient().NewListByKustoPoolPager("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -75,11 +75,11 @@ func ExampleKustoPoolDatabasesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", nil)
+	res, err := clientFactory.NewKustoPoolDatabasesClient().Get(ctx, "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -108,11 +108,11 @@ func ExampleKustoPoolDatabasesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", &armsynapse.ReadWriteDatabase{
+	poller, err := clientFactory.NewKustoPoolDatabasesClient().BeginCreateOrUpdate(ctx, "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", &armsynapse.ReadWriteDatabase{
 		Kind:     to.Ptr(armsynapse.KindReadWrite),
 		Location: to.Ptr("westus"),
 		Properties: &armsynapse.ReadWriteDatabaseProperties{
@@ -151,11 +151,11 @@ func ExampleKustoPoolDatabasesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", &armsynapse.ReadWriteDatabase{
+	poller, err := clientFactory.NewKustoPoolDatabasesClient().BeginUpdate(ctx, "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", &armsynapse.ReadWriteDatabase{
 		Kind: to.Ptr(armsynapse.KindReadWrite),
 		Properties: &armsynapse.ReadWriteDatabaseProperties{
 			SoftDeletePeriod: to.Ptr("P1D"),
@@ -193,11 +193,11 @@ func ExampleKustoPoolDatabasesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", nil)
+	poller, err := clientFactory.NewKustoPoolDatabasesClient().BeginDelete(ctx, "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

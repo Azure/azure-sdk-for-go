@@ -22,8 +22,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,66 +33,59 @@ import (
 // ResourcePoolsClient contains the methods for the ResourcePools group.
 // Don't use this type directly, use NewResourcePoolsClient() instead.
 type ResourcePoolsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewResourcePoolsClient creates a new instance of ResourcePoolsClient with the specified values.
-// subscriptionID - The Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewResourcePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourcePoolsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ResourcePoolsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ResourcePoolsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Create Or Update resourcePool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// resourcePoolName - Name of the resourcePool.
-// body - Request payload.
-// options - ResourcePoolsClientBeginCreateOptions contains the optional parameters for the ResourcePoolsClient.BeginCreate
-// method.
+//   - resourceGroupName - The Resource Group Name.
+//   - resourcePoolName - Name of the resourcePool.
+//   - body - Request payload.
+//   - options - ResourcePoolsClientBeginCreateOptions contains the optional parameters for the ResourcePoolsClient.BeginCreate
+//     method.
 func (client *ResourcePoolsClient) BeginCreate(ctx context.Context, resourceGroupName string, resourcePoolName string, body ResourcePool, options *ResourcePoolsClientBeginCreateOptions) (*runtime.Poller[ResourcePoolsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, resourcePoolName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ResourcePoolsClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourcePoolsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ResourcePoolsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ResourcePoolsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Create Or Update resourcePool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *ResourcePoolsClient) create(ctx context.Context, resourceGroupName string, resourcePoolName string, body ResourcePool, options *ResourcePoolsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, resourcePoolName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +110,7 @@ func (client *ResourcePoolsClient) createCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter resourcePoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourcePoolName}", url.PathEscape(resourcePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -132,32 +123,34 @@ func (client *ResourcePoolsClient) createCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Implements resourcePool DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// resourcePoolName - Name of the resourcePool.
-// options - ResourcePoolsClientBeginDeleteOptions contains the optional parameters for the ResourcePoolsClient.BeginDelete
-// method.
+//   - resourceGroupName - The Resource Group Name.
+//   - resourcePoolName - Name of the resourcePool.
+//   - options - ResourcePoolsClientBeginDeleteOptions contains the optional parameters for the ResourcePoolsClient.BeginDelete
+//     method.
 func (client *ResourcePoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourcePoolName string, options *ResourcePoolsClientBeginDeleteOptions) (*runtime.Poller[ResourcePoolsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourcePoolName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ResourcePoolsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ResourcePoolsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ResourcePoolsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ResourcePoolsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Implements resourcePool DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *ResourcePoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourcePoolName string, options *ResourcePoolsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourcePoolName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +175,7 @@ func (client *ResourcePoolsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter resourcePoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourcePoolName}", url.PathEscape(resourcePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -198,16 +191,17 @@ func (client *ResourcePoolsClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - Implements resourcePool GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// resourcePoolName - Name of the resourcePool.
-// options - ResourcePoolsClientGetOptions contains the optional parameters for the ResourcePoolsClient.Get method.
+//   - resourceGroupName - The Resource Group Name.
+//   - resourcePoolName - Name of the resourcePool.
+//   - options - ResourcePoolsClientGetOptions contains the optional parameters for the ResourcePoolsClient.Get method.
 func (client *ResourcePoolsClient) Get(ctx context.Context, resourceGroupName string, resourcePoolName string, options *ResourcePoolsClientGetOptions) (ResourcePoolsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourcePoolName, options)
 	if err != nil {
 		return ResourcePoolsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourcePoolsClientGetResponse{}, err
 	}
@@ -232,7 +226,7 @@ func (client *ResourcePoolsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter resourcePoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourcePoolName}", url.PathEscape(resourcePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -253,9 +247,9 @@ func (client *ResourcePoolsClient) getHandleResponse(resp *http.Response) (Resou
 }
 
 // NewListPager - List of resourcePools in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// options - ResourcePoolsClientListOptions contains the optional parameters for the ResourcePoolsClient.List method.
+//   - options - ResourcePoolsClientListOptions contains the optional parameters for the ResourcePoolsClient.NewListPager method.
 func (client *ResourcePoolsClient) NewListPager(options *ResourcePoolsClientListOptions) *runtime.Pager[ResourcePoolsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourcePoolsClientListResponse]{
 		More: func(page ResourcePoolsClientListResponse) bool {
@@ -272,7 +266,7 @@ func (client *ResourcePoolsClient) NewListPager(options *ResourcePoolsClientList
 			if err != nil {
 				return ResourcePoolsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ResourcePoolsClientListResponse{}, err
 			}
@@ -291,7 +285,7 @@ func (client *ResourcePoolsClient) listCreateRequest(ctx context.Context, option
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,11 +306,11 @@ func (client *ResourcePoolsClient) listHandleResponse(resp *http.Response) (Reso
 }
 
 // NewListByResourceGroupPager - List of resourcePools in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// options - ResourcePoolsClientListByResourceGroupOptions contains the optional parameters for the ResourcePoolsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The Resource Group Name.
+//   - options - ResourcePoolsClientListByResourceGroupOptions contains the optional parameters for the ResourcePoolsClient.NewListByResourceGroupPager
+//     method.
 func (client *ResourcePoolsClient) NewListByResourceGroupPager(resourceGroupName string, options *ResourcePoolsClientListByResourceGroupOptions) *runtime.Pager[ResourcePoolsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourcePoolsClientListByResourceGroupResponse]{
 		More: func(page ResourcePoolsClientListByResourceGroupResponse) bool {
@@ -333,7 +327,7 @@ func (client *ResourcePoolsClient) NewListByResourceGroupPager(resourceGroupName
 			if err != nil {
 				return ResourcePoolsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ResourcePoolsClientListByResourceGroupResponse{}, err
 			}
@@ -356,7 +350,7 @@ func (client *ResourcePoolsClient) listByResourceGroupCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -378,17 +372,18 @@ func (client *ResourcePoolsClient) listByResourceGroupHandleResponse(resp *http.
 
 // Update - API to update certain properties of the resourcePool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// resourcePoolName - Name of the resourcePool.
-// body - Resource properties to update.
-// options - ResourcePoolsClientUpdateOptions contains the optional parameters for the ResourcePoolsClient.Update method.
+//   - resourceGroupName - The Resource Group Name.
+//   - resourcePoolName - Name of the resourcePool.
+//   - body - Resource properties to update.
+//   - options - ResourcePoolsClientUpdateOptions contains the optional parameters for the ResourcePoolsClient.Update method.
 func (client *ResourcePoolsClient) Update(ctx context.Context, resourceGroupName string, resourcePoolName string, body ResourcePatch, options *ResourcePoolsClientUpdateOptions) (ResourcePoolsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourcePoolName, body, options)
 	if err != nil {
 		return ResourcePoolsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourcePoolsClientUpdateResponse{}, err
 	}
@@ -413,7 +408,7 @@ func (client *ResourcePoolsClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter resourcePoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourcePoolName}", url.PathEscape(resourcePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // ImagesClient contains the methods for the Images group.
 // Don't use this type directly, use NewImagesClient() instead.
 type ImagesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewImagesClient creates a new instance of ImagesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImagesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ImagesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ImagesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Updates an image resource via PUT. Creating new resources via PUT will not function.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
-// and in UI.
-// imageName - The image name.
-// body - The request body.
-// options - ImagesClientCreateOrUpdateOptions contains the optional parameters for the ImagesClient.CreateOrUpdate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+//     and in UI.
+//   - imageName - The image name.
+//   - body - The request body.
+//   - options - ImagesClientCreateOrUpdateOptions contains the optional parameters for the ImagesClient.CreateOrUpdate method.
 func (client *ImagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, body Image, options *ImagesClientCreateOrUpdateOptions) (ImagesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labPlanName, imageName, body, options)
 	if err != nil {
 		return ImagesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ImagesClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter imageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,18 +110,19 @@ func (client *ImagesClient) createOrUpdateHandleResponse(resp *http.Response) (I
 
 // Get - Gets an image resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
-// and in UI.
-// imageName - The image name.
-// options - ImagesClientGetOptions contains the optional parameters for the ImagesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+//     and in UI.
+//   - imageName - The image name.
+//   - options - ImagesClientGetOptions contains the optional parameters for the ImagesClient.Get method.
 func (client *ImagesClient) Get(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, options *ImagesClientGetOptions) (ImagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labPlanName, imageName, options)
 	if err != nil {
 		return ImagesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ImagesClientGetResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter imageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,12 +172,13 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 }
 
 // NewListByLabPlanPager - Gets all images from galleries attached to a lab plan.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
-// and in UI.
-// options - ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.ListByLabPlan method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+//     and in UI.
+//   - options - ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.NewListByLabPlanPager
+//     method.
 func (client *ImagesClient) NewListByLabPlanPager(resourceGroupName string, labPlanName string, options *ImagesClientListByLabPlanOptions) *runtime.Pager[ImagesClientListByLabPlanResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ImagesClientListByLabPlanResponse]{
 		More: func(page ImagesClientListByLabPlanResponse) bool {
@@ -203,7 +195,7 @@ func (client *ImagesClient) NewListByLabPlanPager(resourceGroupName string, labP
 			if err != nil {
 				return ImagesClientListByLabPlanResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ImagesClientListByLabPlanResponse{}, err
 			}
@@ -230,7 +222,7 @@ func (client *ImagesClient) listByLabPlanCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter labPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labPlanName}", url.PathEscape(labPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -255,19 +247,20 @@ func (client *ImagesClient) listByLabPlanHandleResponse(resp *http.Response) (Im
 
 // Update - Updates an image resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
-// and in UI.
-// imageName - The image name.
-// body - The request body.
-// options - ImagesClientUpdateOptions contains the optional parameters for the ImagesClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+//     and in UI.
+//   - imageName - The image name.
+//   - body - The request body.
+//   - options - ImagesClientUpdateOptions contains the optional parameters for the ImagesClient.Update method.
 func (client *ImagesClient) Update(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, body ImageUpdate, options *ImagesClientUpdateOptions) (ImagesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labPlanName, imageName, body, options)
 	if err != nil {
 		return ImagesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ImagesClientUpdateResponse{}, err
 	}
@@ -296,7 +289,7 @@ func (client *ImagesClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter imageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

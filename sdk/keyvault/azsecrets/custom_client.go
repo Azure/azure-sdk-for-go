@@ -37,8 +37,11 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 			DisableChallengeResourceVerification: options.DisableChallengeResourceVerification,
 		},
 	)
-	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &Client{endpoint: vaultURL, pl: pl}, nil
+	azcoreClient, err := azcore.NewClient("azsecrets.Client", version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return &Client{endpoint: vaultURL, internal: azcoreClient}, nil
 }
 
 // ID is a secret's unique ID, containing its name and version.

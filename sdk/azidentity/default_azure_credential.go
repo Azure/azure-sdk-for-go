@@ -23,9 +23,12 @@ import (
 type DefaultAzureCredentialOptions struct {
 	azcore.ClientOptions
 
+	// AdditionallyAllowedTenants specifies additional tenants for which the credential may acquire tokens. Add
+	// the wildcard value "*" to allow the credential to acquire tokens for any tenant. This value can also be
+	// set as a semicolon delimited list of tenants in the environment variable AZURE_ADDITIONALLY_ALLOWED_TENANTS.
+	AdditionallyAllowedTenants []string
 	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
 	DisableInstanceDiscovery bool
-
 	// TenantID identifies the tenant the Azure CLI should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
 	TenantID string
@@ -58,8 +61,16 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	if options == nil {
 		options = &DefaultAzureCredentialOptions{}
 	}
+	additionalTenants := options.AdditionallyAllowedTenants
+	if len(additionalTenants) == 0 {
+		if tenants := os.Getenv(azureAdditionallyAllowedTenants); tenants != "" {
+			additionalTenants = strings.Split(tenants, ";")
+		}
+	}
 
-	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: options.ClientOptions, DisableInstanceDiscovery: options.DisableInstanceDiscovery})
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
+		ClientOptions: options.ClientOptions, DisableInstanceDiscovery: options.DisableInstanceDiscovery, additionallyAllowedTenants: additionalTenants},
+	)
 	if err == nil {
 		creds = append(creds, envCred)
 	} else {
@@ -68,34 +79,20 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	}
 
 	// workload identity requires values for AZURE_AUTHORITY_HOST, AZURE_CLIENT_ID, AZURE_FEDERATED_TOKEN_FILE, AZURE_TENANT_ID
-	haveWorkloadConfig := false
-	clientID, haveClientID := os.LookupEnv(azureClientID)
-	if haveClientID {
-		if file, ok := os.LookupEnv(azureFederatedTokenFile); ok {
-			if _, ok := os.LookupEnv(azureAuthorityHost); ok {
-				if tenantID, ok := os.LookupEnv(azureTenantID); ok {
-					haveWorkloadConfig = true
-					workloadCred, err := NewWorkloadIdentityCredential(tenantID, clientID, file, &WorkloadIdentityCredentialOptions{
-						ClientOptions: options.ClientOptions},
-					)
-					if err == nil {
-						creds = append(creds, workloadCred)
-					} else {
-						errorMessages = append(errorMessages, credNameWorkloadIdentity+": "+err.Error())
-						creds = append(creds, &defaultCredentialErrorReporter{credType: credNameWorkloadIdentity, err: err})
-					}
-				}
-			}
-		}
-	}
-	if !haveWorkloadConfig {
-		err := errors.New("missing environment variables for workload identity. Check webhook and pod configuration")
+	wic, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		AdditionallyAllowedTenants: additionalTenants,
+		ClientOptions:              options.ClientOptions,
+		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
+	})
+	if err == nil {
+		creds = append(creds, wic)
+	} else {
+		errorMessages = append(errorMessages, credNameWorkloadIdentity+": "+err.Error())
 		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameWorkloadIdentity, err: err})
 	}
-
 	o := &ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions}
-	if haveClientID {
-		o.ID = ClientID(clientID)
+	if ID, ok := os.LookupEnv(azureClientID); ok {
+		o.ID = ClientID(ID)
 	}
 	miCred, err := NewManagedIdentityCredential(o)
 	if err == nil {
@@ -105,7 +102,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameManagedIdentity, err: err})
 	}
 
-	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: options.TenantID})
+	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{AdditionallyAllowedTenants: additionalTenants, TenantID: options.TenantID})
 	if err == nil {
 		creds = append(creds, cliCred)
 	} else {

@@ -24,7 +24,7 @@ type ActionsClientGetResponse struct {
 	ActionResponse
 }
 
-// ActionsClientListByAlertRuleResponse contains the response from method ActionsClient.ListByAlertRule.
+// ActionsClientListByAlertRuleResponse contains the response from method ActionsClient.NewListByAlertRulePager.
 type ActionsClientListByAlertRuleResponse struct {
 	ActionsList
 }
@@ -44,7 +44,7 @@ func (a *AlertRuleTemplatesClientGetResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// AlertRuleTemplatesClientListResponse contains the response from method AlertRuleTemplatesClient.List.
+// AlertRuleTemplatesClientListResponse contains the response from method AlertRuleTemplatesClient.NewListPager.
 type AlertRuleTemplatesClientListResponse struct {
 	AlertRuleTemplatesList
 }
@@ -84,7 +84,7 @@ func (a *AlertRulesClientGetResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// AlertRulesClientListResponse contains the response from method AlertRulesClient.List.
+// AlertRulesClientListResponse contains the response from method AlertRulesClient.NewListPager.
 type AlertRulesClientListResponse struct {
 	AlertRulesList
 }
@@ -97,7 +97,7 @@ type AutomationRulesClientCreateOrUpdateResponse struct {
 // AutomationRulesClientDeleteResponse contains the response from method AutomationRulesClient.Delete.
 type AutomationRulesClientDeleteResponse struct {
 	// Anything
-	Interface interface{}
+	Interface any
 }
 
 // AutomationRulesClientGetResponse contains the response from method AutomationRulesClient.Get.
@@ -105,7 +105,7 @@ type AutomationRulesClientGetResponse struct {
 	AutomationRule
 }
 
-// AutomationRulesClientListResponse contains the response from method AutomationRulesClient.List.
+// AutomationRulesClientListResponse contains the response from method AutomationRulesClient.NewListPager.
 type AutomationRulesClientListResponse struct {
 	AutomationRulesList
 }
@@ -130,7 +130,7 @@ type BookmarkRelationsClientGetResponse struct {
 	Relation
 }
 
-// BookmarkRelationsClientListResponse contains the response from method BookmarkRelationsClient.List.
+// BookmarkRelationsClientListResponse contains the response from method BookmarkRelationsClient.NewListPager.
 type BookmarkRelationsClientListResponse struct {
 	RelationList
 }
@@ -150,7 +150,7 @@ type BookmarksClientGetResponse struct {
 	Bookmark
 }
 
-// BookmarksClientListResponse contains the response from method BookmarksClient.List.
+// BookmarksClientListResponse contains the response from method BookmarksClient.NewListPager.
 type BookmarksClientListResponse struct {
 	BookmarkList
 }
@@ -205,7 +205,7 @@ func (d *DataConnectorsClientGetResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DataConnectorsClientListResponse contains the response from method DataConnectorsClient.List.
+// DataConnectorsClientListResponse contains the response from method DataConnectorsClient.NewListPager.
 type DataConnectorsClientListResponse struct {
 	DataConnectorList
 }
@@ -240,7 +240,7 @@ func (e *EntitiesClientGetResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// EntitiesClientListResponse contains the response from method EntitiesClient.List.
+// EntitiesClientListResponse contains the response from method EntitiesClient.NewListPager.
 type EntitiesClientListResponse struct {
 	EntityList
 }
@@ -255,7 +255,7 @@ type EntitiesGetTimelineClientListResponse struct {
 	EntityTimelineResponse
 }
 
-// EntitiesRelationsClientListResponse contains the response from method EntitiesRelationsClient.List.
+// EntitiesRelationsClientListResponse contains the response from method EntitiesRelationsClient.NewListPager.
 type EntitiesRelationsClientListResponse struct {
 	RelationList
 }
@@ -295,7 +295,7 @@ func (e *EntityQueriesClientGetResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// EntityQueriesClientListResponse contains the response from method EntityQueriesClient.List.
+// EntityQueriesClientListResponse contains the response from method EntityQueriesClient.NewListPager.
 type EntityQueriesClientListResponse struct {
 	EntityQueryList
 }
@@ -315,7 +315,7 @@ func (e *EntityQueryTemplatesClientGetResponse) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// EntityQueryTemplatesClientListResponse contains the response from method EntityQueryTemplatesClient.List.
+// EntityQueryTemplatesClientListResponse contains the response from method EntityQueryTemplatesClient.NewListPager.
 type EntityQueryTemplatesClientListResponse struct {
 	EntityQueryTemplateList
 }
@@ -330,7 +330,7 @@ type FileImportsClientCreateResponse struct {
 	FileImport
 }
 
-// FileImportsClientDeleteResponse contains the response from method FileImportsClient.Delete.
+// FileImportsClientDeleteResponse contains the response from method FileImportsClient.BeginDelete.
 type FileImportsClientDeleteResponse struct {
 	FileImport
 }
@@ -340,7 +340,7 @@ type FileImportsClientGetResponse struct {
 	FileImport
 }
 
-// FileImportsClientListResponse contains the response from method FileImportsClient.List.
+// FileImportsClientListResponse contains the response from method FileImportsClient.NewListPager.
 type FileImportsClientListResponse struct {
 	FileImportList
 }
@@ -365,7 +365,7 @@ type IncidentCommentsClientGetResponse struct {
 	IncidentComment
 }
 
-// IncidentCommentsClientListResponse contains the response from method IncidentCommentsClient.List.
+// IncidentCommentsClientListResponse contains the response from method IncidentCommentsClient.NewListPager.
 type IncidentCommentsClientListResponse struct {
 	IncidentCommentList
 }
@@ -385,7 +385,7 @@ type IncidentRelationsClientGetResponse struct {
 	Relation
 }
 
-// IncidentRelationsClientListResponse contains the response from method IncidentRelationsClient.List.
+// IncidentRelationsClientListResponse contains the response from method IncidentRelationsClient.NewListPager.
 type IncidentRelationsClientListResponse struct {
 	RelationList
 }
@@ -425,7 +425,7 @@ type IncidentsClientListEntitiesResponse struct {
 	IncidentEntitiesResponse
 }
 
-// IncidentsClientListResponse contains the response from method IncidentsClient.List.
+// IncidentsClientListResponse contains the response from method IncidentsClient.NewListPager.
 type IncidentsClientListResponse struct {
 	IncidentList
 }
@@ -433,7 +433,7 @@ type IncidentsClientListResponse struct {
 // IncidentsClientRunPlaybookResponse contains the response from method IncidentsClient.RunPlaybook.
 type IncidentsClientRunPlaybookResponse struct {
 	// Anything
-	Interface interface{}
+	Interface any
 }
 
 // MetadataClientCreateResponse contains the response from method MetadataClient.Create.
@@ -451,7 +451,7 @@ type MetadataClientGetResponse struct {
 	MetadataModel
 }
 
-// MetadataClientListResponse contains the response from method MetadataClient.List.
+// MetadataClientListResponse contains the response from method MetadataClient.NewListPager.
 type MetadataClientListResponse struct {
 	MetadataList
 }
@@ -471,12 +471,12 @@ type OfficeConsentsClientGetResponse struct {
 	OfficeConsent
 }
 
-// OfficeConsentsClientListResponse contains the response from method OfficeConsentsClient.List.
+// OfficeConsentsClientListResponse contains the response from method OfficeConsentsClient.NewListPager.
 type OfficeConsentsClientListResponse struct {
 	OfficeConsentList
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationsList
 }
@@ -556,7 +556,7 @@ func (s *SecurityMLAnalyticsSettingsClientGetResponse) UnmarshalJSON(data []byte
 	return nil
 }
 
-// SecurityMLAnalyticsSettingsClientListResponse contains the response from method SecurityMLAnalyticsSettingsClient.List.
+// SecurityMLAnalyticsSettingsClientListResponse contains the response from method SecurityMLAnalyticsSettingsClient.NewListPager.
 type SecurityMLAnalyticsSettingsClientListResponse struct {
 	SecurityMLAnalyticsSettingsList
 }
@@ -581,7 +581,7 @@ type SentinelOnboardingStatesClientListResponse struct {
 	SentinelOnboardingStatesList
 }
 
-// SourceControlClientListRepositoriesResponse contains the response from method SourceControlClient.ListRepositories.
+// SourceControlClientListRepositoriesResponse contains the response from method SourceControlClient.NewListRepositoriesPager.
 type SourceControlClientListRepositoriesResponse struct {
 	RepoList
 }
@@ -601,7 +601,7 @@ type SourceControlsClientGetResponse struct {
 	SourceControl
 }
 
-// SourceControlsClientListResponse contains the response from method SourceControlsClient.List.
+// SourceControlsClientListResponse contains the response from method SourceControlsClient.NewListPager.
 type SourceControlsClientListResponse struct {
 	SourceControlList
 }
@@ -661,7 +661,7 @@ func (t *ThreatIntelligenceIndicatorClientGetResponse) UnmarshalJSON(data []byte
 	return nil
 }
 
-// ThreatIntelligenceIndicatorClientQueryIndicatorsResponse contains the response from method ThreatIntelligenceIndicatorClient.QueryIndicators.
+// ThreatIntelligenceIndicatorClientQueryIndicatorsResponse contains the response from method ThreatIntelligenceIndicatorClient.NewQueryIndicatorsPager.
 type ThreatIntelligenceIndicatorClientQueryIndicatorsResponse struct {
 	ThreatIntelligenceInformationList
 }
@@ -686,7 +686,7 @@ type ThreatIntelligenceIndicatorMetricsClientListResponse struct {
 	ThreatIntelligenceMetricsList
 }
 
-// ThreatIntelligenceIndicatorsClientListResponse contains the response from method ThreatIntelligenceIndicatorsClient.List.
+// ThreatIntelligenceIndicatorsClientListResponse contains the response from method ThreatIntelligenceIndicatorsClient.NewListPager.
 type ThreatIntelligenceIndicatorsClientListResponse struct {
 	ThreatIntelligenceInformationList
 }
@@ -706,7 +706,7 @@ type WatchlistItemsClientGetResponse struct {
 	WatchlistItem
 }
 
-// WatchlistItemsClientListResponse contains the response from method WatchlistItemsClient.List.
+// WatchlistItemsClientListResponse contains the response from method WatchlistItemsClient.NewListPager.
 type WatchlistItemsClientListResponse struct {
 	WatchlistItemList
 }
@@ -729,7 +729,7 @@ type WatchlistsClientGetResponse struct {
 	Watchlist
 }
 
-// WatchlistsClientListResponse contains the response from method WatchlistsClient.List.
+// WatchlistsClientListResponse contains the response from method WatchlistsClient.NewListPager.
 type WatchlistsClientListResponse struct {
 	WatchlistList
 }

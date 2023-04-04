@@ -110,7 +110,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -375,9 +375,11 @@ type SKU struct {
 
 // SavingsPlanClientGetOptions contains the optional parameters for the SavingsPlanClient.Get method.
 type SavingsPlanClientGetOptions struct {
+	// May be used to expand the detail information of some properties.
+	Expand *string
 }
 
-// SavingsPlanClientListAllOptions contains the optional parameters for the SavingsPlanClient.ListAll method.
+// SavingsPlanClientListAllOptions contains the optional parameters for the SavingsPlanClient.NewListAllPager method.
 type SavingsPlanClientListAllOptions struct {
 	// May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does not currently support
 	// 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
@@ -397,7 +399,7 @@ type SavingsPlanClientListAllOptions struct {
 	Take *float32
 }
 
-// SavingsPlanClientListOptions contains the optional parameters for the SavingsPlanClient.List method.
+// SavingsPlanClientListOptions contains the optional parameters for the SavingsPlanClient.NewListPager method.
 type SavingsPlanClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -595,9 +597,11 @@ type SavingsPlanOrderClientElevateOptions struct {
 
 // SavingsPlanOrderClientGetOptions contains the optional parameters for the SavingsPlanOrderClient.Get method.
 type SavingsPlanOrderClientGetOptions struct {
+	// May be used to expand the detail information of some properties.
+	Expand *string
 }
 
-// SavingsPlanOrderClientListOptions contains the optional parameters for the SavingsPlanOrderClient.List method.
+// SavingsPlanOrderClientListOptions contains the optional parameters for the SavingsPlanOrderClient.NewListPager method.
 type SavingsPlanOrderClientListOptions struct {
 	// placeholder for future optional parameters
 }

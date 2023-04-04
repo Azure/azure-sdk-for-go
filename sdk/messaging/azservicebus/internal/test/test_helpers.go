@@ -26,6 +26,12 @@ var (
 	letterRunes = []rune("abcdefghijklmnopqrstuvwxyz123456789")
 )
 
+// these are created by the test-resources.bicep template - they're useful for tests where we don't need to guaranteee any state, just existence, like our connectivity/recovery tests.
+const (
+	BuiltInTestQueue             = "testQueue"
+	BuildInTestQueueWithSessions = "testQueueWithSessions"
+)
+
 func init() {
 	addSwappableLogger()
 }

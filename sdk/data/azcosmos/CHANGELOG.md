@@ -1,15 +1,9 @@
 # Release History
 
-## 0.3.4 (Unreleased)
+## 0.3.4 (2023-04-11)
 
 ### Features Added
 * Added `NullPartitionKey` variable to create and query documents with null partition key in CosmosDB
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.3.3 (2023-01-10)
 

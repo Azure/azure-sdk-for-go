@@ -25,11 +25,11 @@ func ExampleVPNSitesConfigurationClient_BeginDownload() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNSitesConfigurationClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDownload(ctx, "rg1", "wan1", armnetwork.GetVPNSitesConfigurationRequest{
+	poller, err := clientFactory.NewVPNSitesConfigurationClient().BeginDownload(ctx, "rg1", "wan1", armnetwork.GetVPNSitesConfigurationRequest{
 		OutputBlobSasURL: to.Ptr("https://blobcortextesturl.blob.core.windows.net/folderforconfig/vpnFile?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),
 		VPNSites: []*string{
 			to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/abc")},

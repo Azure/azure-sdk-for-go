@@ -163,13 +163,13 @@ type AppliancesClientGetUpgradeGraphOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppliancesClientListByResourceGroupOptions contains the optional parameters for the AppliancesClient.ListByResourceGroup
+// AppliancesClientListByResourceGroupOptions contains the optional parameters for the AppliancesClient.NewListByResourceGroupPager
 // method.
 type AppliancesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppliancesClientListBySubscriptionOptions contains the optional parameters for the AppliancesClient.ListBySubscription
+// AppliancesClientListBySubscriptionOptions contains the optional parameters for the AppliancesClient.NewListBySubscriptionPager
 // method.
 type AppliancesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -187,7 +187,8 @@ type AppliancesClientListClusterUserCredentialOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppliancesClientListOperationsOptions contains the optional parameters for the AppliancesClient.ListOperations method.
+// AppliancesClientListOperationsOptions contains the optional parameters for the AppliancesClient.NewListOperationsPager
+// method.
 type AppliancesClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -200,7 +201,7 @@ type AppliancesClientUpdateOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`

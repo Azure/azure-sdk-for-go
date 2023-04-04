@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // FrontendsInterfaceClient contains the methods for the FrontendsInterface group.
 // Don't use this type directly, use NewFrontendsInterfaceClient() instead.
 type FrontendsInterfaceClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewFrontendsInterfaceClient creates a new instance of FrontendsInterfaceClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewFrontendsInterfaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FrontendsInterfaceClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".FrontendsInterfaceClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &FrontendsInterfaceClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a Traffic Controller Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// trafficControllerName - traffic controller name for path
-// frontendName - Frontends
-// resource - Resource create parameters.
-// options - FrontendsInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the FrontendsInterfaceClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - trafficControllerName - traffic controller name for path
+//   - frontendName - Frontends
+//   - resource - Resource create parameters.
+//   - options - FrontendsInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the FrontendsInterfaceClient.BeginCreateOrUpdate
+//     method.
 func (client *FrontendsInterfaceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, resource Frontend, options *FrontendsInterfaceClientBeginCreateOrUpdateOptions) (*runtime.Poller[FrontendsInterfaceClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, trafficControllerName, frontendName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FrontendsInterfaceClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FrontendsInterfaceClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[FrontendsInterfaceClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FrontendsInterfaceClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create a Traffic Controller Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
 func (client *FrontendsInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, resource Frontend, options *FrontendsInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, trafficControllerName, frontendName, resource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +106,7 @@ func (client *FrontendsInterfaceClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter frontendName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{frontendName}", url.PathEscape(frontendName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,35 +119,37 @@ func (client *FrontendsInterfaceClient) createOrUpdateCreateRequest(ctx context.
 
 // BeginDelete - Delete a Traffic Controller Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// trafficControllerName - traffic controller name for path
-// frontendName - Frontends
-// options - FrontendsInterfaceClientBeginDeleteOptions contains the optional parameters for the FrontendsInterfaceClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - trafficControllerName - traffic controller name for path
+//   - frontendName - Frontends
+//   - options - FrontendsInterfaceClientBeginDeleteOptions contains the optional parameters for the FrontendsInterfaceClient.BeginDelete
+//     method.
 func (client *FrontendsInterfaceClient) BeginDelete(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, options *FrontendsInterfaceClientBeginDeleteOptions) (*runtime.Poller[FrontendsInterfaceClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, trafficControllerName, frontendName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FrontendsInterfaceClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FrontendsInterfaceClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[FrontendsInterfaceClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FrontendsInterfaceClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete a Traffic Controller Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
 func (client *FrontendsInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, options *FrontendsInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, trafficControllerName, frontendName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +178,7 @@ func (client *FrontendsInterfaceClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter frontendName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{frontendName}", url.PathEscape(frontendName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -198,17 +191,18 @@ func (client *FrontendsInterfaceClient) deleteCreateRequest(ctx context.Context,
 
 // Get - Get a Traffic Controller Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// trafficControllerName - traffic controller name for path
-// frontendName - Frontends
-// options - FrontendsInterfaceClientGetOptions contains the optional parameters for the FrontendsInterfaceClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - trafficControllerName - traffic controller name for path
+//   - frontendName - Frontends
+//   - options - FrontendsInterfaceClientGetOptions contains the optional parameters for the FrontendsInterfaceClient.Get method.
 func (client *FrontendsInterfaceClient) Get(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, options *FrontendsInterfaceClientGetOptions) (FrontendsInterfaceClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, trafficControllerName, frontendName, options)
 	if err != nil {
 		return FrontendsInterfaceClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FrontendsInterfaceClientGetResponse{}, err
 	}
@@ -237,7 +231,7 @@ func (client *FrontendsInterfaceClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter frontendName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{frontendName}", url.PathEscape(frontendName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -258,11 +252,12 @@ func (client *FrontendsInterfaceClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListByTrafficControllerPager - List Frontend resources by TrafficController
+//
 // Generated from API version 2022-10-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// trafficControllerName - traffic controller name for path
-// options - FrontendsInterfaceClientListByTrafficControllerOptions contains the optional parameters for the FrontendsInterfaceClient.ListByTrafficController
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - trafficControllerName - traffic controller name for path
+//   - options - FrontendsInterfaceClientListByTrafficControllerOptions contains the optional parameters for the FrontendsInterfaceClient.NewListByTrafficControllerPager
+//     method.
 func (client *FrontendsInterfaceClient) NewListByTrafficControllerPager(resourceGroupName string, trafficControllerName string, options *FrontendsInterfaceClientListByTrafficControllerOptions) *runtime.Pager[FrontendsInterfaceClientListByTrafficControllerResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FrontendsInterfaceClientListByTrafficControllerResponse]{
 		More: func(page FrontendsInterfaceClientListByTrafficControllerResponse) bool {
@@ -279,7 +274,7 @@ func (client *FrontendsInterfaceClient) NewListByTrafficControllerPager(resource
 			if err != nil {
 				return FrontendsInterfaceClientListByTrafficControllerResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FrontendsInterfaceClientListByTrafficControllerResponse{}, err
 			}
@@ -306,7 +301,7 @@ func (client *FrontendsInterfaceClient) listByTrafficControllerCreateRequest(ctx
 		return nil, errors.New("parameter trafficControllerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -328,19 +323,20 @@ func (client *FrontendsInterfaceClient) listByTrafficControllerHandleResponse(re
 
 // Update - Update a Traffic Controller Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// trafficControllerName - traffic controller name for path
-// frontendName - Frontends
-// properties - The resource properties to be updated.
-// options - FrontendsInterfaceClientUpdateOptions contains the optional parameters for the FrontendsInterfaceClient.Update
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - trafficControllerName - traffic controller name for path
+//   - frontendName - Frontends
+//   - properties - The resource properties to be updated.
+//   - options - FrontendsInterfaceClientUpdateOptions contains the optional parameters for the FrontendsInterfaceClient.Update
+//     method.
 func (client *FrontendsInterfaceClient) Update(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, properties FrontendUpdate, options *FrontendsInterfaceClientUpdateOptions) (FrontendsInterfaceClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, trafficControllerName, frontendName, properties, options)
 	if err != nil {
 		return FrontendsInterfaceClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FrontendsInterfaceClientUpdateResponse{}, err
 	}
@@ -369,7 +365,7 @@ func (client *FrontendsInterfaceClient) updateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter frontendName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{frontendName}", url.PathEscape(frontendName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

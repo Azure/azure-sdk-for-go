@@ -25,11 +25,11 @@ func ExampleVipSwapClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVipSwapClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testCloudService", nil)
+	res, err := clientFactory.NewVipSwapClient().Get(ctx, "rg1", "testCloudService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -53,11 +53,11 @@ func ExampleVipSwapClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVipSwapClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "rg1", "testCloudService", armnetwork.SwapResource{
+	poller, err := clientFactory.NewVipSwapClient().BeginCreate(ctx, "rg1", "testCloudService", armnetwork.SwapResource{
 		Properties: &armnetwork.SwapResourceProperties{
 			SlotType: to.Ptr(armnetwork.SlotTypeProduction),
 		},
@@ -78,11 +78,11 @@ func ExampleVipSwapClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVipSwapClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "rg1", "testCloudService", nil)
+	res, err := clientFactory.NewVipSwapClient().List(ctx, "rg1", "testCloudService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

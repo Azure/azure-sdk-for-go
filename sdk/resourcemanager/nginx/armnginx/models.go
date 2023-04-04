@@ -65,7 +65,7 @@ type CertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
+// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
 type CertificatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -138,7 +138,7 @@ type ConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.List method.
+// ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.NewListPager method.
 type ConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -229,13 +229,13 @@ type DeploymentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.ListByResourceGroup
+// DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.NewListByResourceGroupPager
 // method.
 type DeploymentsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
+// DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.NewListPager method.
 type DeploymentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -314,7 +314,7 @@ type OperationResult struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }

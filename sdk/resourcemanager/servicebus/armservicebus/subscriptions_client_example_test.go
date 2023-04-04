@@ -25,11 +25,11 @@ func ExampleSubscriptionsClient_NewListByTopicPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewSubscriptionsClient("5{Subscriptionid}", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTopicPager("ResourceGroup", "sdk-Namespace-1349", "sdk-Topics-8740", &armservicebus.SubscriptionsClientListByTopicOptions{Skip: nil,
+	pager := clientFactory.NewSubscriptionsClient().NewListByTopicPager("ResourceGroup", "sdk-Namespace-1349", "sdk-Topics-8740", &armservicebus.SubscriptionsClientListByTopicOptions{Skip: nil,
 		Top: nil,
 	})
 	for pager.More() {
@@ -84,11 +84,11 @@ func ExampleSubscriptionsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewSubscriptionsClient("Subscriptionid", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "ResourceGroup", "sdk-Namespace-1349", "sdk-Topics-8740", "sdk-Subscriptions-2178", armservicebus.SBSubscription{
+	res, err := clientFactory.NewSubscriptionsClient().CreateOrUpdate(ctx, "ResourceGroup", "sdk-Namespace-1349", "sdk-Topics-8740", "sdk-Subscriptions-2178", armservicebus.SBSubscription{
 		Properties: &armservicebus.SBSubscriptionProperties{
 			EnableBatchedOperations: to.Ptr(true),
 		},
@@ -137,11 +137,11 @@ func ExampleSubscriptionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewSubscriptionsClient("subscriptionId", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "ResourceGroup", "sdk-Namespace-5882", "sdk-Topics-1804", "sdk-Subscriptions-3670", nil)
+	_, err = clientFactory.NewSubscriptionsClient().Delete(ctx, "ResourceGroup", "sdk-Namespace-5882", "sdk-Topics-1804", "sdk-Subscriptions-3670", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -154,11 +154,11 @@ func ExampleSubscriptionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewSubscriptionsClient("Subscriptionid", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "ResourceGroup", "sdk-Namespace-1349", "sdk-Topics-8740", "sdk-Subscriptions-2178", nil)
+	res, err := clientFactory.NewSubscriptionsClient().Get(ctx, "ResourceGroup", "sdk-Namespace-1349", "sdk-Topics-8740", "sdk-Subscriptions-2178", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

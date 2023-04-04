@@ -25,11 +25,11 @@ func ExampleInterfaceTapConfigurationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfaceTapConfigurationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "test-networkinterface", "test-tapconfiguration", nil)
+	poller, err := clientFactory.NewInterfaceTapConfigurationsClient().BeginDelete(ctx, "rg1", "test-networkinterface", "test-tapconfiguration", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleInterfaceTapConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfaceTapConfigurationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testrg", "mynic", "tapconfiguration1", nil)
+	res, err := clientFactory.NewInterfaceTapConfigurationsClient().Get(ctx, "testrg", "mynic", "tapconfiguration1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -78,11 +78,11 @@ func ExampleInterfaceTapConfigurationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfaceTapConfigurationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "testrg", "mynic", "tapconfiguration1", armnetwork.InterfaceTapConfiguration{
+	poller, err := clientFactory.NewInterfaceTapConfigurationsClient().BeginCreateOrUpdate(ctx, "testrg", "mynic", "tapconfiguration1", armnetwork.InterfaceTapConfiguration{
 		Properties: &armnetwork.InterfaceTapConfigurationPropertiesFormat{
 			VirtualNetworkTap: &armnetwork.VirtualNetworkTap{
 				ID: to.Ptr("/subscriptions/subid/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworkTaps/testvtap"),
@@ -120,11 +120,11 @@ func ExampleInterfaceTapConfigurationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInterfaceTapConfigurationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "mynic", nil)
+	pager := clientFactory.NewInterfaceTapConfigurationsClient().NewListPager("rg1", "mynic", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

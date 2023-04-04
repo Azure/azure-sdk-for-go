@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // TestJobStreamsClient contains the methods for the TestJobStreams group.
 // Don't use this type directly, use NewTestJobStreamsClient() instead.
 type TestJobStreamsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTestJobStreamsClient creates a new instance of TestJobStreamsClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTestJobStreamsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TestJobStreamsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TestJobStreamsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TestJobStreamsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Retrieve a test job stream of the test job identified by runbook name and stream id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-30
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// runbookName - The runbook name.
-// jobStreamID - The job stream id.
-// options - TestJobStreamsClientGetOptions contains the optional parameters for the TestJobStreamsClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - runbookName - The runbook name.
+//   - jobStreamID - The job stream id.
+//   - options - TestJobStreamsClientGetOptions contains the optional parameters for the TestJobStreamsClient.Get method.
 func (client *TestJobStreamsClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, jobStreamID string, options *TestJobStreamsClientGetOptions) (TestJobStreamsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, jobStreamID, options)
 	if err != nil {
 		return TestJobStreamsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TestJobStreamsClientGetResponse{}, err
 	}
@@ -102,7 +92,7 @@ func (client *TestJobStreamsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter jobStreamID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobStreamId}", url.PathEscape(jobStreamID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,13 +113,13 @@ func (client *TestJobStreamsClient) getHandleResponse(resp *http.Response) (Test
 }
 
 // NewListByTestJobPager - Retrieve a list of test job streams identified by runbook name.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-30
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// runbookName - The runbook name.
-// options - TestJobStreamsClientListByTestJobOptions contains the optional parameters for the TestJobStreamsClient.ListByTestJob
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - runbookName - The runbook name.
+//   - options - TestJobStreamsClientListByTestJobOptions contains the optional parameters for the TestJobStreamsClient.NewListByTestJobPager
+//     method.
 func (client *TestJobStreamsClient) NewListByTestJobPager(resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStreamsClientListByTestJobOptions) *runtime.Pager[TestJobStreamsClientListByTestJobResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TestJobStreamsClientListByTestJobResponse]{
 		More: func(page TestJobStreamsClientListByTestJobResponse) bool {
@@ -146,7 +136,7 @@ func (client *TestJobStreamsClient) NewListByTestJobPager(resourceGroupName stri
 			if err != nil {
 				return TestJobStreamsClientListByTestJobResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TestJobStreamsClientListByTestJobResponse{}, err
 			}
@@ -177,7 +167,7 @@ func (client *TestJobStreamsClient) listByTestJobCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

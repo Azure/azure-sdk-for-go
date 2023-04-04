@@ -44,12 +44,12 @@ type WorkflowClientGetResponse struct {
 	Workflow
 }
 
-// WorkflowClientListByResourceGroupResponse contains the response from method WorkflowClient.ListByResourceGroup.
+// WorkflowClientListByResourceGroupResponse contains the response from method WorkflowClient.NewListByResourceGroupPager.
 type WorkflowClientListByResourceGroupResponse struct {
 	WorkflowListResult
 }
 
-// WorkflowClientListResponse contains the response from method WorkflowClient.List.
+// WorkflowClientListResponse contains the response from method WorkflowClient.NewListPager.
 type WorkflowClientListResponse struct {
 	WorkflowListResult
 }

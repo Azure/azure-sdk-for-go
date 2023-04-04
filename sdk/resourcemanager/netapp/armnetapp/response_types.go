@@ -9,7 +9,7 @@
 
 package armnetapp
 
-// AccountBackupsClientDeleteResponse contains the response from method AccountBackupsClient.Delete.
+// AccountBackupsClientDeleteResponse contains the response from method AccountBackupsClient.BeginDelete.
 type AccountBackupsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -19,17 +19,17 @@ type AccountBackupsClientGetResponse struct {
 	Backup
 }
 
-// AccountBackupsClientListResponse contains the response from method AccountBackupsClient.List.
+// AccountBackupsClientListResponse contains the response from method AccountBackupsClient.NewListPager.
 type AccountBackupsClientListResponse struct {
 	BackupsList
 }
 
-// AccountsClientCreateOrUpdateResponse contains the response from method AccountsClient.CreateOrUpdate.
+// AccountsClientCreateOrUpdateResponse contains the response from method AccountsClient.BeginCreateOrUpdate.
 type AccountsClientCreateOrUpdateResponse struct {
 	Account
 }
 
-// AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
+// AccountsClientDeleteResponse contains the response from method AccountsClient.BeginDelete.
 type AccountsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -39,32 +39,32 @@ type AccountsClientGetResponse struct {
 	Account
 }
 
-// AccountsClientListBySubscriptionResponse contains the response from method AccountsClient.ListBySubscription.
+// AccountsClientListBySubscriptionResponse contains the response from method AccountsClient.NewListBySubscriptionPager.
 type AccountsClientListBySubscriptionResponse struct {
 	AccountList
 }
 
-// AccountsClientListResponse contains the response from method AccountsClient.List.
+// AccountsClientListResponse contains the response from method AccountsClient.NewListPager.
 type AccountsClientListResponse struct {
 	AccountList
 }
 
-// AccountsClientRenewCredentialsResponse contains the response from method AccountsClient.RenewCredentials.
+// AccountsClientRenewCredentialsResponse contains the response from method AccountsClient.BeginRenewCredentials.
 type AccountsClientRenewCredentialsResponse struct {
 	// placeholder for future response values
 }
 
-// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+// AccountsClientUpdateResponse contains the response from method AccountsClient.BeginUpdate.
 type AccountsClientUpdateResponse struct {
 	Account
 }
 
-// BackupPoliciesClientCreateResponse contains the response from method BackupPoliciesClient.Create.
+// BackupPoliciesClientCreateResponse contains the response from method BackupPoliciesClient.BeginCreate.
 type BackupPoliciesClientCreateResponse struct {
 	BackupPolicy
 }
 
-// BackupPoliciesClientDeleteResponse contains the response from method BackupPoliciesClient.Delete.
+// BackupPoliciesClientDeleteResponse contains the response from method BackupPoliciesClient.BeginDelete.
 type BackupPoliciesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -74,22 +74,22 @@ type BackupPoliciesClientGetResponse struct {
 	BackupPolicy
 }
 
-// BackupPoliciesClientListResponse contains the response from method BackupPoliciesClient.List.
+// BackupPoliciesClientListResponse contains the response from method BackupPoliciesClient.NewListPager.
 type BackupPoliciesClientListResponse struct {
 	BackupPoliciesList
 }
 
-// BackupPoliciesClientUpdateResponse contains the response from method BackupPoliciesClient.Update.
+// BackupPoliciesClientUpdateResponse contains the response from method BackupPoliciesClient.BeginUpdate.
 type BackupPoliciesClientUpdateResponse struct {
 	BackupPolicy
 }
 
-// BackupsClientCreateResponse contains the response from method BackupsClient.Create.
+// BackupsClientCreateResponse contains the response from method BackupsClient.BeginCreate.
 type BackupsClientCreateResponse struct {
 	Backup
 }
 
-// BackupsClientDeleteResponse contains the response from method BackupsClient.Delete.
+// BackupsClientDeleteResponse contains the response from method BackupsClient.BeginDelete.
 type BackupsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -109,27 +109,32 @@ type BackupsClientGetVolumeRestoreStatusResponse struct {
 	RestoreStatus
 }
 
-// BackupsClientListResponse contains the response from method BackupsClient.List.
+// BackupsClientListResponse contains the response from method BackupsClient.NewListPager.
 type BackupsClientListResponse struct {
 	BackupsList
 }
 
-// BackupsClientUpdateResponse contains the response from method BackupsClient.Update.
+// BackupsClientRestoreFilesResponse contains the response from method BackupsClient.BeginRestoreFiles.
+type BackupsClientRestoreFilesResponse struct {
+	// placeholder for future response values
+}
+
+// BackupsClientUpdateResponse contains the response from method BackupsClient.BeginUpdate.
 type BackupsClientUpdateResponse struct {
 	Backup
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PoolsClientCreateOrUpdateResponse contains the response from method PoolsClient.CreateOrUpdate.
+// PoolsClientCreateOrUpdateResponse contains the response from method PoolsClient.BeginCreateOrUpdate.
 type PoolsClientCreateOrUpdateResponse struct {
 	CapacityPool
 }
 
-// PoolsClientDeleteResponse contains the response from method PoolsClient.Delete.
+// PoolsClientDeleteResponse contains the response from method PoolsClient.BeginDelete.
 type PoolsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -139,12 +144,12 @@ type PoolsClientGetResponse struct {
 	CapacityPool
 }
 
-// PoolsClientListResponse contains the response from method PoolsClient.List.
+// PoolsClientListResponse contains the response from method PoolsClient.NewListPager.
 type PoolsClientListResponse struct {
 	CapacityPoolList
 }
 
-// PoolsClientUpdateResponse contains the response from method PoolsClient.Update.
+// PoolsClientUpdateResponse contains the response from method PoolsClient.BeginUpdate.
 type PoolsClientUpdateResponse struct {
 	CapacityPool
 }
@@ -174,7 +179,7 @@ type ResourceQuotaLimitsClientGetResponse struct {
 	SubscriptionQuotaItem
 }
 
-// ResourceQuotaLimitsClientListResponse contains the response from method ResourceQuotaLimitsClient.List.
+// ResourceQuotaLimitsClientListResponse contains the response from method ResourceQuotaLimitsClient.NewListPager.
 type ResourceQuotaLimitsClientListResponse struct {
 	SubscriptionQuotaItemList
 }
@@ -184,7 +189,7 @@ type SnapshotPoliciesClientCreateResponse struct {
 	SnapshotPolicy
 }
 
-// SnapshotPoliciesClientDeleteResponse contains the response from method SnapshotPoliciesClient.Delete.
+// SnapshotPoliciesClientDeleteResponse contains the response from method SnapshotPoliciesClient.BeginDelete.
 type SnapshotPoliciesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -194,7 +199,7 @@ type SnapshotPoliciesClientGetResponse struct {
 	SnapshotPolicy
 }
 
-// SnapshotPoliciesClientListResponse contains the response from method SnapshotPoliciesClient.List.
+// SnapshotPoliciesClientListResponse contains the response from method SnapshotPoliciesClient.NewListPager.
 type SnapshotPoliciesClientListResponse struct {
 	SnapshotPoliciesList
 }
@@ -204,17 +209,17 @@ type SnapshotPoliciesClientListVolumesResponse struct {
 	SnapshotPolicyVolumeList
 }
 
-// SnapshotPoliciesClientUpdateResponse contains the response from method SnapshotPoliciesClient.Update.
+// SnapshotPoliciesClientUpdateResponse contains the response from method SnapshotPoliciesClient.BeginUpdate.
 type SnapshotPoliciesClientUpdateResponse struct {
 	SnapshotPolicy
 }
 
-// SnapshotsClientCreateResponse contains the response from method SnapshotsClient.Create.
+// SnapshotsClientCreateResponse contains the response from method SnapshotsClient.BeginCreate.
 type SnapshotsClientCreateResponse struct {
 	Snapshot
 }
 
-// SnapshotsClientDeleteResponse contains the response from method SnapshotsClient.Delete.
+// SnapshotsClientDeleteResponse contains the response from method SnapshotsClient.BeginDelete.
 type SnapshotsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -224,32 +229,32 @@ type SnapshotsClientGetResponse struct {
 	Snapshot
 }
 
-// SnapshotsClientListResponse contains the response from method SnapshotsClient.List.
+// SnapshotsClientListResponse contains the response from method SnapshotsClient.NewListPager.
 type SnapshotsClientListResponse struct {
 	SnapshotsList
 }
 
-// SnapshotsClientRestoreFilesResponse contains the response from method SnapshotsClient.RestoreFiles.
+// SnapshotsClientRestoreFilesResponse contains the response from method SnapshotsClient.BeginRestoreFiles.
 type SnapshotsClientRestoreFilesResponse struct {
 	// placeholder for future response values
 }
 
-// SnapshotsClientUpdateResponse contains the response from method SnapshotsClient.Update.
+// SnapshotsClientUpdateResponse contains the response from method SnapshotsClient.BeginUpdate.
 type SnapshotsClientUpdateResponse struct {
 	Snapshot
 }
 
-// SubvolumesClientCreateResponse contains the response from method SubvolumesClient.Create.
+// SubvolumesClientCreateResponse contains the response from method SubvolumesClient.BeginCreate.
 type SubvolumesClientCreateResponse struct {
 	SubvolumeInfo
 }
 
-// SubvolumesClientDeleteResponse contains the response from method SubvolumesClient.Delete.
+// SubvolumesClientDeleteResponse contains the response from method SubvolumesClient.BeginDelete.
 type SubvolumesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// SubvolumesClientGetMetadataResponse contains the response from method SubvolumesClient.GetMetadata.
+// SubvolumesClientGetMetadataResponse contains the response from method SubvolumesClient.BeginGetMetadata.
 type SubvolumesClientGetMetadataResponse struct {
 	SubvolumeModel
 }
@@ -259,27 +264,22 @@ type SubvolumesClientGetResponse struct {
 	SubvolumeInfo
 }
 
-// SubvolumesClientListByVolumeResponse contains the response from method SubvolumesClient.ListByVolume.
+// SubvolumesClientListByVolumeResponse contains the response from method SubvolumesClient.NewListByVolumePager.
 type SubvolumesClientListByVolumeResponse struct {
 	SubvolumesList
 }
 
-// SubvolumesClientUpdateResponse contains the response from method SubvolumesClient.Update.
+// SubvolumesClientUpdateResponse contains the response from method SubvolumesClient.BeginUpdate.
 type SubvolumesClientUpdateResponse struct {
 	SubvolumeInfo
 }
 
-// VaultsClientListResponse contains the response from method VaultsClient.List.
-type VaultsClientListResponse struct {
-	VaultList
-}
-
-// VolumeGroupsClientCreateResponse contains the response from method VolumeGroupsClient.Create.
+// VolumeGroupsClientCreateResponse contains the response from method VolumeGroupsClient.BeginCreate.
 type VolumeGroupsClientCreateResponse struct {
 	VolumeGroupDetails
 }
 
-// VolumeGroupsClientDeleteResponse contains the response from method VolumeGroupsClient.Delete.
+// VolumeGroupsClientDeleteResponse contains the response from method VolumeGroupsClient.BeginDelete.
 type VolumeGroupsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -289,17 +289,17 @@ type VolumeGroupsClientGetResponse struct {
 	VolumeGroupDetails
 }
 
-// VolumeGroupsClientListByNetAppAccountResponse contains the response from method VolumeGroupsClient.ListByNetAppAccount.
+// VolumeGroupsClientListByNetAppAccountResponse contains the response from method VolumeGroupsClient.NewListByNetAppAccountPager.
 type VolumeGroupsClientListByNetAppAccountResponse struct {
 	VolumeGroupList
 }
 
-// VolumeQuotaRulesClientCreateResponse contains the response from method VolumeQuotaRulesClient.Create.
+// VolumeQuotaRulesClientCreateResponse contains the response from method VolumeQuotaRulesClient.BeginCreate.
 type VolumeQuotaRulesClientCreateResponse struct {
 	VolumeQuotaRule
 }
 
-// VolumeQuotaRulesClientDeleteResponse contains the response from method VolumeQuotaRulesClient.Delete.
+// VolumeQuotaRulesClientDeleteResponse contains the response from method VolumeQuotaRulesClient.BeginDelete.
 type VolumeQuotaRulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -309,42 +309,47 @@ type VolumeQuotaRulesClientGetResponse struct {
 	VolumeQuotaRule
 }
 
-// VolumeQuotaRulesClientListByVolumeResponse contains the response from method VolumeQuotaRulesClient.ListByVolume.
+// VolumeQuotaRulesClientListByVolumeResponse contains the response from method VolumeQuotaRulesClient.NewListByVolumePager.
 type VolumeQuotaRulesClientListByVolumeResponse struct {
 	VolumeQuotaRulesList
 }
 
-// VolumeQuotaRulesClientUpdateResponse contains the response from method VolumeQuotaRulesClient.Update.
+// VolumeQuotaRulesClientUpdateResponse contains the response from method VolumeQuotaRulesClient.BeginUpdate.
 type VolumeQuotaRulesClientUpdateResponse struct {
 	VolumeQuotaRule
 }
 
-// VolumesClientAuthorizeReplicationResponse contains the response from method VolumesClient.AuthorizeReplication.
+// VolumesClientAuthorizeReplicationResponse contains the response from method VolumesClient.BeginAuthorizeReplication.
 type VolumesClientAuthorizeReplicationResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientBreakReplicationResponse contains the response from method VolumesClient.BreakReplication.
+// VolumesClientBreakFileLocksResponse contains the response from method VolumesClient.BeginBreakFileLocks.
+type VolumesClientBreakFileLocksResponse struct {
+	// placeholder for future response values
+}
+
+// VolumesClientBreakReplicationResponse contains the response from method VolumesClient.BeginBreakReplication.
 type VolumesClientBreakReplicationResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientCreateOrUpdateResponse contains the response from method VolumesClient.CreateOrUpdate.
+// VolumesClientCreateOrUpdateResponse contains the response from method VolumesClient.BeginCreateOrUpdate.
 type VolumesClientCreateOrUpdateResponse struct {
 	Volume
 }
 
-// VolumesClientDeleteReplicationResponse contains the response from method VolumesClient.DeleteReplication.
+// VolumesClientDeleteReplicationResponse contains the response from method VolumesClient.BeginDeleteReplication.
 type VolumesClientDeleteReplicationResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientDeleteResponse contains the response from method VolumesClient.Delete.
+// VolumesClientDeleteResponse contains the response from method VolumesClient.BeginDelete.
 type VolumesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientFinalizeRelocationResponse contains the response from method VolumesClient.FinalizeRelocation.
+// VolumesClientFinalizeRelocationResponse contains the response from method VolumesClient.BeginFinalizeRelocation.
 type VolumesClientFinalizeRelocationResponse struct {
 	// placeholder for future response values
 }
@@ -354,32 +359,32 @@ type VolumesClientGetResponse struct {
 	Volume
 }
 
-// VolumesClientListReplicationsResponse contains the response from method VolumesClient.ListReplications.
+// VolumesClientListReplicationsResponse contains the response from method VolumesClient.NewListReplicationsPager.
 type VolumesClientListReplicationsResponse struct {
 	ListReplications
 }
 
-// VolumesClientListResponse contains the response from method VolumesClient.List.
+// VolumesClientListResponse contains the response from method VolumesClient.NewListPager.
 type VolumesClientListResponse struct {
 	VolumeList
 }
 
-// VolumesClientPoolChangeResponse contains the response from method VolumesClient.PoolChange.
+// VolumesClientPoolChangeResponse contains the response from method VolumesClient.BeginPoolChange.
 type VolumesClientPoolChangeResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientReInitializeReplicationResponse contains the response from method VolumesClient.ReInitializeReplication.
+// VolumesClientReInitializeReplicationResponse contains the response from method VolumesClient.BeginReInitializeReplication.
 type VolumesClientReInitializeReplicationResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientReestablishReplicationResponse contains the response from method VolumesClient.ReestablishReplication.
+// VolumesClientReestablishReplicationResponse contains the response from method VolumesClient.BeginReestablishReplication.
 type VolumesClientReestablishReplicationResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientRelocateResponse contains the response from method VolumesClient.Relocate.
+// VolumesClientRelocateResponse contains the response from method VolumesClient.BeginRelocate.
 type VolumesClientRelocateResponse struct {
 	// placeholder for future response values
 }
@@ -389,27 +394,27 @@ type VolumesClientReplicationStatusResponse struct {
 	ReplicationStatus
 }
 
-// VolumesClientResetCifsPasswordResponse contains the response from method VolumesClient.ResetCifsPassword.
+// VolumesClientResetCifsPasswordResponse contains the response from method VolumesClient.BeginResetCifsPassword.
 type VolumesClientResetCifsPasswordResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientResyncReplicationResponse contains the response from method VolumesClient.ResyncReplication.
+// VolumesClientResyncReplicationResponse contains the response from method VolumesClient.BeginResyncReplication.
 type VolumesClientResyncReplicationResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientRevertRelocationResponse contains the response from method VolumesClient.RevertRelocation.
+// VolumesClientRevertRelocationResponse contains the response from method VolumesClient.BeginRevertRelocation.
 type VolumesClientRevertRelocationResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientRevertResponse contains the response from method VolumesClient.Revert.
+// VolumesClientRevertResponse contains the response from method VolumesClient.BeginRevert.
 type VolumesClientRevertResponse struct {
 	// placeholder for future response values
 }
 
-// VolumesClientUpdateResponse contains the response from method VolumesClient.Update.
+// VolumesClientUpdateResponse contains the response from method VolumesClient.BeginUpdate.
 type VolumesClientUpdateResponse struct {
 	Volume
 }

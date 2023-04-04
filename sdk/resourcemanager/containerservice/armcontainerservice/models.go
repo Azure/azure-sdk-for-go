@@ -194,7 +194,7 @@ type AgentPoolsClientGetUpgradeProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.List method.
+// AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.NewListPager method.
 type AgentPoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -218,6 +218,12 @@ type AzureKeyVaultKms struct {
 	// Resource ID of key vault. When keyVaultNetworkAccess is Private, this field is required and must be a valid resource ID.
 	// When keyVaultNetworkAccess is Public, leave the field empty.
 	KeyVaultResourceID *string `json:"keyVaultResourceId,omitempty"`
+}
+
+// ClusterUpgradeSettings - Settings for upgrading a cluster.
+type ClusterUpgradeSettings struct {
+	// Settings for overrides.
+	OverrideSettings *UpgradeOverrideSettings `json:"overrideSettings,omitempty"`
 }
 
 // CommandResultProperties - The results of a run command
@@ -431,7 +437,7 @@ type FleetMembersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FleetMembersClientListByFleetOptions contains the optional parameters for the FleetMembersClient.ListByFleet method.
+// FleetMembersClientListByFleetOptions contains the optional parameters for the FleetMembersClient.NewListByFleetPager method.
 type FleetMembersClientListByFleetOptions struct {
 	// placeholder for future optional parameters
 }
@@ -486,7 +492,8 @@ type FleetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FleetsClientListByResourceGroupOptions contains the optional parameters for the FleetsClient.ListByResourceGroup method.
+// FleetsClientListByResourceGroupOptions contains the optional parameters for the FleetsClient.NewListByResourceGroupPager
+// method.
 type FleetsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -496,7 +503,7 @@ type FleetsClientListCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FleetsClientListOptions contains the optional parameters for the FleetsClient.List method.
+// FleetsClientListOptions contains the optional parameters for the FleetsClient.NewListPager method.
 type FleetsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -664,7 +671,7 @@ type MaintenanceConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MaintenanceConfigurationsClientListByManagedClusterOptions contains the optional parameters for the MaintenanceConfigurationsClient.ListByManagedCluster
+// MaintenanceConfigurationsClientListByManagedClusterOptions contains the optional parameters for the MaintenanceConfigurationsClient.NewListByManagedClusterPager
 // method.
 type MaintenanceConfigurationsClientListByManagedClusterOptions struct {
 	// placeholder for future optional parameters
@@ -735,7 +742,7 @@ type ManagedClusterAADProfile struct {
 	// The list of AAD group object IDs that will have admin role of the cluster.
 	AdminGroupObjectIDs []*string `json:"adminGroupObjectIDs,omitempty"`
 
-	// The client AAD application ID.
+	// (DEPRECATED) The client AAD application ID. Learn more at https://aka.ms/aks/aad-legacy.
 	ClientAppID *string `json:"clientAppID,omitempty"`
 
 	// Whether to enable Azure RBAC for Kubernetes authorization.
@@ -744,10 +751,10 @@ type ManagedClusterAADProfile struct {
 	// Whether to enable managed AAD.
 	Managed *bool `json:"managed,omitempty"`
 
-	// The server AAD application ID.
+	// (DEPRECATED) The server AAD application ID. Learn more at https://aka.ms/aks/aad-legacy.
 	ServerAppID *string `json:"serverAppID,omitempty"`
 
-	// The server AAD application secret.
+	// (DEPRECATED) The server AAD application secret. Learn more at https://aka.ms/aks/aad-legacy.
 	ServerAppSecret *string `json:"serverAppSecret,omitempty"`
 
 	// The AAD tenant ID to use for authentication. If not specified, will use the tenant of the deployment subscription.
@@ -1504,7 +1511,7 @@ type ManagedClusterProperties struct {
 	// This is of the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'
 	DiskEncryptionSetID *string `json:"diskEncryptionSetID,omitempty"`
 
-	// The default value is false. It can be enabled/disabled on creation and updation of the managed cluster. See https://aka.ms/NamespaceARMResource
+	// The default value is false. It can be enabled/disabled on creation and updating of the managed cluster. See https://aka.ms/NamespaceARMResource
 	// [https://aka.ms/NamespaceARMResource] for more details
 	// on Namespace as a ARM Resource.
 	EnableNamespaceResources *bool `json:"enableNamespaceResources,omitempty"`
@@ -1571,6 +1578,9 @@ type ManagedClusterProperties struct {
 
 	// Storage profile for the managed cluster.
 	StorageProfile *ManagedClusterStorageProfile `json:"storageProfile,omitempty"`
+
+	// Settings for upgrading a cluster.
+	UpgradeSettings *ClusterUpgradeSettings `json:"upgradeSettings,omitempty"`
 
 	// The profile for Windows VMs in the Managed Cluster.
 	WindowsProfile *ManagedClusterWindowsProfile `json:"windowsProfile,omitempty"`
@@ -1681,7 +1691,8 @@ type ManagedClusterSKU struct {
 	// The name of a managed cluster SKU.
 	Name *ManagedClusterSKUName `json:"name,omitempty"`
 
-	// If not specified, the default is 'Free'. See uptime SLA [https://docs.microsoft.com/azure/aks/uptime-sla] for more details.
+	// If not specified, the default is 'Free'. See AKS Pricing Tier [https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers]
+	// for more details.
 	Tier *ManagedClusterSKUTier `json:"tier,omitempty"`
 }
 
@@ -1821,13 +1832,14 @@ type ManagedClusterSnapshotsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedClusterSnapshotsClientListByResourceGroupOptions contains the optional parameters for the ManagedClusterSnapshotsClient.ListByResourceGroup
+// ManagedClusterSnapshotsClientListByResourceGroupOptions contains the optional parameters for the ManagedClusterSnapshotsClient.NewListByResourceGroupPager
 // method.
 type ManagedClusterSnapshotsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedClusterSnapshotsClientListOptions contains the optional parameters for the ManagedClusterSnapshotsClient.List method.
+// ManagedClusterSnapshotsClientListOptions contains the optional parameters for the ManagedClusterSnapshotsClient.NewListPager
+// method.
 type ManagedClusterSnapshotsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2070,7 +2082,7 @@ type ManagedClustersClientGetUpgradeProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedClustersClientListByResourceGroupOptions contains the optional parameters for the ManagedClustersClient.ListByResourceGroup
+// ManagedClustersClientListByResourceGroupOptions contains the optional parameters for the ManagedClustersClient.NewListByResourceGroupPager
 // method.
 type ManagedClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
@@ -2101,12 +2113,12 @@ type ManagedClustersClientListClusterUserCredentialsOptions struct {
 	ServerFqdn *string
 }
 
-// ManagedClustersClientListOptions contains the optional parameters for the ManagedClustersClient.List method.
+// ManagedClustersClientListOptions contains the optional parameters for the ManagedClustersClient.NewListPager method.
 type ManagedClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ManagedClustersClient.ListOutboundNetworkDependenciesEndpoints
+// ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager
 // method.
 type ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions struct {
 	// placeholder for future optional parameters
@@ -2297,7 +2309,7 @@ type OperationValueDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2595,13 +2607,13 @@ type SnapshotsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.ListByResourceGroup
+// SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.NewListByResourceGroupPager
 // method.
 type SnapshotsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
+// SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.NewListPager method.
 type SnapshotsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2814,7 +2826,7 @@ type TrustedAccessRoleBindingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TrustedAccessRoleBindingsClientListOptions contains the optional parameters for the TrustedAccessRoleBindingsClient.List
+// TrustedAccessRoleBindingsClientListOptions contains the optional parameters for the TrustedAccessRoleBindingsClient.NewListPager
 // method.
 type TrustedAccessRoleBindingsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2847,9 +2859,20 @@ type TrustedAccessRoleRule struct {
 	Verbs []*string `json:"verbs,omitempty" azure:"ro"`
 }
 
-// TrustedAccessRolesClientListOptions contains the optional parameters for the TrustedAccessRolesClient.List method.
+// TrustedAccessRolesClientListOptions contains the optional parameters for the TrustedAccessRolesClient.NewListPager method.
 type TrustedAccessRolesClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// UpgradeOverrideSettings - Settings for overrides when upgrading a cluster.
+type UpgradeOverrideSettings struct {
+	// List of upgrade overrides when upgrading a cluster's control plane.
+	ControlPlaneOverrides []*ControlPlaneUpgradeOverride `json:"controlPlaneOverrides,omitempty"`
+
+	// Until when the overrides are effective. Note that this only matches the start time of an upgrade, and the effectiveness
+	// won't change once an upgrade starts even if the until expires as upgrade
+	// proceeds. This field is not set by default. It must be set for the overrides to take effect.
+	Until *time.Time `json:"until,omitempty"`
 }
 
 // UserAssignedIdentity - Details about a user assigned identity.

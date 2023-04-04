@@ -39,7 +39,7 @@ func TestUnit_PartitionClient_PrefetchOff(t *testing.T) {
 	require.NotEmpty(t, events)
 
 	require.Equal(t, []uint32{uint32(3)}, ns.Receiver.IssuedCredit, "Non-prefetch scenarios will issue credit at the time of request")
-	require.Equal(t, uint32(0), ns.Receiver.ActiveCredits, "All messages should have been received")
+	require.EqualValues(t, 0, ns.Receiver.ActiveCredits, "All messages should have been received")
 	require.True(t, ns.Receiver.ManualCreditsSetFromOptions)
 }
 
@@ -83,7 +83,7 @@ func TestUnit_PartitionClient_PrefetchOff_CreditLimits(t *testing.T) {
 func TestUnit_PartitionClient_PrefetchOffOnlyBackfillsCredits(t *testing.T) {
 	testData := []struct {
 		Name    string
-		Initial uint32
+		Initial int32
 		Issued  []uint32
 	}{
 		{"Need some more credits", 2, []uint32{uint32(1)}},
@@ -118,7 +118,7 @@ func TestUnit_PartitionClient_PrefetchOffOnlyBackfillsCredits(t *testing.T) {
 			require.NotEmpty(t, events)
 
 			require.Equal(t, td.Issued, ns.Receiver.IssuedCredit, "Only issue credits to backfill missing credits")
-			require.Equal(t, uint32(0), ns.Receiver.ActiveCredits, "All messages should have been received")
+			require.EqualValues(t, 0, ns.Receiver.ActiveCredits, "All messages should have been received")
 			require.True(t, ns.Receiver.ManualCreditsSetFromOptions)
 		})
 	}
@@ -149,10 +149,10 @@ func TestUnit_PartitionClient_PrefetchOn(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, events)
 
-		require.Equal(t, td.initialCredits, ns.Receiver.CreditsSetFromOptions, "All messages should have been received")
+		require.EqualValues(t, td.initialCredits, ns.Receiver.CreditsSetFromOptions, "All messages should have been received")
 		require.Nil(t, ns.Receiver.IssuedCredit, "prefetching doesn't manually issue credits")
 
-		require.Equal(t, uint32(td.initialCredits-3), ns.Receiver.ActiveCredits, "All messages should have been received")
+		require.EqualValues(t, td.initialCredits-3, ns.Receiver.ActiveCredits, "All messages should have been received")
 	}
 }
 

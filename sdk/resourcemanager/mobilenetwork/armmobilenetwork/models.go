@@ -59,7 +59,7 @@ type AsyncOperationStatus struct {
 	PercentComplete *float64 `json:"percentComplete,omitempty"`
 
 	// Properties returned by the resource provider on a successful operation
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 
 	// Fully qualified ID for the resource that this async operation status relates to.
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -159,7 +159,7 @@ type AttachedDataNetworksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttachedDataNetworksClientListByPacketCoreDataPlaneOptions contains the optional parameters for the AttachedDataNetworksClient.ListByPacketCoreDataPlane
+// AttachedDataNetworksClientListByPacketCoreDataPlaneOptions contains the optional parameters for the AttachedDataNetworksClient.NewListByPacketCoreDataPlanePager
 // method.
 type AttachedDataNetworksClientListByPacketCoreDataPlaneOptions struct {
 	// placeholder for future optional parameters
@@ -355,7 +355,7 @@ type DataNetworksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataNetworksClientListByMobileNetworkOptions contains the optional parameters for the DataNetworksClient.ListByMobileNetwork
+// DataNetworksClientListByMobileNetworkOptions contains the optional parameters for the DataNetworksClient.NewListByMobileNetworkPager
 // method.
 type DataNetworksClientListByMobileNetworkOptions struct {
 	// placeholder for future optional parameters
@@ -430,7 +430,7 @@ type EncryptedSimUploadList struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -581,13 +581,13 @@ type MobileNetworksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MobileNetworksClientListByResourceGroupOptions contains the optional parameters for the MobileNetworksClient.ListByResourceGroup
+// MobileNetworksClientListByResourceGroupOptions contains the optional parameters for the MobileNetworksClient.NewListByResourceGroupPager
 // method.
 type MobileNetworksClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MobileNetworksClientListBySubscriptionOptions contains the optional parameters for the MobileNetworksClient.ListBySubscription
+// MobileNetworksClientListBySubscriptionOptions contains the optional parameters for the MobileNetworksClient.NewListBySubscriptionPager
 // method.
 type MobileNetworksClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -656,7 +656,7 @@ type OperationList struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -726,7 +726,7 @@ type PacketCoreControlPlanePropertiesFormat struct {
 	CoreNetworkTechnology *CoreNetworkType `json:"coreNetworkTechnology,omitempty"`
 
 	// Settings to allow interoperability with third party components e.g. RANs and UEs.
-	InteropSettings interface{} `json:"interopSettings,omitempty"`
+	InteropSettings any `json:"interopSettings,omitempty"`
 
 	// The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links for all data networks. The MTU
 	// set on the user plane access link is calculated to be 60 bytes greater than this
@@ -788,7 +788,7 @@ type PacketCoreControlPlaneVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PacketCoreControlPlaneVersionsClientListOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.List
+// PacketCoreControlPlaneVersionsClientListOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.NewListPager
 // method.
 type PacketCoreControlPlaneVersionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -834,13 +834,13 @@ type PacketCoreControlPlanesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PacketCoreControlPlanesClientListByResourceGroupOptions contains the optional parameters for the PacketCoreControlPlanesClient.ListByResourceGroup
+// PacketCoreControlPlanesClientListByResourceGroupOptions contains the optional parameters for the PacketCoreControlPlanesClient.NewListByResourceGroupPager
 // method.
 type PacketCoreControlPlanesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PacketCoreControlPlanesClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlanesClient.ListBySubscription
+// PacketCoreControlPlanesClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlanesClient.NewListBySubscriptionPager
 // method.
 type PacketCoreControlPlanesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -915,7 +915,7 @@ type PacketCoreDataPlanesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the PacketCoreDataPlanesClient.ListByPacketCoreControlPlane
+// PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the PacketCoreDataPlanesClient.NewListByPacketCoreControlPlanePager
 // method.
 type PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions struct {
 	// placeholder for future optional parameters
@@ -1255,7 +1255,8 @@ type ServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesClientListByMobileNetworkOptions contains the optional parameters for the ServicesClient.ListByMobileNetwork method.
+// ServicesClientListByMobileNetworkOptions contains the optional parameters for the ServicesClient.NewListByMobileNetworkPager
+// method.
 type ServicesClientListByMobileNetworkOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1361,13 +1362,14 @@ type SimGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SimGroupsClientListByResourceGroupOptions contains the optional parameters for the SimGroupsClient.ListByResourceGroup
+// SimGroupsClientListByResourceGroupOptions contains the optional parameters for the SimGroupsClient.NewListByResourceGroupPager
 // method.
 type SimGroupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SimGroupsClientListBySubscriptionOptions contains the optional parameters for the SimGroupsClient.ListBySubscription method.
+// SimGroupsClientListBySubscriptionOptions contains the optional parameters for the SimGroupsClient.NewListBySubscriptionPager
+// method.
 type SimGroupsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1422,7 +1424,7 @@ type SimPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SimPoliciesClientListByMobileNetworkOptions contains the optional parameters for the SimPoliciesClient.ListByMobileNetwork
+// SimPoliciesClientListByMobileNetworkOptions contains the optional parameters for the SimPoliciesClient.NewListByMobileNetworkPager
 // method.
 type SimPoliciesClientListByMobileNetworkOptions struct {
 	// placeholder for future optional parameters
@@ -1606,7 +1608,7 @@ type SimsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SimsClientListByGroupOptions contains the optional parameters for the SimsClient.ListByGroup method.
+// SimsClientListByGroupOptions contains the optional parameters for the SimsClient.NewListByGroupPager method.
 type SimsClientListByGroupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1677,7 +1679,8 @@ type SitesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SitesClientListByMobileNetworkOptions contains the optional parameters for the SitesClient.ListByMobileNetwork method.
+// SitesClientListByMobileNetworkOptions contains the optional parameters for the SitesClient.NewListByMobileNetworkPager
+// method.
 type SitesClientListByMobileNetworkOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1770,7 +1773,8 @@ type SlicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SlicesClientListByMobileNetworkOptions contains the optional parameters for the SlicesClient.ListByMobileNetwork method.
+// SlicesClientListByMobileNetworkOptions contains the optional parameters for the SlicesClient.NewListByMobileNetworkPager
+// method.
 type SlicesClientListByMobileNetworkOptions struct {
 	// placeholder for future optional parameters
 }

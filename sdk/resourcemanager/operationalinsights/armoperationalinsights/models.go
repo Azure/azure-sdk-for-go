@@ -223,12 +223,13 @@ type ClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup method.
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
+// method.
 type ClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+// ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
 type ClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -323,7 +324,8 @@ type DataExportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataExportsClientListByWorkspaceOptions contains the optional parameters for the DataExportsClient.ListByWorkspace method.
+// DataExportsClientListByWorkspaceOptions contains the optional parameters for the DataExportsClient.NewListByWorkspacePager
+// method.
 type DataExportsClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
@@ -334,7 +336,7 @@ type DataSource struct {
 	Kind *DataSourceKind `json:"kind,omitempty"`
 
 	// REQUIRED; The data source properties in raw json format, each kind of data source have it's own schema.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 
 	// The ETag of the data source.
 	Etag *string `json:"etag,omitempty"`
@@ -382,19 +384,20 @@ type DataSourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataSourcesClientListByWorkspaceOptions contains the optional parameters for the DataSourcesClient.ListByWorkspace method.
+// DataSourcesClientListByWorkspaceOptions contains the optional parameters for the DataSourcesClient.NewListByWorkspacePager
+// method.
 type DataSourcesClientListByWorkspaceOptions struct {
 	// Starting point of the collection of data source instances.
 	Skiptoken *string
 }
 
-// DeletedWorkspacesClientListByResourceGroupOptions contains the optional parameters for the DeletedWorkspacesClient.ListByResourceGroup
+// DeletedWorkspacesClientListByResourceGroupOptions contains the optional parameters for the DeletedWorkspacesClient.NewListByResourceGroupPager
 // method.
 type DeletedWorkspacesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.List method.
+// DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.NewListPager method.
 type DeletedWorkspacesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -420,7 +423,7 @@ type DestinationMetaData struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -571,7 +574,7 @@ type LinkedServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LinkedServicesClientListByWorkspaceOptions contains the optional parameters for the LinkedServicesClient.ListByWorkspace
+// LinkedServicesClientListByWorkspaceOptions contains the optional parameters for the LinkedServicesClient.NewListByWorkspacePager
 // method.
 type LinkedServicesClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
@@ -593,7 +596,7 @@ type LinkedStorageAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LinkedStorageAccountsClientListByWorkspaceOptions contains the optional parameters for the LinkedStorageAccountsClient.ListByWorkspace
+// LinkedStorageAccountsClientListByWorkspaceOptions contains the optional parameters for the LinkedStorageAccountsClient.NewListByWorkspacePager
 // method.
 type LinkedStorageAccountsClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
@@ -717,7 +720,7 @@ type LogAnalyticsQueryPackQueryProperties struct {
 	Description *string `json:"description,omitempty"`
 
 	// Additional properties that can be set for the query.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 
 	// The related metadata items for the function.
 	Related *LogAnalyticsQueryPackQueryPropertiesRelated `json:"related,omitempty"`
@@ -804,7 +807,7 @@ type ManagementGroupProperties struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// ManagementGroupsClientListOptions contains the optional parameters for the ManagementGroupsClient.List method.
+// ManagementGroupsClientListOptions contains the optional parameters for the ManagementGroupsClient.NewListPager method.
 type ManagementGroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -877,7 +880,7 @@ type OperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -914,7 +917,7 @@ type QueriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QueriesClientListOptions contains the optional parameters for the QueriesClient.List method.
+// QueriesClientListOptions contains the optional parameters for the QueriesClient.NewListPager method.
 type QueriesClientListOptions struct {
 	// Flag indicating whether or not to return the body of each applicable query. If false, only return the query information.
 	IncludeBody *bool
@@ -929,7 +932,7 @@ type QueriesClientPutOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QueriesClientSearchOptions contains the optional parameters for the QueriesClient.Search method.
+// QueriesClientSearchOptions contains the optional parameters for the QueriesClient.NewSearchPager method.
 type QueriesClientSearchOptions struct {
 	// Flag indicating whether or not to return the body of each applicable query. If false, only return the query information.
 	IncludeBody *bool
@@ -959,13 +962,13 @@ type QueryPacksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QueryPacksClientListByResourceGroupOptions contains the optional parameters for the QueryPacksClient.ListByResourceGroup
+// QueryPacksClientListByResourceGroupOptions contains the optional parameters for the QueryPacksClient.NewListByResourceGroupPager
 // method.
 type QueryPacksClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.List method.
+// QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.NewListPager method.
 type QueryPacksClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1336,7 +1339,7 @@ type StorageInsightConfigsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageInsightConfigsClientListByWorkspaceOptions contains the optional parameters for the StorageInsightConfigsClient.ListByWorkspace
+// StorageInsightConfigsClientListByWorkspaceOptions contains the optional parameters for the StorageInsightConfigsClient.NewListByWorkspacePager
 // method.
 type StorageInsightConfigsClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
@@ -1492,7 +1495,7 @@ type TablesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TablesClientListByWorkspaceOptions contains the optional parameters for the TablesClient.ListByWorkspace method.
+// TablesClientListByWorkspaceOptions contains the optional parameters for the TablesClient.NewListByWorkspacePager method.
 type TablesClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1563,7 +1566,7 @@ type UsageMetric struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
-// UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
+// UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 type UsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1619,7 +1622,7 @@ type WorkspaceCapping struct {
 // WorkspaceFeatures - Workspace features.
 type WorkspaceFeatures struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Dedicated LA cluster resourceId that is linked to the workspaces.
 	ClusterResourceID *string `json:"clusterResourceId,omitempty"`
@@ -1742,7 +1745,7 @@ type WorkspacePurgeBodyFilters struct {
 
 	// the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or
 	// array of values.
-	Value interface{} `json:"value,omitempty"`
+	Value any `json:"value,omitempty"`
 }
 
 // WorkspacePurgeClientGetPurgeStatusOptions contains the optional parameters for the WorkspacePurgeClient.GetPurgeStatus
@@ -1800,13 +1803,13 @@ type WorkspacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.ListByResourceGroup
+// WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.NewListByResourceGroupPager
 // method.
 type WorkspacesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.List method.
+// WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.NewListPager method.
 type WorkspacesClientListOptions struct {
 	// placeholder for future optional parameters
 }

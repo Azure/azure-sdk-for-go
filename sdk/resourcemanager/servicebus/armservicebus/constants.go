@@ -11,7 +11,7 @@ package armservicebus
 
 const (
 	moduleName    = "armservicebus"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v2.0.0-beta.3"
 )
 
 type AccessRights string

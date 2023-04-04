@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,63 +24,56 @@ import (
 // SubscriptionGovernanceRulesExecuteStatusClient contains the methods for the SubscriptionGovernanceRulesExecuteStatus group.
 // Don't use this type directly, use NewSubscriptionGovernanceRulesExecuteStatusClient() instead.
 type SubscriptionGovernanceRulesExecuteStatusClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSubscriptionGovernanceRulesExecuteStatusClient creates a new instance of SubscriptionGovernanceRulesExecuteStatusClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSubscriptionGovernanceRulesExecuteStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionGovernanceRulesExecuteStatusClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SubscriptionGovernanceRulesExecuteStatusClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SubscriptionGovernanceRulesExecuteStatusClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginGet - Get a specific governanceRule execution status for the requested scope by ruleId and operationId
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
-// ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
-// operationID - The security GovernanceRule execution key - unique key for the execution of GovernanceRule
-// options - SubscriptionGovernanceRulesExecuteStatusClientBeginGetOptions contains the optional parameters for the SubscriptionGovernanceRulesExecuteStatusClient.BeginGet
-// method.
+//   - ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
+//   - operationID - The security GovernanceRule execution key - unique key for the execution of GovernanceRule
+//   - options - SubscriptionGovernanceRulesExecuteStatusClientBeginGetOptions contains the optional parameters for the SubscriptionGovernanceRulesExecuteStatusClient.BeginGet
+//     method.
 func (client *SubscriptionGovernanceRulesExecuteStatusClient) BeginGet(ctx context.Context, ruleID string, operationID string, options *SubscriptionGovernanceRulesExecuteStatusClientBeginGetOptions) (*runtime.Poller[SubscriptionGovernanceRulesExecuteStatusClientGetResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.get(ctx, ruleID, operationID, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SubscriptionGovernanceRulesExecuteStatusClientGetResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SubscriptionGovernanceRulesExecuteStatusClientGetResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[SubscriptionGovernanceRulesExecuteStatusClientGetResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubscriptionGovernanceRulesExecuteStatusClientGetResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Get - Get a specific governanceRule execution status for the requested scope by ruleId and operationId
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
 func (client *SubscriptionGovernanceRulesExecuteStatusClient) get(ctx context.Context, ruleID string, operationID string, options *SubscriptionGovernanceRulesExecuteStatusClientBeginGetOptions) (*http.Response, error) {
 	req, err := client.getCreateRequest(ctx, ruleID, operationID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +98,7 @@ func (client *SubscriptionGovernanceRulesExecuteStatusClient) getCreateRequest(c
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

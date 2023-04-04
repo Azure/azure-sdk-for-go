@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // WatchlistsClient contains the methods for the Watchlists group.
 // Don't use this type directly, use NewWatchlistsClient() instead.
 type WatchlistsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWatchlistsClient creates a new instance of WatchlistsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWatchlistsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WatchlistsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WatchlistsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WatchlistsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -62,19 +51,20 @@ func NewWatchlistsClient(subscriptionID string, credential azcore.TokenCredentia
 // go up to 500 MB. The status of processing such large file can be polled through the URL returned in Azure-AsyncOperation
 // header.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// watchlistAlias - Watchlist Alias
-// watchlist - The watchlist
-// options - WatchlistsClientCreateOrUpdateOptions contains the optional parameters for the WatchlistsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - watchlistAlias - Watchlist Alias
+//   - watchlist - The watchlist
+//   - options - WatchlistsClientCreateOrUpdateOptions contains the optional parameters for the WatchlistsClient.CreateOrUpdate
+//     method.
 func (client *WatchlistsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlist Watchlist, options *WatchlistsClientCreateOrUpdateOptions) (WatchlistsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, watchlistAlias, watchlist, options)
 	if err != nil {
 		return WatchlistsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatchlistsClientCreateOrUpdateResponse{}, err
 	}
@@ -103,7 +93,7 @@ func (client *WatchlistsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter watchlistAlias cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{watchlistAlias}", url.PathEscape(watchlistAlias))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,17 +118,18 @@ func (client *WatchlistsClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Delete a watchlist.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// watchlistAlias - Watchlist Alias
-// options - WatchlistsClientDeleteOptions contains the optional parameters for the WatchlistsClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - watchlistAlias - Watchlist Alias
+//   - options - WatchlistsClientDeleteOptions contains the optional parameters for the WatchlistsClient.Delete method.
 func (client *WatchlistsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistsClientDeleteOptions) (WatchlistsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, watchlistAlias, options)
 	if err != nil {
 		return WatchlistsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatchlistsClientDeleteResponse{}, err
 	}
@@ -167,7 +158,7 @@ func (client *WatchlistsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter watchlistAlias cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{watchlistAlias}", url.PathEscape(watchlistAlias))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,17 +180,18 @@ func (client *WatchlistsClient) deleteHandleResponse(resp *http.Response) (Watch
 
 // Get - Gets a watchlist, without its watchlist items.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// watchlistAlias - Watchlist Alias
-// options - WatchlistsClientGetOptions contains the optional parameters for the WatchlistsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - watchlistAlias - Watchlist Alias
+//   - options - WatchlistsClientGetOptions contains the optional parameters for the WatchlistsClient.Get method.
 func (client *WatchlistsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistsClientGetOptions) (WatchlistsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, watchlistAlias, options)
 	if err != nil {
 		return WatchlistsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatchlistsClientGetResponse{}, err
 	}
@@ -228,7 +220,7 @@ func (client *WatchlistsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter watchlistAlias cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{watchlistAlias}", url.PathEscape(watchlistAlias))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,10 +241,11 @@ func (client *WatchlistsClient) getHandleResponse(resp *http.Response) (Watchlis
 }
 
 // NewListPager - Gets all watchlists, without watchlist items.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - WatchlistsClientListOptions contains the optional parameters for the WatchlistsClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - WatchlistsClientListOptions contains the optional parameters for the WatchlistsClient.NewListPager method.
 func (client *WatchlistsClient) NewListPager(resourceGroupName string, workspaceName string, options *WatchlistsClientListOptions) *runtime.Pager[WatchlistsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WatchlistsClientListResponse]{
 		More: func(page WatchlistsClientListResponse) bool {
@@ -269,7 +262,7 @@ func (client *WatchlistsClient) NewListPager(resourceGroupName string, workspace
 			if err != nil {
 				return WatchlistsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WatchlistsClientListResponse{}, err
 			}
@@ -296,7 +289,7 @@ func (client *WatchlistsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

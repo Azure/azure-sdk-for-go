@@ -24,11 +24,11 @@ func ExampleUsagesClient_NewListPager_listUsages() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewUsagesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("westus", nil)
+	pager := clientFactory.NewUsagesClient().NewListPager("westus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -302,11 +302,11 @@ func ExampleUsagesClient_NewListPager_listUsagesSpacedLocation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewUsagesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("West US", nil)
+	pager := clientFactory.NewUsagesClient().NewListPager("West US", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

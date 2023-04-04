@@ -1,13 +1,13 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-0583784627/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-0583784627/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -20,13 +20,13 @@
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "71a87860-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "1"
+        "x-ms-request-id": "d7e2c356-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "3"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-0583784627/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-0583784627/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -34,7 +34,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "13",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "kty": "RSA"
@@ -42,25 +42,25 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "725",
+        "Content-Length": "709",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "71b13504-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "285"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d7fa2e06-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "253"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1656356443,
+          "created": 1680041211,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1656356443
+          "updated": 1680041211
         },
         "key": {
           "e": "AQAB",
@@ -72,14 +72,14 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm.local/keys/testlistkeys-0583784627/faa9cc8203af06c2214629ec5ef2e9ab",
+          "kid": "https://fakemhsm.local/keys/testlistkeys-0583784627/4efca3c32a4f4d712330ff6001ae6699",
           "kty": "RSA-HSM",
-          "n": "wCS_UK9QTXltu3M3Tm1_wBFYOz7fC7mXvivDMzuwiw4OAdPT5rT-dSX1ZSdYI9wnmO9aB6ny3yIy8p0VG2U-2bf2KIF-MGDs2t3prIIGIM4ciqqWh1XEOGC1ZZBb5ayau6a6mDO49l5YGYc3_RDEyB2zkA3yoFnQSd7rKoAdZdCC77yFw13fFTDhLDNY832Zxi8ipCuj2uiUO_vU53dCpcYQHDmj8lewohCFyqF02gcCMt5Oy1xCTdjVPl-FsvIppBkE5VnGpg5y2maf-DCgIkrx0wjTjpOXbz29lENxacyTlJwm3reYt53mjjILOWQl0AVeiev6P-GfwVDJRltSgw"
+          "n": "n0_fmtpPR1-LlOWpWKmMDHiK1FbI8nvhVEKOWfOs0jY9shQ7wFYCu4kk7ooEWj1k-Ajwf3ViRlWXPSzUHYSJ0K-6pj1CZqWQC7vEJVpkjqcAmhUsWk8dc8-d9Na0bfpxi2hndDYpHccaXEgywB5uvaW5lf41G7NSDnFSZprm-nUYiA5sBdTcX22Cd4ZJ_SJuIAjaxMBLBbshwXp8hTpXAETgeHrVuf2zBAi4CK0nVnS_zmX_d3tPwp-qFu9sLqoFFqD0N2x2JfRw4RloXozfoQiDlPmztNCcTAX1vHjWZIKKg7egpGbUyNnEr_5NZVhvVPGlnUVd2Q4DKyUlZ1uv1w"
         }
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-1583784627/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-1583784627/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -87,7 +87,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "13",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "kty": "RSA"
@@ -95,25 +95,25 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "725",
+        "Content-Length": "709",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "71e5aa0a-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "265"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d837c0ae-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "221"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1656356443,
+          "created": 1680041212,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1656356443
+          "updated": 1680041212
         },
         "key": {
           "e": "AQAB",
@@ -125,14 +125,14 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm.local/keys/testlistkeys-1583784627/8b132363c77a0551189f7ad364cfa69e",
+          "kid": "https://fakemhsm.local/keys/testlistkeys-1583784627/fcd83969950646ec9f9b8e8a6b10aadb",
           "kty": "RSA-HSM",
-          "n": "2uekP3xcYdYighWwoFVZnZxMOJDDcuNZdmbdAkjtoHnyYZa9kkPwXfwHIsrAzG4GW6dmuCsCIcW5j9RrkNK0UwIImRyk5wYAK3jvy410Vv0SUejcSwyZzzeINKYXAFcKzDA9P_HSGjb0Roly9jVlFCKWBTF4FB69NZAy0o8U-7ofuNLPATqI8ZZm7MetIpeDVLikZGcO_UvN1XlO2cIlIa7pPJ74KmiMsXLLMhH2KbTkGkz3cDxELxNIVDWK1vwNl7ohuMbOZ4FVFtP1rJ10rmxmLGSwuO6ssVEumfEDkoq4iTh_tG5mf9is16A6jp3sPgb42-Yrn7irRGedxjzI6w"
+          "n": "lLOOXOLUosxOIzY6LNpk-4aTvYbJrOjoNTk5qOU0ySNhugUlP-Td73D1UEW2D0FSQZKItG5mtZjb02nEvNbiocBlrmIHgaeENkRIHhn_-wXxW7ogWIbkmIGwvcWsSQCNqEt71DpQ-ZqjJ3VyFtxuZ8ZftdH-TiIMJuSUEAtUgToA8njSQ31LG9c5uF6lriaTHJ_-ygDuraTPvjgT3caWIIDcOdD-BZ0WRjrzxB3zSmAZ7yo8yQg6Ec_ApB6FH8dt225XK8kFXwom23Q-9GlZlwZLDm1ScCtJbuhqVW5IaXOr9Nl5ra-1BESGbUXsoY8pkrFWFfahtrz9ERWV0DAn7Q"
         }
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-2583784627/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-2583784627/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -140,7 +140,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "13",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "kty": "RSA"
@@ -148,25 +148,25 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "725",
+        "Content-Length": "709",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "7221f4f6-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "269"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d8704172-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "308"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1656356443,
+          "created": 1680041212,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1656356443
+          "updated": 1680041212
         },
         "key": {
           "e": "AQAB",
@@ -178,14 +178,14 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm.local/keys/testlistkeys-2583784627/582a1901381c043f82a9bf831a820550",
+          "kid": "https://fakemhsm.local/keys/testlistkeys-2583784627/9e2ef0d2c76b0ba5051b31d00d0b770f",
           "kty": "RSA-HSM",
-          "n": "kv8zIaBPVV5nr4piIBJiQT7U-sDr-x4UjPnpFhbV9ToUukYwYg9cV9Y3gCzmcocpNMg9dm8l7AhEj51CRLQ0Ezn-mnWYLJwuCL-KVz0WPZW0gFNUe1DdxeXavr8jm8YEB7rPsrYYxleAT9GeotFD8k9z2asoB4VZ_24RD558smGtWh_QuXpaiF74jt15P-9NLnZuK-5IUjhkhTiZctidS2bzjYCck5Qhs6vRwg0IwvZF2-_Xlp1j0gNGfa9o_82KkctHsXeOq9MXJ6nYjDjo8c_q1h9KKcINh3yFkPTkHjVB5vEMC4Wut4bCEaMhq-BkumrGtEWaI91bEhermyB03w"
+          "n": "tYm7aja5tLoB1oW2KQj0kSUzdDoFocke8H1uQjCGOtqiRnchpfnBePmqkymsk7E9_EKx8YXJUigbsCzOJFQU-epFncfmfyitFA7RTeq5i194btYpvYRiGySGDbIXDkWVujmZpSdv2PPUybuKYYOjsCaVKay16orK_hg5uI-KvgXfV0TX-S7Kn_ccymbvSagn6GQc_VMsYpJmGTcOAbAoS0hN4qeW7XeHasg1EEqxDhmAXM2NV6nGvHl69mU_xhpN1TajRqQZJfzG_elQ0pg1YtgTXgK8cNgfFIMlBPJwtnQo9x2QqaqGXHF-V6i4iTqhoDoWJ8N3CG2-VvahF6soeQ"
         }
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-3583784627/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-3583784627/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -193,7 +193,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "13",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "kty": "RSA"
@@ -201,25 +201,25 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "725",
+        "Content-Length": "709",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "725f5ff8-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "266"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d8b6234a-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "217"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1656356444,
+          "created": 1680041213,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1656356444
+          "updated": 1680041213
         },
         "key": {
           "e": "AQAB",
@@ -231,48 +231,48 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm.local/keys/testlistkeys-3583784627/58d6d9adbd0804363814d9144ab31932",
+          "kid": "https://fakemhsm.local/keys/testlistkeys-3583784627/08cb809a46fe45b8a02931a8fe951ef5",
           "kty": "RSA-HSM",
-          "n": "i_85nAnivmkJ5QTbmq8UwA-8iHN3dPsx6aBt69ULGatNgzNfj8zTVDH7kKJY-MZML3zTPnKCbqwnMHCuP0EkhlAzwwNPVEqmFbVOPtpyfW-9pmDzp3HUlazA3yOLV67956P7CVOVk-vkIDK1KhLOZQwSM-yd59DUArhxAnrO6svVX6iSnNzATfGiMZA3_tREEMSUh0RJoO0GtNx1u5uYb0hVAKwhEVL9rdXt2K0jbwNcC2C5uOc8iVME0fRlEJrewGfyYy6tgw0lEUZO1BzWRISVg9rmL6Zu_CMbM7bHKe80n9LujP_YKizmNOvdIRZqKMHc9_hyTiadMHzDOfqjNw"
+          "n": "m0yUgNt57ZbDUmstaQwndpIgnKIZiAZZU9a1Hy2yL9-gqUSvSzNHRc6tvG5mERw60ZSg4j4knHXcAtCLybZOflVsgOm25FT3TZoh7Rk_XycpJ4XK7lGv9oMpcv3ssaIiXJ9YyDqsc5jNBsN0PYy6XYXnnjBfxg3y8JLM0ItFuqAts9Nj1OMamk3cFeXj5RpJIi3OruU4aYL8aBJN3wlOvIDRARFO-Rh-agrMTL23QKrAg5TKwIKlFBHmSE9HMf7euI73YAKSUpEfkvol-eiGGrDUgEPD7huTksIZdjmUyW15UO77Idbpmz6Hv5kjvqzdGfocWXd8BVuJErDZPWy2xQ"
         }
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys?api-version=7.3\u0026maxresults=1",
+      "RequestUri": "https://fakemhsm.local/keys?api-version=7.4\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "406",
+        "Content-Length": "374",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20220608-2-b6970bb4-1.0.20220513-1-d979721d-develop",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "729de1ce-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "27"
+        "x-ms-build-version": "1.0.20230312-1-12e5b134-feb-lkg",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d8ee2b32-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "51"
       },
       "ResponseBody": {
-        "nextLink": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-eTJ0TUFJNHhkRFlaQUFBQUFBQUFBQT09I1JUOjEjVFJDOjEjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
+        "nextLink": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-dGprYkFOdXBtZjRUQUFBQUFBQUFBQT09I1JUOjEjVFJDOjEjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
         "value": [
           {
             "attributes": {
-              "created": 1656356414,
+              "created": 1680041183,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1656356414
+              "updated": 1680041183
             },
             "kid": "https://fakemhsm.local/keys/key4206922229"
           }
@@ -280,40 +280,81 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-eTJ0TUFJNHhkRFlaQUFBQUFBQUFBQT09I1JUOjEjVFJDOjEjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
+      "RequestUri": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-dGprYkFOdXBtZjRUQUFBQUFBQUFBQT09I1JUOjEjVFJDOjEjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "416",
+        "Content-Length": "374",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20220608-2-b6970bb4-1.0.20220513-1-d979721d-develop",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "72aab61a-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "35"
+        "x-ms-build-version": "1.0.20230312-1-12e5b134-feb-lkg",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d90ccf7e-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "27"
       },
       "ResponseBody": {
-        "nextLink": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-eTJ0TUFJNHhkRFlsQUFBQUFBQUFBQT09I1JUOjIjVFJDOjIjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
+        "nextLink": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-dGprYkFOdXBtZjRWQUFBQUFBQUFBQT09I1JUOjIjVFJDOjIjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
         "value": [
           {
             "attributes": {
-              "created": 1656356443,
+              "created": 1680041184,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1656356443
+              "updated": 1680041184
+            },
+            "kid": "https://fakemhsm.local/keys/key3126998794"
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-dGprYkFOdXBtZjRWQUFBQUFBQUFBQT09I1JUOjIjVFJDOjIjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "384",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-build-version": "1.0.20230312-1-12e5b134-feb-lkg",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d9281c98-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "48"
+      },
+      "ResponseBody": {
+        "nextLink": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-dGprYkFOdXBtZjRoQUFBQUFBQUFBQT09I1JUOjMjVFJDOjMjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
+        "value": [
+          {
+            "attributes": {
+              "created": 1680041211,
+              "enabled": true,
+              "exportable": false,
+              "recoverableDays": 7,
+              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+              "updated": 1680041211
             },
             "kid": "https://fakemhsm.local/keys/testlistkeys-0583784627"
           }
@@ -321,40 +362,40 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-eTJ0TUFJNHhkRFlsQUFBQUFBQUFBQT09I1JUOjIjVFJDOjIjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
+      "RequestUri": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-dGprYkFOdXBtZjRoQUFBQUFBQUFBQT09I1JUOjMjVFJDOjMjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "416",
+        "Content-Length": "384",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20220608-2-b6970bb4-1.0.20220513-1-d979721d-develop",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "72b835a6-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "26"
+        "x-ms-build-version": "1.0.20230312-1-12e5b134-feb-lkg",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d9461bee-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "42"
       },
       "ResponseBody": {
-        "nextLink": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-eTJ0TUFJNHhkRFluQUFBQUFBQUFBQT09I1JUOjMjVFJDOjMjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
+        "nextLink": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-dGprYkFOdXBtZjRqQUFBQUFBQUFBQT09I1JUOjQjVFJDOjQjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
         "value": [
           {
             "attributes": {
-              "created": 1656356443,
+              "created": 1680041212,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1656356443
+              "updated": 1680041212
             },
             "kid": "https://fakemhsm.local/keys/testlistkeys-1583784627"
           }
@@ -362,40 +403,40 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-eTJ0TUFJNHhkRFluQUFBQUFBQUFBQT09I1JUOjMjVFJDOjMjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
+      "RequestUri": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-dGprYkFOdXBtZjRqQUFBQUFBQUFBQT09I1JUOjQjVFJDOjQjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "416",
+        "Content-Length": "384",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20220608-2-b6970bb4-1.0.20220513-1-d979721d-develop",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "72c429ec-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "30"
+        "x-ms-build-version": "1.0.20230312-1-12e5b134-feb-lkg",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d963b0a0-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "49"
       },
       "ResponseBody": {
-        "nextLink": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-eTJ0TUFJNHhkRFlwQUFBQUFBQUFBQT09I1JUOjQjVFJDOjQjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
+        "nextLink": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-dGprYkFOdXBtZjRsQUFBQUFBQUFBQT09I1JUOjUjVFJDOjUjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
         "value": [
           {
             "attributes": {
-              "created": 1656356443,
+              "created": 1680041212,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1656356443
+              "updated": 1680041212
             },
             "kid": "https://fakemhsm.local/keys/testlistkeys-2583784627"
           }
@@ -403,39 +444,39 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-eTJ0TUFJNHhkRFlwQUFBQUFBQUFBQT09I1JUOjQjVFJDOjQjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
+      "RequestUri": "https://fakemhsm.local/keys?maxresults=1\u0026$skiptoken=K1JJRDp-dGprYkFOdXBtZjRsQUFBQUFBQUFBQT09I1JUOjUjVFJDOjUjSVNWOjIjSUVPOjY1NTY3I1FDRjo4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "250",
+        "Content-Length": "234",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20220608-2-b6970bb4-1.0.20220513-1-d979721d-develop",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "72d43ad0-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "38"
+        "x-ms-build-version": "1.0.20230312-1-12e5b134-feb-lkg",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d982159a-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "50"
       },
       "ResponseBody": {
         "value": [
           {
             "attributes": {
-              "created": 1656356444,
+              "created": 1680041213,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1656356444
+              "updated": 1680041213
             },
             "kid": "https://fakemhsm.local/keys/testlistkeys-3583784627"
           }
@@ -443,39 +484,39 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-3583784627?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-3583784627?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "872",
+        "Content-Length": "840",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "72e24238-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "176"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d9a0cbb6-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "109"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1656356444,
+          "created": 1680041213,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1656356444
+          "updated": 1680041213
         },
-        "deletedDate": 1656356445,
+        "deletedDate": 1680041214,
         "key": {
           "e": "AQAB",
           "key_ops": [
@@ -486,48 +527,48 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm.local/keys/testlistkeys-3583784627/58d6d9adbd0804363814d9144ab31932",
+          "kid": "https://fakemhsm.local/keys/testlistkeys-3583784627/08cb809a46fe45b8a02931a8fe951ef5",
           "kty": "RSA-HSM",
-          "n": "i_85nAnivmkJ5QTbmq8UwA-8iHN3dPsx6aBt69ULGatNgzNfj8zTVDH7kKJY-MZML3zTPnKCbqwnMHCuP0EkhlAzwwNPVEqmFbVOPtpyfW-9pmDzp3HUlazA3yOLV67956P7CVOVk-vkIDK1KhLOZQwSM-yd59DUArhxAnrO6svVX6iSnNzATfGiMZA3_tREEMSUh0RJoO0GtNx1u5uYb0hVAKwhEVL9rdXt2K0jbwNcC2C5uOc8iVME0fRlEJrewGfyYy6tgw0lEUZO1BzWRISVg9rmL6Zu_CMbM7bHKe80n9LujP_YKizmNOvdIRZqKMHc9_hyTiadMHzDOfqjNw"
+          "n": "m0yUgNt57ZbDUmstaQwndpIgnKIZiAZZU9a1Hy2yL9-gqUSvSzNHRc6tvG5mERw60ZSg4j4knHXcAtCLybZOflVsgOm25FT3TZoh7Rk_XycpJ4XK7lGv9oMpcv3ssaIiXJ9YyDqsc5jNBsN0PYy6XYXnnjBfxg3y8JLM0ItFuqAts9Nj1OMamk3cFeXj5RpJIi3OruU4aYL8aBJN3wlOvIDRARFO-Rh-agrMTL23QKrAg5TKwIKlFBHmSE9HMf7euI73YAKSUpEfkvol-eiGGrDUgEPD7huTksIZdjmUyW15UO77Idbpmz6Hv5kjvqzdGfocWXd8BVuJErDZPWy2xQ"
         },
         "recoveryId": "https://fakemhsm.local/deletedkeys/testlistkeys-3583784627",
-        "scheduledPurgeDate": 1656961245
+        "scheduledPurgeDate": 1680646014
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-2583784627?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-2583784627?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "872",
+        "Content-Length": "840",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "730bfbf0-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "172"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d9c8425e-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "142"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1656356443,
+          "created": 1680041212,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1656356443
+          "updated": 1680041212
         },
-        "deletedDate": 1656356445,
+        "deletedDate": 1680041215,
         "key": {
           "e": "AQAB",
           "key_ops": [
@@ -538,48 +579,48 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm.local/keys/testlistkeys-2583784627/582a1901381c043f82a9bf831a820550",
+          "kid": "https://fakemhsm.local/keys/testlistkeys-2583784627/9e2ef0d2c76b0ba5051b31d00d0b770f",
           "kty": "RSA-HSM",
-          "n": "kv8zIaBPVV5nr4piIBJiQT7U-sDr-x4UjPnpFhbV9ToUukYwYg9cV9Y3gCzmcocpNMg9dm8l7AhEj51CRLQ0Ezn-mnWYLJwuCL-KVz0WPZW0gFNUe1DdxeXavr8jm8YEB7rPsrYYxleAT9GeotFD8k9z2asoB4VZ_24RD558smGtWh_QuXpaiF74jt15P-9NLnZuK-5IUjhkhTiZctidS2bzjYCck5Qhs6vRwg0IwvZF2-_Xlp1j0gNGfa9o_82KkctHsXeOq9MXJ6nYjDjo8c_q1h9KKcINh3yFkPTkHjVB5vEMC4Wut4bCEaMhq-BkumrGtEWaI91bEhermyB03w"
+          "n": "tYm7aja5tLoB1oW2KQj0kSUzdDoFocke8H1uQjCGOtqiRnchpfnBePmqkymsk7E9_EKx8YXJUigbsCzOJFQU-epFncfmfyitFA7RTeq5i194btYpvYRiGySGDbIXDkWVujmZpSdv2PPUybuKYYOjsCaVKay16orK_hg5uI-KvgXfV0TX-S7Kn_ccymbvSagn6GQc_VMsYpJmGTcOAbAoS0hN4qeW7XeHasg1EEqxDhmAXM2NV6nGvHl69mU_xhpN1TajRqQZJfzG_elQ0pg1YtgTXgK8cNgfFIMlBPJwtnQo9x2QqaqGXHF-V6i4iTqhoDoWJ8N3CG2-VvahF6soeQ"
         },
         "recoveryId": "https://fakemhsm.local/deletedkeys/testlistkeys-2583784627",
-        "scheduledPurgeDate": 1656961245
+        "scheduledPurgeDate": 1680646015
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-1583784627?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-1583784627?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "872",
+        "Content-Length": "840",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "733084fc-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "173"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "d9f51f22-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "104"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1656356443,
+          "created": 1680041212,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1656356443
+          "updated": 1680041212
         },
-        "deletedDate": 1656356445,
+        "deletedDate": 1680041215,
         "key": {
           "e": "AQAB",
           "key_ops": [
@@ -590,48 +631,48 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm.local/keys/testlistkeys-1583784627/8b132363c77a0551189f7ad364cfa69e",
+          "kid": "https://fakemhsm.local/keys/testlistkeys-1583784627/fcd83969950646ec9f9b8e8a6b10aadb",
           "kty": "RSA-HSM",
-          "n": "2uekP3xcYdYighWwoFVZnZxMOJDDcuNZdmbdAkjtoHnyYZa9kkPwXfwHIsrAzG4GW6dmuCsCIcW5j9RrkNK0UwIImRyk5wYAK3jvy410Vv0SUejcSwyZzzeINKYXAFcKzDA9P_HSGjb0Roly9jVlFCKWBTF4FB69NZAy0o8U-7ofuNLPATqI8ZZm7MetIpeDVLikZGcO_UvN1XlO2cIlIa7pPJ74KmiMsXLLMhH2KbTkGkz3cDxELxNIVDWK1vwNl7ohuMbOZ4FVFtP1rJ10rmxmLGSwuO6ssVEumfEDkoq4iTh_tG5mf9is16A6jp3sPgb42-Yrn7irRGedxjzI6w"
+          "n": "lLOOXOLUosxOIzY6LNpk-4aTvYbJrOjoNTk5qOU0ySNhugUlP-Td73D1UEW2D0FSQZKItG5mtZjb02nEvNbiocBlrmIHgaeENkRIHhn_-wXxW7ogWIbkmIGwvcWsSQCNqEt71DpQ-ZqjJ3VyFtxuZ8ZftdH-TiIMJuSUEAtUgToA8njSQ31LG9c5uF6lriaTHJ_-ygDuraTPvjgT3caWIIDcOdD-BZ0WRjrzxB3zSmAZ7yo8yQg6Ec_ApB6FH8dt225XK8kFXwom23Q-9GlZlwZLDm1ScCtJbuhqVW5IaXOr9Nl5ra-1BESGbUXsoY8pkrFWFfahtrz9ERWV0DAn7Q"
         },
         "recoveryId": "https://fakemhsm.local/deletedkeys/testlistkeys-1583784627",
-        "scheduledPurgeDate": 1656961245
+        "scheduledPurgeDate": 1680646015
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-0583784627?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testlistkeys-0583784627?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "872",
+        "Content-Length": "840",
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
-        "x-ms-keyvault-region": "westus3",
-        "x-ms-request-id": "735984d8-f64b-11ec-b395-6045bd86d5ca",
-        "x-ms-server-latency": "172"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.205;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-request-id": "da1be288-cdb4-11ed-9492-6045bd0feb1d",
+        "x-ms-server-latency": "144"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1656356443,
+          "created": 1680041211,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1656356443
+          "updated": 1680041211
         },
-        "deletedDate": 1656356446,
+        "deletedDate": 1680041215,
         "key": {
           "e": "AQAB",
           "key_ops": [
@@ -642,12 +683,12 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm.local/keys/testlistkeys-0583784627/faa9cc8203af06c2214629ec5ef2e9ab",
+          "kid": "https://fakemhsm.local/keys/testlistkeys-0583784627/4efca3c32a4f4d712330ff6001ae6699",
           "kty": "RSA-HSM",
-          "n": "wCS_UK9QTXltu3M3Tm1_wBFYOz7fC7mXvivDMzuwiw4OAdPT5rT-dSX1ZSdYI9wnmO9aB6ny3yIy8p0VG2U-2bf2KIF-MGDs2t3prIIGIM4ciqqWh1XEOGC1ZZBb5ayau6a6mDO49l5YGYc3_RDEyB2zkA3yoFnQSd7rKoAdZdCC77yFw13fFTDhLDNY832Zxi8ipCuj2uiUO_vU53dCpcYQHDmj8lewohCFyqF02gcCMt5Oy1xCTdjVPl-FsvIppBkE5VnGpg5y2maf-DCgIkrx0wjTjpOXbz29lENxacyTlJwm3reYt53mjjILOWQl0AVeiev6P-GfwVDJRltSgw"
+          "n": "n0_fmtpPR1-LlOWpWKmMDHiK1FbI8nvhVEKOWfOs0jY9shQ7wFYCu4kk7ooEWj1k-Ajwf3ViRlWXPSzUHYSJ0K-6pj1CZqWQC7vEJVpkjqcAmhUsWk8dc8-d9Na0bfpxi2hndDYpHccaXEgywB5uvaW5lf41G7NSDnFSZprm-nUYiA5sBdTcX22Cd4ZJ_SJuIAjaxMBLBbshwXp8hTpXAETgeHrVuf2zBAi4CK0nVnS_zmX_d3tPwp-qFu9sLqoFFqD0N2x2JfRw4RloXozfoQiDlPmztNCcTAX1vHjWZIKKg7egpGbUyNnEr_5NZVhvVPGlnUVd2Q4DKyUlZ1uv1w"
         },
         "recoveryId": "https://fakemhsm.local/deletedkeys/testlistkeys-0583784627",
-        "scheduledPurgeDate": 1656961246
+        "scheduledPurgeDate": 1680646015
       }
     }
   ],

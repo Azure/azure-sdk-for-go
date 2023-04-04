@@ -25,11 +25,11 @@ func ExampleVirtualRouterPeeringsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualRouterPeeringsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "virtualRouter", "peering1", nil)
+	poller, err := clientFactory.NewVirtualRouterPeeringsClient().BeginDelete(ctx, "rg1", "virtualRouter", "peering1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleVirtualRouterPeeringsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualRouterPeeringsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "virtualRouter", "peering1", nil)
+	res, err := clientFactory.NewVirtualRouterPeeringsClient().Get(ctx, "rg1", "virtualRouter", "peering1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -76,11 +76,11 @@ func ExampleVirtualRouterPeeringsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualRouterPeeringsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "virtualRouter", "peering1", armnetwork.VirtualRouterPeering{
+	poller, err := clientFactory.NewVirtualRouterPeeringsClient().BeginCreateOrUpdate(ctx, "rg1", "virtualRouter", "peering1", armnetwork.VirtualRouterPeering{
 		Properties: &armnetwork.VirtualRouterPeeringProperties{
 			PeerAsn: to.Ptr[int64](20000),
 			PeerIP:  to.Ptr("192.168.1.5"),
@@ -115,11 +115,11 @@ func ExampleVirtualRouterPeeringsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualRouterPeeringsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "virtualRouter", nil)
+	pager := clientFactory.NewVirtualRouterPeeringsClient().NewListPager("rg1", "virtualRouter", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // PrivateEndpointConnectionProxiesClient contains the methods for the PrivateEndpointConnectionProxies group.
 // Don't use this type directly, use NewPrivateEndpointConnectionProxiesClient() instead.
 type PrivateEndpointConnectionProxiesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPrivateEndpointConnectionProxiesClient creates a new instance of PrivateEndpointConnectionProxiesClient with the specified values.
-// subscriptionID - The Azure subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Azure subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPrivateEndpointConnectionProxiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionProxiesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PrivateEndpointConnectionProxiesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PrivateEndpointConnectionProxiesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,37 +47,39 @@ func NewPrivateEndpointConnectionProxiesClient(subscriptionID string, credential
 // BeginCreateOrUpdate - (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource
 // associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
-// privateEndpointConnectionProxy - The parameters for creating a private endpoint connection proxy.
-// options - PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
+//   - privateEndpointConnectionProxy - The parameters for creating a private endpoint connection proxy.
+//   - options - PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.BeginCreateOrUpdate
+//     method.
 func (client *PrivateEndpointConnectionProxiesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy PrivateEndpointConnectionProxy, options *PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, privateEndpointConnectionProxy, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
 // with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
 func (client *PrivateEndpointConnectionProxiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy PrivateEndpointConnectionProxy, options *PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, privateEndpointConnectionProxy, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +108,7 @@ func (client *PrivateEndpointConnectionProxiesClient) createOrUpdateCreateReques
 		return nil, errors.New("parameter privateEndpointConnectionProxyID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionProxyId}", url.PathEscape(privateEndpointConnectionProxyID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,36 +122,38 @@ func (client *PrivateEndpointConnectionProxiesClient) createOrUpdateCreateReques
 // BeginDelete - (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device
 // update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
-// options - PrivateEndpointConnectionProxiesClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.BeginDelete
-// method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
+//   - options - PrivateEndpointConnectionProxiesClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.BeginDelete
+//     method.
 func (client *PrivateEndpointConnectionProxiesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, options *PrivateEndpointConnectionProxiesClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionProxiesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionProxiesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionProxiesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionProxiesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionProxiesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
 // account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
 func (client *PrivateEndpointConnectionProxiesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, options *PrivateEndpointConnectionProxiesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -189,7 +182,7 @@ func (client *PrivateEndpointConnectionProxiesClient) deleteCreateRequest(ctx co
 		return nil, errors.New("parameter privateEndpointConnectionProxyID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionProxyId}", url.PathEscape(privateEndpointConnectionProxyID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,18 +195,19 @@ func (client *PrivateEndpointConnectionProxiesClient) deleteCreateRequest(ctx co
 
 // Get - (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
-// options - PrivateEndpointConnectionProxiesClientGetOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.Get
-// method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
+//   - options - PrivateEndpointConnectionProxiesClientGetOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.Get
+//     method.
 func (client *PrivateEndpointConnectionProxiesClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, options *PrivateEndpointConnectionProxiesClientGetOptions) (PrivateEndpointConnectionProxiesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, options)
 	if err != nil {
 		return PrivateEndpointConnectionProxiesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PrivateEndpointConnectionProxiesClientGetResponse{}, err
 	}
@@ -242,7 +236,7 @@ func (client *PrivateEndpointConnectionProxiesClient) getCreateRequest(ctx conte
 		return nil, errors.New("parameter privateEndpointConnectionProxyID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionProxyId}", url.PathEscape(privateEndpointConnectionProxyID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -263,12 +257,12 @@ func (client *PrivateEndpointConnectionProxiesClient) getHandleResponse(resp *ht
 }
 
 // NewListByAccountPager - (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// options - PrivateEndpointConnectionProxiesClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.ListByAccount
-// method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - options - PrivateEndpointConnectionProxiesClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.NewListByAccountPager
+//     method.
 func (client *PrivateEndpointConnectionProxiesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *PrivateEndpointConnectionProxiesClientListByAccountOptions) *runtime.Pager[PrivateEndpointConnectionProxiesClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionProxiesClientListByAccountResponse]{
 		More: func(page PrivateEndpointConnectionProxiesClientListByAccountResponse) bool {
@@ -279,7 +273,7 @@ func (client *PrivateEndpointConnectionProxiesClient) NewListByAccountPager(reso
 			if err != nil {
 				return PrivateEndpointConnectionProxiesClientListByAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PrivateEndpointConnectionProxiesClientListByAccountResponse{}, err
 			}
@@ -306,7 +300,7 @@ func (client *PrivateEndpointConnectionProxiesClient) listByAccountCreateRequest
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -329,19 +323,20 @@ func (client *PrivateEndpointConnectionProxiesClient) listByAccountHandleRespons
 // UpdatePrivateEndpointProperties - (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection
 // proxy object.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
-// privateEndpointUpdate - The parameters for updating a private endpoint connection proxy.
-// options - PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesOptions contains the optional parameters
-// for the PrivateEndpointConnectionProxiesClient.UpdatePrivateEndpointProperties method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
+//   - privateEndpointUpdate - The parameters for updating a private endpoint connection proxy.
+//   - options - PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesOptions contains the optional parameters
+//     for the PrivateEndpointConnectionProxiesClient.UpdatePrivateEndpointProperties method.
 func (client *PrivateEndpointConnectionProxiesClient) UpdatePrivateEndpointProperties(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointUpdate PrivateEndpointUpdate, options *PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesOptions) (PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesResponse, error) {
 	req, err := client.updatePrivateEndpointPropertiesCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, privateEndpointUpdate, options)
 	if err != nil {
 		return PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PrivateEndpointConnectionProxiesClientUpdatePrivateEndpointPropertiesResponse{}, err
 	}
@@ -370,7 +365,7 @@ func (client *PrivateEndpointConnectionProxiesClient) updatePrivateEndpointPrope
 		return nil, errors.New("parameter privateEndpointConnectionProxyID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionProxyId}", url.PathEscape(privateEndpointConnectionProxyID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -383,19 +378,20 @@ func (client *PrivateEndpointConnectionProxiesClient) updatePrivateEndpointPrope
 
 // Validate - (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
-// privateEndpointConnectionProxy - The parameters for creating a private endpoint connection proxy.
-// options - PrivateEndpointConnectionProxiesClientValidateOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.Validate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
+//   - privateEndpointConnectionProxy - The parameters for creating a private endpoint connection proxy.
+//   - options - PrivateEndpointConnectionProxiesClientValidateOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.Validate
+//     method.
 func (client *PrivateEndpointConnectionProxiesClient) Validate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy PrivateEndpointConnectionProxy, options *PrivateEndpointConnectionProxiesClientValidateOptions) (PrivateEndpointConnectionProxiesClientValidateResponse, error) {
 	req, err := client.validateCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionProxyID, privateEndpointConnectionProxy, options)
 	if err != nil {
 		return PrivateEndpointConnectionProxiesClientValidateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PrivateEndpointConnectionProxiesClientValidateResponse{}, err
 	}
@@ -424,7 +420,7 @@ func (client *PrivateEndpointConnectionProxiesClient) validateCreateRequest(ctx 
 		return nil, errors.New("parameter privateEndpointConnectionProxyID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionProxyId}", url.PathEscape(privateEndpointConnectionProxyID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

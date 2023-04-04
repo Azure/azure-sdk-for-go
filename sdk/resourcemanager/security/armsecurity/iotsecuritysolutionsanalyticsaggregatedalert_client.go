@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,49 +25,41 @@ import (
 // IotSecuritySolutionsAnalyticsAggregatedAlertClient contains the methods for the IotSecuritySolutionsAnalyticsAggregatedAlert group.
 // Don't use this type directly, use NewIotSecuritySolutionsAnalyticsAggregatedAlertClient() instead.
 type IotSecuritySolutionsAnalyticsAggregatedAlertClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewIotSecuritySolutionsAnalyticsAggregatedAlertClient creates a new instance of IotSecuritySolutionsAnalyticsAggregatedAlertClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionsAnalyticsAggregatedAlertClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".IotSecuritySolutionsAnalyticsAggregatedAlertClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &IotSecuritySolutionsAnalyticsAggregatedAlertClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Dismiss - Use this method to dismiss an aggregated IoT Security Solution Alert.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-08-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// solutionName - The name of the IoT Security solution.
-// aggregatedAlertName - Identifier of the aggregated alert.
-// options - IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsAggregatedAlertClient.Dismiss
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - solutionName - The name of the IoT Security solution.
+//   - aggregatedAlertName - Identifier of the aggregated alert.
+//   - options - IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsAggregatedAlertClient.Dismiss
+//     method.
 func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) Dismiss(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissOptions) (IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissResponse, error) {
 	req, err := client.dismissCreateRequest(ctx, resourceGroupName, solutionName, aggregatedAlertName, options)
 	if err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissCreateR
 		return nil, errors.New("parameter aggregatedAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{aggregatedAlertName}", url.PathEscape(aggregatedAlertName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -112,18 +102,19 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissCreateR
 // Get - Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is performed
 // by alert name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-08-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// solutionName - The name of the IoT Security solution.
-// aggregatedAlertName - Identifier of the aggregated alert.
-// options - IotSecuritySolutionsAnalyticsAggregatedAlertClientGetOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsAggregatedAlertClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - solutionName - The name of the IoT Security solution.
+//   - aggregatedAlertName - Identifier of the aggregated alert.
+//   - options - IotSecuritySolutionsAnalyticsAggregatedAlertClientGetOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsAggregatedAlertClient.Get
+//     method.
 func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) Get(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertClientGetOptions) (IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, solutionName, aggregatedAlertName, options)
 	if err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse{}, err
 	}
@@ -152,7 +143,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateReque
 		return nil, errors.New("parameter aggregatedAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{aggregatedAlertName}", url.PathEscape(aggregatedAlertName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,11 +164,12 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getHandleRespo
 }
 
 // NewListPager - Use this method to get the aggregated alert list of yours IoT Security solution.
+//
 // Generated from API version 2019-08-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// solutionName - The name of the IoT Security solution.
-// options - IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsAggregatedAlertClient.List
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - solutionName - The name of the IoT Security solution.
+//   - options - IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsAggregatedAlertClient.NewListPager
+//     method.
 func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) NewListPager(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions) *runtime.Pager[IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse]{
 		More: func(page IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse) bool {
@@ -194,7 +186,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) NewListPager(r
 			if err != nil {
 				return IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse{}, err
 			}
@@ -221,7 +213,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listCreateRequ
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

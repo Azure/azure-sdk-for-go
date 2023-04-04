@@ -24,11 +24,11 @@ func ExampleGetClient_IntegrationRuntimeStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewGetClient("2d03866b-587b-4e1f-a2fe-0a55958c655e", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.IntegrationRuntimeStart(ctx, "drage-felles-prod-rg", "felles-prod-synapse-workspace", "SSIS-intergrationRuntime-Drage", "5752dcdf918e4aecb941245ddf6ebb83", nil)
+	res, err := clientFactory.NewGetClient().IntegrationRuntimeStart(ctx, "drage-felles-prod-rg", "felles-prod-synapse-workspace", "SSIS-intergrationRuntime-Drage", "5752dcdf918e4aecb941245ddf6ebb83", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -52,11 +52,11 @@ func ExampleGetClient_IntegrationRuntimeStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewGetClient("2d03866b-587b-4e1f-a2fe-0a55958c655e", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.IntegrationRuntimeStop(ctx, "drage-felles-prod-rg", "felles-prod-synapse-workspace", "SSIS-intergrationRuntime-Drage", "5752dcdf918e4aecb941245ddf6ebb83", nil)
+	res, err := clientFactory.NewGetClient().IntegrationRuntimeStop(ctx, "drage-felles-prod-rg", "felles-prod-synapse-workspace", "SSIS-intergrationRuntime-Drage", "5752dcdf918e4aecb941245ddf6ebb83", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -80,11 +80,11 @@ func ExampleGetClient_IntegrationRuntimeEnableInteractivequery() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewGetClient("2d03866b-587b-4e1f-a2fe-0a55958c655e", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.IntegrationRuntimeEnableInteractivequery(ctx, "drage-felles-prod-rg", "felles-prod-synapse-workspace", "SSIS-intergrationRuntime-Drage", "5752dcdf918e4aecb941245ddf6ebb83", nil)
+	res, err := clientFactory.NewGetClient().IntegrationRuntimeEnableInteractivequery(ctx, "drage-felles-prod-rg", "felles-prod-synapse-workspace", "SSIS-intergrationRuntime-Drage", "5752dcdf918e4aecb941245ddf6ebb83", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

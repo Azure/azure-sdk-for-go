@@ -25,11 +25,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "connS2S", armnetwork.VirtualNetworkGatewayConnection{
+	poller, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().BeginCreateOrUpdate(ctx, "rg1", "connS2S", armnetwork.VirtualNetworkGatewayConnection{
 		Location: to.Ptr("centralus"),
 		Properties: &armnetwork.VirtualNetworkGatewayConnectionPropertiesFormat{
 			ConnectionMode:     to.Ptr(armnetwork.VirtualNetworkGatewayConnectionModeDefault),
@@ -177,11 +177,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "connS2S", nil)
+	res, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().Get(ctx, "rg1", "connS2S", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -251,11 +251,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "conn1", nil)
+	poller, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().BeginDelete(ctx, "rg1", "conn1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -272,11 +272,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginUpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateTags(ctx, "rg1", "test", armnetwork.TagsObject{
+	poller, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().BeginUpdateTags(ctx, "rg1", "test", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -354,11 +354,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginSetSharedKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginSetSharedKey(ctx, "rg1", "connS2S", armnetwork.ConnectionSharedKey{
+	poller, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().BeginSetSharedKey(ctx, "rg1", "connS2S", armnetwork.ConnectionSharedKey{
 		Value: to.Ptr("AzureAbc123"),
 	}, nil)
 	if err != nil {
@@ -383,11 +383,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_GetSharedKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSharedKey(ctx, "rg1", "connS2S", nil)
+	res, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().GetSharedKey(ctx, "rg1", "connS2S", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -406,11 +406,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewVirtualNetworkGatewayConnectionsClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -538,11 +538,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetSharedKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResetSharedKey(ctx, "rg1", "conn1", armnetwork.ConnectionResetSharedKey{
+	poller, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().BeginResetSharedKey(ctx, "rg1", "conn1", armnetwork.ConnectionResetSharedKey{
 		KeyLength: to.Ptr[int32](128),
 	}, nil)
 	if err != nil {
@@ -567,11 +567,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture_start
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStartPacketCapture(ctx, "rg1", "vpngwcn1", &armnetwork.VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions{Parameters: &armnetwork.VPNPacketCaptureStartParameters{
+	poller, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().BeginStartPacketCapture(ctx, "rg1", "vpngwcn1", &armnetwork.VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions{Parameters: &armnetwork.VPNPacketCaptureStartParameters{
 		FilterData: to.Ptr("{'TracingFlags': 11,'MaxPacketBufferSize': 120,'MaxFileSize': 200,'Filters': [{'SourceSubnets': ['20.1.1.0/24'],'DestinationSubnets': ['10.1.1.0/24'],'SourcePort': [500],'DestinationPort': [4500],'Protocol': 6,'TcpFlags': 16,'CaptureSingleDirectionTrafficOnly': true}]}"),
 	},
 	})
@@ -595,11 +595,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture_start
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStartPacketCapture(ctx, "rg1", "vpngwcn1", &armnetwork.VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions{Parameters: nil})
+	poller, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().BeginStartPacketCapture(ctx, "rg1", "vpngwcn1", &armnetwork.VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions{Parameters: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -620,11 +620,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStopPacketCapture() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStopPacketCapture(ctx, "rg1", "vpngwcn1", armnetwork.VPNPacketCaptureStopParameters{
+	poller, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().BeginStopPacketCapture(ctx, "rg1", "vpngwcn1", armnetwork.VPNPacketCaptureStopParameters{
 		SasURL: to.Ptr("https://teststorage.blob.core.windows.net/?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-09-13T07:44:05Z&st=2019-09-06T23:44:05Z&spr=https&sig=V1h9D1riltvZMI69d6ihENnFo%2FrCvTqGgjO2lf%2FVBhE%3D"),
 	}, nil)
 	if err != nil {
@@ -647,11 +647,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginGetIkeSas() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetIkeSas(ctx, "rg1", "vpngwcn1", nil)
+	poller, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().BeginGetIkeSas(ctx, "rg1", "vpngwcn1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -672,11 +672,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResetConnection(ctx, "rg1", "conn1", nil)
+	poller, err := clientFactory.NewVirtualNetworkGatewayConnectionsClient().BeginResetConnection(ctx, "rg1", "conn1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

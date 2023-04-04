@@ -25,11 +25,11 @@ func ExampleFirewallPolicyIdpsSignaturesFilterValuesClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesFilterValuesClient("e747cc13-97d4-4a79-b463-42d7f4e558f2", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "rg1", "firewallPolicy", armnetwork.SignatureOverridesFilterValuesQuery{
+	res, err := clientFactory.NewFirewallPolicyIdpsSignaturesFilterValuesClient().List(ctx, "rg1", "firewallPolicy", armnetwork.SignatureOverridesFilterValuesQuery{
 		FilterName: to.Ptr("severity"),
 	}, nil)
 	if err != nil {

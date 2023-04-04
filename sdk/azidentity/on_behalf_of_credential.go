@@ -10,7 +10,6 @@ import (
 	"context"
 	"crypto"
 	"crypto/x509"
-	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -28,15 +27,19 @@ const credNameOBO = "OnBehalfOfCredential"
 type OnBehalfOfCredential struct {
 	assertion string
 	client    confidentialClient
+	s         *syncer
 }
 
 // OnBehalfOfCredentialOptions contains optional parameters for OnBehalfOfCredential
 type OnBehalfOfCredentialOptions struct {
 	azcore.ClientOptions
 
+	// AdditionallyAllowedTenants specifies additional tenants for which the credential may acquire tokens.
+	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
+	// application is registered.
+	AdditionallyAllowedTenants []string
 	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
 	DisableInstanceDiscovery bool
-
 	// SendCertificateChain applies only when the credential is configured to authenticate with a certificate.
 	// This setting controls whether the credential sends the public certificate chain in the x5c header of each
 	// token request's JWT. This is required for, and only used in, Subject Name/Issuer (SNI) authentication.
@@ -46,7 +49,7 @@ type OnBehalfOfCredentialOptions struct {
 // NewOnBehalfOfCredentialFromCertificate constructs an OnBehalfOfCredential that authenticates with a certificate.
 // See [ParseCertificates] for help loading a certificate.
 func NewOnBehalfOfCredentialFromCertificate(tenantID, clientID, userAssertion string, certs []*x509.Certificate, key crypto.PrivateKey, options *OnBehalfOfCredentialOptions) (*OnBehalfOfCredential, error) {
-	cred, err := confidential.NewCredFromCertChain(certs, key)
+	cred, err := confidential.NewCredFromCert(certs, key)
 	if err != nil {
 		return nil, err
 	}
@@ -75,18 +78,19 @@ func newOnBehalfOfCredential(tenantID, clientID, userAssertion string, cred conf
 	if err != nil {
 		return nil, err
 	}
-	return &OnBehalfOfCredential{assertion: userAssertion, client: c}, nil
+	obo := OnBehalfOfCredential{assertion: userAssertion, client: c}
+	obo.s = newSyncer(credNameOBO, tenantID, options.AdditionallyAllowedTenants, obo.requestToken, obo.requestToken)
+	return &obo, nil
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 func (o *OnBehalfOfCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	if len(opts.Scopes) == 0 {
-		return azcore.AccessToken{}, errors.New(credNameSecret + ": GetToken() requires at least one scope")
-	}
-	ar, err := o.client.AcquireTokenOnBehalfOf(ctx, o.assertion, opts.Scopes)
-	if err != nil {
-		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameOBO, err)
-	}
-	logGetTokenSuccess(o, opts)
-	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, nil
+	return o.s.GetToken(ctx, opts)
 }
+
+func (o *OnBehalfOfCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	ar, err := o.client.AcquireTokenOnBehalfOf(ctx, o.assertion, opts.Scopes, confidential.WithTenantID(opts.TenantID))
+	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+}
+
+var _ azcore.TokenCredential = (*OnBehalfOfCredential)(nil)

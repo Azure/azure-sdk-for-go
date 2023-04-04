@@ -17,9 +17,9 @@ import (
 )
 
 func TestOwnershipLost(t *testing.T) {
-	detachErr := &amqp.DetachError{
-		RemoteError: &amqp.Error{
-			Condition: amqp.ErrorCondition("amqp:link:stolen"),
+	detachErr := &amqp.LinkError{
+		RemoteErr: &amqp.Error{
+			Condition: amqp.ErrCond("amqp:link:stolen"),
 		},
 	}
 
@@ -32,15 +32,15 @@ func TestOwnershipLost(t *testing.T) {
 	require.ErrorAs(t, transformedErr, &err)
 	require.Equal(t, exported.ErrorCodeOwnershipLost, err.Code)
 
-	require.False(t, IsOwnershipLostError(&amqp.DetachError{}))
-	require.False(t, IsOwnershipLostError(&amqp.ConnectionError{}))
+	require.False(t, IsOwnershipLostError(&amqp.LinkError{}))
+	require.False(t, IsOwnershipLostError(&amqp.ConnError{}))
 	require.False(t, IsOwnershipLostError(errors.New("definitely not an ownership lost error")))
 }
 
 func TestGetRecoveryKind(t *testing.T) {
 	require.Equal(t, GetRecoveryKind(nil), RecoveryKindNone)
-	require.Equal(t, GetRecoveryKind(errConnResetNeeded), RecoveryKindConn)
-	require.Equal(t, GetRecoveryKind(&amqp.DetachError{}), RecoveryKindLink)
+	require.Equal(t, GetRecoveryKind(amqpwrap.ErrConnResetNeeded), RecoveryKindConn)
+	require.Equal(t, GetRecoveryKind(&amqp.LinkError{}), RecoveryKindLink)
 	require.Equal(t, GetRecoveryKind(context.Canceled), RecoveryKindFatal)
 	require.Equal(t, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusUnauthorized}}), RecoveryKindFatal)
 	require.Equal(t, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusNotFound}}), RecoveryKindFatal)
@@ -49,9 +49,9 @@ func TestGetRecoveryKind(t *testing.T) {
 func Test_TransformError(t *testing.T) {
 	var asExportedErr *exported.Error
 
-	err := TransformError(&amqp.DetachError{
-		RemoteError: &amqp.Error{
-			Condition: amqp.ErrorCondition("amqp:link:stolen"),
+	err := TransformError(&amqp.LinkError{
+		RemoteErr: &amqp.Error{
+			Condition: amqp.ErrCond("amqp:link:stolen"),
 		},
 	})
 	require.ErrorAs(t, err, &asExportedErr)
@@ -61,7 +61,7 @@ func Test_TransformError(t *testing.T) {
 	require.ErrorAs(t, err, &asExportedErr)
 	require.Equal(t, exported.ErrorCodeUnauthorizedAccess, asExportedErr.Code)
 
-	err = TransformError(&amqp.Error{Condition: amqp.ErrorUnauthorizedAccess})
+	err = TransformError(&amqp.Error{Condition: amqp.ErrCondUnauthorizedAccess})
 	require.ErrorAs(t, err, &asExportedErr)
 	require.Equal(t, exported.ErrorCodeUnauthorizedAccess, asExportedErr.Code)
 
@@ -75,14 +75,14 @@ func Test_TransformError(t *testing.T) {
 	require.False(t, errors.As(err, &asExportedErr))
 
 	// sanity check, an RPCError but it's not a azservicebus.Code type error.
-	err = TransformError(&amqp.Error{Condition: amqp.ErrorNotFound})
+	err = TransformError(&amqp.Error{Condition: amqp.ErrCondNotFound})
 	require.False(t, errors.As(err, &asExportedErr))
 
-	err = TransformError(amqp.ErrLinkClosed)
+	err = TransformError(&amqp.LinkError{})
 	require.ErrorAs(t, err, &asExportedErr)
 	require.Equal(t, exported.ErrorCodeConnectionLost, asExportedErr.Code)
 
-	err = TransformError(&amqp.ConnectionError{})
+	err = TransformError(&amqp.ConnError{})
 	require.ErrorAs(t, err, &asExportedErr)
 	require.Equal(t, exported.ErrorCodeConnectionLost, asExportedErr.Code)
 

@@ -24,11 +24,11 @@ func ExampleExpressRouteCircuitAuthorizationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitAuthorizationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "circuitName", "authorizationName", nil)
+	poller, err := clientFactory.NewExpressRouteCircuitAuthorizationsClient().BeginDelete(ctx, "rg1", "circuitName", "authorizationName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -45,11 +45,11 @@ func ExampleExpressRouteCircuitAuthorizationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitAuthorizationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "circuitName", "authorizationName", nil)
+	res, err := clientFactory.NewExpressRouteCircuitAuthorizationsClient().Get(ctx, "rg1", "circuitName", "authorizationName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -76,11 +76,11 @@ func ExampleExpressRouteCircuitAuthorizationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitAuthorizationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "circuitName", "authorizatinName", armnetwork.ExpressRouteCircuitAuthorization{
+	poller, err := clientFactory.NewExpressRouteCircuitAuthorizationsClient().BeginCreateOrUpdate(ctx, "rg1", "circuitName", "authorizatinName", armnetwork.ExpressRouteCircuitAuthorization{
 		Properties: &armnetwork.AuthorizationPropertiesFormat{},
 	}, nil)
 	if err != nil {
@@ -111,11 +111,11 @@ func ExampleExpressRouteCircuitAuthorizationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitAuthorizationsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "circuitName", nil)
+	pager := clientFactory.NewExpressRouteCircuitAuthorizationsClient().NewListPager("rg1", "circuitName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

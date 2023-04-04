@@ -25,11 +25,11 @@ func ExampleManagersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testNetworkManager", nil)
+	res, err := clientFactory.NewManagersClient().Get(ctx, "rg1", "testNetworkManager", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -70,11 +70,11 @@ func ExampleManagersClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "TestNetworkManager", armnetwork.Manager{
+	res, err := clientFactory.NewManagersClient().CreateOrUpdate(ctx, "rg1", "TestNetworkManager", armnetwork.Manager{
 		Properties: &armnetwork.ManagerProperties{
 			Description: to.Ptr("My Test Network Manager"),
 			NetworkManagerScopeAccesses: []*armnetwork.ConfigurationType{
@@ -128,11 +128,11 @@ func ExampleManagersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "testNetworkManager", &armnetwork.ManagersClientBeginDeleteOptions{Force: to.Ptr(false)})
+	poller, err := clientFactory.NewManagersClient().BeginDelete(ctx, "rg1", "testNetworkManager", &armnetwork.ManagersClientBeginDeleteOptions{Force: to.Ptr(false)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -149,11 +149,11 @@ func ExampleManagersClient_Patch() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Patch(ctx, "rg1", "testNetworkManager", armnetwork.PatchObject{
+	res, err := clientFactory.NewManagersClient().Patch(ctx, "rg1", "testNetworkManager", armnetwork.PatchObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -205,11 +205,11 @@ func ExampleManagersClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(&armnetwork.ManagersClientListBySubscriptionOptions{Top: nil,
+	pager := clientFactory.NewManagersClient().NewListBySubscriptionPager(&armnetwork.ManagersClientListBySubscriptionOptions{Top: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {
@@ -261,11 +261,11 @@ func ExampleManagersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", &armnetwork.ManagersClientListOptions{Top: nil,
+	pager := clientFactory.NewManagersClient().NewListPager("rg1", &armnetwork.ManagersClientListOptions{Top: nil,
 		SkipToken: nil,
 	})
 	for pager.More() {

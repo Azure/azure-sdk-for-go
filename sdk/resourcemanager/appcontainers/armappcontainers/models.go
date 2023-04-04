@@ -170,7 +170,7 @@ type AvailableWorkloadProfileProperties struct {
 	MemoryGiB *int32 `json:"memoryGiB,omitempty"`
 }
 
-// AvailableWorkloadProfilesClientGetOptions contains the optional parameters for the AvailableWorkloadProfilesClient.Get
+// AvailableWorkloadProfilesClientGetOptions contains the optional parameters for the AvailableWorkloadProfilesClient.NewGetPager
 // method.
 type AvailableWorkloadProfilesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -463,7 +463,7 @@ type CertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
+// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
 type CertificatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -632,7 +632,7 @@ type ConnectedEnvironmentsCertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectedEnvironmentsCertificatesClientListOptions contains the optional parameters for the ConnectedEnvironmentsCertificatesClient.List
+// ConnectedEnvironmentsCertificatesClientListOptions contains the optional parameters for the ConnectedEnvironmentsCertificatesClient.NewListPager
 // method.
 type ConnectedEnvironmentsCertificatesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -669,13 +669,13 @@ type ConnectedEnvironmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectedEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the ConnectedEnvironmentsClient.ListByResourceGroup
+// ConnectedEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the ConnectedEnvironmentsClient.NewListByResourceGroupPager
 // method.
 type ConnectedEnvironmentsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectedEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the ConnectedEnvironmentsClient.ListBySubscription
+// ConnectedEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the ConnectedEnvironmentsClient.NewListBySubscriptionPager
 // method.
 type ConnectedEnvironmentsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -704,7 +704,7 @@ type ConnectedEnvironmentsDaprComponentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectedEnvironmentsDaprComponentsClientListOptions contains the optional parameters for the ConnectedEnvironmentsDaprComponentsClient.List
+// ConnectedEnvironmentsDaprComponentsClientListOptions contains the optional parameters for the ConnectedEnvironmentsDaprComponentsClient.NewListPager
 // method.
 type ConnectedEnvironmentsDaprComponentsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -981,7 +981,7 @@ type ContainerAppsAuthConfigsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsAuthConfigsClientListByContainerAppOptions contains the optional parameters for the ContainerAppsAuthConfigsClient.ListByContainerApp
+// ContainerAppsAuthConfigsClientListByContainerAppOptions contains the optional parameters for the ContainerAppsAuthConfigsClient.NewListByContainerAppPager
 // method.
 type ContainerAppsAuthConfigsClientListByContainerAppOptions struct {
 	// placeholder for future optional parameters
@@ -1016,13 +1016,13 @@ type ContainerAppsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsClientListByResourceGroupOptions contains the optional parameters for the ContainerAppsClient.ListByResourceGroup
+// ContainerAppsClientListByResourceGroupOptions contains the optional parameters for the ContainerAppsClient.NewListByResourceGroupPager
 // method.
 type ContainerAppsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsClientListBySubscriptionOptions contains the optional parameters for the ContainerAppsClient.ListBySubscription
+// ContainerAppsClientListBySubscriptionOptions contains the optional parameters for the ContainerAppsClient.NewListBySubscriptionPager
 // method.
 type ContainerAppsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1058,13 +1058,13 @@ type ContainerAppsDiagnosticsClientGetRootOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsDiagnosticsClientListDetectorsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.ListDetectors
+// ContainerAppsDiagnosticsClientListDetectorsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.NewListDetectorsPager
 // method.
 type ContainerAppsDiagnosticsClientListDetectorsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsDiagnosticsClientListRevisionsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.ListRevisions
+// ContainerAppsDiagnosticsClientListRevisionsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.NewListRevisionsPager
 // method.
 type ContainerAppsDiagnosticsClientListRevisionsOptions struct {
 	// The filter to apply on the operation.
@@ -1101,7 +1101,7 @@ type ContainerAppsRevisionsClientGetRevisionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsRevisionsClientListRevisionsOptions contains the optional parameters for the ContainerAppsRevisionsClient.ListRevisions
+// ContainerAppsRevisionsClientListRevisionsOptions contains the optional parameters for the ContainerAppsRevisionsClient.NewListRevisionsPager
 // method.
 type ContainerAppsRevisionsClientListRevisionsOptions struct {
 	// The filter to apply on the operation.
@@ -1134,7 +1134,7 @@ type ContainerAppsSourceControlsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsSourceControlsClientListByContainerAppOptions contains the optional parameters for the ContainerAppsSourceControlsClient.ListByContainerApp
+// ContainerAppsSourceControlsClientListByContainerAppOptions contains the optional parameters for the ContainerAppsSourceControlsClient.NewListByContainerAppPager
 // method.
 type ContainerAppsSourceControlsClientListByContainerAppOptions struct {
 	// placeholder for future optional parameters
@@ -1376,7 +1376,7 @@ type DaprComponentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DaprComponentsClientListOptions contains the optional parameters for the DaprComponentsClient.List method.
+// DaprComponentsClientListOptions contains the optional parameters for the DaprComponentsClient.NewListPager method.
 type DaprComponentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1503,7 +1503,7 @@ type DiagnosticDataTableResponseObject struct {
 	Columns []*DiagnosticDataTableResponseColumn `json:"columns,omitempty"`
 
 	// Rows in the table
-	Rows []interface{} `json:"rows,omitempty"`
+	Rows []any `json:"rows,omitempty"`
 
 	// Table name
 	TableName *string `json:"tableName,omitempty"`
@@ -1677,7 +1677,7 @@ type EnvironmentVar struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -2139,19 +2139,19 @@ type ManagedEnvironmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the ManagedEnvironmentsClient.ListByResourceGroup
+// ManagedEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the ManagedEnvironmentsClient.NewListByResourceGroupPager
 // method.
 type ManagedEnvironmentsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the ManagedEnvironmentsClient.ListBySubscription
+// ManagedEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the ManagedEnvironmentsClient.NewListBySubscriptionPager
 // method.
 type ManagedEnvironmentsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedEnvironmentsClientListWorkloadProfileStatesOptions contains the optional parameters for the ManagedEnvironmentsClient.ListWorkloadProfileStates
+// ManagedEnvironmentsClientListWorkloadProfileStatesOptions contains the optional parameters for the ManagedEnvironmentsClient.NewListWorkloadProfileStatesPager
 // method.
 type ManagedEnvironmentsClientListWorkloadProfileStatesOptions struct {
 	// placeholder for future optional parameters
@@ -2309,7 +2309,7 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }

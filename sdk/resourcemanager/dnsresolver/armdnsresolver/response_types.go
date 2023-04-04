@@ -9,12 +9,12 @@
 
 package armdnsresolver
 
-// DNSForwardingRulesetsClientCreateOrUpdateResponse contains the response from method DNSForwardingRulesetsClient.CreateOrUpdate.
+// DNSForwardingRulesetsClientCreateOrUpdateResponse contains the response from method DNSForwardingRulesetsClient.BeginCreateOrUpdate.
 type DNSForwardingRulesetsClientCreateOrUpdateResponse struct {
 	DNSForwardingRuleset
 }
 
-// DNSForwardingRulesetsClientDeleteResponse contains the response from method DNSForwardingRulesetsClient.Delete.
+// DNSForwardingRulesetsClientDeleteResponse contains the response from method DNSForwardingRulesetsClient.BeginDelete.
 type DNSForwardingRulesetsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,32 +24,32 @@ type DNSForwardingRulesetsClientGetResponse struct {
 	DNSForwardingRuleset
 }
 
-// DNSForwardingRulesetsClientListByResourceGroupResponse contains the response from method DNSForwardingRulesetsClient.ListByResourceGroup.
+// DNSForwardingRulesetsClientListByResourceGroupResponse contains the response from method DNSForwardingRulesetsClient.NewListByResourceGroupPager.
 type DNSForwardingRulesetsClientListByResourceGroupResponse struct {
 	DNSForwardingRulesetListResult
 }
 
-// DNSForwardingRulesetsClientListByVirtualNetworkResponse contains the response from method DNSForwardingRulesetsClient.ListByVirtualNetwork.
+// DNSForwardingRulesetsClientListByVirtualNetworkResponse contains the response from method DNSForwardingRulesetsClient.NewListByVirtualNetworkPager.
 type DNSForwardingRulesetsClientListByVirtualNetworkResponse struct {
 	VirtualNetworkDNSForwardingRulesetListResult
 }
 
-// DNSForwardingRulesetsClientListResponse contains the response from method DNSForwardingRulesetsClient.List.
+// DNSForwardingRulesetsClientListResponse contains the response from method DNSForwardingRulesetsClient.NewListPager.
 type DNSForwardingRulesetsClientListResponse struct {
 	DNSForwardingRulesetListResult
 }
 
-// DNSForwardingRulesetsClientUpdateResponse contains the response from method DNSForwardingRulesetsClient.Update.
+// DNSForwardingRulesetsClientUpdateResponse contains the response from method DNSForwardingRulesetsClient.BeginUpdate.
 type DNSForwardingRulesetsClientUpdateResponse struct {
 	DNSForwardingRuleset
 }
 
-// DNSResolversClientCreateOrUpdateResponse contains the response from method DNSResolversClient.CreateOrUpdate.
+// DNSResolversClientCreateOrUpdateResponse contains the response from method DNSResolversClient.BeginCreateOrUpdate.
 type DNSResolversClientCreateOrUpdateResponse struct {
 	DNSResolver
 }
 
-// DNSResolversClientDeleteResponse contains the response from method DNSResolversClient.Delete.
+// DNSResolversClientDeleteResponse contains the response from method DNSResolversClient.BeginDelete.
 type DNSResolversClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -59,22 +59,22 @@ type DNSResolversClientGetResponse struct {
 	DNSResolver
 }
 
-// DNSResolversClientListByResourceGroupResponse contains the response from method DNSResolversClient.ListByResourceGroup.
+// DNSResolversClientListByResourceGroupResponse contains the response from method DNSResolversClient.NewListByResourceGroupPager.
 type DNSResolversClientListByResourceGroupResponse struct {
 	ListResult
 }
 
-// DNSResolversClientListByVirtualNetworkResponse contains the response from method DNSResolversClient.ListByVirtualNetwork.
+// DNSResolversClientListByVirtualNetworkResponse contains the response from method DNSResolversClient.NewListByVirtualNetworkPager.
 type DNSResolversClientListByVirtualNetworkResponse struct {
 	SubResourceListResult
 }
 
-// DNSResolversClientListResponse contains the response from method DNSResolversClient.List.
+// DNSResolversClientListResponse contains the response from method DNSResolversClient.NewListPager.
 type DNSResolversClientListResponse struct {
 	ListResult
 }
 
-// DNSResolversClientUpdateResponse contains the response from method DNSResolversClient.Update.
+// DNSResolversClientUpdateResponse contains the response from method DNSResolversClient.BeginUpdate.
 type DNSResolversClientUpdateResponse struct {
 	DNSResolver
 }
@@ -94,7 +94,7 @@ type ForwardingRulesClientGetResponse struct {
 	ForwardingRule
 }
 
-// ForwardingRulesClientListResponse contains the response from method ForwardingRulesClient.List.
+// ForwardingRulesClientListResponse contains the response from method ForwardingRulesClient.NewListPager.
 type ForwardingRulesClientListResponse struct {
 	ForwardingRuleListResult
 }
@@ -104,12 +104,12 @@ type ForwardingRulesClientUpdateResponse struct {
 	ForwardingRule
 }
 
-// InboundEndpointsClientCreateOrUpdateResponse contains the response from method InboundEndpointsClient.CreateOrUpdate.
+// InboundEndpointsClientCreateOrUpdateResponse contains the response from method InboundEndpointsClient.BeginCreateOrUpdate.
 type InboundEndpointsClientCreateOrUpdateResponse struct {
 	InboundEndpoint
 }
 
-// InboundEndpointsClientDeleteResponse contains the response from method InboundEndpointsClient.Delete.
+// InboundEndpointsClientDeleteResponse contains the response from method InboundEndpointsClient.BeginDelete.
 type InboundEndpointsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -119,22 +119,22 @@ type InboundEndpointsClientGetResponse struct {
 	InboundEndpoint
 }
 
-// InboundEndpointsClientListResponse contains the response from method InboundEndpointsClient.List.
+// InboundEndpointsClientListResponse contains the response from method InboundEndpointsClient.NewListPager.
 type InboundEndpointsClientListResponse struct {
 	InboundEndpointListResult
 }
 
-// InboundEndpointsClientUpdateResponse contains the response from method InboundEndpointsClient.Update.
+// InboundEndpointsClientUpdateResponse contains the response from method InboundEndpointsClient.BeginUpdate.
 type InboundEndpointsClientUpdateResponse struct {
 	InboundEndpoint
 }
 
-// OutboundEndpointsClientCreateOrUpdateResponse contains the response from method OutboundEndpointsClient.CreateOrUpdate.
+// OutboundEndpointsClientCreateOrUpdateResponse contains the response from method OutboundEndpointsClient.BeginCreateOrUpdate.
 type OutboundEndpointsClientCreateOrUpdateResponse struct {
 	OutboundEndpoint
 }
 
-// OutboundEndpointsClientDeleteResponse contains the response from method OutboundEndpointsClient.Delete.
+// OutboundEndpointsClientDeleteResponse contains the response from method OutboundEndpointsClient.BeginDelete.
 type OutboundEndpointsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -144,22 +144,22 @@ type OutboundEndpointsClientGetResponse struct {
 	OutboundEndpoint
 }
 
-// OutboundEndpointsClientListResponse contains the response from method OutboundEndpointsClient.List.
+// OutboundEndpointsClientListResponse contains the response from method OutboundEndpointsClient.NewListPager.
 type OutboundEndpointsClientListResponse struct {
 	OutboundEndpointListResult
 }
 
-// OutboundEndpointsClientUpdateResponse contains the response from method OutboundEndpointsClient.Update.
+// OutboundEndpointsClientUpdateResponse contains the response from method OutboundEndpointsClient.BeginUpdate.
 type OutboundEndpointsClientUpdateResponse struct {
 	OutboundEndpoint
 }
 
-// VirtualNetworkLinksClientCreateOrUpdateResponse contains the response from method VirtualNetworkLinksClient.CreateOrUpdate.
+// VirtualNetworkLinksClientCreateOrUpdateResponse contains the response from method VirtualNetworkLinksClient.BeginCreateOrUpdate.
 type VirtualNetworkLinksClientCreateOrUpdateResponse struct {
 	VirtualNetworkLink
 }
 
-// VirtualNetworkLinksClientDeleteResponse contains the response from method VirtualNetworkLinksClient.Delete.
+// VirtualNetworkLinksClientDeleteResponse contains the response from method VirtualNetworkLinksClient.BeginDelete.
 type VirtualNetworkLinksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -169,12 +169,12 @@ type VirtualNetworkLinksClientGetResponse struct {
 	VirtualNetworkLink
 }
 
-// VirtualNetworkLinksClientListResponse contains the response from method VirtualNetworkLinksClient.List.
+// VirtualNetworkLinksClientListResponse contains the response from method VirtualNetworkLinksClient.NewListPager.
 type VirtualNetworkLinksClientListResponse struct {
 	VirtualNetworkLinkListResult
 }
 
-// VirtualNetworkLinksClientUpdateResponse contains the response from method VirtualNetworkLinksClient.Update.
+// VirtualNetworkLinksClientUpdateResponse contains the response from method VirtualNetworkLinksClient.BeginUpdate.
 type VirtualNetworkLinksClientUpdateResponse struct {
 	VirtualNetworkLink
 }

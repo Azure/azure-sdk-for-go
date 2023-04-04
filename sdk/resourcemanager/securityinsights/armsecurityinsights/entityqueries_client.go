@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // EntityQueriesClient contains the methods for the EntityQueries group.
 // Don't use this type directly, use NewEntityQueriesClient() instead.
 type EntityQueriesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewEntityQueriesClient creates a new instance of EntityQueriesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEntityQueriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntityQueriesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EntityQueriesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EntityQueriesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the entity query.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityQueryID - entity query ID
-// entityQuery - The entity query we want to create or update
-// options - EntityQueriesClientCreateOrUpdateOptions contains the optional parameters for the EntityQueriesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityQueryID - entity query ID
+//   - entityQuery - The entity query we want to create or update
+//   - options - EntityQueriesClientCreateOrUpdateOptions contains the optional parameters for the EntityQueriesClient.CreateOrUpdate
+//     method.
 func (client *EntityQueriesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, entityQueryID string, entityQuery CustomEntityQueryClassification, options *EntityQueriesClientCreateOrUpdateOptions) (EntityQueriesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, entityQueryID, entityQuery, options)
 	if err != nil {
 		return EntityQueriesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EntityQueriesClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *EntityQueriesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter entityQueryID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{entityQueryId}", url.PathEscape(entityQueryID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *EntityQueriesClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // Delete - Delete the entity query.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityQueryID - entity query ID
-// options - EntityQueriesClientDeleteOptions contains the optional parameters for the EntityQueriesClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityQueryID - entity query ID
+//   - options - EntityQueriesClientDeleteOptions contains the optional parameters for the EntityQueriesClient.Delete method.
 func (client *EntityQueriesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, entityQueryID string, options *EntityQueriesClientDeleteOptions) (EntityQueriesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, entityQueryID, options)
 	if err != nil {
 		return EntityQueriesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EntityQueriesClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *EntityQueriesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter entityQueryID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{entityQueryId}", url.PathEscape(entityQueryID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,17 +163,18 @@ func (client *EntityQueriesClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - Gets an entity query.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityQueryID - entity query ID
-// options - EntityQueriesClientGetOptions contains the optional parameters for the EntityQueriesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityQueryID - entity query ID
+//   - options - EntityQueriesClientGetOptions contains the optional parameters for the EntityQueriesClient.Get method.
 func (client *EntityQueriesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, entityQueryID string, options *EntityQueriesClientGetOptions) (EntityQueriesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, entityQueryID, options)
 	if err != nil {
 		return EntityQueriesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EntityQueriesClientGetResponse{}, err
 	}
@@ -211,7 +203,7 @@ func (client *EntityQueriesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter entityQueryID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{entityQueryId}", url.PathEscape(entityQueryID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,10 +224,11 @@ func (client *EntityQueriesClient) getHandleResponse(resp *http.Response) (Entit
 }
 
 // NewListPager - Gets all entity queries.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - EntityQueriesClientListOptions contains the optional parameters for the EntityQueriesClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - EntityQueriesClientListOptions contains the optional parameters for the EntityQueriesClient.NewListPager method.
 func (client *EntityQueriesClient) NewListPager(resourceGroupName string, workspaceName string, options *EntityQueriesClientListOptions) *runtime.Pager[EntityQueriesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EntityQueriesClientListResponse]{
 		More: func(page EntityQueriesClientListResponse) bool {
@@ -252,7 +245,7 @@ func (client *EntityQueriesClient) NewListPager(resourceGroupName string, worksp
 			if err != nil {
 				return EntityQueriesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EntityQueriesClientListResponse{}, err
 			}
@@ -279,7 +272,7 @@ func (client *EntityQueriesClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

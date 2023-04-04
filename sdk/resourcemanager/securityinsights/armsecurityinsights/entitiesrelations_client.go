@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,41 +25,34 @@ import (
 // EntitiesRelationsClient contains the methods for the EntitiesRelations group.
 // Don't use this type directly, use NewEntitiesRelationsClient() instead.
 type EntitiesRelationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewEntitiesRelationsClient creates a new instance of EntitiesRelationsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEntitiesRelationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntitiesRelationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EntitiesRelationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EntitiesRelationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Gets all relations of an entity.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// entityID - entity ID
-// options - EntitiesRelationsClientListOptions contains the optional parameters for the EntitiesRelationsClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - entityID - entity ID
+//   - options - EntitiesRelationsClientListOptions contains the optional parameters for the EntitiesRelationsClient.NewListPager
+//     method.
 func (client *EntitiesRelationsClient) NewListPager(resourceGroupName string, workspaceName string, entityID string, options *EntitiesRelationsClientListOptions) *runtime.Pager[EntitiesRelationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EntitiesRelationsClientListResponse]{
 		More: func(page EntitiesRelationsClientListResponse) bool {
@@ -78,7 +69,7 @@ func (client *EntitiesRelationsClient) NewListPager(resourceGroupName string, wo
 			if err != nil {
 				return EntitiesRelationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EntitiesRelationsClientListResponse{}, err
 			}
@@ -109,7 +100,7 @@ func (client *EntitiesRelationsClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter entityID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{entityId}", url.PathEscape(entityID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -25,11 +25,11 @@ func ExampleSQLPoolSecurityAlertPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSecurityAlertPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("securityalert-6852", "securityalert-2080", "testdb", nil)
+	pager := clientFactory.NewSQLPoolSecurityAlertPoliciesClient().NewListPager("securityalert-6852", "securityalert-2080", "testdb", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -70,11 +70,11 @@ func ExampleSQLPoolSecurityAlertPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSecurityAlertPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "securityalert-6852", "securityalert-2080", "testdb", armsynapse.SecurityAlertPolicyNameDefault, nil)
+	res, err := clientFactory.NewSQLPoolSecurityAlertPoliciesClient().Get(ctx, "securityalert-6852", "securityalert-2080", "testdb", armsynapse.SecurityAlertPolicyNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -107,11 +107,11 @@ func ExampleSQLPoolSecurityAlertPoliciesClient_CreateOrUpdate_updateASqlPoolsThr
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSecurityAlertPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "securityalert-4799", "securityalert-6440", "testdb", armsynapse.SecurityAlertPolicyNameDefault, armsynapse.SQLPoolSecurityAlertPolicy{
+	res, err := clientFactory.NewSQLPoolSecurityAlertPoliciesClient().CreateOrUpdate(ctx, "securityalert-4799", "securityalert-6440", "testdb", armsynapse.SecurityAlertPolicyNameDefault, armsynapse.SQLPoolSecurityAlertPolicy{
 		Properties: &armsynapse.SecurityAlertPolicyProperties{
 			DisabledAlerts: []*string{
 				to.Ptr("Sql_Injection"),
@@ -159,11 +159,11 @@ func ExampleSQLPoolSecurityAlertPoliciesClient_CreateOrUpdate_updateASqlPoolsThr
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSecurityAlertPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "securityalert-4799", "securityalert-6440", "testdb", armsynapse.SecurityAlertPolicyNameDefault, armsynapse.SQLPoolSecurityAlertPolicy{
+	res, err := clientFactory.NewSQLPoolSecurityAlertPoliciesClient().CreateOrUpdate(ctx, "securityalert-4799", "securityalert-6440", "testdb", armsynapse.SecurityAlertPolicyNameDefault, armsynapse.SQLPoolSecurityAlertPolicy{
 		Properties: &armsynapse.SecurityAlertPolicyProperties{
 			State: to.Ptr(armsynapse.SecurityAlertPolicyStateEnabled),
 		},

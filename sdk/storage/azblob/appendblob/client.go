@@ -35,7 +35,7 @@ type Client base.CompositeClient[generated.BlobClient, generated.AppendBlobClien
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	authPolicy := shared.NewStorageChallengePolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName,
@@ -259,7 +259,7 @@ func (ab *Client) SetLegalHold(ctx context.Context, legalHold bool, options *blo
 // SetTier
 // Deprecated: SetTier only works for page blob in premium storage account and block blob in blob storage account.
 func (ab *Client) SetTier(ctx context.Context, tier blob.AccessTier, o *blob.SetTierOptions) (blob.SetTierResponse, error) {
-	return blob.SetTierResponse{}, errors.New("Operation will not work on this blob type. SetTier only works for page blob in premium storage account and block blob in blob storage account.")
+	return blob.SetTierResponse{}, errors.New("operation will not work on this blob type. SetTier only works for page blob in premium storage account and block blob in blob storage account")
 }
 
 // SetExpiry operation sets an expiry time on an existing blob. This operation is only allowed on Hierarchical Namespace enabled accounts.
@@ -277,6 +277,12 @@ func (ab *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetEx
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
 func (ab *Client) GetProperties(ctx context.Context, o *blob.GetPropertiesOptions) (blob.GetPropertiesResponse, error) {
 	return ab.BlobClient().GetProperties(ctx, o)
+}
+
+// GetAccountInfo provides account level information
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-account-information?tabs=shared-access-signatures.
+func (ab *Client) GetAccountInfo(ctx context.Context, o *blob.GetAccountInfoOptions) (blob.GetAccountInfoResponse, error) {
+	return ab.BlobClient().GetAccountInfo(ctx, o)
 }
 
 // SetHTTPHeaders changes a blob's HTTP headers.
@@ -326,7 +332,7 @@ func (ab *Client) GetTags(ctx context.Context, o *blob.GetTagsOptions) (blob.Get
 // CopyFromURL
 // Deprecated: CopyFromURL works only with block blob
 func (ab *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.CopyFromURLOptions) (blob.CopyFromURLResponse, error) {
-	return blob.CopyFromURLResponse{}, errors.New("Operation will not work on this blob type. CopyFromURL works only with block blob.")
+	return blob.CopyFromURLResponse{}, errors.New("operation will not work on this blob type. CopyFromURL works only with block blob")
 }
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------

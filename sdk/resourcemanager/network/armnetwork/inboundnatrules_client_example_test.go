@@ -25,11 +25,11 @@ func ExampleInboundNatRulesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInboundNatRulesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("testrg", "lb1", nil)
+	pager := clientFactory.NewInboundNatRulesClient().NewListPager("testrg", "lb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -91,11 +91,11 @@ func ExampleInboundNatRulesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInboundNatRulesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "testrg", "lb1", "natRule1.1", nil)
+	poller, err := clientFactory.NewInboundNatRulesClient().BeginDelete(ctx, "testrg", "lb1", "natRule1.1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -112,11 +112,11 @@ func ExampleInboundNatRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInboundNatRulesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testrg", "lb1", "natRule1.1", &armnetwork.InboundNatRulesClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewInboundNatRulesClient().Get(ctx, "testrg", "lb1", "natRule1.1", &armnetwork.InboundNatRulesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -151,11 +151,11 @@ func ExampleInboundNatRulesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewInboundNatRulesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "testrg", "lb1", "natRule1.1", armnetwork.InboundNatRule{
+	poller, err := clientFactory.NewInboundNatRulesClient().BeginCreateOrUpdate(ctx, "testrg", "lb1", "natRule1.1", armnetwork.InboundNatRule{
 		Properties: &armnetwork.InboundNatRulePropertiesFormat{
 			BackendPort:      to.Ptr[int32](3389),
 			EnableFloatingIP: to.Ptr(false),

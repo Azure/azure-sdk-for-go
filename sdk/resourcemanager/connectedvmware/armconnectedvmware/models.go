@@ -162,12 +162,13 @@ type ClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup method.
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
+// method.
 type ClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+// ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
 type ClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -184,21 +185,6 @@ type ClustersList struct {
 
 	// Url to follow for getting next page of Clusters.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// Condition defines an extension to status.
-type Condition struct {
-	// READ-ONLY; A human readable message indicating details about the status.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The reason for the condition's status.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
-
-	// READ-ONLY; Severity with which to treat failures of this type of condition.
-	Severity *string `json:"severity,omitempty" azure:"ro"`
-
-	// READ-ONLY; Status of the condition.
-	Status *string `json:"status,omitempty" azure:"ro"`
 }
 
 // Datastore - Define the datastore.
@@ -314,13 +300,13 @@ type DatastoresClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatastoresClientListByResourceGroupOptions contains the optional parameters for the DatastoresClient.ListByResourceGroup
+// DatastoresClientListByResourceGroupOptions contains the optional parameters for the DatastoresClient.NewListByResourceGroupPager
 // method.
 type DatastoresClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatastoresClientListOptions contains the optional parameters for the DatastoresClient.List method.
+// DatastoresClientListOptions contains the optional parameters for the DatastoresClient.NewListPager method.
 type DatastoresClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -339,18 +325,6 @@ type DatastoresList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ErrorDefinition - Error definition.
-type ErrorDefinition struct {
-	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; Internal error details.
-	Details []*ErrorDefinition `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; Description of the error.
-	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
 // ErrorDetail - Error details.
 type ErrorDetail struct {
 	// REQUIRED; The error's code.
@@ -364,12 +338,6 @@ type ErrorDetail struct {
 
 	// Indicates which property in the request is responsible for the error.
 	Target *string `json:"target,omitempty"`
-}
-
-// ErrorResponse - Error response.
-type ErrorResponse struct {
-	// The error details.
-	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // ExtendedLocation - The extended location.
@@ -470,7 +438,7 @@ type GuestAgentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestAgentsClientListByVMOptions contains the optional parameters for the GuestAgentsClient.ListByVM method.
+// GuestAgentsClientListByVMOptions contains the optional parameters for the GuestAgentsClient.NewListByVMPager method.
 type GuestAgentsClientListByVMOptions struct {
 	// placeholder for future optional parameters
 }
@@ -621,12 +589,13 @@ type HostsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HostsClientListByResourceGroupOptions contains the optional parameters for the HostsClient.ListByResourceGroup method.
+// HostsClientListByResourceGroupOptions contains the optional parameters for the HostsClient.NewListByResourceGroupPager
+// method.
 type HostsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HostsClientListOptions contains the optional parameters for the HostsClient.List method.
+// HostsClientListOptions contains the optional parameters for the HostsClient.NewListPager method.
 type HostsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -680,7 +649,7 @@ type HybridIdentityMetadataClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridIdentityMetadataClientListByVMOptions contains the optional parameters for the HybridIdentityMetadataClient.ListByVM
+// HybridIdentityMetadataClientListByVMOptions contains the optional parameters for the HybridIdentityMetadataClient.NewListByVMPager
 // method.
 type HybridIdentityMetadataClientListByVMOptions struct {
 	// placeholder for future optional parameters
@@ -800,7 +769,8 @@ type InventoryItemsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InventoryItemsClientListByVCenterOptions contains the optional parameters for the InventoryItemsClient.ListByVCenter method.
+// InventoryItemsClientListByVCenterOptions contains the optional parameters for the InventoryItemsClient.NewListByVCenterPager
+// method.
 type InventoryItemsClientListByVCenterOptions struct {
 	// placeholder for future optional parameters
 }
@@ -850,21 +820,6 @@ type MachineExtension struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MachineExtensionInstanceView - Describes the Machine Extension Instance View.
-type MachineExtensionInstanceView struct {
-	// Instance view status.
-	Status *MachineExtensionInstanceViewStatus `json:"status,omitempty"`
-
-	// READ-ONLY; The machine extension name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Specifies the type of the extension; an example is "CustomScriptExtension".
-	Type *string `json:"type,omitempty" azure:"ro"`
-
-	// READ-ONLY; Specifies the version of the script handler.
-	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty" azure:"ro"`
-}
-
 // MachineExtensionInstanceViewStatus - Instance view status.
 type MachineExtensionInstanceViewStatus struct {
 	// READ-ONLY; The status code.
@@ -900,13 +855,13 @@ type MachineExtensionProperties struct {
 	InstanceView *MachineExtensionPropertiesInstanceView `json:"instanceView,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings any `json:"protectedSettings,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings interface{} `json:"settings,omitempty"`
+	Settings any `json:"settings,omitempty"`
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
@@ -956,13 +911,13 @@ type MachineExtensionUpdateProperties struct {
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings any `json:"protectedSettings,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings interface{} `json:"settings,omitempty"`
+	Settings any `json:"settings,omitempty"`
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
@@ -997,7 +952,7 @@ type MachineExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MachineExtensionsClientListOptions contains the optional parameters for the MachineExtensionsClient.List method.
+// MachineExtensionsClientListOptions contains the optional parameters for the MachineExtensionsClient.NewListPager method.
 type MachineExtensionsClientListOptions struct {
 	// The expand expression to apply on the operation.
 	Expand *string
@@ -1146,7 +1101,7 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1254,31 +1209,6 @@ type PlacementProfile struct {
 
 	// Gets or sets the ARM Id of the resourcePool resource on which this virtual machine will deploy.
 	ResourcePoolID *string `json:"resourcePoolId,omitempty"`
-}
-
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ResourcePatch - Object containing updates for patch operations.
@@ -1419,13 +1349,13 @@ type ResourcePoolsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourcePoolsClientListByResourceGroupOptions contains the optional parameters for the ResourcePoolsClient.ListByResourceGroup
+// ResourcePoolsClientListByResourceGroupOptions contains the optional parameters for the ResourcePoolsClient.NewListByResourceGroupPager
 // method.
 type ResourcePoolsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourcePoolsClientListOptions contains the optional parameters for the ResourcePoolsClient.List method.
+// ResourcePoolsClientListOptions contains the optional parameters for the ResourcePoolsClient.NewListPager method.
 type ResourcePoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1604,12 +1534,13 @@ type VCentersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VCentersClientListByResourceGroupOptions contains the optional parameters for the VCentersClient.ListByResourceGroup method.
+// VCentersClientListByResourceGroupOptions contains the optional parameters for the VCentersClient.NewListByResourceGroupPager
+// method.
 type VCentersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VCentersClientListOptions contains the optional parameters for the VCentersClient.List method.
+// VCentersClientListOptions contains the optional parameters for the VCentersClient.NewListPager method.
 type VCentersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2131,13 +2062,14 @@ type VirtualMachineTemplatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachineTemplatesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachineTemplatesClient.ListByResourceGroup
+// VirtualMachineTemplatesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachineTemplatesClient.NewListByResourceGroupPager
 // method.
 type VirtualMachineTemplatesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachineTemplatesClientListOptions contains the optional parameters for the VirtualMachineTemplatesClient.List method.
+// VirtualMachineTemplatesClientListOptions contains the optional parameters for the VirtualMachineTemplatesClient.NewListPager
+// method.
 type VirtualMachineTemplatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2245,13 +2177,13 @@ type VirtualMachinesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachinesClient.ListByResourceGroup
+// VirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachinesClient.NewListByResourceGroupPager
 // method.
 type VirtualMachinesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.List method.
+// VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.NewListPager method.
 type VirtualMachinesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2372,13 +2304,13 @@ type VirtualNetworksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworksClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworksClient.ListByResourceGroup
+// VirtualNetworksClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworksClient.NewListByResourceGroupPager
 // method.
 type VirtualNetworksClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworksClientListOptions contains the optional parameters for the VirtualNetworksClient.List method.
+// VirtualNetworksClientListOptions contains the optional parameters for the VirtualNetworksClient.NewListPager method.
 type VirtualNetworksClientListOptions struct {
 	// placeholder for future optional parameters
 }

@@ -108,21 +108,22 @@ type DNSForwardingRulesetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DNSForwardingRulesetsClientListByResourceGroupOptions contains the optional parameters for the DNSForwardingRulesetsClient.ListByResourceGroup
+// DNSForwardingRulesetsClientListByResourceGroupOptions contains the optional parameters for the DNSForwardingRulesetsClient.NewListByResourceGroupPager
 // method.
 type DNSForwardingRulesetsClientListByResourceGroupOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
 }
 
-// DNSForwardingRulesetsClientListByVirtualNetworkOptions contains the optional parameters for the DNSForwardingRulesetsClient.ListByVirtualNetwork
+// DNSForwardingRulesetsClientListByVirtualNetworkOptions contains the optional parameters for the DNSForwardingRulesetsClient.NewListByVirtualNetworkPager
 // method.
 type DNSForwardingRulesetsClientListByVirtualNetworkOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
 }
 
-// DNSForwardingRulesetsClientListOptions contains the optional parameters for the DNSForwardingRulesetsClient.List method.
+// DNSForwardingRulesetsClientListOptions contains the optional parameters for the DNSForwardingRulesetsClient.NewListPager
+// method.
 type DNSForwardingRulesetsClientListOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
@@ -190,21 +191,21 @@ type DNSResolversClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DNSResolversClientListByResourceGroupOptions contains the optional parameters for the DNSResolversClient.ListByResourceGroup
+// DNSResolversClientListByResourceGroupOptions contains the optional parameters for the DNSResolversClient.NewListByResourceGroupPager
 // method.
 type DNSResolversClientListByResourceGroupOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
 }
 
-// DNSResolversClientListByVirtualNetworkOptions contains the optional parameters for the DNSResolversClient.ListByVirtualNetwork
+// DNSResolversClientListByVirtualNetworkOptions contains the optional parameters for the DNSResolversClient.NewListByVirtualNetworkPager
 // method.
 type DNSResolversClientListByVirtualNetworkOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
 }
 
-// DNSResolversClientListOptions contains the optional parameters for the DNSResolversClient.List method.
+// DNSResolversClientListOptions contains the optional parameters for the DNSResolversClient.NewListPager method.
 type DNSResolversClientListOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
@@ -299,7 +300,7 @@ type ForwardingRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ForwardingRulesClientListOptions contains the optional parameters for the ForwardingRulesClient.List method.
+// ForwardingRulesClientListOptions contains the optional parameters for the ForwardingRulesClient.NewListPager method.
 type ForwardingRulesClientListOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
@@ -414,7 +415,7 @@ type InboundEndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InboundEndpointsClientListOptions contains the optional parameters for the InboundEndpointsClient.List method.
+// InboundEndpointsClientListOptions contains the optional parameters for the InboundEndpointsClient.NewListPager method.
 type InboundEndpointsClientListOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
@@ -521,7 +522,7 @@ type OutboundEndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OutboundEndpointsClientListOptions contains the optional parameters for the OutboundEndpointsClient.List method.
+// OutboundEndpointsClientListOptions contains the optional parameters for the OutboundEndpointsClient.NewListPager method.
 type OutboundEndpointsClientListOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
@@ -713,7 +714,7 @@ type VirtualNetworkLinksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkLinksClientListOptions contains the optional parameters for the VirtualNetworkLinksClient.List method.
+// VirtualNetworkLinksClientListOptions contains the optional parameters for the VirtualNetworkLinksClient.NewListPager method.
 type VirtualNetworkLinksClientListOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32

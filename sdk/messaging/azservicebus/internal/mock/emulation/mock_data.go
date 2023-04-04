@@ -159,7 +159,7 @@ func (md *MockData) NewConnection(ctx context.Context) (amqpwrap.AMQPClient, err
 
 	conn.EXPECT().Close().DoAndReturn(func() error {
 		md.Events.CloseConnection(conn.Name())
-		conn.Status.CloseWithError(&amqp.ConnectionError{})
+		conn.Status.CloseWithError(&amqp.ConnError{})
 		return nil
 	}).AnyTimes()
 
@@ -172,7 +172,7 @@ func (md *MockData) DetachSenders(entityName string) {
 	defer md.mocksMu.Unlock()
 
 	for _, ms := range md.senders[entityName] {
-		ms.Status.CloseWithError(&amqp.DetachError{})
+		ms.Status.CloseWithError(&amqp.LinkError{})
 	}
 
 	md.senders[entityName] = nil
@@ -183,7 +183,7 @@ func (md *MockData) DetachReceivers(entityName string) {
 	defer md.mocksMu.Unlock()
 
 	for _, mr := range md.receivers[entityName] {
-		mr.Status.CloseWithError(&amqp.DetachError{})
+		mr.Status.CloseWithError(&amqp.LinkError{})
 	}
 
 	md.receivers[entityName] = nil

@@ -51,12 +51,12 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+// ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager method.
 type ClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+// ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 type ClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -130,7 +130,7 @@ type CustomCertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomCertificatesClientListOptions contains the optional parameters for the CustomCertificatesClient.List method.
+// CustomCertificatesClientListOptions contains the optional parameters for the CustomCertificatesClient.NewListPager method.
 type CustomCertificatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -192,7 +192,7 @@ type CustomDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.List method.
+// CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.NewListPager method.
 type CustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -215,7 +215,7 @@ type Dimension struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -413,7 +413,7 @@ type HubsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HubsClientListOptions contains the optional parameters for the HubsClient.List method.
+// HubsClientListOptions contains the optional parameters for the HubsClient.NewListPager method.
 type HubsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -605,7 +605,7 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -684,7 +684,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -735,7 +735,8 @@ type PrivateLinkResourceProperties struct {
 	ShareablePrivateLinkResourceTypes []*ShareablePrivateLinkResourceType `json:"shareablePrivateLinkResourceTypes,omitempty"`
 }
 
-// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListPager
+// method.
 type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1055,7 +1056,7 @@ type SharedPrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SharedPrivateLinkResourcesClientListOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.List
+// SharedPrivateLinkResourcesClientListOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.NewListPager
 // method.
 type SharedPrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1151,7 +1152,7 @@ type UpstreamAuthSettings struct {
 	Type *UpstreamAuthType `json:"type,omitempty"`
 }
 
-// UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
+// UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 type UsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }

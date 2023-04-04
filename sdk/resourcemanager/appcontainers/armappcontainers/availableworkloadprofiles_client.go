@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,40 +24,32 @@ import (
 // AvailableWorkloadProfilesClient contains the methods for the AvailableWorkloadProfiles group.
 // Don't use this type directly, use NewAvailableWorkloadProfilesClient() instead.
 type AvailableWorkloadProfilesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAvailableWorkloadProfilesClient creates a new instance of AvailableWorkloadProfilesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAvailableWorkloadProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailableWorkloadProfilesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AvailableWorkloadProfilesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AvailableWorkloadProfilesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewGetPager - Get all available workload profiles for a location.
+//
 // Generated from API version 2022-06-01-preview
-// location - The name of Azure region.
-// options - AvailableWorkloadProfilesClientGetOptions contains the optional parameters for the AvailableWorkloadProfilesClient.Get
-// method.
+//   - location - The name of Azure region.
+//   - options - AvailableWorkloadProfilesClientGetOptions contains the optional parameters for the AvailableWorkloadProfilesClient.NewGetPager
+//     method.
 func (client *AvailableWorkloadProfilesClient) NewGetPager(location string, options *AvailableWorkloadProfilesClientGetOptions) *runtime.Pager[AvailableWorkloadProfilesClientGetResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AvailableWorkloadProfilesClientGetResponse]{
 		More: func(page AvailableWorkloadProfilesClientGetResponse) bool {
@@ -76,7 +66,7 @@ func (client *AvailableWorkloadProfilesClient) NewGetPager(location string, opti
 			if err != nil {
 				return AvailableWorkloadProfilesClientGetResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AvailableWorkloadProfilesClientGetResponse{}, err
 			}
@@ -99,7 +89,7 @@ func (client *AvailableWorkloadProfilesClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

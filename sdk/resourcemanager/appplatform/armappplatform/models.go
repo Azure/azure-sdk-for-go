@@ -64,7 +64,8 @@ type APIPortalCustomDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIPortalCustomDomainsClientListOptions contains the optional parameters for the APIPortalCustomDomainsClient.List method.
+// APIPortalCustomDomainsClientListOptions contains the optional parameters for the APIPortalCustomDomainsClient.NewListPager
+// method.
 type APIPortalCustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -165,7 +166,7 @@ type APIPortalsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIPortalsClientListOptions contains the optional parameters for the APIPortalsClient.List method.
+// APIPortalsClientListOptions contains the optional parameters for the APIPortalsClient.NewListPager method.
 type APIPortalsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -309,7 +310,7 @@ type AppResourceCollection struct {
 // AppResourceProperties - App resource properties payload
 type AppResourceProperties struct {
 	// Collection of addons
-	AddonConfigs map[string]map[string]interface{} `json:"addonConfigs,omitempty"`
+	AddonConfigs map[string]map[string]any `json:"addonConfigs,omitempty"`
 
 	// List of custom persistent disks
 	CustomPersistentDisks []*CustomPersistentDiskResource `json:"customPersistentDisks,omitempty"`
@@ -445,7 +446,8 @@ type ApplicationAcceleratorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationAcceleratorsClientListOptions contains the optional parameters for the ApplicationAcceleratorsClient.List method.
+// ApplicationAcceleratorsClientListOptions contains the optional parameters for the ApplicationAcceleratorsClient.NewListPager
+// method.
 type ApplicationAcceleratorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -462,7 +464,7 @@ type ApplicationLiveViewComponent struct {
 	Instances []*ApplicationLiveViewInstance `json:"instances,omitempty" azure:"ro"`
 
 	// READ-ONLY; Name of the component.
-	Name interface{} `json:"name,omitempty" azure:"ro"`
+	Name any `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; The requested resource quantity for required CPU and Memory.
 	ResourceRequests *ApplicationLiveViewResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
@@ -546,7 +548,8 @@ type ApplicationLiveViewsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationLiveViewsClientListOptions contains the optional parameters for the ApplicationLiveViewsClient.List method.
+// ApplicationLiveViewsClientListOptions contains the optional parameters for the ApplicationLiveViewsClient.NewListPager
+// method.
 type ApplicationLiveViewsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -587,7 +590,7 @@ type AppsClientGetResourceUploadURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsClientListOptions contains the optional parameters for the AppsClient.List method.
+// AppsClientListOptions contains the optional parameters for the AppsClient.NewListPager method.
 type AppsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -669,7 +672,7 @@ type BindingResourceCollection struct {
 // BindingResourceProperties - Binding resource properties payload
 type BindingResourceProperties struct {
 	// Binding parameters of the Binding resource
-	BindingParameters map[string]interface{} `json:"bindingParameters,omitempty"`
+	BindingParameters map[string]any `json:"bindingParameters,omitempty"`
 
 	// The key of the bound resource
 	Key *string `json:"key,omitempty"`
@@ -716,7 +719,7 @@ type BindingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BindingsClientListOptions contains the optional parameters for the BindingsClient.List method.
+// BindingsClientListOptions contains the optional parameters for the BindingsClient.NewListPager method.
 type BindingsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -884,7 +887,8 @@ type BuildServiceAgentPoolClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildServiceAgentPoolClientListOptions contains the optional parameters for the BuildServiceAgentPoolClient.List method.
+// BuildServiceAgentPoolClientListOptions contains the optional parameters for the BuildServiceAgentPoolClient.NewListPager
+// method.
 type BuildServiceAgentPoolClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -963,7 +967,7 @@ type BuildServiceBuilderClientListDeploymentsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildServiceBuilderClientListOptions contains the optional parameters for the BuildServiceBuilderClient.List method.
+// BuildServiceBuilderClientListOptions contains the optional parameters for the BuildServiceBuilderClient.NewListPager method.
 type BuildServiceBuilderClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1013,19 +1017,19 @@ type BuildServiceClientGetSupportedStackOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildServiceClientListBuildResultsOptions contains the optional parameters for the BuildServiceClient.ListBuildResults
+// BuildServiceClientListBuildResultsOptions contains the optional parameters for the BuildServiceClient.NewListBuildResultsPager
 // method.
 type BuildServiceClientListBuildResultsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildServiceClientListBuildServicesOptions contains the optional parameters for the BuildServiceClient.ListBuildServices
+// BuildServiceClientListBuildServicesOptions contains the optional parameters for the BuildServiceClient.NewListBuildServicesPager
 // method.
 type BuildServiceClientListBuildServicesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildServiceClientListBuildsOptions contains the optional parameters for the BuildServiceClient.ListBuilds method.
+// BuildServiceClientListBuildsOptions contains the optional parameters for the BuildServiceClient.NewListBuildsPager method.
 type BuildServiceClientListBuildsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1144,7 +1148,7 @@ type BuildpackBindingClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildpackBindingClientListOptions contains the optional parameters for the BuildpackBindingClient.List method.
+// BuildpackBindingClientListOptions contains the optional parameters for the BuildpackBindingClient.NewListPager method.
 type BuildpackBindingClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1300,7 +1304,7 @@ type CertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
+// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
 type CertificatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1600,7 +1604,8 @@ type ConfigurationServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationServicesClientListOptions contains the optional parameters for the ConfigurationServicesClient.List method.
+// ConfigurationServicesClientListOptions contains the optional parameters for the ConfigurationServicesClient.NewListPager
+// method.
 type ConfigurationServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1781,7 +1786,7 @@ type CustomDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.List method.
+// CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.NewListPager method.
 type CustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1891,7 +1896,8 @@ type CustomizedAcceleratorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomizedAcceleratorsClientListOptions contains the optional parameters for the CustomizedAcceleratorsClient.List method.
+// CustomizedAcceleratorsClientListOptions contains the optional parameters for the CustomizedAcceleratorsClient.NewListPager
+// method.
 type CustomizedAcceleratorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1983,7 +1989,7 @@ type DeploymentResourceProperties struct {
 // DeploymentSettings - Deployment settings payload
 type DeploymentSettings struct {
 	// Collection of addons
-	AddonConfigs map[string]map[string]interface{} `json:"addonConfigs,omitempty"`
+	AddonConfigs map[string]map[string]any `json:"addonConfigs,omitempty"`
 
 	// Container liveness and readiness probe settings
 	ContainerProbeSettings *ContainerProbeSettings `json:"containerProbeSettings,omitempty"`
@@ -2110,13 +2116,14 @@ type DeploymentsClientGetRemoteDebuggingConfigOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsClientListForClusterOptions contains the optional parameters for the DeploymentsClient.ListForCluster method.
+// DeploymentsClientListForClusterOptions contains the optional parameters for the DeploymentsClient.NewListForClusterPager
+// method.
 type DeploymentsClientListForClusterOptions struct {
 	// Version of the deployments to be listed
 	Version []string
 }
 
-// DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
+// DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.NewListPager method.
 type DeploymentsClientListOptions struct {
 	// Version of the deployments to be listed
 	Version []string
@@ -2246,7 +2253,7 @@ type DevToolPortalsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevToolPortalsClientListOptions contains the optional parameters for the DevToolPortalsClient.List method.
+// DevToolPortalsClientListOptions contains the optional parameters for the DevToolPortalsClient.NewListPager method.
 type DevToolPortalsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2417,7 +2424,8 @@ type GatewayCustomDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayCustomDomainsClientListOptions contains the optional parameters for the GatewayCustomDomainsClient.List method.
+// GatewayCustomDomainsClientListOptions contains the optional parameters for the GatewayCustomDomainsClient.NewListPager
+// method.
 type GatewayCustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2621,7 +2629,7 @@ type GatewayRouteConfigsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayRouteConfigsClientListOptions contains the optional parameters for the GatewayRouteConfigsClient.List method.
+// GatewayRouteConfigsClientListOptions contains the optional parameters for the GatewayRouteConfigsClient.NewListPager method.
 type GatewayRouteConfigsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2648,7 +2656,7 @@ type GatewaysClientListEnvSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewaysClientListOptions contains the optional parameters for the GatewaysClient.List method.
+// GatewaysClientListOptions contains the optional parameters for the GatewaysClient.NewListPager method.
 type GatewaysClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3146,7 +3154,7 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3229,7 +3237,8 @@ type PredefinedAcceleratorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PredefinedAcceleratorsClientListOptions contains the optional parameters for the PredefinedAcceleratorsClient.List method.
+// PredefinedAcceleratorsClientListOptions contains the optional parameters for the PredefinedAcceleratorsClient.NewListPager
+// method.
 type PredefinedAcceleratorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3488,7 +3497,7 @@ type SKUCapacity struct {
 	ScaleType *SKUScaleType `json:"scaleType,omitempty"`
 }
 
-// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 type SKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3512,7 +3521,7 @@ type ServiceRegistriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceRegistriesClientListOptions contains the optional parameters for the ServiceRegistriesClient.List method.
+// ServiceRegistriesClientListOptions contains the optional parameters for the ServiceRegistriesClient.NewListPager method.
 type ServiceRegistriesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3680,12 +3689,13 @@ type ServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription method.
+// ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.NewListBySubscriptionPager
+// method.
 type ServicesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+// ServicesClientListOptions contains the optional parameters for the ServicesClient.NewListPager method.
 type ServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3841,7 +3851,7 @@ type StoragesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StoragesClientListOptions contains the optional parameters for the StoragesClient.List method.
+// StoragesClientListOptions contains the optional parameters for the StoragesClient.NewListPager method.
 type StoragesClientListOptions struct {
 	// placeholder for future optional parameters
 }

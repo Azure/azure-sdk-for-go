@@ -83,24 +83,10 @@ type ClassicAdministratorProperties struct {
 	Role *string `json:"role,omitempty"`
 }
 
-// ClassicAdministratorsClientListOptions contains the optional parameters for the ClassicAdministratorsClient.List method.
+// ClassicAdministratorsClientListOptions contains the optional parameters for the ClassicAdministratorsClient.NewListPager
+// method.
 type ClassicAdministratorsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// CloudError - An error response from the service.
-type CloudError struct {
-	// An error response from the service.
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the service.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
 }
 
 // DenyAssignment - Deny Assignment
@@ -198,7 +184,7 @@ type DenyAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DenyAssignmentsClientListForResourceGroupOptions contains the optional parameters for the DenyAssignmentsClient.ListForResourceGroup
+// DenyAssignmentsClientListForResourceGroupOptions contains the optional parameters for the DenyAssignmentsClient.NewListForResourceGroupPager
 // method.
 type DenyAssignmentsClientListForResourceGroupOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
@@ -213,7 +199,7 @@ type DenyAssignmentsClientListForResourceGroupOptions struct {
 	Filter *string
 }
 
-// DenyAssignmentsClientListForResourceOptions contains the optional parameters for the DenyAssignmentsClient.ListForResource
+// DenyAssignmentsClientListForResourceOptions contains the optional parameters for the DenyAssignmentsClient.NewListForResourcePager
 // method.
 type DenyAssignmentsClientListForResourceOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
@@ -228,7 +214,8 @@ type DenyAssignmentsClientListForResourceOptions struct {
 	Filter *string
 }
 
-// DenyAssignmentsClientListForScopeOptions contains the optional parameters for the DenyAssignmentsClient.ListForScope method.
+// DenyAssignmentsClientListForScopeOptions contains the optional parameters for the DenyAssignmentsClient.NewListForScopePager
+// method.
 type DenyAssignmentsClientListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
 	// eq '{name}' to search deny assignments by name at
@@ -242,7 +229,7 @@ type DenyAssignmentsClientListForScopeOptions struct {
 	Filter *string
 }
 
-// DenyAssignmentsClientListOptions contains the optional parameters for the DenyAssignmentsClient.List method.
+// DenyAssignmentsClientListOptions contains the optional parameters for the DenyAssignmentsClient.NewListPager method.
 type DenyAssignmentsClientListOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
 	// eq '{name}' to search deny assignments by name at
@@ -268,7 +255,8 @@ type EligibleChildResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// EligibleChildResourcesClientGetOptions contains the optional parameters for the EligibleChildResourcesClient.Get method.
+// EligibleChildResourcesClientGetOptions contains the optional parameters for the EligibleChildResourcesClient.NewGetPager
+// method.
 type EligibleChildResourcesClientGetOptions struct {
 	// The filter to apply on the operation. Use $filter=resourceType+eq+'Subscription' to filter on only resource of type = 'Subscription'.
 	// Use
@@ -289,7 +277,7 @@ type EligibleChildResourcesListResult struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -400,13 +388,14 @@ type PermissionGetResult struct {
 	Value []*Permission `json:"value,omitempty"`
 }
 
-// PermissionsClientListForResourceGroupOptions contains the optional parameters for the PermissionsClient.ListForResourceGroup
+// PermissionsClientListForResourceGroupOptions contains the optional parameters for the PermissionsClient.NewListForResourceGroupPager
 // method.
 type PermissionsClientListForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PermissionsClientListForResourceOptions contains the optional parameters for the PermissionsClient.ListForResource method.
+// PermissionsClientListForResourceOptions contains the optional parameters for the PermissionsClient.NewListForResourcePager
+// method.
 type PermissionsClientListForResourceOptions struct {
 	// placeholder for future optional parameters
 }
@@ -510,7 +499,7 @@ type ProviderOperation struct {
 	Origin *string `json:"origin,omitempty"`
 
 	// The operation properties.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 }
 
 // ProviderOperationsMetadata - Provider Operations metadata
@@ -541,7 +530,7 @@ type ProviderOperationsMetadataClientGetOptions struct {
 	Expand *string
 }
 
-// ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.List
+// ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.NewListPager
 // method.
 type ProviderOperationsMetadataClientListOptions struct {
 	// Specifies whether to expand the values.
@@ -774,7 +763,7 @@ type RoleAssignmentScheduleInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.ListForScope
+// RoleAssignmentScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.NewListForScopePager
 // method.
 type RoleAssignmentScheduleInstancesClientListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
@@ -993,7 +982,7 @@ type RoleAssignmentScheduleRequestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.ListForScope
+// RoleAssignmentScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.NewListForScopePager
 // method.
 type RoleAssignmentScheduleRequestsClientListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule requests at or above
@@ -1017,7 +1006,7 @@ type RoleAssignmentSchedulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentSchedulesClientListForScopeOptions contains the optional parameters for the RoleAssignmentSchedulesClient.ListForScope
+// RoleAssignmentSchedulesClientListForScopeOptions contains the optional parameters for the RoleAssignmentSchedulesClient.NewListForScopePager
 // method.
 type RoleAssignmentSchedulesClientListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
@@ -1062,7 +1051,7 @@ type RoleAssignmentsClientGetOptions struct {
 	TenantID *string
 }
 
-// RoleAssignmentsClientListForResourceGroupOptions contains the optional parameters for the RoleAssignmentsClient.ListForResourceGroup
+// RoleAssignmentsClientListForResourceGroupOptions contains the optional parameters for the RoleAssignmentsClient.NewListForResourceGroupPager
 // method.
 type RoleAssignmentsClientListForResourceGroupOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
@@ -1073,7 +1062,7 @@ type RoleAssignmentsClientListForResourceGroupOptions struct {
 	TenantID *string
 }
 
-// RoleAssignmentsClientListForResourceOptions contains the optional parameters for the RoleAssignmentsClient.ListForResource
+// RoleAssignmentsClientListForResourceOptions contains the optional parameters for the RoleAssignmentsClient.NewListForResourcePager
 // method.
 type RoleAssignmentsClientListForResourceOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
@@ -1084,7 +1073,8 @@ type RoleAssignmentsClientListForResourceOptions struct {
 	TenantID *string
 }
 
-// RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope method.
+// RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.NewListForScopePager
+// method.
 type RoleAssignmentsClientListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
 	// eq {id} to return all role assignments at, above or below the
@@ -1097,7 +1087,7 @@ type RoleAssignmentsClientListForScopeOptions struct {
 	TenantID *string
 }
 
-// RoleAssignmentsClientListForSubscriptionOptions contains the optional parameters for the RoleAssignmentsClient.ListForSubscription
+// RoleAssignmentsClientListForSubscriptionOptions contains the optional parameters for the RoleAssignmentsClient.NewListForSubscriptionPager
 // method.
 type RoleAssignmentsClientListForSubscriptionOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
@@ -1180,7 +1170,7 @@ type RoleDefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.List method.
+// RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.NewListPager method.
 type RoleDefinitionsClientListOptions struct {
 	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
 	Filter *string
@@ -1302,7 +1292,7 @@ type RoleEligibilityScheduleInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleEligibilityScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleInstancesClient.ListForScope
+// RoleEligibilityScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleInstancesClient.NewListForScopePager
 // method.
 type RoleEligibilityScheduleInstancesClientListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
@@ -1512,7 +1502,7 @@ type RoleEligibilityScheduleRequestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleEligibilityScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.ListForScope
+// RoleEligibilityScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.NewListForScopePager
 // method.
 type RoleEligibilityScheduleRequestsClientListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedule requests at or above
@@ -1536,7 +1526,7 @@ type RoleEligibilitySchedulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleEligibilitySchedulesClientListForScopeOptions contains the optional parameters for the RoleEligibilitySchedulesClient.ListForScope
+// RoleEligibilitySchedulesClientListForScopeOptions contains the optional parameters for the RoleEligibilitySchedulesClient.NewListForScopePager
 // method.
 type RoleEligibilitySchedulesClientListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedules at or above the scope.
@@ -1558,7 +1548,7 @@ type RoleManagementPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPoliciesClientListForScopeOptions contains the optional parameters for the RoleManagementPoliciesClient.ListForScope
+// RoleManagementPoliciesClientListForScopeOptions contains the optional parameters for the RoleManagementPoliciesClient.NewListForScopePager
 // method.
 type RoleManagementPoliciesClientListForScopeOptions struct {
 	// placeholder for future optional parameters
@@ -1669,7 +1659,7 @@ type RoleManagementPolicyAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPolicyAssignmentsClientListForScopeOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.ListForScope
+// RoleManagementPolicyAssignmentsClientListForScopeOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.NewListForScopePager
 // method.
 type RoleManagementPolicyAssignmentsClientListForScopeOptions struct {
 	// placeholder for future optional parameters

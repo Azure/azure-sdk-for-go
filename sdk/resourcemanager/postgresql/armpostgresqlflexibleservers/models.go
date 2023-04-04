@@ -88,7 +88,8 @@ type AdministratorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AdministratorsClientListByServerOptions contains the optional parameters for the AdministratorsClient.ListByServer method.
+// AdministratorsClientListByServerOptions contains the optional parameters for the AdministratorsClient.NewListByServerPager
+// method.
 type AdministratorsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
@@ -122,7 +123,7 @@ type BackupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.ListByServer method.
+// BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.NewListByServerPager method.
 type BackupsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
@@ -276,7 +277,8 @@ type ConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.ListByServer method.
+// ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.NewListByServerPager
+// method.
 type ConfigurationsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
@@ -346,7 +348,7 @@ type DatabasesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasesClientListByServerOptions contains the optional parameters for the DatabasesClient.ListByServer method.
+// DatabasesClientListByServerOptions contains the optional parameters for the DatabasesClient.NewListByServerPager method.
 type DatabasesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
@@ -425,7 +427,8 @@ type FirewallRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesClientListByServerOptions contains the optional parameters for the FirewallRulesClient.ListByServer method.
+// FirewallRulesClientListByServerOptions contains the optional parameters for the FirewallRulesClient.NewListByServerPager
+// method.
 type FirewallRulesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
@@ -481,7 +484,7 @@ type HyperscaleNodeEditionCapability struct {
 	SupportedStorageEditions []*StorageEditionCapability `json:"supportedStorageEditions,omitempty" azure:"ro"`
 }
 
-// LocationBasedCapabilitiesClientExecuteOptions contains the optional parameters for the LocationBasedCapabilitiesClient.Execute
+// LocationBasedCapabilitiesClientExecuteOptions contains the optional parameters for the LocationBasedCapabilitiesClient.NewExecutePager
 // method.
 type LocationBasedCapabilitiesClientExecuteOptions struct {
 	// placeholder for future optional parameters
@@ -559,7 +562,7 @@ type Operation struct {
 	Origin *OperationOrigin `json:"origin,omitempty" azure:"ro"`
 
 	// READ-ONLY; Additional descriptions for the operation.
-	Properties map[string]interface{} `json:"properties,omitempty" azure:"ro"`
+	Properties map[string]any `json:"properties,omitempty" azure:"ro"`
 }
 
 // OperationDisplay - Display metadata associated with the operation.
@@ -591,7 +594,7 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.ListByServer method.
+// ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.NewListByServerPager method.
 type ReplicasClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
@@ -860,12 +863,13 @@ type ServersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.ListByResourceGroup method.
+// ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.NewListByResourceGroupPager
+// method.
 type ServersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersClientListOptions contains the optional parameters for the ServersClient.List method.
+// ServersClientListOptions contains the optional parameters for the ServersClient.NewListPager method.
 type ServersClientListOptions struct {
 	// placeholder for future optional parameters
 }

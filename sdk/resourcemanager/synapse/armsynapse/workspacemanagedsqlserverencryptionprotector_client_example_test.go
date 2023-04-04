@@ -25,11 +25,11 @@ func ExampleWorkspaceManagedSQLServerEncryptionProtectorClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspaceManagedSQLServerEncryptionProtectorClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "wsg-7398", "testWorkspace", armsynapse.EncryptionProtectorNameCurrent, nil)
+	res, err := clientFactory.NewWorkspaceManagedSQLServerEncryptionProtectorClient().Get(ctx, "wsg-7398", "testWorkspace", armsynapse.EncryptionProtectorNameCurrent, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -57,11 +57,11 @@ func ExampleWorkspaceManagedSQLServerEncryptionProtectorClient_BeginCreateOrUpda
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspaceManagedSQLServerEncryptionProtectorClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "wsg-7398", "testWorkspace", armsynapse.EncryptionProtectorNameCurrent, armsynapse.EncryptionProtector{
+	poller, err := clientFactory.NewWorkspaceManagedSQLServerEncryptionProtectorClient().BeginCreateOrUpdate(ctx, "wsg-7398", "testWorkspace", armsynapse.EncryptionProtectorNameCurrent, armsynapse.EncryptionProtector{
 		Properties: &armsynapse.EncryptionProtectorProperties{
 			ServerKeyName: to.Ptr("someVault_someKey_01234567890123456789012345678901"),
 			ServerKeyType: to.Ptr(armsynapse.ServerKeyTypeAzureKeyVault),
@@ -97,11 +97,11 @@ func ExampleWorkspaceManagedSQLServerEncryptionProtectorClient_BeginCreateOrUpda
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspaceManagedSQLServerEncryptionProtectorClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "wsg-7398", "testWorkspace", armsynapse.EncryptionProtectorNameCurrent, armsynapse.EncryptionProtector{
+	poller, err := clientFactory.NewWorkspaceManagedSQLServerEncryptionProtectorClient().BeginCreateOrUpdate(ctx, "wsg-7398", "testWorkspace", armsynapse.EncryptionProtectorNameCurrent, armsynapse.EncryptionProtector{
 		Properties: &armsynapse.EncryptionProtectorProperties{
 			ServerKeyName: to.Ptr("ServiceManaged"),
 			ServerKeyType: to.Ptr(armsynapse.ServerKeyTypeServiceManaged),
@@ -137,11 +137,11 @@ func ExampleWorkspaceManagedSQLServerEncryptionProtectorClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspaceManagedSQLServerEncryptionProtectorClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("wsg-7398", "testWorkspace", nil)
+	pager := clientFactory.NewWorkspaceManagedSQLServerEncryptionProtectorClient().NewListPager("wsg-7398", "testWorkspace", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -177,11 +177,11 @@ func ExampleWorkspaceManagedSQLServerEncryptionProtectorClient_BeginRevalidate()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspaceManagedSQLServerEncryptionProtectorClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRevalidate(ctx, "wsg-7398", "testWorkspace", armsynapse.EncryptionProtectorNameCurrent, nil)
+	poller, err := clientFactory.NewWorkspaceManagedSQLServerEncryptionProtectorClient().BeginRevalidate(ctx, "wsg-7398", "testWorkspace", armsynapse.EncryptionProtectorNameCurrent, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

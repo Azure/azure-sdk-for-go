@@ -73,7 +73,8 @@ type BestPracticesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BestPracticesClientListByTenantOptions contains the optional parameters for the BestPracticesClient.ListByTenant method.
+// BestPracticesClientListByTenantOptions contains the optional parameters for the BestPracticesClient.NewListByTenantPager
+// method.
 type BestPracticesClientListByTenantOptions struct {
 	// placeholder for future optional parameters
 }
@@ -83,7 +84,7 @@ type BestPracticesVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BestPracticesVersionsClientListByTenantOptions contains the optional parameters for the BestPracticesVersionsClient.ListByTenant
+// BestPracticesVersionsClientListByTenantOptions contains the optional parameters for the BestPracticesVersionsClient.NewListByTenantPager
 // method.
 type BestPracticesVersionsClientListByTenantOptions struct {
 	// placeholder for future optional parameters
@@ -171,31 +172,31 @@ type ConfigurationProfileAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfileAssignmentsClientListByClusterNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByClusterName
+// ConfigurationProfileAssignmentsClientListByClusterNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.NewListByClusterNamePager
 // method.
 type ConfigurationProfileAssignmentsClientListByClusterNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfileAssignmentsClientListByMachineNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByMachineName
+// ConfigurationProfileAssignmentsClientListByMachineNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.NewListByMachineNamePager
 // method.
 type ConfigurationProfileAssignmentsClientListByMachineNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfileAssignmentsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListBySubscription
+// ConfigurationProfileAssignmentsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.NewListBySubscriptionPager
 // method.
 type ConfigurationProfileAssignmentsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByVirtualMachines
+// ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.NewListByVirtualMachinesPager
 // method.
 type ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfileAssignmentsClientListOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.List
+// ConfigurationProfileAssignmentsClientListOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.NewListPager
 // method.
 type ConfigurationProfileAssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -246,7 +247,7 @@ type ConfigurationProfileList struct {
 // ConfigurationProfileProperties - Automanage configuration profile properties.
 type ConfigurationProfileProperties struct {
 	// configuration dictionary of the configuration profile.
-	Configuration interface{} `json:"configuration,omitempty"`
+	Configuration any `json:"configuration,omitempty"`
 }
 
 // ConfigurationProfileUpdate - Definition of the configuration profile.
@@ -274,13 +275,13 @@ type ConfigurationProfilesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfilesClientListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilesClient.ListByResourceGroup
+// ConfigurationProfilesClientListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilesClient.NewListByResourceGroupPager
 // method.
 type ConfigurationProfilesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfilesClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilesClient.ListBySubscription
+// ConfigurationProfilesClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilesClient.NewListBySubscriptionPager
 // method.
 type ConfigurationProfilesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -309,7 +310,7 @@ type ConfigurationProfilesVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfilesVersionsClientListChildResourcesOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.ListChildResources
+// ConfigurationProfilesVersionsClientListChildResourcesOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.NewListChildResourcesPager
 // method.
 type ConfigurationProfilesVersionsClientListChildResourcesOptions struct {
 	// placeholder for future optional parameters
@@ -318,7 +319,7 @@ type ConfigurationProfilesVersionsClientListChildResourcesOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -354,7 +355,7 @@ type HCIReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HCIReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCIReportsClient.ListByConfigurationProfileAssignments
+// HCIReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCIReportsClient.NewListByConfigurationProfileAssignmentsPager
 // method.
 type HCIReportsClientListByConfigurationProfileAssignmentsOptions struct {
 	// placeholder for future optional parameters
@@ -365,7 +366,7 @@ type HCRPReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HCRPReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCRPReportsClient.ListByConfigurationProfileAssignments
+// HCRPReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCRPReportsClient.NewListByConfigurationProfileAssignmentsPager
 // method.
 type HCRPReportsClientListByConfigurationProfileAssignmentsOptions struct {
 	// placeholder for future optional parameters
@@ -420,7 +421,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -485,7 +486,7 @@ type ReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the ReportsClient.ListByConfigurationProfileAssignments
+// ReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the ReportsClient.NewListByConfigurationProfileAssignmentsPager
 // method.
 type ReportsClientListByConfigurationProfileAssignmentsOptions struct {
 	// placeholder for future optional parameters
@@ -541,7 +542,7 @@ type ServicePrincipalsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicePrincipalsClientListBySubscriptionOptions contains the optional parameters for the ServicePrincipalsClient.ListBySubscription
+// ServicePrincipalsClientListBySubscriptionOptions contains the optional parameters for the ServicePrincipalsClient.NewListBySubscriptionPager
 // method.
 type ServicePrincipalsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters

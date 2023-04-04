@@ -1317,7 +1317,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
+	loc, err := time.LoadLocation("Asia/Kolkata")
+	_require.NoError(err)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, -10)
+	currentTime = currentTime.In(loc) // converting to IST
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -1350,7 +1353,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
+	loc, err := time.LoadLocation("EST")
+	_require.NoError(err)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, 10)
+	currentTime = currentTime.In(loc) // converting to EST
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -1388,7 +1394,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
+	loc, err := time.LoadLocation("Asia/Kolkata")
+	_require.NoError(err)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, 10)
+	currentTime = currentTime.In(loc) // converting to IST
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -1425,7 +1434,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
+	loc, err := time.LoadLocation("EST")
+	_require.NoError(err)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, -10)
+	currentTime = currentTime.In(loc) //converting to EST
 
 	uploadBlockBlobOptions := blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -1435,7 +1447,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(nil)), &uploadBlockBlobOptions)
-	_ = err
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -1648,7 +1660,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfModifiedSinceFalse()
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 	})
-	_ = err
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -2874,7 +2886,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTags() {
 
 func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	_require := require.New(s.T())
-	testName := s.T().Name()
+	testName := "bb" + s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
@@ -4472,6 +4484,25 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel()
 	committed := resp.BlockList.CommittedBlocks
 	_require.Equal(*(committed[0].Size), largeBlockSize)
 	_require.Equal(*(committed[1].Size), largeBlockSize)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
+	bAccInfo, err := bbClient.GetAccountInfo(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotZero(bAccInfo)
 }
 
 type fakeBlockBlob struct {

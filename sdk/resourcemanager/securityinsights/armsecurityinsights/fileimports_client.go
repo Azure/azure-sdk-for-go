@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,49 +25,41 @@ import (
 // FileImportsClient contains the methods for the FileImports group.
 // Don't use this type directly, use NewFileImportsClient() instead.
 type FileImportsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewFileImportsClient creates a new instance of FileImportsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewFileImportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FileImportsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".FileImportsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &FileImportsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Creates the file import.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// fileImportID - File import ID
-// fileImport - The file import
-// options - FileImportsClientCreateOptions contains the optional parameters for the FileImportsClient.Create method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - fileImportID - File import ID
+//   - fileImport - The file import
+//   - options - FileImportsClientCreateOptions contains the optional parameters for the FileImportsClient.Create method.
 func (client *FileImportsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, fileImport FileImport, options *FileImportsClientCreateOptions) (FileImportsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, fileImportID, fileImport, options)
 	if err != nil {
 		return FileImportsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileImportsClientCreateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *FileImportsClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter fileImportID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fileImportId}", url.PathEscape(fileImportID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,34 +110,36 @@ func (client *FileImportsClient) createHandleResponse(resp *http.Response) (File
 
 // BeginDelete - Delete the file import.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// fileImportID - File import ID
-// options - FileImportsClientBeginDeleteOptions contains the optional parameters for the FileImportsClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - fileImportID - File import ID
+//   - options - FileImportsClientBeginDeleteOptions contains the optional parameters for the FileImportsClient.BeginDelete method.
 func (client *FileImportsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, options *FileImportsClientBeginDeleteOptions) (*runtime.Poller[FileImportsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, fileImportID, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FileImportsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FileImportsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[FileImportsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FileImportsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete the file import.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
 func (client *FileImportsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, options *FileImportsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, fileImportID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +168,7 @@ func (client *FileImportsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter fileImportID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fileImportId}", url.PathEscape(fileImportID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,17 +181,18 @@ func (client *FileImportsClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Gets a file import.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// fileImportID - File import ID
-// options - FileImportsClientGetOptions contains the optional parameters for the FileImportsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - fileImportID - File import ID
+//   - options - FileImportsClientGetOptions contains the optional parameters for the FileImportsClient.Get method.
 func (client *FileImportsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, fileImportID string, options *FileImportsClientGetOptions) (FileImportsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, fileImportID, options)
 	if err != nil {
 		return FileImportsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileImportsClientGetResponse{}, err
 	}
@@ -228,7 +221,7 @@ func (client *FileImportsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter fileImportID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fileImportId}", url.PathEscape(fileImportID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,10 +242,11 @@ func (client *FileImportsClient) getHandleResponse(resp *http.Response) (FileImp
 }
 
 // NewListPager - Gets all file imports.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - FileImportsClientListOptions contains the optional parameters for the FileImportsClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - FileImportsClientListOptions contains the optional parameters for the FileImportsClient.NewListPager method.
 func (client *FileImportsClient) NewListPager(resourceGroupName string, workspaceName string, options *FileImportsClientListOptions) *runtime.Pager[FileImportsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FileImportsClientListResponse]{
 		More: func(page FileImportsClientListResponse) bool {
@@ -269,7 +263,7 @@ func (client *FileImportsClient) NewListPager(resourceGroupName string, workspac
 			if err != nil {
 				return FileImportsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FileImportsClientListResponse{}, err
 			}
@@ -296,7 +290,7 @@ func (client *FileImportsClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

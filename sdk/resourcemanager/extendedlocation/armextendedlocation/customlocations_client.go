@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // CustomLocationsClient contains the methods for the CustomLocations group.
 // Don't use this type directly, use NewCustomLocationsClient() instead.
 type CustomLocationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCustomLocationsClient creates a new instance of CustomLocationsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCustomLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomLocationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CustomLocationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CustomLocationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a Custom Location in the specified Subscription and Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - Custom Locations name.
-// parameters - Parameters supplied to create or update a Custom Location.
-// options - CustomLocationsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomLocationsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Custom Locations name.
+//   - parameters - Parameters supplied to create or update a Custom Location.
+//   - options - CustomLocationsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomLocationsClient.BeginCreateOrUpdate
+//     method.
 func (client *CustomLocationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocation, options *CustomLocationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomLocationsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CustomLocationsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomLocationsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CustomLocationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomLocationsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a Custom Location in the specified Subscription and Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
 func (client *CustomLocationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocation, options *CustomLocationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +101,7 @@ func (client *CustomLocationsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,34 +114,36 @@ func (client *CustomLocationsClient) createOrUpdateCreateRequest(ctx context.Con
 
 // BeginDelete - Deletes the Custom Location with the specified Resource Name, Resource Group, and Subscription Id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - Custom Locations name.
-// options - CustomLocationsClientBeginDeleteOptions contains the optional parameters for the CustomLocationsClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Custom Locations name.
+//   - options - CustomLocationsClientBeginDeleteOptions contains the optional parameters for the CustomLocationsClient.BeginDelete
+//     method.
 func (client *CustomLocationsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientBeginDeleteOptions) (*runtime.Poller[CustomLocationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CustomLocationsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomLocationsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CustomLocationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomLocationsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the Custom Location with the specified Resource Name, Resource Group, and Subscription Id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
 func (client *CustomLocationsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +168,7 @@ func (client *CustomLocationsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,18 +182,19 @@ func (client *CustomLocationsClient) deleteCreateRequest(ctx context.Context, re
 // FindTargetResourceGroup - Returns the target resource group associated with the resource sync rules of the Custom Location
 // that match the rules passed in with the Find Target Resource Group Request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - Custom Locations name.
-// parameters - Parameters of the find target resource group request.
-// options - CustomLocationsClientFindTargetResourceGroupOptions contains the optional parameters for the CustomLocationsClient.FindTargetResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Custom Locations name.
+//   - parameters - Parameters of the find target resource group request.
+//   - options - CustomLocationsClientFindTargetResourceGroupOptions contains the optional parameters for the CustomLocationsClient.FindTargetResourceGroup
+//     method.
 func (client *CustomLocationsClient) FindTargetResourceGroup(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocationFindTargetResourceGroupProperties, options *CustomLocationsClientFindTargetResourceGroupOptions) (CustomLocationsClientFindTargetResourceGroupResponse, error) {
 	req, err := client.findTargetResourceGroupCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return CustomLocationsClientFindTargetResourceGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CustomLocationsClientFindTargetResourceGroupResponse{}, err
 	}
@@ -225,7 +219,7 @@ func (client *CustomLocationsClient) findTargetResourceGroupCreateRequest(ctx co
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -247,16 +241,17 @@ func (client *CustomLocationsClient) findTargetResourceGroupHandleResponse(resp 
 
 // Get - Gets the details of the customLocation with a specified resource group and name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - Custom Locations name.
-// options - CustomLocationsClientGetOptions contains the optional parameters for the CustomLocationsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Custom Locations name.
+//   - options - CustomLocationsClientGetOptions contains the optional parameters for the CustomLocationsClient.Get method.
 func (client *CustomLocationsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientGetOptions) (CustomLocationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return CustomLocationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CustomLocationsClientGetResponse{}, err
 	}
@@ -281,7 +276,7 @@ func (client *CustomLocationsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -303,11 +298,11 @@ func (client *CustomLocationsClient) getHandleResponse(resp *http.Response) (Cus
 
 // NewListByResourceGroupPager - Gets a list of Custom Locations in the specified subscription and resource group. The operation
 // returns properties of each Custom Location.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - CustomLocationsClientListByResourceGroupOptions contains the optional parameters for the CustomLocationsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - CustomLocationsClientListByResourceGroupOptions contains the optional parameters for the CustomLocationsClient.NewListByResourceGroupPager
+//     method.
 func (client *CustomLocationsClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomLocationsClientListByResourceGroupOptions) *runtime.Pager[CustomLocationsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListByResourceGroupResponse]{
 		More: func(page CustomLocationsClientListByResourceGroupResponse) bool {
@@ -324,7 +319,7 @@ func (client *CustomLocationsClient) NewListByResourceGroupPager(resourceGroupNa
 			if err != nil {
 				return CustomLocationsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CustomLocationsClientListByResourceGroupResponse{}, err
 			}
@@ -347,7 +342,7 @@ func (client *CustomLocationsClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -369,10 +364,10 @@ func (client *CustomLocationsClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - Gets a list of Custom Locations in the specified subscription. The operation returns properties
 // of each Custom Location
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
-// options - CustomLocationsClientListBySubscriptionOptions contains the optional parameters for the CustomLocationsClient.ListBySubscription
-// method.
+//   - options - CustomLocationsClientListBySubscriptionOptions contains the optional parameters for the CustomLocationsClient.NewListBySubscriptionPager
+//     method.
 func (client *CustomLocationsClient) NewListBySubscriptionPager(options *CustomLocationsClientListBySubscriptionOptions) *runtime.Pager[CustomLocationsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListBySubscriptionResponse]{
 		More: func(page CustomLocationsClientListBySubscriptionResponse) bool {
@@ -389,7 +384,7 @@ func (client *CustomLocationsClient) NewListBySubscriptionPager(options *CustomL
 			if err != nil {
 				return CustomLocationsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CustomLocationsClientListBySubscriptionResponse{}, err
 			}
@@ -408,7 +403,7 @@ func (client *CustomLocationsClient) listBySubscriptionCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -429,12 +424,12 @@ func (client *CustomLocationsClient) listBySubscriptionHandleResponse(resp *http
 }
 
 // NewListEnabledResourceTypesPager - Gets the list of the Enabled Resource Types.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - Custom Locations name.
-// options - CustomLocationsClientListEnabledResourceTypesOptions contains the optional parameters for the CustomLocationsClient.ListEnabledResourceTypes
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Custom Locations name.
+//   - options - CustomLocationsClientListEnabledResourceTypesOptions contains the optional parameters for the CustomLocationsClient.NewListEnabledResourceTypesPager
+//     method.
 func (client *CustomLocationsClient) NewListEnabledResourceTypesPager(resourceGroupName string, resourceName string, options *CustomLocationsClientListEnabledResourceTypesOptions) *runtime.Pager[CustomLocationsClientListEnabledResourceTypesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListEnabledResourceTypesResponse]{
 		More: func(page CustomLocationsClientListEnabledResourceTypesResponse) bool {
@@ -451,7 +446,7 @@ func (client *CustomLocationsClient) NewListEnabledResourceTypesPager(resourceGr
 			if err != nil {
 				return CustomLocationsClientListEnabledResourceTypesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CustomLocationsClientListEnabledResourceTypesResponse{}, err
 			}
@@ -478,7 +473,7 @@ func (client *CustomLocationsClient) listEnabledResourceTypesCreateRequest(ctx c
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -499,10 +494,10 @@ func (client *CustomLocationsClient) listEnabledResourceTypesHandleResponse(resp
 }
 
 // NewListOperationsPager - Lists all available Custom Locations operations.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
-// options - CustomLocationsClientListOperationsOptions contains the optional parameters for the CustomLocationsClient.ListOperations
-// method.
+//   - options - CustomLocationsClientListOperationsOptions contains the optional parameters for the CustomLocationsClient.NewListOperationsPager
+//     method.
 func (client *CustomLocationsClient) NewListOperationsPager(options *CustomLocationsClientListOperationsOptions) *runtime.Pager[CustomLocationsClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListOperationsResponse]{
 		More: func(page CustomLocationsClientListOperationsResponse) bool {
@@ -519,7 +514,7 @@ func (client *CustomLocationsClient) NewListOperationsPager(options *CustomLocat
 			if err != nil {
 				return CustomLocationsClientListOperationsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CustomLocationsClientListOperationsResponse{}, err
 			}
@@ -534,7 +529,7 @@ func (client *CustomLocationsClient) NewListOperationsPager(options *CustomLocat
 // listOperationsCreateRequest creates the ListOperations request.
 func (client *CustomLocationsClient) listOperationsCreateRequest(ctx context.Context, options *CustomLocationsClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ExtendedLocation/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -556,17 +551,18 @@ func (client *CustomLocationsClient) listOperationsHandleResponse(resp *http.Res
 
 // Update - Updates a Custom Location with the specified Resource Name in the specified Resource Group and Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-08-31-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - Custom Locations name.
-// parameters - The updatable fields of an existing Custom Location.
-// options - CustomLocationsClientUpdateOptions contains the optional parameters for the CustomLocationsClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Custom Locations name.
+//   - parameters - The updatable fields of an existing Custom Location.
+//   - options - CustomLocationsClientUpdateOptions contains the optional parameters for the CustomLocationsClient.Update method.
 func (client *CustomLocationsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, parameters PatchableCustomLocations, options *CustomLocationsClientUpdateOptions) (CustomLocationsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return CustomLocationsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CustomLocationsClientUpdateResponse{}, err
 	}
@@ -591,7 +587,7 @@ func (client *CustomLocationsClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

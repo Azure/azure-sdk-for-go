@@ -114,14 +114,14 @@ type AttachedNetworksClientGetByProjectOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttachedNetworksClientListByDevCenterOptions contains the optional parameters for the AttachedNetworksClient.ListByDevCenter
+// AttachedNetworksClientListByDevCenterOptions contains the optional parameters for the AttachedNetworksClient.NewListByDevCenterPager
 // method.
 type AttachedNetworksClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// AttachedNetworksClientListByProjectOptions contains the optional parameters for the AttachedNetworksClient.ListByProject
+// AttachedNetworksClientListByProjectOptions contains the optional parameters for the AttachedNetworksClient.NewListByProjectPager
 // method.
 type AttachedNetworksClientListByProjectOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -230,7 +230,7 @@ type CatalogsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CatalogsClientListByDevCenterOptions contains the optional parameters for the CatalogsClient.ListByDevCenter method.
+// CatalogsClientListByDevCenterOptions contains the optional parameters for the CatalogsClient.NewListByDevCenterPager method.
 type CatalogsClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -385,14 +385,14 @@ type DevBoxDefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevBoxDefinitionsClientListByDevCenterOptions contains the optional parameters for the DevBoxDefinitionsClient.ListByDevCenter
+// DevBoxDefinitionsClientListByDevCenterOptions contains the optional parameters for the DevBoxDefinitionsClient.NewListByDevCenterPager
 // method.
 type DevBoxDefinitionsClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// DevBoxDefinitionsClientListByProjectOptions contains the optional parameters for the DevBoxDefinitionsClient.ListByProject
+// DevBoxDefinitionsClientListByProjectOptions contains the optional parameters for the DevBoxDefinitionsClient.NewListByProjectPager
 // method.
 type DevBoxDefinitionsClientListByProjectOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -450,14 +450,14 @@ type DevCentersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevCentersClientListByResourceGroupOptions contains the optional parameters for the DevCentersClient.ListByResourceGroup
+// DevCentersClientListByResourceGroupOptions contains the optional parameters for the DevCentersClient.NewListByResourceGroupPager
 // method.
 type DevCentersClientListByResourceGroupOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// DevCentersClientListBySubscriptionOptions contains the optional parameters for the DevCentersClient.ListBySubscription
+// DevCentersClientListBySubscriptionOptions contains the optional parameters for the DevCentersClient.NewListBySubscriptionPager
 // method.
 type DevCentersClientListBySubscriptionOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -532,7 +532,7 @@ type EnvironmentTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentTypesClientListByDevCenterOptions contains the optional parameters for the EnvironmentTypesClient.ListByDevCenter
+// EnvironmentTypesClientListByDevCenterOptions contains the optional parameters for the EnvironmentTypesClient.NewListByDevCenterPager
 // method.
 type EnvironmentTypesClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -547,7 +547,7 @@ type EnvironmentTypesClientUpdateOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -589,7 +589,8 @@ type GalleriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GalleriesClientListByDevCenterOptions contains the optional parameters for the GalleriesClient.ListByDevCenter method.
+// GalleriesClientListByDevCenterOptions contains the optional parameters for the GalleriesClient.NewListByDevCenterPager
+// method.
 type GalleriesClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -835,7 +836,8 @@ type ImageVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ImageVersionsClientListByImageOptions contains the optional parameters for the ImageVersionsClient.ListByImage method.
+// ImageVersionsClientListByImageOptions contains the optional parameters for the ImageVersionsClient.NewListByImagePager
+// method.
 type ImageVersionsClientListByImageOptions struct {
 	// placeholder for future optional parameters
 }
@@ -845,13 +847,13 @@ type ImagesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ImagesClientListByDevCenterOptions contains the optional parameters for the ImagesClient.ListByDevCenter method.
+// ImagesClientListByDevCenterOptions contains the optional parameters for the ImagesClient.NewListByDevCenterPager method.
 type ImagesClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// ImagesClientListByGalleryOptions contains the optional parameters for the ImagesClient.ListByGallery method.
+// ImagesClientListByGalleryOptions contains the optional parameters for the ImagesClient.NewListByGalleryPager method.
 type ImagesClientListByGalleryOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1000,21 +1002,21 @@ type NetworkConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkConnectionsClientListByResourceGroupOptions contains the optional parameters for the NetworkConnectionsClient.ListByResourceGroup
+// NetworkConnectionsClientListByResourceGroupOptions contains the optional parameters for the NetworkConnectionsClient.NewListByResourceGroupPager
 // method.
 type NetworkConnectionsClientListByResourceGroupOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// NetworkConnectionsClientListBySubscriptionOptions contains the optional parameters for the NetworkConnectionsClient.ListBySubscription
+// NetworkConnectionsClientListBySubscriptionOptions contains the optional parameters for the NetworkConnectionsClient.NewListBySubscriptionPager
 // method.
 type NetworkConnectionsClientListBySubscriptionOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// NetworkConnectionsClientListHealthDetailsOptions contains the optional parameters for the NetworkConnectionsClient.ListHealthDetails
+// NetworkConnectionsClientListHealthDetailsOptions contains the optional parameters for the NetworkConnectionsClient.NewListHealthDetailsPager
 // method.
 type NetworkConnectionsClientListHealthDetailsOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1129,7 +1131,7 @@ type OperationStatus struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 
 	// READ-ONLY; Custom operation properties, populated only for a successful operation.
-	Properties interface{} `json:"properties,omitempty" azure:"ro"`
+	Properties any `json:"properties,omitempty" azure:"ro"`
 
 	// READ-ONLY; The id of the resource.
 	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
@@ -1167,7 +1169,7 @@ type OperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1273,7 +1275,7 @@ type PoolsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoolsClientListByProjectOptions contains the optional parameters for the PoolsClient.ListByProject method.
+// PoolsClientListByProjectOptions contains the optional parameters for the PoolsClient.NewListByProjectPager method.
 type PoolsClientListByProjectOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1309,7 +1311,7 @@ type ProjectAllowedEnvironmentTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectAllowedEnvironmentTypesClientListOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.List
+// ProjectAllowedEnvironmentTypesClientListOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.NewListPager
 // method.
 type ProjectAllowedEnvironmentTypesClientListOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1427,7 +1429,8 @@ type ProjectEnvironmentTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectEnvironmentTypesClientListOptions contains the optional parameters for the ProjectEnvironmentTypesClient.List method.
+// ProjectEnvironmentTypesClientListOptions contains the optional parameters for the ProjectEnvironmentTypesClient.NewListPager
+// method.
 type ProjectEnvironmentTypesClientListOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1507,13 +1510,15 @@ type ProjectsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectsClientListByResourceGroupOptions contains the optional parameters for the ProjectsClient.ListByResourceGroup method.
+// ProjectsClientListByResourceGroupOptions contains the optional parameters for the ProjectsClient.NewListByResourceGroupPager
+// method.
 type ProjectsClientListByResourceGroupOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// ProjectsClientListBySubscriptionOptions contains the optional parameters for the ProjectsClient.ListBySubscription method.
+// ProjectsClientListBySubscriptionOptions contains the optional parameters for the ProjectsClient.NewListBySubscriptionPager
+// method.
 type ProjectsClientListBySubscriptionOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1604,7 +1609,7 @@ type SKUListResult struct {
 	Value []*SKUInfo `json:"value,omitempty" azure:"ro"`
 }
 
-// SKUsClientListBySubscriptionOptions contains the optional parameters for the SKUsClient.ListBySubscription method.
+// SKUsClientListBySubscriptionOptions contains the optional parameters for the SKUsClient.NewListBySubscriptionPager method.
 type SKUsClientListBySubscriptionOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1720,7 +1725,7 @@ type SchedulesClientGetOptions struct {
 	Top *int32
 }
 
-// SchedulesClientListByPoolOptions contains the optional parameters for the SchedulesClient.ListByPool method.
+// SchedulesClientListByPoolOptions contains the optional parameters for the SchedulesClient.NewListByPoolPager method.
 type SchedulesClientListByPoolOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1783,7 +1788,7 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
+// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.NewListByLocationPager method.
 type UsagesClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }

@@ -56,12 +56,13 @@ type AccountClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup method.
+// AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.NewListByResourceGroupPager
+// method.
 type AccountClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountClientListOptions contains the optional parameters for the AccountClient.List method.
+// AccountClientListOptions contains the optional parameters for the AccountClient.NewListPager method.
 type AccountClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -199,7 +200,7 @@ type ActivityClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ActivityClientListByModuleOptions contains the optional parameters for the ActivityClient.ListByModule method.
+// ActivityClientListByModuleOptions contains the optional parameters for the ActivityClient.NewListByModulePager method.
 type ActivityClientListByModuleOptions struct {
 	// placeholder for future optional parameters
 }
@@ -403,7 +404,7 @@ type CertificateClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificateClientListByAutomationAccountOptions contains the optional parameters for the CertificateClient.ListByAutomationAccount
+// CertificateClientListByAutomationAccountOptions contains the optional parameters for the CertificateClient.NewListByAutomationAccountPager
 // method.
 type CertificateClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -526,7 +527,7 @@ type ConnectionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectionClientListByAutomationAccountOptions contains the optional parameters for the ConnectionClient.ListByAutomationAccount
+// ConnectionClientListByAutomationAccountOptions contains the optional parameters for the ConnectionClient.NewListByAutomationAccountPager
 // method.
 type ConnectionClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -622,7 +623,7 @@ type ConnectionTypeClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectionTypeClientListByAutomationAccountOptions contains the optional parameters for the ConnectionTypeClient.ListByAutomationAccount
+// ConnectionTypeClientListByAutomationAccountOptions contains the optional parameters for the ConnectionTypeClient.NewListByAutomationAccountPager
 // method.
 type ConnectionTypeClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -757,7 +758,7 @@ type CredentialClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CredentialClientListByAutomationAccountOptions contains the optional parameters for the CredentialClient.ListByAutomationAccount
+// CredentialClientListByAutomationAccountOptions contains the optional parameters for the CredentialClient.NewListByAutomationAccountPager
 // method.
 type CredentialClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -911,7 +912,7 @@ type DscCompilationJobClientGetStreamOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscCompilationJobClientListByAutomationAccountOptions contains the optional parameters for the DscCompilationJobClient.ListByAutomationAccount
+// DscCompilationJobClientListByAutomationAccountOptions contains the optional parameters for the DscCompilationJobClient.NewListByAutomationAccountPager
 // method.
 type DscCompilationJobClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -1062,7 +1063,7 @@ type DscConfigurationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscConfigurationClient.ListByAutomationAccount
+// DscConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscConfigurationClient.NewListByAutomationAccountPager
 // method.
 type DscConfigurationClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -1078,13 +1079,15 @@ type DscConfigurationClientListByAutomationAccountOptions struct {
 // DscConfigurationClientUpdateWithJSONOptions contains the optional parameters for the DscConfigurationClient.UpdateWithJSON
 // method.
 type DscConfigurationClientUpdateWithJSONOptions struct {
-	// placeholder for future optional parameters
+	// The create or update parameters for configuration.
+	Parameters *DscConfigurationUpdateParameters
 }
 
 // DscConfigurationClientUpdateWithTextOptions contains the optional parameters for the DscConfigurationClient.UpdateWithText
 // method.
 type DscConfigurationClientUpdateWithTextOptions struct {
-	// placeholder for future optional parameters
+	// The create or update parameters for configuration.
+	Parameters *string
 }
 
 // DscConfigurationCreateOrUpdateParameters - The parameters supplied to the create or update configuration operation.
@@ -1241,7 +1244,7 @@ type DscNodeClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscNodeClientListByAutomationAccountOptions contains the optional parameters for the DscNodeClient.ListByAutomationAccount
+// DscNodeClientListByAutomationAccountOptions contains the optional parameters for the DscNodeClient.NewListByAutomationAccountPager
 // method.
 type DscNodeClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -1297,7 +1300,7 @@ type DscNodeConfigurationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscNodeConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscNodeConfigurationClient.ListByAutomationAccount
+// DscNodeConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscNodeConfigurationClient.NewListByAutomationAccountPager
 // method.
 type DscNodeConfigurationClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -1579,7 +1582,7 @@ type EncryptionProperties struct {
 type EncryptionPropertiesIdentity struct {
 	// The user identity used for CMK. It will be an ARM resource id in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentity interface{} `json:"userAssignedIdentity,omitempty"`
+	UserAssignedIdentity any `json:"userAssignedIdentity,omitempty"`
 }
 
 // ErrorResponse - Error response of an operation failure
@@ -1603,7 +1606,7 @@ type FieldDefinition struct {
 	IsOptional *bool `json:"isOptional,omitempty"`
 }
 
-// FieldsClientListByTypeOptions contains the optional parameters for the FieldsClient.ListByType method.
+// FieldsClientListByTypeOptions contains the optional parameters for the FieldsClient.NewListByTypePager method.
 type FieldsClientListByTypeOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1685,7 +1688,7 @@ type HybridRunbookWorkerGroupClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridRunbookWorkerGroupClientListByAutomationAccountOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.ListByAutomationAccount
+// HybridRunbookWorkerGroupClientListByAutomationAccountOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.NewListByAutomationAccountPager
 // method.
 type HybridRunbookWorkerGroupClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -1773,7 +1776,7 @@ type HybridRunbookWorkersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions contains the optional parameters for the HybridRunbookWorkersClient.ListByHybridRunbookWorkerGroup
+// HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions contains the optional parameters for the HybridRunbookWorkersClient.NewListByHybridRunbookWorkerGroupPager
 // method.
 type HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions struct {
 	// The filter to apply on the operation.
@@ -1850,7 +1853,8 @@ type JobClientGetRunbookContentOptions struct {
 	ClientRequestID *string
 }
 
-// JobClientListByAutomationAccountOptions contains the optional parameters for the JobClient.ListByAutomationAccount method.
+// JobClientListByAutomationAccountOptions contains the optional parameters for the JobClient.NewListByAutomationAccountPager
+// method.
 type JobClientListByAutomationAccountOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
@@ -2028,7 +2032,7 @@ type JobScheduleClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobScheduleClientListByAutomationAccountOptions contains the optional parameters for the JobScheduleClient.ListByAutomationAccount
+// JobScheduleClientListByAutomationAccountOptions contains the optional parameters for the JobScheduleClient.NewListByAutomationAccountPager
 // method.
 type JobScheduleClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -2098,7 +2102,7 @@ type JobStreamClientGetOptions struct {
 	ClientRequestID *string
 }
 
-// JobStreamClientListByJobOptions contains the optional parameters for the JobStreamClient.ListByJob method.
+// JobStreamClientListByJobOptions contains the optional parameters for the JobStreamClient.NewListByJobPager method.
 type JobStreamClientListByJobOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
@@ -2133,7 +2137,7 @@ type JobStreamProperties struct {
 	Time *time.Time `json:"time,omitempty"`
 
 	// Gets or sets the values of the job stream.
-	Value map[string]interface{} `json:"value,omitempty"`
+	Value map[string]any `json:"value,omitempty"`
 }
 
 // Key - Automation key which is used to register a DSC Node
@@ -2235,7 +2239,7 @@ type ModuleClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ModuleClientListByAutomationAccountOptions contains the optional parameters for the ModuleClient.ListByAutomationAccount
+// ModuleClientListByAutomationAccountOptions contains the optional parameters for the ModuleClient.NewListByAutomationAccountPager
 // method.
 type ModuleClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -2378,7 +2382,7 @@ type NodeReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NodeReportsClientListByNodeOptions contains the optional parameters for the NodeReportsClient.ListByNode method.
+// NodeReportsClientListByNodeOptions contains the optional parameters for the NodeReportsClient.NewListByNodePager method.
 type NodeReportsClientListByNodeOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
@@ -2393,13 +2397,13 @@ type NonAzureQueryProperties struct {
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 }
 
-// ObjectDataTypesClientListFieldsByModuleAndTypeOptions contains the optional parameters for the ObjectDataTypesClient.ListFieldsByModuleAndType
+// ObjectDataTypesClientListFieldsByModuleAndTypeOptions contains the optional parameters for the ObjectDataTypesClient.NewListFieldsByModuleAndTypePager
 // method.
 type ObjectDataTypesClientListFieldsByModuleAndTypeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectDataTypesClientListFieldsByTypeOptions contains the optional parameters for the ObjectDataTypesClient.ListFieldsByType
+// ObjectDataTypesClientListFieldsByTypeOptions contains the optional parameters for the ObjectDataTypesClient.NewListFieldsByTypePager
 // method.
 type ObjectDataTypesClientListFieldsByTypeOptions struct {
 	// placeholder for future optional parameters
@@ -2432,7 +2436,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2490,7 +2494,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListByAutomationAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByAutomationAccount
+// PrivateEndpointConnectionsClientListByAutomationAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByAutomationAccountPager
 // method.
 type PrivateEndpointConnectionsClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -2532,7 +2536,7 @@ type PrivateLinkResourceProperties struct {
 	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
 }
 
-// PrivateLinkResourcesClientAutomationOptions contains the optional parameters for the PrivateLinkResourcesClient.Automation
+// PrivateLinkResourcesClientAutomationOptions contains the optional parameters for the PrivateLinkResourcesClient.NewAutomationPager
 // method.
 type PrivateLinkResourcesClientAutomationOptions struct {
 	// placeholder for future optional parameters
@@ -2578,7 +2582,7 @@ type Python2PackageClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Python2PackageClientListByAutomationAccountOptions contains the optional parameters for the Python2PackageClient.ListByAutomationAccount
+// Python2PackageClientListByAutomationAccountOptions contains the optional parameters for the Python2PackageClient.NewListByAutomationAccountPager
 // method.
 type Python2PackageClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -2696,7 +2700,7 @@ type RunbookClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RunbookClientListByAutomationAccountOptions contains the optional parameters for the RunbookClient.ListByAutomationAccount
+// RunbookClientListByAutomationAccountOptions contains the optional parameters for the RunbookClient.NewListByAutomationAccountPager
 // method.
 type RunbookClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -3016,7 +3020,7 @@ type ScheduleClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScheduleClientListByAutomationAccountOptions contains the optional parameters for the ScheduleClient.ListByAutomationAccount
+// ScheduleClientListByAutomationAccountOptions contains the optional parameters for the ScheduleClient.NewListByAutomationAccountPager
 // method.
 type ScheduleClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -3054,7 +3058,7 @@ type ScheduleCreateOrUpdateProperties struct {
 	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
 
 	// Gets or sets the interval of the schedule.
-	Interval interface{} `json:"interval,omitempty"`
+	Interval any `json:"interval,omitempty"`
 
 	// Gets or sets the time zone of the schedule.
 	TimeZone *string `json:"timeZone,omitempty"`
@@ -3090,7 +3094,7 @@ type ScheduleProperties struct {
 	Frequency *ScheduleFrequency `json:"frequency,omitempty"`
 
 	// Gets or sets the interval of the schedule.
-	Interval interface{} `json:"interval,omitempty"`
+	Interval any `json:"interval,omitempty"`
 
 	// Gets or sets a value indicating whether this schedule is enabled.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
@@ -3438,7 +3442,7 @@ type SourceControlClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.ListByAutomationAccount
+// SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.NewListByAutomationAccountPager
 // method.
 type SourceControlClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -3591,7 +3595,7 @@ type SourceControlSyncJobClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SourceControlSyncJobClientListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJobClient.ListByAutomationAccount
+// SourceControlSyncJobClientListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJobClient.NewListByAutomationAccountPager
 // method.
 type SourceControlSyncJobClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -3673,7 +3677,7 @@ type SourceControlSyncJobStreamByIDProperties struct {
 	Summary *string `json:"summary,omitempty"`
 
 	// The values of the job stream.
-	Value map[string]interface{} `json:"value,omitempty"`
+	Value map[string]any `json:"value,omitempty"`
 
 	// READ-ONLY; The time of the sync job stream.
 	Time *time.Time `json:"time,omitempty" azure:"ro"`
@@ -3700,7 +3704,7 @@ type SourceControlSyncJobStreamsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SourceControlSyncJobStreamsClientListBySyncJobOptions contains the optional parameters for the SourceControlSyncJobStreamsClient.ListBySyncJob
+// SourceControlSyncJobStreamsClientListBySyncJobOptions contains the optional parameters for the SourceControlSyncJobStreamsClient.NewListBySyncJobPager
 // method.
 type SourceControlSyncJobStreamsClientListBySyncJobOptions struct {
 	// The filter to apply on the operation.
@@ -3761,7 +3765,7 @@ type Statistics struct {
 	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
 }
 
-// StatisticsClientListByAutomationAccountOptions contains the optional parameters for the StatisticsClient.ListByAutomationAccount
+// StatisticsClientListByAutomationAccountOptions contains the optional parameters for the StatisticsClient.NewListByAutomationAccountPager
 // method.
 type StatisticsClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -3897,7 +3901,8 @@ type TestJobStreamsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TestJobStreamsClientListByTestJobOptions contains the optional parameters for the TestJobStreamsClient.ListByTestJob method.
+// TestJobStreamsClientListByTestJobOptions contains the optional parameters for the TestJobStreamsClient.NewListByTestJobPager
+// method.
 type TestJobStreamsClientListByTestJobOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
@@ -4054,7 +4059,7 @@ type UsageListResult struct {
 	Value []*Usage `json:"value,omitempty"`
 }
 
-// UsagesClientListByAutomationAccountOptions contains the optional parameters for the UsagesClient.ListByAutomationAccount
+// UsagesClientListByAutomationAccountOptions contains the optional parameters for the UsagesClient.NewListByAutomationAccountPager
 // method.
 type UsagesClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -4090,7 +4095,7 @@ type VariableClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VariableClientListByAutomationAccountOptions contains the optional parameters for the VariableClient.ListByAutomationAccount
+// VariableClientListByAutomationAccountOptions contains the optional parameters for the VariableClient.NewListByAutomationAccountPager
 // method.
 type VariableClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -4206,7 +4211,7 @@ type WatcherClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WatcherClientListByAutomationAccountOptions contains the optional parameters for the WatcherClient.ListByAutomationAccount
+// WatcherClientListByAutomationAccountOptions contains the optional parameters for the WatcherClient.NewListByAutomationAccountPager
 // method.
 type WatcherClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -4316,7 +4321,7 @@ type WebhookClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebhookClientListByAutomationAccountOptions contains the optional parameters for the WebhookClient.ListByAutomationAccount
+// WebhookClientListByAutomationAccountOptions contains the optional parameters for the WebhookClient.NewListByAutomationAccountPager
 // method.
 type WebhookClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.

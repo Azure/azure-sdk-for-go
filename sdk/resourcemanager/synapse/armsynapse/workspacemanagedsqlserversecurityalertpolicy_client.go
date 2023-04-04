@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // WorkspaceManagedSQLServerSecurityAlertPolicyClient contains the methods for the WorkspaceManagedSQLServerSecurityAlertPolicy group.
 // Don't use this type directly, use NewWorkspaceManagedSQLServerSecurityAlertPolicyClient() instead.
 type WorkspaceManagedSQLServerSecurityAlertPolicyClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkspaceManagedSQLServerSecurityAlertPolicyClient creates a new instance of WorkspaceManagedSQLServerSecurityAlertPolicyClient with the specified values.
@@ -36,21 +33,13 @@ type WorkspaceManagedSQLServerSecurityAlertPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWorkspaceManagedSQLServerSecurityAlertPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceManagedSQLServerSecurityAlertPolicyClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkspaceManagedSQLServerSecurityAlertPolicyClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkspaceManagedSQLServerSecurityAlertPolicyClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *WorkspaceManagedSQLServerSecurityAlertPolicyClient) BeginCreateOrU
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *WorkspaceManagedSQLServerSecurityAlertPolicyClient) createOrUpdate
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,7 @@ func (client *WorkspaceManagedSQLServerSecurityAlertPolicyClient) createOrUpdate
 		return nil, errors.New("parameter securityAlertPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{securityAlertPolicyName}", url.PathEscape(string(securityAlertPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +129,7 @@ func (client *WorkspaceManagedSQLServerSecurityAlertPolicyClient) Get(ctx contex
 	if err != nil {
 		return WorkspaceManagedSQLServerSecurityAlertPolicyClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkspaceManagedSQLServerSecurityAlertPolicyClientGetResponse{}, err
 	}
@@ -169,7 +158,7 @@ func (client *WorkspaceManagedSQLServerSecurityAlertPolicyClient) getCreateReque
 		return nil, errors.New("parameter securityAlertPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{securityAlertPolicyName}", url.PathEscape(string(securityAlertPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +201,7 @@ func (client *WorkspaceManagedSQLServerSecurityAlertPolicyClient) NewListPager(r
 			if err != nil {
 				return WorkspaceManagedSQLServerSecurityAlertPolicyClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkspaceManagedSQLServerSecurityAlertPolicyClientListResponse{}, err
 			}
@@ -239,7 +228,7 @@ func (client *WorkspaceManagedSQLServerSecurityAlertPolicyClient) listCreateRequ
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -25,11 +25,11 @@ func ExampleSQLPoolSensitivityLabelsClient_NewListCurrentPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCurrentPager("myRG", "myServer", "myDatabase", &armsynapse.SQLPoolSensitivityLabelsClientListCurrentOptions{Filter: nil})
+	pager := clientFactory.NewSQLPoolSensitivityLabelsClient().NewListCurrentPager("myRG", "myServer", "myDatabase", &armsynapse.SQLPoolSensitivityLabelsClientListCurrentOptions{Filter: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -75,11 +75,11 @@ func ExampleSQLPoolSensitivityLabelsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Update(ctx, "myRG", "myWorkspace", "mySqlPool", armsynapse.SensitivityLabelUpdateList{
+	_, err = clientFactory.NewSQLPoolSensitivityLabelsClient().Update(ctx, "myRG", "myWorkspace", "mySqlPool", armsynapse.SensitivityLabelUpdateList{
 		Operations: []*armsynapse.SensitivityLabelUpdate{
 			{
 				Properties: &armsynapse.SensitivityLabelUpdateProperties{
@@ -136,11 +136,11 @@ func ExampleSQLPoolSensitivityLabelsClient_NewListRecommendedPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListRecommendedPager("myRG", "myServer", "myDatabase", &armsynapse.SQLPoolSensitivityLabelsClientListRecommendedOptions{IncludeDisabledRecommendations: nil,
+	pager := clientFactory.NewSQLPoolSensitivityLabelsClient().NewListRecommendedPager("myRG", "myServer", "myDatabase", &armsynapse.SQLPoolSensitivityLabelsClientListRecommendedOptions{IncludeDisabledRecommendations: nil,
 		SkipToken: nil,
 		Filter:    nil,
 	})
@@ -189,11 +189,11 @@ func ExampleSQLPoolSensitivityLabelsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", armsynapse.SensitivityLabel{
+	res, err := clientFactory.NewSQLPoolSensitivityLabelsClient().CreateOrUpdate(ctx, "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", armsynapse.SensitivityLabel{
 		Properties: &armsynapse.SensitivityLabelProperties{
 			InformationType:   to.Ptr("PhoneNumber"),
 			InformationTypeID: to.Ptr("d22fa6e9-5ee4-3bde-4c2b-a409604c4646"),
@@ -227,11 +227,11 @@ func ExampleSQLPoolSensitivityLabelsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", nil)
+	_, err = clientFactory.NewSQLPoolSensitivityLabelsClient().Delete(ctx, "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -244,11 +244,11 @@ func ExampleSQLPoolSensitivityLabelsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", armsynapse.SensitivityLabelSourceCurrent, nil)
+	res, err := clientFactory.NewSQLPoolSensitivityLabelsClient().Get(ctx, "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", armsynapse.SensitivityLabelSourceCurrent, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -275,11 +275,11 @@ func ExampleSQLPoolSensitivityLabelsClient_EnableRecommendation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.EnableRecommendation(ctx, "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", nil)
+	_, err = clientFactory.NewSQLPoolSensitivityLabelsClient().EnableRecommendation(ctx, "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -292,11 +292,11 @@ func ExampleSQLPoolSensitivityLabelsClient_DisableRecommendation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.DisableRecommendation(ctx, "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", nil)
+	_, err = clientFactory.NewSQLPoolSensitivityLabelsClient().DisableRecommendation(ctx, "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

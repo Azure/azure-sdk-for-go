@@ -25,11 +25,11 @@ func ExampleRoutingIntentClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRoutingIntentClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "virtualHub1", "Intent1", armnetwork.RoutingIntent{
+	poller, err := clientFactory.NewRoutingIntentClient().BeginCreateOrUpdate(ctx, "rg1", "virtualHub1", "Intent1", armnetwork.RoutingIntent{
 		Properties: &armnetwork.RoutingIntentProperties{
 			RoutingPolicies: []*armnetwork.RoutingPolicy{
 				{
@@ -87,11 +87,11 @@ func ExampleRoutingIntentClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRoutingIntentClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "virtualHub1", "Intent1", nil)
+	res, err := clientFactory.NewRoutingIntentClient().Get(ctx, "rg1", "virtualHub1", "Intent1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -129,11 +129,11 @@ func ExampleRoutingIntentClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRoutingIntentClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "virtualHub1", "Intent1", nil)
+	poller, err := clientFactory.NewRoutingIntentClient().BeginDelete(ctx, "rg1", "virtualHub1", "Intent1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -150,11 +150,11 @@ func ExampleRoutingIntentClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewRoutingIntentClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "virtualHub1", nil)
+	pager := clientFactory.NewRoutingIntentClient().NewListPager("rg1", "virtualHub1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

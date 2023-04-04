@@ -25,11 +25,11 @@ func ExampleSQLPoolBlobAuditingPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolBlobAuditingPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "blobauditingtest-6852", "blobauditingtest-2080", "testdb", nil)
+	res, err := clientFactory.NewSQLPoolBlobAuditingPoliciesClient().Get(ctx, "blobauditingtest-6852", "blobauditingtest-2080", "testdb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -61,11 +61,11 @@ func ExampleSQLPoolBlobAuditingPoliciesClient_CreateOrUpdate_createOrUpdateAData
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolBlobAuditingPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "blobauditingtest-4799", "blobauditingtest-6440", "testdb", armsynapse.SQLPoolBlobAuditingPolicy{
+	res, err := clientFactory.NewSQLPoolBlobAuditingPoliciesClient().CreateOrUpdate(ctx, "blobauditingtest-4799", "blobauditingtest-6440", "testdb", armsynapse.SQLPoolBlobAuditingPolicy{
 		Properties: &armsynapse.SQLPoolBlobAuditingPolicyProperties{
 			AuditActionsAndGroups: []*string{
 				to.Ptr("DATABASE_LOGOUT_GROUP"),
@@ -113,11 +113,11 @@ func ExampleSQLPoolBlobAuditingPoliciesClient_CreateOrUpdate_createOrUpdateAData
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolBlobAuditingPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "blobauditingtest-4799", "blobauditingtest-6440", "testdb", armsynapse.SQLPoolBlobAuditingPolicy{
+	res, err := clientFactory.NewSQLPoolBlobAuditingPoliciesClient().CreateOrUpdate(ctx, "blobauditingtest-4799", "blobauditingtest-6440", "testdb", armsynapse.SQLPoolBlobAuditingPolicy{
 		Properties: &armsynapse.SQLPoolBlobAuditingPolicyProperties{
 			State:                   to.Ptr(armsynapse.BlobAuditingPolicyStateEnabled),
 			StorageAccountAccessKey: to.Ptr("sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD=="),
@@ -157,11 +157,11 @@ func ExampleSQLPoolBlobAuditingPoliciesClient_NewListBySQLPoolPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolBlobAuditingPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySQLPoolPager("blobauditingtest-6852", "blobauditingtest-2080", "testdb", nil)
+	pager := clientFactory.NewSQLPoolBlobAuditingPoliciesClient().NewListBySQLPoolPager("blobauditingtest-6852", "blobauditingtest-2080", "testdb", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

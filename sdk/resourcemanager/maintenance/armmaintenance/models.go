@@ -185,7 +185,7 @@ type ConfigurationProperties struct {
 	// Gets or sets extensionProperties of the maintenanceConfiguration
 	ExtensionProperties map[string]*string `json:"extensionProperties,omitempty"`
 
-	// The input parameters to be passed to the patch run operation. This property only applies to Guest (InGuestPatch) scope.
+	// The input parameters to be passed to the patch run operation.
 	InstallPatches *InputPatchConfiguration `json:"installPatches,omitempty"`
 
 	// Gets or sets maintenanceScope of the configuration
@@ -248,8 +248,7 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// InputLinuxParameters - Input properties for patching a Linux machine. This property only applies to Guest (InGuestPatch)
-// scope.
+// InputLinuxParameters - Input properties for patching a Linux machine.
 type InputLinuxParameters struct {
 	// Classification category of patches to be patched
 	ClassificationsToInclude []*string `json:"classificationsToInclude,omitempty"`
@@ -263,25 +262,21 @@ type InputLinuxParameters struct {
 
 // InputPatchConfiguration - Input configuration for a patch run
 type InputPatchConfiguration struct {
-	// Input parameters specific to patching Linux machine. For Windows machines, do not pass this property. This property only
-	// applies to Guest (InGuestPatch) scope.
+	// Input parameters specific to patching Linux machine. For Windows machines, do not pass this property.
 	LinuxParameters *InputLinuxParameters `json:"linuxParameters,omitempty"`
 
 	// Possible reboot preference as defined by the user based on which it would be decided to reboot the machine or not after
-	// the patch operation is completed. This property only applies to Guest
-	// (InGuestPatch) scope.
+	// the patch operation is completed.
 	RebootSetting *RebootOptions `json:"rebootSetting,omitempty"`
 
-	// [Not supported] Tasks information for the Software update configuration.
+	// Tasks information for the Software update configuration.
 	Tasks *SoftwareUpdateConfigurationTasks `json:"tasks,omitempty"`
 
-	// Input parameters specific to patching a Windows machine. For Linux machines, do not pass this property. This property only
-	// applies to Guest (InGuestPatch) scope.
+	// Input parameters specific to patching a Windows machine. For Linux machines, do not pass this property.
 	WindowsParameters *InputWindowsParameters `json:"windowsParameters,omitempty"`
 }
 
-// InputWindowsParameters - Input properties for patching a Windows machine. This property only applies to Guest (InGuestPatch)
-// scope.
+// InputWindowsParameters - Input properties for patching a Windows machine.
 type InputWindowsParameters struct {
 	// Classification category of patches to be patched
 	ClassificationsToInclude []*string `json:"classificationsToInclude,omitempty"`
@@ -391,12 +386,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// SoftwareUpdateConfigurationTasks - [Not supported] Task properties of the software update configuration.
+// SoftwareUpdateConfigurationTasks - Task properties of the software update configuration.
 type SoftwareUpdateConfigurationTasks struct {
-	// [Not supported] List of post tasks. e.g. [{'source' :'runbook', 'taskScope': 'Resource', 'parameters': { 'arg1': 'value1'}}]
+	// List of post tasks. e.g. [{'source' :'runbook', 'taskScope': 'Resource', 'parameters': { 'arg1': 'value1'}}]
 	PostTasks []*TaskProperties `json:"postTasks,omitempty"`
 
-	// [Not supported] List of pre tasks. e.g. [{'source' :'runbook', 'taskScope': 'Global', 'parameters': { 'arg1': 'value1'}}]
+	// List of pre tasks. e.g. [{'source' :'runbook', 'taskScope': 'Global', 'parameters': { 'arg1': 'value1'}}]
 	PreTasks []*TaskProperties `json:"preTasks,omitempty"`
 }
 
@@ -421,15 +416,15 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// TaskProperties - [Not supported] Task properties of the software update configuration.
+// TaskProperties - Task properties of the software update configuration.
 type TaskProperties struct {
-	// [Not supported] Gets or sets the parameters of the task.
+	// Gets or sets the parameters of the task.
 	Parameters map[string]*string `json:"parameters,omitempty"`
 
-	// [Not supported] Gets or sets the name of the runbook.
+	// Gets or sets the name of the runbook.
 	Source *string `json:"source,omitempty"`
 
-	// [Not supported] Global Task execute once when schedule trigger. Resource task execute for each VM.
+	// Global Task execute once when schedule trigger. Resource task execute for each VM.
 	TaskScope *TaskScope `json:"taskScope,omitempty"`
 }
 

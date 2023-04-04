@@ -47,7 +47,7 @@ func NewConfigurationsForResourceGroupClient(subscriptionID string, credential a
 
 // NewListPager - Get Configuration records within a subscription and resource group
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2021-09-01-preview
 //   - resourceGroupName - Resource Group Name
 //   - options - ConfigurationsForResourceGroupClientListOptions contains the optional parameters for the ConfigurationsForResourceGroupClient.NewListPager
 //     method.
@@ -89,7 +89,7 @@ func (client *ConfigurationsForResourceGroupClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

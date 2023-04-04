@@ -47,7 +47,7 @@ func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // NewListPager - Get updates to resources.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2021-09-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceType - Resource type
@@ -103,7 +103,7 @@ func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -120,7 +120,7 @@ func (client *UpdatesClient) listHandleResponse(resp *http.Response) (UpdatesCli
 
 // NewListParentPager - Get updates to resources.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2021-09-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceParentType - Resource parent type
@@ -186,7 +186,7 @@ func (client *UpdatesClient) listParentCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

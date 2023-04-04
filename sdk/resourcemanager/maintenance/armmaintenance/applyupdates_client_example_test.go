@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0b1c0be5c97dcd5dadea4e7f975a556a78f58d60/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ApplyUpdates_GetParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_GetParent.json
 func ExampleApplyUpdatesClient_GetParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleApplyUpdatesClient_GetParent() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0b1c0be5c97dcd5dadea4e7f975a556a78f58d60/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ApplyUpdates_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_Get.json
 func ExampleApplyUpdatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleApplyUpdatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0b1c0be5c97dcd5dadea4e7f975a556a78f58d60/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ApplyUpdates_CreateOrUpdateParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_CreateOrUpdateParent.json
 func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0b1c0be5c97dcd5dadea4e7f975a556a78f58d60/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ApplyUpdates_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_CreateOrUpdate.json
 func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0b1c0be5c97dcd5dadea4e7f975a556a78f58d60/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ApplyUpdates_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_List.json
 func ExampleApplyUpdatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

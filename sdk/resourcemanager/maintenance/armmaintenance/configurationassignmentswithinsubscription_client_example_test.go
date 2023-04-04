@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0b1c0be5c97dcd5dadea4e7f975a556a78f58d60/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ConfigurationAssignmentsResultWithinSubscription_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignmentsResultWithinSubscription_List.json
 func ExampleConfigurationAssignmentsWithinSubscriptionClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

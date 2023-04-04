@@ -1,5 +1,11 @@
 # Release History
 
+## 1.1.0-beta.4 (2023-04-07)
+### Breaking Changes
+
+- Const `MaintenanceScopeResource` from type alias `MaintenanceScope` has been removed
+
+
 ## 1.1.0-beta.3 (2023-03-31)
 ### Features Added
 

@@ -11,7 +11,7 @@ package armsecurityinsights
 
 const (
 	moduleName    = "armsecurityinsights"
-	moduleVersion = "v2.0.0-beta.3"
+	moduleVersion = "v2.0.0-beta.4"
 )
 
 // ActionType - The type of the automation rule action.
@@ -195,24 +195,6 @@ func PossibleAttackTacticValues() []AttackTactic {
 	}
 }
 
-type AutomationRuleBooleanConditionSupportedOperator string
-
-const (
-	// AutomationRuleBooleanConditionSupportedOperatorAnd - Evaluates as true if all the item conditions are evaluated as true
-	AutomationRuleBooleanConditionSupportedOperatorAnd AutomationRuleBooleanConditionSupportedOperator = "And"
-	// AutomationRuleBooleanConditionSupportedOperatorOr - Evaluates as true if at least one of the item conditions are evaluated
-	// as true
-	AutomationRuleBooleanConditionSupportedOperatorOr AutomationRuleBooleanConditionSupportedOperator = "Or"
-)
-
-// PossibleAutomationRuleBooleanConditionSupportedOperatorValues returns the possible values for the AutomationRuleBooleanConditionSupportedOperator const type.
-func PossibleAutomationRuleBooleanConditionSupportedOperatorValues() []AutomationRuleBooleanConditionSupportedOperator {
-	return []AutomationRuleBooleanConditionSupportedOperator{
-		AutomationRuleBooleanConditionSupportedOperatorAnd,
-		AutomationRuleBooleanConditionSupportedOperatorOr,
-	}
-}
-
 type AutomationRulePropertyArrayChangedConditionSupportedArrayType string
 
 const (
@@ -247,39 +229,6 @@ const (
 func PossibleAutomationRulePropertyArrayChangedConditionSupportedChangeTypeValues() []AutomationRulePropertyArrayChangedConditionSupportedChangeType {
 	return []AutomationRulePropertyArrayChangedConditionSupportedChangeType{
 		AutomationRulePropertyArrayChangedConditionSupportedChangeTypeAdded,
-	}
-}
-
-type AutomationRulePropertyArrayConditionSupportedArrayConditionType string
-
-const (
-	// AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem - Evaluate the condition as true if any item fulfills
-	// it
-	AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem AutomationRulePropertyArrayConditionSupportedArrayConditionType = "AnyItem"
-)
-
-// PossibleAutomationRulePropertyArrayConditionSupportedArrayConditionTypeValues returns the possible values for the AutomationRulePropertyArrayConditionSupportedArrayConditionType const type.
-func PossibleAutomationRulePropertyArrayConditionSupportedArrayConditionTypeValues() []AutomationRulePropertyArrayConditionSupportedArrayConditionType {
-	return []AutomationRulePropertyArrayConditionSupportedArrayConditionType{
-		AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem,
-	}
-}
-
-type AutomationRulePropertyArrayConditionSupportedArrayType string
-
-const (
-	// AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetailValues - Evaluate the condition on a custom detail's
-	// values
-	AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetailValues AutomationRulePropertyArrayConditionSupportedArrayType = "CustomDetailValues"
-	// AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetails - Evaluate the condition on the custom detail keys
-	AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetails AutomationRulePropertyArrayConditionSupportedArrayType = "CustomDetails"
-)
-
-// PossibleAutomationRulePropertyArrayConditionSupportedArrayTypeValues returns the possible values for the AutomationRulePropertyArrayConditionSupportedArrayType const type.
-func PossibleAutomationRulePropertyArrayConditionSupportedArrayTypeValues() []AutomationRulePropertyArrayConditionSupportedArrayType {
-	return []AutomationRulePropertyArrayConditionSupportedArrayType{
-		AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetailValues,
-		AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetails,
 	}
 }
 
@@ -384,8 +333,6 @@ const (
 	AutomationRulePropertyConditionSupportedPropertyAccountSid AutomationRulePropertyConditionSupportedProperty = "AccountSid"
 	// AutomationRulePropertyConditionSupportedPropertyAccountUPNSuffix - The account user principal name suffix
 	AutomationRulePropertyConditionSupportedPropertyAccountUPNSuffix AutomationRulePropertyConditionSupportedProperty = "AccountUPNSuffix"
-	// AutomationRulePropertyConditionSupportedPropertyAlertAnalyticRuleIDs - The analytic rule ids of the alert
-	AutomationRulePropertyConditionSupportedPropertyAlertAnalyticRuleIDs AutomationRulePropertyConditionSupportedProperty = "AlertAnalyticRuleIds"
 	// AutomationRulePropertyConditionSupportedPropertyAlertProductNames - The name of the product of the alert
 	AutomationRulePropertyConditionSupportedPropertyAlertProductNames AutomationRulePropertyConditionSupportedProperty = "AlertProductNames"
 	// AutomationRulePropertyConditionSupportedPropertyAzureResourceResourceID - The Azure resource id
@@ -416,10 +363,6 @@ const (
 	AutomationRulePropertyConditionSupportedPropertyHostOSVersion AutomationRulePropertyConditionSupportedProperty = "HostOSVersion"
 	// AutomationRulePropertyConditionSupportedPropertyIPAddress - The IP address
 	AutomationRulePropertyConditionSupportedPropertyIPAddress AutomationRulePropertyConditionSupportedProperty = "IPAddress"
-	// AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsKey - The incident custom detail key
-	AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsKey AutomationRulePropertyConditionSupportedProperty = "IncidentCustomDetailsKey"
-	// AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsValue - The incident custom detail value
-	AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsValue AutomationRulePropertyConditionSupportedProperty = "IncidentCustomDetailsValue"
 	// AutomationRulePropertyConditionSupportedPropertyIncidentDescription - The description of the incident
 	AutomationRulePropertyConditionSupportedPropertyIncidentDescription AutomationRulePropertyConditionSupportedProperty = "IncidentDescription"
 	// AutomationRulePropertyConditionSupportedPropertyIncidentLabel - The labels of the incident
@@ -436,8 +379,6 @@ const (
 	AutomationRulePropertyConditionSupportedPropertyIncidentTactics AutomationRulePropertyConditionSupportedProperty = "IncidentTactics"
 	// AutomationRulePropertyConditionSupportedPropertyIncidentTitle - The title of the incident
 	AutomationRulePropertyConditionSupportedPropertyIncidentTitle AutomationRulePropertyConditionSupportedProperty = "IncidentTitle"
-	// AutomationRulePropertyConditionSupportedPropertyIncidentUpdatedBySource - The update source of the incident
-	AutomationRulePropertyConditionSupportedPropertyIncidentUpdatedBySource AutomationRulePropertyConditionSupportedProperty = "IncidentUpdatedBySource"
 	// AutomationRulePropertyConditionSupportedPropertyIoTDeviceID - "The IoT device id
 	AutomationRulePropertyConditionSupportedPropertyIoTDeviceID AutomationRulePropertyConditionSupportedProperty = "IoTDeviceId"
 	// AutomationRulePropertyConditionSupportedPropertyIoTDeviceModel - The IoT device model
@@ -497,7 +438,6 @@ func PossibleAutomationRulePropertyConditionSupportedPropertyValues() []Automati
 		AutomationRulePropertyConditionSupportedPropertyAccountPUID,
 		AutomationRulePropertyConditionSupportedPropertyAccountSid,
 		AutomationRulePropertyConditionSupportedPropertyAccountUPNSuffix,
-		AutomationRulePropertyConditionSupportedPropertyAlertAnalyticRuleIDs,
 		AutomationRulePropertyConditionSupportedPropertyAlertProductNames,
 		AutomationRulePropertyConditionSupportedPropertyAzureResourceResourceID,
 		AutomationRulePropertyConditionSupportedPropertyAzureResourceSubscriptionID,
@@ -513,8 +453,6 @@ func PossibleAutomationRulePropertyConditionSupportedPropertyValues() []Automati
 		AutomationRulePropertyConditionSupportedPropertyHostNetBiosName,
 		AutomationRulePropertyConditionSupportedPropertyHostOSVersion,
 		AutomationRulePropertyConditionSupportedPropertyIPAddress,
-		AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsKey,
-		AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsValue,
 		AutomationRulePropertyConditionSupportedPropertyIncidentDescription,
 		AutomationRulePropertyConditionSupportedPropertyIncidentLabel,
 		AutomationRulePropertyConditionSupportedPropertyIncidentProviderName,
@@ -523,7 +461,6 @@ func PossibleAutomationRulePropertyConditionSupportedPropertyValues() []Automati
 		AutomationRulePropertyConditionSupportedPropertyIncidentStatus,
 		AutomationRulePropertyConditionSupportedPropertyIncidentTactics,
 		AutomationRulePropertyConditionSupportedPropertyIncidentTitle,
-		AutomationRulePropertyConditionSupportedPropertyIncidentUpdatedBySource,
 		AutomationRulePropertyConditionSupportedPropertyIoTDeviceID,
 		AutomationRulePropertyConditionSupportedPropertyIoTDeviceModel,
 		AutomationRulePropertyConditionSupportedPropertyIoTDeviceName,
@@ -553,12 +490,8 @@ func PossibleAutomationRulePropertyConditionSupportedPropertyValues() []Automati
 type ConditionType string
 
 const (
-	// ConditionTypeBoolean - Apply a boolean operator (e.g AND, OR) to conditions
-	ConditionTypeBoolean ConditionType = "Boolean"
 	// ConditionTypeProperty - Evaluate an object property value
 	ConditionTypeProperty ConditionType = "Property"
-	// ConditionTypePropertyArray - Evaluate an object array property value
-	ConditionTypePropertyArray ConditionType = "PropertyArray"
 	// ConditionTypePropertyArrayChanged - Evaluate an object array property changed value
 	ConditionTypePropertyArrayChanged ConditionType = "PropertyArrayChanged"
 	// ConditionTypePropertyChanged - Evaluate an object property changed value
@@ -568,9 +501,7 @@ const (
 // PossibleConditionTypeValues returns the possible values for the ConditionType const type.
 func PossibleConditionTypeValues() []ConditionType {
 	return []ConditionType{
-		ConditionTypeBoolean,
 		ConditionTypeProperty,
-		ConditionTypePropertyArray,
 		ConditionTypePropertyArrayChanged,
 		ConditionTypePropertyChanged,
 	}
@@ -807,27 +738,6 @@ func PossibleDataTypeStateValues() []DataTypeState {
 	}
 }
 
-// DeleteStatus - Indicates whether the file was deleted from the storage account.
-type DeleteStatus string
-
-const (
-	// DeleteStatusDeleted - The file was deleted.
-	DeleteStatusDeleted DeleteStatus = "Deleted"
-	// DeleteStatusNotDeleted - The file was not deleted.
-	DeleteStatusNotDeleted DeleteStatus = "NotDeleted"
-	// DeleteStatusUnspecified - Unspecified
-	DeleteStatusUnspecified DeleteStatus = "Unspecified"
-)
-
-// PossibleDeleteStatusValues returns the possible values for the DeleteStatus const type.
-func PossibleDeleteStatusValues() []DeleteStatus {
-	return []DeleteStatus{
-		DeleteStatusDeleted,
-		DeleteStatusNotDeleted,
-		DeleteStatusUnspecified,
-	}
-}
-
 // DeliveryAction - The delivery action of this mail message like Delivered, Blocked, Replaced etc
 type DeliveryAction string
 
@@ -950,30 +860,6 @@ func PossibleDeploymentStateValues() []DeploymentState {
 	}
 }
 
-// DeviceImportance - Device importance, determines if the device classified as 'crown jewel'
-type DeviceImportance string
-
-const (
-	// DeviceImportanceHigh - High
-	DeviceImportanceHigh DeviceImportance = "High"
-	// DeviceImportanceLow - Low
-	DeviceImportanceLow DeviceImportance = "Low"
-	// DeviceImportanceNormal - Normal
-	DeviceImportanceNormal DeviceImportance = "Normal"
-	// DeviceImportanceUnknown - Unknown - Default value
-	DeviceImportanceUnknown DeviceImportance = "Unknown"
-)
-
-// PossibleDeviceImportanceValues returns the possible values for the DeviceImportance const type.
-func PossibleDeviceImportanceValues() []DeviceImportance {
-	return []DeviceImportance{
-		DeviceImportanceHigh,
-		DeviceImportanceLow,
-		DeviceImportanceNormal,
-		DeviceImportanceUnknown,
-	}
-}
-
 // ElevationToken - The elevation token associated with the process.
 type ElevationToken string
 
@@ -1041,8 +927,6 @@ const (
 	EntityKindMailbox EntityKind = "Mailbox"
 	// EntityKindMalware - Entity represents malware in the system.
 	EntityKindMalware EntityKind = "Malware"
-	// EntityKindNic - Entity represents network interface in the system.
-	EntityKindNic EntityKind = "Nic"
 	// EntityKindProcess - Entity represents process in the system.
 	EntityKindProcess EntityKind = "Process"
 	// EntityKindRegistryKey - Entity represents registry key in the system.
@@ -1076,7 +960,6 @@ func PossibleEntityKindValues() []EntityKind {
 		EntityKindMailMessage,
 		EntityKindMailbox,
 		EntityKindMalware,
-		EntityKindNic,
 		EntityKindProcess,
 		EntityKindRegistryKey,
 		EntityKindRegistryValue,
@@ -1257,8 +1140,6 @@ const (
 	EntityTypeMailbox EntityType = "Mailbox"
 	// EntityTypeMalware - Entity represents malware in the system.
 	EntityTypeMalware EntityType = "Malware"
-	// EntityTypeNic - Entity represents network interface in the system.
-	EntityTypeNic EntityType = "Nic"
 	// EntityTypeProcess - Entity represents process in the system.
 	EntityTypeProcess EntityType = "Process"
 	// EntityTypeRegistryKey - Entity represents registry key in the system.
@@ -1292,7 +1173,6 @@ func PossibleEntityTypeValues() []EntityType {
 		EntityTypeMailMessage,
 		EntityTypeMailbox,
 		EntityTypeMalware,
-		EntityTypeNic,
 		EntityTypeProcess,
 		EntityTypeRegistryKey,
 		EntityTypeRegistryValue,
@@ -1347,27 +1227,6 @@ func PossibleEventGroupingAggregationKindValues() []EventGroupingAggregationKind
 	}
 }
 
-// FileFormat - The format of the file
-type FileFormat string
-
-const (
-	// FileFormatCSV - A CSV file.
-	FileFormatCSV FileFormat = "CSV"
-	// FileFormatJSON - A JSON file.
-	FileFormatJSON FileFormat = "JSON"
-	// FileFormatUnspecified - A file of other format.
-	FileFormatUnspecified FileFormat = "Unspecified"
-)
-
-// PossibleFileFormatValues returns the possible values for the FileFormat const type.
-func PossibleFileFormatValues() []FileFormat {
-	return []FileFormat{
-		FileFormatCSV,
-		FileFormatJSON,
-		FileFormatUnspecified,
-	}
-}
-
 // FileHashAlgorithm - The hash algorithm type.
 type FileHashAlgorithm string
 
@@ -1392,61 +1251,6 @@ func PossibleFileHashAlgorithmValues() []FileHashAlgorithm {
 		FileHashAlgorithmSHA256,
 		FileHashAlgorithmSHA256AC,
 		FileHashAlgorithmUnknown,
-	}
-}
-
-// FileImportContentType - The content type of this file.
-type FileImportContentType string
-
-const (
-	// FileImportContentTypeBasicIndicator - File containing records with the core fields of an indicator, plus the observables
-	// to construct the STIX pattern.
-	FileImportContentTypeBasicIndicator FileImportContentType = "BasicIndicator"
-	// FileImportContentTypeStixIndicator - File containing STIX indicators.
-	FileImportContentTypeStixIndicator FileImportContentType = "StixIndicator"
-	// FileImportContentTypeUnspecified - File containing other records.
-	FileImportContentTypeUnspecified FileImportContentType = "Unspecified"
-)
-
-// PossibleFileImportContentTypeValues returns the possible values for the FileImportContentType const type.
-func PossibleFileImportContentTypeValues() []FileImportContentType {
-	return []FileImportContentType{
-		FileImportContentTypeBasicIndicator,
-		FileImportContentTypeStixIndicator,
-		FileImportContentTypeUnspecified,
-	}
-}
-
-// FileImportState - The state of the file import.
-type FileImportState string
-
-const (
-	// FileImportStateFatalError - A fatal error has occurred while ingesting the file.
-	FileImportStateFatalError FileImportState = "FatalError"
-	// FileImportStateInProgress - The file ingestion is in progress.
-	FileImportStateInProgress FileImportState = "InProgress"
-	// FileImportStateIngested - The file has been ingested.
-	FileImportStateIngested FileImportState = "Ingested"
-	// FileImportStateIngestedWithErrors - The file has been ingested with errors.
-	FileImportStateIngestedWithErrors FileImportState = "IngestedWithErrors"
-	// FileImportStateInvalid - The file is invalid.
-	FileImportStateInvalid FileImportState = "Invalid"
-	// FileImportStateUnspecified - Unspecified state.
-	FileImportStateUnspecified FileImportState = "Unspecified"
-	// FileImportStateWaitingForUpload - Waiting for the file to be uploaded.
-	FileImportStateWaitingForUpload FileImportState = "WaitingForUpload"
-)
-
-// PossibleFileImportStateValues returns the possible values for the FileImportState const type.
-func PossibleFileImportStateValues() []FileImportState {
-	return []FileImportState{
-		FileImportStateFatalError,
-		FileImportStateInProgress,
-		FileImportStateIngested,
-		FileImportStateIngestedWithErrors,
-		FileImportStateInvalid,
-		FileImportStateUnspecified,
-		FileImportStateWaitingForUpload,
 	}
 }
 
@@ -1572,27 +1376,6 @@ func PossibleIncidentStatusValues() []IncidentStatus {
 		IncidentStatusActive,
 		IncidentStatusClosed,
 		IncidentStatusNew,
-	}
-}
-
-// IngestionMode - Describes how to ingest the records in the file.
-type IngestionMode string
-
-const (
-	// IngestionModeIngestAnyValidRecords - Valid records should still be ingested when invalid records are detected.
-	IngestionModeIngestAnyValidRecords IngestionMode = "IngestAnyValidRecords"
-	// IngestionModeIngestOnlyIfAllAreValid - No records should be ingested when invalid records are detected.
-	IngestionModeIngestOnlyIfAllAreValid IngestionMode = "IngestOnlyIfAllAreValid"
-	// IngestionModeUnspecified - Unspecified
-	IngestionModeUnspecified IngestionMode = "Unspecified"
-)
-
-// PossibleIngestionModeValues returns the possible values for the IngestionMode const type.
-func PossibleIngestionModeValues() []IngestionMode {
-	return []IngestionMode{
-		IngestionModeIngestAnyValidRecords,
-		IngestionModeIngestOnlyIfAllAreValid,
-		IngestionModeUnspecified,
 	}
 }
 
@@ -2222,8 +2005,6 @@ func PossibleTriggerOperatorValues() []TriggerOperator {
 type TriggersOn string
 
 const (
-	// TriggersOnAlerts - Trigger on Alerts
-	TriggersOnAlerts TriggersOn = "Alerts"
 	// TriggersOnIncidents - Trigger on Incidents
 	TriggersOnIncidents TriggersOn = "Incidents"
 )
@@ -2231,7 +2012,6 @@ const (
 // PossibleTriggersOnValues returns the possible values for the TriggersOn const type.
 func PossibleTriggersOnValues() []TriggersOn {
 	return []TriggersOn{
-		TriggersOnAlerts,
 		TriggersOnIncidents,
 	}
 }

@@ -47,7 +47,7 @@ func NewEntityQueryTemplatesClient(subscriptionID string, credential azcore.Toke
 // Get - Gets an entity query.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - entityQueryTemplateID - entity query template ID
@@ -92,7 +92,7 @@ func (client *EntityQueryTemplatesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +109,7 @@ func (client *EntityQueryTemplatesClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Gets all entity query templates.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - EntityQueryTemplatesClientListOptions contains the optional parameters for the EntityQueryTemplatesClient.NewListPager
@@ -165,7 +165,7 @@ func (client *EntityQueryTemplatesClient) listCreateRequest(ctx context.Context,
 	if options != nil && options.Kind != nil {
 		reqQP.Set("kind", string(*options.Kind))
 	}
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -52,7 +52,7 @@ func NewWatchlistsClient(subscriptionID string, credential azcore.TokenCredentia
 // header.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - watchlistAlias - Watchlist Alias
@@ -98,7 +98,7 @@ func (client *WatchlistsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, watchlist)
@@ -119,7 +119,7 @@ func (client *WatchlistsClient) createOrUpdateHandleResponse(resp *http.Response
 // Delete - Delete a watchlist.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - watchlistAlias - Watchlist Alias
@@ -163,7 +163,7 @@ func (client *WatchlistsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,7 +181,7 @@ func (client *WatchlistsClient) deleteHandleResponse(resp *http.Response) (Watch
 // Get - Gets a watchlist, without its watchlist items.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - watchlistAlias - Watchlist Alias
@@ -225,7 +225,7 @@ func (client *WatchlistsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -242,7 +242,7 @@ func (client *WatchlistsClient) getHandleResponse(resp *http.Response) (Watchlis
 
 // NewListPager - Gets all watchlists, without watchlist items.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - WatchlistsClientListOptions contains the optional parameters for the WatchlistsClient.NewListPager method.
@@ -294,7 +294,7 @@ func (client *WatchlistsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}

@@ -325,26 +325,6 @@ type EntityRelationsClientGetRelationResponse struct {
 	Relation
 }
 
-// FileImportsClientCreateResponse contains the response from method FileImportsClient.Create.
-type FileImportsClientCreateResponse struct {
-	FileImport
-}
-
-// FileImportsClientDeleteResponse contains the response from method FileImportsClient.BeginDelete.
-type FileImportsClientDeleteResponse struct {
-	FileImport
-}
-
-// FileImportsClientGetResponse contains the response from method FileImportsClient.Get.
-type FileImportsClientGetResponse struct {
-	FileImport
-}
-
-// FileImportsClientListResponse contains the response from method FileImportsClient.NewListPager.
-type FileImportsClientListResponse struct {
-	FileImportList
-}
-
 // IPGeodataClientGetResponse contains the response from method IPGeodataClient.Get.
 type IPGeodataClientGetResponse struct {
 	EnrichmentIPGeodata

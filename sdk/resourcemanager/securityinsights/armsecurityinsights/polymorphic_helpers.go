@@ -154,12 +154,8 @@ func unmarshalAutomationRuleConditionClassification(rawMsg json.RawMessage) (Aut
 	}
 	var b AutomationRuleConditionClassification
 	switch m["conditionType"] {
-	case string(ConditionTypeBoolean):
-		b = &BooleanConditionProperties{}
 	case string(ConditionTypeProperty):
 		b = &PropertyConditionProperties{}
-	case string(ConditionTypePropertyArray):
-		b = &PropertyArrayConditionProperties{}
 	case string(ConditionTypePropertyArrayChanged):
 		b = &PropertyArrayChangedConditionProperties{}
 	case string(ConditionTypePropertyChanged):
@@ -302,8 +298,6 @@ func unmarshalEntityClassification(rawMsg json.RawMessage) (EntityClassification
 		b = &MailboxEntity{}
 	case string(EntityKindMalware):
 		b = &MalwareEntity{}
-	case string(EntityKindNic):
-		b = &NicEntity{}
 	case string(EntityKindProcess):
 		b = &ProcessEntity{}
 	case string(EntityKindRegistryKey):

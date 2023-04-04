@@ -1,5 +1,60 @@
 # Release History
 
+## 2.0.0-beta.4 (2023-04-07)
+### Breaking Changes
+
+- Const `AutomationRulePropertyConditionSupportedPropertyAlertAnalyticRuleIDs`, `AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsKey`, `AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsValue`, `AutomationRulePropertyConditionSupportedPropertyIncidentUpdatedBySource` from type alias `AutomationRulePropertyConditionSupportedProperty` has been removed
+- Const `ConditionTypeBoolean`, `ConditionTypePropertyArray` from type alias `ConditionType` has been removed
+- Const `EntityKindNic` from type alias `EntityKind` has been removed
+- Const `EntityTypeNic` from type alias `EntityType` has been removed
+- Const `TriggersOnAlerts` from type alias `TriggersOn` has been removed
+- Type alias `AutomationRuleBooleanConditionSupportedOperator` has been removed
+- Type alias `AutomationRulePropertyArrayConditionSupportedArrayConditionType` has been removed
+- Type alias `AutomationRulePropertyArrayConditionSupportedArrayType` has been removed
+- Type alias `DeleteStatus` has been removed
+- Type alias `DeviceImportance` has been removed
+- Type alias `FileFormat` has been removed
+- Type alias `FileImportContentType` has been removed
+- Type alias `FileImportState` has been removed
+- Type alias `IngestionMode` has been removed
+- Function `*BooleanConditionProperties.GetAutomationRuleCondition` has been removed
+- Function `*ClientFactory.NewFileImportsClient` has been removed
+- Function `NewFileImportsClient` has been removed
+- Function `*FileImportsClient.Create` has been removed
+- Function `*FileImportsClient.BeginDelete` has been removed
+- Function `*FileImportsClient.Get` has been removed
+- Function `*FileImportsClient.NewListPager` has been removed
+- Function `*PropertyArrayConditionProperties.GetAutomationRuleCondition` has been removed
+- Function `*NicEntity.GetEntity` has been removed
+- Struct `AutomationRuleBooleanCondition` has been removed
+- Struct `AutomationRulePropertyArrayValuesCondition` has been removed
+- Struct `BooleanConditionProperties` has been removed
+- Struct `FileImport` has been removed
+- Struct `FileImportList` has been removed
+- Struct `FileImportProperties` has been removed
+- Struct `FileMetadata` has been removed
+- Struct `NicEntity` has been removed
+- Struct `NicEntityProperties` has been removed
+- Struct `PropertyArrayConditionProperties` has been removed
+- Struct `ValidationError` has been removed
+- Field `DataCollectionEndpoint` of struct `DataConnectorConnectBody` has been removed
+- Field `DataCollectionRuleImmutableID` of struct `DataConnectorConnectBody` has been removed
+- Field `OutputStream` of struct `DataConnectorConnectBody` has been removed
+- Field `DeviceSubType` of struct `IoTDeviceEntityProperties` has been removed
+- Field `Importance` of struct `IoTDeviceEntityProperties` has been removed
+- Field `IsAuthorized` of struct `IoTDeviceEntityProperties` has been removed
+- Field `IsProgramming` of struct `IoTDeviceEntityProperties` has been removed
+- Field `IsScanner` of struct `IoTDeviceEntityProperties` has been removed
+- Field `NicEntityIDs` of struct `IoTDeviceEntityProperties` has been removed
+- Field `Owners` of struct `IoTDeviceEntityProperties` has been removed
+- Field `PurdueLayer` of struct `IoTDeviceEntityProperties` has been removed
+- Field `Sensor` of struct `IoTDeviceEntityProperties` has been removed
+- Field `Site` of struct `IoTDeviceEntityProperties` has been removed
+- Field `Zone` of struct `IoTDeviceEntityProperties` has been removed
+- Field `EventGroupingSettings` of struct `NrtAlertRuleProperties` has been removed
+- Field `EventGroupingSettings` of struct `NrtAlertRuleTemplateProperties` has been removed
+
+
 ## 2.0.0-beta.3 (2023-03-31)
 ### Features Added
 

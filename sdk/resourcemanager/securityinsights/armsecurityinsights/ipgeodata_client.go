@@ -47,7 +47,7 @@ func NewIPGeodataClient(subscriptionID string, credential azcore.TokenCredential
 // Get - Get geodata for a single IP address
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipAddress - IP address (v4 or v6) to be enriched
 //   - options - IPGeodataClientGetOptions contains the optional parameters for the IPGeodataClient.Get method.
@@ -82,7 +82,7 @@ func (client *IPGeodataClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	reqQP.Set("ipAddress", ipAddress)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

@@ -47,7 +47,7 @@ func NewDataConnectorsCheckRequirementsClient(subscriptionID string, credential 
 // Post - Get requirements state for a data connector type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - dataConnectorsCheckRequirements - The parameters for requirements check message
@@ -88,7 +88,7 @@ func (client *DataConnectorsCheckRequirementsClient) postCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dataConnectorsCheckRequirements)

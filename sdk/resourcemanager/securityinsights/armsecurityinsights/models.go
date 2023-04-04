@@ -959,16 +959,10 @@ type AutomationRuleAction struct {
 // GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleAction.
 func (a *AutomationRuleAction) GetAutomationRuleAction() *AutomationRuleAction { return a }
 
-type AutomationRuleBooleanCondition struct {
-	InnerConditions []AutomationRuleConditionClassification          `json:"innerConditions,omitempty"`
-	Operator        *AutomationRuleBooleanConditionSupportedOperator `json:"operator,omitempty"`
-}
-
 // AutomationRuleConditionClassification provides polymorphic access to related types.
 // Call the interface's GetAutomationRuleCondition() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AutomationRuleCondition, *BooleanConditionProperties, *PropertyArrayChangedConditionProperties, *PropertyArrayConditionProperties,
-// - *PropertyChangedConditionProperties, *PropertyConditionProperties
+// - *AutomationRuleCondition, *PropertyArrayChangedConditionProperties, *PropertyChangedConditionProperties, *PropertyConditionProperties
 type AutomationRuleConditionClassification interface {
 	// GetAutomationRuleCondition returns the AutomationRuleCondition content of the underlying type.
 	GetAutomationRuleCondition() *AutomationRuleCondition
@@ -1031,12 +1025,6 @@ type AutomationRuleProperties struct {
 type AutomationRulePropertyArrayChangedValuesCondition struct {
 	ArrayType  *AutomationRulePropertyArrayChangedConditionSupportedArrayType  `json:"arrayType,omitempty"`
 	ChangeType *AutomationRulePropertyArrayChangedConditionSupportedChangeType `json:"changeType,omitempty"`
-}
-
-type AutomationRulePropertyArrayValuesCondition struct {
-	ArrayConditionType *AutomationRulePropertyArrayConditionSupportedArrayConditionType `json:"arrayConditionType,omitempty"`
-	ArrayType          *AutomationRulePropertyArrayConditionSupportedArrayType          `json:"arrayType,omitempty"`
-	ItemConditions     []AutomationRuleConditionClassification                          `json:"itemConditions,omitempty"`
 }
 
 type AutomationRulePropertyValuesChangedCondition struct {
@@ -1539,20 +1527,6 @@ type BookmarksClientGetOptions struct {
 // BookmarksClientListOptions contains the optional parameters for the BookmarksClient.NewListPager method.
 type BookmarksClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// BooleanConditionProperties - Describes an automation rule condition that applies a boolean operator (e.g AND, OR) to conditions
-type BooleanConditionProperties struct {
-	// REQUIRED
-	ConditionType       *ConditionType                  `json:"conditionType,omitempty"`
-	ConditionProperties *AutomationRuleBooleanCondition `json:"conditionProperties,omitempty"`
-}
-
-// GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type BooleanConditionProperties.
-func (b *BooleanConditionProperties) GetAutomationRuleCondition() *AutomationRuleCondition {
-	return &AutomationRuleCondition{
-		ConditionType: b.ConditionType,
-	}
 }
 
 // ClientInfo - Information on the client (user or application) that made some action
@@ -2085,18 +2059,8 @@ type DataConnectorConnectBody struct {
 	// The client secret of the OAuth 2.0 application.
 	ClientSecret *string `json:"clientSecret,omitempty"`
 
-	// Used in v2 logs connector. Represents the data collection ingestion endpoint in log analytics.
-	DataCollectionEndpoint *string `json:"dataCollectionEndpoint,omitempty"`
-
-	// Used in v2 logs connector. The data collection rule immutable id, the rule defines the transformation and data destination.
-	DataCollectionRuleImmutableID *string `json:"dataCollectionRuleImmutableId,omitempty"`
-
 	// The authentication kind used to poll the data
 	Kind *ConnectAuthKind `json:"kind,omitempty"`
-
-	// Used in v2 logs connector. The stream we are sending the data to, this is the name of the streamDeclarations defined in
-	// the DCR.
-	OutputStream *string `json:"outputStream,omitempty"`
 
 	// The user password in the audit log server.
 	Password                     *string `json:"password,omitempty"`
@@ -2518,7 +2482,7 @@ type EntitiesRelationsClientListOptions struct {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AccountEntity, *AzureResourceEntity, *CloudApplicationEntity, *DNSEntity, *Entity, *FileEntity, *FileHashEntity, *HostEntity,
 // - *HuntingBookmark, *IPEntity, *IoTDeviceEntity, *MailClusterEntity, *MailMessageEntity, *MailboxEntity, *MalwareEntity,
-// - *NicEntity, *ProcessEntity, *RegistryKeyEntity, *RegistryValueEntity, *SecurityAlert, *SecurityGroupEntity, *SubmissionMailEntity,
+// - *ProcessEntity, *RegistryKeyEntity, *RegistryValueEntity, *SecurityAlert, *SecurityGroupEntity, *SubmissionMailEntity,
 // - *URLEntity
 type EntityClassification interface {
 	// GetEntity returns the Entity content of the underlying type.
@@ -3130,123 +3094,6 @@ type FileHashEntityProperties struct {
 
 	// READ-ONLY; The file hash value.
 	HashValue *string `json:"hashValue,omitempty" azure:"ro"`
-}
-
-// FileImport - Represents a file import in Azure Security Insights.
-type FileImport struct {
-	// File import properties
-	Properties *FileImportProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// FileImportList - List all the file imports.
-type FileImportList struct {
-	// REQUIRED; Array of file imports.
-	Value []*FileImport `json:"value,omitempty"`
-
-	// READ-ONLY; URL to fetch the next set of file imports.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// FileImportProperties - Describes the FileImport's properties
-type FileImportProperties struct {
-	// REQUIRED; The content type of this file.
-	ContentType *FileImportContentType `json:"contentType,omitempty"`
-
-	// REQUIRED; Represents the imported file.
-	ImportFile *FileMetadata `json:"importFile,omitempty"`
-
-	// REQUIRED; Describes how to ingest the records in the file.
-	IngestionMode *IngestionMode `json:"ingestionMode,omitempty"`
-
-	// REQUIRED; The source for the data in the file.
-	Source *string `json:"source,omitempty"`
-
-	// READ-ONLY; The time the file was imported.
-	CreatedTimeUTC *time.Time `json:"createdTimeUTC,omitempty" azure:"ro"`
-
-	// READ-ONLY; Represents the error file (if the import was ingested with errors or failed the validation).
-	ErrorFile *FileMetadata `json:"errorFile,omitempty" azure:"ro"`
-
-	// READ-ONLY; An ordered list of some of the errors that were encountered during validation.
-	ErrorsPreview []*ValidationError `json:"errorsPreview,omitempty" azure:"ro"`
-
-	// READ-ONLY; The time the files associated with this import are deleted from the storage account.
-	FilesValidUntilTimeUTC *time.Time `json:"filesValidUntilTimeUTC,omitempty" azure:"ro"`
-
-	// READ-ONLY; The time the file import record is soft deleted from the database and history.
-	ImportValidUntilTimeUTC *time.Time `json:"importValidUntilTimeUTC,omitempty" azure:"ro"`
-
-	// READ-ONLY; The number of records that have been successfully ingested.
-	IngestedRecordCount *int32 `json:"ingestedRecordCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The state of the file import.
-	State *FileImportState `json:"state,omitempty" azure:"ro"`
-
-	// READ-ONLY; The number of records in the file.
-	TotalRecordCount *int32 `json:"totalRecordCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The number of records that have passed validation.
-	ValidRecordCount *int32 `json:"validRecordCount,omitempty" azure:"ro"`
-}
-
-// FileImportsClientBeginDeleteOptions contains the optional parameters for the FileImportsClient.BeginDelete method.
-type FileImportsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// FileImportsClientCreateOptions contains the optional parameters for the FileImportsClient.Create method.
-type FileImportsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FileImportsClientGetOptions contains the optional parameters for the FileImportsClient.Get method.
-type FileImportsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FileImportsClientListOptions contains the optional parameters for the FileImportsClient.NewListPager method.
-type FileImportsClientListOptions struct {
-	// Filters the results, based on a Boolean condition. Optional.
-	Filter *string
-	// Sorts the results. Optional.
-	Orderby *string
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skiptoken parameter that
-	// specifies a starting point to use for subsequent calls. Optional.
-	SkipToken *string
-	// Returns only the first n results. Optional.
-	Top *int32
-}
-
-// FileMetadata - Represents a file.
-type FileMetadata struct {
-	// The format of the file
-	FileFormat *FileFormat `json:"fileFormat,omitempty"`
-
-	// The name of the file.
-	FileName *string `json:"fileName,omitempty"`
-
-	// The size of the file.
-	FileSize *int32 `json:"fileSize,omitempty"`
-
-	// READ-ONLY; Indicates whether the file was deleted from the storage account.
-	DeleteStatus *DeleteStatus `json:"deleteStatus,omitempty" azure:"ro"`
-
-	// READ-ONLY; A URI with a valid SAS token to allow uploading / downloading the file.
-	FileContentURI *string `json:"fileContentUri,omitempty" azure:"ro"`
 }
 
 // FusionAlertRule - Represents Fusion alert rule.
@@ -4400,9 +4247,6 @@ func (i *IoTDeviceEntity) GetEntity() *Entity {
 
 // IoTDeviceEntityProperties - IoTDevice entity property bag.
 type IoTDeviceEntityProperties struct {
-	// Device importance, determines if the device classified as 'crown jewel'
-	Importance *DeviceImportance `json:"importance,omitempty"`
-
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
 	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
 
@@ -4411,9 +4255,6 @@ type IoTDeviceEntityProperties struct {
 
 	// READ-ONLY; The friendly name of the device
 	DeviceName *string `json:"deviceName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The subType of the device ('PLC', 'HMI', 'EWS', etc.)
-	DeviceSubType *string `json:"deviceSubType,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the device
 	DeviceType *string `json:"deviceType,omitempty" azure:"ro"`
@@ -4440,44 +4281,20 @@ type IoTDeviceEntityProperties struct {
 	// READ-ONLY; The ID of the security agent running on the device
 	IotSecurityAgentID *string `json:"iotSecurityAgentId,omitempty" azure:"ro"`
 
-	// READ-ONLY; Determines whether the device classified as authorized device
-	IsAuthorized *bool `json:"isAuthorized,omitempty" azure:"ro"`
-
-	// READ-ONLY; Determines whether the device classified as programming device
-	IsProgramming *bool `json:"isProgramming,omitempty" azure:"ro"`
-
-	// READ-ONLY; Is the device classified as a scanner device
-	IsScanner *bool `json:"isScanner,omitempty" azure:"ro"`
-
 	// READ-ONLY; The MAC address of the device
 	MacAddress *string `json:"macAddress,omitempty" azure:"ro"`
 
 	// READ-ONLY; The model of the device
 	Model *string `json:"model,omitempty" azure:"ro"`
 
-	// READ-ONLY; A list of Nic entity ids of the IoTDevice entity.
-	NicEntityIDs []*string `json:"nicEntityIds,omitempty" azure:"ro"`
-
 	// READ-ONLY; The operating system of the device
 	OperatingSystem *string `json:"operatingSystem,omitempty" azure:"ro"`
-
-	// READ-ONLY; A list of owners of the IoTDevice entity.
-	Owners []*string `json:"owners,omitempty" azure:"ro"`
 
 	// READ-ONLY; A list of protocols of the IoTDevice entity.
 	Protocols []*string `json:"protocols,omitempty" azure:"ro"`
 
-	// READ-ONLY; The Purdue Layer of the device
-	PurdueLayer *string `json:"purdueLayer,omitempty" azure:"ro"`
-
-	// READ-ONLY; The sensor the device is monitored by
-	Sensor *string `json:"sensor,omitempty" azure:"ro"`
-
 	// READ-ONLY; The serial number of the device
 	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
-
-	// READ-ONLY; The site of the device
-	Site *string `json:"site,omitempty" azure:"ro"`
 
 	// READ-ONLY; The source of the device
 	Source *string `json:"source,omitempty" azure:"ro"`
@@ -4487,9 +4304,6 @@ type IoTDeviceEntityProperties struct {
 
 	// READ-ONLY; The vendor of the device
 	Vendor *string `json:"vendor,omitempty" azure:"ro"`
-
-	// READ-ONLY; The zone location of the device within a site
-	Zone *string `json:"zone,omitempty" azure:"ro"`
 }
 
 // MCASCheckRequirements - Represents MCAS (Microsoft Cloud App Security) requirements check request.
@@ -5235,7 +5049,6 @@ type MalwareEntityProperties struct {
 }
 
 type ManualTriggerRequestBody struct {
-	// REQUIRED
 	LogicAppsResourceID *string `json:"logicAppsResourceId,omitempty"`
 	TenantID            *string `json:"tenantId,omitempty"`
 }
@@ -5681,57 +5494,6 @@ func (m *MtpCheckRequirements) GetDataConnectorsCheckRequirements() *DataConnect
 	}
 }
 
-// NicEntity - Represents an network interface entity.
-type NicEntity struct {
-	// REQUIRED; The kind of the entity.
-	Kind *EntityKind `json:"kind,omitempty"`
-
-	// Network interface entity properties
-	Properties *NicEntityProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetEntity implements the EntityClassification interface for type NicEntity.
-func (n *NicEntity) GetEntity() *Entity {
-	return &Entity{
-		Kind:       n.Kind,
-		ID:         n.ID,
-		Name:       n.Name,
-		Type:       n.Type,
-		SystemData: n.SystemData,
-	}
-}
-
-// NicEntityProperties - Nic entity property bag.
-type NicEntityProperties struct {
-	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
-	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The IP entity id of this network interface
-	IPAddressEntityID *string `json:"ipAddressEntityId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The MAC address of this network interface
-	MacAddress *string `json:"macAddress,omitempty" azure:"ro"`
-
-	// READ-ONLY; A list of VLANs of the network interface entity.
-	Vlans []*string `json:"vlans,omitempty" azure:"ro"`
-}
-
 // NrtAlertRule - Represents NRT alert rule.
 type NrtAlertRule struct {
 	// REQUIRED; The kind of the alert rule
@@ -5803,9 +5565,6 @@ type NrtAlertRuleProperties struct {
 	// Array of the entity mappings of the alert rule
 	EntityMappings []*EntityMapping `json:"entityMappings,omitempty"`
 
-	// The event grouping settings.
-	EventGroupingSettings *EventGroupingSettings `json:"eventGroupingSettings,omitempty"`
-
 	// The settings of the incidents that created from alerts triggered by this analytics rule
 	IncidentConfiguration *IncidentConfiguration `json:"incidentConfiguration,omitempty"`
 
@@ -5873,9 +5632,6 @@ type NrtAlertRuleTemplateProperties struct {
 
 	// Array of the entity mappings of the alert rule
 	EntityMappings []*EntityMapping `json:"entityMappings,omitempty"`
-
-	// The event grouping settings.
-	EventGroupingSettings *EventGroupingSettings `json:"eventGroupingSettings,omitempty"`
 
 	// The query that creates alerts for this rule.
 	Query *string `json:"query,omitempty"`
@@ -6508,20 +6264,6 @@ type PropertyArrayChangedConditionProperties struct {
 
 // GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type PropertyArrayChangedConditionProperties.
 func (p *PropertyArrayChangedConditionProperties) GetAutomationRuleCondition() *AutomationRuleCondition {
-	return &AutomationRuleCondition{
-		ConditionType: p.ConditionType,
-	}
-}
-
-// PropertyArrayConditionProperties - Describes an automation rule condition that evaluates an array property's value
-type PropertyArrayConditionProperties struct {
-	// REQUIRED
-	ConditionType       *ConditionType                              `json:"conditionType,omitempty"`
-	ConditionProperties *AutomationRulePropertyArrayValuesCondition `json:"conditionProperties,omitempty"`
-}
-
-// GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type PropertyArrayConditionProperties.
-func (p *PropertyArrayConditionProperties) GetAutomationRuleCondition() *AutomationRuleCondition {
 	return &AutomationRuleCondition{
 		ConditionType: p.ConditionType,
 	}
@@ -8420,15 +8162,6 @@ type UserInfo struct {
 
 	// READ-ONLY; The name of the user.
 	Name *string `json:"name,omitempty" azure:"ro"`
-}
-
-// ValidationError - Describes an error encountered in the file during validation.
-type ValidationError struct {
-	// The number of the record that has the error.
-	RecordIndex *int32 `json:"recordIndex,omitempty"`
-
-	// READ-ONLY; A list of descriptions of the error.
-	ErrorMessages []*string `json:"errorMessages,omitempty" azure:"ro"`
 }
 
 // Watchlist - Represents a Watchlist in Azure Security Insights.

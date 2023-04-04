@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/GetAllAlertRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/GetAllAlertRules.json
 func ExampleAlertRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +406,7 @@ func ExampleAlertRulesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/GetFusionAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/GetFusionAlertRule.json
 func ExampleAlertRulesClient_Get_getAFusionAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -704,7 +704,7 @@ func ExampleAlertRulesClient_Get_getAFusionAlertRule() {
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/GetMicrosoftSecurityIncidentCreationAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/GetMicrosoftSecurityIncidentCreationAlertRule.json
 func ExampleAlertRulesClient_Get_getAMicrosoftSecurityIncidentCreationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -739,7 +739,7 @@ func ExampleAlertRulesClient_Get_getAMicrosoftSecurityIncidentCreationRule() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/GetScheduledAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/GetScheduledAlertRule.json
 func ExampleAlertRulesClient_Get_getAScheduledAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -832,7 +832,7 @@ func ExampleAlertRulesClient_Get_getAScheduledAlertRule() {
 	// 						                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/GetNrtAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/GetNrtAlertRule.json
 func ExampleAlertRulesClient_Get_getAnNrtAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -861,9 +861,6 @@ func ExampleAlertRulesClient_Get_getAnNrtAlertRule() {
 	// 			Description: to.Ptr(""),
 	// 			DisplayName: to.Ptr("Rule2"),
 	// 			Enabled: to.Ptr(true),
-	// 			EventGroupingSettings: &armsecurityinsights.EventGroupingSettings{
-	// 				AggregationKind: to.Ptr(armsecurityinsights.EventGroupingAggregationKindAlertPerResult),
-	// 			},
 	// 			IncidentConfiguration: &armsecurityinsights.IncidentConfiguration{
 	// 				CreateIncident: to.Ptr(true),
 	// 				GroupingConfiguration: &armsecurityinsights.GroupingConfiguration{
@@ -892,7 +889,7 @@ func ExampleAlertRulesClient_Get_getAnNrtAlertRule() {
 	// 				                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
 func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRuleWithScenarioExclusionPattern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1414,7 +1411,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRuleWith
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateFusionAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/CreateFusionAlertRule.json
 func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1936,7 +1933,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRule() {
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateMicrosoftSecurityIncidentCreationAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/CreateMicrosoftSecurityIncidentCreationAlertRule.json
 func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAMicrosoftSecurityIncidentCreationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1979,7 +1976,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAMicrosoftSecurityIn
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateNrtAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/CreateNrtAlertRule.json
 func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesANrtAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1997,9 +1994,6 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesANrtAlertRule() {
 			Description: to.Ptr(""),
 			DisplayName: to.Ptr("Rule2"),
 			Enabled:     to.Ptr(true),
-			EventGroupingSettings: &armsecurityinsights.EventGroupingSettings{
-				AggregationKind: to.Ptr(armsecurityinsights.EventGroupingAggregationKindAlertPerResult),
-			},
 			IncidentConfiguration: &armsecurityinsights.IncidentConfiguration{
 				CreateIncident: to.Ptr(true),
 				GroupingConfiguration: &armsecurityinsights.GroupingConfiguration{
@@ -2041,9 +2035,6 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesANrtAlertRule() {
 	// 			Description: to.Ptr(""),
 	// 			DisplayName: to.Ptr("Rule2"),
 	// 			Enabled: to.Ptr(true),
-	// 			EventGroupingSettings: &armsecurityinsights.EventGroupingSettings{
-	// 				AggregationKind: to.Ptr(armsecurityinsights.EventGroupingAggregationKindAlertPerResult),
-	// 			},
 	// 			IncidentConfiguration: &armsecurityinsights.IncidentConfiguration{
 	// 				CreateIncident: to.Ptr(true),
 	// 				GroupingConfiguration: &armsecurityinsights.GroupingConfiguration{
@@ -2072,7 +2063,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesANrtAlertRule() {
 	// 				                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateScheduledAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/CreateScheduledAlertRule.json
 func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAScheduledAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2231,7 +2222,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAScheduledAlertRule(
 	// 						                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/DeleteAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/DeleteAlertRule.json
 func ExampleAlertRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

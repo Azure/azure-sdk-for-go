@@ -118,11 +118,6 @@ func (c *ClientFactory) NewEntityQueryTemplatesClient() *EntityQueryTemplatesCli
 	return subClient
 }
 
-func (c *ClientFactory) NewFileImportsClient() *FileImportsClient {
-	subClient, _ := NewFileImportsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewIncidentCommentsClient() *IncidentCommentsClient {
 	subClient, _ := NewIncidentCommentsClient(c.subscriptionID, c.credential, c.options)
 	return subClient

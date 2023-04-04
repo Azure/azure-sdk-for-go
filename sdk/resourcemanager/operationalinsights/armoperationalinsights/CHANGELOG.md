@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.0-beta.4 (2023-04-07)
+### Breaking Changes
+
+- Const `DataSourceTypeIngestion` from type alias `DataSourceType` has been removed
+
+
 ## 2.0.0-beta.3 (2023-03-27)
 ### Features Added
 

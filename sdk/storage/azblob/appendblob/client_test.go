@@ -11,6 +11,8 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -405,6 +407,78 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 	_, err = destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendBlockURLOptions)
 	_require.NotNil(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// Getting AAD Authentication
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source and destination blobs
+	srcABClient := testcommon.CreateNewAppendBlob(context.Background(), _require, "src "+testName, containerClient)
+	destABClient := testcommon.CreateNewAppendBlob(context.Background(), _require, "dest"+testName, containerClient)
+
+	// Upload some data to source
+	contentSize := 4 * 1024 // 4KB
+	r, sourceData := testcommon.GetRandomDataAndReader(contentSize)
+	_, err = srcABClient.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
+	_require.Nil(err)
+
+	// Getting token
+	token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
+	_require.NoError(err)
+
+	options := appendblob.AppendBlockFromURLOptions{
+		CopySourceAuthorization: to.Ptr("Bearer " + token.Token),
+	}
+
+	pbResp, err := destABClient.AppendBlockFromURL(context.Background(), srcABClient.URL(), &options)
+	_require.NoError(err)
+	_require.NotNil(pbResp)
+
+	// Download data from destination
+	destBuffer := make([]byte, 4*1024)
+	_, err = destABClient.DownloadBuffer(context.Background(), destBuffer, nil)
+	_require.Nil(err)
+	_require.Equal(destBuffer, sourceData)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuthNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source and destination blobs
+	srcABClient := testcommon.CreateNewAppendBlob(context.Background(), _require, "src "+testName, containerClient)
+	destABClient := testcommon.CreateNewAppendBlob(context.Background(), _require, "dest"+testName, containerClient)
+
+	// Upload some data to source
+	contentSize := 4 * 1024 // 4KB
+	r, _ := testcommon.GetRandomDataAndReader(contentSize)
+	_, err = srcABClient.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
+	_require.Nil(err)
+
+	options := appendblob.AppendBlockFromURLOptions{
+		CopySourceAuthorization: to.Ptr("Bearer XXXXXXXXXXXXXXXXXXXXX"),
+	}
+
+	_, err = destABClient.AppendBlockFromURL(context.Background(), srcABClient.URL(), &options)
+	_require.Error(err)
+	_require.True(bloberror.HasCode(err, bloberror.CannotVerifyCopySource))
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendMetadataNonEmpty() {

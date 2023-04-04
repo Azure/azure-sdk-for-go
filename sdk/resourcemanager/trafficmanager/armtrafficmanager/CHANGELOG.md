@@ -1,19 +1,20 @@
 # Release History
 
-## 1.1.0-beta.2 (2023-03-31)
+## 2.0.0 (2023-04-07)
+### Breaking Changes
+
+- Struct `CloudError` has been removed
+- Struct `CloudErrorBody` has been removed
+
 ### Features Added
 
-- New struct `ClientFactory` which is a client factory used to create any client in this module
-
-
-## 1.1.0-beta.1 (2022-10-31)
-### Features Added
-
-- New const `AlwaysServeDisabled`
-- New const `AlwaysServeEnabled`
-- New type alias `AlwaysServe`
-- New function `PossibleAlwaysServeValues() []AlwaysServe`
-- New field `AlwaysServe` in struct `EndpointProperties`
+- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
+- New function `*ClientFactory.NewEndpointsClient() *EndpointsClient`
+- New function `*ClientFactory.NewGeographicHierarchiesClient() *GeographicHierarchiesClient`
+- New function `*ClientFactory.NewHeatMapClient() *HeatMapClient`
+- New function `*ClientFactory.NewProfilesClient() *ProfilesClient`
+- New function `*ClientFactory.NewUserMetricsKeysClient() *UserMetricsKeysClient`
+- New struct `ClientFactory`
 
 
 ## 1.0.0 (2022-05-17)

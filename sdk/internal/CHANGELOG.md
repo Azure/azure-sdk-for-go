@@ -1,14 +1,10 @@
 # Release History
 
-## 1.2.1 (Unreleased)
+## 1.3.0 (2023-04-04)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Added package `poller` which exports various LRO helpers to aid in the creation of custom `PollerHandler[T]`.
+* Added package `exported` which contains payload helpers needed by the `poller` package and exported in `azcore`.
 
 ## 1.2.0 (2023-03-02)
 

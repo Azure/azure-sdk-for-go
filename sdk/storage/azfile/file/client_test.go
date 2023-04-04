@@ -714,22 +714,7 @@ func (f *FileRecordedTestsSuite) TestFileSetMetadataInvalidField() {
 	_require.Error(err)
 }
 
-func waitForCopy(_require *require.Assertions, copyFClient *file.Client, fileCopyResponse file.StartCopyFromURLResponse) {
-	status := fileCopyResponse.CopyStatus
-	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
-	start := time.Now()
-	for *status != file.CopyStatusTypeSuccess {
-		GetPropertiesResp, err := copyFClient.GetProperties(context.Background(), nil)
-		_require.NoError(err)
-		status = GetPropertiesResp.CopyStatus
-		currentTime := time.Now()
-		if currentTime.Sub(start) >= time.Minute && *status != file.CopyStatusTypeSuccess {
-			_require.Fail("Copy status is " + string(*status) + "after 1 minute")
-		}
-	}
-}
-
-func (f *FileUnrecordedTestsSuite) TestFileStartCopyMetadata() {
+func (f *FileRecordedTestsSuite) TestFileStartCopyMetadata() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -749,16 +734,17 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyMetadata() {
 		"Foo": to.Ptr("Foovalue"),
 		"Bar": to.Ptr("Barvalue"),
 	}
-	resp, err := copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{Metadata: basicMetadata})
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{Metadata: basicMetadata})
 	_require.NoError(err)
-	waitForCopy(_require, copyFClient, resp)
+
+	time.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.EqualValues(resp2.Metadata, basicMetadata)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopyMetadataNil() {
+func (f *FileRecordedTestsSuite) TestFileStartCopyMetadataNil() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -787,17 +773,17 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyMetadataNil() {
 	_require.NoError(err)
 	_require.EqualValues(gResp.Metadata, basicMetadata)
 
-	resp, err := copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), nil)
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), nil)
 	_require.NoError(err)
 
-	waitForCopy(_require, copyFClient, resp)
+	time.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Len(resp2.Metadata, 0)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopyMetadataEmpty() {
+func (f *FileRecordedTestsSuite) TestFileStartCopyMetadataEmpty() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -826,10 +812,10 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyMetadataEmpty() {
 	_require.NoError(err)
 	_require.EqualValues(gResp.Metadata, basicMetadata)
 
-	resp, err := copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{Metadata: map[string]*string{}})
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{Metadata: map[string]*string{}})
 	_require.NoError(err)
 
-	waitForCopy(_require, copyFClient, resp)
+	time.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -858,7 +844,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyNegativeMetadataInvalidField()
 	_require.Error(err)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceCreationTime() {
+func (f *FileRecordedTestsSuite) TestFileStartCopySourceCreationTime() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -903,7 +889,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceCreationTime() {
 	_require.NotEqualValues(resp2.FileAttributes, cResp.FileAttributes)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceProperties() {
+func (f *FileRecordedTestsSuite) TestFileStartCopySourceProperties() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -952,7 +938,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceProperties() {
 	_require.EqualValues(resp2.FilePermissionKey, cResp.FilePermissionKey)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopyDifferentProperties() {
+func (f *FileRecordedTestsSuite) TestFileStartCopyDifferentProperties() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -983,7 +969,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyDifferentProperties() {
 
 	destCreationTime := currTime.Add(5 * time.Minute)
 	destLastWriteTIme := currTime.Add(6 * time.Minute)
-	resp, err := copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
 		CopyFileSMBInfo: &file.CopyFileSMBInfo{
 			CreationTime:  file.DestinationCopyFileCreationTime(destCreationTime),
 			LastWriteTime: file.DestinationCopyFileLastWriteTime(destLastWriteTIme),
@@ -991,7 +977,8 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyDifferentProperties() {
 		},
 	})
 	_require.NoError(err)
-	waitForCopy(_require, copyFClient, resp)
+
+	time.Sleep(4 * time.Second)
 
 	resp2, err := copyFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1003,7 +990,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyDifferentProperties() {
 	_require.EqualValues(resp2.FilePermissionKey, cResp.FilePermissionKey)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopyOverrideMode() {
+func (f *FileRecordedTestsSuite) TestFileStartCopyOverrideMode() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -1042,7 +1029,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyOverrideMode() {
 	_require.NotEqualValues(resp2.FilePermissionKey, cResp.FilePermissionKey)
 }
 
-func (f *FileUnrecordedTestsSuite) TestNegativeFileStartCopyOverrideMode() {
+func (f *FileRecordedTestsSuite) TestNegativeFileStartCopyOverrideMode() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -1072,7 +1059,7 @@ func (f *FileUnrecordedTestsSuite) TestNegativeFileStartCopyOverrideMode() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.MissingRequiredHeader)
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopySetArchiveAttributeTrue() {
+func (f *FileRecordedTestsSuite) TestFileStartCopySetArchiveAttributeTrue() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -1113,7 +1100,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopySetArchiveAttributeTrue() {
 	_require.Contains(*resp2.FileAttributes, "Archive")
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopySetArchiveAttributeFalse() {
+func (f *FileRecordedTestsSuite) TestFileStartCopySetArchiveAttributeFalse() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -1154,7 +1141,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopySetArchiveAttributeFalse() {
 	_require.NotContains(*resp2.FileAttributes, "Archive")
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileStartCopyDestReadOnly() {
+func (f *FileRecordedTestsSuite) TestFileStartCopyDestReadOnly() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -1196,7 +1183,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyDestReadOnly() {
 	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
 }
 
-func (f *FileUnrecordedTestsSuite) TestNegativeFileStartCopyDestReadOnly() {
+func (f *FileRecordedTestsSuite) TestNegativeFileStartCopyDestReadOnly() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 

@@ -333,6 +333,17 @@ func formatTime(c *SignedIdentifier) error {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// GetAccountInfoOptions provides set of options for Client.GetAccountInfo
+type GetAccountInfoOptions struct {
+	// placeholder for future options
+}
+
+func (o *GetAccountInfoOptions) format() *generated.ContainerClientGetAccountInfoOptions {
+	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // BatchDeleteOptions contains the optional parameters for the BatchBuilder.Delete method.
 type BatchDeleteOptions struct {
 	blob.DeleteOptions

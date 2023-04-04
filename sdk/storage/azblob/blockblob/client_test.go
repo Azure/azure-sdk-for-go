@@ -3900,6 +3900,25 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel()
 	_require.Equal(*(committed[1].Size), largeBlockSize)
 }
 
+func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
+	bAccInfo, err := bbClient.GetAccountInfo(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotZero(bAccInfo)
+}
+
 type fakeBlockBlob struct {
 	totalStaged int64
 }

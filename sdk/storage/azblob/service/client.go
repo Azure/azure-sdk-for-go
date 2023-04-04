@@ -167,6 +167,7 @@ func (s *Client) RestoreContainer(ctx context.Context, deletedContainerName stri
 }
 
 // GetAccountInfo provides account level information
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-account-information?tabs=shared-access-signatures.
 func (s *Client) GetAccountInfo(ctx context.Context, o *GetAccountInfoOptions) (GetAccountInfoResponse, error) {
 	getAccountInfoOptions := o.format()
 	resp, err := s.generated().GetAccountInfo(ctx, getAccountInfoOptions)

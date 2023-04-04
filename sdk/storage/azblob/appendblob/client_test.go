@@ -2962,3 +2962,23 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 		_require.Equal(testcommon.BasicBlobTagsMap[*blobTag.Key], *blobTag.Value)
 	}
 }
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendGetAccountInfo() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
+	bAccInfo, err := abClient.GetAccountInfo(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotZero(bAccInfo)
+}

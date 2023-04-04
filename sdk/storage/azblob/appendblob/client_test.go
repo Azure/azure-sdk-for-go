@@ -2963,7 +2963,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	}
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestGetAccountInfo() {
+func (s *AppendBlobRecordedTestsSuite) TestAppendGetAccountInfo() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

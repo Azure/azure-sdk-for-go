@@ -4635,7 +4635,7 @@ func (s *PageBlobRecordedTestsSuite) TestUndeletePageBlobSnapshot() {
 	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
 }
 
-func (s *PageBlobRecordedTestsSuite) TestGetAccountInfo() {
+func (s *PageBlobRecordedTestsSuite) TestPageGetAccountInfo() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

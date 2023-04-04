@@ -3610,7 +3610,7 @@ func (s *BlobUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 	_require.Equal(err, bloberror.MissingSharedKeyCredential)
 }
 
-func (s *BlobRecordedTestsSuite) TestGetAccountInfo() {
+func (s *BlobRecordedTestsSuite) TestBlobGetAccountInfo() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

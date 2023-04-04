@@ -97,7 +97,7 @@ type ContainerUnrecordedTestsSuite struct {
 //	_require.Equal(testURL.URL(), correctURL)
 //}
 
-func (s *ContainerRecordedTestsSuite) TestGetAccountInfo() {
+func (s *ContainerRecordedTestsSuite) TestContainerGetAccountInfo() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

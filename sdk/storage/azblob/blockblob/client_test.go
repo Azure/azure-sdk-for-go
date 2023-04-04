@@ -3900,7 +3900,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel()
 	_require.Equal(*(committed[1].Size), largeBlockSize)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestGetAccountInfo() {
+func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

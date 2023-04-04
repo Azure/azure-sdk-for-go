@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_ListBuildServices.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_ListBuildServices.json
 func ExampleBuildServiceClient_NewListBuildServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleBuildServiceClient_NewListBuildServicesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_GetBuildService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_GetBuildService.json
 func ExampleBuildServiceClient_GetBuildService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleBuildServiceClient_GetBuildService() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_ListBuilds.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_ListBuilds.json
 func ExampleBuildServiceClient_NewListBuildsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleBuildServiceClient_NewListBuildsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_GetBuild.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_GetBuild.json
 func ExampleBuildServiceClient_GetBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleBuildServiceClient_GetBuild() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_CreateOrUpdateBuild.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_CreateOrUpdateBuild.json
 func ExampleBuildServiceClient_CreateOrUpdateBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +267,7 @@ func ExampleBuildServiceClient_CreateOrUpdateBuild() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_ListBuildResults.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_ListBuildResults.json
 func ExampleBuildServiceClient_NewListBuildResultsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -309,43 +309,28 @@ func ExampleBuildServiceClient_NewListBuildResultsPager() {
 		// 				BuildStages: []*armappplatform.BuildStageProperties{
 		// 					{
 		// 						Name: to.Ptr("prepare"),
-		// 						ExitCode: to.Ptr("0"),
-		// 						Reason: to.Ptr("Completed"),
-		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateSucceeded),
+		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateRunning),
 		// 					},
 		// 					{
 		// 						Name: to.Ptr("detect"),
-		// 						ExitCode: to.Ptr("0"),
-		// 						Reason: to.Ptr("Completed"),
-		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateSucceeded),
+		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateNotStarted),
 		// 					},
 		// 					{
 		// 						Name: to.Ptr("analyze"),
-		// 						ExitCode: to.Ptr("0"),
-		// 						Reason: to.Ptr("Completed"),
-		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateSucceeded),
+		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateNotStarted),
 		// 					},
 		// 					{
 		// 						Name: to.Ptr("restore"),
-		// 						ExitCode: to.Ptr("0"),
-		// 						Reason: to.Ptr("Completed"),
-		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateSucceeded),
+		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateNotStarted),
 		// 					},
 		// 					{
 		// 						Name: to.Ptr("build"),
-		// 						ExitCode: to.Ptr("51"),
-		// 						Reason: to.Ptr("Error"),
-		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateFailed),
+		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateNotStarted),
 		// 					},
 		// 					{
 		// 						Name: to.Ptr("export"),
-		// 						ExitCode: to.Ptr("-1"),
 		// 						Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateNotStarted),
 		// 				}},
-		// 				Error: &armappplatform.Error{
-		// 					Code: to.Ptr("51"),
-		// 					Message: to.Ptr("Build failed in stage build with reason OOMKilled, please refer to https://aka.ms/buildexitcode"),
-		// 				},
 		// 				ProvisioningState: to.Ptr(armappplatform.BuildResultProvisioningStateSucceeded),
 		// 			},
 		// 	}},
@@ -353,7 +338,7 @@ func ExampleBuildServiceClient_NewListBuildResultsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_GetBuildResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_GetBuildResult.json
 func ExampleBuildServiceClient_GetBuildResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,49 +374,34 @@ func ExampleBuildServiceClient_GetBuildResult() {
 	// 		BuildStages: []*armappplatform.BuildStageProperties{
 	// 			{
 	// 				Name: to.Ptr("prepare"),
-	// 				ExitCode: to.Ptr("0"),
-	// 				Reason: to.Ptr("Completed"),
-	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateSucceeded),
+	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateRunning),
 	// 			},
 	// 			{
 	// 				Name: to.Ptr("detect"),
-	// 				ExitCode: to.Ptr("0"),
-	// 				Reason: to.Ptr("Completed"),
-	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateSucceeded),
+	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateNotStarted),
 	// 			},
 	// 			{
 	// 				Name: to.Ptr("analyze"),
-	// 				ExitCode: to.Ptr("0"),
-	// 				Reason: to.Ptr("Completed"),
-	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateSucceeded),
+	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateNotStarted),
 	// 			},
 	// 			{
 	// 				Name: to.Ptr("restore"),
-	// 				ExitCode: to.Ptr("0"),
-	// 				Reason: to.Ptr("Completed"),
-	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateSucceeded),
+	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateNotStarted),
 	// 			},
 	// 			{
 	// 				Name: to.Ptr("build"),
-	// 				ExitCode: to.Ptr("51"),
-	// 				Reason: to.Ptr("Error"),
-	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateFailed),
+	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateNotStarted),
 	// 			},
 	// 			{
 	// 				Name: to.Ptr("export"),
-	// 				ExitCode: to.Ptr("-1"),
 	// 				Status: to.Ptr(armappplatform.KPackBuildStageProvisioningStateNotStarted),
 	// 		}},
-	// 		Error: &armappplatform.Error{
-	// 			Code: to.Ptr("51"),
-	// 			Message: to.Ptr("Build failed in stage build with reason OOMKilled, please refer to https://aka.ms/buildexitcode"),
-	// 		},
 	// 		ProvisioningState: to.Ptr(armappplatform.BuildResultProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_GetBuildResultLog.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_GetBuildResultLog.json
 func ExampleBuildServiceClient_GetBuildResultLog() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +424,7 @@ func ExampleBuildServiceClient_GetBuildResultLog() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_GetResourceUploadUrl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_GetResourceUploadUrl.json
 func ExampleBuildServiceClient_GetResourceUploadURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +448,7 @@ func ExampleBuildServiceClient_GetResourceUploadURL() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_ListSupportedBuildpacks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_ListSupportedBuildpacks.json
 func ExampleBuildServiceClient_ListSupportedBuildpacks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -517,7 +487,7 @@ func ExampleBuildServiceClient_ListSupportedBuildpacks() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_GetSupportedBuildpack.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_GetSupportedBuildpack.json
 func ExampleBuildServiceClient_GetSupportedBuildpack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -553,7 +523,7 @@ func ExampleBuildServiceClient_GetSupportedBuildpack() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_ListSupportedStacks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_ListSupportedStacks.json
 func ExampleBuildServiceClient_ListSupportedStacks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -593,7 +563,7 @@ func ExampleBuildServiceClient_ListSupportedStacks() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/BuildService_GetSupportedStack.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildService_GetSupportedStack.json
 func ExampleBuildServiceClient_GetSupportedStack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

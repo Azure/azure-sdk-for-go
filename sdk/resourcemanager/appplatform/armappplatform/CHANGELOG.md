@@ -1,5 +1,111 @@
 # Release History
 
+## 1.1.0-beta.4 (2023-04-07)
+### Breaking Changes
+
+- Const `BindingTypeCACertificates` from type alias `BindingType` has been removed
+- Type alias `ApmType` has been removed
+- Type alias `ApplicationAcceleratorProvisioningState` has been removed
+- Type alias `ApplicationLiveViewProvisioningState` has been removed
+- Type alias `BackendProtocol` has been removed
+- Type alias `CustomizedAcceleratorProvisioningState` has been removed
+- Type alias `CustomizedAcceleratorValidateResultState` has been removed
+- Type alias `DevToolPortalFeatureState` has been removed
+- Type alias `DevToolPortalProvisioningState` has been removed
+- Type alias `GatewayRouteConfigProtocol` has been removed
+- Type alias `PredefinedAcceleratorProvisioningState` has been removed
+- Type alias `PredefinedAcceleratorState` has been removed
+- Type alias `SessionAffinity` has been removed
+- Function `*AcceleratorAuthSetting.GetAcceleratorAuthSetting` has been removed
+- Function `*AcceleratorBasicAuthSetting.GetAcceleratorAuthSetting` has been removed
+- Function `*AcceleratorPublicSetting.GetAcceleratorAuthSetting` has been removed
+- Function `*AcceleratorSSHSetting.GetAcceleratorAuthSetting` has been removed
+- Function `NewApplicationAcceleratorsClient` has been removed
+- Function `*ApplicationAcceleratorsClient.BeginCreateOrUpdate` has been removed
+- Function `*ApplicationAcceleratorsClient.BeginDelete` has been removed
+- Function `*ApplicationAcceleratorsClient.Get` has been removed
+- Function `*ApplicationAcceleratorsClient.NewListPager` has been removed
+- Function `NewApplicationLiveViewsClient` has been removed
+- Function `*ApplicationLiveViewsClient.BeginCreateOrUpdate` has been removed
+- Function `*ApplicationLiveViewsClient.BeginDelete` has been removed
+- Function `*ApplicationLiveViewsClient.Get` has been removed
+- Function `*ApplicationLiveViewsClient.NewListPager` has been removed
+- Function `*BuildServiceBuilderClient.ListDeployments` has been removed
+- Function `*ClientFactory.NewApplicationAcceleratorsClient` has been removed
+- Function `*ClientFactory.NewApplicationLiveViewsClient` has been removed
+- Function `*ClientFactory.NewCustomizedAcceleratorsClient` has been removed
+- Function `*ClientFactory.NewDevToolPortalsClient` has been removed
+- Function `*ClientFactory.NewPredefinedAcceleratorsClient` has been removed
+- Function `NewCustomizedAcceleratorsClient` has been removed
+- Function `*CustomizedAcceleratorsClient.BeginCreateOrUpdate` has been removed
+- Function `*CustomizedAcceleratorsClient.BeginDelete` has been removed
+- Function `*CustomizedAcceleratorsClient.Get` has been removed
+- Function `*CustomizedAcceleratorsClient.NewListPager` has been removed
+- Function `*CustomizedAcceleratorsClient.Validate` has been removed
+- Function `*DeploymentsClient.BeginDisableRemoteDebugging` has been removed
+- Function `*DeploymentsClient.BeginEnableRemoteDebugging` has been removed
+- Function `*DeploymentsClient.GetRemoteDebuggingConfig` has been removed
+- Function `NewDevToolPortalsClient` has been removed
+- Function `*DevToolPortalsClient.BeginCreateOrUpdate` has been removed
+- Function `*DevToolPortalsClient.BeginDelete` has been removed
+- Function `*DevToolPortalsClient.Get` has been removed
+- Function `*DevToolPortalsClient.NewListPager` has been removed
+- Function `*GatewaysClient.ListEnvSecrets` has been removed
+- Function `NewPredefinedAcceleratorsClient` has been removed
+- Function `*PredefinedAcceleratorsClient.BeginDisable` has been removed
+- Function `*PredefinedAcceleratorsClient.BeginEnable` has been removed
+- Function `*PredefinedAcceleratorsClient.Get` has been removed
+- Function `*PredefinedAcceleratorsClient.NewListPager` has been removed
+- Struct `AcceleratorBasicAuthSetting` has been removed
+- Struct `AcceleratorGitRepository` has been removed
+- Struct `AcceleratorPublicSetting` has been removed
+- Struct `AcceleratorSSHSetting` has been removed
+- Struct `ApplicationAcceleratorComponent` has been removed
+- Struct `ApplicationAcceleratorInstance` has been removed
+- Struct `ApplicationAcceleratorProperties` has been removed
+- Struct `ApplicationAcceleratorResource` has been removed
+- Struct `ApplicationAcceleratorResourceCollection` has been removed
+- Struct `ApplicationAcceleratorResourceRequests` has been removed
+- Struct `ApplicationLiveViewComponent` has been removed
+- Struct `ApplicationLiveViewInstance` has been removed
+- Struct `ApplicationLiveViewProperties` has been removed
+- Struct `ApplicationLiveViewResource` has been removed
+- Struct `ApplicationLiveViewResourceCollection` has been removed
+- Struct `ApplicationLiveViewResourceRequests` has been removed
+- Struct `CustomizedAcceleratorProperties` has been removed
+- Struct `CustomizedAcceleratorResource` has been removed
+- Struct `CustomizedAcceleratorResourceCollection` has been removed
+- Struct `CustomizedAcceleratorValidateResult` has been removed
+- Struct `DeploymentList` has been removed
+- Struct `DevToolPortalFeatureDetail` has been removed
+- Struct `DevToolPortalFeatureSettings` has been removed
+- Struct `DevToolPortalInstance` has been removed
+- Struct `DevToolPortalProperties` has been removed
+- Struct `DevToolPortalResource` has been removed
+- Struct `DevToolPortalResourceCollection` has been removed
+- Struct `DevToolPortalResourceRequests` has been removed
+- Struct `DevToolPortalSsoProperties` has been removed
+- Struct `GatewayPropertiesEnvironmentVariables` has been removed
+- Struct `IngressSettings` has been removed
+- Struct `IngressSettingsClientAuth` has been removed
+- Struct `PredefinedAcceleratorProperties` has been removed
+- Struct `PredefinedAcceleratorResource` has been removed
+- Struct `PredefinedAcceleratorResourceCollection` has been removed
+- Struct `RemoteDebugging` has been removed
+- Struct `RemoteDebuggingPayload` has been removed
+- Field `IngressSettings` of struct `AppResourceProperties` has been removed
+- Field `Error` of struct `BuildResultProperties` has been removed
+- Field `ExitCode` of struct `BuildStageProperties` has been removed
+- Field `Reason` of struct `BuildStageProperties` has been removed
+- Field `ApmTypes` of struct `GatewayProperties` has been removed
+- Field `EnvironmentVariables` of struct `GatewayProperties` has been removed
+- Field `Filters` of struct `GatewayRouteConfigProperties` has been removed
+- Field `Predicates` of struct `GatewayRouteConfigProperties` has been removed
+- Field `Protocol` of struct `GatewayRouteConfigProperties` has been removed
+- Field `SsoEnabled` of struct `GatewayRouteConfigProperties` has been removed
+- Field `OutboundType` of struct `NetworkProfile` has been removed
+
+
 ## 1.1.0-beta.3 (2023-03-27)
 ### Features Added
 

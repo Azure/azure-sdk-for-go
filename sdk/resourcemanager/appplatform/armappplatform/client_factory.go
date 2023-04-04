@@ -59,16 +59,6 @@ func (c *ClientFactory) NewServiceRegistriesClient() *ServiceRegistriesClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewApplicationLiveViewsClient() *ApplicationLiveViewsClient {
-	subClient, _ := NewApplicationLiveViewsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewDevToolPortalsClient() *DevToolPortalsClient {
-	subClient, _ := NewDevToolPortalsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewBuildServiceClient() *BuildServiceClient {
 	subClient, _ := NewBuildServiceClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -161,20 +151,5 @@ func (c *ClientFactory) NewAPIPortalsClient() *APIPortalsClient {
 
 func (c *ClientFactory) NewAPIPortalCustomDomainsClient() *APIPortalCustomDomainsClient {
 	subClient, _ := NewAPIPortalCustomDomainsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewApplicationAcceleratorsClient() *ApplicationAcceleratorsClient {
-	subClient, _ := NewApplicationAcceleratorsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewCustomizedAcceleratorsClient() *CustomizedAcceleratorsClient {
-	subClient, _ := NewCustomizedAcceleratorsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewPredefinedAcceleratorsClient() *PredefinedAcceleratorsClient {
-	subClient, _ := NewPredefinedAcceleratorsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

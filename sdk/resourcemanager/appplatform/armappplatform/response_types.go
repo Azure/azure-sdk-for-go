@@ -54,46 +54,6 @@ type APIPortalsClientValidateDomainResponse struct {
 	CustomDomainValidateResult
 }
 
-// ApplicationAcceleratorsClientCreateOrUpdateResponse contains the response from method ApplicationAcceleratorsClient.BeginCreateOrUpdate.
-type ApplicationAcceleratorsClientCreateOrUpdateResponse struct {
-	ApplicationAcceleratorResource
-}
-
-// ApplicationAcceleratorsClientDeleteResponse contains the response from method ApplicationAcceleratorsClient.BeginDelete.
-type ApplicationAcceleratorsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ApplicationAcceleratorsClientGetResponse contains the response from method ApplicationAcceleratorsClient.Get.
-type ApplicationAcceleratorsClientGetResponse struct {
-	ApplicationAcceleratorResource
-}
-
-// ApplicationAcceleratorsClientListResponse contains the response from method ApplicationAcceleratorsClient.NewListPager.
-type ApplicationAcceleratorsClientListResponse struct {
-	ApplicationAcceleratorResourceCollection
-}
-
-// ApplicationLiveViewsClientCreateOrUpdateResponse contains the response from method ApplicationLiveViewsClient.BeginCreateOrUpdate.
-type ApplicationLiveViewsClientCreateOrUpdateResponse struct {
-	ApplicationLiveViewResource
-}
-
-// ApplicationLiveViewsClientDeleteResponse contains the response from method ApplicationLiveViewsClient.BeginDelete.
-type ApplicationLiveViewsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ApplicationLiveViewsClientGetResponse contains the response from method ApplicationLiveViewsClient.Get.
-type ApplicationLiveViewsClientGetResponse struct {
-	ApplicationLiveViewResource
-}
-
-// ApplicationLiveViewsClientListResponse contains the response from method ApplicationLiveViewsClient.NewListPager.
-type ApplicationLiveViewsClientListResponse struct {
-	ApplicationLiveViewResourceCollection
-}
-
 // AppsClientCreateOrUpdateResponse contains the response from method AppsClient.BeginCreateOrUpdate.
 type AppsClientCreateOrUpdateResponse struct {
 	AppResource
@@ -187,11 +147,6 @@ type BuildServiceBuilderClientDeleteResponse struct {
 // BuildServiceBuilderClientGetResponse contains the response from method BuildServiceBuilderClient.Get.
 type BuildServiceBuilderClientGetResponse struct {
 	BuilderResource
-}
-
-// BuildServiceBuilderClientListDeploymentsResponse contains the response from method BuildServiceBuilderClient.ListDeployments.
-type BuildServiceBuilderClientListDeploymentsResponse struct {
-	DeploymentList
 }
 
 // BuildServiceBuilderClientListResponse contains the response from method BuildServiceBuilderClient.NewListPager.
@@ -374,31 +329,6 @@ type CustomDomainsClientUpdateResponse struct {
 	CustomDomainResource
 }
 
-// CustomizedAcceleratorsClientCreateOrUpdateResponse contains the response from method CustomizedAcceleratorsClient.BeginCreateOrUpdate.
-type CustomizedAcceleratorsClientCreateOrUpdateResponse struct {
-	CustomizedAcceleratorResource
-}
-
-// CustomizedAcceleratorsClientDeleteResponse contains the response from method CustomizedAcceleratorsClient.BeginDelete.
-type CustomizedAcceleratorsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// CustomizedAcceleratorsClientGetResponse contains the response from method CustomizedAcceleratorsClient.Get.
-type CustomizedAcceleratorsClientGetResponse struct {
-	CustomizedAcceleratorResource
-}
-
-// CustomizedAcceleratorsClientListResponse contains the response from method CustomizedAcceleratorsClient.NewListPager.
-type CustomizedAcceleratorsClientListResponse struct {
-	CustomizedAcceleratorResourceCollection
-}
-
-// CustomizedAcceleratorsClientValidateResponse contains the response from method CustomizedAcceleratorsClient.Validate.
-type CustomizedAcceleratorsClientValidateResponse struct {
-	CustomizedAcceleratorValidateResult
-}
-
 // DeploymentsClientCreateOrUpdateResponse contains the response from method DeploymentsClient.BeginCreateOrUpdate.
 type DeploymentsClientCreateOrUpdateResponse struct {
 	DeploymentResource
@@ -407,16 +337,6 @@ type DeploymentsClientCreateOrUpdateResponse struct {
 // DeploymentsClientDeleteResponse contains the response from method DeploymentsClient.BeginDelete.
 type DeploymentsClientDeleteResponse struct {
 	// placeholder for future response values
-}
-
-// DeploymentsClientDisableRemoteDebuggingResponse contains the response from method DeploymentsClient.BeginDisableRemoteDebugging.
-type DeploymentsClientDisableRemoteDebuggingResponse struct {
-	RemoteDebugging
-}
-
-// DeploymentsClientEnableRemoteDebuggingResponse contains the response from method DeploymentsClient.BeginEnableRemoteDebugging.
-type DeploymentsClientEnableRemoteDebuggingResponse struct {
-	RemoteDebugging
 }
 
 // DeploymentsClientGenerateHeapDumpResponse contains the response from method DeploymentsClient.BeginGenerateHeapDump.
@@ -432,11 +352,6 @@ type DeploymentsClientGenerateThreadDumpResponse struct {
 // DeploymentsClientGetLogFileURLResponse contains the response from method DeploymentsClient.GetLogFileURL.
 type DeploymentsClientGetLogFileURLResponse struct {
 	LogFileURLResponse
-}
-
-// DeploymentsClientGetRemoteDebuggingConfigResponse contains the response from method DeploymentsClient.GetRemoteDebuggingConfig.
-type DeploymentsClientGetRemoteDebuggingConfigResponse struct {
-	RemoteDebugging
 }
 
 // DeploymentsClientGetResponse contains the response from method DeploymentsClient.Get.
@@ -477,26 +392,6 @@ type DeploymentsClientStopResponse struct {
 // DeploymentsClientUpdateResponse contains the response from method DeploymentsClient.BeginUpdate.
 type DeploymentsClientUpdateResponse struct {
 	DeploymentResource
-}
-
-// DevToolPortalsClientCreateOrUpdateResponse contains the response from method DevToolPortalsClient.BeginCreateOrUpdate.
-type DevToolPortalsClientCreateOrUpdateResponse struct {
-	DevToolPortalResource
-}
-
-// DevToolPortalsClientDeleteResponse contains the response from method DevToolPortalsClient.BeginDelete.
-type DevToolPortalsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// DevToolPortalsClientGetResponse contains the response from method DevToolPortalsClient.Get.
-type DevToolPortalsClientGetResponse struct {
-	DevToolPortalResource
-}
-
-// DevToolPortalsClientListResponse contains the response from method DevToolPortalsClient.NewListPager.
-type DevToolPortalsClientListResponse struct {
-	DevToolPortalResourceCollection
 }
 
 // GatewayCustomDomainsClientCreateOrUpdateResponse contains the response from method GatewayCustomDomainsClient.BeginCreateOrUpdate.
@@ -554,12 +449,6 @@ type GatewaysClientGetResponse struct {
 	GatewayResource
 }
 
-// GatewaysClientListEnvSecretsResponse contains the response from method GatewaysClient.ListEnvSecrets.
-type GatewaysClientListEnvSecretsResponse struct {
-	// Sensitive properties for Spring Cloud Gateway
-	Value map[string]*string
-}
-
 // GatewaysClientListResponse contains the response from method GatewaysClient.NewListPager.
 type GatewaysClientListResponse struct {
 	GatewayResourceCollection
@@ -588,26 +477,6 @@ type MonitoringSettingsClientUpdatePutResponse struct {
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	AvailableOperations
-}
-
-// PredefinedAcceleratorsClientDisableResponse contains the response from method PredefinedAcceleratorsClient.BeginDisable.
-type PredefinedAcceleratorsClientDisableResponse struct {
-	// placeholder for future response values
-}
-
-// PredefinedAcceleratorsClientEnableResponse contains the response from method PredefinedAcceleratorsClient.BeginEnable.
-type PredefinedAcceleratorsClientEnableResponse struct {
-	// placeholder for future response values
-}
-
-// PredefinedAcceleratorsClientGetResponse contains the response from method PredefinedAcceleratorsClient.Get.
-type PredefinedAcceleratorsClientGetResponse struct {
-	PredefinedAcceleratorResource
-}
-
-// PredefinedAcceleratorsClientListResponse contains the response from method PredefinedAcceleratorsClient.NewListPager.
-type PredefinedAcceleratorsClientListResponse struct {
-	PredefinedAcceleratorResourceCollection
 }
 
 // RuntimeVersionsClientListRuntimeVersionsResponse contains the response from method RuntimeVersionsClient.ListRuntimeVersions.

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/GatewayRouteConfigs_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/GatewayRouteConfigs_Get.json
 func ExampleGatewayRouteConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,12 +64,11 @@ func ExampleGatewayRouteConfigsClient_Get() {
 	// 						SsoEnabled: to.Ptr(true),
 	// 						Title: to.Ptr("myApp route config"),
 	// 				}},
-	// 				Protocol: to.Ptr(armappplatform.GatewayRouteConfigProtocolHTTPS),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/GatewayRouteConfigs_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/GatewayRouteConfigs_CreateOrUpdate.json
 func ExampleGatewayRouteConfigsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +95,6 @@ func ExampleGatewayRouteConfigsClient_BeginCreateOrUpdate() {
 					SsoEnabled: to.Ptr(true),
 					Title:      to.Ptr("myApp route config"),
 				}},
-			Protocol: to.Ptr(armappplatform.GatewayRouteConfigProtocolHTTPS),
 		},
 	}, nil)
 	if err != nil {
@@ -137,12 +135,11 @@ func ExampleGatewayRouteConfigsClient_BeginCreateOrUpdate() {
 	// 						SsoEnabled: to.Ptr(true),
 	// 						Title: to.Ptr("myApp route config"),
 	// 				}},
-	// 				Protocol: to.Ptr(armappplatform.GatewayRouteConfigProtocolHTTPS),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/GatewayRouteConfigs_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/GatewayRouteConfigs_Delete.json
 func ExampleGatewayRouteConfigsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +160,7 @@ func ExampleGatewayRouteConfigsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86ead567acadc5a059949bca607a5e702610551f/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-11-01-preview/examples/GatewayRouteConfigs_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/GatewayRouteConfigs_List.json
 func ExampleGatewayRouteConfigsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +212,6 @@ func ExampleGatewayRouteConfigsClient_NewListPager() {
 		// 								SsoEnabled: to.Ptr(true),
 		// 								Title: to.Ptr("myApp route config"),
 		// 						}},
-		// 						Protocol: to.Ptr(armappplatform.GatewayRouteConfigProtocolHTTPS),
 		// 					},
 		// 			}},
 		// 		}

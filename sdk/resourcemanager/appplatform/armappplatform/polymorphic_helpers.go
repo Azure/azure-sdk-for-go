@@ -11,28 +11,6 @@ package armappplatform
 
 import "encoding/json"
 
-func unmarshalAcceleratorAuthSettingClassification(rawMsg json.RawMessage) (AcceleratorAuthSettingClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b AcceleratorAuthSettingClassification
-	switch m["authType"] {
-	case "BasicAuth":
-		b = &AcceleratorBasicAuthSetting{}
-	case "Public":
-		b = &AcceleratorPublicSetting{}
-	case "SSH":
-		b = &AcceleratorSSHSetting{}
-	default:
-		b = &AcceleratorAuthSetting{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
 func unmarshalCertificatePropertiesClassification(rawMsg json.RawMessage) (CertificatePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil

@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Replicas_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Replicas_Get.json
 func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,8 +44,6 @@ func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	// 			{
 	// 				Name: to.Ptr("hello92"),
 	// 				ContainerID: to.Ptr("containerd://6bac7bb3afed1c704b5fe563c34c0ecf59ac30c766bb73488f7fa552dc42ee54"),
-	// 				ExecEndpoint: to.Ptr("testExecEndpoint"),
-	// 				LogStreamEndpoint: to.Ptr("testLogStreamEndpoint"),
 	// 				Ready: to.Ptr(true),
 	// 				RestartCount: to.Ptr[int32](0),
 	// 				Started: to.Ptr(true),
@@ -55,7 +53,7 @@ func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Replicas_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Replicas_List.json
 func ExampleContainerAppsRevisionReplicasClient_ListReplicas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,8 +82,6 @@ func ExampleContainerAppsRevisionReplicasClient_ListReplicas() {
 	// 					{
 	// 						Name: to.Ptr("hello92"),
 	// 						ContainerID: to.Ptr("containerd://6bac7bb3afed1c704b5fe563c34c0ecf59ac30c766bb73488f7fa552dc42ee54"),
-	// 						ExecEndpoint: to.Ptr("testExecEndpoint"),
-	// 						LogStreamEndpoint: to.Ptr("testLogStreamEndpoint"),
 	// 						Ready: to.Ptr(true),
 	// 						RestartCount: to.Ptr[int32](0),
 	// 						Started: to.Ptr(true),

@@ -11,7 +11,7 @@ package armappcontainers
 
 const (
 	moduleName    = "armappcontainers"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v1.1.0"
 )
 
 // AccessMode - Access mode for storage
@@ -27,22 +27,6 @@ func PossibleAccessModeValues() []AccessMode {
 	return []AccessMode{
 		AccessModeReadOnly,
 		AccessModeReadWrite,
-	}
-}
-
-// Action - Allow or Deny rules to determine for incoming IP. Note: Rules can only consist of ALL Allow or ALL Deny
-type Action string
-
-const (
-	ActionAllow Action = "Allow"
-	ActionDeny  Action = "Deny"
-)
-
-// PossibleActionValues returns the possible values for the Action const type.
-func PossibleActionValues() []Action {
-	return []Action{
-		ActionAllow,
-		ActionDeny,
 	}
 }
 
@@ -80,22 +64,6 @@ func PossibleAppProtocolValues() []AppProtocol {
 	}
 }
 
-// Applicability - indicates whether the profile is default for the location.
-type Applicability string
-
-const (
-	ApplicabilityCustom          Applicability = "Custom"
-	ApplicabilityLocationDefault Applicability = "LocationDefault"
-)
-
-// PossibleApplicabilityValues returns the possible values for the Applicability const type.
-func PossibleApplicabilityValues() []Applicability {
-	return []Applicability{
-		ApplicabilityCustom,
-		ApplicabilityLocationDefault,
-	}
-}
-
 // BindingType - Custom Domain binding type.
 type BindingType string
 
@@ -109,24 +77,6 @@ func PossibleBindingTypeValues() []BindingType {
 	return []BindingType{
 		BindingTypeDisabled,
 		BindingTypeSniEnabled,
-	}
-}
-
-// Category - Used to map workload profile types to billing meter.
-type Category string
-
-const (
-	CategoryPremiumSKUComputeOptimized Category = "PremiumSkuComputeOptimized"
-	CategoryPremiumSKUGeneralPurpose   Category = "PremiumSkuGeneralPurpose"
-	CategoryPremiumSKUMemoryOptimized  Category = "PremiumSkuMemoryOptimized"
-)
-
-// PossibleCategoryValues returns the possible values for the Category const type.
-func PossibleCategoryValues() []Category {
-	return []Category{
-		CategoryPremiumSKUComputeOptimized,
-		CategoryPremiumSKUGeneralPurpose,
-		CategoryPremiumSKUMemoryOptimized,
 	}
 }
 
@@ -168,40 +118,11 @@ func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
 	}
 }
 
-// ConnectedEnvironmentProvisioningState - Provisioning state of the Kubernetes Environment.
-type ConnectedEnvironmentProvisioningState string
-
-const (
-	ConnectedEnvironmentProvisioningStateCanceled                      ConnectedEnvironmentProvisioningState = "Canceled"
-	ConnectedEnvironmentProvisioningStateFailed                        ConnectedEnvironmentProvisioningState = "Failed"
-	ConnectedEnvironmentProvisioningStateInfrastructureSetupComplete   ConnectedEnvironmentProvisioningState = "InfrastructureSetupComplete"
-	ConnectedEnvironmentProvisioningStateInfrastructureSetupInProgress ConnectedEnvironmentProvisioningState = "InfrastructureSetupInProgress"
-	ConnectedEnvironmentProvisioningStateInitializationInProgress      ConnectedEnvironmentProvisioningState = "InitializationInProgress"
-	ConnectedEnvironmentProvisioningStateScheduledForDelete            ConnectedEnvironmentProvisioningState = "ScheduledForDelete"
-	ConnectedEnvironmentProvisioningStateSucceeded                     ConnectedEnvironmentProvisioningState = "Succeeded"
-	ConnectedEnvironmentProvisioningStateWaiting                       ConnectedEnvironmentProvisioningState = "Waiting"
-)
-
-// PossibleConnectedEnvironmentProvisioningStateValues returns the possible values for the ConnectedEnvironmentProvisioningState const type.
-func PossibleConnectedEnvironmentProvisioningStateValues() []ConnectedEnvironmentProvisioningState {
-	return []ConnectedEnvironmentProvisioningState{
-		ConnectedEnvironmentProvisioningStateCanceled,
-		ConnectedEnvironmentProvisioningStateFailed,
-		ConnectedEnvironmentProvisioningStateInfrastructureSetupComplete,
-		ConnectedEnvironmentProvisioningStateInfrastructureSetupInProgress,
-		ConnectedEnvironmentProvisioningStateInitializationInProgress,
-		ConnectedEnvironmentProvisioningStateScheduledForDelete,
-		ConnectedEnvironmentProvisioningStateSucceeded,
-		ConnectedEnvironmentProvisioningStateWaiting,
-	}
-}
-
 // ContainerAppProvisioningState - Provisioning state of the Container App.
 type ContainerAppProvisioningState string
 
 const (
 	ContainerAppProvisioningStateCanceled   ContainerAppProvisioningState = "Canceled"
-	ContainerAppProvisioningStateDeleting   ContainerAppProvisioningState = "Deleting"
 	ContainerAppProvisioningStateFailed     ContainerAppProvisioningState = "Failed"
 	ContainerAppProvisioningStateInProgress ContainerAppProvisioningState = "InProgress"
 	ContainerAppProvisioningStateSucceeded  ContainerAppProvisioningState = "Succeeded"
@@ -211,7 +132,6 @@ const (
 func PossibleContainerAppProvisioningStateValues() []ContainerAppProvisioningState {
 	return []ContainerAppProvisioningState{
 		ContainerAppProvisioningStateCanceled,
-		ContainerAppProvisioningStateDeleting,
 		ContainerAppProvisioningStateFailed,
 		ContainerAppProvisioningStateInProgress,
 		ContainerAppProvisioningStateSucceeded,
@@ -304,20 +224,6 @@ func PossibleEnvironmentProvisioningStateValues() []EnvironmentProvisioningState
 	}
 }
 
-// ExtendedLocationTypes - The type of extendedLocation.
-type ExtendedLocationTypes string
-
-const (
-	ExtendedLocationTypesCustomLocation ExtendedLocationTypes = "CustomLocation"
-)
-
-// PossibleExtendedLocationTypesValues returns the possible values for the ExtendedLocationTypes const type.
-func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
-	return []ExtendedLocationTypes{
-		ExtendedLocationTypesCustomLocation,
-	}
-}
-
 // ForwardProxyConvention - The convention used to determine the url of the request made.
 type ForwardProxyConvention string
 
@@ -343,7 +249,6 @@ const (
 	IngressTransportMethodAuto  IngressTransportMethod = "auto"
 	IngressTransportMethodHTTP  IngressTransportMethod = "http"
 	IngressTransportMethodHTTP2 IngressTransportMethod = "http2"
-	IngressTransportMethodTCP   IngressTransportMethod = "tcp"
 )
 
 // PossibleIngressTransportMethodValues returns the possible values for the IngressTransportMethod const type.
@@ -352,43 +257,6 @@ func PossibleIngressTransportMethodValues() []IngressTransportMethod {
 		IngressTransportMethodAuto,
 		IngressTransportMethodHTTP,
 		IngressTransportMethodHTTP2,
-		IngressTransportMethodTCP,
-	}
-}
-
-// LogLevel - Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info.
-type LogLevel string
-
-const (
-	LogLevelDebug LogLevel = "debug"
-	LogLevelError LogLevel = "error"
-	LogLevelInfo  LogLevel = "info"
-	LogLevelWarn  LogLevel = "warn"
-)
-
-// PossibleLogLevelValues returns the possible values for the LogLevel const type.
-func PossibleLogLevelValues() []LogLevel {
-	return []LogLevel{
-		LogLevelDebug,
-		LogLevelError,
-		LogLevelInfo,
-		LogLevelWarn,
-	}
-}
-
-// ManagedEnvironmentOutBoundType - Outbound type for the cluster
-type ManagedEnvironmentOutBoundType string
-
-const (
-	ManagedEnvironmentOutBoundTypeLoadBalancer       ManagedEnvironmentOutBoundType = "LoadBalancer"
-	ManagedEnvironmentOutBoundTypeUserDefinedRouting ManagedEnvironmentOutBoundType = "UserDefinedRouting"
-)
-
-// PossibleManagedEnvironmentOutBoundTypeValues returns the possible values for the ManagedEnvironmentOutBoundType const type.
-func PossibleManagedEnvironmentOutBoundTypeValues() []ManagedEnvironmentOutBoundType {
-	return []ManagedEnvironmentOutBoundType{
-		ManagedEnvironmentOutBoundTypeLoadBalancer,
-		ManagedEnvironmentOutBoundTypeUserDefinedRouting,
 	}
 }
 
@@ -449,24 +317,6 @@ func PossibleRevisionProvisioningStateValues() []RevisionProvisioningState {
 		RevisionProvisioningStateFailed,
 		RevisionProvisioningStateProvisioned,
 		RevisionProvisioningStateProvisioning,
-	}
-}
-
-// SKUName - Name of the Sku.
-type SKUName string
-
-const (
-	// SKUNameConsumption - Consumption SKU of Managed Environment.
-	SKUNameConsumption SKUName = "Consumption"
-	// SKUNamePremium - Premium SKU of Managed Environment.
-	SKUNamePremium SKUName = "Premium"
-)
-
-// PossibleSKUNameValues returns the possible values for the SKUName const type.
-func PossibleSKUNameValues() []SKUName {
-	return []SKUName{
-		SKUNameConsumption,
-		SKUNamePremium,
 	}
 }
 

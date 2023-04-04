@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Revisions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Revisions_List.json
 func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,8 +48,7 @@ func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 		// 			Properties: &armappcontainers.RevisionProperties{
 		// 				Active: to.Ptr(true),
 		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22+00:00"); return t}()),
-		// 				Fqdn: to.Ptr("testcontainerApp0-pjxhsye.politehill-ab123456.eastus.azurecontainerapps.io"),
-		// 				LastActiveTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22+00:00"); return t}()),
+		// 				Fqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerapps.k4apps.io"),
 		// 				Replicas: to.Ptr[int32](1),
 		// 				Template: &armappcontainers.Template{
 		// 					Containers: []*armappcontainers.Container{
@@ -75,14 +74,13 @@ func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 		// 						}},
 		// 					},
 		// 				},
-		// 				TrafficWeight: to.Ptr[int32](80),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Revisions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Revisions_Get.json
 func ExampleContainerAppsRevisionsClient_GetRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,8 +105,7 @@ func ExampleContainerAppsRevisionsClient_GetRevision() {
 	// 	Properties: &armappcontainers.RevisionProperties{
 	// 		Active: to.Ptr(true),
 	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22+00:00"); return t}()),
-	// 		Fqdn: to.Ptr("testcontainerApp0-pjxhsye.politehill-ab123456.eastus.azurecontainerapps.io"),
-	// 		LastActiveTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22+00:00"); return t}()),
+	// 		Fqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 		Replicas: to.Ptr[int32](1),
 	// 		Template: &armappcontainers.Template{
 	// 			Containers: []*armappcontainers.Container{
@@ -134,12 +131,11 @@ func ExampleContainerAppsRevisionsClient_GetRevision() {
 	// 				}},
 	// 			},
 	// 		},
-	// 		TrafficWeight: to.Ptr[int32](80),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Revisions_Activate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Revisions_Activate.json
 func ExampleContainerAppsRevisionsClient_ActivateRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +152,7 @@ func ExampleContainerAppsRevisionsClient_ActivateRevision() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Revisions_Deactivate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Revisions_Deactivate.json
 func ExampleContainerAppsRevisionsClient_DeactivateRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +169,7 @@ func ExampleContainerAppsRevisionsClient_DeactivateRevision() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Revisions_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Revisions_Restart.json
 func ExampleContainerAppsRevisionsClient_RestartRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

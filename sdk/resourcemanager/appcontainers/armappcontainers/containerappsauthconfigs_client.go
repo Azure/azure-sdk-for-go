@@ -47,7 +47,7 @@ func NewContainerAppsAuthConfigsClient(subscriptionID string, credential azcore.
 // CreateOrUpdate - Create or update the AuthConfig for a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-01-preview
+// Generated from API version 2022-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - authConfigName - Name of the Container App AuthConfig.
@@ -93,7 +93,7 @@ func (client *ContainerAppsAuthConfigsClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, authConfigEnvelope)
@@ -111,7 +111,7 @@ func (client *ContainerAppsAuthConfigsClient) createOrUpdateHandleResponse(resp 
 // Delete - Delete a Container App AuthConfig.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-01-preview
+// Generated from API version 2022-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - authConfigName - Name of the Container App AuthConfig.
@@ -156,7 +156,7 @@ func (client *ContainerAppsAuthConfigsClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -165,7 +165,7 @@ func (client *ContainerAppsAuthConfigsClient) deleteCreateRequest(ctx context.Co
 // Get - Get a AuthConfig of a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-01-preview
+// Generated from API version 2022-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - authConfigName - Name of the Container App AuthConfig.
@@ -210,7 +210,7 @@ func (client *ContainerAppsAuthConfigsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -227,7 +227,7 @@ func (client *ContainerAppsAuthConfigsClient) getHandleResponse(resp *http.Respo
 
 // NewListByContainerAppPager - Get the Container App AuthConfigs in a given resource group.
 //
-// Generated from API version 2022-06-01-preview
+// Generated from API version 2022-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - options - ContainerAppsAuthConfigsClientListByContainerAppOptions contains the optional parameters for the ContainerAppsAuthConfigsClient.NewListByContainerAppPager
@@ -280,7 +280,7 @@ func (client *ContainerAppsAuthConfigsClient) listByContainerAppCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

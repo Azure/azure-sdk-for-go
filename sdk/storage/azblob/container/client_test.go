@@ -97,6 +97,22 @@ type ContainerUnrecordedTestsSuite struct {
 //	_require.Equal(testURL.URL(), correctURL)
 //}
 
+func (s *ContainerRecordedTestsSuite) TestGetAccountInfo() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
+	cAccInfo, err := containerClient.GetAccountInfo(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotZero(cAccInfo)
+}
+
 func (s *ContainerRecordedTestsSuite) TestContainerCreateInvalidName() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

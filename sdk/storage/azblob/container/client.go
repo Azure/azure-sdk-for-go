@@ -239,6 +239,14 @@ func (c *Client) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions)
 	return resp, err
 }
 
+// GetAccountInfo provides account level information
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-account-information?tabs=shared-access-signatures.
+func (c *Client) GetAccountInfo(ctx context.Context, o *GetAccountInfoOptions) (GetAccountInfoResponse, error) {
+	getAccountInfoOptions := o.format()
+	resp, err := c.generated().GetAccountInfo(ctx, getAccountInfoOptions)
+	return resp, err
+}
+
 // NewListBlobsFlatPager returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.

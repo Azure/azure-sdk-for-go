@@ -9,46 +9,6 @@
 
 package armstoragecache
 
-// AmlFilesystemsClientArchiveResponse contains the response from method AmlFilesystemsClient.Archive.
-type AmlFilesystemsClientArchiveResponse struct {
-	// placeholder for future response values
-}
-
-// AmlFilesystemsClientCancelArchiveResponse contains the response from method AmlFilesystemsClient.CancelArchive.
-type AmlFilesystemsClientCancelArchiveResponse struct {
-	// placeholder for future response values
-}
-
-// AmlFilesystemsClientCreateOrUpdateResponse contains the response from method AmlFilesystemsClient.BeginCreateOrUpdate.
-type AmlFilesystemsClientCreateOrUpdateResponse struct {
-	AmlFilesystem
-}
-
-// AmlFilesystemsClientDeleteResponse contains the response from method AmlFilesystemsClient.BeginDelete.
-type AmlFilesystemsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// AmlFilesystemsClientGetResponse contains the response from method AmlFilesystemsClient.Get.
-type AmlFilesystemsClientGetResponse struct {
-	AmlFilesystem
-}
-
-// AmlFilesystemsClientListByResourceGroupResponse contains the response from method AmlFilesystemsClient.NewListByResourceGroupPager.
-type AmlFilesystemsClientListByResourceGroupResponse struct {
-	AmlFilesystemsListResult
-}
-
-// AmlFilesystemsClientListResponse contains the response from method AmlFilesystemsClient.NewListPager.
-type AmlFilesystemsClientListResponse struct {
-	AmlFilesystemsListResult
-}
-
-// AmlFilesystemsClientUpdateResponse contains the response from method AmlFilesystemsClient.BeginUpdate.
-type AmlFilesystemsClientUpdateResponse struct {
-	AmlFilesystem
-}
-
 // AscOperationsClientGetResponse contains the response from method AscOperationsClient.Get.
 type AscOperationsClientGetResponse struct {
 	AscOperation
@@ -137,16 +97,6 @@ type CachesClientUpdateResponse struct {
 // CachesClientUpgradeFirmwareResponse contains the response from method CachesClient.BeginUpgradeFirmware.
 type CachesClientUpgradeFirmwareResponse struct {
 	// placeholder for future response values
-}
-
-// ManagementClientCheckAmlFSSubnetsResponse contains the response from method ManagementClient.CheckAmlFSSubnets.
-type ManagementClientCheckAmlFSSubnetsResponse struct {
-	// placeholder for future response values
-}
-
-// ManagementClientGetRequiredAmlFSSubnetsSizeResponse contains the response from method ManagementClient.GetRequiredAmlFSSubnetsSize.
-type ManagementClientGetRequiredAmlFSSubnetsSizeResponse struct {
-	RequiredAmlFilesystemSubnetsSize
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

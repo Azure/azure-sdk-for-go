@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_List.json
 func ExampleCachesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,14 +62,14 @@ func ExampleCachesClient_NewListPager() {
 		// 					},
 		// 					UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 		// 						AutoDownloadCertificate: to.Ptr(false),
-		// 						CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+		// 						CaCertificateURI: to.Ptr(""),
 		// 						EncryptLdapConnection: to.Ptr(false),
 		// 						ExtendedGroups: to.Ptr(true),
-		// 						GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+		// 						GroupFileURI: to.Ptr(""),
 		// 						LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
 		// 						LdapServer: to.Ptr("192.0.2.12"),
 		// 						RequireValidCertificate: to.Ptr(false),
-		// 						UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+		// 						UserFileURI: to.Ptr(""),
 		// 						UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
 		// 						UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
 		// 					},
@@ -105,7 +105,6 @@ func ExampleCachesClient_NewListPager() {
 		// 						PrimingJobs: []*armstoragecache.PrimingJob{
 		// 						},
 		// 						ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-		// 						ScalingFactor: to.Ptr[float64](1),
 		// 						SecuritySettings: &armstoragecache.CacheSecuritySettings{
 		// 							AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 		// 								{
@@ -139,11 +138,11 @@ func ExampleCachesClient_NewListPager() {
 		// 							UpgradeScheduleEnabled: to.Ptr(true),
 		// 						},
 		// 						UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-		// 							CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+		// 							CurrentFirmwareVersion: to.Ptr("V5.1.12"),
 		// 							FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 		// 							FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
 		// 							LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
-		// 							PendingFirmwareVersion: to.Ptr("2022.08.1"),
+		// 							PendingFirmwareVersion: to.Ptr("V5.1.15"),
 		// 						},
 		// 					},
 		// 					SKU: &armstoragecache.CacheSKU{
@@ -179,14 +178,14 @@ func ExampleCachesClient_NewListPager() {
 		// 							},
 		// 							UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 		// 								AutoDownloadCertificate: to.Ptr(false),
-		// 								CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+		// 								CaCertificateURI: to.Ptr(""),
 		// 								EncryptLdapConnection: to.Ptr(false),
 		// 								ExtendedGroups: to.Ptr(true),
-		// 								GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+		// 								GroupFileURI: to.Ptr(""),
 		// 								LdapBaseDN: to.Ptr(""),
 		// 								LdapServer: to.Ptr(""),
 		// 								RequireValidCertificate: to.Ptr(false),
-		// 								UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+		// 								UserFileURI: to.Ptr(""),
 		// 								UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
 		// 								UsernameSource: to.Ptr(armstoragecache.UsernameSourceAD),
 		// 							},
@@ -237,7 +236,6 @@ func ExampleCachesClient_NewListPager() {
 		// 										PrimingJobStatus: to.Ptr(""),
 		// 								}},
 		// 								ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-		// 								ScalingFactor: to.Ptr[float64](1),
 		// 								SecuritySettings: &armstoragecache.CacheSecuritySettings{
 		// 									AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 		// 										{
@@ -260,11 +258,11 @@ func ExampleCachesClient_NewListPager() {
 		// 									UpgradeScheduleEnabled: to.Ptr(true),
 		// 								},
 		// 								UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-		// 									CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+		// 									CurrentFirmwareVersion: to.Ptr("V5.1.12"),
 		// 									FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 		// 									FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
 		// 									LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
-		// 									PendingFirmwareVersion: to.Ptr("2022.08.1"),
+		// 									PendingFirmwareVersion: to.Ptr("V5.1.15"),
 		// 								},
 		// 								Zones: []*string{
 		// 									to.Ptr("1")},
@@ -288,7 +286,7 @@ func ExampleCachesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_ListByResourceGroup.json
 func ExampleCachesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,14 +328,14 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 		// 						AutoDownloadCertificate: to.Ptr(false),
-		// 						CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+		// 						CaCertificateURI: to.Ptr(""),
 		// 						EncryptLdapConnection: to.Ptr(false),
 		// 						ExtendedGroups: to.Ptr(true),
-		// 						GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+		// 						GroupFileURI: to.Ptr(""),
 		// 						LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
 		// 						LdapServer: to.Ptr("192.0.2.12"),
 		// 						RequireValidCertificate: to.Ptr(false),
-		// 						UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+		// 						UserFileURI: to.Ptr(""),
 		// 						UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
 		// 						UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
 		// 					},
@@ -373,7 +371,6 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 						PrimingJobs: []*armstoragecache.PrimingJob{
 		// 						},
 		// 						ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-		// 						ScalingFactor: to.Ptr[float64](1),
 		// 						SecuritySettings: &armstoragecache.CacheSecuritySettings{
 		// 							AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 		// 								{
@@ -407,11 +404,11 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 							UpgradeScheduleEnabled: to.Ptr(true),
 		// 						},
 		// 						UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-		// 							CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+		// 							CurrentFirmwareVersion: to.Ptr("V5.1.12"),
 		// 							FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 		// 							FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
 		// 							LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
-		// 							PendingFirmwareVersion: to.Ptr("2022.08.1"),
+		// 							PendingFirmwareVersion: to.Ptr("V5.1.15"),
 		// 						},
 		// 						Zones: []*string{
 		// 							to.Ptr("1")},
@@ -449,14 +446,14 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 								},
 		// 								UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 		// 									AutoDownloadCertificate: to.Ptr(false),
-		// 									CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+		// 									CaCertificateURI: to.Ptr(""),
 		// 									EncryptLdapConnection: to.Ptr(false),
 		// 									ExtendedGroups: to.Ptr(true),
-		// 									GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+		// 									GroupFileURI: to.Ptr(""),
 		// 									LdapBaseDN: to.Ptr(""),
 		// 									LdapServer: to.Ptr(""),
 		// 									RequireValidCertificate: to.Ptr(false),
-		// 									UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+		// 									UserFileURI: to.Ptr(""),
 		// 									UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
 		// 									UsernameSource: to.Ptr(armstoragecache.UsernameSourceAD),
 		// 								},
@@ -507,7 +504,6 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 											PrimingJobStatus: to.Ptr(""),
 		// 									}},
 		// 									ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-		// 									ScalingFactor: to.Ptr[float64](1),
 		// 									SecuritySettings: &armstoragecache.CacheSecuritySettings{
 		// 										AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 		// 											{
@@ -530,11 +526,11 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 										UpgradeScheduleEnabled: to.Ptr(true),
 		// 									},
 		// 									UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-		// 										CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+		// 										CurrentFirmwareVersion: to.Ptr("V5.1.12"),
 		// 										FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 		// 										FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
 		// 										LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
-		// 										PendingFirmwareVersion: to.Ptr("2022.08.1"),
+		// 										PendingFirmwareVersion: to.Ptr("V5.1.15"),
 		// 									},
 		// 									Zones: []*string{
 		// 										to.Ptr("2")},
@@ -558,7 +554,7 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_Delete.json
 func ExampleCachesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -579,7 +575,7 @@ func ExampleCachesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_Get.json
 func ExampleCachesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -615,14 +611,14 @@ func ExampleCachesClient_Get() {
 	// 			},
 	// 			UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 	// 				AutoDownloadCertificate: to.Ptr(false),
-	// 				CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+	// 				CaCertificateURI: to.Ptr(""),
 	// 				EncryptLdapConnection: to.Ptr(false),
 	// 				ExtendedGroups: to.Ptr(true),
-	// 				GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+	// 				GroupFileURI: to.Ptr(""),
 	// 				LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
 	// 				LdapServer: to.Ptr("192.0.2.12"),
 	// 				RequireValidCertificate: to.Ptr(false),
-	// 				UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+	// 				UserFileURI: to.Ptr(""),
 	// 				UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
 	// 				UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
 	// 			},
@@ -673,7 +669,6 @@ func ExampleCachesClient_Get() {
 	// 						PrimingJobStatus: to.Ptr(""),
 	// 				}},
 	// 				ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-	// 				ScalingFactor: to.Ptr[float64](1),
 	// 				SecuritySettings: &armstoragecache.CacheSecuritySettings{
 	// 					AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 	// 						{
@@ -707,11 +702,11 @@ func ExampleCachesClient_Get() {
 	// 					UpgradeScheduleEnabled: to.Ptr(true),
 	// 				},
 	// 				UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-	// 					CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+	// 					CurrentFirmwareVersion: to.Ptr("V5.1.12"),
 	// 					FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 	// 					FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
 	// 					LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
-	// 					PendingFirmwareVersion: to.Ptr("2022.08.1"),
+	// 					PendingFirmwareVersion: to.Ptr("V5.1.15"),
 	// 				},
 	// 				Zones: []*string{
 	// 					to.Ptr("1")},
@@ -733,7 +728,7 @@ func ExampleCachesClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_CreateOrUpdate.json
 func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -785,7 +780,6 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 					},
 				},
 			},
-			ScalingFactor: to.Ptr[float64](1),
 			SecuritySettings: &armstoragecache.CacheSecuritySettings{
 				AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 					{
@@ -841,14 +835,14 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	// 			},
 	// 			UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 	// 				AutoDownloadCertificate: to.Ptr(false),
-	// 				CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+	// 				CaCertificateURI: to.Ptr(""),
 	// 				EncryptLdapConnection: to.Ptr(false),
 	// 				ExtendedGroups: to.Ptr(true),
-	// 				GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+	// 				GroupFileURI: to.Ptr(""),
 	// 				LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
 	// 				LdapServer: to.Ptr("192.0.2.12"),
 	// 				RequireValidCertificate: to.Ptr(false),
-	// 				UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+	// 				UserFileURI: to.Ptr(""),
 	// 				UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
 	// 				UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
 	// 			},
@@ -899,7 +893,6 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	// 						PrimingJobStatus: to.Ptr(""),
 	// 				}},
 	// 				ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-	// 				ScalingFactor: to.Ptr[float64](1),
 	// 				SecuritySettings: &armstoragecache.CacheSecuritySettings{
 	// 					AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 	// 						{
@@ -922,11 +915,11 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	// 					UpgradeScheduleEnabled: to.Ptr(true),
 	// 				},
 	// 				UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-	// 					CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+	// 					CurrentFirmwareVersion: to.Ptr("V5.1.12"),
 	// 					FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 	// 					FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
 	// 					LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
-	// 					PendingFirmwareVersion: to.Ptr("2022.08.1"),
+	// 					PendingFirmwareVersion: to.Ptr("V5.1.15"),
 	// 				},
 	// 				Zones: []*string{
 	// 					to.Ptr("1")},
@@ -948,7 +941,7 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_CreateOrUpdate_ldap_only.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_CreateOrUpdate_ldap_only.json
 func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -983,7 +976,6 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 					},
 				},
 			},
-			ScalingFactor: to.Ptr[float64](1),
 			SecuritySettings: &armstoragecache.CacheSecuritySettings{
 				AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 					{
@@ -1031,14 +1023,14 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	// 		DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
 	// 			UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 	// 				AutoDownloadCertificate: to.Ptr(false),
-	// 				CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+	// 				CaCertificateURI: to.Ptr(""),
 	// 				EncryptLdapConnection: to.Ptr(false),
 	// 				ExtendedGroups: to.Ptr(true),
-	// 				GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+	// 				GroupFileURI: to.Ptr(""),
 	// 				LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
 	// 				LdapServer: to.Ptr("192.0.2.12"),
 	// 				RequireValidCertificate: to.Ptr(false),
-	// 				UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+	// 				UserFileURI: to.Ptr(""),
 	// 				UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
 	// 				UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
 	// 			},
@@ -1089,7 +1081,6 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	// 						PrimingJobStatus: to.Ptr(""),
 	// 				}},
 	// 				ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-	// 				ScalingFactor: to.Ptr[float64](1),
 	// 				SecuritySettings: &armstoragecache.CacheSecuritySettings{
 	// 					AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 	// 						{
@@ -1112,11 +1103,11 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	// 					UpgradeScheduleEnabled: to.Ptr(true),
 	// 				},
 	// 				UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-	// 					CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+	// 					CurrentFirmwareVersion: to.Ptr("V5.1.12"),
 	// 					FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 	// 					FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
 	// 					LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
-	// 					PendingFirmwareVersion: to.Ptr("2022.08.1"),
+	// 					PendingFirmwareVersion: to.Ptr("V5.1.15"),
 	// 				},
 	// 				Zones: []*string{
 	// 					to.Ptr("1")},
@@ -1138,7 +1129,7 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_Update.json
 func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1174,7 +1165,6 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 				Mtu:       to.Ptr[int32](1500),
 				NtpServer: to.Ptr("time.contoso.com"),
 			},
-			ScalingFactor: to.Ptr[float64](2),
 			SecuritySettings: &armstoragecache.CacheSecuritySettings{
 				AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 					{
@@ -1225,7 +1215,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 			},
 		},
 		SKU: &armstoragecache.CacheSKU{
-			Name: to.Ptr("Standard_Scalable"),
+			Name: to.Ptr("Standard_2G"),
 		},
 		Tags: map[string]*string{
 			"Dept": to.Ptr("Contoso"),
@@ -1259,14 +1249,14 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	// 			},
 	// 			UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 	// 				AutoDownloadCertificate: to.Ptr(false),
-	// 				CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+	// 				CaCertificateURI: to.Ptr(""),
 	// 				EncryptLdapConnection: to.Ptr(false),
 	// 				ExtendedGroups: to.Ptr(true),
-	// 				GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+	// 				GroupFileURI: to.Ptr(""),
 	// 				LdapBaseDN: to.Ptr(""),
 	// 				LdapServer: to.Ptr(""),
 	// 				RequireValidCertificate: to.Ptr(false),
-	// 				UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+	// 				UserFileURI: to.Ptr(""),
 	// 				UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
 	// 				UsernameSource: to.Ptr(armstoragecache.UsernameSourceAD),
 	// 			},
@@ -1309,7 +1299,6 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	// 						PrimingJobStatus: to.Ptr(""),
 	// 				}},
 	// 				ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-	// 				ScalingFactor: to.Ptr[float64](2),
 	// 				SecuritySettings: &armstoragecache.CacheSecuritySettings{
 	// 					AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 	// 						{
@@ -1372,15 +1361,15 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	// 					UpgradeScheduleEnabled: to.Ptr(true),
 	// 				},
 	// 				UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-	// 					CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+	// 					CurrentFirmwareVersion: to.Ptr("V5.1.12"),
 	// 					FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 	// 					FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
 	// 					LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
-	// 					PendingFirmwareVersion: to.Ptr("2022.08.1"),
+	// 					PendingFirmwareVersion: to.Ptr("V5.1.15"),
 	// 				},
 	// 			},
 	// 			SKU: &armstoragecache.CacheSKU{
-	// 				Name: to.Ptr("Standard_Scalable"),
+	// 				Name: to.Ptr("Standard_2G"),
 	// 			},
 	// 			SystemData: &armstoragecache.SystemData{
 	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
@@ -1396,7 +1385,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_Update_ldap_only.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_Update_ldap_only.json
 func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1431,7 +1420,6 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 				Mtu:       to.Ptr[int32](1500),
 				NtpServer: to.Ptr("time.contoso.com"),
 			},
-			ScalingFactor: to.Ptr[float64](1),
 			SecuritySettings: &armstoragecache.CacheSecuritySettings{
 				AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 					{
@@ -1508,14 +1496,14 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	// 		DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
 	// 			UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 	// 				AutoDownloadCertificate: to.Ptr(false),
-	// 				CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+	// 				CaCertificateURI: to.Ptr(""),
 	// 				EncryptLdapConnection: to.Ptr(false),
 	// 				ExtendedGroups: to.Ptr(true),
-	// 				GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+	// 				GroupFileURI: to.Ptr(""),
 	// 				LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
 	// 				LdapServer: to.Ptr("192.0.2.12"),
 	// 				RequireValidCertificate: to.Ptr(false),
-	// 				UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+	// 				UserFileURI: to.Ptr(""),
 	// 				UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeNo),
 	// 				UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
 	// 			},
@@ -1558,7 +1546,6 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	// 						PrimingJobStatus: to.Ptr(""),
 	// 				}},
 	// 				ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-	// 				ScalingFactor: to.Ptr[float64](1),
 	// 				SecuritySettings: &armstoragecache.CacheSecuritySettings{
 	// 					AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 	// 						{
@@ -1610,11 +1597,11 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	// 					UpgradeScheduleEnabled: to.Ptr(true),
 	// 				},
 	// 				UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-	// 					CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+	// 					CurrentFirmwareVersion: to.Ptr("V5.1.12"),
 	// 					FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 	// 					FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
 	// 					LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
-	// 					PendingFirmwareVersion: to.Ptr("2022.08.1"),
+	// 					PendingFirmwareVersion: to.Ptr("V5.1.15"),
 	// 				},
 	// 			},
 	// 			SKU: &armstoragecache.CacheSKU{
@@ -1634,7 +1621,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_DebugInfo.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_DebugInfo.json
 func ExampleCachesClient_BeginDebugInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1655,7 +1642,7 @@ func ExampleCachesClient_BeginDebugInfo() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_Flush.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_Flush.json
 func ExampleCachesClient_BeginFlush() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1676,7 +1663,7 @@ func ExampleCachesClient_BeginFlush() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_Start.json
 func ExampleCachesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1697,7 +1684,7 @@ func ExampleCachesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_Stop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_Stop.json
 func ExampleCachesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1718,7 +1705,7 @@ func ExampleCachesClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/StartPrimingJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/StartPrimingJob.json
 func ExampleCachesClient_BeginStartPrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1743,7 +1730,7 @@ func ExampleCachesClient_BeginStartPrimingJob() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/StopPrimingJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/StopPrimingJob.json
 func ExampleCachesClient_BeginStopPrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1767,7 +1754,7 @@ func ExampleCachesClient_BeginStopPrimingJob() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/PausePrimingJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/PausePrimingJob.json
 func ExampleCachesClient_BeginPausePrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1791,7 +1778,7 @@ func ExampleCachesClient_BeginPausePrimingJob() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/ResumePrimingJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/ResumePrimingJob.json
 func ExampleCachesClient_BeginResumePrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1815,7 +1802,7 @@ func ExampleCachesClient_BeginResumePrimingJob() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_UpgradeFirmware.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_UpgradeFirmware.json
 func ExampleCachesClient_BeginUpgradeFirmware() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1836,7 +1823,7 @@ func ExampleCachesClient_BeginUpgradeFirmware() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e2749bb2cbee0b4c447a9d6c1d7cbce3d415abd4/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/SpaceAllocation_Post.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/SpaceAllocation_Post.json
 func ExampleCachesClient_BeginSpaceAllocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

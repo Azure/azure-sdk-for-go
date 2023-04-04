@@ -54,11 +54,6 @@ type DatabasesClientExportResponse struct {
 	// placeholder for future response values
 }
 
-// DatabasesClientFlushResponse contains the response from method DatabasesClient.BeginFlush.
-type DatabasesClientFlushResponse struct {
-	// placeholder for future response values
-}
-
 // DatabasesClientForceUnlinkResponse contains the response from method DatabasesClient.BeginForceUnlink.
 type DatabasesClientForceUnlinkResponse struct {
 	// placeholder for future response values
@@ -127,9 +122,4 @@ type PrivateEndpointConnectionsClientPutResponse struct {
 // PrivateLinkResourcesClientListByClusterResponse contains the response from method PrivateLinkResourcesClient.NewListByClusterPager.
 type PrivateLinkResourcesClientListByClusterResponse struct {
 	PrivateLinkResourceListResult
-}
-
-// SKUsClientListResponse contains the response from method SKUsClient.NewListPager.
-type SKUsClientListResponse struct {
-	RegionSKUDetails
 }

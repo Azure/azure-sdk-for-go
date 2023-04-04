@@ -1146,28 +1146,39 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLCopySourceFalse() {
 	_require.NotEqual(resp.AccessTier, to.Ptr("Cool"))
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_, svcCred, err := testcommon.GetServiceClientCred(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	// Getting OAuth
+	// Getting AAD Authentication
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateContainerCred(context.Background(), _require, containerName, svcCred, cred)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
+	// Create source and destination blobs
+	srcBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, "src "+testName, containerClient)
+	destBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, "dest"+testName, containerClient)
+
+	// create empty dest blob
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	_, err = destBBClient.Upload(context.Background(), streaming.NopCloser(body), nil)
+	_require.Nil(err)
+
 	// Getting token
-	token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{})
+	token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
 	_require.NoError(err)
 
 	options := blockblob.UploadBlobFromURLOptions{
-		CopySourceAuthorization: to.Ptr(token.Token),
+		CopySourceAuthorization: to.Ptr("Bearer " + token.Token),
 	}
 
-	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	pbResp, err := destBBClient.UploadBlobFromURL(context.Background(), srcBBClient.URL(), &options)
 	_require.NoError(err)
 	_require.NotNil(pbResp)
 

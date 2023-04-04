@@ -139,6 +139,24 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *servic
 	return serviceClient, err
 }
 
+func GetServiceClientCred(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, *azblob.SharedKeyCredential, error) {
+	if options == nil {
+		options = &service.ClientOptions{}
+	}
+
+	SetClientOptions(t, &options.ClientOptions)
+
+	cred, err := GetGenericSharedKeyCredential(accountType)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".blob.core.windows.net/", cred, options)
+
+	// Returns SharedKeyCredential
+	return serviceClient, cred, err
+}
+
 func GetServiceClientNoCredential(t *testing.T, sasUrl string, options *service.ClientOptions) (*service.Client, error) {
 	if options == nil {
 		options = &service.ClientOptions{}
@@ -207,7 +225,17 @@ func CreateNewContainer(ctx context.Context, _require *require.Assertions, conta
 
 	_, err := containerClient.Create(ctx, nil)
 	_require.Nil(err)
-	// _require.Equal(cResp.RawResponse.StatusCode, 201)
+
+	return containerClient
+}
+
+func CreateContainerCred(ctx context.Context, _require *require.Assertions, containerName string, svcCred *service.SharedKeyCredential, cred *azidentity.DefaultAzureCredential) *container.Client {
+	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", svcCred.AccountName(), containerName)
+
+	containerClient, err := container.NewClient(containerURL, cred, nil)
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
 	return containerClient
 }
 

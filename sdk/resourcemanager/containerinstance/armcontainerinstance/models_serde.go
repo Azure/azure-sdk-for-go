@@ -230,33 +230,6 @@ func (c *CapabilitiesListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfidentialComputeProperties.
-func (c ConfidentialComputeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "ccePolicy", c.CcePolicy)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ConfidentialComputeProperties.
-func (c *ConfidentialComputeProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", c, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "ccePolicy":
-			err = unpopulate(val, "CcePolicy", &c.CcePolicy)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", c, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type Container.
 func (c Container) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -656,7 +629,6 @@ func (c *ContainerGroupPropertiesInstanceView) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type ContainerGroupPropertiesProperties.
 func (c ContainerGroupPropertiesProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "confidentialComputeProperties", c.ConfidentialComputeProperties)
 	populate(objectMap, "containers", c.Containers)
 	populate(objectMap, "dnsConfig", c.DNSConfig)
 	populate(objectMap, "diagnostics", c.Diagnostics)
@@ -667,7 +639,6 @@ func (c ContainerGroupPropertiesProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "initContainers", c.InitContainers)
 	populate(objectMap, "instanceView", c.InstanceView)
 	populate(objectMap, "osType", c.OSType)
-	populate(objectMap, "priority", c.Priority)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "restartPolicy", c.RestartPolicy)
 	populate(objectMap, "sku", c.SKU)
@@ -685,9 +656,6 @@ func (c *ContainerGroupPropertiesProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "confidentialComputeProperties":
-			err = unpopulate(val, "ConfidentialComputeProperties", &c.ConfidentialComputeProperties)
-			delete(rawMsg, key)
 		case "containers":
 			err = unpopulate(val, "Containers", &c.Containers)
 			delete(rawMsg, key)
@@ -717,9 +685,6 @@ func (c *ContainerGroupPropertiesProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "osType":
 			err = unpopulate(val, "OSType", &c.OSType)
-			delete(rawMsg, key)
-		case "priority":
-			err = unpopulate(val, "Priority", &c.Priority)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)

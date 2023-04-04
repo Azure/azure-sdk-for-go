@@ -86,12 +86,6 @@ type CapabilitiesListResult struct {
 	Value []*Capabilities `json:"value,omitempty"`
 }
 
-// ConfidentialComputeProperties - The properties for confidential container group
-type ConfidentialComputeProperties struct {
-	// The base64 encoded confidential compute enforcement policy
-	CcePolicy *string `json:"ccePolicy,omitempty"`
-}
-
 // Container - A container instance.
 type Container struct {
 	// REQUIRED; The user-provided name of the container instance.
@@ -230,9 +224,6 @@ type ContainerGroupPropertiesProperties struct {
 	// REQUIRED; The operating system type required by the containers in the container group.
 	OSType *OperatingSystemTypes `json:"osType,omitempty"`
 
-	// The properties for confidential container group
-	ConfidentialComputeProperties *ConfidentialComputeProperties `json:"confidentialComputeProperties,omitempty"`
-
 	// The DNS config information for a container group.
 	DNSConfig *DNSConfiguration `json:"dnsConfig,omitempty"`
 
@@ -253,9 +244,6 @@ type ContainerGroupPropertiesProperties struct {
 
 	// The init containers for a container group.
 	InitContainers []*InitContainerDefinition `json:"initContainers,omitempty"`
-
-	// The priority of the container group.
-	Priority *ContainerGroupPriority `json:"priority,omitempty"`
 
 	// Restart policy for all containers within the container group.
 	// * Always Always restart

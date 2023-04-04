@@ -49,7 +49,7 @@ func NewSubnetServiceAssociationLinkClient(subscriptionID string, credential azc
 // by the user.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkName - The name of the virtual network.
 //   - subnetName - The name of the subnet.
@@ -71,7 +71,7 @@ func (client *SubnetServiceAssociationLinkClient) BeginDelete(ctx context.Contex
 // by the user.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2022-09-01
 func (client *SubnetServiceAssociationLinkClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetServiceAssociationLinkClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 	if err != nil {
@@ -111,7 +111,7 @@ func (client *SubnetServiceAssociationLinkClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

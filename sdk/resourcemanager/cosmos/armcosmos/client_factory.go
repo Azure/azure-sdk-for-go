@@ -103,11 +103,6 @@ func (c *ClientFactory) NewPartitionKeyRangeIDRegionClient() *PartitionKeyRangeI
 	return subClient
 }
 
-func (c *ClientFactory) NewGraphResourcesClient() *GraphResourcesClient {
-	subClient, _ := NewGraphResourcesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewSQLResourcesClient() *SQLResourcesClient {
 	subClient, _ := NewSQLResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -135,11 +130,6 @@ func (c *ClientFactory) NewGremlinResourcesClient() *GremlinResourcesClient {
 
 func (c *ClientFactory) NewLocationsClient() *LocationsClient {
 	subClient, _ := NewLocationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewDataTransferJobsClient() *DataTransferJobsClient {
-	subClient, _ := NewDataTransferJobsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

@@ -1,170 +1,47 @@
 # Release History
 
-## 2.3.0-beta.1 (2023-03-24)
+## 2.3.0 (2023-04-07)
 ### Features Added
 
-- New struct `ClientFactory` which is a client factory used to create any client in this module
-- New value `AuthenticationMethodLdap` added to enum type `AuthenticationMethod`
-- New value `OperationTypeRecreate` added to enum type `OperationType`
-- New enum type `ContinuousTier` with values `ContinuousTierContinuous30Days`, `ContinuousTierContinuous7Days`
-- New enum type `DataTransferComponent` with values `DataTransferComponentAzureBlobStorage`, `DataTransferComponentCosmosDBCassandra`, `DataTransferComponentCosmosDBSQL`
-- New enum type `EnableFullTextQuery` with values `EnableFullTextQueryFalse`, `EnableFullTextQueryNone`, `EnableFullTextQueryTrue`
-- New enum type `ThroughputPolicyType` with values `ThroughputPolicyTypeCustom`, `ThroughputPolicyTypeEqual`, `ThroughputPolicyTypeNone`
-- New function `*AzureBlobDataTransferDataSourceSink.GetDataTransferDataSourceSink() *DataTransferDataSourceSink`
-- New function `*CassandraClustersClient.GetBackup(context.Context, string, string, string, *CassandraClustersClientGetBackupOptions) (CassandraClustersClientGetBackupResponse, error)`
-- New function `*CassandraClustersClient.NewListBackupsPager(string, string, *CassandraClustersClientListBackupsOptions) *runtime.Pager[CassandraClustersClientListBackupsResponse]`
-- New function `*CassandraDataTransferDataSourceSink.GetDataTransferDataSourceSink() *DataTransferDataSourceSink`
-- New function `*CassandraResourcesClient.BeginCreateUpdateCassandraView(context.Context, string, string, string, string, CassandraViewCreateUpdateParameters, *CassandraResourcesClientBeginCreateUpdateCassandraViewOptions) (*runtime.Poller[CassandraResourcesClientCreateUpdateCassandraViewResponse], error)`
-- New function `*CassandraResourcesClient.BeginDeleteCassandraView(context.Context, string, string, string, string, *CassandraResourcesClientBeginDeleteCassandraViewOptions) (*runtime.Poller[CassandraResourcesClientDeleteCassandraViewResponse], error)`
-- New function `*CassandraResourcesClient.GetCassandraView(context.Context, string, string, string, string, *CassandraResourcesClientGetCassandraViewOptions) (CassandraResourcesClientGetCassandraViewResponse, error)`
-- New function `*CassandraResourcesClient.GetCassandraViewThroughput(context.Context, string, string, string, string, *CassandraResourcesClientGetCassandraViewThroughputOptions) (CassandraResourcesClientGetCassandraViewThroughputResponse, error)`
-- New function `*CassandraResourcesClient.NewListCassandraViewsPager(string, string, string, *CassandraResourcesClientListCassandraViewsOptions) *runtime.Pager[CassandraResourcesClientListCassandraViewsResponse]`
-- New function `*CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale(context.Context, string, string, string, string, *CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions) (*runtime.Poller[CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse], error)`
-- New function `*CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput(context.Context, string, string, string, string, *CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions) (*runtime.Poller[CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse], error)`
-- New function `*CassandraResourcesClient.BeginUpdateCassandraViewThroughput(context.Context, string, string, string, string, ThroughputSettingsUpdateParameters, *CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions) (*runtime.Poller[CassandraResourcesClientUpdateCassandraViewThroughputResponse], error)`
-- New function `*DataTransferDataSourceSink.GetDataTransferDataSourceSink() *DataTransferDataSourceSink`
-- New function `NewDataTransferJobsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DataTransferJobsClient, error)`
-- New function `*DataTransferJobsClient.Cancel(context.Context, string, string, string, *DataTransferJobsClientCancelOptions) (DataTransferJobsClientCancelResponse, error)`
-- New function `*DataTransferJobsClient.Create(context.Context, string, string, string, CreateJobRequest, *DataTransferJobsClientCreateOptions) (DataTransferJobsClientCreateResponse, error)`
-- New function `*DataTransferJobsClient.Get(context.Context, string, string, string, *DataTransferJobsClientGetOptions) (DataTransferJobsClientGetResponse, error)`
-- New function `*DataTransferJobsClient.NewListByDatabaseAccountPager(string, string, *DataTransferJobsClientListByDatabaseAccountOptions) *runtime.Pager[DataTransferJobsClientListByDatabaseAccountResponse]`
-- New function `*DataTransferJobsClient.Pause(context.Context, string, string, string, *DataTransferJobsClientPauseOptions) (DataTransferJobsClientPauseResponse, error)`
-- New function `*DataTransferJobsClient.Resume(context.Context, string, string, string, *DataTransferJobsClientResumeOptions) (DataTransferJobsClientResumeResponse, error)`
-- New function `NewGraphResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GraphResourcesClient, error)`
-- New function `*GraphResourcesClient.BeginCreateUpdateGraph(context.Context, string, string, string, GraphResourceCreateUpdateParameters, *GraphResourcesClientBeginCreateUpdateGraphOptions) (*runtime.Poller[GraphResourcesClientCreateUpdateGraphResponse], error)`
-- New function `*GraphResourcesClient.BeginDeleteGraphResource(context.Context, string, string, string, *GraphResourcesClientBeginDeleteGraphResourceOptions) (*runtime.Poller[GraphResourcesClientDeleteGraphResourceResponse], error)`
-- New function `*GraphResourcesClient.GetGraph(context.Context, string, string, string, *GraphResourcesClientGetGraphOptions) (GraphResourcesClientGetGraphResponse, error)`
-- New function `*GraphResourcesClient.NewListGraphsPager(string, string, *GraphResourcesClientListGraphsOptions) *runtime.Pager[GraphResourcesClientListGraphsResponse]`
-- New function `*MongoDBResourcesClient.BeginListMongoDBCollectionPartitionMerge(context.Context, string, string, string, string, MergeParameters, *MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions) (*runtime.Poller[MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse], error)`
-- New function `*MongoDBResourcesClient.BeginMongoDBContainerRedistributeThroughput(context.Context, string, string, string, string, RedistributeThroughputParameters, *MongoDBResourcesClientBeginMongoDBContainerRedistributeThroughputOptions) (*runtime.Poller[MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse], error)`
-- New function `*MongoDBResourcesClient.BeginMongoDBContainerRetrieveThroughputDistribution(context.Context, string, string, string, string, RetrieveThroughputParameters, *MongoDBResourcesClientBeginMongoDBContainerRetrieveThroughputDistributionOptions) (*runtime.Poller[MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse], error)`
-- New function `*MongoDBResourcesClient.BeginMongoDBDatabaseRedistributeThroughput(context.Context, string, string, string, RedistributeThroughputParameters, *MongoDBResourcesClientBeginMongoDBDatabaseRedistributeThroughputOptions) (*runtime.Poller[MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse], error)`
-- New function `*MongoDBResourcesClient.BeginMongoDBDatabaseRetrieveThroughputDistribution(context.Context, string, string, string, RetrieveThroughputParameters, *MongoDBResourcesClientBeginMongoDBDatabaseRetrieveThroughputDistributionOptions) (*runtime.Poller[MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse], error)`
-- New function `*SQLDataTransferDataSourceSink.GetDataTransferDataSourceSink() *DataTransferDataSourceSink`
-- New function `*SQLResourcesClient.BeginListSQLContainerPartitionMerge(context.Context, string, string, string, string, MergeParameters, *SQLResourcesClientBeginListSQLContainerPartitionMergeOptions) (*runtime.Poller[SQLResourcesClientListSQLContainerPartitionMergeResponse], error)`
-- New function `*SQLResourcesClient.BeginSQLContainerRedistributeThroughput(context.Context, string, string, string, string, RedistributeThroughputParameters, *SQLResourcesClientBeginSQLContainerRedistributeThroughputOptions) (*runtime.Poller[SQLResourcesClientSQLContainerRedistributeThroughputResponse], error)`
-- New function `*SQLResourcesClient.BeginSQLContainerRetrieveThroughputDistribution(context.Context, string, string, string, string, RetrieveThroughputParameters, *SQLResourcesClientBeginSQLContainerRetrieveThroughputDistributionOptions) (*runtime.Poller[SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse], error)`
-- New function `*SQLResourcesClient.BeginSQLDatabaseRedistributeThroughput(context.Context, string, string, string, RedistributeThroughputParameters, *SQLResourcesClientBeginSQLDatabaseRedistributeThroughputOptions) (*runtime.Poller[SQLResourcesClientSQLDatabaseRedistributeThroughputResponse], error)`
-- New function `*SQLResourcesClient.BeginSQLDatabaseRetrieveThroughputDistribution(context.Context, string, string, string, RetrieveThroughputParameters, *SQLResourcesClientBeginSQLDatabaseRetrieveThroughputDistributionOptions) (*runtime.Poller[SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse], error)`
-- New struct `AuthenticationMethodLdapProperties`
-- New struct `AzureBlobDataTransferDataSourceSink`
-- New struct `BackupResource`
-- New struct `BackupResourceProperties`
-- New struct `CassandraDataTransferDataSourceSink`
-- New struct `CassandraViewCreateUpdateParameters`
-- New struct `CassandraViewCreateUpdateProperties`
-- New struct `CassandraViewGetProperties`
-- New struct `CassandraViewGetPropertiesOptions`
-- New struct `CassandraViewGetPropertiesResource`
-- New struct `CassandraViewGetResults`
-- New struct `CassandraViewListResult`
-- New struct `CassandraViewResource`
-- New struct `ContinuousModeProperties`
-- New struct `CreateJobRequest`
-- New struct `DataTransferJobFeedResults`
-- New struct `DataTransferJobGetResults`
-- New struct `DataTransferJobProperties`
-- New struct `DiagnosticLogSettings`
-- New struct `GraphResource`
-- New struct `GraphResourceCreateUpdateParameters`
-- New struct `GraphResourceCreateUpdateProperties`
-- New struct `GraphResourceGetProperties`
-- New struct `GraphResourceGetPropertiesOptions`
-- New struct `GraphResourceGetPropertiesResource`
-- New struct `GraphResourceGetResults`
-- New struct `GraphResourcesListResult`
-- New struct `ListBackups`
-- New struct `MergeParameters`
-- New struct `PhysicalPartitionID`
-- New struct `PhysicalPartitionStorageInfo`
-- New struct `PhysicalPartitionStorageInfoCollection`
-- New struct `PhysicalPartitionThroughputInfoProperties`
-- New struct `PhysicalPartitionThroughputInfoResource`
-- New struct `PhysicalPartitionThroughputInfoResult`
-- New struct `PhysicalPartitionThroughputInfoResultProperties`
-- New struct `PhysicalPartitionThroughputInfoResultPropertiesResource`
-- New struct `RedistributeThroughputParameters`
-- New struct `RedistributeThroughputProperties`
-- New struct `RedistributeThroughputPropertiesResource`
-- New struct `ResourceRestoreParameters`
-- New struct `RestoreParametersBase`
-- New struct `RetrieveThroughputParameters`
-- New struct `RetrieveThroughputProperties`
-- New struct `RetrieveThroughputPropertiesResource`
-- New struct `SQLDataTransferDataSourceSink`
-- New field `Identity` in struct `ARMResourceProperties`
-- New field `Identity` in struct `CassandraKeyspaceCreateUpdateParameters`
-- New field `Identity` in struct `CassandraKeyspaceGetResults`
-- New field `Identity` in struct `CassandraTableCreateUpdateParameters`
-- New field `Identity` in struct `CassandraTableGetResults`
-- New field `ContinuousModeProperties` in struct `ContinuousModeBackupPolicy`
-- New field `AuthenticationMethodLdapProperties` in struct `DataCenterResourceProperties`
-- New field `DiagnosticLogSettings` in struct `DatabaseAccountCreateUpdateProperties`
-- New field `EnableBurstCapacity` in struct `DatabaseAccountCreateUpdateProperties`
-- New field `EnableMaterializedViews` in struct `DatabaseAccountCreateUpdateProperties`
-- New field `DiagnosticLogSettings` in struct `DatabaseAccountGetProperties`
-- New field `EnableBurstCapacity` in struct `DatabaseAccountGetProperties`
-- New field `EnableMaterializedViews` in struct `DatabaseAccountGetProperties`
-- New field `DiagnosticLogSettings` in struct `DatabaseAccountUpdateProperties`
-- New field `EnableBurstCapacity` in struct `DatabaseAccountUpdateProperties`
-- New field `EnableMaterializedViews` in struct `DatabaseAccountUpdateProperties`
-- New field `Identity` in struct `GremlinDatabaseCreateUpdateParameters`
-- New field `CreateMode` in struct `GremlinDatabaseGetPropertiesResource`
-- New field `RestoreParameters` in struct `GremlinDatabaseGetPropertiesResource`
-- New field `Identity` in struct `GremlinDatabaseGetResults`
-- New field `CreateMode` in struct `GremlinDatabaseResource`
-- New field `RestoreParameters` in struct `GremlinDatabaseResource`
-- New field `Identity` in struct `GremlinGraphCreateUpdateParameters`
-- New field `CreateMode` in struct `GremlinGraphGetPropertiesResource`
-- New field `RestoreParameters` in struct `GremlinGraphGetPropertiesResource`
-- New field `Identity` in struct `GremlinGraphGetResults`
-- New field `CreateMode` in struct `GremlinGraphResource`
-- New field `RestoreParameters` in struct `GremlinGraphResource`
-- New field `Status` in struct `LocationProperties`
-- New field `Identity` in struct `MongoDBCollectionCreateUpdateParameters`
-- New field `CreateMode` in struct `MongoDBCollectionGetPropertiesResource`
-- New field `RestoreParameters` in struct `MongoDBCollectionGetPropertiesResource`
-- New field `Identity` in struct `MongoDBCollectionGetResults`
-- New field `CreateMode` in struct `MongoDBCollectionResource`
-- New field `RestoreParameters` in struct `MongoDBCollectionResource`
-- New field `Identity` in struct `MongoDBDatabaseCreateUpdateParameters`
-- New field `CreateMode` in struct `MongoDBDatabaseGetPropertiesResource`
-- New field `RestoreParameters` in struct `MongoDBDatabaseGetPropertiesResource`
-- New field `Identity` in struct `MongoDBDatabaseGetResults`
-- New field `CreateMode` in struct `MongoDBDatabaseResource`
-- New field `RestoreParameters` in struct `MongoDBDatabaseResource`
-- New field `OldestRestorableTime` in struct `RestorableDatabaseAccountProperties`
-- New field `CreateMode` in struct `RestorableSQLContainerPropertiesResourceContainer`
-- New field `RestoreParameters` in struct `RestorableSQLContainerPropertiesResourceContainer`
-- New field `CreateMode` in struct `RestorableSQLDatabasePropertiesResourceDatabase`
-- New field `RestoreParameters` in struct `RestorableSQLDatabasePropertiesResourceDatabase`
-- New field `SourceBackupLocation` in struct `RestoreParameters`
-- New field `Identity` in struct `SQLContainerCreateUpdateParameters`
-- New field `CreateMode` in struct `SQLContainerGetPropertiesResource`
-- New field `RestoreParameters` in struct `SQLContainerGetPropertiesResource`
-- New field `Identity` in struct `SQLContainerGetResults`
-- New field `CreateMode` in struct `SQLContainerResource`
-- New field `RestoreParameters` in struct `SQLContainerResource`
-- New field `Identity` in struct `SQLDatabaseCreateUpdateParameters`
-- New field `CreateMode` in struct `SQLDatabaseGetPropertiesResource`
-- New field `RestoreParameters` in struct `SQLDatabaseGetPropertiesResource`
-- New field `Identity` in struct `SQLDatabaseGetResults`
-- New field `CreateMode` in struct `SQLDatabaseResource`
-- New field `RestoreParameters` in struct `SQLDatabaseResource`
-- New field `Identity` in struct `SQLStoredProcedureCreateUpdateParameters`
-- New field `Identity` in struct `SQLStoredProcedureGetResults`
-- New field `Identity` in struct `SQLTriggerCreateUpdateParameters`
-- New field `Identity` in struct `SQLTriggerGetResults`
-- New field `Identity` in struct `SQLUserDefinedFunctionCreateUpdateParameters`
-- New field `Identity` in struct `SQLUserDefinedFunctionGetResults`
-- New field `Identity` in struct `TableCreateUpdateParameters`
-- New field `CreateMode` in struct `TableGetPropertiesResource`
-- New field `RestoreParameters` in struct `TableGetPropertiesResource`
-- New field `Identity` in struct `TableGetResults`
-- New field `CreateMode` in struct `TableResource`
-- New field `RestoreParameters` in struct `TableResource`
-- New field `Identity` in struct `ThroughputSettingsGetResults`
-- New field `Identity` in struct `ThroughputSettingsUpdateParameters`
+- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
+- New function `*ClientFactory.NewCassandraClustersClient() *CassandraClustersClient`
+- New function `*ClientFactory.NewCassandraDataCentersClient() *CassandraDataCentersClient`
+- New function `*ClientFactory.NewCassandraResourcesClient() *CassandraResourcesClient`
+- New function `*ClientFactory.NewCollectionClient() *CollectionClient`
+- New function `*ClientFactory.NewCollectionPartitionClient() *CollectionPartitionClient`
+- New function `*ClientFactory.NewCollectionPartitionRegionClient() *CollectionPartitionRegionClient`
+- New function `*ClientFactory.NewCollectionRegionClient() *CollectionRegionClient`
+- New function `*ClientFactory.NewDatabaseAccountRegionClient() *DatabaseAccountRegionClient`
+- New function `*ClientFactory.NewDatabaseAccountsClient() *DatabaseAccountsClient`
+- New function `*ClientFactory.NewDatabaseClient() *DatabaseClient`
+- New function `*ClientFactory.NewGremlinResourcesClient() *GremlinResourcesClient`
+- New function `*ClientFactory.NewLocationsClient() *LocationsClient`
+- New function `*ClientFactory.NewMongoDBResourcesClient() *MongoDBResourcesClient`
+- New function `*ClientFactory.NewNotebookWorkspacesClient() *NotebookWorkspacesClient`
+- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
+- New function `*ClientFactory.NewPartitionKeyRangeIDClient() *PartitionKeyRangeIDClient`
+- New function `*ClientFactory.NewPartitionKeyRangeIDRegionClient() *PartitionKeyRangeIDRegionClient`
+- New function `*ClientFactory.NewPercentileClient() *PercentileClient`
+- New function `*ClientFactory.NewPercentileSourceTargetClient() *PercentileSourceTargetClient`
+- New function `*ClientFactory.NewPercentileTargetClient() *PercentileTargetClient`
+- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
+- New function `*ClientFactory.NewRestorableDatabaseAccountsClient() *RestorableDatabaseAccountsClient`
+- New function `*ClientFactory.NewRestorableGremlinDatabasesClient() *RestorableGremlinDatabasesClient`
+- New function `*ClientFactory.NewRestorableGremlinGraphsClient() *RestorableGremlinGraphsClient`
+- New function `*ClientFactory.NewRestorableGremlinResourcesClient() *RestorableGremlinResourcesClient`
+- New function `*ClientFactory.NewRestorableMongodbCollectionsClient() *RestorableMongodbCollectionsClient`
+- New function `*ClientFactory.NewRestorableMongodbDatabasesClient() *RestorableMongodbDatabasesClient`
+- New function `*ClientFactory.NewRestorableMongodbResourcesClient() *RestorableMongodbResourcesClient`
+- New function `*ClientFactory.NewRestorableSQLContainersClient() *RestorableSQLContainersClient`
+- New function `*ClientFactory.NewRestorableSQLDatabasesClient() *RestorableSQLDatabasesClient`
+- New function `*ClientFactory.NewRestorableSQLResourcesClient() *RestorableSQLResourcesClient`
+- New function `*ClientFactory.NewRestorableTableResourcesClient() *RestorableTableResourcesClient`
+- New function `*ClientFactory.NewRestorableTablesClient() *RestorableTablesClient`
+- New function `*ClientFactory.NewSQLResourcesClient() *SQLResourcesClient`
+- New function `*ClientFactory.NewServiceClient() *ServiceClient`
+- New function `*ClientFactory.NewTableResourcesClient() *TableResourcesClient`
+- New struct `ClientFactory`
 
 
 ## 2.2.0 (2023-02-24)

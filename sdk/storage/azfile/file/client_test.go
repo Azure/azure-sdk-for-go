@@ -858,6 +858,376 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyNegativeMetadataInvalidField()
 	_require.Error(err)
 }
 
+func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceCreationTime() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 21:00:00 GMT 2023")
+	_require.NoError(err)
+
+	cResp, err := fClient.Create(context.Background(), 0, &file.CreateOptions{
+		SMBProperties: &file.SMBProperties{
+			Attributes:    &file.NTFSFileAttributes{ReadOnly: true, Hidden: true},
+			CreationTime:  to.Ptr(currTime.Add(5 * time.Minute)),
+			LastWriteTime: to.Ptr(currTime.Add(2 * time.Minute)),
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(cResp.FileCreationTime)
+	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileAttributes)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			CreationTime: file.SourceCopyFileCreationTime{},
+		},
+	})
+	_require.NoError(err)
+
+	time.Sleep(4 * time.Second)
+
+	resp2, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.EqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
+	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.NotEqualValues(resp2.FileAttributes, cResp.FileAttributes)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopySourceProperties() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+
+	cResp, err := fClient.Create(context.Background(), 0, &file.CreateOptions{
+		SMBProperties: &file.SMBProperties{
+			Attributes:    &file.NTFSFileAttributes{System: true},
+			CreationTime:  to.Ptr(currTime.Add(1 * time.Minute)),
+			LastWriteTime: to.Ptr(currTime.Add(2 * time.Minute)),
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(cResp.FileCreationTime)
+	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileAttributes)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			CreationTime:       file.SourceCopyFileCreationTime{},
+			LastWriteTime:      file.SourceCopyFileLastWriteTime{},
+			Attributes:         file.SourceCopyFileAttributes{},
+			PermissionCopyMode: to.Ptr(file.PermissionCopyModeTypeSource),
+		},
+	})
+	_require.NoError(err)
+
+	time.Sleep(4 * time.Second)
+
+	resp2, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.EqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
+	_require.EqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.EqualValues(resp2.FileAttributes, cResp.FileAttributes)
+	_require.EqualValues(resp2.FilePermissionKey, cResp.FilePermissionKey)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopyDifferentProperties() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+
+	cResp, err := fClient.Create(context.Background(), 0, &file.CreateOptions{
+		SMBProperties: &file.SMBProperties{
+			Attributes:    &file.NTFSFileAttributes{System: true},
+			CreationTime:  to.Ptr(currTime.Add(1 * time.Minute)),
+			LastWriteTime: to.Ptr(currTime.Add(2 * time.Minute)),
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(cResp.FileCreationTime)
+	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileAttributes)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	destCreationTime := currTime.Add(5 * time.Minute)
+	destLastWriteTIme := currTime.Add(6 * time.Minute)
+	resp, err := copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			CreationTime:  file.DestinationCopyFileCreationTime(destCreationTime),
+			LastWriteTime: file.DestinationCopyFileLastWriteTime(destLastWriteTIme),
+			Attributes:    file.DestinationCopyFileAttributes{ReadOnly: true},
+		},
+	})
+	_require.NoError(err)
+	waitForCopy(_require, copyFClient, resp)
+
+	resp2, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotEqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
+	_require.EqualValues(*resp2.FileCreationTime, destCreationTime.UTC())
+	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.EqualValues(*resp2.FileLastWriteTime, destLastWriteTIme.UTC())
+	_require.NotEqualValues(resp2.FileAttributes, cResp.FileAttributes)
+	_require.EqualValues(resp2.FilePermissionKey, cResp.FilePermissionKey)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopyOverrideMode() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	cResp, err := fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileCreationTime)
+	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileAttributes)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+		Permissions: &file.Permissions{
+			Permission: to.Ptr(testcommon.SampleSDDL),
+		},
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			PermissionCopyMode: to.Ptr(file.PermissionCopyModeTypeOverride),
+		},
+	})
+	_require.NoError(err)
+
+	time.Sleep(4 * time.Second)
+
+	resp2, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotEqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
+	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.NotEqualValues(resp2.FilePermissionKey, cResp.FilePermissionKey)
+}
+
+func (f *FileUnrecordedTestsSuite) TestNegativeFileStartCopyOverrideMode() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	cResp, err := fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileCreationTime)
+	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileAttributes)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	// permission or permission key is required when the PermissionCopyMode is override.
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			PermissionCopyMode: to.Ptr(file.PermissionCopyModeTypeOverride),
+		},
+	})
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.MissingRequiredHeader)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopySetArchiveAttributeTrue() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	cResp, err := fClient.Create(context.Background(), 0, &file.CreateOptions{
+		SMBProperties: &file.SMBProperties{
+			Attributes: &file.NTFSFileAttributes{ReadOnly: true, Hidden: true},
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(cResp.FileCreationTime)
+	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileAttributes)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			Attributes:          file.DestinationCopyFileAttributes{System: true, ReadOnly: true},
+			SetArchiveAttribute: to.Ptr(true),
+		},
+	})
+	_require.NoError(err)
+
+	time.Sleep(4 * time.Second)
+
+	resp2, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotEqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
+	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.Contains(*resp2.FileAttributes, "Archive")
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopySetArchiveAttributeFalse() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	cResp, err := fClient.Create(context.Background(), 0, &file.CreateOptions{
+		SMBProperties: &file.SMBProperties{
+			Attributes: &file.NTFSFileAttributes{ReadOnly: true, Hidden: true},
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(cResp.FileCreationTime)
+	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileAttributes)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			Attributes:          file.DestinationCopyFileAttributes{System: true, ReadOnly: true},
+			SetArchiveAttribute: to.Ptr(false),
+		},
+	})
+	_require.NoError(err)
+
+	time.Sleep(4 * time.Second)
+
+	resp2, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotEqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
+	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.NotContains(*resp2.FileAttributes, "Archive")
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileStartCopyDestReadOnly() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	cResp, err := fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileCreationTime)
+	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileAttributes)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	_, err = copyFClient.Create(context.Background(), 0, &file.CreateOptions{
+		SMBProperties: &file.SMBProperties{
+			Attributes: &file.NTFSFileAttributes{ReadOnly: true},
+		},
+	})
+	_require.NoError(err)
+
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			IgnoreReadOnly: to.Ptr(true),
+		},
+	})
+	_require.NoError(err)
+
+	time.Sleep(4 * time.Second)
+
+	resp2, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotEqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
+	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+}
+
+func (f *FileUnrecordedTestsSuite) TestNegativeFileStartCopyDestReadOnly() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := shareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	cResp, err := fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileCreationTime)
+	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileAttributes)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	_, err = copyFClient.Create(context.Background(), 0, &file.CreateOptions{
+		SMBProperties: &file.SMBProperties{
+			Attributes: &file.NTFSFileAttributes{ReadOnly: true},
+		},
+	})
+	_require.NoError(err)
+
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ReadOnlyAttribute)
+}
+
 func (f *FileRecordedTestsSuite) TestFileStartCopySourceNonExistent() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

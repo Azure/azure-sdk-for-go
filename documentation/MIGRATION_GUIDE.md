@@ -280,4 +280,4 @@ client, err := armresources.NewResourceGroupsClient("<SubscriptionId>", credenti
 
 ## Need help?
 
-If you have encountered an issue during migration, please file an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-go/issues) and make sure you add the "Preview" label to the issue
+If you have encountered an issue during migration, please file an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-go/issues).

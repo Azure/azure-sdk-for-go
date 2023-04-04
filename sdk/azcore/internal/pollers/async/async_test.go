@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/poller"
 	"github.com/stretchr/testify/require"
 )
 
@@ -55,29 +56,29 @@ func TestCanResume(t *testing.T) {
 }
 
 func TestNew(t *testing.T) {
-	poller, err := New[struct{}](exported.Pipeline{}, nil, "")
+	ap, err := New[struct{}](exported.Pipeline{}, nil, "")
 	require.NoError(t, err)
-	require.Empty(t, poller.CurState)
+	require.Empty(t, ap.CurState)
 
-	poller, err = New[struct{}](exported.Pipeline{}, &http.Response{Header: http.Header{}}, "")
+	ap, err = New[struct{}](exported.Pipeline{}, &http.Response{Header: http.Header{}}, "")
 	require.Error(t, err)
-	require.Nil(t, poller)
+	require.Nil(t, ap)
 
 	resp := initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, "this is an invalid polling URL")
-	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
+	ap, err = New[struct{}](exported.Pipeline{}, resp, "")
 	require.Error(t, err)
-	require.Nil(t, poller)
+	require.Nil(t, ap)
 
 	resp = initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeResourceURL)
-	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
+	ap, err = New[struct{}](exported.Pipeline{}, resp, "")
 	require.NoError(t, err)
-	require.Equal(t, fakePollingURL, poller.AsyncURL)
-	require.Equal(t, fakeResourceURL, poller.LocURL)
-	require.Equal(t, pollers.StatusInProgress, poller.CurState)
-	require.False(t, poller.Done())
+	require.Equal(t, fakePollingURL, ap.AsyncURL)
+	require.Equal(t, fakeResourceURL, ap.LocURL)
+	require.Equal(t, poller.StatusInProgress, ap.CurState)
+	require.False(t, ap.Done())
 }
 
 func TestNewDeleteNoProvState(t *testing.T) {
@@ -273,10 +274,10 @@ func TestSynchronousCompletion(t *testing.T) {
 	resp := initialResponse(http.MethodPut, io.NopCloser(strings.NewReader(`{ "properties": { "provisioningState": "Succeeded" } }`)))
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeResourceURL)
-	poller, err := New[struct{}](exported.Pipeline{}, resp, "")
+	ap, err := New[struct{}](exported.Pipeline{}, resp, "")
 	require.NoError(t, err)
-	require.Equal(t, fakePollingURL, poller.AsyncURL)
-	require.Equal(t, fakeResourceURL, poller.LocURL)
-	require.Equal(t, pollers.StatusSucceeded, poller.CurState)
-	require.True(t, poller.Done())
+	require.Equal(t, fakePollingURL, ap.AsyncURL)
+	require.Equal(t, fakeResourceURL, ap.LocURL)
+	require.Equal(t, poller.StatusSucceeded, ap.CurState)
+	require.True(t, ap.Done())
 }

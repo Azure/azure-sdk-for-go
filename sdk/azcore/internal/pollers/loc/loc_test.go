@@ -15,8 +15,8 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/poller"
 	"github.com/stretchr/testify/require"
 )
 
@@ -167,9 +167,9 @@ func TestSynchronousCompletion(t *testing.T) {
 	resp := initialResponse()
 	resp.Body = io.NopCloser(strings.NewReader(`{ "properties": { "provisioningState": "Succeeded" } }`))
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New[struct{}](exported.Pipeline{}, resp)
+	lp, err := New[struct{}](exported.Pipeline{}, resp)
 	require.NoError(t, err)
-	require.Equal(t, fakeLocationURL, poller.PollURL)
-	require.Equal(t, pollers.StatusSucceeded, poller.CurState)
-	require.True(t, poller.Done())
+	require.Equal(t, fakeLocationURL, lp.PollURL)
+	require.Equal(t, poller.StatusSucceeded, lp.CurState)
+	require.True(t, lp.Done())
 }

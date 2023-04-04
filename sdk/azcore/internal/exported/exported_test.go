@@ -7,7 +7,6 @@
 package exported
 
 import (
-	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -32,26 +31,5 @@ func TestHasStatusCode(t *testing.T) {
 	}
 	if !HasStatusCode(&http.Response{StatusCode: http.StatusOK}, http.StatusAccepted, http.StatusOK, http.StatusNoContent) {
 		t.Fatal("unexpected failure")
-	}
-}
-
-func TestPayload(t *testing.T) {
-	const val = "payload"
-	resp := &http.Response{
-		Body: io.NopCloser(strings.NewReader(val)),
-	}
-	b, err := Payload(resp)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if string(b) != val {
-		t.Fatalf("got %s, want %s", string(b), val)
-	}
-	b, err = Payload(resp)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if string(b) != val {
-		t.Fatalf("got %s, want %s", string(b), val)
 	}
 }

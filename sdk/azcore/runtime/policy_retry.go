@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/exported"
 )
 
 const (
@@ -133,7 +134,7 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 			// if the body was already downloaded or there was an error it's safe to cancel the context now
 			if err != nil {
 				tryCancel()
-			} else if _, ok := resp.Body.(*shared.NopClosingBytesReader); ok {
+			} else if exported.PayloadDownloaded(resp) {
 				tryCancel()
 			} else {
 				// must cancel the context after the body has been read and closed

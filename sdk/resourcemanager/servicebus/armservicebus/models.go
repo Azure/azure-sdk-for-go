@@ -222,7 +222,7 @@ type DisasterRecoveryConfigsClientListOptions struct {
 // Encryption - Properties to configure Encryption
 type Encryption struct {
 	// Enumerates the possible value of keySource for Encryption
-	KeySource *string `json:"keySource,omitempty"`
+	KeySource *KeySource `json:"keySource,omitempty"`
 
 	// Properties of KeyVault
 	KeyVaultProperties []*KeyVaultProperties `json:"keyVaultProperties,omitempty"`
@@ -1011,15 +1011,8 @@ type SBNamespaceProperties struct {
 	// The minimum TLS version for the cluster to support, e.g. '1.2'
 	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
 
-	// The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default
-	// value is 1 and possible values are 1, 2 and 4
-	PremiumMessagingPartitions *int32 `json:"premiumMessagingPartitions,omitempty"`
-
 	// List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
-
-	// This determines if traffic is allowed over public network. By default it is enabled.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
 	// Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
@@ -1212,10 +1205,7 @@ type SBSKU struct {
 	// REQUIRED; Name of this SKU.
 	Name *SKUName `json:"name,omitempty"`
 
-	// Messaging units for your service bus premium namespace. Valid capacities are {1, 2, 4, 8, 16} multiples of your properties.premiumMessagingPartitions
-	// setting. For example, If
-	// properties.premiumMessagingPartitions is 1 then possible capacity values are 1, 2, 4, 8, and 16. If properties.premiumMessagingPartitions
-	// is 4 then possible capacity values are 4, 8, 16, 32 and 64
+	// The specified messaging units for the tier. For Premium tier, capacity are 1,2 and 4.
 	Capacity *int32 `json:"capacity,omitempty"`
 
 	// The billing tier of this particular SKU.

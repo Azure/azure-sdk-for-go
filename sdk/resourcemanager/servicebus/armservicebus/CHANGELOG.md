@@ -1,5 +1,18 @@
 # Release History
 
+## 2.0.0-beta.4 (2023-04-07)
+### Breaking Changes
+
+- Type of `Encryption.KeySource` has been changed from `*string` to `*KeySource`
+- Type alias `PublicNetworkAccess` has been removed
+- Field `PremiumMessagingPartitions` of struct `SBNamespaceProperties` has been removed
+- Field `PublicNetworkAccess` of struct `SBNamespaceProperties` has been removed
+
+### Features Added
+
+- New enum type `KeySource` with values `KeySourceMicrosoftKeyVault`
+
+
 ## 2.0.0-beta.3 (2023-03-27)
 ### Features Added
 

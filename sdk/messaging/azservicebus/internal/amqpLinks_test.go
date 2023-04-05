@@ -541,7 +541,7 @@ func TestAMQPLinksLiveRace(t *testing.T) {
 }
 
 func TestAMQPLinksLiveRaceLink(t *testing.T) {
-	endCapture := test.CaptureLogsForTest()
+	endCapture := test.CaptureLogsForTest(false)
 	defer func() {
 		messages := endCapture()
 		for _, msg := range messages {

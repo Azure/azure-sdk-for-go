@@ -131,7 +131,7 @@ func TestNewClientWithWebsockets(t *testing.T) {
 }
 
 func TestNewClientUsingSharedAccessSignature(t *testing.T) {
-	getLogsFn := test.CaptureLogsForTest()
+	getLogsFn := test.CaptureLogsForTest(false)
 
 	sasCS, err := sas.CreateConnectionStringWithSASUsingExpiry(test.GetConnectionString(t), time.Now().UTC().Add(time.Hour))
 	require.NoError(t, err)

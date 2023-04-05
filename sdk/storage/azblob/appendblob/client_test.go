@@ -12,7 +12,6 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -415,8 +414,12 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuth() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
+	// Random seed for data generation
+	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
+	random := rand.New(rand.NewSource(seed))
+
 	// Getting AAD Authentication
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -424,13 +427,17 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuth() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Create source and destination blobs
-	srcABClient := testcommon.CreateNewAppendBlob(context.Background(), _require, "src "+testName, containerClient)
-	destABClient := testcommon.CreateNewAppendBlob(context.Background(), _require, "dest"+testName, containerClient)
+	srcABClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appendsrc"))
+	destABClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appenddest"))
 
 	// Upload some data to source
+	_, err = srcABClient.Create(context.Background(), nil)
+	_require.Nil(err)
 	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetRandomDataAndReader(contentSize)
+	r, sourceData := testcommon.GetDataAndReader(random, contentSize)
 	_, err = srcABClient.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
+	_require.Nil(err)
+	_, err = destABClient.Create(context.Background(), nil)
 	_require.Nil(err)
 
 	// Getting token
@@ -458,22 +465,30 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuthNegat
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
+	// Random seed for data generation
+	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
+	random := rand.New(rand.NewSource(seed))
+
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Create source and destination blobs
-	srcABClient := testcommon.CreateNewAppendBlob(context.Background(), _require, "src "+testName, containerClient)
-	destABClient := testcommon.CreateNewAppendBlob(context.Background(), _require, "dest"+testName, containerClient)
+	srcABClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appendsrc"))
+	destABClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appenddest"))
 
 	// Upload some data to source
+	_, err = srcABClient.Create(context.Background(), nil)
+	_require.Nil(err)
 	contentSize := 4 * 1024 // 4KB
-	r, _ := testcommon.GetRandomDataAndReader(contentSize)
+	r, _ := testcommon.GetDataAndReader(random, contentSize)
 	_, err = srcABClient.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
+	_require.Nil(err)
+	_, err = destABClient.Create(context.Background(), nil)
 	_require.Nil(err)
 
 	options := appendblob.AppendBlockFromURLOptions{
-		CopySourceAuthorization: to.Ptr("Bearer XXXXXXXXXXXXXXXXXXXXX"),
+		CopySourceAuthorization: to.Ptr("Bearer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"),
 	}
 
 	_, err = destABClient.AppendBlockFromURL(context.Background(), srcABClient.URL(), &options)

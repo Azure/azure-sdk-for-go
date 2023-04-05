@@ -11,9 +11,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"strings"
 	"testing"
@@ -56,6 +56,7 @@ const (
 const (
 	FakeStorageAccount = "fakestorage"
 	FakeStorageURL     = "https://fakestorage.blob.core.windows.net"
+	FakeToken          = "faketoken"
 )
 
 var (
@@ -146,6 +147,20 @@ func GetServiceClientNoCredential(t *testing.T, sasUrl string, options *service.
 	return serviceClient, err
 }
 
+type FakeCredential struct {
+}
+
+func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{Token: FakeToken, ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
+}
+
+func GetGenericTokenCredential() (azcore.TokenCredential, error) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return &FakeCredential{}, nil
+	}
+	return azidentity.NewDefaultAzureCredential(nil)
+}
+
 func GetGenericAccountInfo(accountType TestAccountType) (string, string) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		return FakeStorageAccount, "ZmFrZQ=="
@@ -221,20 +236,8 @@ func CreateNewBlobs(ctx context.Context, _require *require.Assertions, blobNames
 	}
 }
 
-func GetAppendBlobClient(blockBlobName string, containerClient *container.Client) *appendblob.Client {
-	return containerClient.NewAppendBlobClient(blockBlobName)
-}
-
 func GetBlockBlobClient(blockBlobName string, containerClient *container.Client) *blockblob.Client {
 	return containerClient.NewBlockBlobClient(blockBlobName)
-}
-
-func CreateNewAppendBlob(ctx context.Context, _require *require.Assertions, blockBlobName string, containerClient *container.Client) *appendblob.Client {
-	abClient := GetAppendBlobClient(blockBlobName, containerClient)
-
-	_, err := abClient.Create(ctx, nil)
-	_require.Nil(err)
-	return abClient
 }
 
 func CreateNewBlockBlob(ctx context.Context, _require *require.Assertions, blockBlobName string, containerClient *container.Client) *blockblob.Client {

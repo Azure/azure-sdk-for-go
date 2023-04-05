@@ -151,20 +151,28 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	require.Len(t, res.Tables[0].Rows, 100)
 }
 
-// func TestQueryResource(t *testing.T) {
-// 	client := startLogsTest(t)
-// 	timespan := azquery.NewTimeInterval(time.Date(2022, 12, 1, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 2, 0, 0, 0, 0, time.UTC))
-// 	body := azquery.Body{
-// 		Query:    to.Ptr(query),
-// 		Timespan: to.Ptr(timespan),
-// 	}
-// 	testSerde(t, &body)
+func TestQueryResource(t *testing.T) {
+	client := startLogsTest(t)
+	timespan := azquery.NewTimeInterval(time.Date(2022, 12, 1, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 2, 0, 0, 0, 0, time.UTC))
+	body := azquery.Body{
+		Query:    to.Ptr(query),
+		Timespan: to.Ptr(timespan),
+	}
+	testSerde(t, &body)
+	_ = body
 
-// 	res, err := client.QueryResource(context.Background(), resourceURI, body, nil)
-// 	require.NoError(t, err)
-// 	_ = res
+	resourceID := "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-nibhatimonitor/providers/Microsoft.Storage/storageAccounts/7vawietjvdrls"
+	res, err := client.QueryResource(context.Background(), resourceID, azquery.Body{Query: to.Ptr("search *")}, nil)
+	require.NoError(t, err)
+	require.NoError(t, err)
+	require.Nil(t, res.Error)
+	require.Nil(t, res.Visualization)
+	require.Nil(t, res.Statistics)
+	require.Len(t, res.Tables, 1)
+	require.Len(t, res.Tables[0].Rows, 100)
+	testSerde(t, &res)
 
-// }
+}
 
 func TestQueryBatch_QuerySuccess(t *testing.T) {
 	client := startLogsTest(t)

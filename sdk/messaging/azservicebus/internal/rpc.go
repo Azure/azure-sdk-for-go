@@ -100,6 +100,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 
 	linkID, err := uuid.New()
 	if err != nil {
+		_ = session.Close(ctx)
 		return nil, err
 	}
 
@@ -121,6 +122,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 		nil,
 	)
 	if err != nil {
+		_ = session.Close(ctx)
 		return nil, err
 	}
 
@@ -141,11 +143,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 
 	receiver, err := session.NewReceiver(ctx, args.Address, receiverOpts)
 	if err != nil {
-		// make sure we close the sender
-		clsCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-
-		_ = sender.Close(clsCtx)
+		_ = session.Close(ctx)
 		return nil, err
 	}
 
@@ -317,38 +315,10 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 func (l *rpcLink) Close(ctx context.Context) error {
 	l.rpcLinkCtxCancel()
 
-	if err := l.closeReceiver(ctx); err != nil {
-		_ = l.closeSender(ctx)
-		_ = l.closeSession(ctx)
-		return err
-	}
-
-	if err := l.closeSender(ctx); err != nil {
-		_ = l.closeSession(ctx)
-		return err
-	}
-
-	return l.closeSession(ctx)
-}
-
-func (l *rpcLink) closeReceiver(ctx context.Context) error {
-	if l.receiver != nil {
-		return l.receiver.Close(ctx)
-	}
-	return nil
-}
-
-func (l *rpcLink) closeSender(ctx context.Context) error {
-	if l.sender != nil {
-		return l.sender.Close(ctx)
-	}
-	return nil
-}
-
-func (l *rpcLink) closeSession(ctx context.Context) error {
 	if l.session != nil {
 		return l.session.Close(ctx)
 	}
+
 	return nil
 }
 

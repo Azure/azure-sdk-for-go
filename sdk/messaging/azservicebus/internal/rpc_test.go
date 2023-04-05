@@ -5,13 +5,16 @@ package internal
 
 import (
 	"context"
+	"errors"
 	"net"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -34,7 +37,7 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 	defer func() { require.NoError(t, link.Close(context.Background())) }()
 
 	messagesCh := make(chan string, 10000)
-	endCapture := test.CaptureLogsForTestWithChannel(messagesCh)
+	endCapture := test.CaptureLogsForTestWithChannel(messagesCh, false)
 	defer endCapture()
 
 	responses := []*rpcTestResp{
@@ -84,7 +87,7 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 
 	defer func() { require.NoError(t, link.Close(context.Background())) }()
 
-	cleanupLogs := test.CaptureLogsForTest()
+	cleanupLogs := test.CaptureLogsForTest(false)
 	defer cleanupLogs()
 
 	responses := []*rpcTestResp{
@@ -161,6 +164,86 @@ func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
 	require.Equal(t, "response from service", resp.Message.Value)
 	acceptedMessage = <-tester.Accepted
 	require.Equal(t, "response from service", acceptedMessage.Value, "successfully received message is accepted")
+}
+
+func TestRPCLinkClosingClean_SessionCreationFailed(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	conn := mock.NewMockAMQPClient(ctrl)
+
+	sessionErr := errors.New("failed to create session")
+
+	conn.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(nil, sessionErr)
+
+	rpcLink, err := NewRPCLink(context.Background(), RPCLinkArgs{
+		Client:   conn,
+		Address:  "rpcAddress",
+		LogEvent: "Testing",
+	})
+	require.EqualError(t, err, sessionErr.Error())
+	require.Nil(t, rpcLink)
+}
+
+func TestRPCLinkClosingClean_SenderCreationFailed(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	conn := mock.NewMockAMQPClient(ctrl)
+	sess := mock.NewMockAMQPSession(ctrl)
+
+	senderErr := errors.New("failed to create sender")
+
+	conn.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(sess, nil)
+	sess.EXPECT().NewSender(mock.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, senderErr)
+	sess.EXPECT().Close(mock.NotCancelled).Return(nil)
+
+	rpcLink, err := NewRPCLink(context.Background(), RPCLinkArgs{
+		Client:   conn,
+		Address:  "rpcAddress",
+		LogEvent: "Testing",
+	})
+	require.EqualError(t, err, senderErr.Error())
+	require.Nil(t, rpcLink)
+}
+
+func TestRPCLinkClosingClean_ReceiverCreationFailed(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	conn := mock.NewMockAMQPClient(ctrl)
+	sess := mock.NewMockAMQPSession(ctrl)
+	sender := mock.NewMockAMQPSenderCloser(ctrl)
+
+	receiverErr := errors.New("failed to create receiver")
+
+	conn.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(sess, nil)
+	sess.EXPECT().NewSender(mock.NotCancelled, "rpcAddress", gomock.Any()).Return(sender, nil)
+	sess.EXPECT().NewReceiver(mock.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, receiverErr)
+
+	sess.EXPECT().Close(mock.NotCancelled).Return(nil)
+
+	rpcLink, err := NewRPCLink(context.Background(), RPCLinkArgs{
+		Client:   conn,
+		Address:  "rpcAddress",
+		LogEvent: "Testing",
+	})
+	require.EqualError(t, err, receiverErr.Error())
+	require.Nil(t, rpcLink)
+}
+
+func TestRPCLinkClosingClean_CreationFailsButSessionCloseFailsToo(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	conn := mock.NewMockAMQPClient(ctrl)
+	sess := mock.NewMockAMQPSession(ctrl)
+
+	senderErr := errors.New("failed to create receiver")
+
+	conn.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(sess, nil)
+	sess.EXPECT().NewSender(mock.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, senderErr)
+	sess.EXPECT().Close(mock.NotCancelled).Return(errors.New("session closing failed"))
+
+	rpcLink, err := NewRPCLink(context.Background(), RPCLinkArgs{
+		Client:   conn,
+		Address:  "rpcAddress",
+		LogEvent: "Testing",
+	})
+	require.EqualError(t, err, senderErr.Error(), "original error is more relevant, so we favor it over session.Close()")
+	require.Nil(t, rpcLink)
 }
 
 // rpcTester has all the functions needed (for our RPC tests) to be:

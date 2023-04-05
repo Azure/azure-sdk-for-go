@@ -3,7 +3,7 @@
 ## 1.0.1 (Unreleased)
 
 ### Features Added
-* Added LogsClient.QueryResource which allow users to query Azure resources directly without the a workspace
+* Added the `LogsClient.QueryResource` method which allow users to query Azure resources directly without a Log Analytics workspace
 
 ### Breaking Changes
 

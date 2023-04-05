@@ -184,12 +184,18 @@ func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions)
 }
 
 // UploadRange operation uploads a range of bytes to a file.
-//   - contentRange: Specifies the range of bytes to be written.
+//   - offset: Specifies the start byte at which the range of bytes is to be written.
 //   - body: Specifies the data to be uploaded.
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
-func (f *Client) UploadRange(ctx context.Context, contentRange HTTPRange, body io.ReadSeekCloser, options *UploadRangeOptions) (UploadRangeResponse, error) {
-	return UploadRangeResponse{}, nil
+func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeekCloser, options *UploadRangeOptions) (UploadRangeResponse, error) {
+	rangeParam, contentLength, uploadRangeOptions, leaseAccessConditions, err := options.format(offset, body)
+	if err != nil {
+		return UploadRangeResponse{}, err
+	}
+
+	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeUpdate, contentLength, body, uploadRangeOptions, leaseAccessConditions)
+	return resp, err
 }
 
 // ClearRange operation clears the specified range and releases the space used in storage for that range.
@@ -197,7 +203,13 @@ func (f *Client) UploadRange(ctx context.Context, contentRange HTTPRange, body i
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
 func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options *ClearRangeOptions) (ClearRangeResponse, error) {
-	return ClearRangeResponse{}, nil
+	rangeParam, leaseAccessConditions, err := options.format(contentRange)
+	if err != nil {
+		return ClearRangeResponse{}, err
+	}
+
+	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeClear, 0, nil, nil, leaseAccessConditions)
+	return resp, err
 }
 
 // UploadRangeFromURL operation uploads a range of bytes to a file where the contents are read from a URL.
@@ -206,8 +218,14 @@ func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options
 //   - sourceRange: Bytes of source data in the specified range.
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range-from-url.
-func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, destinationRange HTTPRange, sourceRange HTTPRange, options *UploadRangeFromURLOptions) (UploadRangeFromURLResponse, error) {
-	return UploadRangeFromURLResponse{}, nil
+func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, sourceOffset int64, destinationOffset int64, count int64, options *UploadRangeFromURLOptions) (UploadRangeFromURLResponse, error) {
+	destRange, opts, sourceModifiedAccessConditions, leaseAccessConditions, err := options.format(sourceOffset, destinationOffset, count)
+	if err != nil {
+		return UploadRangeFromURLResponse{}, err
+	}
+
+	resp, err := f.generated().UploadRangeFromURL(ctx, destRange, copySource, 0, opts, sourceModifiedAccessConditions, leaseAccessConditions)
+	return resp, err
 }
 
 // GetRangeList operation returns the list of valid ranges for a file.

@@ -1411,7 +1411,7 @@ func (f *FileRecordedTestsSuite) TestSASFileClientSignNegative() {
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
 
-// TODO: Add tests for different options of StartCopyFromURL()
+// TODO: Content validation in StartCopyFromURL() after adding upload and download methods.
 
 // TODO: Add tests for upload and download methods
 

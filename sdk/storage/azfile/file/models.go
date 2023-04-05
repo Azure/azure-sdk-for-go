@@ -7,10 +7,12 @@
 package file
 
 import (
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"io"
 	"time"
 )
 
@@ -406,24 +408,108 @@ func (o *ResizeOptions) format(contentLength int64) (fileAttributes string, file
 
 // UploadRangeOptions contains the optional parameters for the Client.UploadRange method.
 type UploadRangeOptions struct {
-	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5
-	// header is specified, the File service compares the hash of the content that has
-	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400 (Bad Request).
-	ContentMD5 []byte
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation TransferValidationType
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (string, int64, *generated.FileClientUploadRangeOptions, *generated.LeaseAccessConditions, error) {
+	if offset < 0 || body == nil {
+		return "", 0, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
+	}
+
+	count, err := validateSeekableStreamAt0AndGetCount(body)
+	if err != nil {
+		return "", 0, nil, nil, err
+	}
+
+	if count == 0 {
+		return "", 0, nil, nil, errors.New("invalid argument: body must contain readable data whose size is > 0")
+	}
+
+	httpRange := exported.FormatHTTPRange(HTTPRange{
+		Offset: offset,
+		Count:  count,
+	})
+	rangeParam := ""
+	if httpRange != nil {
+		rangeParam = *httpRange
+	}
+
+	var leaseAccessConditions *LeaseAccessConditions
+	uploadRangeOptions := &generated.FileClientUploadRangeOptions{}
+
+	if o != nil {
+		leaseAccessConditions = o.LeaseAccessConditions
+	}
+	if o != nil && o.TransactionalValidation != nil {
+		body, err = o.TransactionalValidation.Apply(body, uploadRangeOptions)
+		if err != nil {
+			return "", 0, nil, nil, err
+		}
+	}
+
+	return rangeParam, count, uploadRangeOptions, leaseAccessConditions, nil
+}
+
+func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {
+	if body == nil { // nil body is "logically" seekable to 0 and are 0 bytes long
+		return 0, nil
+	}
+
+	err := validateSeekableStreamAt0(body)
+	if err != nil {
+		return 0, err
+	}
+
+	count, err := body.Seek(0, io.SeekEnd)
+	if err != nil {
+		return 0, errors.New("body stream must be seekable")
+	}
+
+	_, err = body.Seek(0, io.SeekStart)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
+// return an error if body is not a valid seekable stream at 0
+func validateSeekableStreamAt0(body io.ReadSeeker) error {
+	if body == nil { // nil body is "logically" seekable to 0
+		return nil
+	}
+	if pos, err := body.Seek(0, io.SeekCurrent); pos != 0 || err != nil {
+		// Help detect programmer error
+		if err != nil {
+			return errors.New("body stream must be seekable")
+		}
+		return errors.New("body stream must be set to position 0")
+	}
+	return nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ClearRangeOptions contains the optional parameters for the Client.ClearRange method.
 type ClearRangeOptions struct {
-	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5
-	// header is specified, the File service compares the hash of the content that has
-	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400 (Bad Request).
-	ContentMD5 []byte
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *ClearRangeOptions) format(contentRange HTTPRange) (string, *generated.LeaseAccessConditions, error) {
+	httpRange := exported.FormatHTTPRange(contentRange)
+	if httpRange == nil || contentRange.Offset < 0 || contentRange.Count <= 0 {
+		return "", nil, errors.New("invalid argument: either offset is < 0 or count <= 0")
+	}
+
+	if o == nil {
+		return *httpRange, nil, nil
+	}
+
+	return *httpRange, o.LeaseAccessConditions, nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -432,10 +518,42 @@ type ClearRangeOptions struct {
 type UploadRangeFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
-	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64             []byte
+	// SourceContentValidation contains the validation mechanism used on the range of bytes read from the source.
+	SourceContentValidation        SourceContentValidationType
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	LeaseAccessConditions          *LeaseAccessConditions
+}
+
+func (o *UploadRangeFromURLOptions) format(sourceOffset int64, destinationOffset int64, count int64) (string, *generated.FileClientUploadRangeFromURLOptions, *generated.SourceModifiedAccessConditions, *generated.LeaseAccessConditions, error) {
+	if sourceOffset < 0 || destinationOffset < 0 {
+		return "", nil, nil, nil, errors.New("invalid argument: source and destination offsets must be >= 0")
+	}
+
+	httpRangeSrc := exported.FormatHTTPRange(HTTPRange{Offset: sourceOffset, Count: count})
+	httpRangeDest := exported.FormatHTTPRange(HTTPRange{Offset: destinationOffset, Count: count})
+	destRange := ""
+	if httpRangeDest != nil {
+		destRange = *httpRangeDest
+	}
+
+	opts := &generated.FileClientUploadRangeFromURLOptions{
+		SourceRange: httpRangeSrc,
+	}
+
+	var sourceModifiedAccessConditions *SourceModifiedAccessConditions
+	var leaseAccessConditions *LeaseAccessConditions
+
+	if o != nil {
+		opts.CopySourceAuthorization = o.CopySourceAuthorization
+		sourceModifiedAccessConditions = o.SourceModifiedAccessConditions
+		leaseAccessConditions = o.LeaseAccessConditions
+	}
+
+	if o != nil && o.SourceContentValidation != nil {
+		o.SourceContentValidation.Apply(opts)
+	}
+
+	return destRange, opts, sourceModifiedAccessConditions, leaseAccessConditions, nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

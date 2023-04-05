@@ -191,7 +191,7 @@ func waitForCopy(_require *require.Assertions, copyBlobClient *blockblob.Client,
 	}
 }
 
-func (s *BlobUnrecordedTestsSuite) TestCopyBlockBlobFromURL() {
+func (s *BlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

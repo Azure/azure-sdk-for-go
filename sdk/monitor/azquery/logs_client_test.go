@@ -161,8 +161,7 @@ func TestQueryResource(t *testing.T) {
 	testSerde(t, &body)
 	_ = body
 
-	resourceID := "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-nibhatimonitor/providers/Microsoft.Storage/storageAccounts/7vawietjvdrls"
-	res, err := client.QueryResource(context.Background(), resourceID, azquery.Body{Query: to.Ptr("search *")}, nil)
+	res, err := client.QueryResource(context.Background(), resourceURI, body, nil)
 	require.NoError(t, err)
 	require.NoError(t, err)
 	require.Nil(t, res.Error)
@@ -171,7 +170,43 @@ func TestQueryResource(t *testing.T) {
 	require.Len(t, res.Tables, 1)
 	require.Len(t, res.Tables[0].Rows, 100)
 	testSerde(t, &res)
+}
 
+func TestQueryResource_Fail(t *testing.T) {
+	client := startLogsTest(t)
+
+	res, err := client.QueryResource(
+		context.Background(),
+		resourceURI,
+		azquery.Body{
+			Query:    to.Ptr("not a valid query"),
+			Timespan: to.Ptr(azquery.TimeInterval("PT2H")),
+		},
+		nil,
+	)
+	require.Error(t, err)
+	require.Nil(t, res.Error)
+	require.Nil(t, res.Tables)
+
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Equal(t, httpErr.ErrorCode, "BadArgumentError")
+	require.Equal(t, httpErr.StatusCode, 400)
+
+	testSerde(t, &res)
+}
+
+func TestQueryResource_Advanced(t *testing.T) {
+	client := startLogsTest(t)
+
+	res, err := client.QueryResource(context.Background(), resourceURI, azquery.Body{Query: &query},
+		&azquery.LogsClientQueryResourceOptions{Options: &azquery.LogsQueryOptions{Statistics: to.Ptr(true), Visualization: to.Ptr(true), Wait: to.Ptr(600)}})
+	require.NoError(t, err)
+	require.Nil(t, res.Error)
+	require.NotNil(t, res.Tables)
+	require.NotNil(t, res.Visualization)
+	require.NotNil(t, res.Statistics)
+	testSerde(t, &res)
 }
 
 func TestQueryBatch_QuerySuccess(t *testing.T) {

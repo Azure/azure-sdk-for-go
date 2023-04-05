@@ -1210,6 +1210,39 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 
 }
 
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuthNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// Random seed for data generation
+	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
+	random := rand.New(rand.NewSource(seed))
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source and destination blobs
+	srcBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, "src "+testName, containerClient)
+	destBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, "dest"+testName, containerClient)
+
+	// Upload some data to source
+	contentSize := 4 * 1024 // 4KB
+	r, _ := testcommon.GetDataAndReader(random, contentSize)
+	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
+	_require.Nil(err)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		CopySourceAuthorization: to.Ptr("Bearer XXXXXXXXXXXXXX"),
+	}
+
+	_, err = destBBClient.UploadBlobFromURL(context.Background(), srcBBClient.URL(), &options)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CannotVerifyCopySource)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

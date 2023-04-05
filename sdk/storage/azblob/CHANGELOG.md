@@ -7,6 +7,7 @@
 * Added [Blob Batch API](https://learn.microsoft.com/rest/api/storageservices/blob-batch).
 * Added support for bearer challenge for identity based managed disks.
 * Added support for GetAccountInfo to container and blob level clients. 
+* Added support for CopySourceAuthorization to appendblob.AppendBlockFromURL
 
 ### Breaking Changes
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0 (Unreleased)
+## 1.5.0 (2023-04-06)
 
 ### Features Added
 * Added `ShouldRetry` to `policy.RetryOptions` for finer-grained control over when to retry.
@@ -14,6 +14,7 @@
 * Added non-conformant LRO terminal states `Cancelled` and `Completed`.
 
 ### Other Changes
+* Updated to latest `internal` module.
 
 ## 1.5.0-beta.1 (2023-03-02)
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0 (Unreleased)
+## 1.5.0 (2023-04-06)
 
 ### Features Added
 * Added `ShouldRetry` to `policy.RetryOptions` for finer-grained control over when to retry.

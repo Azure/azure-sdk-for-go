@@ -8,6 +8,7 @@
 * Added support for bearer challenge for identity based managed disks.
 * Added support for GetAccountInfo to container and blob level clients. 
 * Added [UploadBlobFromURL API](https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url).
+* Added support for CopySourceAuthorization to appendblob.AppendBlockFromURL
 
 ### Breaking Changes
 

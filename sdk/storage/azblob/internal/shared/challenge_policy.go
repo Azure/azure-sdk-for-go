@@ -31,10 +31,6 @@ func NewStorageChallengePolicy(cred azcore.TokenCredential) policy.Policy {
 }
 
 func (s *storageAuthorizer) onRequest(req *policy.Request, authNZ func(policy.TokenRequestOptions) error) error {
-	if len(s.scopes) == 0 || s.tenantID == "" {
-		// returning nil indicates the bearer token policy should send the request
-		return nil
-	}
 	return authNZ(policy.TokenRequestOptions{Scopes: s.scopes})
 }
 

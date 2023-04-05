@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"sync/atomic"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
@@ -124,8 +125,13 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 
 	rcvr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(rcvr.InternalReceive).AnyTimes()
 
+	var closed int64
+
 	rcvr.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
-		md.Events.CloseLink(rcvr.LinkEvent())
+		if atomic.CompareAndSwapInt64(&closed, 0, 1) {
+			md.Events.CloseLink(rcvr.LinkEvent())
+			return nil
+		}
 
 		select {
 		case <-ctx.Done():

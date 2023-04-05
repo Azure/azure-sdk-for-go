@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -52,7 +53,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 		}
 
 		t.Run(testName, func(t *testing.T) {
-			endLogging := test.CaptureLogsForTest()
+			endLogging := test.CaptureLogsForTest(false)
 			defer endLogging()
 
 			receiver := &FakeAMQPReceiver{}
@@ -117,7 +118,7 @@ func TestAMQPLinks_Logging(t *testing.T) {
 			require.NoError(t, err)
 		}()
 
-		endCapture := test.CaptureLogsForTest()
+		endCapture := test.CaptureLogsForTest(false)
 		defer endCapture()
 
 		err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.LinkError{})
@@ -149,7 +150,7 @@ func TestAMQPLinks_Logging(t *testing.T) {
 			require.NoError(t, err)
 		}()
 
-		endCapture := test.CaptureLogsForTest()
+		endCapture := test.CaptureLogsForTest(true)
 		defer endCapture()
 
 		err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.ConnError{})
@@ -158,7 +159,7 @@ func TestAMQPLinks_Logging(t *testing.T) {
 		messages := endCapture()
 
 		require.Equal(t, []string{
-			"[azsb.Conn] Recovering link for error amqp: connection closed",
+			"[azsb.Conn] Recovering link for error amqp: link closed",
 			"[azsb.Conn] Recovering connection (and links)",
 			"[azsb.Conn] closing old link: current:{0 0}, old:{0 0}",
 			"[azsb.Conn] recreating link: c: true, current:{0 0}, old:{0 0}",
@@ -167,7 +168,7 @@ func TestAMQPLinks_Logging(t *testing.T) {
 	})
 }
 
-func TestAMQPCloseLinkTimeout_Receiver_ExternalCancellation(t *testing.T) {
+func TestAMQPCloseLinkTimeout_Receiver_CancellationDuringClose(t *testing.T) {
 	userCtx, cancelUserCtx := context.WithCancel(context.Background())
 	defer cancelUserCtx()
 
@@ -176,7 +177,7 @@ func TestAMQPCloseLinkTimeout_Receiver_ExternalCancellation(t *testing.T) {
 
 	preReceiverMock := func(orig *emulation.MockReceiver, ctx context.Context) error {
 		if orig.Source == "entity path" {
-			orig.EXPECT().Close(&mock.ContextCreatedForTest{}).DoAndReturn(func(ctx context.Context) error {
+			orig.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
 				md.Events.CloseLink(orig.LinkEvent())
 
 				// this simulates as if the user cancelled their outer context
@@ -184,6 +185,8 @@ func TestAMQPCloseLinkTimeout_Receiver_ExternalCancellation(t *testing.T) {
 
 				return ctx.Err()
 			})
+
+			orig.EXPECT().Close(gomock.Any()).AnyTimes()
 		}
 
 		return nil
@@ -222,17 +225,10 @@ func TestAMQPCloseLinkTimeout_Receiver_ExternalCancellation(t *testing.T) {
 	require.Equal(t, 3, len(md.Events.GetOpenLinks()), "mgmt link (sender and receiver) + receiver are open")
 	require.Equal(t, 1, len(md.Events.GetOpenConns()), "connection is open")
 
-	// capture logs just before we do the "link.Close() timeout causes the connection to close" behavior.
-	getLogs := test.CaptureLogsForTest()
-
 	// now close the links. We've made it so the receiver will cancel the context, as if the user
 	// interrupted the close. This will end up closing the connection as well.
 	rk := links.CloseIfNeeded(userCtx, &amqp.LinkError{})
-
-	require.Contains(t, getLogs(), "[azsb.Conn] Connection closed instead. Link closing has timed out.")
-
-	require.Equal(t, rk, RecoveryKindConn, "Link is upgraded to a connection error instead")
-	emulation.RequireNoLeaks(t, md.Events)
+	require.Equal(t, RecoveryKindLink, rk)
 
 	// check that we left ourselves into a correct position to recover.
 	// TODO: it'd be nice to see if we "over-recover", which happened in Event Hubs.
@@ -259,33 +255,6 @@ func TestAMQPCloseLinkTimeout_Receiver_RecoverIfNeeded(t *testing.T) {
 	userCtx, cancelUserCtx := context.WithCancel(context.Background())
 	defer cancelUserCtx()
 
-	var md *emulation.MockData
-	var links *AMQPLinksImpl
-
-	type keyType string
-
-	preReceiverMock := func(orig *emulation.MockReceiver, ctx context.Context) error {
-		if orig.Source == "entity path" {
-			orig.EXPECT().Close(&mock.ContextCreatedForTest{}).DoAndReturn(func(ctx context.Context) error {
-				if ctx.Value(keyType("close")) == "cancel" {
-					md.Events.CloseLink(orig.LinkEvent())
-
-					// this simulates as if the user cancelled their outer context
-					cancelUserCtx()
-				}
-
-				select {
-				case <-ctx.Done():
-					return ctx.Err()
-				default:
-					return nil
-				}
-			})
-		}
-
-		return nil
-	}
-
 	createLinkFn := func(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
 		receiver, err := session.NewReceiver(ctx, "entity path", &amqp.ReceiverOptions{
 			SettlementMode:            amqp.ReceiverSettleModeFirst.Ptr(),
@@ -296,13 +265,8 @@ func TestAMQPCloseLinkTimeout_Receiver_RecoverIfNeeded(t *testing.T) {
 		return nil, receiver, err
 	}
 
-	tempMD, tempLinks, _, cleanup := newAMQPLinksForTest(t, emulation.MockDataOptions{
-		PreReceiverMock: preReceiverMock,
-	}, createLinkFn)
+	md, links, _, cleanup := newAMQPLinksForTest(t, emulation.MockDataOptions{}, createLinkFn)
 	defer cleanup()
-
-	md = tempMD
-	links = tempLinks
 
 	var lwid *LinksWithID
 
@@ -319,27 +283,14 @@ func TestAMQPCloseLinkTimeout_Receiver_RecoverIfNeeded(t *testing.T) {
 	require.Equal(t, 3, len(md.Events.GetOpenLinks()), "mgmt link (sender and receiver) + receiver are open")
 	require.Equal(t, 1, len(md.Events.GetOpenConns()), "connection is open")
 
-	// capture logs just before we do the "link.Close() timeout causes the connection to close" behavior.
-	getLogs := test.CaptureLogsForTest()
-
-	// now close the links. We've made it so the receiver will cancel the context, as if the user
-	// interrupted the close. This will end up closing the connection as well.
-	recoveryErr := links.RecoverIfNeeded(context.WithValue(userCtx, keyType("close"), "cancel"), lwid.ID, &amqp.LinkError{})
-
-	require.Contains(t, getLogs(), "[azsb.Conn] Upgrading to connection reset for recovery instead of link")
-	require.ErrorIs(t, recoveryErr, context.Canceled)
-
-	emulation.RequireNoLeaks(t, md.Events)
-
-	nonCancelledCtx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	recoveryErr = links.RecoverIfNeeded(nonCancelledCtx, lwid.ID, &amqp.LinkError{})
-
-	require.NotContains(t, getLogs(), "[azsb.Conn] Connection reset for recovery instead of link. Link closing has timed out.")
+	recoveryErr := links.RecoverIfNeeded(context.Background(), lwid.ID, &amqp.LinkError{})
 	require.NoError(t, recoveryErr)
 
 	require.Equal(t, 3, len(md.Events.GetOpenLinks()), "mgmt link (sender and receiver) + receiver are open")
 	require.Equal(t, 1, len(md.Events.GetOpenConns()), "connection is open")
+
+	err = links.Close(context.Background(), false)
+	require.NoError(t, err)
 }
 
 func TestAMQPCloseLinkTimeout_Sender(t *testing.T) {
@@ -395,7 +346,7 @@ func TestAMQPCloseLinkTimeout_Sender(t *testing.T) {
 	require.Equal(t, 1, len(md.Events.GetOpenConns()), "connection is open")
 
 	// capture logs just before we do the "link.Close() timeout causes the connection to close" behavior.
-	getLogs := test.CaptureLogsForTest()
+	getLogs := test.CaptureLogsForTest(false)
 
 	// now close the links. We've made it so the receiver will cancel the context, as if the user
 	// interrupted the close. This will end up closing the connection as well.
@@ -444,11 +395,11 @@ func newAMQPLinksForTest(t *testing.T, mockDataOptions emulation.MockDataOptions
 	})
 
 	links := tmpLinks.(*AMQPLinksImpl)
-	links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
 
 	return md, links, ns, func() {
 		test.RequireLinksClose(t, links)
 		test.RequireNSClose(t, ns)
+		emulation.RequireNoLeaks(t, md.Events)
 		md.Close()
 	}
 }

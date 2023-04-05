@@ -10,6 +10,7 @@ package testcommon
 import (
 	"bytes"
 	"context"
+	crypto_rand "crypto/rand"
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
@@ -83,7 +84,7 @@ func GetReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 
 func GetRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	data := make([]byte, n)
-	_, _ = rand.Read(data)
+	_, _ = crypto_rand.Read(data)
 	return bytes.NewReader(data), data
 }
 

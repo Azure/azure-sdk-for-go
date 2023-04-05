@@ -165,6 +165,19 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 	return resp, err
 }
 
+// UploadBlobFromURL - The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from
+// a given URL. Partial updates are not supported with Put Blob from URL; the content of an existing blob is overwritten
+// with the content of the new blob. To perform partial updates to a block blob’s contents using a source URL, use the Put
+// Block from URL API in conjunction with Put Block List.
+// For more information, see https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url
+func (bb *Client) UploadBlobFromURL(ctx context.Context, copySource string, options *UploadBlobFromURLOptions) (UploadBlobFromURLResponse, error) {
+	opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions := options.format()
+
+	resp, err := bb.generated().PutBlobFromURL(ctx, int64(0), copySource, opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions)
+
+	return resp, err
+}
+
 // StageBlock uploads the specified block to the block blob's "staging area" to be later committed by a call to CommitBlockList.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-block.

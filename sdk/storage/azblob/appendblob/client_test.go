@@ -488,7 +488,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuthNegat
 	_require.Nil(err)
 
 	options := appendblob.AppendBlockFromURLOptions{
-		CopySourceAuthorization: to.Ptr("Bearer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"),
+		CopySourceAuthorization: to.Ptr("Bearer faketoken"),
 	}
 
 	_, err = destABClient.AppendBlockFromURL(context.Background(), srcABClient.URL(), &options)

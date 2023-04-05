@@ -10,12 +10,13 @@ package testcommon
 import (
 	"bytes"
 	"context"
-	"crypto/rand"
+	crypto_rand "crypto/rand"
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
 	"fmt"
 	"io"
+	"math/rand"
 	"os"
 	"runtime"
 	"strconv"
@@ -83,7 +84,13 @@ func GetReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 
 func GetRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	data := make([]byte, n)
-	_, _ = rand.Read(data)
+	_, _ = crypto_rand.Read(data)
+	return bytes.NewReader(data), data
+}
+
+func GetDataAndReader(r *rand.Rand, n int) (*bytes.Reader, []byte) {
+	data := make([]byte, n)
+	_, _ = r.Read(data)
 	return bytes.NewReader(data), data
 }
 
@@ -181,8 +188,10 @@ func GetRequiredEnv(name string) (string, error) {
 
 func BeforeTest(t *testing.T, suite string, test string) {
 	const urlRegex = `https://\S+\.blob\.core\.windows\.net`
+	const tokenRegex = `(?:Bearer\s).*`
 	require.NoError(t, recording.AddURISanitizer(FakeStorageURL, urlRegex, nil))
 	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-copy-source", FakeStorageURL, urlRegex, nil))
+	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-copy-source-authorization", FakeToken, tokenRegex, nil))
 	// we freeze request IDs and timestamps to avoid creating noisy diffs
 	// NOTE: we can't freeze time stamps as that breaks some tests that use if-modified-since etc (maybe it can be fixed?)
 	//testframework.AddHeaderRegexSanitizer("X-Ms-Date", "Wed, 10 Aug 2022 23:34:14 GMT", "", nil)

@@ -11,6 +11,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
@@ -55,6 +56,7 @@ const (
 const (
 	FakeStorageAccount = "fakestorage"
 	FakeStorageURL     = "https://fakestorage.blob.core.windows.net"
+	FakeToken          = "faketoken"
 )
 
 var (
@@ -143,6 +145,20 @@ func GetServiceClientNoCredential(t *testing.T, sasUrl string, options *service.
 	serviceClient, err := service.NewClientWithNoCredential(sasUrl, options)
 
 	return serviceClient, err
+}
+
+type FakeCredential struct {
+}
+
+func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{Token: FakeToken, ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
+}
+
+func GetGenericTokenCredential() (azcore.TokenCredential, error) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return &FakeCredential{}, nil
+	}
+	return azidentity.NewDefaultAzureCredential(nil)
 }
 
 func GetGenericAccountInfo(accountType TestAccountType) (string, string) {

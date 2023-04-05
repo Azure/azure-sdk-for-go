@@ -14,7 +14,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -659,11 +658,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithHeaders() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Invoke UploadBlobFromURL
+	tier := blob.AccessTierCool
 	options := blockblob.UploadBlobFromURLOptions{
 		Tags:        testcommon.BasicBlobTagsMap,
 		HTTPHeaders: &testcommon.BasicHeaders,
 		Metadata:    testcommon.BasicMetadata,
-		Tier:        &testcommon.CoolAccessTier,
+		Tier:        &tier,
 	}
 
 	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
@@ -676,7 +676,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithHeaders() {
 	h := blob.ParseHTTPHeaders(resp)
 	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
 	_require.EqualValues(h, testcommon.BasicHeaders)
-	_require.EqualValues(resp.AccessTier, &testcommon.CoolAccessTier)
+	_require.EqualValues(resp.AccessTier, &tier)
 	tagcount := int64(len(testcommon.BasicBlobTagsMap))
 	_require.EqualValues(resp.TagCount, &tagcount)
 	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
@@ -1168,8 +1168,12 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
+	// Random seed for data generation
+	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
+	random := rand.New(rand.NewSource(seed))
+
 	// Getting AAD Authentication
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -1182,7 +1186,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 
 	// Upload some data to source
 	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetRandomDataAndReader(contentSize)
+	r, sourceData := testcommon.GetDataAndReader(random, contentSize)
 	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 

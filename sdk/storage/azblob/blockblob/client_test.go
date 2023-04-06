@@ -608,7 +608,7 @@ func setUpPutBlobFromURLTest(s *BlockBlobUnrecordedTestsSuite, testName string, 
 	_require.Nil(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	if err != nil {
+	_require.NoError(err)
 		s.T().Fatal("Couldn't fetch credential because " + err.Error())
 	}
 

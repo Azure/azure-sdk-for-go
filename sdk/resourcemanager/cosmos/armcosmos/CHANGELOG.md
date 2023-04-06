@@ -3,46 +3,7 @@
 ## 2.3.0 (2023-04-07)
 ### Features Added
 
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
-- New function `*ClientFactory.NewCassandraClustersClient() *CassandraClustersClient`
-- New function `*ClientFactory.NewCassandraDataCentersClient() *CassandraDataCentersClient`
-- New function `*ClientFactory.NewCassandraResourcesClient() *CassandraResourcesClient`
-- New function `*ClientFactory.NewCollectionClient() *CollectionClient`
-- New function `*ClientFactory.NewCollectionPartitionClient() *CollectionPartitionClient`
-- New function `*ClientFactory.NewCollectionPartitionRegionClient() *CollectionPartitionRegionClient`
-- New function `*ClientFactory.NewCollectionRegionClient() *CollectionRegionClient`
-- New function `*ClientFactory.NewDatabaseAccountRegionClient() *DatabaseAccountRegionClient`
-- New function `*ClientFactory.NewDatabaseAccountsClient() *DatabaseAccountsClient`
-- New function `*ClientFactory.NewDatabaseClient() *DatabaseClient`
-- New function `*ClientFactory.NewGremlinResourcesClient() *GremlinResourcesClient`
-- New function `*ClientFactory.NewLocationsClient() *LocationsClient`
-- New function `*ClientFactory.NewMongoDBResourcesClient() *MongoDBResourcesClient`
-- New function `*ClientFactory.NewNotebookWorkspacesClient() *NotebookWorkspacesClient`
-- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
-- New function `*ClientFactory.NewPartitionKeyRangeIDClient() *PartitionKeyRangeIDClient`
-- New function `*ClientFactory.NewPartitionKeyRangeIDRegionClient() *PartitionKeyRangeIDRegionClient`
-- New function `*ClientFactory.NewPercentileClient() *PercentileClient`
-- New function `*ClientFactory.NewPercentileSourceTargetClient() *PercentileSourceTargetClient`
-- New function `*ClientFactory.NewPercentileTargetClient() *PercentileTargetClient`
-- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
-- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
-- New function `*ClientFactory.NewRestorableDatabaseAccountsClient() *RestorableDatabaseAccountsClient`
-- New function `*ClientFactory.NewRestorableGremlinDatabasesClient() *RestorableGremlinDatabasesClient`
-- New function `*ClientFactory.NewRestorableGremlinGraphsClient() *RestorableGremlinGraphsClient`
-- New function `*ClientFactory.NewRestorableGremlinResourcesClient() *RestorableGremlinResourcesClient`
-- New function `*ClientFactory.NewRestorableMongodbCollectionsClient() *RestorableMongodbCollectionsClient`
-- New function `*ClientFactory.NewRestorableMongodbDatabasesClient() *RestorableMongodbDatabasesClient`
-- New function `*ClientFactory.NewRestorableMongodbResourcesClient() *RestorableMongodbResourcesClient`
-- New function `*ClientFactory.NewRestorableSQLContainersClient() *RestorableSQLContainersClient`
-- New function `*ClientFactory.NewRestorableSQLDatabasesClient() *RestorableSQLDatabasesClient`
-- New function `*ClientFactory.NewRestorableSQLResourcesClient() *RestorableSQLResourcesClient`
-- New function `*ClientFactory.NewRestorableTableResourcesClient() *RestorableTableResourcesClient`
-- New function `*ClientFactory.NewRestorableTablesClient() *RestorableTablesClient`
-- New function `*ClientFactory.NewSQLResourcesClient() *SQLResourcesClient`
-- New function `*ClientFactory.NewServiceClient() *ServiceClient`
-- New function `*ClientFactory.NewTableResourcesClient() *TableResourcesClient`
-- New struct `ClientFactory`
-
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 ## 2.2.0 (2023-02-24)
 ### Features Added

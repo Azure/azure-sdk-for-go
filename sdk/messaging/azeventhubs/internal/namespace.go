@@ -290,8 +290,7 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) error {
 
 // negotiateClaimFn matches the signature for NegotiateClaim, and is used when we want to stub things out for tests.
 type negotiateClaimFn func(
-	ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider,
-	contextWithTimeoutFn contextWithTimeoutFn) error
+	ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error
 
 // negotiateClaim performs initial authentication and starts periodic refresh of credentials.
 // the returned func is to cancel() the refresh goroutine.
@@ -334,7 +333,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 		// The current cbs.NegotiateClaim implementation automatically creates and shuts
 		// down it's own link so we have to guard against that here.
 		ns.negotiateClaimMu.Lock()
-		err = cbsNegotiateClaim(ctx, audience, amqpClient, token, context.WithTimeout)
+		err = cbsNegotiateClaim(ctx, audience, amqpClient, token)
 		ns.negotiateClaimMu.Unlock()
 
 		if err != nil {

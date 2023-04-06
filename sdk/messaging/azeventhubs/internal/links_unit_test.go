@@ -141,9 +141,6 @@ func TestLinks_ConnectionRecovery(t *testing.T) {
 		return receiver, nil
 	})
 
-	require.NotNil(t, links.contextWithTimeoutFn, "sanity check, we are setting the context.WithTimeout func")
-	links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
-
 	lwid, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)
 	require.NotNil(t, links.links["0"])
@@ -152,9 +149,9 @@ func TestLinks_ConnectionRecovery(t *testing.T) {
 	// if the connection has closed in response to an error then it'll propagate it's error to
 	// the children, including receivers. Which means closing the receiver here will _also_ return
 	// a connection error.
-	receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).Return(&amqp.ConnError{})
+	receiver.EXPECT().Close(mock.NotCancelled).Return(&amqp.ConnError{})
 
-	ns.EXPECT().Recover(mock.NotCancelledAndHasTimeout, gomock.Any()).Return(nil)
+	ns.EXPECT().Recover(mock.NotCancelled, gomock.Any()).Return(nil)
 
 	// initiate a connection level recovery
 	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.ConnError{})
@@ -236,22 +233,23 @@ func TestLinks_closeWithTimeout(t *testing.T) {
 				return receiver, nil
 			})
 
-			require.NotNil(t, links.contextWithTimeoutFn, "sanity check, we are setting the context.WithTimeout func")
-			links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
-
 			lwid, err := links.GetLink(context.Background(), "0")
 			require.NoError(t, err)
 
+			userCtx, cancelUserCtx := context.WithCancel(context.Background())
+			defer cancelUserCtx()
+
 			// now set ourselves up so Close() is "slow" and we end up timing out, or
 			// the user "cancels"
-			receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).DoAndReturn(func(ctx context.Context) error {
+			receiver.EXPECT().Close(mock.NotCancelled).DoAndReturn(func(ctx context.Context) error {
+				cancelUserCtx()
 				<-ctx.Done()
 				return errToReturn
 			})
 
 			// purposefully recover with what should be a link level recovery. However, the Close() failing
 			// means we end up "upgrading" to a connection reset instead.
-			err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.LinkError{})
+			err = links.RecoverIfNeeded(userCtx, "0", lwid, &amqp.LinkError{})
 			require.ErrorIs(t, err, errToReturn)
 
 			// we still cleanup what we can (including cancelling our background negotiate claim loop)
@@ -277,15 +275,13 @@ func TestLinks_linkRecoveryOnly(t *testing.T) {
 
 	// super important that when we close we're given a context that properly times out.
 	// (in this test the Close(ctx) call doesn't time out)
-	fakeReceiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).Return(nil)
+	fakeReceiver.EXPECT().Close(mock.NotCancelled).Return(nil)
 
 	links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
 		return fmt.Sprintf("part:%s", partitionID)
 	}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (amqpwrap.AMQPReceiverCloser, error) {
 		return fakeReceiver, nil
 	})
-
-	links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
 
 	lwid, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)
@@ -315,15 +311,13 @@ func TestLinks_linkRecoveryFailsWithLinkFailure(t *testing.T) {
 	// super important that when we close we're given a context that properly times out.
 	// (in this test the Close(ctx) call doesn't time out)
 	detachErr := &amqp.LinkError{RemoteErr: &amqp.Error{Condition: amqp.ErrCondDetachForced}}
-	fakeReceiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).Return(detachErr)
+	fakeReceiver.EXPECT().Close(mock.NotCancelled).Return(detachErr)
 
 	links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
 		return fmt.Sprintf("part:%s", partitionID)
 	}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (amqpwrap.AMQPReceiverCloser, error) {
 		return fakeReceiver, nil
 	})
-
-	links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
 
 	lwid, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)

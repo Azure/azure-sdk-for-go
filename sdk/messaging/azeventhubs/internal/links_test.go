@@ -148,7 +148,7 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestLinkFailureUpgradedToConnectionError(t *testing.T) {
+func TestLinkFailureWhenConnectionIsDead(t *testing.T) {
 	ns, links := newLinksForTest(t)
 	defer test.RequireClose(t, links)
 	defer test.RequireNSClose(t, ns)
@@ -167,14 +167,14 @@ func TestLinkFailureUpgradedToConnectionError(t *testing.T) {
 	require.Error(t, err)
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
 
-	getLogsFn := test.CaptureLogsForTest()
-
-	// NOTE: this is the key diff between the connection level test and ours - we induce a failure at the connection level _but_ we pretend to recover a link level error.
 	err = links.RecoverIfNeeded(context.Background(), "0", oldLWID, &amqp.LinkError{})
-	require.NoError(t, err)
+	var connErr *amqp.ConnError
+	require.ErrorAs(t, err, &connErr)
+	require.Nil(t, connErr.RemoteErr, "is the forwarded error from the closed connection")
+	require.Equal(t, RecoveryKindConn, GetRecoveryKind(connErr), "next recovery would force a connection level recovery")
 
-	logs := getLogsFn()
-	require.Contains(t, logs, "[azeh.Conn] Upgrading to connection reset for recovery instead of link")
+	err = links.RecoverIfNeeded(context.Background(), "0", oldLWID, connErr)
+	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)

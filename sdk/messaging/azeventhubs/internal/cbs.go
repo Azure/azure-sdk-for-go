@@ -24,10 +24,7 @@ const (
 )
 
 // NegotiateClaim attempts to put a token to the $cbs management endpoint to negotiate auth for the given audience
-//
-// contextWithTimeoutFn is intended to be context.WithTimeout in production code, but can be stubbed out when writing
-// unit tests to keep timeouts reasonable.
-func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
+func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 	link, err := NewRPCLink(ctx, RPCLinkArgs{
 		Client:   conn,
 		Address:  cbsAddress,
@@ -47,9 +44,6 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 	}
 
 	closeLink := func(ctx context.Context, origErr error) error {
-		ctx, cancel := contextWithTimeoutFn(ctx, defaultCloseTimeout)
-		defer cancel()
-
 		if err := link.Close(ctx); err != nil {
 			azlog.Writef(exported.EventAuth, "Failed closing claim link: %s", err.Error())
 			return err

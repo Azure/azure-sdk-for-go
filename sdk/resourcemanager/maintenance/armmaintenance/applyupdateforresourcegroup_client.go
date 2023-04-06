@@ -47,7 +47,7 @@ func NewApplyUpdateForResourceGroupClient(subscriptionID string, credential azco
 
 // NewListPager - Get Configuration records within a subscription and resource group
 //
-// Generated from API version 2021-09-01-preview
+// Generated from API version 2021-05-01
 //   - resourceGroupName - Resource Group Name
 //   - options - ApplyUpdateForResourceGroupClientListOptions contains the optional parameters for the ApplyUpdateForResourceGroupClient.NewListPager
 //     method.
@@ -89,7 +89,7 @@ func (client *ApplyUpdateForResourceGroupClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Operations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,28 +42,28 @@ func ExampleOperationsClient_NewListPager() {
 		// page.OperationListResult = armiotcentral.OperationListResult{
 		// 	Value: []*armiotcentral.Operation{
 		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/read"),
+		// 			Name: to.Ptr("Microsoft.IoTCentral/IoTApps/read"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Read IoTApp resources"),
-		// 				Operation: to.Ptr("Get/List IoTApp resource(s)"),
+		// 				Description: to.Ptr("Gets a single IoT Central Application"),
+		// 				Operation: to.Ptr("Get IoT Central Application"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
 		// 				Resource: to.Ptr("IoTApps"),
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/write"),
+		// 			Name: to.Ptr("Microsoft.IoTCentral/IoTApps/write"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Create or update a IoTApp resource"),
-		// 				Operation: to.Ptr("Create/Update/Patch IoTApp resources"),
+		// 				Description: to.Ptr("Creates or Updates an IoT Central Applications"),
+		// 				Operation: to.Ptr("Create or Update IoT Central Application"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
 		// 				Resource: to.Ptr("IoTApps"),
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/delete"),
+		// 			Name: to.Ptr("Microsoft.IoTCentral/IoTApps/delete"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Delete IoTApp resource"),
-		// 				Operation: to.Ptr("Delete IoTApp resource"),
+		// 				Description: to.Ptr("Deletes an IoT Central Applications"),
+		// 				Operation: to.Ptr("Delete IoT Central Application"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
 		// 				Resource: to.Ptr("IoTApps"),
 		// 			},
@@ -71,8 +71,8 @@ func ExampleOperationsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("Microsoft.IoTCentral/checkNameAvailability/action"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Checks if a IoTApp resource name is available"),
-		// 				Operation: to.Ptr("Check IoTApp resource name availability"),
+		// 				Description: to.Ptr("Checks if an IoT Central Application name is available"),
+		// 				Operation: to.Ptr("Check resource name availability"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
 		// 				Resource: to.Ptr(""),
 		// 			},
@@ -80,8 +80,8 @@ func ExampleOperationsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("Microsoft.IoTCentral/checkSubdomainAvailability/action"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Check if a IoTApp resource subdomain is available"),
-		// 				Operation: to.Ptr("Check IoTApp resource subdomain availability"),
+		// 				Description: to.Ptr("Checks if an IoT Central Application subdomain is available"),
+		// 				Operation: to.Ptr("Check resource subdomain availability"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
 		// 				Resource: to.Ptr(""),
 		// 			},
@@ -89,8 +89,8 @@ func ExampleOperationsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("Microsoft.IoTCentral/operations/read"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Get/List all the available operations for IoT Central"),
-		// 				Operation: to.Ptr("Get/List operations"),
+		// 				Description: to.Ptr("Gets all the available operations on IoT Central Applications"),
+		// 				Operation: to.Ptr("Get all the available operations"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
 		// 				Resource: to.Ptr(""),
 		// 			},
@@ -98,107 +98,26 @@ func ExampleOperationsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("Microsoft.IoTCentral/appTemplates/action"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Lists application templates for IoTApps resources."),
-		// 				Operation: to.Ptr("List app templates"),
+		// 				Description: to.Ptr("Gets all the available application templates on Azure IoT Central"),
+		// 				Operation: to.Ptr("Get all available application templates"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("Azure IoT Central resource provider"),
+		// 				Resource: to.Ptr("Azure IoT Central Resource Provider"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.IoTCentral/register/action"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Register the subscription for the IoTCentral resource provider"),
-		// 				Operation: to.Ptr("Register Microsoft.IoTCentral resource provider"),
+		// 				Description: to.Ptr("Register the subscription for Azure IoT Central resource provider"),
+		// 				Operation: to.Ptr("Register Azure IoT Central resource provider"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("Azure IoT Central resource provider"),
+		// 				Resource: to.Ptr("Azure IoT Central Resource Provider"),
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/privateLinkResources/read"),
+		// 			Name: to.Ptr("Microsoft.IoTCentral/IoTApps/providers/Microsoft.Insights/metricDefinitions/read"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Read private link resources"),
-		// 				Operation: to.Ptr("Get/List private link resources"),
-		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("IoTApps/privateLinkResources"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/privateEndpointConnections/write"),
-		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Approve/reject/disconnect private endpoint connections"),
-		// 				Operation: to.Ptr("Approve/Reject/Disconnect private endpoint connections"),
-		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("IoTApps/privateEndpointConnections"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/privateEndpointConnections/read"),
-		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Read private endpoint connections"),
-		// 				Operation: to.Ptr("Get/List private endpoint connections"),
-		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("IoTApps/privateEndpointConnections"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/privateEndpointConnections/delete"),
-		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Delete private endpoint connections"),
-		// 				Operation: to.Ptr("Delete private endpoint connections"),
-		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("IoTApps/privateEndpointConnections"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/privateEndpointConnectionProxies/validate/action"),
-		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Validate private endpoint connection proxies during Create/Update/Patch"),
-		// 				Operation: to.Ptr("Validate private endpoint connection proxies"),
-		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("IoTApps/privateEndpointConnectionProxies"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/privateEndpointConnectionProxies/read"),
-		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Read private endpoint connection proxies"),
-		// 				Operation: to.Ptr("Get/List private endpoint connection proxies"),
-		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("IoTApps/privateEndpointConnectionProxies"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/privateEndpointConnectionProxies/write"),
-		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Create/Update/Patch private endpoint connection proxies"),
-		// 				Operation: to.Ptr("Create/Update/Patch private endpoint connection proxies"),
-		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("IoTApps/privateEndpointConnectionProxies"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/privateEndpointConnectionProxies/delete"),
-		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Deletes private endpoint connection proxies"),
-		// 				Operation: to.Ptr("Delete private endpoint connection proxies"),
-		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("IoTApps/privateEndpointConnectionProxies"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/locations/operationResults/read"),
-		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Get async operation results for IoT Central"),
-		// 				Operation: to.Ptr("Get async operation results"),
-		// 				Provider: to.Ptr("Azure IoT Central"),
-		// 				Resource: to.Ptr("locations/operationResults"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/providers/Microsoft.Insights/metricDefinitions/read"),
-		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Read all the available metric definitions for IoT Central"),
-		// 				Operation: to.Ptr("Get/List metric definitions"),
+		// 				Description: to.Ptr("Gets all the available Metrics definitions on Azure IoT Central"),
+		// 				Operation: to.Ptr("Get all available Metrics definitions"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
 		// 				Resource: to.Ptr("IoTApps"),
 		// 			},
@@ -211,12 +130,12 @@ func ExampleOperationsClient_NewListPager() {
 		// 							"aggregationType": "Average",
 		// 							"displayDescription": "Number of devices connected to IoT Central",
 		// 							"displayName": "Total Connected Devices",
-		// 							"fillGapWithZero": true,
 		// 							"lockAggregationType": "Total",
 		// 							"supportedAggregationTypes":[]any{
 		// 								"Average",
 		// 							},
 		// 							"supportedTimeGrainTypes":[]any{
+		// 								"PT1M",
 		// 								"PT5M",
 		// 								"PT15M",
 		// 								"PT30M",
@@ -232,7 +151,6 @@ func ExampleOperationsClient_NewListPager() {
 		// 							"aggregationType": "Total",
 		// 							"displayDescription": "The count of all successful property reads initiated from IoT Central",
 		// 							"displayName": "Successful Device Property Reads from IoT Central",
-		// 							"fillGapWithZero": false,
 		// 							"supportedAggregationTypes":[]any{
 		// 								"Total",
 		// 							},
@@ -253,7 +171,6 @@ func ExampleOperationsClient_NewListPager() {
 		// 							"aggregationType": "Total",
 		// 							"displayDescription": "The count of all failed property reads initiated from IoT Central",
 		// 							"displayName": "Failed Device Property Reads from IoT Central",
-		// 							"fillGapWithZero": false,
 		// 							"supportedAggregationTypes":[]any{
 		// 								"Total",
 		// 							},
@@ -274,7 +191,6 @@ func ExampleOperationsClient_NewListPager() {
 		// 							"aggregationType": "Total",
 		// 							"displayDescription": "The count of all successful property reads initiated from devices",
 		// 							"displayName": "Successful Device Property Reads from Devices",
-		// 							"fillGapWithZero": false,
 		// 							"supportedAggregationTypes":[]any{
 		// 								"Total",
 		// 							},
@@ -295,7 +211,6 @@ func ExampleOperationsClient_NewListPager() {
 		// 							"aggregationType": "Total",
 		// 							"displayDescription": "The count of all failed property reads initiated from devices",
 		// 							"displayName": "Failed Device Property Reads from Devices",
-		// 							"fillGapWithZero": false,
 		// 							"supportedAggregationTypes":[]any{
 		// 								"Total",
 		// 							},
@@ -316,7 +231,6 @@ func ExampleOperationsClient_NewListPager() {
 		// 							"aggregationType": "Total",
 		// 							"displayDescription": "The count of all successful property updates initiated from IoT Central",
 		// 							"displayName": "Successful Device Property Updates from IoT Central",
-		// 							"fillGapWithZero": false,
 		// 							"supportedAggregationTypes":[]any{
 		// 								"Total",
 		// 							},
@@ -337,7 +251,6 @@ func ExampleOperationsClient_NewListPager() {
 		// 							"aggregationType": "Total",
 		// 							"displayDescription": "The count of all failed property updates initiated from IoT Central",
 		// 							"displayName": "Failed Device Property Updates from IoT Central",
-		// 							"fillGapWithZero": false,
 		// 							"supportedAggregationTypes":[]any{
 		// 								"Total",
 		// 							},
@@ -358,7 +271,6 @@ func ExampleOperationsClient_NewListPager() {
 		// 							"aggregationType": "Total",
 		// 							"displayDescription": "The count of all successful property updates initiated from devices",
 		// 							"displayName": "Successful Device Property Updates from Devices",
-		// 							"fillGapWithZero": false,
 		// 							"supportedAggregationTypes":[]any{
 		// 								"Total",
 		// 							},
@@ -379,394 +291,6 @@ func ExampleOperationsClient_NewListPager() {
 		// 							"aggregationType": "Total",
 		// 							"displayDescription": "The count of all failed property updates initiated from devices",
 		// 							"displayName": "Failed Device Property Updates from Devices",
-		// 							"fillGapWithZero": false,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Count",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "provisionedDeviceCount",
-		// 							"aggregationType": "Average",
-		// 							"displayDescription": "Number of devices provisioned in IoT Central application",
-		// 							"displayName": "Total Provisioned Devices",
-		// 							"fillGapWithZero": true,
-		// 							"lockAggregationType": "Total",
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Average",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Count",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "deviceDataUsage",
-		// 							"aggregationType": "Total",
-		// 							"displayDescription": "Bytes transferred to and from any devices connected to IoT Central application",
-		// 							"displayName": "Total Device Data Usage",
-		// 							"fillGapWithZero": true,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Bytes",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "c2d.commands.success",
-		// 							"aggregationType": "Total",
-		// 							"displayDescription": "The count of all successful command requests initiated from IoT Central",
-		// 							"displayName": "Successful command invocations",
-		// 							"fillGapWithZero": false,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Count",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "c2d.commands.failure",
-		// 							"aggregationType": "Total",
-		// 							"displayDescription": "The count of all failed command requests initiated from IoT Central",
-		// 							"displayName": "Failed command invocations",
-		// 							"fillGapWithZero": false,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Count",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "c2d.commands.requestSize",
-		// 							"aggregationType": "Total",
-		// 							"displayDescription": "Request size of all command requests initiated from IoT Central",
-		// 							"displayName": "Request size of command invocations",
-		// 							"fillGapWithZero": false,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Bytes",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "c2d.commands.responseSize",
-		// 							"aggregationType": "Total",
-		// 							"displayDescription": "Response size of all command responses initiated from IoT Central",
-		// 							"displayName": "Response size of command invocations",
-		// 							"fillGapWithZero": false,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Bytes",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "d2c.telemetry.ingress.allProtocol",
-		// 							"aggregationType": "Total",
-		// 							"displayDescription": "Number of device-to-cloud telemetry messages attempted to be sent to the IoT Central application",
-		// 							"displayName": "Total Telemetry Message Send Attempts",
-		// 							"fillGapWithZero": false,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Count",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "d2c.telemetry.ingress.success",
-		// 							"aggregationType": "Total",
-		// 							"displayDescription": "Number of device-to-cloud telemetry messages successfully sent to the IoT Central application",
-		// 							"displayName": "Total Telemetry Messages Sent",
-		// 							"fillGapWithZero": false,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Count",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "dataExport.messages.received",
-		// 							"aggregationType": "Total",
-		// 							"dimensions":[]any{
-		// 								map[string]any{
-		// 									"name": "exportId",
-		// 									"displayName": "Export Id",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "exportDisplayName",
-		// 									"displayName": "Export Display Name",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "destinationId",
-		// 									"displayName": "Destination Id",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "destinationDisplayName",
-		// 									"displayName": "Destination Display Name",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 							},
-		// 							"displayDescription": "Number of messages incoming to data export, before filtering and enrichment processing",
-		// 							"displayName": "Data Export Messages Received",
-		// 							"fillGapWithZero": false,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Count",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "dataExport.messages.filtered",
-		// 							"aggregationType": "Total",
-		// 							"dimensions":[]any{
-		// 								map[string]any{
-		// 									"name": "exportId",
-		// 									"displayName": "Export Id",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "exportDisplayName",
-		// 									"displayName": "Export Display Name",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "destinationId",
-		// 									"displayName": "Destination Id",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "destinationDisplayName",
-		// 									"displayName": "Destination Display Name",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 							},
-		// 							"displayDescription": "Number of messages that have passed through filters in data export",
-		// 							"displayName": "Data Export Messages Filtered",
-		// 							"fillGapWithZero": false,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Count",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "dataExport.messages.written",
-		// 							"aggregationType": "Total",
-		// 							"dimensions":[]any{
-		// 								map[string]any{
-		// 									"name": "exportId",
-		// 									"displayName": "Export Id",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "exportDisplayName",
-		// 									"displayName": "Export Display Name",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "destinationId",
-		// 									"displayName": "Destination Id",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "destinationDisplayName",
-		// 									"displayName": "Destination Display Name",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 							},
-		// 							"displayDescription": "Number of messages written to a destination",
-		// 							"displayName": "Data Export Messages Written",
-		// 							"fillGapWithZero": false,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Count",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "dataExport.error",
-		// 							"aggregationType": "Total",
-		// 							"dimensions":[]any{
-		// 								map[string]any{
-		// 									"name": "exportId",
-		// 									"displayName": "Export Id",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "exportDisplayName",
-		// 									"displayName": "Export Display Name",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "destinationId",
-		// 									"displayName": "Destination Id",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "destinationDisplayName",
-		// 									"displayName": "Destination Display Name",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 							},
-		// 							"displayDescription": "Number of errors encountered for data export",
-		// 							"displayName": "Data Export Errors",
-		// 							"fillGapWithZero": true,
-		// 							"supportedAggregationTypes":[]any{
-		// 								"Total",
-		// 							},
-		// 							"supportedTimeGrainTypes":[]any{
-		// 								"PT1M",
-		// 								"PT5M",
-		// 								"PT15M",
-		// 								"PT30M",
-		// 								"PT1H",
-		// 								"PT6H",
-		// 								"PT12H",
-		// 								"P1D",
-		// 							},
-		// 							"unit": "Count",
-		// 						},
-		// 						map[string]any{
-		// 							"name": "dataExport.statusChange",
-		// 							"aggregationType": "Total",
-		// 							"dimensions":[]any{
-		// 								map[string]any{
-		// 									"name": "exportId",
-		// 									"displayName": "Export Id",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "exportDisplayName",
-		// 									"displayName": "Export Display Name",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "destinationId",
-		// 									"displayName": "Destination Id",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "destinationDisplayName",
-		// 									"displayName": "Destination Display Name",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 								map[string]any{
-		// 									"name": "status",
-		// 									"displayName": "Status",
-		// 									"toBeExportedForShoebox": true,
-		// 								},
-		// 							},
-		// 							"displayDescription": "Number of status changes",
-		// 							"displayName": "Data Export Status Change",
-		// 							"fillGapWithZero": true,
 		// 							"supportedAggregationTypes":[]any{
 		// 								"Total",
 		// 							},
@@ -787,20 +311,20 @@ func ExampleOperationsClient_NewListPager() {
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/providers/Microsoft.Insights/diagnosticSettings/read"),
+		// 			Name: to.Ptr("Microsoft.IoTCentral/IoTApps/providers/Microsoft.Insights/diagnosticSettings/read"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Get/List all the diagnostic settings for the resource"),
-		// 				Operation: to.Ptr("Get/List diagnostic settings"),
+		// 				Description: to.Ptr("Gets the diagnostic setting for the resource"),
+		// 				Operation: to.Ptr("Read diagnostic setting"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
 		// 				Resource: to.Ptr("IoTApps"),
 		// 			},
 		// 			Origin: to.Ptr("system"),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.IoTCentral/iotApps/providers/Microsoft.Insights/diagnosticSettings/write"),
+		// 			Name: to.Ptr("Microsoft.IoTCentral/IoTApps/providers/Microsoft.Insights/diagnosticSettings/write"),
 		// 			Display: &armiotcentral.OperationDisplay{
-		// 				Description: to.Ptr("Set diagnostic settings for the resource"),
-		// 				Operation: to.Ptr("Create/Update/Patch diagnostic settings"),
+		// 				Description: to.Ptr("Creates or updates the diagnostic setting for the resource"),
+		// 				Operation: to.Ptr("Write diagnostic setting"),
 		// 				Provider: to.Ptr("Azure IoT Central"),
 		// 				Resource: to.Ptr("IoTApps"),
 		// 			},

@@ -43,16 +43,6 @@ func (c *ClientFactory) NewAppsClient() *AppsClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
-	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewPrivateLinksClient() *PrivateLinksClient {
-	subClient, _ := NewPrivateLinksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient

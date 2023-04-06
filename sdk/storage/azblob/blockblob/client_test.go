@@ -587,7 +587,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 	_require.Nil(err)
 }
 
-func setUpPutBlobFromURLTest(s *BlockBlobUnrecordedTestsSuite, testName string, _require *require.Assertions, svcClient *service.Client) (*container.Client, *blockblob.Client, *blockblob.Client, string, []byte) {
+func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcClient *service.Client) (*container.Client, *blockblob.Client, *blockblob.Client, string, []byte) {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 
@@ -604,13 +604,11 @@ func setUpPutBlobFromURLTest(s *BlockBlobUnrecordedTestsSuite, testName string, 
 	_require.Nil(err)
 
 	// Create SAS for source and get SAS URL
-	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	expiryTime := time.Now().UTC().Add(15 * time.Minute)
 	_require.Nil(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.NoError(err)
-		s.T().Fatal("Couldn't fetch credential because " + err.Error())
-	}
 
 	sasQueryParams, err := sas.AccountSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
@@ -633,7 +631,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURL() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS, sourceData := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS, sourceData := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Invoke UploadBlobFromURL
@@ -648,13 +646,27 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURL() {
 	_require.Equal(destBuffer, sourceData)
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, _, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Invoke UploadBlobFromURL without SAS
+	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlob.URL(), nil)
+	_require.Error(err)
+}
+
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Invoke UploadBlobFromURL
@@ -688,7 +700,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlWithCPK() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Invoke UploadBlobFromURL
@@ -717,7 +729,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, _, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, _, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Create Blob with CPK
@@ -765,7 +777,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS, sourceData := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS, sourceData := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Invoke UploadBlobFromURL
@@ -798,7 +810,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchTrue() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, sourceData := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, sourceData := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Get source properties
@@ -832,7 +844,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchFalse() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Getting random etag
@@ -856,7 +868,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchTrue(
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS, sourceData := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS, sourceData := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Invoke UploadBlobFromURL
@@ -881,7 +893,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchFalse
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Get source properties
@@ -907,7 +919,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceTru
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
@@ -936,7 +948,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceFal
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
@@ -961,7 +973,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceT
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
@@ -989,7 +1001,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceF
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
@@ -1015,7 +1027,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromUrlDestIfMatchTrue() 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Get ETag from dest blob
@@ -1044,7 +1056,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfMatchFalse() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Get ETag from dest blob
@@ -1077,7 +1089,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchTrue() 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Get Etag from dest blob
@@ -1108,7 +1120,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchFalse()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Get ETag from dest blob
@@ -1135,7 +1147,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLCopySourceFalse() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(s, testName, _require, svcClient)
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Set tier to Cool and check tier has been set

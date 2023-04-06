@@ -49,7 +49,7 @@ func TestProducerClient_SAS(t *testing.T) {
 	require.NoError(t, err)
 
 	err = batch.AddEventData(&azeventhubs.EventData{
-		Body: []byte("hello world"),
+		Body: []byte("TestProducerClient_SAS"),
 	}, nil)
 	require.NoError(t, err)
 
@@ -251,34 +251,41 @@ func TestProducerClient_SendToAny(t *testing.T) {
 
 	t.Run("no partition key, no client instanceID", func(t *testing.T) {
 		testSendAny(t, struct {
+			testName     string
 			instanceID   string
 			partitionKey *string
-		}{})
+		}{testName: "no partition key, no client instanceID"})
 	})
 
 	t.Run("no partition key, with client instanceID", func(t *testing.T) {
 		testSendAny(t, struct {
+			testName     string
 			instanceID   string
 			partitionKey *string
 		}{
+			testName:   "no partition key, with client instanceID",
 			instanceID: "client ID",
 		})
 	})
 
 	t.Run("actual partition key, no client instanceID", func(t *testing.T) {
 		testSendAny(t, struct {
+			testName     string
 			instanceID   string
 			partitionKey *string
 		}{
+			testName:     "actual partition key, no client instanceID",
 			partitionKey: to.Ptr("my special partition key"),
 		})
 	})
 
 	t.Run("actual partition key, with client instanceID", func(t *testing.T) {
 		testSendAny(t, struct {
+			testName     string
 			instanceID   string
 			partitionKey *string
 		}{
+			testName:     "actual partition key, with client instanceID",
 			instanceID:   "client ID",
 			partitionKey: to.Ptr("my special partition key"),
 		})
@@ -286,6 +293,7 @@ func TestProducerClient_SendToAny(t *testing.T) {
 }
 
 func testSendAny(t *testing.T, args struct {
+	testName     string
 	instanceID   string
 	partitionKey *string
 }) {
@@ -302,7 +310,7 @@ func testSendAny(t *testing.T, args struct {
 	require.NoError(t, err)
 
 	err = batch.AddEventData(&azeventhubs.EventData{
-		Body:          []byte("hello world"),
+		Body:          []byte(args.testName),
 		ContentType:   to.Ptr("content type"),
 		CorrelationID: "correlation id",
 		MessageID:     to.Ptr("message id"),
@@ -330,7 +338,7 @@ func testSendAny(t *testing.T, args struct {
 	receivedEvent := receiveEventFromAnyPartition(ctx, t, consumer, partitionsBeforeSend)
 
 	require.Equal(t, azeventhubs.EventData{
-		Body:          []byte("hello world"),
+		Body:          []byte(args.testName),
 		ContentType:   to.Ptr("content type"),
 		CorrelationID: "correlation id",
 		MessageID:     to.Ptr("message id"),

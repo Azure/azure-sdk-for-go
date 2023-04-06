@@ -96,7 +96,7 @@ func TestLinksRecoverLinkWithConnectionFailure(t *testing.T) {
 	requireNewLinkNewConn(t, oldLWID, newLWID)
 
 	err = newLWID.Link.Send(context.Background(), &amqp.Message{
-		Data: [][]byte{[]byte("hello world")},
+		Data: [][]byte{[]byte("TestLinksRecoverLinkWithConnectionFailure")},
 	}, nil)
 	require.NoError(t, err)
 }
@@ -182,7 +182,7 @@ func TestLinkFailureWhenConnectionIsDead(t *testing.T) {
 	requireNewLinkNewConn(t, oldLWID, newLWID)
 
 	err = newLWID.Link.Send(context.Background(), &amqp.Message{
-		Data: [][]byte{[]byte("hello world")},
+		Data: [][]byte{[]byte("TestLinkFailureWhenConnectionIsDead")},
 	}, nil)
 	require.NoError(t, err)
 }

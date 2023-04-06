@@ -3,13 +3,7 @@
 ## 2.2.0 (2023-04-07)
 ### Features Added
 
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
-- New function `*ClientFactory.NewContainerGroupsClient() *ContainerGroupsClient`
-- New function `*ClientFactory.NewContainersClient() *ContainersClient`
-- New function `*ClientFactory.NewLocationClient() *LocationClient`
-- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
-- New function `*ClientFactory.NewSubnetServiceAssociationLinkClient() *SubnetServiceAssociationLinkClient`
-- New struct `ClientFactory`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 2.1.0 (2022-11-08)

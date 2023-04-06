@@ -46,7 +46,7 @@ func NewNetworkFunctionVendorSKUsClient(subscriptionID string, credential azcore
 
 // NewListBySKUPager - Lists information about network function vendor sku details.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - vendorName - The name of the network function vendor.
 //   - vendorSKUName - The name of the network function sku.
 //   - options - NetworkFunctionVendorSKUsClientListBySKUOptions contains the optional parameters for the NetworkFunctionVendorSKUsClient.NewListBySKUPager
@@ -99,7 +99,7 @@ func (client *NetworkFunctionVendorSKUsClient) listBySKUCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +116,7 @@ func (client *NetworkFunctionVendorSKUsClient) listBySKUHandleResponse(resp *htt
 
 // NewListByVendorPager - Lists all network function vendor sku details in a vendor.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - vendorName - The name of the network function vendor.
 //   - options - NetworkFunctionVendorSKUsClientListByVendorOptions contains the optional parameters for the NetworkFunctionVendorSKUsClient.NewListByVendorPager
 //     method.
@@ -164,7 +164,7 @@ func (client *NetworkFunctionVendorSKUsClient) listByVendorCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -48,7 +48,7 @@ func NewVendorNetworkFunctionsClient(subscriptionID string, credential azcore.To
 // This is expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - locationName - The Azure region where the network function resource was created by the customer.
 //   - vendorName - The name of the vendor.
 //   - serviceKey - The GUID for the vendor network function.
@@ -73,7 +73,7 @@ func (client *VendorNetworkFunctionsClient) BeginCreateOrUpdate(ctx context.Cont
 // is expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 func (client *VendorNetworkFunctionsClient) createOrUpdate(ctx context.Context, locationName string, vendorName string, serviceKey string, parameters VendorNetworkFunction, options *VendorNetworkFunctionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, locationName, vendorName, serviceKey, parameters, options)
 	if err != nil {
@@ -113,7 +113,7 @@ func (client *VendorNetworkFunctionsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -122,7 +122,7 @@ func (client *VendorNetworkFunctionsClient) createOrUpdateCreateRequest(ctx cont
 // Get - Gets information about the specified vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - locationName - The Azure region where the network function resource was created by the customer.
 //   - vendorName - The name of the vendor.
 //   - serviceKey - The GUID for the vendor network function.
@@ -167,7 +167,7 @@ func (client *VendorNetworkFunctionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -184,7 +184,7 @@ func (client *VendorNetworkFunctionsClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - Lists all the vendor network function sub resources in an Azure region, filtered by skuType, skuName, vendorProvisioningState.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - locationName - The Azure region where the network function resource was created by the customer.
 //   - vendorName - The name of the vendor.
 //   - options - VendorNetworkFunctionsClientListOptions contains the optional parameters for the VendorNetworkFunctionsClient.NewListPager
@@ -240,7 +240,7 @@ func (client *VendorNetworkFunctionsClient) listCreateRequest(ctx context.Contex
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

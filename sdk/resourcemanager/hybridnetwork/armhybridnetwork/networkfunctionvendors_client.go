@@ -46,7 +46,7 @@ func NewNetworkFunctionVendorsClient(subscriptionID string, credential azcore.To
 
 // NewListPager - Lists all the available vendor and sku information.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - options - NetworkFunctionVendorsClientListOptions contains the optional parameters for the NetworkFunctionVendorsClient.NewListPager
 //     method.
 func (client *NetworkFunctionVendorsClient) NewListPager(options *NetworkFunctionVendorsClientListOptions) *runtime.Pager[NetworkFunctionVendorsClientListResponse] {
@@ -89,7 +89,7 @@ func (client *NetworkFunctionVendorsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

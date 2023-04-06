@@ -47,7 +47,7 @@ func NewVendorsClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCreateOrUpdate - Creates or updates a vendor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - vendorName - The name of the vendor.
 //   - options - VendorsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorsClient.BeginCreateOrUpdate
 //     method.
@@ -68,7 +68,7 @@ func (client *VendorsClient) BeginCreateOrUpdate(ctx context.Context, vendorName
 // CreateOrUpdate - Creates or updates a vendor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 func (client *VendorsClient) createOrUpdate(ctx context.Context, vendorName string, options *VendorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, vendorName, options)
 	if err != nil {
@@ -100,7 +100,7 @@ func (client *VendorsClient) createOrUpdateCreateRequest(ctx context.Context, ve
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -112,7 +112,7 @@ func (client *VendorsClient) createOrUpdateCreateRequest(ctx context.Context, ve
 // BeginDelete - Deletes the specified vendor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - vendorName - The name of the vendor.
 //   - options - VendorsClientBeginDeleteOptions contains the optional parameters for the VendorsClient.BeginDelete method.
 func (client *VendorsClient) BeginDelete(ctx context.Context, vendorName string, options *VendorsClientBeginDeleteOptions) (*runtime.Poller[VendorsClientDeleteResponse], error) {
@@ -132,7 +132,7 @@ func (client *VendorsClient) BeginDelete(ctx context.Context, vendorName string,
 // Delete - Deletes the specified vendor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 func (client *VendorsClient) deleteOperation(ctx context.Context, vendorName string, options *VendorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, vendorName, options)
 	if err != nil {
@@ -164,7 +164,7 @@ func (client *VendorsClient) deleteCreateRequest(ctx context.Context, vendorName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -173,7 +173,7 @@ func (client *VendorsClient) deleteCreateRequest(ctx context.Context, vendorName
 // Get - Gets information about the specified vendor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - vendorName - The name of the vendor.
 //   - options - VendorsClientGetOptions contains the optional parameters for the VendorsClient.Get method.
 func (client *VendorsClient) Get(ctx context.Context, vendorName string, options *VendorsClientGetOptions) (VendorsClientGetResponse, error) {
@@ -207,7 +207,7 @@ func (client *VendorsClient) getCreateRequest(ctx context.Context, vendorName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -224,7 +224,7 @@ func (client *VendorsClient) getHandleResponse(resp *http.Response) (VendorsClie
 
 // NewListBySubscriptionPager - Lists all the vendors in a subscription.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - options - VendorsClientListBySubscriptionOptions contains the optional parameters for the VendorsClient.NewListBySubscriptionPager
 //     method.
 func (client *VendorsClient) NewListBySubscriptionPager(options *VendorsClientListBySubscriptionOptions) *runtime.Pager[VendorsClientListBySubscriptionResponse] {
@@ -267,7 +267,7 @@ func (client *VendorsClient) listBySubscriptionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

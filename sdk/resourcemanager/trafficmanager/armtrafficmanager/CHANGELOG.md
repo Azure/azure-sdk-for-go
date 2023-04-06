@@ -1,20 +1,9 @@
 # Release History
 
-## 2.0.0 (2023-04-07)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
-
+## 1.1.0 (2023-04-07)
 ### Features Added
 
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
-- New function `*ClientFactory.NewEndpointsClient() *EndpointsClient`
-- New function `*ClientFactory.NewGeographicHierarchiesClient() *GeographicHierarchiesClient`
-- New function `*ClientFactory.NewHeatMapClient() *HeatMapClient`
-- New function `*ClientFactory.NewProfilesClient() *ProfilesClient`
-- New function `*ClientFactory.NewUserMetricsKeysClient() *UserMetricsKeysClient`
-- New struct `ClientFactory`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 1.0.0 (2022-05-17)

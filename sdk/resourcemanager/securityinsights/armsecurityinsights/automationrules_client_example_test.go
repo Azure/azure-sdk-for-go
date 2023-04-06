@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/automationRules/AutomationRules_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/automationRules/AutomationRules_Get.json
 func ExampleAutomationRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,33 +76,16 @@ func ExampleAutomationRulesClient_Get() {
 	// 							to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/fab3d2d4-747f-46a7-8ef0-9c0be8112bf7"),
 	// 							to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/8deb8303-e94d-46ff-96e0-5fd94b33df1a")},
 	// 						},
-	// 					},
-	// 					&armsecurityinsights.PropertyChangedConditionProperties{
-	// 						ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyChanged),
-	// 						ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesChangedCondition{
-	// 							ChangeType: to.Ptr(armsecurityinsights.AutomationRulePropertyChangedConditionSupportedChangedTypeChangedFrom),
-	// 							Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
-	// 							PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentStatus),
-	// 							PropertyValues: []*string{
-	// 								to.Ptr("Closed")},
-	// 							},
-	// 						},
-	// 						&armsecurityinsights.PropertyArrayChangedConditionProperties{
-	// 							ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyArrayChanged),
-	// 							ConditionProperties: &armsecurityinsights.AutomationRulePropertyArrayChangedValuesCondition{
-	// 								ArrayType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayChangedConditionSupportedArrayTypeAlerts),
-	// 								ChangeType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayChangedConditionSupportedChangeTypeAdded),
-	// 							},
-	// 					}},
-	// 					IsEnabled: to.Ptr(true),
-	// 					TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
-	// 					TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
-	// 				},
+	// 				}},
+	// 				IsEnabled: to.Ptr(true),
+	// 				TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
+	// 				TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
 	// 			},
-	// 		}
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/automationRules/AutomationRules_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/automationRules/AutomationRules_CreateOrUpdate.json
 func ExampleAutomationRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,33 +144,16 @@ func ExampleAutomationRulesClient_CreateOrUpdate() {
 	// 							to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/fab3d2d4-747f-46a7-8ef0-9c0be8112bf7"),
 	// 							to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/8deb8303-e94d-46ff-96e0-5fd94b33df1a")},
 	// 						},
-	// 					},
-	// 					&armsecurityinsights.PropertyChangedConditionProperties{
-	// 						ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyChanged),
-	// 						ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesChangedCondition{
-	// 							ChangeType: to.Ptr(armsecurityinsights.AutomationRulePropertyChangedConditionSupportedChangedTypeChangedFrom),
-	// 							Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
-	// 							PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentStatus),
-	// 							PropertyValues: []*string{
-	// 								to.Ptr("Closed")},
-	// 							},
-	// 						},
-	// 						&armsecurityinsights.PropertyArrayChangedConditionProperties{
-	// 							ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyArrayChanged),
-	// 							ConditionProperties: &armsecurityinsights.AutomationRulePropertyArrayChangedValuesCondition{
-	// 								ArrayType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayChangedConditionSupportedArrayTypeAlerts),
-	// 								ChangeType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayChangedConditionSupportedChangeTypeAdded),
-	// 							},
-	// 					}},
-	// 					IsEnabled: to.Ptr(true),
-	// 					TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
-	// 					TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
-	// 				},
+	// 				}},
+	// 				IsEnabled: to.Ptr(true),
+	// 				TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
+	// 				TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
 	// 			},
-	// 		}
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/automationRules/AutomationRules_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/automationRules/AutomationRules_Delete.json
 func ExampleAutomationRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,7 +175,7 @@ func ExampleAutomationRulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/automationRules/AutomationRules_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/automationRules/AutomationRules_List.json
 func ExampleAutomationRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,30 +240,13 @@ func ExampleAutomationRulesClient_NewListPager() {
 		// 									to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/fab3d2d4-747f-46a7-8ef0-9c0be8112bf7"),
 		// 									to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/8deb8303-e94d-46ff-96e0-5fd94b33df1a")},
 		// 								},
-		// 							},
-		// 							&armsecurityinsights.PropertyChangedConditionProperties{
-		// 								ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyChanged),
-		// 								ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesChangedCondition{
-		// 									ChangeType: to.Ptr(armsecurityinsights.AutomationRulePropertyChangedConditionSupportedChangedTypeChangedFrom),
-		// 									Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
-		// 									PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyChangedConditionSupportedPropertyTypeIncidentStatus),
-		// 									PropertyValues: []*string{
-		// 										to.Ptr("Closed")},
-		// 									},
-		// 								},
-		// 								&armsecurityinsights.PropertyArrayChangedConditionProperties{
-		// 									ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyArrayChanged),
-		// 									ConditionProperties: &armsecurityinsights.AutomationRulePropertyArrayChangedValuesCondition{
-		// 										ArrayType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayChangedConditionSupportedArrayTypeAlerts),
-		// 										ChangeType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayChangedConditionSupportedChangeTypeAdded),
-		// 									},
-		// 							}},
-		// 							IsEnabled: to.Ptr(true),
-		// 							TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
-		// 							TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
-		// 						},
+		// 						}},
+		// 						IsEnabled: to.Ptr(true),
+		// 						TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
+		// 						TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
 		// 					},
-		// 			}},
-		// 		}
+		// 				},
+		// 		}},
+		// 	}
 	}
 }

@@ -38,16 +38,6 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-func (c *ClientFactory) NewQueryPacksClient() *QueryPacksClient {
-	subClient, _ := NewQueryPacksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewQueriesClient() *QueriesClient {
-	subClient, _ := NewQueriesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewDataExportsClient() *DataExportsClient {
 	subClient, _ := NewDataExportsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -133,6 +123,11 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewTablesClient() *TablesClient {
+	subClient, _ := NewTablesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewWorkspacesClient() *WorkspacesClient {
 	subClient, _ := NewWorkspacesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -140,10 +135,5 @@ func (c *ClientFactory) NewWorkspacesClient() *WorkspacesClient {
 
 func (c *ClientFactory) NewDeletedWorkspacesClient() *DeletedWorkspacesClient {
 	subClient, _ := NewDeletedWorkspacesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewTablesClient() *TablesClient {
-	subClient, _ := NewTablesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

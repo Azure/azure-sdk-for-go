@@ -46,7 +46,7 @@ func NewDeletedWorkspacesClient(subscriptionID string, credential azcore.TokenCr
 
 // NewListPager - Gets recently deleted workspaces in a subscription, available for recovery.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2021-06-01
 //   - options - DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.NewListPager
 //     method.
 func (client *DeletedWorkspacesClient) NewListPager(options *DeletedWorkspacesClientListOptions) *runtime.Pager[DeletedWorkspacesClientListResponse] {
@@ -83,7 +83,7 @@ func (client *DeletedWorkspacesClient) listCreateRequest(ctx context.Context, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,7 +100,7 @@ func (client *DeletedWorkspacesClient) listHandleResponse(resp *http.Response) (
 
 // NewListByResourceGroupPager - Gets recently deleted workspaces in a resource group, available for recovery.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DeletedWorkspacesClientListByResourceGroupOptions contains the optional parameters for the DeletedWorkspacesClient.NewListByResourceGroupPager
 //     method.
@@ -142,7 +142,7 @@ func (client *DeletedWorkspacesClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

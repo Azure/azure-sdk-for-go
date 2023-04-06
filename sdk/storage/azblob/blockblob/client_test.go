@@ -735,7 +735,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
 	// Create Blob with CPK
 	bbName := testcommon.GenerateBlobName(testName)
 	srcBlob := testcommon.CreateNewBlockBlobWithCPK(context.Background(), _require, bbName, containerClient, nil, &encryptionScope)
-	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	expiryTime := time.Now().UTC().Add(15 * time.Minute)
 	_require.Nil(err)
 
 	// Create SAS credentials to get SAS URL for source

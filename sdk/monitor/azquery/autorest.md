@@ -9,7 +9,7 @@ clear-output-folder: false
 export-clients: true
 go: true
 input-file: 
-    - https://github.com/Azure/azure-rest-api-specs/blob/f9877ef8032f249c168e04b8495e39f287988b91/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/605407bc0c1a133018285f550d01175469cb3c3a/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
@@ -138,6 +138,18 @@ directive:
   - from: swagger-document
     where: $.definitions.batchQueryRequest.properties.method
     transform: $["x-ms-client-default"] = "POST"
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.path.x-ms-enum
+    transform: $["modelAsString"] = true
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.path.x-ms-enum
+    transform: $["name"] = "BatchQueryRequestPath"
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.method.x-ms-enum
+    transform: $["modelAsString"] = true
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.method.x-ms-enum
+    transform: $["name"] = "BatchQueryRequestMethod"
 
   # add descriptions for models and constants that don't have them
   - from: swagger-document

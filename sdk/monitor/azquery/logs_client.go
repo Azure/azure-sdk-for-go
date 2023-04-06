@@ -30,7 +30,7 @@ type LogsClient struct {
 // QueryBatch - Executes a batch of Analytics queries for data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-27_Preview
+// Generated from API version 2022-10-27
 //   - body - The batch request body
 //   - options - LogsClientQueryBatchOptions contains the optional parameters for the LogsClient.QueryBatch method.
 func (client *LogsClient) QueryBatch(ctx context.Context, body BatchRequest, options *LogsClientQueryBatchOptions) (LogsClientQueryBatchResponse, error) {
@@ -73,7 +73,7 @@ func (client *LogsClient) queryBatchHandleResponse(resp *http.Response) (LogsCli
 // query.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-27_Preview
+// Generated from API version 2022-10-27
 //   - resourceID - The identifier of the resource.
 //   - body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
 //   - options - LogsClientQueryResourceOptions contains the optional parameters for the LogsClient.QueryResource method.
@@ -119,7 +119,7 @@ func (client *LogsClient) queryResourceHandleResponse(resp *http.Response) (Logs
 // QueryWorkspace - Executes an Analytics query for data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-27_Preview
+// Generated from API version 2022-10-27
 //   - workspaceID - Primary Workspace ID of the query. This is Workspace ID from the Properties blade in the Azure portal
 //   - body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
 //   - options - LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.

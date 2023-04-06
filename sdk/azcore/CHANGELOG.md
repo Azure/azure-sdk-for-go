@@ -7,7 +7,7 @@
 
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.5.0-beta.1
-* Removed `Claims` and `TenantID` fields from `policy.TokenRequestOptions`
+* Removed `TokenRequestOptions.Claims`
 * Removed CAE support for ARM clients
 
 ### Bugs Fixed

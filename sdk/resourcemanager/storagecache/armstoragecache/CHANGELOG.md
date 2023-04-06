@@ -3,16 +3,7 @@
 ## 3.1.0 (2023-04-07)
 ### Features Added
 
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
-- New function `*ClientFactory.NewAscOperationsClient() *AscOperationsClient`
-- New function `*ClientFactory.NewAscUsagesClient() *AscUsagesClient`
-- New function `*ClientFactory.NewCachesClient() *CachesClient`
-- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
-- New function `*ClientFactory.NewSKUsClient() *SKUsClient`
-- New function `*ClientFactory.NewStorageTargetClient() *StorageTargetClient`
-- New function `*ClientFactory.NewStorageTargetsClient() *StorageTargetsClient`
-- New function `*ClientFactory.NewUsageModelsClient() *UsageModelsClient`
-- New struct `ClientFactory`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 3.0.0 (2023-02-24)

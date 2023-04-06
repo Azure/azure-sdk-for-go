@@ -82,7 +82,7 @@ type RPCLinkArgs struct {
 }
 
 // NewRPCLink will build a new request response link
-func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
+func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error) {
 	session, err := args.Client.NewSession(ctx, nil)
 
 	if err != nil {

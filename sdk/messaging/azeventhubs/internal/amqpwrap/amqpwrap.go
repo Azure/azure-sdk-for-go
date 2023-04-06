@@ -66,22 +66,6 @@ type AMQPClient interface {
 	NewSession(ctx context.Context, opts *amqp.SessionOptions) (AMQPSession, error)
 }
 
-// RPCLink is implemented by *rpc.Link
-type RPCLink interface {
-	Close(ctx context.Context) error
-	RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, error)
-	LinkName() string
-}
-
-// RPCResponse is the simplified response structure from an RPC like call
-type RPCResponse struct {
-	// Code is the response code - these originate from Service Bus. Some
-	// common values are called out below, with the RPCResponseCode* constants.
-	Code        int
-	Description string
-	Message     *amqp.Message
-}
-
 type goamqpConn interface {
 	NewSession(ctx context.Context, opts *amqp.SessionOptions) (*amqp.Session, error)
 	Close() error

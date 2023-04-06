@@ -92,6 +92,7 @@ func RandomString(prefix string, length int) string {
 }
 
 type ConnectionParamsForTest struct {
+	ClientID                   string
 	ConnectionString           string
 	ConnectionStringListenOnly string
 	ConnectionStringSendOnly   string
@@ -100,6 +101,7 @@ type ConnectionParamsForTest struct {
 	ResourceGroup              string
 	StorageConnectionString    string
 	SubscriptionID             string
+	TenantID                   string
 }
 
 func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
@@ -110,6 +112,8 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 	}
 
 	envVars := mustGetEnvironmentVars(t, []string{
+		"AZURE_TENANT_ID",
+		"AZURE_CLIENT_ID",
 		"AZURE_SUBSCRIPTION_ID",
 		"CHECKPOINTSTORE_STORAGE_CONNECTION_STRING",
 		"EVENTHUB_CONNECTION_STRING_LISTEN_ONLY",
@@ -131,6 +135,8 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		ResourceGroup:              envVars["RESOURCE_GROUP"],
 		StorageConnectionString:    envVars["CHECKPOINTSTORE_STORAGE_CONNECTION_STRING"],
 		SubscriptionID:             envVars["AZURE_SUBSCRIPTION_ID"],
+		TenantID:                   envVars["AZURE_TENANT_ID"],
+		ClientID:                   envVars["AZURE_CLIENT_ID"],
 	}
 }
 

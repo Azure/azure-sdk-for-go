@@ -8,5 +8,5 @@ package azquery
 
 const (
 	moduleName = "azquery"
-	version    = "v1.0.1"
+	version    = "v1.1.0-beta.1"
 )

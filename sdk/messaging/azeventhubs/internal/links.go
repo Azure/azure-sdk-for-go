@@ -98,20 +98,7 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 
 		if err := l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName()); err != nil {
 			azlog.Writef(exported.EventConn, "(%s) Error when cleaning up old link for link recovery: %s", lwid.String(), err)
-
-			if GetRecoveryKind(err) == RecoveryKindConn {
-				log.Writef(exported.EventConn, "Upgrading to connection reset for recovery instead of link")
-
-				if err := l.ns.Recover(ctx, lwid.ConnID); err != nil {
-					log.Writef(exported.EventConn, "failed to recover connection: %s", err.Error())
-
-					// we still need the next recovery to attempt a connection level recovery
-					return amqpwrap.ErrConnResetNeeded
-				}
-			} else {
-				log.Writef(exported.EventConn, "failed to recreate link: %s", err.Error())
-				return err
-			}
+			return err
 		}
 
 		return nil

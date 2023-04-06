@@ -382,7 +382,7 @@ func (c *CorrelationFilter) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Encryption.
 func (e Encryption) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "keySource", e.KeySource)
+	objectMap["keySource"] = "Microsoft.KeyVault"
 	populate(objectMap, "keyVaultProperties", e.KeyVaultProperties)
 	populate(objectMap, "requireInfrastructureEncryption", e.RequireInfrastructureEncryption)
 	return json.Marshal(objectMap)
@@ -1855,7 +1855,6 @@ func (s SBNamespaceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "disableLocalAuth", s.DisableLocalAuth)
 	populate(objectMap, "encryption", s.Encryption)
 	populate(objectMap, "metricId", s.MetricID)
-	populate(objectMap, "minimumTlsVersion", s.MinimumTLSVersion)
 	populate(objectMap, "privateEndpointConnections", s.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "serviceBusEndpoint", s.ServiceBusEndpoint)
@@ -1888,9 +1887,6 @@ func (s *SBNamespaceProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "metricId":
 			err = unpopulate(val, "MetricID", &s.MetricID)
-			delete(rawMsg, key)
-		case "minimumTlsVersion":
-			err = unpopulate(val, "MinimumTLSVersion", &s.MinimumTLSVersion)
 			delete(rawMsg, key)
 		case "privateEndpointConnections":
 			err = unpopulate(val, "PrivateEndpointConnections", &s.PrivateEndpointConnections)

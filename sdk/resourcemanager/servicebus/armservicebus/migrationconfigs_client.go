@@ -50,7 +50,7 @@ func NewMigrationConfigsClient(subscriptionID string, credential azcore.TokenCre
 // operation will fail when entity migration is in-progress.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - configName - The configuration name. Should always be "$default".
@@ -95,7 +95,7 @@ func (client *MigrationConfigsClient) completeMigrationCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *MigrationConfigsClient) completeMigrationCreateRequest(ctx context
 // namespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - configName - The configuration name. Should always be "$default".
@@ -127,7 +127,7 @@ func (client *MigrationConfigsClient) BeginCreateAndStartMigration(ctx context.C
 // CreateAndStartMigration - Creates Migration configuration and starts migration of entities from Standard to Premium namespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-11-01
 func (client *MigrationConfigsClient) createAndStartMigration(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, parameters MigrationConfigProperties, options *MigrationConfigsClientBeginCreateAndStartMigrationOptions) (*http.Response, error) {
 	req, err := client.createAndStartMigrationCreateRequest(ctx, resourceGroupName, namespaceName, configName, parameters, options)
 	if err != nil {
@@ -167,7 +167,7 @@ func (client *MigrationConfigsClient) createAndStartMigrationCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -176,7 +176,7 @@ func (client *MigrationConfigsClient) createAndStartMigrationCreateRequest(ctx c
 // Delete - Deletes a MigrationConfiguration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - configName - The configuration name. Should always be "$default".
@@ -220,7 +220,7 @@ func (client *MigrationConfigsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -229,7 +229,7 @@ func (client *MigrationConfigsClient) deleteCreateRequest(ctx context.Context, r
 // Get - Retrieves Migration Config
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - configName - The configuration name. Should always be "$default".
@@ -273,7 +273,7 @@ func (client *MigrationConfigsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,7 +290,7 @@ func (client *MigrationConfigsClient) getHandleResponse(resp *http.Response) (Mi
 
 // NewListPager - Gets all migrationConfigurations
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - options - MigrationConfigsClientListOptions contains the optional parameters for the MigrationConfigsClient.NewListPager
@@ -343,7 +343,7 @@ func (client *MigrationConfigsClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -361,7 +361,7 @@ func (client *MigrationConfigsClient) listHandleResponse(resp *http.Response) (M
 // Revert - This operation reverts Migration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - configName - The configuration name. Should always be "$default".
@@ -405,7 +405,7 @@ func (client *MigrationConfigsClient) revertCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

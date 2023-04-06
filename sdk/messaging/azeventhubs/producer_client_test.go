@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"sort"
 	"strings"
 	"sync"
@@ -141,10 +140,9 @@ func TestClientsUnauthorizedCreds(t *testing.T) {
 	})
 
 	t.Run("invalid identity creds", func(t *testing.T) {
-		tenantID := os.Getenv("AZEVENTHUBS_TENANT_ID")
-		clientID := os.Getenv("AZEVENTHUBS_CLIENT_ID")
+		testData := test.GetConnectionParamsForTest(t)
 
-		cliCred, err := azidentity.NewClientSecretCredential(tenantID, clientID, "bogus-client-secret", nil)
+		cliCred, err := azidentity.NewClientSecretCredential(testData.TenantID, testData.ClientID, "bogus-client-secret", nil)
 		require.NoError(t, err)
 
 		prodClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, cliCred, nil)

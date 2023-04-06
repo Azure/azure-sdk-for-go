@@ -3,19 +3,7 @@
 ## 1.1.0 (2023-04-07)
 ### Features Added
 
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
-- New function `*ClientFactory.NewCertificatesClient() *CertificatesClient`
-- New function `*ClientFactory.NewContainerAppsAuthConfigsClient() *ContainerAppsAuthConfigsClient`
-- New function `*ClientFactory.NewContainerAppsClient() *ContainerAppsClient`
-- New function `*ClientFactory.NewContainerAppsRevisionReplicasClient() *ContainerAppsRevisionReplicasClient`
-- New function `*ClientFactory.NewContainerAppsRevisionsClient() *ContainerAppsRevisionsClient`
-- New function `*ClientFactory.NewContainerAppsSourceControlsClient() *ContainerAppsSourceControlsClient`
-- New function `*ClientFactory.NewDaprComponentsClient() *DaprComponentsClient`
-- New function `*ClientFactory.NewManagedEnvironmentsClient() *ManagedEnvironmentsClient`
-- New function `*ClientFactory.NewManagedEnvironmentsStoragesClient() *ManagedEnvironmentsStoragesClient`
-- New function `*ClientFactory.NewNamespacesClient() *NamespacesClient`
-- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
-- New struct `ClientFactory`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 1.0.0 (2022-05-25)

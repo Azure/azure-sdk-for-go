@@ -48,7 +48,7 @@ func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCreateOrUpdate - Create a new Deployment or update an exiting Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -74,7 +74,7 @@ func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // CreateOrUpdate - Create a new Deployment or update an exiting Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *DeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource, options *DeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource, options)
 	if err != nil {
@@ -118,7 +118,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, deploymentResource)
@@ -127,7 +127,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 // BeginDelete - Operation to delete a Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -151,7 +151,7 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Operation to delete a Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *DeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
@@ -195,7 +195,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -204,7 +204,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 // BeginGenerateHeapDump - Generate Heap Dump
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -230,7 +230,7 @@ func (client *DeploymentsClient) BeginGenerateHeapDump(ctx context.Context, reso
 // GenerateHeapDump - Generate Heap Dump
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *DeploymentsClient) generateHeapDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginGenerateHeapDumpOptions) (*http.Response, error) {
 	req, err := client.generateHeapDumpCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
 	if err != nil {
@@ -274,7 +274,7 @@ func (client *DeploymentsClient) generateHeapDumpCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
@@ -283,7 +283,7 @@ func (client *DeploymentsClient) generateHeapDumpCreateRequest(ctx context.Conte
 // BeginGenerateThreadDump - Generate Thread Dump
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -309,7 +309,7 @@ func (client *DeploymentsClient) BeginGenerateThreadDump(ctx context.Context, re
 // GenerateThreadDump - Generate Thread Dump
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *DeploymentsClient) generateThreadDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginGenerateThreadDumpOptions) (*http.Response, error) {
 	req, err := client.generateThreadDumpCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
 	if err != nil {
@@ -353,7 +353,7 @@ func (client *DeploymentsClient) generateThreadDumpCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
@@ -362,7 +362,7 @@ func (client *DeploymentsClient) generateThreadDumpCreateRequest(ctx context.Con
 // Get - Get a Deployment and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -412,7 +412,7 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -430,7 +430,7 @@ func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (Deploym
 // GetLogFileURL - Get deployment log file URL
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -481,7 +481,7 @@ func (client *DeploymentsClient) getLogFileURLCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -498,7 +498,7 @@ func (client *DeploymentsClient) getLogFileURLHandleResponse(resp *http.Response
 
 // NewListPager - Handles requests to list all resources in an App.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -556,7 +556,7 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	if options != nil && options.Version != nil {
 		for _, qv := range options.Version {
 			reqQP.Add("version", qv)
@@ -578,7 +578,7 @@ func (client *DeploymentsClient) listHandleResponse(resp *http.Response) (Deploy
 
 // NewListForClusterPager - List deployments for a certain service
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -632,7 +632,7 @@ func (client *DeploymentsClient) listForClusterCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	if options != nil && options.Version != nil {
 		for _, qv := range options.Version {
 			reqQP.Add("version", qv)
@@ -655,7 +655,7 @@ func (client *DeploymentsClient) listForClusterHandleResponse(resp *http.Respons
 // BeginRestart - Restart the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -680,7 +680,7 @@ func (client *DeploymentsClient) BeginRestart(ctx context.Context, resourceGroup
 // Restart - Restart the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *DeploymentsClient) restart(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
@@ -724,7 +724,7 @@ func (client *DeploymentsClient) restartCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -733,7 +733,7 @@ func (client *DeploymentsClient) restartCreateRequest(ctx context.Context, resou
 // BeginStart - Start the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -757,7 +757,7 @@ func (client *DeploymentsClient) BeginStart(ctx context.Context, resourceGroupNa
 // Start - Start the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *DeploymentsClient) start(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
@@ -801,7 +801,7 @@ func (client *DeploymentsClient) startCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -810,7 +810,7 @@ func (client *DeploymentsClient) startCreateRequest(ctx context.Context, resourc
 // BeginStartJFR - Start JFR
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -836,7 +836,7 @@ func (client *DeploymentsClient) BeginStartJFR(ctx context.Context, resourceGrou
 // StartJFR - Start JFR
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *DeploymentsClient) startJFR(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginStartJFROptions) (*http.Response, error) {
 	req, err := client.startJFRCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
 	if err != nil {
@@ -880,7 +880,7 @@ func (client *DeploymentsClient) startJFRCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
@@ -889,7 +889,7 @@ func (client *DeploymentsClient) startJFRCreateRequest(ctx context.Context, reso
 // BeginStop - Stop the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -913,7 +913,7 @@ func (client *DeploymentsClient) BeginStop(ctx context.Context, resourceGroupNam
 // Stop - Stop the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *DeploymentsClient) stop(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
@@ -957,7 +957,7 @@ func (client *DeploymentsClient) stopCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -966,7 +966,7 @@ func (client *DeploymentsClient) stopCreateRequest(ctx context.Context, resource
 // BeginUpdate - Operation to update an exiting Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -991,7 +991,7 @@ func (client *DeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupN
 // Update - Operation to update an exiting Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *DeploymentsClient) update(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource, options *DeploymentsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource, options)
 	if err != nil {
@@ -1035,7 +1035,7 @@ func (client *DeploymentsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, deploymentResource)

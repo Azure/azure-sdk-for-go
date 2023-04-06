@@ -94,11 +94,6 @@ func (c *ClientFactory) NewBindingsClient() *BindingsClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewStoragesClient() *StoragesClient {
-	subClient, _ := NewStoragesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewCertificatesClient() *CertificatesClient {
 	subClient, _ := NewCertificatesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -126,30 +121,5 @@ func (c *ClientFactory) NewRuntimeVersionsClient() *RuntimeVersionsClient {
 
 func (c *ClientFactory) NewSKUsClient() *SKUsClient {
 	subClient, _ := NewSKUsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewGatewaysClient() *GatewaysClient {
-	subClient, _ := NewGatewaysClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewGatewayRouteConfigsClient() *GatewayRouteConfigsClient {
-	subClient, _ := NewGatewayRouteConfigsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewGatewayCustomDomainsClient() *GatewayCustomDomainsClient {
-	subClient, _ := NewGatewayCustomDomainsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewAPIPortalsClient() *APIPortalsClient {
-	subClient, _ := NewAPIPortalsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewAPIPortalCustomDomainsClient() *APIPortalCustomDomainsClient {
-	subClient, _ := NewAPIPortalCustomDomainsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

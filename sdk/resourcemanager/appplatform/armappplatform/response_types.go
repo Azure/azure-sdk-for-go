@@ -9,51 +9,6 @@
 
 package armappplatform
 
-// APIPortalCustomDomainsClientCreateOrUpdateResponse contains the response from method APIPortalCustomDomainsClient.BeginCreateOrUpdate.
-type APIPortalCustomDomainsClientCreateOrUpdateResponse struct {
-	APIPortalCustomDomainResource
-}
-
-// APIPortalCustomDomainsClientDeleteResponse contains the response from method APIPortalCustomDomainsClient.BeginDelete.
-type APIPortalCustomDomainsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// APIPortalCustomDomainsClientGetResponse contains the response from method APIPortalCustomDomainsClient.Get.
-type APIPortalCustomDomainsClientGetResponse struct {
-	APIPortalCustomDomainResource
-}
-
-// APIPortalCustomDomainsClientListResponse contains the response from method APIPortalCustomDomainsClient.NewListPager.
-type APIPortalCustomDomainsClientListResponse struct {
-	APIPortalCustomDomainResourceCollection
-}
-
-// APIPortalsClientCreateOrUpdateResponse contains the response from method APIPortalsClient.BeginCreateOrUpdate.
-type APIPortalsClientCreateOrUpdateResponse struct {
-	APIPortalResource
-}
-
-// APIPortalsClientDeleteResponse contains the response from method APIPortalsClient.BeginDelete.
-type APIPortalsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// APIPortalsClientGetResponse contains the response from method APIPortalsClient.Get.
-type APIPortalsClientGetResponse struct {
-	APIPortalResource
-}
-
-// APIPortalsClientListResponse contains the response from method APIPortalsClient.NewListPager.
-type APIPortalsClientListResponse struct {
-	APIPortalResourceCollection
-}
-
-// APIPortalsClientValidateDomainResponse contains the response from method APIPortalsClient.ValidateDomain.
-type APIPortalsClientValidateDomainResponse struct {
-	CustomDomainValidateResult
-}
-
 // AppsClientCreateOrUpdateResponse contains the response from method AppsClient.BeginCreateOrUpdate.
 type AppsClientCreateOrUpdateResponse struct {
 	AppResource
@@ -394,71 +349,6 @@ type DeploymentsClientUpdateResponse struct {
 	DeploymentResource
 }
 
-// GatewayCustomDomainsClientCreateOrUpdateResponse contains the response from method GatewayCustomDomainsClient.BeginCreateOrUpdate.
-type GatewayCustomDomainsClientCreateOrUpdateResponse struct {
-	GatewayCustomDomainResource
-}
-
-// GatewayCustomDomainsClientDeleteResponse contains the response from method GatewayCustomDomainsClient.BeginDelete.
-type GatewayCustomDomainsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// GatewayCustomDomainsClientGetResponse contains the response from method GatewayCustomDomainsClient.Get.
-type GatewayCustomDomainsClientGetResponse struct {
-	GatewayCustomDomainResource
-}
-
-// GatewayCustomDomainsClientListResponse contains the response from method GatewayCustomDomainsClient.NewListPager.
-type GatewayCustomDomainsClientListResponse struct {
-	GatewayCustomDomainResourceCollection
-}
-
-// GatewayRouteConfigsClientCreateOrUpdateResponse contains the response from method GatewayRouteConfigsClient.BeginCreateOrUpdate.
-type GatewayRouteConfigsClientCreateOrUpdateResponse struct {
-	GatewayRouteConfigResource
-}
-
-// GatewayRouteConfigsClientDeleteResponse contains the response from method GatewayRouteConfigsClient.BeginDelete.
-type GatewayRouteConfigsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// GatewayRouteConfigsClientGetResponse contains the response from method GatewayRouteConfigsClient.Get.
-type GatewayRouteConfigsClientGetResponse struct {
-	GatewayRouteConfigResource
-}
-
-// GatewayRouteConfigsClientListResponse contains the response from method GatewayRouteConfigsClient.NewListPager.
-type GatewayRouteConfigsClientListResponse struct {
-	GatewayRouteConfigResourceCollection
-}
-
-// GatewaysClientCreateOrUpdateResponse contains the response from method GatewaysClient.BeginCreateOrUpdate.
-type GatewaysClientCreateOrUpdateResponse struct {
-	GatewayResource
-}
-
-// GatewaysClientDeleteResponse contains the response from method GatewaysClient.BeginDelete.
-type GatewaysClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// GatewaysClientGetResponse contains the response from method GatewaysClient.Get.
-type GatewaysClientGetResponse struct {
-	GatewayResource
-}
-
-// GatewaysClientListResponse contains the response from method GatewaysClient.NewListPager.
-type GatewaysClientListResponse struct {
-	GatewayResourceCollection
-}
-
-// GatewaysClientValidateDomainResponse contains the response from method GatewaysClient.ValidateDomain.
-type GatewaysClientValidateDomainResponse struct {
-	CustomDomainValidateResult
-}
-
 // MonitoringSettingsClientGetResponse contains the response from method MonitoringSettingsClient.Get.
 type MonitoringSettingsClientGetResponse struct {
 	MonitoringSettingResource
@@ -559,37 +449,7 @@ type ServicesClientRegenerateTestKeyResponse struct {
 	TestKeys
 }
 
-// ServicesClientStartResponse contains the response from method ServicesClient.BeginStart.
-type ServicesClientStartResponse struct {
-	// placeholder for future response values
-}
-
-// ServicesClientStopResponse contains the response from method ServicesClient.BeginStop.
-type ServicesClientStopResponse struct {
-	// placeholder for future response values
-}
-
 // ServicesClientUpdateResponse contains the response from method ServicesClient.BeginUpdate.
 type ServicesClientUpdateResponse struct {
 	ServiceResource
-}
-
-// StoragesClientCreateOrUpdateResponse contains the response from method StoragesClient.BeginCreateOrUpdate.
-type StoragesClientCreateOrUpdateResponse struct {
-	StorageResource
-}
-
-// StoragesClientDeleteResponse contains the response from method StoragesClient.BeginDelete.
-type StoragesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// StoragesClientGetResponse contains the response from method StoragesClient.Get.
-type StoragesClientGetResponse struct {
-	StorageResource
-}
-
-// StoragesClientListResponse contains the response from method StoragesClient.NewListPager.
-type StoragesClientListResponse struct {
-	StorageResourceCollection
 }

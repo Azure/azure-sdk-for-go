@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/CustomDomains_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/CustomDomains_Get.json
 func ExampleCustomDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,13 +51,12 @@ func ExampleCustomDomainsClient_Get() {
 	// 	Properties: &armappplatform.CustomDomainProperties{
 	// 		AppName: to.Ptr("myapp"),
 	// 		CertName: to.Ptr("mycert"),
-	// 		ProvisioningState: to.Ptr(armappplatform.CustomDomainResourceProvisioningStateSucceeded),
 	// 		Thumbprint: to.Ptr("934367bf1c97033f877db0f15cb1b586957d3133"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/CustomDomains_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/CustomDomains_CreateOrUpdate.json
 func ExampleCustomDomainsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +103,7 @@ func ExampleCustomDomainsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/CustomDomains_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/CustomDomains_Delete.json
 func ExampleCustomDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +124,7 @@ func ExampleCustomDomainsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/CustomDomains_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/CustomDomains_Update.json
 func ExampleCustomDomainsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +171,7 @@ func ExampleCustomDomainsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/CustomDomains_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/CustomDomains_List.json
 func ExampleCustomDomainsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +210,6 @@ func ExampleCustomDomainsClient_NewListPager() {
 		// 			Properties: &armappplatform.CustomDomainProperties{
 		// 				AppName: to.Ptr("myapp"),
 		// 				CertName: to.Ptr("mycert"),
-		// 				ProvisioningState: to.Ptr(armappplatform.CustomDomainResourceProvisioningStateSucceeded),
 		// 				Thumbprint: to.Ptr("934367bf1c97033f877db0f15cb1b586957d3133"),
 		// 			},
 		// 	}},

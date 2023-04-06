@@ -11,30 +11,8 @@ package armappplatform
 
 const (
 	moduleName    = "armappplatform"
-	moduleVersion = "v1.1.0-beta.4"
+	moduleVersion = "v2.0.0"
 )
-
-// APIPortalProvisioningState - State of the API portal.
-type APIPortalProvisioningState string
-
-const (
-	APIPortalProvisioningStateCreating  APIPortalProvisioningState = "Creating"
-	APIPortalProvisioningStateDeleting  APIPortalProvisioningState = "Deleting"
-	APIPortalProvisioningStateFailed    APIPortalProvisioningState = "Failed"
-	APIPortalProvisioningStateSucceeded APIPortalProvisioningState = "Succeeded"
-	APIPortalProvisioningStateUpdating  APIPortalProvisioningState = "Updating"
-)
-
-// PossibleAPIPortalProvisioningStateValues returns the possible values for the APIPortalProvisioningState const type.
-func PossibleAPIPortalProvisioningStateValues() []APIPortalProvisioningState {
-	return []APIPortalProvisioningState{
-		APIPortalProvisioningStateCreating,
-		APIPortalProvisioningStateDeleting,
-		APIPortalProvisioningStateFailed,
-		APIPortalProvisioningStateSucceeded,
-		APIPortalProvisioningStateUpdating,
-	}
-}
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
@@ -206,28 +184,6 @@ func PossibleBuildpackBindingProvisioningStateValues() []BuildpackBindingProvisi
 	}
 }
 
-// CertificateResourceProvisioningState - Provisioning state of the Certificate
-type CertificateResourceProvisioningState string
-
-const (
-	CertificateResourceProvisioningStateCreating  CertificateResourceProvisioningState = "Creating"
-	CertificateResourceProvisioningStateDeleting  CertificateResourceProvisioningState = "Deleting"
-	CertificateResourceProvisioningStateFailed    CertificateResourceProvisioningState = "Failed"
-	CertificateResourceProvisioningStateSucceeded CertificateResourceProvisioningState = "Succeeded"
-	CertificateResourceProvisioningStateUpdating  CertificateResourceProvisioningState = "Updating"
-)
-
-// PossibleCertificateResourceProvisioningStateValues returns the possible values for the CertificateResourceProvisioningState const type.
-func PossibleCertificateResourceProvisioningStateValues() []CertificateResourceProvisioningState {
-	return []CertificateResourceProvisioningState{
-		CertificateResourceProvisioningStateCreating,
-		CertificateResourceProvisioningStateDeleting,
-		CertificateResourceProvisioningStateFailed,
-		CertificateResourceProvisioningStateSucceeded,
-		CertificateResourceProvisioningStateUpdating,
-	}
-}
-
 // ConfigServerState - State of the config server.
 type ConfigServerState string
 
@@ -292,28 +248,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// CustomDomainResourceProvisioningState - Provisioning state of the Domain
-type CustomDomainResourceProvisioningState string
-
-const (
-	CustomDomainResourceProvisioningStateCreating  CustomDomainResourceProvisioningState = "Creating"
-	CustomDomainResourceProvisioningStateDeleting  CustomDomainResourceProvisioningState = "Deleting"
-	CustomDomainResourceProvisioningStateFailed    CustomDomainResourceProvisioningState = "Failed"
-	CustomDomainResourceProvisioningStateSucceeded CustomDomainResourceProvisioningState = "Succeeded"
-	CustomDomainResourceProvisioningStateUpdating  CustomDomainResourceProvisioningState = "Updating"
-)
-
-// PossibleCustomDomainResourceProvisioningStateValues returns the possible values for the CustomDomainResourceProvisioningState const type.
-func PossibleCustomDomainResourceProvisioningStateValues() []CustomDomainResourceProvisioningState {
-	return []CustomDomainResourceProvisioningState{
-		CustomDomainResourceProvisioningStateCreating,
-		CustomDomainResourceProvisioningStateDeleting,
-		CustomDomainResourceProvisioningStateFailed,
-		CustomDomainResourceProvisioningStateSucceeded,
-		CustomDomainResourceProvisioningStateUpdating,
-	}
-}
-
 // DeploymentResourceProvisioningState - Provisioning state of the Deployment
 type DeploymentResourceProvisioningState string
 
@@ -347,47 +281,6 @@ func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
 	return []DeploymentResourceStatus{
 		DeploymentResourceStatusRunning,
 		DeploymentResourceStatusStopped,
-	}
-}
-
-// GatewayProvisioningState - State of the Spring Cloud Gateway.
-type GatewayProvisioningState string
-
-const (
-	GatewayProvisioningStateCreating  GatewayProvisioningState = "Creating"
-	GatewayProvisioningStateDeleting  GatewayProvisioningState = "Deleting"
-	GatewayProvisioningStateFailed    GatewayProvisioningState = "Failed"
-	GatewayProvisioningStateSucceeded GatewayProvisioningState = "Succeeded"
-	GatewayProvisioningStateUpdating  GatewayProvisioningState = "Updating"
-)
-
-// PossibleGatewayProvisioningStateValues returns the possible values for the GatewayProvisioningState const type.
-func PossibleGatewayProvisioningStateValues() []GatewayProvisioningState {
-	return []GatewayProvisioningState{
-		GatewayProvisioningStateCreating,
-		GatewayProvisioningStateDeleting,
-		GatewayProvisioningStateFailed,
-		GatewayProvisioningStateSucceeded,
-		GatewayProvisioningStateUpdating,
-	}
-}
-
-// HTTPSchemeType - Scheme to use for connecting to the host. Defaults to HTTP.
-// Possible enum values:
-// * "HTTP" means that the scheme used will be http://
-// * "HTTPS" means that the scheme used will be https://
-type HTTPSchemeType string
-
-const (
-	HTTPSchemeTypeHTTP  HTTPSchemeType = "HTTP"
-	HTTPSchemeTypeHTTPS HTTPSchemeType = "HTTPS"
-)
-
-// PossibleHTTPSchemeTypeValues returns the possible values for the HTTPSchemeType const type.
-func PossibleHTTPSchemeTypeValues() []HTTPSchemeType {
-	return []HTTPSchemeType{
-		HTTPSchemeTypeHTTP,
-		HTTPSchemeTypeHTTPS,
 	}
 }
 
@@ -468,40 +361,6 @@ func PossibleMonitoringSettingStateValues() []MonitoringSettingState {
 		MonitoringSettingStateNotAvailable,
 		MonitoringSettingStateSucceeded,
 		MonitoringSettingStateUpdating,
-	}
-}
-
-// PowerState - Power state of the Service
-type PowerState string
-
-const (
-	PowerStateRunning PowerState = "Running"
-	PowerStateStopped PowerState = "Stopped"
-)
-
-// PossiblePowerStateValues returns the possible values for the PowerState const type.
-func PossiblePowerStateValues() []PowerState {
-	return []PowerState{
-		PowerStateRunning,
-		PowerStateStopped,
-	}
-}
-
-// ProbeActionType - The type of the action to take to perform the health check.
-type ProbeActionType string
-
-const (
-	ProbeActionTypeExecAction      ProbeActionType = "ExecAction"
-	ProbeActionTypeHTTPGetAction   ProbeActionType = "HTTPGetAction"
-	ProbeActionTypeTCPSocketAction ProbeActionType = "TCPSocketAction"
-)
-
-// PossibleProbeActionTypeValues returns the possible values for the ProbeActionType const type.
-func PossibleProbeActionTypeValues() []ProbeActionType {
-	return []ProbeActionType{
-		ProbeActionTypeExecAction,
-		ProbeActionTypeHTTPGetAction,
-		ProbeActionTypeTCPSocketAction,
 	}
 }
 
@@ -611,20 +470,6 @@ func PossibleServiceRegistryProvisioningStateValues() []ServiceRegistryProvision
 	}
 }
 
-// StorageType - The type of the storage.
-type StorageType string
-
-const (
-	StorageTypeStorageAccount StorageType = "StorageAccount"
-)
-
-// PossibleStorageTypeValues returns the possible values for the StorageType const type.
-func PossibleStorageTypeValues() []StorageType {
-	return []StorageType{
-		StorageTypeStorageAccount,
-	}
-}
-
 // SupportedRuntimePlatform - The platform of this runtime version (possible values: "Java" or ".NET").
 type SupportedRuntimePlatform string
 
@@ -690,19 +535,5 @@ func PossibleTrafficDirectionValues() []TrafficDirection {
 	return []TrafficDirection{
 		TrafficDirectionInbound,
 		TrafficDirectionOutbound,
-	}
-}
-
-// Type - The type of the underlying resource to mount as a persistent disk.
-type Type string
-
-const (
-	TypeAzureFileVolume Type = "AzureFileVolume"
-)
-
-// PossibleTypeValues returns the possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{
-		TypeAzureFileVolume,
 	}
 }

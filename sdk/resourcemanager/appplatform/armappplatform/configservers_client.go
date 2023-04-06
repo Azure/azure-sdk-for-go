@@ -48,7 +48,7 @@ func NewConfigServersClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Get the config server and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -88,7 +88,7 @@ func (client *ConfigServersClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,7 +106,7 @@ func (client *ConfigServersClient) getHandleResponse(resp *http.Response) (Confi
 // BeginUpdatePatch - Update the config server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -130,7 +130,7 @@ func (client *ConfigServersClient) BeginUpdatePatch(ctx context.Context, resourc
 // UpdatePatch - Update the config server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *ConfigServersClient) updatePatch(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersClientBeginUpdatePatchOptions) (*http.Response, error) {
 	req, err := client.updatePatchCreateRequest(ctx, resourceGroupName, serviceName, configServerResource, options)
 	if err != nil {
@@ -166,7 +166,7 @@ func (client *ConfigServersClient) updatePatchCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, configServerResource)
@@ -175,7 +175,7 @@ func (client *ConfigServersClient) updatePatchCreateRequest(ctx context.Context,
 // BeginUpdatePut - Update the config server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -199,7 +199,7 @@ func (client *ConfigServersClient) BeginUpdatePut(ctx context.Context, resourceG
 // UpdatePut - Update the config server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *ConfigServersClient) updatePut(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersClientBeginUpdatePutOptions) (*http.Response, error) {
 	req, err := client.updatePutCreateRequest(ctx, resourceGroupName, serviceName, configServerResource, options)
 	if err != nil {
@@ -235,7 +235,7 @@ func (client *ConfigServersClient) updatePutCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, configServerResource)
@@ -244,7 +244,7 @@ func (client *ConfigServersClient) updatePutCreateRequest(ctx context.Context, r
 // BeginValidate - Check if the config server settings are valid.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -268,7 +268,7 @@ func (client *ConfigServersClient) BeginValidate(ctx context.Context, resourceGr
 // Validate - Check if the config server settings are valid.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01-preview
+// Generated from API version 2022-04-01
 func (client *ConfigServersClient) validate(ctx context.Context, resourceGroupName string, serviceName string, configServerSettings ConfigServerSettings, options *ConfigServersClientBeginValidateOptions) (*http.Response, error) {
 	req, err := client.validateCreateRequest(ctx, resourceGroupName, serviceName, configServerSettings, options)
 	if err != nil {
@@ -304,7 +304,7 @@ func (client *ConfigServersClient) validateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, configServerSettings)

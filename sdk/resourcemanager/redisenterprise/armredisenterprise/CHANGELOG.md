@@ -3,14 +3,7 @@
 ## 1.1.0 (2023-04-07)
 ### Features Added
 
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
-- New function `*ClientFactory.NewClient() *Client`
-- New function `*ClientFactory.NewDatabasesClient() *DatabasesClient`
-- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
-- New function `*ClientFactory.NewOperationsStatusClient() *OperationsStatusClient`
-- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
-- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
-- New struct `ClientFactory`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 1.0.0 (2022-05-17)

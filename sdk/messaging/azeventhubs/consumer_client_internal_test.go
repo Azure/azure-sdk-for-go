@@ -94,7 +94,7 @@ func testConsumerClient_Recovery(t *testing.T) {
 
 			t.Logf("[%s] After props %#v", pid, afterPartProps)
 
-			require.Equal(t, int64(2), afterPartProps.LastEnqueuedSequenceNumber-partProps.LastEnqueuedSequenceNumber)
+			require.Equalf(t, int64(2), afterPartProps.LastEnqueuedSequenceNumber-partProps.LastEnqueuedSequenceNumber, "Expected only 2 messages in partition %s", pid)
 
 			sendResults[i] = sendResult{PartitionID: pid, OffsetBefore: partProps.LastEnqueuedOffset}
 		}(i, pid)

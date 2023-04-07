@@ -84,7 +84,6 @@ func (c *InteractiveBrowserCredential) requestToken(ctx context.Context, opts po
 	ar, err := c.client.AcquireTokenInteractive(ctx, opts.Scopes,
 		public.WithLoginHint(c.options.LoginHint),
 		public.WithRedirectURI(c.options.RedirectURL),
-		public.WithTenantID(opts.TenantID),
 	)
 	if err == nil {
 		c.account = ar.Account
@@ -95,7 +94,6 @@ func (c *InteractiveBrowserCredential) requestToken(ctx context.Context, opts po
 func (c *InteractiveBrowserCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes,
 		public.WithSilentAccount(c.account),
-		public.WithTenantID(opts.TenantID),
 	)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }

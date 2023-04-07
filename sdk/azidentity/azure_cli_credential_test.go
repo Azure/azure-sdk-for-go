@@ -65,6 +65,7 @@ func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
 }
 
 func TestAzureCLICredential_TenantID(t *testing.T) {
+	t.Skip("unskip this test after restoring TokenRequestOptions.TenantID")
 	expected := "expected-tenant-id"
 	called := false
 	options := AzureCLICredentialOptions{

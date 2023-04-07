@@ -199,7 +199,7 @@ resource iot 'Microsoft.Devices/IotHubs@2018-04-01' = {
 }
 
 output EVENTHUB_NAME string = eventHub.name
-output EVENTHUB_LINKSONLY_NAME=linksonly.name
+output EVENTHUB_LINKSONLY_NAME string = linksonly.name
 output EVENTHUB_CONNECTION_STRING string = listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, 'RootManageSharedAccessKey'), apiVersion).primaryConnectionString
 output EVENTHUB_CONNECTION_STRING_LISTEN_ONLY string = listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, authorizedListenOnly.name), apiVersion).primaryConnectionString
 output EVENTHUB_CONNECTION_STRING_SEND_ONLY string = listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, authorizedSendOnly.name), apiVersion).primaryConnectionString

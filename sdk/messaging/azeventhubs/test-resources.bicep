@@ -73,7 +73,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2017-04-01' = {
   parent: namespace
 }
 
-resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2017-04-01' = {
+resource linksonly 'Microsoft.EventHub/namespaces/eventhubs@2017-04-01' = {
   name: 'linksonly'
   properties: {
     messageRetentionInDays: 1

@@ -111,7 +111,7 @@ func TestCalculateNewVersion(t *testing.T) {
 	newVersion, prl, err = CalculateNewVersion(breakingChange, "1.2.0-beta.1", true)
 	assert.NoError(t, err)
 	assert.Equal(t, newVersion.String(), "1.2.0-beta.2")
-	assert.Equal(t, BetaLabel, prl)
+	assert.Equal(t, BetaBreakingChangeLabel, prl)
 
 	// additive with stable
 	newVersion, _, err = CalculateNewVersion(additiveChange, "1.2.0-beta.1", false)

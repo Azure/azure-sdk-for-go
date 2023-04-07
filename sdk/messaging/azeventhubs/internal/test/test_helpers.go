@@ -97,6 +97,7 @@ type ConnectionParamsForTest struct {
 	ConnectionStringListenOnly string
 	ConnectionStringSendOnly   string
 	EventHubName               string
+	EventHubLinksOnlyName      string
 	EventHubNamespace          string
 	ResourceGroup              string
 	StorageConnectionString    string
@@ -120,6 +121,7 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		"EVENTHUB_CONNECTION_STRING_SEND_ONLY",
 		"EVENTHUB_CONNECTION_STRING",
 		"EVENTHUB_NAME",
+		"EVENTHUB_LINKSONLY_NAME",
 		"RESOURCE_GROUP",
 	})
 
@@ -131,6 +133,7 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		ConnectionStringListenOnly: envVars["EVENTHUB_CONNECTION_STRING_LISTEN_ONLY"],
 		ConnectionStringSendOnly:   envVars["EVENTHUB_CONNECTION_STRING_SEND_ONLY"],
 		EventHubName:               envVars["EVENTHUB_NAME"],
+		EventHubLinksOnlyName:      envVars["EVENTHUB_LINKSONLY_NAME"],
 		EventHubNamespace:          connProps.FullyQualifiedNamespace,
 		ResourceGroup:              envVars["RESOURCE_GROUP"],
 		StorageConnectionString:    envVars["CHECKPOINTSTORE_STORAGE_CONNECTION_STRING"],

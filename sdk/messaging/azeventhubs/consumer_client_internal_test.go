@@ -20,14 +20,6 @@ import (
 )
 
 func TestConsumerClient_Recovery(t *testing.T) {
-	for i := 0; i < 30; i++ {
-		t.Run(fmt.Sprintf("testConsumerClient_Recovery(%d)", i), func(t *testing.T) {
-			testConsumerClient_Recovery(t)
-		})
-	}
-}
-
-func testConsumerClient_Recovery(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
 	// Uncomment to see the entire recovery playbook run.

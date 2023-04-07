@@ -233,8 +233,8 @@ func newLinksForTest(t *testing.T) (*Namespace, *Links[amqpwrap.AMQPSenderCloser
 	ns, err := NewNamespace(NamespaceWithConnectionString(testParams.ConnectionString))
 	require.NoError(t, err)
 
-	links := NewLinks(ns, fmt.Sprintf("%s/$management", testParams.EventHubName), func(partitionID string) string {
-		return fmt.Sprintf("%s/Partitions/%s", testParams.EventHubName, partitionID)
+	links := NewLinks(ns, fmt.Sprintf("%s/$management", testParams.EventHubLinksOnlyName), func(partitionID string) string {
+		return fmt.Sprintf("%s/Partitions/%s", testParams.EventHubLinksOnlyName, partitionID)
 	}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (AMQPSenderCloser, error) {
 		select {
 		case <-ctx.Done():

@@ -44,12 +44,6 @@ type RegistrationOptions struct {
 type ClientOptions struct {
 	policy.ClientOptions
 
-	// AuxiliaryTenants are additional tenant IDs for authenticating cross-tenant requests.
-	// The client will add a token from each of these tenants to every request. The
-	// authenticating user or service principal must be a guest in these tenants, and the
-	// client's credential must support multitenant authentication.
-	AuxiliaryTenants []string
-
 	// DisableRPRegistration disables the auto-RP registration policy. Defaults to false.
 	DisableRPRegistration bool
 }

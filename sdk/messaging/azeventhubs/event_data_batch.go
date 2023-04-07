@@ -211,9 +211,11 @@ func newEventDataBatch(sender amqpwrap.AMQPSenderCloser, options *EventDataBatch
 	if options.PartitionID != nil {
 		// they want to send to a particular partition. The batch size should be the same for any
 		// link but we might as well use the one they're going to send to.
-		batch.partitionID = options.PartitionID
+		pid := *options.PartitionID
+		batch.partitionID = &pid
 	} else if options.PartitionKey != nil {
-		batch.partitionKey = options.PartitionKey
+		partKey := *options.PartitionKey
+		batch.partitionKey = &partKey
 	}
 
 	if options.MaxBytes == 0 {

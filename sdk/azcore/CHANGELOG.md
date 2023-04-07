@@ -7,8 +7,9 @@
 
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.5.0-beta.1
-* Removed `TokenRequestOptions.Claims`
-* Removed CAE support for ARM clients
+> These features will return in v1.6.0-beta.1.
+* Removed `TokenRequestOptions.Claims` and `.TenantID`
+* Removed ARM client support for CAE and cross-tenant auth.
 
 ### Bugs Fixed
 * Added non-conformant LRO terminal states `Cancelled` and `Completed`.

@@ -58,12 +58,12 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts policy.Token
 }
 
 func (c *ClientSecretCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, confidential.WithTenantID(opts.TenantID))
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
 func (c *ClientSecretCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := c.client.AcquireTokenByCredential(ctx, opts.Scopes, confidential.WithTenantID(opts.TenantID))
+	ar, err := c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

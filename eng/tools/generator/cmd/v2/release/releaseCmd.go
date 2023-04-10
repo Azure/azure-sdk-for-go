@@ -110,9 +110,10 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 }
 
 type commandContext struct {
-	rpName        string
-	namespaceName string
-	flags         Flags
+	rpName            string
+	namespaceName     string
+	flags             Flags
+	pullRequestLabels string
 }
 
 func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
@@ -161,7 +162,8 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 		return fmt.Errorf("failed to finish release generation process: %+v", err)
 	}
 	// print generation result
-	log.Printf("Generation result: %s", result)
+	log.Printf("Generation result: %v", result)
+	c.pullRequestLabels = result.PullRequestLabels
 
 	if !c.flags.SkipCreateBranch {
 		log.Printf("Create new branch for release")
@@ -253,7 +255,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			}
 
 			log.Printf("%s: create pull request...\n", branchName)
-			pullRequestUrl, err := common.ExecuteCreatePullRequest(sdkRepo.Root(), link.SpecOwner, link.SDKRepo, githubUserName, branchName, repo.ReleaseTitle(branchName), issue, c.flags.Token)
+			pullRequestUrl, err := common.ExecuteCreatePullRequest(sdkRepo.Root(), link.SpecOwner, link.SDKRepo, githubUserName, branchName, repo.ReleaseTitle(branchName), issue, c.flags.Token, c.pullRequestLabels)
 			if err != nil {
 				return err
 			}

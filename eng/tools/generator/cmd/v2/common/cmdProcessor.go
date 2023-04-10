@@ -65,8 +65,8 @@ func ExecuteGitPush(path, remoteName, branchName string) (string, error) {
 	return "", nil
 }
 
-func ExecuteCreatePullRequest(path, repoOwner, repoName, prOwner, prBranch, prTitle, prBody, authToken string) (string, error) {
-	cmd := exec.Command("pwsh", "./eng/common/scripts/Submit-PullRequest.ps1", "-RepoOwner", repoOwner, "-RepoName", repoName, "-BaseBranch", "main", "-PROwner", prOwner, "-PRBranch", prBranch, "-AuthToken", authToken, "-PRTitle", prTitle, "-PRBody", prBody)
+func ExecuteCreatePullRequest(path, repoOwner, repoName, prOwner, prBranch, prTitle, prBody, authToken, prLabels string) (string, error) {
+	cmd := exec.Command("pwsh", "./eng/common/scripts/Submit-PullRequest.ps1", "-RepoOwner", repoOwner, "-RepoName", repoName, "-BaseBranch", "main", "-PROwner", prOwner, "-PRBranch", prBranch, "-AuthToken", authToken, "-PRTitle", prTitle, "-PRBody", prBody, "-PRLabels", prLabels)
 	cmd.Dir = path
 	output, err := cmd.CombinedOutput()
 	log.Printf("Result of `pwsh Submit-PullRequest` execution: \n%s", string(output))

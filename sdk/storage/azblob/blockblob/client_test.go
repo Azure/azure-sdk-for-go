@@ -467,7 +467,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 }
 
 // nolint
-func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

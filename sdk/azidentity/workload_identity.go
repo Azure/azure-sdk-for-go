@@ -20,9 +20,9 @@ import (
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
 
 // WorkloadIdentityCredential supports Azure workload identity on Kubernetes.
-// See [AKS documentation] for more information.
+// See [Azure Kubernetes Service documentation] for more information.
 //
-// [AKS documentation]: https://learn.microsoft.com/azure/aks/workload-identity-overview
+// [Azure Kubernetes Service documentation]: https://learn.microsoft.com/azure/aks/workload-identity-overview
 type WorkloadIdentityCredential struct {
 	assertion, file string
 	cred            *ClientAssertionCredential

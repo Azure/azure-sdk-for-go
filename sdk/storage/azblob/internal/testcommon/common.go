@@ -15,6 +15,8 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"hash/crc64"
 	"io"
 	"math/rand"
 	"os"
@@ -88,9 +90,12 @@ func GetRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	return bytes.NewReader(data), data
 }
 
-func GetDataAndReader(r *rand.Rand, n int) (*bytes.Reader, []byte) {
+func GetDataAndReader(testName string, n int) (*bytes.Reader, []byte) {
+	// Random seed for data generation
+	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
+	random := rand.New(rand.NewSource(seed))
 	data := make([]byte, n)
-	_, _ = r.Read(data)
+	_, _ = random.Read(data)
 	return bytes.NewReader(data), data
 }
 

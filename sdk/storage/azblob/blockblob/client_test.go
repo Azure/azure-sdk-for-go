@@ -1180,10 +1180,6 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	// Random seed for data generation
-	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
-	random := rand.New(rand.NewSource(seed))
-
 	// Getting AAD Authentication
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
@@ -1198,7 +1194,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 
 	// Upload some data to source
 	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetDataAndReader(random, contentSize)
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 
@@ -1228,10 +1224,6 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuthNegative()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	// Random seed for data generation
-	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
-	random := rand.New(rand.NewSource(seed))
-
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -1242,7 +1234,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuthNegative()
 
 	// Upload some data to source
 	contentSize := 4 * 1024 // 4KB
-	r, _ := testcommon.GetDataAndReader(random, contentSize)
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 

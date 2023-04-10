@@ -191,7 +191,7 @@ func waitForCopy(_require *require.Assertions, copyBlobClient *blockblob.Client,
 	}
 }
 
-func (s *BlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5() {
+func (s *BlobRecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -245,7 +245,7 @@ func (s *BlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5() {
 	_require.EqualValues(resp.ContentMD5, sourceContentMD5)
 
 	// Provide bad MD5 and make sure the copy fails
-	_, badMD5 := testcommon.GetRandomDataAndReader(16)
+	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
 	resp, err = destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &blob.CopyFromURLOptions{
 		SourceContentMD5: badMD5,
 	})
@@ -1077,7 +1077,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 
 	// Create a large blob that takes time to copy
 	blobSize := 8 * 1024 * 1024
-	blobReader, _ := testcommon.GetRandomDataAndReader(blobSize)
+	blobReader, _ := testcommon.GetDataAndReader(testName, blobSize)
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(blobReader), nil)
 	_require.Nil(err)
 

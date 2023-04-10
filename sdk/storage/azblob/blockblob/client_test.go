@@ -421,7 +421,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //	}
 
 // nolint
-func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -467,7 +467,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 }
 
 // nolint
-func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -501,7 +501,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
 	_require.Equal((*putResp.Date).IsZero(), false)
 
 	// test put block with bad MD5 value
-	_, badContent := testcommon.GetRandomDataAndReader(contentSize)
+	_, badContent := testcommon.GetDataAndReader(testName, contentSize)
 	badMD5Value := md5.Sum(badContent)
 	badContentMD5 := badMD5Value[:]
 
@@ -599,7 +599,7 @@ func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcC
 
 	// Upload some data to source
 	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetRandomDataAndReader(contentSize)
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	_, err := srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 
@@ -625,7 +625,7 @@ func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcC
 	return containerClient, srcBBClient, destBBClient, srcBlobURLWithSAS, sourceData
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURL() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -646,7 +646,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURL() {
 	_require.Equal(destBuffer, sourceData)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLNegative() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -660,7 +660,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLNegative() {
 	_require.Error(err)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithHeaders() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLWithHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -694,7 +694,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithHeaders() {
 	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlWithCPK() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -771,7 +771,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
 	_require.EqualValues(*getResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -796,7 +796,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	_require.EqualValues(resp.ContentMD5, sourceDataMD5Value[:])
 
 	// Try UploadBlobFromURL with bad MD5
-	_, badMD5 := testcommon.GetRandomDataAndReader(16)
+	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
 	options2 := blockblob.UploadBlobFromURLOptions{
 		SourceContentMD5: badMD5,
 	}
@@ -804,7 +804,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	_require.NotNil(err)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchTrue() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -838,7 +838,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchTrue() {
 	_require.Equal(destBuffer, sourceData)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchFalse() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -862,7 +862,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchFalse() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.SourceConditionNotMet)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchTrue() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -887,7 +887,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchTrue(
 	_require.Equal(destBuffer, sourceData)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchFalse() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -913,7 +913,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchFalse
 	_require.ErrorContains(err, "304")
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceTrue() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -942,7 +942,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceTru
 	_require.Nil(err)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceFalse() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -967,7 +967,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceFal
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceTrue() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -995,7 +995,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceT
 	_require.Nil(err)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceFalse() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1021,7 +1021,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceF
 	_require.NotNil(err)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromUrlDestIfMatchTrue() {
+func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobFromUrlDestIfMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1050,7 +1050,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromUrlDestIfMatchTrue() 
 	_require.Nil(err)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfMatchFalse() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlDestIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1083,7 +1083,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfMatchFalse() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchTrue() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1114,7 +1114,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchTrue() 
 	_require.Nil(err)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchFalse() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1141,7 +1141,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchFalse()
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLCopySourceFalse() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1180,10 +1180,6 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	// Random seed for data generation
-	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
-	random := rand.New(rand.NewSource(seed))
-
 	// Getting AAD Authentication
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
@@ -1198,7 +1194,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 
 	// Upload some data to source
 	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetDataAndReader(random, contentSize)
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 
@@ -1228,10 +1224,6 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuthNegative()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	// Random seed for data generation
-	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
-	random := rand.New(rand.NewSource(seed))
-
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -1242,7 +1234,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuthNegative()
 
 	// Upload some data to source
 	contentSize := 4 * 1024 // 4KB
-	r, _ := testcommon.GetDataAndReader(random, contentSize)
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 
@@ -1966,7 +1958,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommit() {
 	}
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
+func (s *BlockBlobRecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1977,7 +1969,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	const contentSize = 4 * 1024 * 1024 // 4 MB
-	contentReader, _ := testcommon.GetRandomDataAndReader(contentSize)
+	contentReader, _ := testcommon.GetDataAndReader(testName, contentSize)
 
 	srcBlob := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 
@@ -2748,7 +2740,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	testSize := 2 * 1024 * 1024 // 1MB
-	r, _ := testcommon.GetRandomDataAndReader(testSize)
+	r, _ := testcommon.GetDataAndReader(testName, testSize)
 	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 
 	// Prepare source blob for copy.

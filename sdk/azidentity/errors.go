@@ -83,6 +83,8 @@ func (e *AuthenticationFailedError) Error() string {
 		anchor = "managed-id"
 	case credNameUserPassword:
 		anchor = "username-password"
+	case credNameWorkloadIdentity:
+		anchor = "workload"
 	}
 	if anchor != "" {
 		fmt.Fprintf(msg, "To troubleshoot, visit https://aka.ms/azsdk/go/identity/troubleshoot#%s", anchor)

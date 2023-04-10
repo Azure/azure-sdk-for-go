@@ -10,7 +10,6 @@ package testcommon
 import (
 	"bytes"
 	"context"
-	crypto_rand "crypto/rand"
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
@@ -82,12 +81,6 @@ func GenerateBlobName(testName string) string {
 func GetReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 	r, _ := GenerateData(n)
 	return streaming.NopCloser(r)
-}
-
-func GetRandomDataAndReader(n int) (*bytes.Reader, []byte) {
-	data := make([]byte, n)
-	_, _ = crypto_rand.Read(data)
-	return bytes.NewReader(data), data
 }
 
 func GetDataAndReader(testName string, n int) (*bytes.Reader, []byte) {

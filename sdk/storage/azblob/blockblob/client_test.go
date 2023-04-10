@@ -501,7 +501,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
 	_require.Equal((*putResp.Date).IsZero(), false)
 
 	// test put block with bad MD5 value
-	_, badContent := testcommon.GetRandomDataAndReader(contentSize)
+	_, badContent := testcommon.GetDataAndReader(testName, contentSize)
 	badMD5Value := md5.Sum(badContent)
 	badContentMD5 := badMD5Value[:]
 
@@ -599,7 +599,7 @@ func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcC
 
 	// Upload some data to source
 	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetRandomDataAndReader(contentSize)
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	_, err := srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 
@@ -796,7 +796,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	_require.EqualValues(resp.ContentMD5, sourceDataMD5Value[:])
 
 	// Try UploadBlobFromURL with bad MD5
-	_, badMD5 := testcommon.GetRandomDataAndReader(16)
+	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
 	options2 := blockblob.UploadBlobFromURLOptions{
 		SourceContentMD5: badMD5,
 	}
@@ -1969,7 +1969,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	const contentSize = 4 * 1024 * 1024 // 4 MB
-	contentReader, _ := testcommon.GetRandomDataAndReader(contentSize)
+	contentReader, _ := testcommon.GetDataAndReader(testName, contentSize)
 
 	srcBlob := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 
@@ -2740,7 +2740,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	testSize := 2 * 1024 * 1024 // 1MB
-	r, _ := testcommon.GetRandomDataAndReader(testSize)
+	r, _ := testcommon.GetDataAndReader(testName, testSize)
 	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 
 	// Prepare source blob for copy.

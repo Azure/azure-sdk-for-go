@@ -1,8 +1,6 @@
 # Release History
 
-## 1.3.0-beta.5 (Unreleased)
-
-### Features Added
+## 1.3.0-beta.5 (2023-04-11)
 
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.3.0-beta.4
@@ -10,13 +8,11 @@
   The constructor now reads default configuration from environment variables set by the Azure
   workload identity webhook by default.
   ([#20478](https://github.com/Azure/azure-sdk-for-go/pull/20478))
-* Removed CAE support. It will return in the next beta release.
+* Removed CAE support. It will return in v1.4.0-beta.1
   ([#20479](https://github.com/Azure/azure-sdk-for-go/pull/20479))
 
 ### Bugs Fixed
 * Fixed an issue in `DefaultAzureCredential` that could cause the managed identity endpoint check to fail in rare circumstances.
-
-### Other Changes
 
 ## 1.3.0-beta.4 (2023-03-08)
 

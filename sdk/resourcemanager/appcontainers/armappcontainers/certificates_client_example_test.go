@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Certificates_ListByManagedEnvironment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Certificates_ListByManagedEnvironment.json
 func ExampleCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,44 +43,40 @@ func ExampleCertificatesClient_NewListPager() {
 		// page.CertificateCollection = armappcontainers.CertificateCollection{
 		// 	Value: []*armappcontainers.Certificate{
 		// 		{
-		// 			Name: to.Ptr("certificate-firendly-name"),
+		// 			Name: to.Ptr("certificate-firendly-name1"),
 		// 			Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name1"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappcontainers.CertificateProperties{
 		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
 		// 				IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
 		// 				Issuer: to.Ptr("Issuer Name"),
 		// 				ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
-		// 				SubjectAlternativeNames: []*string{
-		// 					to.Ptr("CN=my-subject-name.com")},
-		// 					SubjectName: to.Ptr("my-subject-name.company.country.net"),
-		// 					Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
-		// 					Valid: to.Ptr(true),
-		// 				},
+		// 				SubjectName: to.Ptr("my-subject-name1.contoso.com"),
+		// 				Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+		// 				Valid: to.Ptr(true),
 		// 			},
-		// 			{
-		// 				Name: to.Ptr("certificate-firendly-name"),
-		// 				Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
-		// 				Location: to.Ptr("East US"),
-		// 				Properties: &armappcontainers.CertificateProperties{
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
-		// 					Issuer: to.Ptr("Issuer Name"),
-		// 					ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
-		// 					SubjectAlternativeNames: []*string{
-		// 						to.Ptr("CN=my-subject-name.com")},
-		// 						SubjectName: to.Ptr("my-subject-name.company.country.net"),
-		// 						Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
-		// 						Valid: to.Ptr(true),
-		// 					},
-		// 			}},
-		// 		}
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("certificate-firendly-name2"),
+		// 			Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name2"),
+		// 			Location: to.Ptr("East US"),
+		// 			Properties: &armappcontainers.CertificateProperties{
+		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 				IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+		// 				Issuer: to.Ptr("Issuer Name"),
+		// 				ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
+		// 				SubjectName: to.Ptr("my-subject-name2.contoso.com"),
+		// 				Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+		// 				Valid: to.Ptr(true),
+		// 			},
+		// 	}},
+		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Certificate_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Certificate_Get.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,23 +97,21 @@ func ExampleCertificatesClient_Get() {
 	// res.Certificate = armappcontainers.Certificate{
 	// 	Name: to.Ptr("certificate-firendly-name"),
 	// 	Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.CertificateProperties{
 	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
 	// 		IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
 	// 		Issuer: to.Ptr("Issuer Name"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
-	// 		SubjectAlternativeNames: []*string{
-	// 			to.Ptr("CN=my-subject-name.com")},
-	// 			SubjectName: to.Ptr("my-subject-name.company.country.net"),
-	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
-	// 			Valid: to.Ptr(true),
-	// 		},
-	// 	}
+	// 		SubjectName: to.Ptr("my-subject-name.contoso.com"),
+	// 		Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+	// 		Valid: to.Ptr(true),
+	// 	},
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Certificate_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Certificate_CreateOrUpdate.json
 func ExampleCertificatesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,23 +138,21 @@ func ExampleCertificatesClient_CreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Certificate = armappcontainers.Certificate{
 	// 	Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.CertificateProperties{
 	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
 	// 		IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
 	// 		Issuer: to.Ptr("Issuer Name"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
-	// 		SubjectAlternativeNames: []*string{
-	// 			to.Ptr("CN=my-subject-name.com")},
-	// 			SubjectName: to.Ptr("my-subject-name.company.country.net"),
-	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
-	// 			Valid: to.Ptr(true),
-	// 		},
-	// 	}
+	// 		SubjectName: to.Ptr("my-subject-name.contoso.com"),
+	// 		Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+	// 		Valid: to.Ptr(true),
+	// 	},
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Certificate_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Certificate_Delete.json
 func ExampleCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +169,7 @@ func ExampleCertificatesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/212686c8383679e034b19143e13cbeb5a40ab454/specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Certificates_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Certificates_Patch.json
 func ExampleCertificatesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +194,7 @@ func ExampleCertificatesClient_Update() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Certificate = armappcontainers.Certificate{
 	// 	Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Tags: map[string]*string{
 	// 		"tag1": to.Ptr("value1"),
@@ -213,11 +205,9 @@ func ExampleCertificatesClient_Update() {
 	// 		IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
 	// 		Issuer: to.Ptr("Issuer Name"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
-	// 		SubjectAlternativeNames: []*string{
-	// 			to.Ptr("CN=my-subject-name.com")},
-	// 			SubjectName: to.Ptr("my-subject-name.company.country.net"),
-	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
-	// 			Valid: to.Ptr(true),
-	// 		},
-	// 	}
+	// 		SubjectName: to.Ptr("my-subject-name.contoso.com"),
+	// 		Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+	// 		Valid: to.Ptr(true),
+	// 	},
+	// }
 }

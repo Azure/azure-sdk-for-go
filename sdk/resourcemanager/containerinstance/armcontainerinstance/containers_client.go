@@ -49,7 +49,7 @@ func NewContainersClient(subscriptionID string, credential azcore.TokenCredentia
 // Attach - Attach to the output stream of a specific container instance in a specified resource group and container group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - containerGroupName - The name of the container group.
 //   - containerName - The name of the container instance.
@@ -93,7 +93,7 @@ func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *ContainersClient) attachHandleResponse(resp *http.Response) (Conta
 // ExecuteCommand - Executes a command for a specific container instance in a specified resource group and container group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - containerGroupName - The name of the container group.
 //   - containerName - The name of the container instance.
@@ -157,7 +157,7 @@ func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, containerExecRequest)
@@ -175,7 +175,7 @@ func (client *ContainersClient) executeCommandHandleResponse(resp *http.Response
 // ListLogs - Get the logs for a specified container instance in a specified resource group and container group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2022-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - containerGroupName - The name of the container group.
 //   - containerName - The name of the container instance.
@@ -219,7 +219,7 @@ func (client *ContainersClient) listLogsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Tail != nil {
 		reqQP.Set("tail", strconv.FormatInt(int64(*options.Tail), 10))
 	}

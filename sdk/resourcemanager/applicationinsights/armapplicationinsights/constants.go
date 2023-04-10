@@ -11,7 +11,7 @@ package armapplicationinsights
 
 const (
 	moduleName    = "armapplicationinsights"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v1.1.0"
 )
 
 // ApplicationType - Type of application being monitored.
@@ -46,26 +46,6 @@ func PossibleCategoryTypeValues() []CategoryType {
 		CategoryTypeRetention,
 		CategoryTypeTSG,
 		CategoryTypeWorkbook,
-	}
-}
-
-// CreatedByType - The type of identity that created the resource.
-type CreatedByType string
-
-const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
-	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
-)
-
-// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
-func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
-		CreatedByTypeApplication,
-		CreatedByTypeKey,
-		CreatedByTypeManagedIdentity,
-		CreatedByTypeUser,
 	}
 }
 
@@ -219,58 +199,6 @@ func PossibleItemTypeParameterValues() []ItemTypeParameter {
 	}
 }
 
-// Kind - The kind of workbook. Choices are user and shared.
-type Kind string
-
-const (
-	KindShared Kind = "shared"
-	KindUser   Kind = "user"
-)
-
-// PossibleKindValues returns the possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{
-		KindShared,
-		KindUser,
-	}
-}
-
-// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
-type ManagedServiceIdentityType string
-
-const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
-)
-
-// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
-func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
-		ManagedServiceIdentityTypeNone,
-		ManagedServiceIdentityTypeSystemAssigned,
-		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
-		ManagedServiceIdentityTypeUserAssigned,
-	}
-}
-
-// MyWorkbookManagedIdentityType - The identity type.
-type MyWorkbookManagedIdentityType string
-
-const (
-	MyWorkbookManagedIdentityTypeNone         MyWorkbookManagedIdentityType = "None"
-	MyWorkbookManagedIdentityTypeUserAssigned MyWorkbookManagedIdentityType = "UserAssigned"
-)
-
-// PossibleMyWorkbookManagedIdentityTypeValues returns the possible values for the MyWorkbookManagedIdentityType const type.
-func PossibleMyWorkbookManagedIdentityTypeValues() []MyWorkbookManagedIdentityType {
-	return []MyWorkbookManagedIdentityType{
-		MyWorkbookManagedIdentityTypeNone,
-		MyWorkbookManagedIdentityTypeUserAssigned,
-	}
-}
-
 // PublicNetworkAccessType - The network access type for operating on the Application Insights Component. By default it is
 // Enabled
 type PublicNetworkAccessType string
@@ -321,16 +249,19 @@ func PossibleRequestSourceValues() []RequestSource {
 	}
 }
 
-type StorageType string
+// SharedTypeKind - The kind of workbook. Choices are user and shared.
+type SharedTypeKind string
 
 const (
-	StorageTypeServiceProfiler StorageType = "ServiceProfiler"
+	SharedTypeKindShared SharedTypeKind = "shared"
+	SharedTypeKindUser   SharedTypeKind = "user"
 )
 
-// PossibleStorageTypeValues returns the possible values for the StorageType const type.
-func PossibleStorageTypeValues() []StorageType {
-	return []StorageType{
-		StorageTypeServiceProfiler,
+// PossibleSharedTypeKindValues returns the possible values for the SharedTypeKind const type.
+func PossibleSharedTypeKindValues() []SharedTypeKind {
+	return []SharedTypeKind{
+		SharedTypeKindShared,
+		SharedTypeKindUser,
 	}
 }
 
@@ -347,33 +278,5 @@ func PossibleWebTestKindValues() []WebTestKind {
 	return []WebTestKind{
 		WebTestKindPing,
 		WebTestKindMultistep,
-	}
-}
-
-// WorkbookSharedTypeKind - The kind of workbook. Only valid value is shared.
-type WorkbookSharedTypeKind string
-
-const (
-	WorkbookSharedTypeKindShared WorkbookSharedTypeKind = "shared"
-)
-
-// PossibleWorkbookSharedTypeKindValues returns the possible values for the WorkbookSharedTypeKind const type.
-func PossibleWorkbookSharedTypeKindValues() []WorkbookSharedTypeKind {
-	return []WorkbookSharedTypeKind{
-		WorkbookSharedTypeKindShared,
-	}
-}
-
-// WorkbookUpdateSharedTypeKind - The kind of workbook. Only valid value is shared.
-type WorkbookUpdateSharedTypeKind string
-
-const (
-	WorkbookUpdateSharedTypeKindShared WorkbookUpdateSharedTypeKind = "shared"
-)
-
-// PossibleWorkbookUpdateSharedTypeKindValues returns the possible values for the WorkbookUpdateSharedTypeKind const type.
-func PossibleWorkbookUpdateSharedTypeKindValues() []WorkbookUpdateSharedTypeKind {
-	return []WorkbookUpdateSharedTypeKind{
-		WorkbookUpdateSharedTypeKindShared,
 	}
 }

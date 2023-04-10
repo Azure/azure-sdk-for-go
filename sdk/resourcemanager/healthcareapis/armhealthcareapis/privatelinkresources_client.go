@@ -47,7 +47,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // Get - Gets a private link resource that need to be created for a service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-31-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - resourceName - The name of the service instance.
 //   - groupName - The name of the private link resource group.
@@ -92,7 +92,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-31-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 // ListByService - Gets the private link resources that need to be created for a service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-31-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - resourceName - The name of the service instance.
 //   - options - PrivateLinkResourcesClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByService
@@ -150,7 +150,7 @@ func (client *PrivateLinkResourcesClient) listByServiceCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-31-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

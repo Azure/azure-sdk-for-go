@@ -103,8 +103,8 @@ func (c *ClientFactory) NewAnalyticsItemsClient() *AnalyticsItemsClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewWorkbookTemplatesClient() *WorkbookTemplatesClient {
-	subClient, _ := NewWorkbookTemplatesClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewWorkbooksClient() *WorkbooksClient {
+	subClient, _ := NewWorkbooksClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -113,22 +113,7 @@ func (c *ClientFactory) NewMyWorkbooksClient() *MyWorkbooksClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewWorkbooksClient() *WorkbooksClient {
-	subClient, _ := NewWorkbooksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewComponentsClient() *ComponentsClient {
 	subClient, _ := NewComponentsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewComponentLinkedStorageAccountsClient() *ComponentLinkedStorageAccountsClient {
-	subClient, _ := NewComponentLinkedStorageAccountsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewLiveTokenClient() *LiveTokenClient {
-	subClient, _ := NewLiveTokenClient(c.credential, c.options)
 	return subClient
 }

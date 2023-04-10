@@ -185,7 +185,7 @@ func GetRequiredEnv(name string) (string, error) {
 }
 
 func BeforeTest(t *testing.T, suite string, test string) {
-	const urlRegex = `https://\S+\.blob\.core\.windows\.net.*`
+	const urlRegex = `https://\S+\.blob\.core\.windows\.net`
 	const tokenRegex = `(?:Bearer\s).*`
 	require.NoError(t, recording.AddURISanitizer(FakeStorageURL, urlRegex, nil))
 	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-copy-source", FakeStorageURL, urlRegex, nil))

@@ -408,7 +408,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuth() {
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLCopySourceAuth() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -455,7 +455,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuth() {
 	_require.Equal(destBuffer, sourceData)
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuthNegative() {
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLCopySourceAuthNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

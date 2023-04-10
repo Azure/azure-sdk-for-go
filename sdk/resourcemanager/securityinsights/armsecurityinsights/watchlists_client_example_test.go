@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/watchlists/GetWatchlists.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/GetWatchlists.json
 func ExampleWatchlistsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,8 +63,7 @@ func ExampleWatchlistsClient_NewListPager() {
 		// 					to.Ptr("Tag1"),
 		// 					to.Ptr("Tag2")},
 		// 					Provider: to.Ptr("Microsoft"),
-		// 					Source: to.Ptr("watchlist.csv"),
-		// 					SourceType: to.Ptr(armsecurityinsights.SourceTypeLocalFile),
+		// 					Source: to.Ptr(armsecurityinsights.SourceLocalFile),
 		// 					TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
 		// 					Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57+00:00"); return t}()),
 		// 					UpdatedBy: &armsecurityinsights.UserInfo{
@@ -81,7 +80,7 @@ func ExampleWatchlistsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/watchlists/GetWatchlistByAlias.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/GetWatchlistByAlias.json
 func ExampleWatchlistsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,8 +119,7 @@ func ExampleWatchlistsClient_Get() {
 	// 			to.Ptr("Tag1"),
 	// 			to.Ptr("Tag2")},
 	// 			Provider: to.Ptr("Microsoft"),
-	// 			Source: to.Ptr("watchlist.csv"),
-	// 			SourceType: to.Ptr(armsecurityinsights.SourceTypeLocalFile),
+	// 			Source: to.Ptr(armsecurityinsights.SourceLocalFile),
 	// 			TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
 	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57+00:00"); return t}()),
 	// 			UpdatedBy: &armsecurityinsights.UserInfo{
@@ -136,7 +134,7 @@ func ExampleWatchlistsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/watchlists/DeleteWatchlist.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/DeleteWatchlist.json
 func ExampleWatchlistsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,8 +151,8 @@ func ExampleWatchlistsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/watchlists/CreateWatchlistAndWatchlistItems.json
-func ExampleWatchlistsClient_CreateOrUpdate_createsOrUpdatesAWatchlistAndBulkCreatesWatchlistItems() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/CreateWatchlistAndWatchlistItems.json
+func ExampleWatchlistsClient_CreateOrUpdate_createOrUpdateAWatchlistAndBulkCreatesWatchlistItems() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -174,8 +172,7 @@ func ExampleWatchlistsClient_CreateOrUpdate_createsOrUpdatesAWatchlistAndBulkCre
 			NumberOfLinesToSkip: to.Ptr[int32](1),
 			Provider:            to.Ptr("Microsoft"),
 			RawContent:          to.Ptr("This line will be skipped\nheader1,header2\nvalue1,value2"),
-			Source:              to.Ptr("watchlist.csv"),
-			SourceType:          to.Ptr(armsecurityinsights.SourceTypeLocalFile),
+			Source:              to.Ptr(armsecurityinsights.SourceLocalFile),
 		},
 	}, nil)
 	if err != nil {
@@ -201,8 +198,7 @@ func ExampleWatchlistsClient_CreateOrUpdate_createsOrUpdatesAWatchlistAndBulkCre
 	// 		IsDeleted: to.Ptr(false),
 	// 		ItemsSearchKey: to.Ptr("header1"),
 	// 		Provider: to.Ptr("Microsoft"),
-	// 		Source: to.Ptr("watchlist.csv"),
-	// 		SourceType: to.Ptr(armsecurityinsights.SourceTypeLocalFile),
+	// 		Source: to.Ptr(armsecurityinsights.SourceLocalFile),
 	// 		TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
 	// 		Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57+00:00"); return t}()),
 	// 		UpdatedBy: &armsecurityinsights.UserInfo{
@@ -217,8 +213,8 @@ func ExampleWatchlistsClient_CreateOrUpdate_createsOrUpdatesAWatchlistAndBulkCre
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e24bbf6a66cb0a19c072c6f15cee163acbd7acf7/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/watchlists/CreateWatchlist.json
-func ExampleWatchlistsClient_CreateOrUpdate_createsOrUpdatesAWatchlist() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/CreateWatchlist.json
+func ExampleWatchlistsClient_CreateOrUpdate_createOrUpdateAWatchlist() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -235,8 +231,7 @@ func ExampleWatchlistsClient_CreateOrUpdate_createsOrUpdatesAWatchlist() {
 			DisplayName:    to.Ptr("High Value Assets Watchlist"),
 			ItemsSearchKey: to.Ptr("header1"),
 			Provider:       to.Ptr("Microsoft"),
-			Source:         to.Ptr("watchlist.csv"),
-			SourceType:     to.Ptr(armsecurityinsights.SourceTypeLocalFile),
+			Source:         to.Ptr(armsecurityinsights.SourceLocalFile),
 		},
 	}, nil)
 	if err != nil {
@@ -262,8 +257,7 @@ func ExampleWatchlistsClient_CreateOrUpdate_createsOrUpdatesAWatchlist() {
 	// 		IsDeleted: to.Ptr(false),
 	// 		ItemsSearchKey: to.Ptr("header1"),
 	// 		Provider: to.Ptr("Microsoft"),
-	// 		Source: to.Ptr("watchlist.csv"),
-	// 		SourceType: to.Ptr(armsecurityinsights.SourceTypeLocalFile),
+	// 		Source: to.Ptr(armsecurityinsights.SourceLocalFile),
 	// 		TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
 	// 		Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57+00:00"); return t}()),
 	// 		UpdatedBy: &armsecurityinsights.UserInfo{

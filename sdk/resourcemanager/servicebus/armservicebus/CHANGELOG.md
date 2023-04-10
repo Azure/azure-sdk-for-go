@@ -1,41 +1,9 @@
 # Release History
 
-## 2.0.0-beta.3 (2023-03-27)
+## 1.1.0 (2023-04-07)
 ### Features Added
 
 - New struct `ClientFactory` which is a client factory used to create any client in this module
-
-
-## 2.0.0-beta.2 (2023-02-24)
-### Breaking Changes
-
-- Type of `Encryption.KeySource` has been changed from `*KeySource` to `*string`
-- Type alias `KeySource` has been removed
-
-### Features Added
-
-- New field `PremiumMessagingPartitions` in struct `SBNamespaceProperties`
-
-
-## 2.0.0-beta.1 (2022-05-24)
-### Breaking Changes
-
-- Type of `Encryption.KeySource` has been changed from `*string` to `*KeySource`
-
-### Features Added
-
-- New const `TLSVersionOne2`
-- New const `KeySourceMicrosoftKeyVault`
-- New const `TLSVersionOne1`
-- New const `PublicNetworkAccessDisabled`
-- New const `TLSVersionOne0`
-- New const `PublicNetworkAccessSecuredByPerimeter`
-- New const `PublicNetworkAccessEnabled`
-- New function `PossibleKeySourceValues() []KeySource`
-- New function `PossiblePublicNetworkAccessValues() []PublicNetworkAccess`
-- New function `PossibleTLSVersionValues() []TLSVersion`
-- New field `MinimumTLSVersion` in struct `SBNamespaceProperties`
-- New field `PublicNetworkAccess` in struct `SBNamespaceProperties`
 
 
 ## 1.0.0 (2022-05-17)

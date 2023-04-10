@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights
 
 go 1.18
 

@@ -59,10 +59,6 @@ type Endpoint struct {
 
 // EndpointProperties - Class representing a Traffic Manager endpoint properties.
 type EndpointProperties struct {
-	// If Always Serve is enabled, probing for endpoint health will be disabled and endpoints will be included in the traffic
-	// routing method.
-	AlwaysServe *AlwaysServe `json:"alwaysServe,omitempty"`
-
 	// List of custom headers.
 	CustomHeaders []*EndpointPropertiesCustomHeadersItem `json:"customHeaders,omitempty"`
 

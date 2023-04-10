@@ -47,7 +47,7 @@ func NewRoleInstancesClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Gets the information of role instance of vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - locationName - The Azure region where the network function resource was created by customer.
 //   - vendorName - The name of the vendor.
 //   - serviceKey - The GUID for the vendor network function.
@@ -96,7 +96,7 @@ func (client *RoleInstancesClient) getCreateRequest(ctx context.Context, locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,7 +113,7 @@ func (client *RoleInstancesClient) getHandleResponse(resp *http.Response) (RoleI
 
 // NewListPager - Lists the information of role instances of vendor network function.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - locationName - The Azure region where the network function resource was created by customer.
 //   - vendorName - The name of the vendor.
 //   - serviceKey - The GUID for the vendor network function.
@@ -170,7 +170,7 @@ func (client *RoleInstancesClient) listCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *RoleInstancesClient) listHandleResponse(resp *http.Response) (Role
 // BeginRestart - Restarts a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - locationName - The Azure region where the network function resource was created by customer.
 //   - vendorName - The name of the vendor.
 //   - serviceKey - The GUID for the vendor network function.
@@ -212,7 +212,7 @@ func (client *RoleInstancesClient) BeginRestart(ctx context.Context, locationNam
 // Restart - Restarts a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 func (client *RoleInstancesClient) restart(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
 	if err != nil {
@@ -256,7 +256,7 @@ func (client *RoleInstancesClient) restartCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *RoleInstancesClient) restartCreateRequest(ctx context.Context, loc
 // BeginStart - Starts a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - locationName - The Azure region where the network function resource was created by customer.
 //   - vendorName - The name of the vendor.
 //   - serviceKey - The GUID for the vendor network function.
@@ -289,7 +289,7 @@ func (client *RoleInstancesClient) BeginStart(ctx context.Context, locationName 
 // Start - Starts a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 func (client *RoleInstancesClient) start(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
 	if err != nil {
@@ -333,7 +333,7 @@ func (client *RoleInstancesClient) startCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -342,7 +342,7 @@ func (client *RoleInstancesClient) startCreateRequest(ctx context.Context, locat
 // BeginStop - Powers off (stop) a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - locationName - The Azure region where the network function resource was created by customer.
 //   - vendorName - The name of the vendor.
 //   - serviceKey - The GUID for the vendor network function.
@@ -365,7 +365,7 @@ func (client *RoleInstancesClient) BeginStop(ctx context.Context, locationName s
 // Stop - Powers off (stop) a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 func (client *RoleInstancesClient) stop(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
 	if err != nil {
@@ -409,7 +409,7 @@ func (client *RoleInstancesClient) stopCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

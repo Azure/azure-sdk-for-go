@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/96e52e2b911d533f95a0ad8e324c828d556c5f2b/specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_Get.json
 func ExampleAppsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleAppsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.App = armiotcentral.App{
 	// 	Name: to.Ptr("myIoTCentralApp"),
-	// 	Type: to.Ptr("Microsoft.IoTCentral/iotApps"),
+	// 	Type: to.Ptr("Microsoft.IoTCentral/IoTApps"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.IoTCentral/iotApps/myIoTCentralApp"),
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
@@ -52,46 +52,17 @@ func ExampleAppsClient_Get() {
 	// 	Properties: &armiotcentral.AppProperties{
 	// 		ApplicationID: to.Ptr("6ebd8fd3-6e34-419e-908f-9be61ec6f6d6"),
 	// 		DisplayName: to.Ptr("My IoT Central App"),
-	// 		NetworkRuleSets: &armiotcentral.NetworkRuleSets{
-	// 			ApplyToDevices: to.Ptr(true),
-	// 			ApplyToIoTCentral: to.Ptr(false),
-	// 			DefaultAction: to.Ptr(armiotcentral.NetworkActionDeny),
-	// 			IPRules: []*armiotcentral.NetworkRuleSetIPRule{
-	// 				{
-	// 					FilterName: to.Ptr("My Computer"),
-	// 					IPMask: to.Ptr("21.19.35.40/24"),
-	// 			}},
-	// 		},
-	// 		PrivateEndpointConnections: []*armiotcentral.PrivateEndpointConnection{
-	// 			{
-	// 				Name: to.Ptr("myIoTCentralAppEndpoint.a791c6b5-874d-4f03-9092-718490d33770"),
-	// 				Type: to.Ptr("Microsoft.IoTCentral/iotApps/privateEndpointConnections"),
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.IoTCentral/iotApps/myIoTCentralApp/PrivateEndpointConnections/myIoTCentralAppEndpoint.a791c6b5-874d-4f03-9092-718490d33770"),
-	// 				Properties: &armiotcentral.PrivateEndpointConnectionProperties{
-	// 					GroupIDs: []*string{
-	// 						to.Ptr("iotApp")},
-	// 						PrivateEndpoint: &armiotcentral.PrivateEndpoint{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/privateEndpoints/myIoTCentralAppEndpoint"),
-	// 						},
-	// 						PrivateLinkServiceConnectionState: &armiotcentral.PrivateLinkServiceConnectionState{
-	// 							Description: to.Ptr("Auto-approved"),
-	// 							ActionsRequired: to.Ptr("None"),
-	// 							Status: to.Ptr(armiotcentral.PrivateEndpointServiceConnectionStatusApproved),
-	// 						},
-	// 					},
-	// 			}},
-	// 			PublicNetworkAccess: to.Ptr(armiotcentral.PublicNetworkAccessEnabled),
-	// 			State: to.Ptr(armiotcentral.AppStateCreated),
-	// 			Subdomain: to.Ptr("my-iot-central-app"),
-	// 			Template: to.Ptr("iotc-pnp-preview@1.0.0"),
-	// 		},
-	// 		SKU: &armiotcentral.AppSKUInfo{
-	// 			Name: to.Ptr(armiotcentral.AppSKUST2),
-	// 		},
-	// 	}
+	// 		State: to.Ptr(armiotcentral.AppStateCreated),
+	// 		Subdomain: to.Ptr("my-iot-central-app"),
+	// 		Template: to.Ptr("iotc-pnp-preview@1.0.0"),
+	// 	},
+	// 	SKU: &armiotcentral.AppSKUInfo{
+	// 		Name: to.Ptr(armiotcentral.AppSKU("F1")),
+	// 	},
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/96e52e2b911d533f95a0ad8e324c828d556c5f2b/specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_CreateOrUpdate.json
 func ExampleAppsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,8 +99,8 @@ func ExampleAppsClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.App = armiotcentral.App{
 	// 	Name: to.Ptr("myIoTCentralApp"),
-	// 	Type: to.Ptr("Microsoft.IoTCentral/iotApps"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.IoTCentral/iotApps/myIoTCentralApp"),
+	// 	Type: to.Ptr("Microsoft.IoTCentral/IoTApps"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.IoTCentral/IoTApps/myIoTCentralApp"),
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"key": to.Ptr("value"),
@@ -141,20 +112,9 @@ func ExampleAppsClient_BeginCreateOrUpdate() {
 	// 	},
 	// 	Properties: &armiotcentral.AppProperties{
 	// 		ApplicationID: to.Ptr("6ebd8fd3-6e34-419e-908f-9be61ec6f6d6"),
-	// 		DisplayName: to.Ptr("My IoT Central App"),
-	// 		NetworkRuleSets: &armiotcentral.NetworkRuleSets{
-	// 			ApplyToDevices: to.Ptr(false),
-	// 			ApplyToIoTCentral: to.Ptr(false),
-	// 			DefaultAction: to.Ptr(armiotcentral.NetworkActionDeny),
-	// 			IPRules: []*armiotcentral.NetworkRuleSetIPRule{
-	// 			},
-	// 		},
-	// 		PrivateEndpointConnections: []*armiotcentral.PrivateEndpointConnection{
-	// 		},
-	// 		ProvisioningState: to.Ptr(armiotcentral.ProvisioningStateSucceeded),
-	// 		PublicNetworkAccess: to.Ptr(armiotcentral.PublicNetworkAccessEnabled),
+	// 		DisplayName: to.Ptr("My IoT Central App 2"),
 	// 		State: to.Ptr(armiotcentral.AppStateCreated),
-	// 		Subdomain: to.Ptr("my-iot-central-app"),
+	// 		Subdomain: to.Ptr("my-iot-central-app-2"),
 	// 		Template: to.Ptr("iotc-pnp-preview@1.0.0"),
 	// 	},
 	// 	SKU: &armiotcentral.AppSKUInfo{
@@ -163,7 +123,7 @@ func ExampleAppsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/96e52e2b911d533f95a0ad8e324c828d556c5f2b/specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_Update.json
 func ExampleAppsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,13 +145,40 @@ func ExampleAppsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.App = armiotcentral.App{
+	// 	Name: to.Ptr("myIoTCentralApp"),
+	// 	Type: to.Ptr("Microsoft.IoTCentral/IoTApps"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.IoTCentral/IoTApps/myIoTCentralApp"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"key": to.Ptr("value"),
+	// 	},
+	// 	Identity: &armiotcentral.SystemAssignedServiceIdentity{
+	// 		Type: to.Ptr(armiotcentral.SystemAssignedServiceIdentityTypeSystemAssigned),
+	// 		PrincipalID: to.Ptr("8988ab15-3e7a-4586-8a1c-ed07a73a53e9"),
+	// 		TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
+	// 	},
+	// 	Properties: &armiotcentral.AppProperties{
+	// 		ApplicationID: to.Ptr("6ebd8fd3-6e34-419e-908f-9be61ec6f6d6"),
+	// 		DisplayName: to.Ptr("My IoT Central App 2"),
+	// 		State: to.Ptr(armiotcentral.AppStateCreated),
+	// 		Subdomain: to.Ptr("my-iot-central-app-2"),
+	// 		Template: to.Ptr("iotc-pnp-preview@1.0.0"),
+	// 	},
+	// 	SKU: &armiotcentral.AppSKUInfo{
+	// 		Name: to.Ptr(armiotcentral.AppSKUST2),
+	// 	},
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/96e52e2b911d533f95a0ad8e324c828d556c5f2b/specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_Delete.json
 func ExampleAppsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +199,7 @@ func ExampleAppsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/96e52e2b911d533f95a0ad8e324c828d556c5f2b/specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_ListBySubscription.json
 func ExampleAppsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +225,7 @@ func ExampleAppsClient_NewListBySubscriptionPager() {
 		// 	Value: []*armiotcentral.App{
 		// 		{
 		// 			Name: to.Ptr("myIoTCentralApp"),
-		// 			Type: to.Ptr("Microsoft.IoTCentral/iotApps"),
+		// 			Type: to.Ptr("Microsoft.IoTCentral/IoTApps"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.IoTCentral/iotApps/myIoTCentralApp"),
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
@@ -252,49 +239,19 @@ func ExampleAppsClient_NewListBySubscriptionPager() {
 		// 			Properties: &armiotcentral.AppProperties{
 		// 				ApplicationID: to.Ptr("6ebd8fd3-6e34-419e-908f-9be61ec6f6d6"),
 		// 				DisplayName: to.Ptr("My IoT Central App"),
-		// 				NetworkRuleSets: &armiotcentral.NetworkRuleSets{
-		// 					ApplyToDevices: to.Ptr(true),
-		// 					ApplyToIoTCentral: to.Ptr(false),
-		// 					DefaultAction: to.Ptr(armiotcentral.NetworkActionDeny),
-		// 					IPRules: []*armiotcentral.NetworkRuleSetIPRule{
-		// 						{
-		// 							FilterName: to.Ptr("My Computer"),
-		// 							IPMask: to.Ptr("21.19.35.40/24"),
-		// 					}},
-		// 				},
-		// 				PrivateEndpointConnections: []*armiotcentral.PrivateEndpointConnection{
-		// 					{
-		// 						Name: to.Ptr("myIoTCentralAppEndpoint.a791c6b5-874d-4f03-9092-718490d33770"),
-		// 						Type: to.Ptr("Microsoft.IoTCentral/iotApps/privateEndpointConnections"),
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.IoTCentral/iotApps/myIoTCentralApp/PrivateEndpointConnections/myIoTCentralAppEndpoint.a791c6b5-874d-4f03-9092-718490d33770"),
-		// 						Properties: &armiotcentral.PrivateEndpointConnectionProperties{
-		// 							GroupIDs: []*string{
-		// 								to.Ptr("iotApp")},
-		// 								PrivateEndpoint: &armiotcentral.PrivateEndpoint{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/privateEndpoints/myIoTCentralAppEndpoint"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armiotcentral.PrivateLinkServiceConnectionState{
-		// 									Description: to.Ptr("Auto-approved"),
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Status: to.Ptr(armiotcentral.PrivateEndpointServiceConnectionStatusApproved),
-		// 								},
-		// 							},
-		// 					}},
-		// 					ProvisioningState: to.Ptr(armiotcentral.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armiotcentral.PublicNetworkAccessEnabled),
-		// 					State: to.Ptr(armiotcentral.AppStateCreated),
-		// 					Subdomain: to.Ptr("my-iot-central-app"),
-		// 					Template: to.Ptr("iotc-pnp-preview@1.0.0"),
-		// 				},
-		// 				SKU: &armiotcentral.AppSKUInfo{
-		// 					Name: to.Ptr(armiotcentral.AppSKU("F1")),
-		// 				},
-		// 		}},
-		// 	}
+		// 				State: to.Ptr(armiotcentral.AppStateCreated),
+		// 				Subdomain: to.Ptr("my-iot-central-app"),
+		// 				Template: to.Ptr("iotc-pnp-preview@1.0.0"),
+		// 			},
+		// 			SKU: &armiotcentral.AppSKUInfo{
+		// 				Name: to.Ptr(armiotcentral.AppSKU("F1")),
+		// 			},
+		// 	}},
+		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/96e52e2b911d533f95a0ad8e324c828d556c5f2b/specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_ListByResourceGroup.json
 func ExampleAppsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +277,7 @@ func ExampleAppsClient_NewListByResourceGroupPager() {
 		// 	Value: []*armiotcentral.App{
 		// 		{
 		// 			Name: to.Ptr("myIoTCentralApp"),
-		// 			Type: to.Ptr("Microsoft.IoTCentral/iotApps"),
+		// 			Type: to.Ptr("Microsoft.IoTCentral/IoTApps"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.IoTCentral/iotApps/myIoTCentralApp"),
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
@@ -334,48 +291,19 @@ func ExampleAppsClient_NewListByResourceGroupPager() {
 		// 			Properties: &armiotcentral.AppProperties{
 		// 				ApplicationID: to.Ptr("6ebd8fd3-6e34-419e-908f-9be61ec6f6d6"),
 		// 				DisplayName: to.Ptr("My IoT Central App"),
-		// 				NetworkRuleSets: &armiotcentral.NetworkRuleSets{
-		// 					ApplyToDevices: to.Ptr(true),
-		// 					ApplyToIoTCentral: to.Ptr(false),
-		// 					DefaultAction: to.Ptr(armiotcentral.NetworkActionDeny),
-		// 					IPRules: []*armiotcentral.NetworkRuleSetIPRule{
-		// 						{
-		// 							FilterName: to.Ptr("My Computer"),
-		// 							IPMask: to.Ptr("21.19.35.40/24"),
-		// 					}},
-		// 				},
-		// 				PrivateEndpointConnections: []*armiotcentral.PrivateEndpointConnection{
-		// 					{
-		// 						Name: to.Ptr("myIoTCentralAppEndpoint.a791c6b5-874d-4f03-9092-718490d33770"),
-		// 						Type: to.Ptr("Microsoft.IoTCentral/iotApps/privateEndpointConnections"),
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.IoTCentral/iotApps/myIoTCentralApp/PrivateEndpointConnections/myIoTCentralAppEndpoint.a791c6b5-874d-4f03-9092-718490d33770"),
-		// 						Properties: &armiotcentral.PrivateEndpointConnectionProperties{
-		// 							GroupIDs: []*string{
-		// 								to.Ptr("iotApp")},
-		// 								PrivateEndpoint: &armiotcentral.PrivateEndpoint{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/privateEndpoints/myIoTCentralAppEndpoint"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armiotcentral.PrivateLinkServiceConnectionState{
-		// 									Description: to.Ptr("Auto-approved"),
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Status: to.Ptr(armiotcentral.PrivateEndpointServiceConnectionStatusApproved),
-		// 								},
-		// 							},
-		// 					}},
-		// 					PublicNetworkAccess: to.Ptr(armiotcentral.PublicNetworkAccessEnabled),
-		// 					State: to.Ptr(armiotcentral.AppStateCreated),
-		// 					Subdomain: to.Ptr("my-iot-central-app"),
-		// 					Template: to.Ptr("iotc-pnp-preview@1.0.0"),
-		// 				},
-		// 				SKU: &armiotcentral.AppSKUInfo{
-		// 					Name: to.Ptr(armiotcentral.AppSKU("F1")),
-		// 				},
-		// 		}},
-		// 	}
+		// 				State: to.Ptr(armiotcentral.AppStateCreated),
+		// 				Subdomain: to.Ptr("my-iot-central-app"),
+		// 				Template: to.Ptr("iotc-pnp-preview@1.0.0"),
+		// 			},
+		// 			SKU: &armiotcentral.AppSKUInfo{
+		// 				Name: to.Ptr(armiotcentral.AppSKU("F1")),
+		// 			},
+		// 	}},
+		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/96e52e2b911d533f95a0ad8e324c828d556c5f2b/specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_CheckNameAvailability.json
 func ExampleAppsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,7 +329,7 @@ func ExampleAppsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/96e52e2b911d533f95a0ad8e324c828d556c5f2b/specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_CheckSubdomainAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_CheckSubdomainAvailability.json
 func ExampleAppsClient_CheckSubdomainAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,7 +355,7 @@ func ExampleAppsClient_CheckSubdomainAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/96e52e2b911d533f95a0ad8e324c828d556c5f2b/specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_Templates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_Templates.json
 func ExampleAppsClient_NewListTemplatesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

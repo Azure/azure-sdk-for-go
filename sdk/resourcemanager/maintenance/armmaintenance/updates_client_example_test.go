@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0b1c0be5c97dcd5dadea4e7f975a556a78f58d60/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/Updates_ListParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/Updates_ListParent.json
 func ExampleUpdatesClient_NewListParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleUpdatesClient_NewListParentPager() {
 		// 		{
 		// 			ImpactDurationInSec: to.Ptr[int32](1440),
 		// 			ImpactType: to.Ptr(armmaintenance.ImpactType("Reboot")),
-		// 			MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeResource),
+		// 			MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScope("Resource")),
 		// 			NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-09T06:17:44.235Z"); return t}()),
 		// 			Properties: &armmaintenance.UpdateProperties{
 		// 				ResourceID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/virtualMachines/1"),
@@ -55,7 +55,7 @@ func ExampleUpdatesClient_NewListParentPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0b1c0be5c97dcd5dadea4e7f975a556a78f58d60/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/Updates_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/Updates_List.json
 func ExampleUpdatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleUpdatesClient_NewListPager() {
 		// 		{
 		// 			ImpactDurationInSec: to.Ptr[int32](1440),
 		// 			ImpactType: to.Ptr(armmaintenance.ImpactType("Reboot")),
-		// 			MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeResource),
+		// 			MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScope("Resource")),
 		// 			NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-09T06:17:44.235Z"); return t}()),
 		// 			Properties: &armmaintenance.UpdateProperties{
 		// 				ResourceID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1"),

@@ -38,88 +38,8 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-func (c *ClientFactory) NewAlertRulesClient() *AlertRulesClient {
-	subClient, _ := NewAlertRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewActionsClient() *ActionsClient {
-	subClient, _ := NewActionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewAlertRuleTemplatesClient() *AlertRuleTemplatesClient {
-	subClient, _ := NewAlertRuleTemplatesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewAutomationRulesClient() *AutomationRulesClient {
-	subClient, _ := NewAutomationRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewIncidentsClient() *IncidentsClient {
 	subClient, _ := NewIncidentsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewBookmarksClient() *BookmarksClient {
-	subClient, _ := NewBookmarksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewBookmarkRelationsClient() *BookmarkRelationsClient {
-	subClient, _ := NewBookmarkRelationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewBookmarkClient() *BookmarkClient {
-	subClient, _ := NewBookmarkClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewIPGeodataClient() *IPGeodataClient {
-	subClient, _ := NewIPGeodataClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewDomainWhoisClient() *DomainWhoisClient {
-	subClient, _ := NewDomainWhoisClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewEntitiesClient() *EntitiesClient {
-	subClient, _ := NewEntitiesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewEntitiesGetTimelineClient() *EntitiesGetTimelineClient {
-	subClient, _ := NewEntitiesGetTimelineClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewEntitiesRelationsClient() *EntitiesRelationsClient {
-	subClient, _ := NewEntitiesRelationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewEntityRelationsClient() *EntityRelationsClient {
-	subClient, _ := NewEntityRelationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewEntityQueriesClient() *EntityQueriesClient {
-	subClient, _ := NewEntityQueriesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewEntityQueryTemplatesClient() *EntityQueryTemplatesClient {
-	subClient, _ := NewEntityQueryTemplatesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewFileImportsClient() *FileImportsClient {
-	subClient, _ := NewFileImportsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -130,41 +50,6 @@ func (c *ClientFactory) NewIncidentCommentsClient() *IncidentCommentsClient {
 
 func (c *ClientFactory) NewIncidentRelationsClient() *IncidentRelationsClient {
 	subClient, _ := NewIncidentRelationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewMetadataClient() *MetadataClient {
-	subClient, _ := NewMetadataClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewOfficeConsentsClient() *OfficeConsentsClient {
-	subClient, _ := NewOfficeConsentsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewSentinelOnboardingStatesClient() *SentinelOnboardingStatesClient {
-	subClient, _ := NewSentinelOnboardingStatesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewSecurityMLAnalyticsSettingsClient() *SecurityMLAnalyticsSettingsClient {
-	subClient, _ := NewSecurityMLAnalyticsSettingsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewProductSettingsClient() *ProductSettingsClient {
-	subClient, _ := NewProductSettingsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewSourceControlClient() *SourceControlClient {
-	subClient, _ := NewSourceControlClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewSourceControlsClient() *SourceControlsClient {
-	subClient, _ := NewSourceControlsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -193,17 +78,42 @@ func (c *ClientFactory) NewWatchlistItemsClient() *WatchlistItemsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewOperationsClient() *OperationsClient {
+	subClient, _ := NewOperationsClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewSentinelOnboardingStatesClient() *SentinelOnboardingStatesClient {
+	subClient, _ := NewSentinelOnboardingStatesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewAlertRulesClient() *AlertRulesClient {
+	subClient, _ := NewAlertRulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewActionsClient() *ActionsClient {
+	subClient, _ := NewActionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewAlertRuleTemplatesClient() *AlertRuleTemplatesClient {
+	subClient, _ := NewAlertRuleTemplatesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewBookmarksClient() *BookmarksClient {
+	subClient, _ := NewBookmarksClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewDataConnectorsClient() *DataConnectorsClient {
 	subClient, _ := NewDataConnectorsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewDataConnectorsCheckRequirementsClient() *DataConnectorsCheckRequirementsClient {
-	subClient, _ := NewDataConnectorsCheckRequirementsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
+func (c *ClientFactory) NewAutomationRulesClient() *AutomationRulesClient {
+	subClient, _ := NewAutomationRulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

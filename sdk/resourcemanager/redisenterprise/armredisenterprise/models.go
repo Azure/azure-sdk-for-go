@@ -9,8 +9,6 @@
 
 package armredisenterprise
 
-import "time"
-
 // AccessKeys - The secret access keys used for authenticating connections to redis
 type AccessKeys struct {
 	// READ-ONLY; The current primary key that clients can use to authenticate
@@ -18,15 +16,6 @@ type AccessKeys struct {
 
 	// READ-ONLY; The current secondary key that clients can use to authenticate
 	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
-}
-
-// Capability - Information about the features the location supports
-type Capability struct {
-	// Feature name
-	Name *string `json:"name,omitempty"`
-
-	// Indicates whether feature is supported or not
-	Value *bool `json:"value,omitempty"`
 }
 
 // ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
@@ -70,9 +59,6 @@ type Cluster struct {
 	// REQUIRED; The SKU to create, which affects price, performance, and features.
 	SKU *SKU `json:"sku,omitempty"`
 
-	// The identity of the resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
-
 	// Other properties of the cluster.
 	Properties *ClusterProperties `json:"properties,omitempty"`
 
@@ -87,9 +73,6 @@ type Cluster struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -106,9 +89,6 @@ type ClusterList struct {
 
 // ClusterProperties - Properties of RedisEnterprise clusters, as opposed to general resource properties like location, tags
 type ClusterProperties struct {
-	// Encryption-at-rest configuration for the cluster.
-	Encryption *ClusterPropertiesEncryption `json:"encryption,omitempty"`
-
 	// The minimum TLS version for the cluster to support, e.g. '1.2'
 	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
 
@@ -128,38 +108,8 @@ type ClusterProperties struct {
 	ResourceState *ResourceState `json:"resourceState,omitempty" azure:"ro"`
 }
 
-// ClusterPropertiesEncryption - Encryption-at-rest configuration for the cluster.
-type ClusterPropertiesEncryption struct {
-	// All Customer-managed key encryption properties for the resource. Set this to an empty object to use Microsoft-managed key
-	// encryption.
-	CustomerManagedKeyEncryption *ClusterPropertiesEncryptionCustomerManagedKeyEncryption `json:"customerManagedKeyEncryption,omitempty"`
-}
-
-// ClusterPropertiesEncryptionCustomerManagedKeyEncryption - All Customer-managed key encryption properties for the resource.
-// Set this to an empty object to use Microsoft-managed key encryption.
-type ClusterPropertiesEncryptionCustomerManagedKeyEncryption struct {
-	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
-	KeyEncryptionKeyIdentity *ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity `json:"keyEncryptionKeyIdentity,omitempty"`
-
-	// Key encryption key Url, versioned only. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
-	KeyEncryptionKeyURL *string `json:"keyEncryptionKeyUrl,omitempty"`
-}
-
-// ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity - All identity configuration for Customer-managed key
-// settings defining which identity should be used to auth to Key Vault.
-type ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity struct {
-	// Only userAssignedIdentity is supported in this API version; other types may be supported in the future
-	IdentityType *CmkIdentityType `json:"identityType,omitempty"`
-
-	// User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions//resourceGroups//providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
-	UserAssignedIdentityResourceID *string `json:"userAssignedIdentityResourceId,omitempty"`
-}
-
 // ClusterUpdate - A partial update to the RedisEnterprise cluster
 type ClusterUpdate struct {
-	// The identity of the resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
-
 	// Other properties of the cluster.
 	Properties *ClusterProperties `json:"properties,omitempty"`
 
@@ -180,9 +130,6 @@ type Database struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -257,12 +204,6 @@ type DatabasesClientBeginDeleteOptions struct {
 
 // DatabasesClientBeginExportOptions contains the optional parameters for the DatabasesClient.BeginExport method.
 type DatabasesClientBeginExportOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// DatabasesClientBeginFlushOptions contains the optional parameters for the DatabasesClient.BeginFlush method.
-type DatabasesClientBeginFlushOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -346,12 +287,6 @@ type ExportClusterParameters struct {
 	SasURI *string `json:"sasUri,omitempty"`
 }
 
-// FlushParameters - Parameters for a Redis Enterprise active geo-replication flush operation.
-type FlushParameters struct {
-	// The resource identifiers of all the other database resources in the georeplication group to be flushed
-	IDs []*string `json:"ids,omitempty"`
-}
-
 // ForceUnlinkParameters - Parameters for a Redis Enterprise Active Geo Replication Force Unlink operation.
 type ForceUnlinkParameters struct {
 	// REQUIRED; The resource IDs of the database resources to be unlinked.
@@ -371,35 +306,6 @@ type LinkedDatabase struct {
 
 	// READ-ONLY; State of the link between the database resources.
 	State *LinkState `json:"state,omitempty" azure:"ro"`
-}
-
-// LocationInfo - Information about location (for example: features that it supports)
-type LocationInfo struct {
-	// List of capabilities
-	Capabilities []*Capability `json:"capabilities,omitempty"`
-
-	// Location name
-	Location *string `json:"location,omitempty"`
-}
-
-// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
-type ManagedServiceIdentity struct {
-	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
-
-	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
-	// resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
-	// The dictionary values can be empty objects ({}) in
-	// requests.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
-
-	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
 // Module - Specifies configuration of a redis module
@@ -526,9 +432,6 @@ type PrivateEndpointConnection struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -587,9 +490,6 @@ type PrivateLinkResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -640,9 +540,6 @@ type ProxyResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -653,24 +550,6 @@ type RegenerateKeyParameters struct {
 	KeyType *AccessKeyType `json:"keyType,omitempty"`
 }
 
-// RegionSKUDetail - Details about the location requested and the available skus in the location
-type RegionSKUDetail struct {
-	// Details about location and its capabilities
-	LocationInfo *LocationInfo `json:"locationInfo,omitempty"`
-
-	// Resource type which has the SKU, such as Microsoft.Cache/redisEnterprise
-	ResourceType *string `json:"resourceType,omitempty"`
-
-	// Details about available skus
-	SKUDetails *SKUDetail `json:"skuDetails,omitempty"`
-}
-
-// RegionSKUDetails - List of details about all the available SKUs
-type RegionSKUDetails struct {
-	// List of Sku Detail
-	Value []*RegionSKUDetail `json:"value,omitempty"`
-}
-
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -678,9 +557,6 @@ type Resource struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -694,38 +570,6 @@ type SKU struct {
 	// The size of the RedisEnterprise cluster. Defaults to 2 or 3 depending on SKU. Valid values are (2, 4, 6, …) for Enterprise
 	// SKUs and (3, 9, 15, …) for Flash SKUs.
 	Capacity *int32 `json:"capacity,omitempty"`
-}
-
-// SKUDetail - Information about Sku
-type SKUDetail struct {
-	// The type of RedisEnterprise cluster to deploy. Possible values: (EnterpriseE10, EnterpriseFlashF300 etc.)
-	Name *SKUName `json:"name,omitempty"`
-}
-
-// SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
-type SKUsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SystemData - Metadata pertaining to creation and last modification of the resource.
-type SystemData struct {
-	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-
-	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
-
-	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
-
-	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
-
-	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-
-	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
@@ -743,18 +587,6 @@ type TrackedResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// UserAssignedIdentity - User assigned identity properties
-type UserAssignedIdentity struct {
-	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }

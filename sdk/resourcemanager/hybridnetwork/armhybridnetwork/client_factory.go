@@ -38,23 +38,13 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-func (c *ClientFactory) NewDevicesClient() *DevicesClient {
-	subClient, _ := NewDevicesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewNetworkFunctionsClient() *NetworkFunctionsClient {
 	subClient, _ := NewNetworkFunctionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewNetworkFunctionVendorsClient() *NetworkFunctionVendorsClient {
-	subClient, _ := NewNetworkFunctionVendorsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewNetworkFunctionVendorSKUsClient() *NetworkFunctionVendorSKUsClient {
-	subClient, _ := NewNetworkFunctionVendorSKUsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewDevicesClient() *DevicesClient {
+	subClient, _ := NewDevicesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -75,6 +65,16 @@ func (c *ClientFactory) NewVendorSKUsClient() *VendorSKUsClient {
 
 func (c *ClientFactory) NewVendorSKUPreviewClient() *VendorSKUPreviewClient {
 	subClient, _ := NewVendorSKUPreviewClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewNetworkFunctionVendorsClient() *NetworkFunctionVendorsClient {
+	subClient, _ := NewNetworkFunctionVendorsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewNetworkFunctionVendorSKUsClient() *NetworkFunctionVendorSKUsClient {
+	subClient, _ := NewNetworkFunctionVendorSKUsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

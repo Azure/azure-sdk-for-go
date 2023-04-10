@@ -47,7 +47,7 @@ func NewAppsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // CheckNameAvailability - Check if an IoT Central application name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 //   - operationInputs - Set the name parameter in the OperationInputs structure to the name of the IoT Central application to
 //     check.
 //   - options - AppsClientCheckNameAvailabilityOptions contains the optional parameters for the AppsClient.CheckNameAvailability
@@ -79,7 +79,7 @@ func (client *AppsClient) checkNameAvailabilityCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, operationInputs)
@@ -97,7 +97,7 @@ func (client *AppsClient) checkNameAvailabilityHandleResponse(resp *http.Respons
 // CheckSubdomainAvailability - Check if an IoT Central application subdomain is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 //   - operationInputs - Set the name parameter in the OperationInputs structure to the subdomain of the IoT Central application
 //     to check.
 //   - options - AppsClientCheckSubdomainAvailabilityOptions contains the optional parameters for the AppsClient.CheckSubdomainAvailability
@@ -129,7 +129,7 @@ func (client *AppsClient) checkSubdomainAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, operationInputs)
@@ -149,7 +149,7 @@ func (client *AppsClient) checkSubdomainAvailabilityHandleResponse(resp *http.Re
 // with the modified values in a new body to update the IoT Central application.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group that contains the IoT Central application.
 //   - resourceName - The ARM resource name of the IoT Central application.
 //   - app - The IoT Central application metadata and security metadata.
@@ -172,7 +172,7 @@ func (client *AppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup
 // with the modified values in a new body to update the IoT Central application.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 func (client *AppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, app App, options *AppsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, app, options)
 	if err != nil {
@@ -182,7 +182,7 @@ func (client *AppsClient) createOrUpdate(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -208,7 +208,7 @@ func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, app)
@@ -217,7 +217,7 @@ func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 // BeginDelete - Delete an IoT Central application.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group that contains the IoT Central application.
 //   - resourceName - The ARM resource name of the IoT Central application.
 //   - options - AppsClientBeginDeleteOptions contains the optional parameters for the AppsClient.BeginDelete method.
@@ -236,7 +236,7 @@ func (client *AppsClient) BeginDelete(ctx context.Context, resourceGroupName str
 // Delete - Delete an IoT Central application.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 func (client *AppsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *AppsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
@@ -246,7 +246,7 @@ func (client *AppsClient) deleteOperation(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -272,7 +272,7 @@ func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -281,7 +281,7 @@ func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 // Get - Get the metadata of an IoT Central application.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group that contains the IoT Central application.
 //   - resourceName - The ARM resource name of the IoT Central application.
 //   - options - AppsClientGetOptions contains the optional parameters for the AppsClient.Get method.
@@ -320,7 +320,7 @@ func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -337,7 +337,7 @@ func (client *AppsClient) getHandleResponse(resp *http.Response) (AppsClientGetR
 
 // NewListByResourceGroupPager - Get all the IoT Central Applications in a resource group.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group that contains the IoT Central application.
 //   - options - AppsClientListByResourceGroupOptions contains the optional parameters for the AppsClient.NewListByResourceGroupPager
 //     method.
@@ -385,7 +385,7 @@ func (client *AppsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -402,7 +402,7 @@ func (client *AppsClient) listByResourceGroupHandleResponse(resp *http.Response)
 
 // NewListBySubscriptionPager - Get all IoT Central Applications in a subscription.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 //   - options - AppsClientListBySubscriptionOptions contains the optional parameters for the AppsClient.NewListBySubscriptionPager
 //     method.
 func (client *AppsClient) NewListBySubscriptionPager(options *AppsClientListBySubscriptionOptions) *runtime.Pager[AppsClientListBySubscriptionResponse] {
@@ -445,7 +445,7 @@ func (client *AppsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -462,7 +462,7 @@ func (client *AppsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 
 // NewListTemplatesPager - Get all available application templates.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 //   - options - AppsClientListTemplatesOptions contains the optional parameters for the AppsClient.NewListTemplatesPager method.
 func (client *AppsClient) NewListTemplatesPager(options *AppsClientListTemplatesOptions) *runtime.Pager[AppsClientListTemplatesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AppsClientListTemplatesResponse]{
@@ -504,7 +504,7 @@ func (client *AppsClient) listTemplatesCreateRequest(ctx context.Context, option
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -522,7 +522,7 @@ func (client *AppsClient) listTemplatesHandleResponse(resp *http.Response) (Apps
 // BeginUpdate - Update the metadata of an IoT Central application.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group that contains the IoT Central application.
 //   - resourceName - The ARM resource name of the IoT Central application.
 //   - appPatch - The IoT Central application metadata and security metadata.
@@ -542,7 +542,7 @@ func (client *AppsClient) BeginUpdate(ctx context.Context, resourceGroupName str
 // Update - Update the metadata of an IoT Central application.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01-preview
+// Generated from API version 2021-06-01
 func (client *AppsClient) update(ctx context.Context, resourceGroupName string, resourceName string, appPatch AppPatch, options *AppsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, appPatch, options)
 	if err != nil {
@@ -552,7 +552,7 @@ func (client *AppsClient) update(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -578,7 +578,7 @@ func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, appPatch)

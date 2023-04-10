@@ -48,7 +48,7 @@ func NewNetworkFunctionsClient(subscriptionID string, credential azcore.TokenCre
 // This is expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFunctionName - Resource name for the network function resource.
 //   - parameters - Parameters supplied in the body to the create or update network function operation.
@@ -72,7 +72,7 @@ func (client *NetworkFunctionsClient) BeginCreateOrUpdate(ctx context.Context, r
 // is expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 func (client *NetworkFunctionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters NetworkFunction, options *NetworkFunctionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkFunctionName, parameters, options)
 	if err != nil {
@@ -108,7 +108,7 @@ func (client *NetworkFunctionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -118,7 +118,7 @@ func (client *NetworkFunctionsClient) createOrUpdateCreateRequest(ctx context.Co
 // expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFunctionName - The name of the network function.
 //   - options - NetworkFunctionsClientBeginDeleteOptions contains the optional parameters for the NetworkFunctionsClient.BeginDelete
@@ -141,7 +141,7 @@ func (client *NetworkFunctionsClient) BeginDelete(ctx context.Context, resourceG
 // service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 func (client *NetworkFunctionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkFunctionName, options)
 	if err != nil {
@@ -177,84 +177,16 @@ func (client *NetworkFunctionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginExecuteRequest - Execute a request to services on a network function.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-01-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFunctionName - The name of the network function.
-//   - parameters - Payload for execute request post call.
-//   - options - NetworkFunctionsClientBeginExecuteRequestOptions contains the optional parameters for the NetworkFunctionsClient.BeginExecuteRequest
-//     method.
-func (client *NetworkFunctionsClient) BeginExecuteRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters ExecuteRequestParameters, options *NetworkFunctionsClientBeginExecuteRequestOptions) (*runtime.Poller[NetworkFunctionsClientExecuteRequestResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.executeRequest(ctx, resourceGroupName, networkFunctionName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFunctionsClientExecuteRequestResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[NetworkFunctionsClientExecuteRequestResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// ExecuteRequest - Execute a request to services on a network function.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-01-01-preview
-func (client *NetworkFunctionsClient) executeRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters ExecuteRequestParameters, options *NetworkFunctionsClientBeginExecuteRequestOptions) (*http.Response, error) {
-	req, err := client.executeRequestCreateRequest(ctx, resourceGroupName, networkFunctionName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// executeRequestCreateRequest creates the ExecuteRequest request.
-func (client *NetworkFunctionsClient) executeRequestCreateRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters ExecuteRequestParameters, options *NetworkFunctionsClientBeginExecuteRequestOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/networkFunctions/{networkFunctionName}/executeRequest"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFunctionName == "" {
-		return nil, errors.New("parameter networkFunctionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFunctionName}", url.PathEscape(networkFunctionName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
 // Get - Gets information about the specified network function resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFunctionName - The name of the network function resource.
 //   - options - NetworkFunctionsClientGetOptions contains the optional parameters for the NetworkFunctionsClient.Get method.
@@ -293,7 +225,7 @@ func (client *NetworkFunctionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,7 +242,7 @@ func (client *NetworkFunctionsClient) getHandleResponse(resp *http.Response) (Ne
 
 // NewListByResourceGroupPager - Lists all the network function resources in a resource group.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkFunctionsClientListByResourceGroupOptions contains the optional parameters for the NetworkFunctionsClient.NewListByResourceGroupPager
 //     method.
@@ -358,7 +290,7 @@ func (client *NetworkFunctionsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -375,7 +307,7 @@ func (client *NetworkFunctionsClient) listByResourceGroupHandleResponse(resp *ht
 
 // NewListBySubscriptionPager - Lists all the network functions in a subscription.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - options - NetworkFunctionsClientListBySubscriptionOptions contains the optional parameters for the NetworkFunctionsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkFunctionsClient) NewListBySubscriptionPager(options *NetworkFunctionsClientListBySubscriptionOptions) *runtime.Pager[NetworkFunctionsClientListBySubscriptionResponse] {
@@ -418,7 +350,7 @@ func (client *NetworkFunctionsClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -436,7 +368,7 @@ func (client *NetworkFunctionsClient) listBySubscriptionHandleResponse(resp *htt
 // UpdateTags - Updates the tags for the network function resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-01-01-preview
+// Generated from API version 2021-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFunctionName - Resource name for the network function resource.
 //   - parameters - Parameters supplied to the update network function tags operation.
@@ -477,7 +409,7 @@ func (client *NetworkFunctionsClient) updateTagsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

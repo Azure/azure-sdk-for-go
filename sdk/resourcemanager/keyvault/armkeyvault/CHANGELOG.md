@@ -1,33 +1,9 @@
 # Release History
 
-## 1.1.0-beta.2 (2023-03-27)
+## 1.1.0 (2023-04-06)
 ### Features Added
 
 - New struct `ClientFactory` which is a client factory used to create any client in this module
-
-
-## 1.1.0-beta.1 (2022-05-19)
-### Features Added
-
-- New const `KeyRotationPolicyActionTypeNotify`
-- New const `JSONWebKeyOperationRelease`
-- New const `KeyRotationPolicyActionTypeRotate`
-- New const `KeyPermissionsRotate`
-- New const `KeyPermissionsRelease`
-- New const `KeyPermissionsSetrotationpolicy`
-- New const `KeyPermissionsGetrotationpolicy`
-- New function `PossibleKeyRotationPolicyActionTypeValues() []KeyRotationPolicyActionType`
-- New function `*KeyReleasePolicy.UnmarshalJSON([]byte) error`
-- New function `KeyReleasePolicy.MarshalJSON() ([]byte, error)`
-- New function `RotationPolicy.MarshalJSON() ([]byte, error)`
-- New struct `Action`
-- New struct `KeyReleasePolicy`
-- New struct `KeyRotationPolicyAttributes`
-- New struct `LifetimeAction`
-- New struct `RotationPolicy`
-- New struct `Trigger`
-- New field `ReleasePolicy` in struct `KeyProperties`
-- New field `RotationPolicy` in struct `KeyProperties`
 
 
 ## 1.0.0 (2022-05-16)

@@ -151,7 +151,6 @@ func (e *Endpoint) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type EndpointProperties.
 func (e EndpointProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "alwaysServe", e.AlwaysServe)
 	populate(objectMap, "customHeaders", e.CustomHeaders)
 	populate(objectMap, "endpointLocation", e.EndpointLocation)
 	populate(objectMap, "endpointMonitorStatus", e.EndpointMonitorStatus)
@@ -177,9 +176,6 @@ func (e *EndpointProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "alwaysServe":
-			err = unpopulate(val, "AlwaysServe", &e.AlwaysServe)
-			delete(rawMsg, key)
 		case "customHeaders":
 			err = unpopulate(val, "CustomHeaders", &e.CustomHeaders)
 			delete(rawMsg, key)

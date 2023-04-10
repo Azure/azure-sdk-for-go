@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral
 
 go 1.18
 

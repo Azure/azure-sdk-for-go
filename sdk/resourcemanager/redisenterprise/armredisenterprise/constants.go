@@ -11,7 +11,7 @@ package armredisenterprise
 
 const (
 	moduleName    = "armredisenterprise"
-	moduleVersion = "v1.1.0-beta.1"
+	moduleVersion = "v1.1.0"
 )
 
 // AccessKeyType - Which access key to regenerate.
@@ -76,42 +76,6 @@ func PossibleClusteringPolicyValues() []ClusteringPolicy {
 	}
 }
 
-// CmkIdentityType - Only userAssignedIdentity is supported in this API version; other types may be supported in the future
-type CmkIdentityType string
-
-const (
-	CmkIdentityTypeSystemAssignedIdentity CmkIdentityType = "systemAssignedIdentity"
-	CmkIdentityTypeUserAssignedIdentity   CmkIdentityType = "userAssignedIdentity"
-)
-
-// PossibleCmkIdentityTypeValues returns the possible values for the CmkIdentityType const type.
-func PossibleCmkIdentityTypeValues() []CmkIdentityType {
-	return []CmkIdentityType{
-		CmkIdentityTypeSystemAssignedIdentity,
-		CmkIdentityTypeUserAssignedIdentity,
-	}
-}
-
-// CreatedByType - The type of identity that created the resource.
-type CreatedByType string
-
-const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
-	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
-)
-
-// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
-func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
-		CreatedByTypeApplication,
-		CreatedByTypeKey,
-		CreatedByTypeManagedIdentity,
-		CreatedByTypeUser,
-	}
-}
-
 // EvictionPolicy - Redis eviction policy - default is VolatileLRU
 type EvictionPolicy string
 
@@ -159,26 +123,6 @@ func PossibleLinkStateValues() []LinkState {
 		LinkStateLinking,
 		LinkStateUnlinkFailed,
 		LinkStateUnlinking,
-	}
-}
-
-// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
-type ManagedServiceIdentityType string
-
-const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
-)
-
-// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
-func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
-		ManagedServiceIdentityTypeNone,
-		ManagedServiceIdentityTypeSystemAssigned,
-		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
-		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 
@@ -333,6 +277,7 @@ func PossibleResourceStateValues() []ResourceState {
 	}
 }
 
+// SKUName - The type of RedisEnterprise cluster to deploy. Possible values: (EnterpriseE10, EnterpriseFlashF300 etc.)
 type SKUName string
 
 const (

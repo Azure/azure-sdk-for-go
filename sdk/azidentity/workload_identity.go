@@ -20,9 +20,9 @@ import (
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
 
 // WorkloadIdentityCredential supports Azure workload identity on Kubernetes.
-// See [AKS documentation] for more information.
+// See [Azure Kubernetes Service documentation] for more information.
 //
-// [AKS documentation]: https://learn.microsoft.com/azure/aks/workload-identity-overview
+// [Azure Kubernetes Service documentation]: https://learn.microsoft.com/azure/aks/workload-identity-overview
 type WorkloadIdentityCredential struct {
 	assertion, file string
 	cred            *ClientAssertionCredential
@@ -40,7 +40,8 @@ type WorkloadIdentityCredentialOptions struct {
 	AdditionallyAllowedTenants []string
 	// ClientID of the service principal. Defaults to the value of the environment variable AZURE_CLIENT_ID.
 	ClientID string
-	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	// DisableInstanceDiscovery should be true for applications authenticating in disconnected or private clouds.
+	// This skips a metadata request that will fail for such applications.
 	DisableInstanceDiscovery bool
 	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
 	TenantID string

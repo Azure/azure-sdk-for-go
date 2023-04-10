@@ -29,7 +29,8 @@ type ClientCertificateCredentialOptions struct {
 	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
 	// application is registered.
 	AdditionallyAllowedTenants []string
-	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	// DisableInstanceDiscovery should be true for applications authenticating in disconnected or private clouds.
+	// This skips a metadata request that will fail for such applications.
 	DisableInstanceDiscovery bool
 	// SendCertificateChain controls whether the credential sends the public certificate chain in the x5c
 	// header of each token request's JWT. This is required for Subject Name/Issuer (SNI) authentication.

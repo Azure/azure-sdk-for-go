@@ -27,7 +27,8 @@ type InteractiveBrowserCredentialOptions struct {
 	// Defaults to the ID of an Azure development application.
 	ClientID string
 
-	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	// DisableInstanceDiscovery should be true for applications authenticating in disconnected or private clouds.
+	// This skips a metadata request that will fail for such applications.
 	DisableInstanceDiscovery bool
 
 	// LoginHint pre-populates the account prompt with a username. Users may choose to authenticate a different account.

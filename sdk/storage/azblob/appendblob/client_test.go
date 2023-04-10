@@ -430,7 +430,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuth() {
 	_, err = srcABClient.Create(context.Background(), nil)
 	_require.Nil(err)
 	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetDataAndReader(random, contentSize)
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcABClient.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 	_, err = destABClient.Create(context.Background(), nil)

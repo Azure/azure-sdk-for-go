@@ -111,7 +111,8 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-client, err := armcompute.NewVirtualMachinesClient("<SubscriptionId>", credential, &options)
+clientFactory, err := armcompute.NewClientFactory(<subscription ID>, cred, &options)
+client = clientFactory.NewVirtualMachinesClient()
 ```
 
 For detailed information on the cloud configuration, please refer to [this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud)
@@ -275,7 +276,8 @@ options := &arm.ClientOptions{
         Transport: &httpClient,
     },
 }
-client, err := armresources.NewResourceGroupsClient("<SubscriptionId>", credential, options)
+clientFactory, err := armresources.NewClientFactory(<subscription ID>, cred, &options)
+client = clientFactory.NewResourceGroupsClient()
 ```
 
 ## Need help?

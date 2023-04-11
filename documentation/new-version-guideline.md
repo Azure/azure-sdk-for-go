@@ -152,16 +152,17 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 ```
 
 ```go
-rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential,
-    &arm.ClientOptions{
+clientFactory, err := armresources.NewClientFactory(subscriptionId, credential, 
+	&arm.ClientOptions{
         ClientOptions: policy.ClientOptions{
             Retry: policy.RetryOptions{
                 // retry for 5 times
                 MaxRetries: 5,
             },
-        },
-    },
+		},
+    }, 
 )
+rgClient := clientFactory.NewResourceGroupsClient()
 ```
 
 ### Customized Policy
@@ -181,13 +182,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 ```go
 // your own implementation of HTTP client
 httpClient := NewYourOwnHTTPClient{}
-rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential,
+clientFactory, err := armresources.NewClientFactory(subscriptionId, credential,
     &arm.ClientOptions{
         ClientOptions: policy.ClientOptions{
             Transport: &httpClient,
         },
     },
 )
+rgClient := clientFactory.NewResourceGroupsClient()
 ```
 
 ### Reference
@@ -210,7 +212,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 ```
 
 ```go
-rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential,
+clientFactory, err := armresources.NewClientFactory(subscriptionId, credential,
     &arm.ClientOptions{
         ClientOptions: policy.ClientOptions{
             Logging: policy.LogOptions{
@@ -220,6 +222,7 @@ rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential
         },
     },
 )
+rgClient := clientFactory.NewResourceGroupsClient()
 ```
 
 You could use the `azcore/log` package to control log event and redirect log to the desired location. For example:

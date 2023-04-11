@@ -107,10 +107,12 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more details on how authentication works in `azidentity`, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
+## Client Factory
+
 
 ## Creating a Resource Management Client
 
-Once you have a credential, you will need to decide what service to use and create a client to connect to that service. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients to access the APIs you require using your `azcore.TokenCredential`.
+Once you have a credential, you need to create a client factory to use any client in this module. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients through the client factory to access the APIs you require using your `azcore.TokenCredential`.
 
 To show an example, we will create a client to manage Virtual Machines. The code to achieve this task would be:
 
@@ -119,7 +121,8 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
 ```
 
 ```go
-client, err := armcompute.NewVirtualMachinesClient("<subscription ID>", credential, nil)
+computeClientFactory,err := armcompute.NewClientFactory("<subscription ID>", credential, nil)
+client := computeClientFactory.NewVirtualMachinesClient()
 ```
 You can use the same pattern to connect with other Azure services that you are using. For example, in order to manage Virtual Network resources, you would install the Network package and create a `VirtualNetwork` Client:
 
@@ -129,7 +132,8 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork
 ```
 
 ```go
-client, err := armnetwork.NewVirtualNetworksClient("<subscription ID>", credential, nil)
+networkClientFactory,err := armnetwork.NewClientFactory("<subscription ID>", credential, nil)
+client := networkClientFactory.NewVirtualNetworksClient()
 ```
 
 ## Interacting with Azure Resources
@@ -144,9 +148,10 @@ To see the reference for a certain package, you can either click into each packa
 
 Let's illustrate the SDK usage by a few quick examples. In the following sample. we are going to create a resource group using the SDK. To achieve this scenario, we can take the follow steps
 
-- **Step 1** : Decide which client we want to use, in our case, we know that it's related to Resource Group so our choice is the [ResourceGroupsClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources#ResourceGroupsClient).
-- **Step 2** : Find out which operation is responsible for creating a resource group. By locating the client in previous step, we are able to see all the functions under `ResourceGroupsClient`, and we can see [the `CreateOrUpdate` function](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources#ResourceGroupsClient.CreateOrUpdate) is what need. 
-- **Step 3** : Using the information about this operation, we can then fill in the required parameters, and implement it using the Go SDK. If we need extra information on what those parameters mean, we can also use the [Azure service documentation](https://docs.microsoft.com/azure/?product=featured) on Microsoft Docs.
+- **Step 1** : Create client factory, use NewClientFactory function.
+- **Step 2** : Decide which client we want to use, in our case, we know that it's related to Resource Group so our choice is the [ResourceGroupsClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources#ResourceGroupsClient).
+- **Step 3** : Find out which operation is responsible for creating a resource group. By locating the client in previous step, we are able to see all the functions under `ResourceGroupsClient`, and we can see [the `CreateOrUpdate` function](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources#ResourceGroupsClient.CreateOrUpdate) is what need. 
+- **Step 4** : Using the information about this operation, we can then fill in the required parameters, and implement it using the Go SDK. If we need extra information on what those parameters mean, we can also use the [Azure service documentation](https://docs.microsoft.com/azure/?product=featured) on Microsoft Docs.
 
 Let's show what final code looks like.
 
@@ -175,16 +180,13 @@ var (
     location            = "westus2"
     resourceGroupName   = "resourceGroupName"
     interval            = 5 * time.Second
+    rgClient            *armresources.ResourceGroupsClient
 )
 ```
 
 ***Write a function to create a resource group***
 ```go
-func createResourceGroup(ctx context.Context, credential azcore.TokenCredential) (*armresources.ResourceGroupsClientCreateOrUpdateResponse, error) {
-    rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
-    if err != nil {
-        return nil, err
-    }
+func createResourceGroup(ctx context.Context) (*armresources.ResourceGroupsClientCreateOrUpdateResponse, error) {
 
     param := armresources.ResourceGroup{
         Location: to.Ptr(location),
@@ -203,8 +205,14 @@ func main() {
     if err != nil {
         log.Fatalf("authentication failure: %+v", err)
     }
-    
-    resourceGroup, err := createResourceGroup(ctx, cred)
+	
+	clientFactory,err := armresources.NewClientFactory(subscriptionId, cred, nil)
+    if err != nil {
+      log.Fatalf("new client factory failure: %+v", err)
+    }
+    rgClient = clientFactory.NewResourceGroupsClient()
+	
+    resourceGroup, err := createResourceGroup(ctx)
     if err != nil {
         log.Fatalf("cannot create resource group: %+v", err)
     }
@@ -219,11 +227,7 @@ Let's demonstrate management client's usage by showing additional samples.
 ***Update a resource group***
 
 ```go
-func updateResourceGroup(ctx context.Context, credential azcore.TokenCredential) (*armresources.ResourceGroupsClientUpdateResponse, error) {
-    rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
-    if err != nil {
-        return nil, err
-    }
+func updateResourceGroup(ctx context.Context) (*armresources.ResourceGroupsClientUpdateResponse, error) {
 
     update := armresources.ResourceGroupPatchable{
         Tags: map[string]*string{
@@ -240,11 +244,7 @@ func updateResourceGroup(ctx context.Context, credential azcore.TokenCredential)
 ***List all resource groups***
 
 ```go
-func listResourceGroups(ctx context.Context, credential azcore.TokenCredential) ([]*armresources.ResourceGroup, error) {
-    rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
-    if err != nil {
-        return nil, err
-    }
+func listResourceGroups(ctx context.Context) ([]*armresources.ResourceGroup, error) {
 
     pager := rgClient.NewListPager(nil)
 
@@ -267,11 +267,7 @@ You could see there is a pattern for pageable operation here. With `NewListPager
 ***Delete a resource group***
 
 ```go
-func deleteResourceGroup(ctx context.Context, credential azcore.TokenCredential) error {
-    rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
-    if err != nil {
-        return err
-    }
+func deleteResourceGroup(ctx context.Context) error {
 
     poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
     if err != nil {
@@ -291,25 +287,31 @@ func main() {
         log.Fatalf("authentication failure: %+v", err)
     }
 
-    resourceGroup, err := createResourceGroup(ctx, cred)
+    clientFactory,err := armresources.NewClientFactory(subscriptionId, cred, nil)
+    if err != nil {
+        log.Fatalf("new client factory failure: %+v", err)
+    }
+    rgClient = clientFactory.NewResourceGroupsClient()
+
+    resourceGroup, err := createResourceGroup(ctx)
     if err != nil {
         log.Fatalf("cannot create resource group: %+v", err)
     }
     log.Printf("Resource Group %s created", *resourceGroup.ResourceGroup.ID)
 
-    updatedRG, err := updateResourceGroup(ctx, cred)
+    updatedRG, err := updateResourceGroup(ctx)
     if err != nil {
         log.Fatalf("cannot update resource group: %+v", err)
     }
     log.Printf("Resource Group %s updated", *updatedRG.ResourceGroup.ID)
 
-    rgList, err := listResourceGroups(ctx, cred)
+    rgList, err := listResourceGroups(ctx)
     if err != nil {
         log.Fatalf("cannot list resource group: %+v", err)
     }
     log.Printf("We totally have %d resource groups", len(rgList))
 
-    if err := deleteResourceGroup(ctx, cred); err != nil {
+    if err := deleteResourceGroup(ctx); err != nil {
         log.Fatalf("cannot delete resource group: %+v", err)
     }
     log.Printf("Resource Group deleted")

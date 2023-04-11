@@ -55,7 +55,7 @@ func NewAssociateTrafficFilterClient(subscriptionID string, credential azcore.To
 // BeginAssociate - Associate traffic filter for the given deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-02-01-preview
 //   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 //   - monitorName - Monitor resource name
 //   - options - AssociateTrafficFilterClientBeginAssociateOptions contains the optional parameters for the AssociateTrafficFilterClient.BeginAssociate
@@ -66,7 +66,9 @@ func (client *AssociateTrafficFilterClient) BeginAssociate(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AssociateTrafficFilterClientAssociateResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AssociateTrafficFilterClientAssociateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[AssociateTrafficFilterClientAssociateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -75,7 +77,7 @@ func (client *AssociateTrafficFilterClient) BeginAssociate(ctx context.Context, 
 // Associate - Associate traffic filter for the given deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-02-01-preview
 func (client *AssociateTrafficFilterClient) associate(ctx context.Context, resourceGroupName string, monitorName string, options *AssociateTrafficFilterClientBeginAssociateOptions) (*http.Response, error) {
 	req, err := client.associateCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
@@ -111,7 +113,7 @@ func (client *AssociateTrafficFilterClient) associateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-02-01-preview")
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}

@@ -29,54 +29,54 @@ import (
 	"strings"
 )
 
-// AllTrafficFiltersClient contains the methods for the AllTrafficFilters group.
-// Don't use this type directly, use NewAllTrafficFiltersClient() instead.
-type AllTrafficFiltersClient struct {
+// OrganizationsClient contains the methods for the Organizations group.
+// Don't use this type directly, use NewOrganizationsClient() instead.
+type OrganizationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAllTrafficFiltersClient creates a new instance of AllTrafficFiltersClient with the specified values.
+// NewOrganizationsClient creates a new instance of OrganizationsClient with the specified values.
 //   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewAllTrafficFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AllTrafficFiltersClient, error) {
-	cl, err := arm.NewClient(moduleName+".AllTrafficFiltersClient", moduleVersion, credential, options)
+func NewOrganizationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OrganizationsClient, error) {
+	cl, err := arm.NewClient(moduleName+".OrganizationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &AllTrafficFiltersClient{
+	client := &OrganizationsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// List - Get the list of all traffic filters for the account.
+// GetAPIKey - Fetch User API Key from internal database, if it was generated and stored while creating the Elasticsearch
+// Organization.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-02-01-preview
 //   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
-//   - monitorName - Monitor resource name
-//   - options - AllTrafficFiltersClientListOptions contains the optional parameters for the AllTrafficFiltersClient.List method.
-func (client *AllTrafficFiltersClient) List(ctx context.Context, resourceGroupName string, monitorName string, options *AllTrafficFiltersClientListOptions) (AllTrafficFiltersClientListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
+//   - options - OrganizationsClientGetAPIKeyOptions contains the optional parameters for the OrganizationsClient.GetAPIKey method.
+func (client *OrganizationsClient) GetAPIKey(ctx context.Context, resourceGroupName string, options *OrganizationsClientGetAPIKeyOptions) (OrganizationsClientGetAPIKeyResponse, error) {
+	req, err := client.getAPIKeyCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return AllTrafficFiltersClientListResponse{}, err
+		return OrganizationsClientGetAPIKeyResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AllTrafficFiltersClientListResponse{}, err
+		return OrganizationsClientGetAPIKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AllTrafficFiltersClientListResponse{}, runtime.NewResponseError(resp)
+		return OrganizationsClientGetAPIKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.listHandleResponse(resp)
+	return client.getAPIKeyHandleResponse(resp)
 }
 
-// listCreateRequest creates the List request.
-func (client *AllTrafficFiltersClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *AllTrafficFiltersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listAllTrafficFilters"
+// getAPIKeyCreateRequest creates the GetAPIKey request.
+func (client *OrganizationsClient) getAPIKeyCreateRequest(ctx context.Context, resourceGroupName string, options *OrganizationsClientGetAPIKeyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/getOrganizationApiKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -85,10 +85,6 @@ func (client *AllTrafficFiltersClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -97,14 +93,17 @@ func (client *AllTrafficFiltersClient) listCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", "2023-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Body != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Body)
+	}
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *AllTrafficFiltersClient) listHandleResponse(resp *http.Response) (AllTrafficFiltersClientListResponse, error) {
-	result := AllTrafficFiltersClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TrafficFilterResponse); err != nil {
-		return AllTrafficFiltersClientListResponse{}, err
+// getAPIKeyHandleResponse handles the GetAPIKey response.
+func (client *OrganizationsClient) getAPIKeyHandleResponse(resp *http.Response) (OrganizationsClientGetAPIKeyResponse, error) {
+	result := OrganizationsClientGetAPIKeyResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UserAPIKeyResponse); err != nil {
+		return OrganizationsClientGetAPIKeyResponse{}, err
 	}
 	return result, nil
 }

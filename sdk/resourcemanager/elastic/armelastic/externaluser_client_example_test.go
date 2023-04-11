@@ -25,7 +25,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/232b858812a4f946a82bc11a81241826f5554fbd/specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/ExternalUserInfo.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/ExternalUserInfo.json
 func ExampleExternalUserClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

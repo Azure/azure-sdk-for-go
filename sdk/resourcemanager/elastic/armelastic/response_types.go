@@ -107,6 +107,11 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// OrganizationsClientGetAPIKeyResponse contains the response from method OrganizationsClient.GetAPIKey.
+type OrganizationsClientGetAPIKeyResponse struct {
+	UserAPIKeyResponse
+}
+
 // TagRulesClientCreateOrUpdateResponse contains the response from method TagRulesClient.CreateOrUpdate.
 type TagRulesClientCreateOrUpdateResponse struct {
 	MonitoringTagRules

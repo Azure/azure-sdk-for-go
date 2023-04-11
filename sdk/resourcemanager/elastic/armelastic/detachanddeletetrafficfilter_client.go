@@ -55,7 +55,7 @@ func NewDetachAndDeleteTrafficFilterClient(subscriptionID string, credential azc
 // Delete - Detach and Delete traffic filter from the given deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-02-01-preview
 //   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 //   - monitorName - Monitor resource name
 //   - options - DetachAndDeleteTrafficFilterClientDeleteOptions contains the optional parameters for the DetachAndDeleteTrafficFilterClient.Delete
@@ -95,7 +95,7 @@ func (client *DetachAndDeleteTrafficFilterClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-02-01-preview")
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}

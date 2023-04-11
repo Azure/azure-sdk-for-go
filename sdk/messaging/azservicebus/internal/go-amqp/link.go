@@ -374,6 +374,14 @@ func (l *link) txFrameAndWait(ctx context.Context, fr frames.FrameBody) error {
 		return nil
 	case l.session.tx <- frameBodyEnvelope{Ctx: ctx, FrameBody: fr, Sent: sent}:
 		debug.Log(2, "TX (link %p): mux frame to Session (%p): %s", l, l.session, fr)
-		return <-sent
+	}
+
+	select {
+	case err := <-sent:
+		return err
+	case <-l.done:
+		return l.doneErr
+	case <-l.session.done:
+		return l.session.doneErr
 	}
 }

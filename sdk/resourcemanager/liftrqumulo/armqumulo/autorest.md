@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/9918780b4dc4bdc111cf3facc11561904d609ad7/specification/liftrqumulo/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/9918780b4dc4bdc111cf3facc11561904d609ad7/specification/liftrqumulo/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/liftrqumulo/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/liftrqumulo/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.2.0
-
+module-version: 0.2.1
+tag: package-2022-10-12-preview
 ```

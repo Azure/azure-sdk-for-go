@@ -50,10 +50,12 @@ func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, opt
 // versions, and does not update existing keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group which contains the specified key vault.
 //   - vaultName - The name of the key vault which contains the key to be created.
-//   - keyName - The name of the key to be created.
+//   - keyName - The name of the key to be created. The value you provide may be copied globally for the purpose of running the
+//     service. The value provided should not include personally identifiable or sensitive
+//     information.
 //   - parameters - The parameters used to create the specified key.
 //   - options - KeysClientCreateIfNotExistOptions contains the optional parameters for the KeysClient.CreateIfNotExist method.
 func (client *KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysClientCreateIfNotExistOptions) (KeysClientCreateIfNotExistResponse, error) {
@@ -95,7 +97,7 @@ func (client *KeysClient) createIfNotExistCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -113,7 +115,7 @@ func (client *KeysClient) createIfNotExistHandleResponse(resp *http.Response) (K
 // Get - Gets the current version of the specified key from the specified key vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group which contains the specified key vault.
 //   - vaultName - The name of the vault which contains the key to be retrieved.
 //   - keyName - The name of the key to be retrieved.
@@ -157,7 +159,7 @@ func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -175,7 +177,7 @@ func (client *KeysClient) getHandleResponse(resp *http.Response) (KeysClientGetR
 // GetVersion - Gets the specified version of the specified key in the specified key vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group which contains the specified key vault.
 //   - vaultName - The name of the vault which contains the key version to be retrieved.
 //   - keyName - The name of the key version to be retrieved.
@@ -224,7 +226,7 @@ func (client *KeysClient) getVersionCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +243,7 @@ func (client *KeysClient) getVersionHandleResponse(resp *http.Response) (KeysCli
 
 // NewListPager - Lists the keys in the specified key vault.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group which contains the specified key vault.
 //   - vaultName - The name of the vault which contains the keys to be retrieved.
 //   - options - KeysClientListOptions contains the optional parameters for the KeysClient.NewListPager method.
@@ -293,7 +295,7 @@ func (client *KeysClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,7 +312,7 @@ func (client *KeysClient) listHandleResponse(resp *http.Response) (KeysClientLis
 
 // NewListVersionsPager - Lists the versions of the specified key in the specified key vault.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group which contains the specified key vault.
 //   - vaultName - The name of the vault which contains the key versions to be retrieved.
 //   - keyName - The name of the key versions to be retrieved.
@@ -367,7 +369,7 @@ func (client *KeysClient) listVersionsCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

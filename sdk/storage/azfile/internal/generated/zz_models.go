@@ -229,10 +229,6 @@ type FileClientAbortCopyOptions struct {
 
 // FileClientAcquireLeaseOptions contains the optional parameters for the FileClient.AcquireLease method.
 type FileClientAcquireLeaseOptions struct {
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using
-	// renew or change.
-	Duration *int32
 	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is
 	// not in the correct format. See Guid Constructor (String) for a list of valid GUID
 	// string formats.
@@ -636,10 +632,6 @@ type Share struct {
 
 // ShareClientAcquireLeaseOptions contains the optional parameters for the ShareClient.AcquireLease method.
 type ShareClientAcquireLeaseOptions struct {
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using
-	// renew or change.
-	Duration *int32
 	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is
 	// not in the correct format. See Guid Constructor (String) for a list of valid GUID
 	// string formats.
@@ -894,7 +886,7 @@ type ShareProperties struct {
 type ShareStats struct {
 	// REQUIRED; The approximate size of the data stored in bytes. Note that this value may not include all recently created or
 	// recently resized files.
-	ShareUsageBytes *int32 `xml:"ShareUsageBytes"`
+	ShareUsageBytes *int64 `xml:"ShareUsageBytes"`
 }
 
 // SignedIdentifier - Signed identifier.

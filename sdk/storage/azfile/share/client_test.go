@@ -60,7 +60,7 @@ type ShareUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateRootDirectoryURL() {
+func (s *ShareRecordedTestsSuite) TestShareCreateRootDirectoryURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -74,12 +74,12 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateRootDirectoryURL() {
 	_require.Equal(shareClient.URL(), rootDirClient.URL())
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateDirectoryURL() {
+func (s *ShareRecordedTestsSuite) TestShareCreateDirectoryURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -94,7 +94,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateDirectoryURL() {
 	_require.Equal(dirClient.URL(), correctURL)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateUsingSharedKey() {
+func (s *ShareRecordedTestsSuite) TestShareCreateUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -103,7 +103,9 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateUsingSharedKey() {
 
 	shareName := testcommon.GenerateShareName(testName)
 	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
-	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, nil)
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
 	_require.NoError(err)
 
 	resp, err := shareClient.Create(context.Background(), nil)
@@ -114,7 +116,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateUsingSharedKey() {
 	_require.NotNil(resp.RequestID)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateUsingConnectionString() {
+func (s *ShareRecordedTestsSuite) TestShareCreateUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -122,7 +124,9 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateUsingConnectionString() {
 	_require.NoError(err)
 
 	shareName := testcommon.GenerateShareName(testName)
-	shareClient, err := share.NewClientFromConnectionString(*connString, shareName, nil)
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientFromConnectionString(*connString, shareName, options)
 	_require.NoError(err)
 
 	resp, err := shareClient.Create(context.Background(), nil)
@@ -163,13 +167,20 @@ func (s *ShareUnrecordedTestsSuite) TestShareClientUsingSAS() {
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthorizationFailure)
 
-	// TODO: create files using shareSASClient
 	dirName1 := testcommon.GenerateDirectoryName(testName) + "1"
 	_, err = shareSASClient.NewDirectoryClient(dirName1).Create(context.Background(), nil)
 	_require.NoError(err)
 
 	dirName2 := testcommon.GenerateDirectoryName(testName) + "2"
 	_, err = shareSASClient.NewDirectoryClient(dirName2).Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName1 := testcommon.GenerateFileName(testName) + "1"
+	_, err = shareSASClient.NewRootDirectoryClient().NewFileClient(fileName1).Create(context.Background(), 1024, nil)
+	_require.NoError(err)
+
+	fileName2 := testcommon.GenerateFileName(testName) + "2"
+	_, err = shareSASClient.NewDirectoryClient(dirName2).NewFileClient(fileName2).Create(context.Background(), 1024, nil)
 	_require.NoError(err)
 
 	dirCtr, fileCtr := 0, 0
@@ -181,10 +192,10 @@ func (s *ShareUnrecordedTestsSuite) TestShareClientUsingSAS() {
 		fileCtr += len(resp.Segment.Files)
 	}
 	_require.Equal(dirCtr, 2)
-	_require.Equal(fileCtr, 0)
+	_require.Equal(fileCtr, 1)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateDeleteNonDefault() {
+func (s *ShareRecordedTestsSuite) TestShareCreateDeleteNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -240,7 +251,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateDeleteNonDefault() {
 	}
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateNilMetadata() {
+func (s *ShareRecordedTestsSuite) TestShareCreateNilMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -258,7 +269,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateNilMetadata() {
 	_require.Len(response.Metadata, 0)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateNegativeInvalidName() {
+func (s *ShareRecordedTestsSuite) TestShareCreateNegativeInvalidName() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -270,7 +281,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateNegativeInvalidName() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidResourceName)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateNegativeInvalidMetadata() {
+func (s *ShareRecordedTestsSuite) TestShareCreateNegativeInvalidMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -286,7 +297,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateNegativeInvalidMetadata() {
 	_require.Error(err)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareDeleteNegativeNonExistent() {
+func (s *ShareRecordedTestsSuite) TestShareDeleteNegativeNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -299,7 +310,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareDeleteNegativeNonExistent() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetSetPropertiesNonDefault() {
+func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -333,7 +344,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetPropertiesNonDefault() {
 	_require.Equal(*props.AccessTier, string(share.AccessTierHot))
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetSetPropertiesDefault() {
+func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -361,7 +372,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetPropertiesDefault() {
 	_require.Greater(*props.Quota, int32(0)) // When using service default quota, it could be any value
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareSetQuotaNegative() {
+func (s *ShareRecordedTestsSuite) TestShareSetQuotaNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -376,7 +387,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetQuotaNegative() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidHeaderValue)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetPropertiesNegative() {
+func (s *ShareRecordedTestsSuite) TestShareGetPropertiesNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -390,7 +401,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetPropertiesNegative() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestSharePutAndGetPermission() {
+func (s *ShareRecordedTestsSuite) TestSharePutAndGetPermission() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -417,7 +428,7 @@ func (s *ShareUnrecordedTestsSuite) TestSharePutAndGetPermission() {
 	_require.NotEmpty(*getResp.Permission)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetSetAccessPolicyNonDefault() {
+func (s *ShareRecordedTestsSuite) TestShareGetSetAccessPolicyNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -427,7 +438,9 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetAccessPolicyNonDefault() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	now := time.Now().UTC().Truncate(10000 * time.Millisecond) // Enough resolution
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+	now := currTime.UTC().Truncate(10000 * time.Millisecond) // Enough resolution
 	expiryTIme := now.Add(5 * time.Minute).UTC()
 	pS := share.AccessPolicyPermission{
 		Read:   true,
@@ -473,7 +486,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetAccessPolicyNonDefault() {
 	_require.EqualValues(*(gResp.SignedIdentifiers[0]), *permissions[0])
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetSetAccessPolicyNonDefaultMultiple() {
+func (s *ShareRecordedTestsSuite) TestShareGetSetAccessPolicyNonDefaultMultiple() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -483,7 +496,9 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetAccessPolicyNonDefaultMultipl
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	now := time.Now().UTC().Truncate(10000 * time.Millisecond) // Enough resolution
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+	now := currTime.UTC().Truncate(10000 * time.Millisecond) // Enough resolution
 	expiryTIme := now.Add(5 * time.Minute).UTC()
 	permission := share.AccessPolicyPermission{
 		Read:  true,
@@ -530,7 +545,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetAccessPolicyNonDefaultMultipl
 	_require.EqualValues(gResp.SignedIdentifiers[1], permissions[1])
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyMoreThanFive() {
+func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyMoreThanFive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -540,7 +555,9 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyMoreThanFive() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	now := time.Now().UTC().Truncate(10000 * time.Millisecond) // Enough resolution
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+	now := currTime.UTC().Truncate(10000 * time.Millisecond) // Enough resolution
 	expiryTIme := now.Add(5 * time.Minute).UTC()
 	permission := share.AccessPolicyPermission{
 		Read:   true,
@@ -574,7 +591,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyMoreThanFive() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidXMLDocument)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetSetAccessPolicyDefault() {
+func (s *ShareRecordedTestsSuite) TestShareGetSetAccessPolicyDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -602,7 +619,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetAccessPolicyDefault() {
 	_require.Len(gResp.SignedIdentifiers, 0)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetAccessPolicyNegative() {
+func (s *ShareRecordedTestsSuite) TestShareGetAccessPolicyNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -616,7 +633,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetAccessPolicyNegative() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyNonDefaultDeleteAndModifyACL() {
+func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyNonDefaultDeleteAndModifyACL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -626,7 +643,9 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyNonDefaultDeleteAndM
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	start := time.Now().UTC().Truncate(10000 * time.Millisecond)
+	currTime, err := time.Parse(time.UnixDate, "Thu Mar 30 20:00:00 GMT 2023")
+	_require.NoError(err)
+	start := currTime.UTC().Truncate(10000 * time.Millisecond)
 	expiry := start.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
 	permissions := make([]*share.SignedIdentifier, 2)
@@ -664,7 +683,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyNonDefaultDeleteAndM
 	_require.EqualValues(resp.SignedIdentifiers, permissions)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyDeleteAllPolicies() {
+func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyDeleteAllPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -674,7 +693,9 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyDeleteAllPolicies() 
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	start := time.Now().UTC()
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+	start := currTime.UTC()
 	expiry := start.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
 	permissions := make([]*share.SignedIdentifier, 2)
@@ -706,7 +727,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyDeleteAllPolicies() 
 	_require.Len(resp2.SignedIdentifiers, 0)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareSetPermissionsNegativeInvalidPolicyTimes() {
+func (s *ShareRecordedTestsSuite) TestShareSetPermissionsNegativeInvalidPolicyTimes() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -717,7 +738,9 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetPermissionsNegativeInvalidPolicy
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
 	// Swap start and expiry
-	expiry := time.Now().UTC()
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+	expiry := currTime.UTC()
 	start := expiry.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
 	permissions := make([]*share.SignedIdentifier, 2)
@@ -744,7 +767,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetPermissionsNegativeInvalidPolicy
 }
 
 // SignedIdentifier ID too long
-func (s *ShareUnrecordedTestsSuite) TestShareSetPermissionsNegative() {
+func (s *ShareRecordedTestsSuite) TestShareSetPermissionsNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -758,7 +781,9 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetPermissionsNegative() {
 	for i := 0; i < 65; i++ {
 		id += "a"
 	}
-	expiry := time.Now().UTC()
+	currTime, err := time.Parse(time.UnixDate, "Wed Mar 29 20:00:00 GMT 2023")
+	_require.NoError(err)
+	expiry := currTime.UTC()
 	start := expiry.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
 	permissions := make([]*share.SignedIdentifier, 2)
@@ -780,7 +805,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetPermissionsNegative() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidXMLDocument)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetSetMetadataDefault() {
+func (s *ShareRecordedTestsSuite) TestShareGetSetMetadataDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -810,7 +835,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetMetadataDefault() {
 	_require.Len(gResp.Metadata, 0)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetSetMetadataNonDefault() {
+func (s *ShareRecordedTestsSuite) TestShareGetSetMetadataNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -844,7 +869,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetMetadataNonDefault() {
 	_require.EqualValues(gResp.Metadata, md)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareSetMetadataNegative() {
+func (s *ShareRecordedTestsSuite) TestShareSetMetadataNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -863,7 +888,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetMetadataNegative() {
 	_require.Error(err)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetStats() {
+func (s *ShareRecordedTestsSuite) TestShareGetStats() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -886,10 +911,10 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetStats() {
 	// _require.Equal(gResp.LastModified.IsZero(), false) // TODO: Even share is once updated, no LastModified would be returned.
 	_require.NotNil(gResp.RequestID)
 	_require.NotNil(gResp.Version)
-	_require.Equal(*gResp.ShareUsageBytes, int32(0))
+	_require.Equal(*gResp.ShareUsageBytes, int64(0))
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareGetStatsNegative() {
+func (s *ShareRecordedTestsSuite) TestShareGetStatsNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -903,8 +928,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetStatsNegative() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
 }
 
-// TODO: uncomment this test after directory and file clients are added
-/*func (s *ShareUnrecordedTestsSuite) TestSetAndGetStatistics() {
+func (s *ShareRecordedTestsSuite) TestSetAndGetStatistics() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -922,20 +946,20 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetStatsNegative() {
 	_require.NoError(err)
 
 	fileClient := dirClient.NewFileClient("testfile")
-	_, err = fileClient.Create(context.Background(), int64(1024 * 1024 * 1024 * 1024), nil)
+	_, err = fileClient.Create(context.Background(), int64(1024*1024*1024*1024), nil)
 	_require.NoError(err)
 
 	getStats, err := shareClient.GetStatistics(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*getStats.ShareUsageBytes, int64(1024*1024*1024*1024))
-}*/
+}
 
 func deleteShare(ctx context.Context, _require *require.Assertions, shareClient *share.Client, o *share.DeleteOptions) {
 	_, err := shareClient.Delete(ctx, o)
 	_require.NoError(err)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNonDefault() {
+func (s *ShareRecordedTestsSuite) TestShareCreateSnapshotNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -983,22 +1007,96 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNonDefault() {
 	_require.True(foundSnapshot)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNegativeShareNotExist() {
+func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := svcClient.NewShareClient(shareName)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+
+	// create a file in the base share.
+	dirClient := shareClient.NewRootDirectoryClient()
+	_require.NoError(err)
+
+	fClient := dirClient.NewFileClient("myfile")
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	// Create share snapshot, the snapshot contains the create file.
+	snapshotShare, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+
+	// Delete file in base share.
+	_, err = fClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+
+	// To produce a share SAS (as opposed to a file SAS), assign to FilePermissions using
+	// ShareSASPermissions and make sure the DirectoryAndFilePath field is "" (the default).
+	perms := sas.SharePermissions{Read: true, Write: true}
+
+	// Restore file from share snapshot.
+	// Create a SAS.
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ShareName:   shareName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	// Build a file snapshot URL.
+	fileParts, err := sas.ParseURL(fClient.URL())
+	_require.NoError(err)
+	fileParts.ShareSnapshot = *snapshotShare.Snapshot
+	fileParts.SAS = sasQueryParams
+	sourceURL := fileParts.String()
+
+	// Before restore
+	_, err = fClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	// Do restore.
+	_, err = fClient.StartCopyFromURL(context.Background(), sourceURL, nil)
+	_require.NoError(err)
+
+	time.Sleep(2 * time.Second)
+
+	// After restore
+	_, err = fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = shareClient.Delete(context.Background(), &share.DeleteOptions{
+		ShareSnapshot: snapshotShare.Snapshot,
+	})
+	_require.NoError(err)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareCreateSnapshotNegativeShareNotExist() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	shareName := testcommon.GenerateShareName(testName)
-	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
-	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+	shareClient := testcommon.GetShareClient(shareName, svcClient)
 
 	_, err = shareClient.CreateSnapshot(context.Background(), &share.CreateSnapshotOptions{Metadata: map[string]*string{}})
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareDeleteSnapshot() {
+func (s *ShareRecordedTestsSuite) TestShareDeleteSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1064,7 +1162,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareDeleteSnapshot() {
 	_require.Equal(snapshotsCtr, 1)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNegativeMetadataInvalid() {
+func (s *ShareRecordedTestsSuite) TestShareCreateSnapshotNegativeMetadataInvalid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1078,7 +1176,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNegativeMetadataInval
 	_require.Error(err)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNegativeSnapshotOfSnapshot() {
+func (s *ShareRecordedTestsSuite) TestShareCreateSnapshotNegativeSnapshotOfSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1088,7 +1186,10 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNegativeSnapshotOfSna
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
 
-	snapshotClient, err := shareClient.WithSnapshot(time.Now().UTC().String())
+	snapTime, err := time.Parse(time.UnixDate, "Fri Mar 31 20:00:00 GMT 2023")
+	_require.NoError(err)
+
+	snapshotClient, err := shareClient.WithSnapshot(snapTime.UTC().String())
 	_require.NoError(err)
 
 	cResp, err := snapshotClient.CreateSnapshot(context.Background(), nil)
@@ -1102,7 +1203,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNegativeSnapshotOfSna
 	_require.NoError(err) //Note: this would not fail, snapshot would be ignored.
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareDeleteSnapshotsInclude() {
+func (s *ShareRecordedTestsSuite) TestShareDeleteSnapshotsInclude() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1140,7 +1241,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareDeleteSnapshotsInclude() {
 	}
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareDeleteSnapshotsNoneWithSnapshots() {
+func (s *ShareRecordedTestsSuite) TestShareDeleteSnapshotsNoneWithSnapshots() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1158,7 +1259,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareDeleteSnapshotsNoneWithSnapshots() 
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareHasSnapshots)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareRestore() {
+func (s *ShareRecordedTestsSuite) TestShareRestoreSuccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
@@ -1215,7 +1316,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareRestore() {
 	_require.Equal(shareCtr, 1)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareRestoreFailures() {
+func (s *ShareRecordedTestsSuite) TestShareRestoreFailures() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
@@ -1230,7 +1331,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareRestoreFailures() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.MissingRequiredHeader)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareRestoreWithSnapshotsAgain() {
+func (s *ShareRecordedTestsSuite) TestShareRestoreWithSnapshotsAgain() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
@@ -1299,10 +1400,10 @@ func (s *ShareUnrecordedTestsSuite) TestShareRestoreWithSnapshotsAgain() {
 	_require.Equal(shareCtr, 2) // 1 share and 1 snapshot
 }
 
-func (s *ShareUnrecordedTestsSuite) TestSASShareClientNoKey() {
+func (s *ShareRecordedTestsSuite) TestSASShareClientNoKey() {
 	_require := require.New(s.T())
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
 	testName := s.T().Name()
 	shareName := testcommon.GenerateShareName(testName)
@@ -1322,12 +1423,11 @@ func (s *ShareUnrecordedTestsSuite) TestSASShareClientNoKey() {
 	_require.Equal(err, fileerror.MissingSharedKeyCredential)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestSASShareClientSignNegative() {
+func (s *ShareRecordedTestsSuite) TestSASShareClientSignNegative() {
 	_require := require.New(s.T())
-	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
-	_require.NoError(err)
-	accountKey, err := testcommon.GetRequiredEnv(testcommon.AccountKeyEnvVar)
-	_require.NoError(err)
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+	_require.Greater(len(accountKey), 0)
 
 	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)

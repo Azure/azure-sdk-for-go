@@ -276,11 +276,34 @@ directive:
 
 ``` yaml
 directive:
-  - from: zz_directory_client.go
+  - from:
+    - zz_directory_client.go
+    - zz_file_client.go
     where: $
     transform: >-
       return $.
         replace(/fileCreationTime,\s+err\s+\:=\s+time\.Parse\(time\.RFC1123,\s+val\)/g, `fileCreationTime, err := time.Parse(ISO8601, val)`).
         replace(/fileLastWriteTime,\s+err\s+\:=\s+time\.Parse\(time\.RFC1123,\s+val\)/g, `fileLastWriteTime, err := time.Parse(ISO8601, val)`).
         replace(/fileChangeTime,\s+err\s+\:=\s+time\.Parse\(time\.RFC1123,\s+val\)/g, `fileChangeTime, err := time.Parse(ISO8601, val)`);
+```
+
+### Change `Duration` parameter in leases to be required
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.LeaseDuration
+  transform: >
+    $.required = true;
+```
+
+### Convert ShareUsageBytes to int64
+
+``` yaml
+directive:
+  - from: zz_models.go
+    where: $
+    transform: >-
+      return $.
+        replace(/ShareUsageBytes\s+\*int32/g, `ShareUsageBytes *int64`);
 ```

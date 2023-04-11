@@ -108,9 +108,12 @@ func (client *FileClient) abortCopyHandleResponse(resp *http.Response) (FileClie
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-10-02
+//   - duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
+//     lease can be between 15 and 60 seconds. A lease duration cannot be changed using
+//     renew or change.
 //   - options - FileClientAcquireLeaseOptions contains the optional parameters for the FileClient.AcquireLease method.
-func (client *FileClient) AcquireLease(ctx context.Context, options *FileClientAcquireLeaseOptions) (FileClientAcquireLeaseResponse, error) {
-	req, err := client.acquireLeaseCreateRequest(ctx, options)
+func (client *FileClient) AcquireLease(ctx context.Context, duration int32, options *FileClientAcquireLeaseOptions) (FileClientAcquireLeaseResponse, error) {
+	req, err := client.acquireLeaseCreateRequest(ctx, duration, options)
 	if err != nil {
 		return FileClientAcquireLeaseResponse{}, err
 	}
@@ -125,7 +128,7 @@ func (client *FileClient) AcquireLease(ctx context.Context, options *FileClientA
 }
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
-func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, options *FileClientAcquireLeaseOptions) (*policy.Request, error) {
+func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, duration int32, options *FileClientAcquireLeaseOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -137,9 +140,7 @@ func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, options
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-lease-action"] = []string{"acquire"}
-	if options != nil && options.Duration != nil {
-		req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(*options.Duration), 10)}
-	}
+	req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(duration), 10)}
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
@@ -469,21 +470,21 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientCreateResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientCreateResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientCreateResponse{}, err
 		}
@@ -713,21 +714,21 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientDownloadResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientDownloadResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientDownloadResponse{}, err
 		}
@@ -981,21 +982,21 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientGetPropertiesResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientGetPropertiesResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientGetPropertiesResponse{}, err
 		}
@@ -1373,21 +1374,21 @@ func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientSetHTTPHeadersResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientSetHTTPHeadersResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return FileClientSetHTTPHeadersResponse{}, err
 		}

@@ -9,6 +9,8 @@ package shared
 import (
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"net"
 	"strings"
 )
@@ -150,4 +152,15 @@ func IsIPEndpointStyle(host string) bool {
 		host = host[1 : len(host)-1]
 	}
 	return net.ParseIP(host) != nil
+}
+
+func GenerateLeaseID(leaseID *string) (*string, error) {
+	if leaseID == nil {
+		generatedUuid, err := uuid.New()
+		if err != nil {
+			return nil, err
+		}
+		leaseID = to.Ptr(generatedUuid.String())
+	}
+	return leaseID, nil
 }

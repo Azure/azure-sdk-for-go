@@ -12,7 +12,7 @@ package armiothub
 import "time"
 
 type ArmIdentity struct {
-	// The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+	// The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly created
 	// identity and a set of user assigned identities. The type 'None' will remove any
 	// identities from the service.
 	Type *ResourceIdentityType `json:"type,omitempty"`
@@ -250,6 +250,15 @@ type DescriptionListResult struct {
 
 	// READ-ONLY; The next link.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// EncryptionPropertiesDescription - The encryption properties for the IoT hub.
+type EncryptionPropertiesDescription struct {
+	// The source of the key.
+	KeySource *string `json:"keySource,omitempty"`
+
+	// The properties of the KeyVault key.
+	KeyVaultProperties []*KeyVaultKeyProperties `json:"keyVaultProperties,omitempty"`
 }
 
 // EndpointHealthData - The health data for an endpoint
@@ -542,6 +551,15 @@ type JobResponseListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
+// KeyVaultKeyProperties - The properties of the KeyVault key.
+type KeyVaultKeyProperties struct {
+	// Managed identity properties of KeyVault Key.
+	Identity *ManagedIdentity `json:"identity,omitempty"`
+
+	// The identifier of the key.
+	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+}
+
 // LocationDescription - Public representation of one of the locations where a resource is provisioned.
 type LocationDescription struct {
 	// The name of the Azure region
@@ -765,6 +783,9 @@ type Properties struct {
 	// IoT hub comments.
 	Comments *string `json:"comments,omitempty"`
 
+	// The device streams properties of iothub.
+	DeviceStreams *PropertiesDeviceStreams `json:"deviceStreams,omitempty"`
+
 	// If true, all device(including Edge devices but excluding modules) scoped SAS keys cannot be used for authentication.
 	DisableDeviceSAS *bool `json:"disableDeviceSAS,omitempty"`
 
@@ -780,6 +801,9 @@ type Properties struct {
 	// If True, file upload notifications are enabled.
 	EnableFileUploadNotifications *bool `json:"enableFileUploadNotifications,omitempty"`
 
+	// The encryption properties for the IoT hub.
+	Encryption *EncryptionPropertiesDescription `json:"encryption,omitempty"`
+
 	// The Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has to be present
 	// in the dictionary while making create or update calls for the IoT hub.
 	EventHubEndpoints map[string]*EventHubProperties `json:"eventHubEndpoints,omitempty"`
@@ -789,6 +813,9 @@ type Properties struct {
 
 	// The IP filter rules.
 	IPFilterRules []*IPFilterRule `json:"ipFilterRules,omitempty"`
+
+	// This property specifies the IP Version the hub is currently utilizing.
+	IPVersion *IPVersion `json:"ipVersion,omitempty"`
 
 	// The messaging endpoint properties for the file upload notification queue.
 	MessagingEndpoints map[string]*MessagingEndpointProperties `json:"messagingEndpoints,omitempty"`
@@ -808,6 +835,9 @@ type Properties struct {
 
 	// If true, egress from IotHub will be restricted to only the allowed FQDNs that are configured via allowedFqdnList.
 	RestrictOutboundNetworkAccess *bool `json:"restrictOutboundNetworkAccess,omitempty"`
+
+	// This property store root certificate related information
+	RootCertificate *RootCertificateProperties `json:"rootCertificate,omitempty"`
 
 	// The routing related properties of the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging
 	Routing *RoutingProperties `json:"routing,omitempty"`
@@ -829,6 +859,12 @@ type Properties struct {
 
 	// READ-ONLY; The hub state.
 	State *string `json:"state,omitempty" azure:"ro"`
+}
+
+// PropertiesDeviceStreams - The device streams properties of iothub.
+type PropertiesDeviceStreams struct {
+	// List of Device Streams Endpoints.
+	StreamingEndpoints []*string `json:"streamingEndpoints,omitempty"`
 }
 
 // QuotaMetricInfo - Quota metrics properties.
@@ -1016,6 +1052,15 @@ type ResourceProviderCommonClientGetSubscriptionQuotaOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RootCertificateProperties - This property store root certificate related information
+type RootCertificateProperties struct {
+	// This property when set to true, hub will use G2 cert; while it's set to false, hub uses Baltimore Cert.
+	EnableRootCertificateV2 *bool `json:"enableRootCertificateV2,omitempty"`
+
+	// READ-ONLY; the last update time to root certificate flag.
+	LastUpdatedTimeUTC *time.Time `json:"lastUpdatedTimeUtc,omitempty" azure:"ro"`
+}
+
 // RouteCompilationError - Compilation error when evaluating route
 type RouteCompilationError struct {
 	// Location where the route error happened
@@ -1068,10 +1113,60 @@ type RouteProperties struct {
 	Condition *string `json:"condition,omitempty"`
 }
 
+// RoutingCosmosDBSQLAPIProperties - The properties related to a cosmos DB sql collection endpoint.
+type RoutingCosmosDBSQLAPIProperties struct {
+	// REQUIRED; The name of the cosmos DB sql collection in the cosmos DB database.
+	CollectionName *string `json:"collectionName,omitempty"`
+
+	// REQUIRED; The name of the cosmos DB database in the cosmos DB account.
+	DatabaseName *string `json:"databaseName,omitempty"`
+
+	// REQUIRED; The url of the cosmos DB account. It must include the protocol https://
+	EndpointURI *string `json:"endpointUri,omitempty"`
+
+	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
+	// hyphens and has a maximum length of 64 characters. The following names are reserved:
+	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
+	Name *string `json:"name,omitempty"`
+
+	// Method used to authenticate against the cosmos DB sql collection endpoint
+	AuthenticationType *AuthenticationType `json:"authenticationType,omitempty"`
+
+	// Id of the cosmos DB sql collection endpoint
+	ID *string `json:"id,omitempty"`
+
+	// Managed identity properties of routing cosmos DB collection endpoint.
+	Identity *ManagedIdentity `json:"identity,omitempty"`
+
+	// The name of the partition key associated with this cosmos DB sql collection if one exists. This is an optional parameter.
+	PartitionKeyName *string `json:"partitionKeyName,omitempty"`
+
+	// The template for generating a synthetic partition key value for use with this cosmos DB sql collection. The template must
+	// include at least one of the following placeholders: {iothub}, {deviceid},
+	// {DD}, {MM}, and {YYYY}. Any one placeholder may be specified at most once, but order and non-placeholder components are
+	// arbitrary. This parameter is only required if PartitionKeyName is specified.
+	PartitionKeyTemplate *string `json:"partitionKeyTemplate,omitempty"`
+
+	// The primary key of the cosmos DB account.
+	PrimaryKey *string `json:"primaryKey,omitempty"`
+
+	// The name of the resource group of the cosmos DB account.
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
+
+	// The secondary key of the cosmos DB account.
+	SecondaryKey *string `json:"secondaryKey,omitempty"`
+
+	// The subscription identifier of the cosmos DB account.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+}
+
 // RoutingEndpoints - The properties related to the custom endpoints to which your IoT hub routes messages based on the routing
 // rules. A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs
 // and only 1 custom endpoint is allowed across all endpoint types for free hubs.
 type RoutingEndpoints struct {
+	// The list of Cosmos DB collection endpoints that IoT hub routes messages to, based on the routing rules.
+	CosmosDBSQLCollections []*RoutingCosmosDBSQLAPIProperties `json:"cosmosDBSqlCollections,omitempty"`
+
 	// The list of Event Hubs endpoints that IoT hub routes messages to, based on the routing rules. This list does not include
 	// the built-in Event Hubs endpoint.
 	EventHubs []*RoutingEventHubProperties `json:"eventHubs,omitempty"`

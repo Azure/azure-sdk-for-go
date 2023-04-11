@@ -734,6 +734,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyMetadata() {
 		"Foo": to.Ptr("Foovalue"),
 		"Bar": to.Ptr("Barvalue"),
 	}
+
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{Metadata: basicMetadata})
 	_require.NoError(err)
 

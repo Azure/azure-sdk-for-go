@@ -151,6 +151,63 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	require.Len(t, res.Tables[0].Rows, 100)
 }
 
+func TestQueryResource(t *testing.T) {
+	client := startLogsTest(t)
+	timespan := azquery.NewTimeInterval(time.Date(2022, 12, 1, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 2, 0, 0, 0, 0, time.UTC))
+	body := azquery.Body{
+		Query:    to.Ptr(query),
+		Timespan: to.Ptr(timespan),
+	}
+	testSerde(t, &body)
+
+	res, err := client.QueryResource(context.Background(), resourceURI, body, nil)
+	require.NoError(t, err)
+	require.NoError(t, err)
+	require.Nil(t, res.Error)
+	require.Nil(t, res.Visualization)
+	require.Nil(t, res.Statistics)
+	require.Len(t, res.Tables, 1)
+	require.Len(t, res.Tables[0].Rows, 100)
+	testSerde(t, &res)
+}
+
+func TestQueryResource_Fail(t *testing.T) {
+	client := startLogsTest(t)
+
+	res, err := client.QueryResource(
+		context.Background(),
+		resourceURI,
+		azquery.Body{
+			Query:    to.Ptr("not a valid query"),
+			Timespan: to.Ptr(azquery.TimeInterval("PT2H")),
+		},
+		nil,
+	)
+	require.Error(t, err)
+	require.Nil(t, res.Error)
+	require.Nil(t, res.Tables)
+
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Equal(t, httpErr.ErrorCode, "BadArgumentError")
+	require.Equal(t, httpErr.StatusCode, 400)
+
+	testSerde(t, &res)
+}
+
+func TestQueryResource_Advanced(t *testing.T) {
+	client := startLogsTest(t)
+
+	res, err := client.QueryResource(context.Background(), resourceURI, azquery.Body{Query: &query},
+		&azquery.LogsClientQueryResourceOptions{Options: &azquery.LogsQueryOptions{Statistics: to.Ptr(true), Visualization: to.Ptr(true), Wait: to.Ptr(600)}})
+	require.NoError(t, err)
+	require.Nil(t, res.Error)
+	require.NotNil(t, res.Tables)
+	require.NotNil(t, res.Visualization)
+	require.NotNil(t, res.Statistics)
+	testSerde(t, &res)
+}
+
 func TestQueryBatch_QuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
 	query1, query2 := query, query+" | take 2"

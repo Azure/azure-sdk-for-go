@@ -1,5 +1,13 @@
 # Release History
 
+## 2.3.0-beta.1 (2023-04-28)
+### Features Added
+
+- New enum type `IsCustomProvisioningTimeout` with values `IsCustomProvisioningTimeoutFalse`, `IsCustomProvisioningTimeoutTrue`
+- New field `IsCustomProvisioningTimeout` in struct `ContainerGroupPropertiesProperties`
+- New field `ProvisioningTimeoutInSeconds` in struct `ContainerGroupPropertiesProperties`
+
+
 ## 2.2.0 (2023-04-07)
 ### Features Added
 

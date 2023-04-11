@@ -6,7 +6,9 @@
 
 package file
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+)
 
 // CreateResponse contains the response from method Client.Create.
 type CreateResponse = generated.FileClientCreateResponse

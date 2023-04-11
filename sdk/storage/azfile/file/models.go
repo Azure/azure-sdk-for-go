@@ -337,7 +337,7 @@ type DownloadBufferOptions struct {
 	// range, as long as the range is less than or equal to 4 MB in size.
 	RangeGetContentMD5 *bool
 
-	// ChunkSize specifies the block size to use for each parallel download; the default size is 4MB.
+	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
 	ChunkSize int64
 
 	// Progress is a function that is invoked periodically as bytes are received.
@@ -364,7 +364,7 @@ type DownloadFileOptions struct {
 	// range, as long as the range is less than or equal to 4 MB in size.
 	RangeGetContentMD5 *bool
 
-	// ChunkSize specifies the block size to use for each parallel download; the default size is 4MB.
+	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
 	ChunkSize int64
 
 	// Progress is a function that is invoked periodically as bytes are received.
@@ -420,7 +420,7 @@ func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (strin
 		return "", 0, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
 	}
 
-	count, err := validateSeekableStreamAt0AndGetCount(body)
+	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return "", 0, nil, nil, err
 	}
@@ -452,43 +452,6 @@ func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (strin
 	}
 
 	return rangeParam, count, uploadRangeOptions, leaseAccessConditions, nil
-}
-
-func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {
-	if body == nil { // nil body is "logically" seekable to 0 and are 0 bytes long
-		return 0, nil
-	}
-
-	err := validateSeekableStreamAt0(body)
-	if err != nil {
-		return 0, err
-	}
-
-	count, err := body.Seek(0, io.SeekEnd)
-	if err != nil {
-		return 0, errors.New("body stream must be seekable")
-	}
-
-	_, err = body.Seek(0, io.SeekStart)
-	if err != nil {
-		return 0, err
-	}
-	return count, nil
-}
-
-// return an error if body is not a valid seekable stream at 0
-func validateSeekableStreamAt0(body io.ReadSeeker) error {
-	if body == nil { // nil body is "logically" seekable to 0
-		return nil
-	}
-	if pos, err := body.Seek(0, io.SeekCurrent); pos != 0 || err != nil {
-		// Help detect programmer error
-		if err != nil {
-			return errors.New("body stream must be seekable")
-		}
-		return errors.New("body stream must be set to position 0")
-	}
-	return nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -657,3 +620,33 @@ func (o *ListHandlesOptions) format() *generated.FileClientListHandlesOptions {
 
 // Handle - A listed Azure Storage handle item.
 type Handle = generated.Handle
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// uploadFromReaderOptions identifies options used by the UploadBuffer and UploadFile functions.
+type uploadFromReaderOptions struct {
+	// ChunkSize specifies the chunk size to use; the default (and maximum size) is MaxUpdateRangeBytes.
+	ChunkSize int64
+
+	// Progress is a function that is invoked periodically as bytes are sent to the FileClient.
+	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
+	Progress func(bytesTransferred int64)
+
+	// Concurrency indicates the maximum number of blocks to upload in parallel (0=default)
+	Concurrency uint16
+
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// UploadBufferOptions provides set of configurations for Client.UploadBuffer operation.
+type UploadBufferOptions = uploadFromReaderOptions
+
+// UploadFileOptions provides set of configurations for Client.UploadFile operation.
+type UploadFileOptions = uploadFromReaderOptions
+
+func (o *uploadFromReaderOptions) getUploadRangeOptions() *UploadRangeOptions {
+	return &UploadRangeOptions{
+		LeaseAccessConditions: o.LeaseAccessConditions,
+	}
+}

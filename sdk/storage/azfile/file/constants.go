@@ -12,6 +12,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 )
 
+const (
+	// MaxUpdateRangeBytes indicates the maximum number of bytes that can be updated in a call to Client.UploadRange.
+	MaxUpdateRangeBytes = 4 * 1024 * 1024 // 4MiB
+
+	// MaxFileSize indicates the maximum size of the file allowed.
+	MaxFileSize = 4 * 1024 * 1024 * 1024 * 1024 // 4 TiB
+)
+
 // CopyStatusType defines the states of the copy operation.
 type CopyStatusType = generated.CopyStatusType
 

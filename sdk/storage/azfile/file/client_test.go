@@ -1534,6 +1534,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURL() {
 	_require.NotNil(rangeList2.RequestID)
 }
 
+// TODO: check why this is failing
 func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

@@ -230,7 +230,13 @@ func (s *Session) txFrame(ctx context.Context, fr frames.FrameBody, sent chan er
 func (s *Session) txFrameAndWait(ctx context.Context, fr frames.FrameBody) error {
 	sent := make(chan error, 1)
 	s.txFrame(ctx, fr, sent)
-	return <-sent
+
+	select {
+	case err := <-sent:
+		return err
+	case <-s.conn.done:
+		return s.conn.doneErr
+	}
 }
 
 // NewReceiver opens a new receiver link on the session.
@@ -271,6 +277,8 @@ func (s *Session) NewSender(ctx context.Context, target string, opts *SenderOpti
 	if err = l.attach(ctx); err != nil {
 		return nil, err
 	}
+
+	go l.mux(senderTestHooks{})
 
 	return l, nil
 }

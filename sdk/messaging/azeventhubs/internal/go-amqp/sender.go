@@ -175,8 +175,13 @@ func (s *Sender) send(ctx context.Context, msg *Message, opts *SendOptions) (cha
 			return nil, ctx.Err()
 		}
 
-		if err := <-sent; err != nil {
-			return nil, err
+		select {
+		case err := <-sent:
+			if err != nil {
+				return nil, err
+			}
+		case <-s.l.done:
+			return nil, s.l.doneErr
 		}
 
 		// clear values that are only required on first message
@@ -300,12 +305,18 @@ func (s *Sender) attach(ctx context.Context) error {
 
 	s.transfers = make(chan transferEnvelope)
 
-	go s.mux()
-
 	return nil
 }
 
-func (s *Sender) mux() {
+type senderTestHooks struct {
+	MuxTransfer func()
+}
+
+func (s *Sender) mux(hooks senderTestHooks) {
+	if hooks.MuxTransfer == nil {
+		hooks.MuxTransfer = nop
+	}
+
 	defer func() {
 		close(s.l.done)
 	}()
@@ -348,6 +359,7 @@ Loop:
 
 		// send data
 		case env := <-outgoingTransfers:
+			hooks.MuxTransfer()
 			select {
 			case s.l.session.txTransfer <- env:
 				debug.Log(2, "TX (Sender %p): mux transfer to Session: %d, %s", s, s.l.session.channel, env.Frame)

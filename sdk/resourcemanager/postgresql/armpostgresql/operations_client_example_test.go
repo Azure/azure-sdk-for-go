@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/OperationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/OperationList.json
 func ExampleOperationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,16 +38,7 @@ func ExampleOperationsClient_List() {
 	// res.OperationListResult = armpostgresql.OperationListResult{
 	// 	Value: []*armpostgresql.Operation{
 	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/locations/performanceTiers/read"),
-	// 			Display: &armpostgresql.OperationDisplay{
-	// 				Description: to.Ptr("Returns the list of Performance Tiers available."),
-	// 				Operation: to.Ptr("List Performance Tiers"),
-	// 				Provider: to.Ptr("Microsoft DB for PostgreSQL"),
-	// 				Resource: to.Ptr("Performance Tiers"),
-	// 			},
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/servers/read"),
+	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/read"),
 	// 			Display: &armpostgresql.OperationDisplay{
 	// 				Description: to.Ptr("Return the list of servers or gets the properties for the specified server."),
 	// 				Operation: to.Ptr("List/Get PostgreSQL Servers"),
@@ -56,7 +47,7 @@ func ExampleOperationsClient_List() {
 	// 			},
 	// 		},
 	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/servers/write"),
+	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/write"),
 	// 			Display: &armpostgresql.OperationDisplay{
 	// 				Description: to.Ptr("Creates a server with the specified parameters or update the properties or tags for the specified server."),
 	// 				Operation: to.Ptr("Create/Update PostgreSQL Server"),
@@ -65,7 +56,7 @@ func ExampleOperationsClient_List() {
 	// 			},
 	// 		},
 	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/servers/delete"),
+	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/delete"),
 	// 			Display: &armpostgresql.OperationDisplay{
 	// 				Description: to.Ptr("Deletes an existing server."),
 	// 				Operation: to.Ptr("Delete PostgreSQL Server"),
@@ -74,16 +65,7 @@ func ExampleOperationsClient_List() {
 	// 			},
 	// 		},
 	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/performanceTiers/read"),
-	// 			Display: &armpostgresql.OperationDisplay{
-	// 				Description: to.Ptr("Returns the list of Performance Tiers available."),
-	// 				Operation: to.Ptr("List Performance Tiers"),
-	// 				Provider: to.Ptr("Microsoft DB for PostgreSQL"),
-	// 				Resource: to.Ptr("Performance Tiers"),
-	// 			},
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/servers/firewallRules/read"),
+	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/firewallRules/read"),
 	// 			Display: &armpostgresql.OperationDisplay{
 	// 				Description: to.Ptr("Return the list of firewall rules for a server or gets the properties for the specified firewall rule."),
 	// 				Operation: to.Ptr("List/Get Firewall Rules"),
@@ -92,7 +74,7 @@ func ExampleOperationsClient_List() {
 	// 			},
 	// 		},
 	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/servers/firewallRules/write"),
+	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/firewallRules/write"),
 	// 			Display: &armpostgresql.OperationDisplay{
 	// 				Description: to.Ptr("Creates a firewall rule with the specified parameters or update an existing rule."),
 	// 				Operation: to.Ptr("Create/Update Firewall Rule"),
@@ -101,7 +83,7 @@ func ExampleOperationsClient_List() {
 	// 			},
 	// 		},
 	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/servers/firewallRules/delete"),
+	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/firewallRules/delete"),
 	// 			Display: &armpostgresql.OperationDisplay{
 	// 				Description: to.Ptr("Deletes an existing firewall rule."),
 	// 				Operation: to.Ptr("Delete Firewall Rule"),
@@ -110,7 +92,7 @@ func ExampleOperationsClient_List() {
 	// 			},
 	// 		},
 	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/servers/providers/Microsoft.Insights/metricDefinitions/read"),
+	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/providers/Microsoft.Insights/metricDefinitions/read"),
 	// 			Display: &armpostgresql.OperationDisplay{
 	// 				Description: to.Ptr("Return types of metrics that are available for databases"),
 	// 				Operation: to.Ptr("Get database metric definitions"),
@@ -125,6 +107,21 @@ func ExampleOperationsClient_List() {
 	// 							"aggregationType": "Average",
 	// 							"displayDescription": "CPU percent",
 	// 							"displayName": "CPU percent",
+	// 							"fillGapWithZero": true,
+	// 							"unit": "Percent",
+	// 						},
+	// 						map[string]any{
+	// 							"name": "compute_limit",
+	// 							"aggregationType": "Average",
+	// 							"displayDescription": "Compute Unit limit",
+	// 							"displayName": "Compute Unit limit",
+	// 							"unit": "Count",
+	// 						},
+	// 						map[string]any{
+	// 							"name": "compute_consumption_percent",
+	// 							"aggregationType": "Average",
+	// 							"displayDescription": "Compute Unit percentage",
+	// 							"displayName": "Compute Unit percentage",
 	// 							"fillGapWithZero": true,
 	// 							"unit": "Percent",
 	// 						},
@@ -186,7 +183,7 @@ func ExampleOperationsClient_List() {
 	// 			},
 	// 		},
 	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/servers/providers/Microsoft.Insights/diagnosticSettings/read"),
+	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/providers/Microsoft.Insights/diagnosticSettings/read"),
 	// 			Display: &armpostgresql.OperationDisplay{
 	// 				Description: to.Ptr("Gets the disagnostic setting for the resource"),
 	// 				Operation: to.Ptr("Read diagnostic setting"),
@@ -195,7 +192,7 @@ func ExampleOperationsClient_List() {
 	// 			},
 	// 		},
 	// 		{
-	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/servers/providers/Microsoft.Insights/diagnosticSettings/write"),
+	// 			Name: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/providers/Microsoft.Insights/diagnosticSettings/write"),
 	// 			Display: &armpostgresql.OperationDisplay{
 	// 				Description: to.Ptr("Creates or updates the diagnostic setting for the resource"),
 	// 				Operation: to.Ptr("Write diagnostic setting"),

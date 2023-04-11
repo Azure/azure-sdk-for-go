@@ -11,9 +11,195 @@ package armpostgresql
 
 import "time"
 
+// ActiveDirectoryAdministrator - Represents an Active Directory administrator.
+type ActiveDirectoryAdministrator struct {
+	// REQUIRED; Properties of the active directory administrator.
+	Properties *AdministratorProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ActiveDirectoryAdministratorAdd - Represents an Active Directory administrator.
+type ActiveDirectoryAdministratorAdd struct {
+	// Properties of the active directory administrator.
+	Properties *AdministratorPropertiesForAdd `json:"properties,omitempty"`
+}
+
+// AdministratorListResult - A list of active directory administrators.
+type AdministratorListResult struct {
+	// The link used to get the next page of active directory.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of active directory administrators
+	Value []*ActiveDirectoryAdministrator `json:"value,omitempty"`
+}
+
+// AdministratorProperties - The properties of an Active Directory administrator.
+type AdministratorProperties struct {
+	// The objectId of the Active Directory administrator.
+	ObjectID *string `json:"objectId,omitempty"`
+
+	// Active Directory administrator principal name.
+	PrincipalName *string `json:"principalName,omitempty"`
+
+	// The principal type used to represent the type of Active Directory Administrator.
+	PrincipalType *PrincipalType `json:"principalType,omitempty"`
+
+	// The tenantId of the Active Directory administrator.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// AdministratorPropertiesForAdd - The properties of an Active Directory administrator.
+type AdministratorPropertiesForAdd struct {
+	// Active Directory administrator principal name.
+	PrincipalName *string `json:"principalName,omitempty"`
+
+	// The principal type used to represent the type of Active Directory Administrator.
+	PrincipalType *PrincipalType `json:"principalType,omitempty"`
+
+	// The tenantId of the Active Directory administrator.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// AdministratorsClientBeginCreateOptions contains the optional parameters for the AdministratorsClient.BeginCreate method.
+type AdministratorsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AdministratorsClientBeginDeleteOptions contains the optional parameters for the AdministratorsClient.BeginDelete method.
+type AdministratorsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AdministratorsClientGetOptions contains the optional parameters for the AdministratorsClient.Get method.
+type AdministratorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AdministratorsClientListByServerOptions contains the optional parameters for the AdministratorsClient.NewListByServerPager
+// method.
+type AdministratorsClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthConfig - Authentication configuration properties of a server
+type AuthConfig struct {
+	// If Enabled, Azure Active Directory authentication is enabled.
+	ActiveDirectoryAuth *ActiveDirectoryAuthEnum `json:"activeDirectoryAuth,omitempty"`
+
+	// If Enabled, Password authentication is enabled.
+	PasswordAuth *PasswordAuthEnum `json:"passwordAuth,omitempty"`
+
+	// Tenant id of the server.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// Backup properties of a server
+type Backup struct {
+	// Backup retention days for the server.
+	BackupRetentionDays *int32 `json:"backupRetentionDays,omitempty"`
+
+	// A value indicating whether Geo-Redundant backup is enabled on the server.
+	GeoRedundantBackup *GeoRedundantBackupEnum `json:"geoRedundantBackup,omitempty"`
+
+	// READ-ONLY; The earliest restore point time (ISO8601 format) for server.
+	EarliestRestoreDate *time.Time `json:"earliestRestoreDate,omitempty" azure:"ro"`
+}
+
+// BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
+type BackupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.NewListByServerPager method.
+type BackupsClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapabilitiesListResult - location capability
+type CapabilitiesListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; A list of supported capabilities.
+	Value []*CapabilityProperties `json:"value,omitempty" azure:"ro"`
+}
+
+// CapabilityProperties - Location capabilities.
+type CapabilityProperties struct {
+	// READ-ONLY; A value indicating whether fast provisioning is supported in this region.
+	FastProvisioningSupported *bool `json:"fastProvisioningSupported,omitempty" azure:"ro"`
+
+	// READ-ONLY; A value indicating whether a new server in this region can have geo-backups to paired region.
+	GeoBackupSupported *bool `json:"geoBackupSupported,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	SupportedFastProvisioningEditions []*FastProvisioningEditionCapability `json:"supportedFastProvisioningEditions,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	SupportedFlexibleServerEditions []*FlexibleServerEditionCapability `json:"supportedFlexibleServerEditions,omitempty" azure:"ro"`
+
+	// READ-ONLY; Supported high availability mode
+	SupportedHAMode []*string `json:"supportedHAMode,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	SupportedHyperscaleNodeEditions []*HyperscaleNodeEditionCapability `json:"supportedHyperscaleNodeEditions,omitempty" azure:"ro"`
+
+	// READ-ONLY; zone name
+	Zone *string `json:"zone,omitempty" azure:"ro"`
+
+	// READ-ONLY; A value indicating whether a new server in this region can have geo-backups to paired region.
+	ZoneRedundantHaAndGeoBackupSupported *bool `json:"zoneRedundantHaAndGeoBackupSupported,omitempty" azure:"ro"`
+
+	// READ-ONLY; A value indicating whether a new server in this region can support multi zone HA.
+	ZoneRedundantHaSupported *bool `json:"zoneRedundantHaSupported,omitempty" azure:"ro"`
+}
+
 // CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
 // method.
 type CheckNameAvailabilityClientExecuteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CheckNameAvailabilityRequest - The check availability request body.
+type CheckNameAvailabilityRequest struct {
+	// The name of the resource for which availability needs to be checked.
+	Name *string `json:"name,omitempty"`
+
+	// The resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// CheckNameAvailabilityResponse - The check availability result.
+type CheckNameAvailabilityResponse struct {
+	// Detailed reason why the given name is available.
+	Message *string `json:"message,omitempty"`
+
+	// Indicates if the resource name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+
+	// The reason why the given name is not available.
+	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
+}
+
+// CheckNameAvailabilityWithLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithLocationClient.Execute
+// method.
+type CheckNameAvailabilityWithLocationClientExecuteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -28,12 +214,24 @@ type Configuration struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// ConfigurationForUpdate - Represents a Configuration.
+type ConfigurationForUpdate struct {
+	// The properties of a configuration.
+	Properties *ConfigurationProperties `json:"properties,omitempty"`
+}
+
 // ConfigurationListResult - A list of server configurations.
 type ConfigurationListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// The list of server configurations.
 	Value []*Configuration `json:"value,omitempty"`
 }
@@ -50,18 +248,38 @@ type ConfigurationProperties struct {
 	AllowedValues *string `json:"allowedValues,omitempty" azure:"ro"`
 
 	// READ-ONLY; Data type of the configuration.
-	DataType *string `json:"dataType,omitempty" azure:"ro"`
+	DataType *ConfigurationDataType `json:"dataType,omitempty" azure:"ro"`
 
 	// READ-ONLY; Default value of the configuration.
 	DefaultValue *string `json:"defaultValue,omitempty" azure:"ro"`
 
 	// READ-ONLY; Description of the configuration.
 	Description *string `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; Configuration documentation link.
+	DocumentationLink *string `json:"documentationLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Configuration is pending restart or not.
+	IsConfigPendingRestart *bool `json:"isConfigPendingRestart,omitempty" azure:"ro"`
+
+	// READ-ONLY; Configuration dynamic or static.
+	IsDynamicConfig *bool `json:"isDynamicConfig,omitempty" azure:"ro"`
+
+	// READ-ONLY; Configuration read-only or not.
+	IsReadOnly *bool `json:"isReadOnly,omitempty" azure:"ro"`
+
+	// READ-ONLY; Configuration unit.
+	Unit *string `json:"unit,omitempty" azure:"ro"`
 }
 
-// ConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginCreateOrUpdate
-// method.
-type ConfigurationsClientBeginCreateOrUpdateOptions struct {
+// ConfigurationsClientBeginPutOptions contains the optional parameters for the ConfigurationsClient.BeginPut method.
+type ConfigurationsClientBeginPutOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ConfigurationsClientBeginUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginUpdate method.
+type ConfigurationsClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -77,6 +295,18 @@ type ConfigurationsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DataEncryption - Data encryption properties of a server
+type DataEncryption struct {
+	// URI for the key for data encryption for primary server.
+	PrimaryKeyURI *string `json:"primaryKeyURI,omitempty"`
+
+	// Resource Id for the User assigned identity to be used for data encryption for primary server.
+	PrimaryUserAssignedIdentityID *string `json:"primaryUserAssignedIdentityId,omitempty"`
+
+	// Data encryption type to depict if it is System Managed vs Azure Key vault.
+	Type *ArmServerKeyType `json:"type,omitempty"`
+}
+
 // Database - Represents a Database.
 type Database struct {
 	// The properties of a database.
@@ -88,12 +318,18 @@ type Database struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DatabaseListResult - A List of databases.
 type DatabaseListResult struct {
+	// The link used to get the next page of databases.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// The list of databases housed in a server
 	Value []*Database `json:"value,omitempty"`
 }
@@ -107,9 +343,8 @@ type DatabaseProperties struct {
 	Collation *string `json:"collation,omitempty"`
 }
 
-// DatabasesClientBeginCreateOrUpdateOptions contains the optional parameters for the DatabasesClient.BeginCreateOrUpdate
-// method.
-type DatabasesClientBeginCreateOrUpdateOptions struct {
+// DatabasesClientBeginCreateOptions contains the optional parameters for the DatabasesClient.BeginCreate method.
+type DatabasesClientBeginCreateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -130,6 +365,15 @@ type DatabasesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DelegatedSubnetUsage - Delegated subnet usage data.
+type DelegatedSubnetUsage struct {
+	// READ-ONLY; Name of the delegated subnet for which IP addresses are in use
+	SubnetName *string `json:"subnetName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Number of IP addresses used by the delegated subnet
+	Usage *int64 `json:"usage,omitempty" azure:"ro"`
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -139,9 +383,8 @@ type ErrorAdditionalInfo struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.)
-type ErrorResponse struct {
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
 	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
 
@@ -149,13 +392,31 @@ type ErrorResponse struct {
 	Code *string `json:"code,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
+type FastProvisioningEditionCapability struct {
+	// READ-ONLY; Fast provisioning supported sku name
+	SupportedSKU *string `json:"supportedSku,omitempty" azure:"ro"`
+
+	// READ-ONLY; Fast provisioning supported version
+	SupportedServerVersions *string `json:"supportedServerVersions,omitempty" azure:"ro"`
+
+	// READ-ONLY; Fast provisioning supported storage in Gb
+	SupportedStorageGb *int64 `json:"supportedStorageGb,omitempty" azure:"ro"`
 }
 
 // FirewallRule - Represents a server firewall rule.
@@ -169,12 +430,18 @@ type FirewallRule struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // FirewallRuleListResult - A list of firewall rules.
 type FirewallRuleListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// The list of firewall rules in a server.
 	Value []*FirewallRule `json:"value,omitempty"`
 }
@@ -212,79 +479,125 @@ type FirewallRulesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationBasedPerformanceTierClientListOptions contains the optional parameters for the LocationBasedPerformanceTierClient.NewListPager
-// method.
-type LocationBasedPerformanceTierClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LogFile - Represents a log file.
-type LogFile struct {
-	// The properties of the log file.
-	Properties *LogFileProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
+// FlexibleServerEditionCapability - Flexible server edition capabilities.
+type FlexibleServerEditionCapability struct {
+	// READ-ONLY; Server edition name
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	// READ-ONLY; The status
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of server versions supported by this server edition.
+	SupportedServerVersions []*ServerVersionCapability `json:"supportedServerVersions,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of editions supported by this server edition.
+	SupportedStorageEditions []*StorageEditionCapability `json:"supportedStorageEditions,omitempty" azure:"ro"`
 }
 
-// LogFileListResult - A list of log files.
-type LogFileListResult struct {
-	// The list of log files.
-	Value []*LogFile `json:"value,omitempty"`
-}
-
-// LogFileProperties - The properties of a log file.
-type LogFileProperties struct {
-	// Size of the log file.
-	SizeInKB *int64 `json:"sizeInKB,omitempty"`
-
-	// Type of the log file.
-	Type *string `json:"type,omitempty"`
-
-	// The url to download the log file from.
-	URL *string `json:"url,omitempty"`
-
-	// READ-ONLY; Creation timestamp of the log file.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Last modified timestamp of the log file.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
-}
-
-// LogFilesClientListByServerOptions contains the optional parameters for the LogFilesClient.NewListByServerPager method.
-type LogFilesClientListByServerOptions struct {
+// GetPrivateDNSZoneSuffixClientExecuteOptions contains the optional parameters for the GetPrivateDNSZoneSuffixClient.Execute
+// method.
+type GetPrivateDNSZoneSuffixClientExecuteOptions struct {
 	// placeholder for future optional parameters
+}
+
+// HighAvailability - High availability properties of a server
+type HighAvailability struct {
+	// The HA mode for the server.
+	Mode *HighAvailabilityMode `json:"mode,omitempty"`
+
+	// availability zone information of the standby.
+	StandbyAvailabilityZone *string `json:"standbyAvailabilityZone,omitempty"`
+
+	// READ-ONLY; A state of a HA server that is visible to user.
+	State *ServerHAState `json:"state,omitempty" azure:"ro"`
+}
+
+// HyperscaleNodeEditionCapability - Hyperscale node edition capabilities.
+type HyperscaleNodeEditionCapability struct {
+	// READ-ONLY; Server edition name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of Node Types supported by this server edition.
+	SupportedNodeTypes []*NodeTypeCapability `json:"supportedNodeTypes,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of server versions supported by this server edition.
+	SupportedServerVersions []*ServerVersionCapability `json:"supportedServerVersions,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of editions supported by this server edition.
+	SupportedStorageEditions []*StorageEditionCapability `json:"supportedStorageEditions,omitempty" azure:"ro"`
+}
+
+// LocationBasedCapabilitiesClientExecuteOptions contains the optional parameters for the LocationBasedCapabilitiesClient.NewExecutePager
+// method.
+type LocationBasedCapabilitiesClientExecuteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceWindow - Maintenance window properties of a server.
+type MaintenanceWindow struct {
+	// indicates whether custom window is enabled or disabled
+	CustomWindow *string `json:"customWindow,omitempty"`
+
+	// day of week for maintenance window
+	DayOfWeek *int32 `json:"dayOfWeek,omitempty"`
+
+	// start hour for maintenance window
+	StartHour *int32 `json:"startHour,omitempty"`
+
+	// start minute for maintenance window
+	StartMinute *int32 `json:"startMinute,omitempty"`
 }
 
 // NameAvailability - Represents a resource name availability.
 type NameAvailability struct {
-	// Error Message.
+	// Detailed reason why the given name is available.
 	Message *string `json:"message,omitempty"`
 
-	// Indicates whether the resource name is available.
+	// Indicates if the resource name is available.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
 
-	// Reason for name being unavailable.
-	Reason *string `json:"reason,omitempty"`
+	// The reason why the given name is not available.
+	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
+
+	// READ-ONLY; name of the PostgreSQL server.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; type of the server
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// NameAvailabilityRequest - Request from client to check resource name availability.
-type NameAvailabilityRequest struct {
-	// REQUIRED; Resource name to verify.
-	Name *string `json:"name,omitempty"`
+// Network properties of a server
+type Network struct {
+	// delegated subnet arm resource id.
+	DelegatedSubnetResourceID *string `json:"delegatedSubnetResourceId,omitempty"`
 
-	// Resource type used for verification.
-	Type *string `json:"type,omitempty"`
+	// private dns zone arm resource id.
+	PrivateDNSZoneArmResourceID *string `json:"privateDnsZoneArmResourceId,omitempty"`
+
+	// READ-ONLY; public network access is enabled or not
+	PublicNetworkAccess *ServerPublicNetworkAccessState `json:"publicNetworkAccess,omitempty" azure:"ro"`
+}
+
+// NodeTypeCapability - node type capability
+type NodeTypeCapability struct {
+	// READ-ONLY; note type name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; note type
+	NodeType *string `json:"nodeType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status
+	Status *string `json:"status,omitempty" azure:"ro"`
 }
 
 // Operation - REST API operation definition.
 type Operation struct {
+	// Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+
 	// READ-ONLY; The localized display information for this particular operation or action.
 	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
 
@@ -315,202 +628,16 @@ type OperationDisplay struct {
 
 // OperationListResult - A list of resource provider operations.
 type OperationListResult struct {
-	// The list of resource provider operations.
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of available operation details
 	Value []*Operation `json:"value,omitempty"`
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// PerformanceTierListResult - A list of performance tiers.
-type PerformanceTierListResult struct {
-	// The list of performance tiers
-	Value []*PerformanceTierProperties `json:"value,omitempty"`
-}
-
-// PerformanceTierProperties - Performance tier properties
-type PerformanceTierProperties struct {
-	// ID of the performance tier.
-	ID *string `json:"id,omitempty"`
-
-	// Maximum Backup retention in days for the performance tier edition
-	MaxBackupRetentionDays *int32 `json:"maxBackupRetentionDays,omitempty"`
-
-	// Max storage allowed for a server.
-	MaxLargeStorageMB *int32 `json:"maxLargeStorageMB,omitempty"`
-
-	// Max storage allowed for a server.
-	MaxStorageMB *int32 `json:"maxStorageMB,omitempty"`
-
-	// Minimum Backup retention in days for the performance tier edition
-	MinBackupRetentionDays *int32 `json:"minBackupRetentionDays,omitempty"`
-
-	// Max storage allowed for a server.
-	MinLargeStorageMB *int32 `json:"minLargeStorageMB,omitempty"`
-
-	// Max storage allowed for a server.
-	MinStorageMB *int32 `json:"minStorageMB,omitempty"`
-
-	// Service level objectives associated with the performance tier
-	ServiceLevelObjectives []*PerformanceTierServiceLevelObjectives `json:"serviceLevelObjectives,omitempty"`
-}
-
-// PerformanceTierServiceLevelObjectives - Service level objectives for performance tier.
-type PerformanceTierServiceLevelObjectives struct {
-	// Edition of the performance tier.
-	Edition *string `json:"edition,omitempty"`
-
-	// Hardware generation associated with the service level objective
-	HardwareGeneration *string `json:"hardwareGeneration,omitempty"`
-
-	// ID for the service level objective.
-	ID *string `json:"id,omitempty"`
-
-	// Maximum Backup retention in days for the performance tier edition
-	MaxBackupRetentionDays *int32 `json:"maxBackupRetentionDays,omitempty"`
-
-	// Max storage allowed for a server.
-	MaxStorageMB *int32 `json:"maxStorageMB,omitempty"`
-
-	// Minimum Backup retention in days for the performance tier edition
-	MinBackupRetentionDays *int32 `json:"minBackupRetentionDays,omitempty"`
-
-	// Max storage allowed for a server.
-	MinStorageMB *int32 `json:"minStorageMB,omitempty"`
-
-	// vCore associated with the service level objective
-	VCore *int32 `json:"vCore,omitempty"`
-}
-
-// PrivateEndpointConnection - A private endpoint connection
-type PrivateEndpointConnection struct {
-	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// PrivateEndpointConnectionListResult - A list of private endpoint connections.
-type PrivateEndpointConnectionListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Array of results.
-	Value []*PrivateEndpointConnection `json:"value,omitempty" azure:"ro"`
-}
-
-// PrivateEndpointConnectionProperties - Properties of a private endpoint connection.
-type PrivateEndpointConnectionProperties struct {
-	// Private endpoint which the connection belongs to.
-	PrivateEndpoint *PrivateEndpointProperty `json:"privateEndpoint,omitempty"`
-
-	// Connection state of the private endpoint connection.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
-
-	// READ-ONLY; State of the private endpoint connection.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
-// method.
-type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
-// method.
-type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PrivateEndpointConnectionsClientBeginUpdateTagsOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginUpdateTags
-// method.
-type PrivateEndpointConnectionsClientBeginUpdateTagsOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
-// method.
-type PrivateEndpointConnectionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsClientListByServerOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByServerPager
-// method.
-type PrivateEndpointConnectionsClientListByServerOptions struct {
-	// placeholder for future optional parameters
-}
-
-type PrivateEndpointProperty struct {
-	// Resource id of the private endpoint.
-	ID *string `json:"id,omitempty"`
-}
-
-// PrivateLinkResource - A private link resource
-type PrivateLinkResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The private link resource group id.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// PrivateLinkResourceListResult - A list of private link resources
-type PrivateLinkResourceListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Array of results.
-	Value []*PrivateLinkResource `json:"value,omitempty" azure:"ro"`
-}
-
-// PrivateLinkResourceProperties - Properties of a private link resource.
-type PrivateLinkResourceProperties struct {
-	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
-}
-
-// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
-type PrivateLinkResourcesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkResourcesClientListByServerOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByServerPager
-// method.
-type PrivateLinkResourcesClientListByServerOptions struct {
-	// placeholder for future optional parameters
-}
-
-type PrivateLinkServiceConnectionStateProperty struct {
-	// REQUIRED; The private link service connection description.
-	Description *string `json:"description,omitempty"`
-
-	// REQUIRED; The private link service connection status.
-	Status *string `json:"status,omitempty"`
-
-	// READ-ONLY; The actions required for private link service connection.
-	ActionsRequired *string `json:"actionsRequired,omitempty" azure:"ro"`
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
@@ -522,49 +649,11 @@ type ProxyResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RecoverableServerProperties - The recoverable server's properties.
-type RecoverableServerProperties struct {
-	// READ-ONLY; Edition of the performance tier.
-	Edition *string `json:"edition,omitempty" azure:"ro"`
-
-	// READ-ONLY; Hardware generation associated with the service level objective
-	HardwareGeneration *string `json:"hardwareGeneration,omitempty" azure:"ro"`
-
-	// READ-ONLY; The last available backup date time.
-	LastAvailableBackupDateTime *string `json:"lastAvailableBackupDateTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; The service level objective
-	ServiceLevelObjective *string `json:"serviceLevelObjective,omitempty" azure:"ro"`
-
-	// READ-ONLY; vCore associated with the service level objective
-	VCore *int32 `json:"vCore,omitempty" azure:"ro"`
-
-	// READ-ONLY; The PostgreSQL version
-	Version *string `json:"version,omitempty" azure:"ro"`
-}
-
-// RecoverableServerResource - A recoverable server resource.
-type RecoverableServerResource struct {
-	// Resource properties.
-	Properties *RecoverableServerProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RecoverableServersClientGetOptions contains the optional parameters for the RecoverableServersClient.Get method.
-type RecoverableServersClientGetOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.NewListByServerPager method.
@@ -580,64 +669,29 @@ type Resource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ResourceIdentity - Azure Active Directory identity configuration for a resource.
-type ResourceIdentity struct {
-	// The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal
-	// for the resource.
-	Type *IdentityType `json:"type,omitempty"`
+// RestartParameter - Represents server restart parameters.
+type RestartParameter struct {
+	// Failover mode.
+	FailoverMode *FailoverMode `json:"failoverMode,omitempty"`
 
-	// READ-ONLY; The Azure Active Directory principal id.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Azure Active Directory tenant id.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	// Indicates whether to restart the server with failover.
+	RestartWithFailover *bool `json:"restartWithFailover,omitempty"`
 }
 
-// SKU - Billing information related properties of a server.
+// SKU - Sku information related properties of a server.
 type SKU struct {
-	// REQUIRED; The name of the sku, typically, tier + family + cores, e.g. BGen41, GPGen58.
+	// REQUIRED; The name of the sku, typically, tier + family + cores, e.g. StandardD4sv3.
 	Name *string `json:"name,omitempty"`
 
-	// The scale up/out capacity, representing server's compute units.
-	Capacity *int32 `json:"capacity,omitempty"`
-
-	// The family of hardware.
-	Family *string `json:"family,omitempty"`
-
-	// The size code, to be interpreted by resource as appropriate.
-	Size *string `json:"size,omitempty"`
-
-	// The tier of the particular SKU, e.g. Basic.
+	// REQUIRED; The tier of the particular SKU, e.g. Burstable.
 	Tier *SKUTier `json:"tier,omitempty"`
-}
-
-// SecurityAlertPolicyProperties - Properties of a security alert policy.
-type SecurityAlertPolicyProperties struct {
-	// REQUIRED; Specifies the state of the policy, whether it is enabled or disabled.
-	State *ServerSecurityAlertPolicyState `json:"state,omitempty"`
-
-	// Specifies an array of alerts that are disabled. Allowed values are: SqlInjection, SqlInjectionVulnerability, AccessAnomaly
-	DisabledAlerts []*string `json:"disabledAlerts,omitempty"`
-
-	// Specifies that the alert is sent to the account administrators.
-	EmailAccountAdmins *bool `json:"emailAccountAdmins,omitempty"`
-
-	// Specifies an array of e-mail addresses to which the alert is sent.
-	EmailAddresses []*string `json:"emailAddresses,omitempty"`
-
-	// Specifies the number of days to keep in the Threat Detection audit logs.
-	RetentionDays *int32 `json:"retentionDays,omitempty"`
-
-	// Specifies the identifier key of the Threat Detection audit storage account.
-	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
-
-	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat
-	// Detection audit logs.
-	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
 }
 
 // Server - Represents a server.
@@ -645,8 +699,8 @@ type Server struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
-	// The Azure Active Directory identity of the server.
-	Identity *ResourceIdentity `json:"identity,omitempty"`
+	// Describes the identity of the application.
+	Identity *UserAssignedIdentity `json:"identity,omitempty"`
 
 	// Properties of the server.
 	Properties *ServerProperties `json:"properties,omitempty"`
@@ -663,30 +717,17 @@ type Server struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ServerAdministratorProperties - The properties of an server Administrator.
-type ServerAdministratorProperties struct {
-	// CONSTANT; The type of administrator.
-	// Field has constant value "ActiveDirectory", any specified value is ignored.
-	AdministratorType *string `json:"administratorType,omitempty"`
-
-	// REQUIRED; The server administrator login account name.
-	Login *string `json:"login,omitempty"`
-
-	// REQUIRED; The server administrator Sid (Secure ID).
-	Sid *string `json:"sid,omitempty"`
-
-	// REQUIRED; The server Active Directory Administrator tenant id.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
-// ServerAdministratorResource - Represents a and external administrator to be created.
-type ServerAdministratorResource struct {
-	// Properties of the server AAD administrator.
-	Properties *ServerAdministratorProperties `json:"properties,omitempty"`
+// ServerBackup - Server backup properties
+type ServerBackup struct {
+	// The properties of a server backup.
+	Properties *ServerBackupProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -694,57 +735,41 @@ type ServerAdministratorResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ServerAdministratorResourceListResult - The response to a list Active Directory Administrators request.
-type ServerAdministratorResourceListResult struct {
-	// The list of server Active Directory Administrators for the server.
-	Value []*ServerAdministratorResource `json:"value,omitempty"`
+// ServerBackupListResult - A list of server backups.
+type ServerBackupListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of backups of a server.
+	Value []*ServerBackup `json:"value,omitempty"`
 }
 
-// ServerAdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerAdministratorsClient.BeginCreateOrUpdate
-// method.
-type ServerAdministratorsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
+// ServerBackupProperties - The properties of a server backup.
+type ServerBackupProperties struct {
+	// Backup type.
+	BackupType *Origin `json:"backupType,omitempty"`
+
+	// Backup completed time (ISO8601 format).
+	CompletedTime *time.Time `json:"completedTime,omitempty"`
+
+	// Backup source
+	Source *string `json:"source,omitempty"`
 }
 
-// ServerAdministratorsClientBeginDeleteOptions contains the optional parameters for the ServerAdministratorsClient.BeginDelete
-// method.
-type ServerAdministratorsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
+// ServerForUpdate - Represents a server to be updated.
+type ServerForUpdate struct {
+	// Describes the identity of the application.
+	Identity *UserAssignedIdentity `json:"identity,omitempty"`
 
-// ServerAdministratorsClientGetOptions contains the optional parameters for the ServerAdministratorsClient.Get method.
-type ServerAdministratorsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServerAdministratorsClientListOptions contains the optional parameters for the ServerAdministratorsClient.NewListPager
-// method.
-type ServerAdministratorsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServerBasedPerformanceTierClientListOptions contains the optional parameters for the ServerBasedPerformanceTierClient.NewListPager
-// method.
-type ServerBasedPerformanceTierClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServerForCreate - Represents a server to be created.
-type ServerForCreate struct {
-	// REQUIRED; The location the resource resides in.
-	Location *string `json:"location,omitempty"`
-
-	// REQUIRED; Properties of the server.
-	Properties ServerPropertiesForCreateClassification `json:"properties,omitempty"`
-
-	// The Azure Active Directory identity of the server.
-	Identity *ResourceIdentity `json:"identity,omitempty"`
+	// Properties of the server.
+	Properties *ServerPropertiesForUpdate `json:"properties,omitempty"`
 
 	// The SKU (pricing tier) of the server.
 	SKU *SKU `json:"sku,omitempty"`
@@ -753,111 +778,13 @@ type ServerForCreate struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// ServerKey - A PostgreSQL Server key.
-type ServerKey struct {
-	// Properties of the ServerKey Resource.
-	Properties *ServerKeyProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Kind of encryption protector used to protect the key.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ServerKeyListResult - A list of PostgreSQL Server keys.
-type ServerKeyListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; A list of PostgreSQL Server keys.
-	Value []*ServerKey `json:"value,omitempty" azure:"ro"`
-}
-
-// ServerKeyProperties - Properties for a key execution.
-type ServerKeyProperties struct {
-	// REQUIRED; The key type like 'AzureKeyVault'.
-	ServerKeyType *ServerKeyType `json:"serverKeyType,omitempty"`
-
-	// The URI of the key.
-	URI *string `json:"uri,omitempty"`
-
-	// READ-ONLY; The key creation date.
-	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
-}
-
-// ServerKeysClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerKeysClient.BeginCreateOrUpdate
-// method.
-type ServerKeysClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ServerKeysClientBeginDeleteOptions contains the optional parameters for the ServerKeysClient.BeginDelete method.
-type ServerKeysClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ServerKeysClientGetOptions contains the optional parameters for the ServerKeysClient.Get method.
-type ServerKeysClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServerKeysClientListOptions contains the optional parameters for the ServerKeysClient.NewListPager method.
-type ServerKeysClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ServerListResult - A list of servers.
 type ServerListResult struct {
-	// The list of servers
+	// The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of flexible servers
 	Value []*Server `json:"value,omitempty"`
-}
-
-// ServerParametersClientBeginListUpdateConfigurationsOptions contains the optional parameters for the ServerParametersClient.BeginListUpdateConfigurations
-// method.
-type ServerParametersClientBeginListUpdateConfigurationsOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ServerPrivateEndpointConnection - A private endpoint connection under a server
-type ServerPrivateEndpointConnection struct {
-	// READ-ONLY; Resource ID of the Private Endpoint Connection.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Private endpoint connection properties
-	Properties *ServerPrivateEndpointConnectionProperties `json:"properties,omitempty" azure:"ro"`
-}
-
-// ServerPrivateEndpointConnectionProperties - Properties of a private endpoint connection.
-type ServerPrivateEndpointConnectionProperties struct {
-	// Private endpoint which the connection belongs to.
-	PrivateEndpoint *PrivateEndpointProperty `json:"privateEndpoint,omitempty"`
-
-	// Connection state of the private endpoint connection.
-	PrivateLinkServiceConnectionState *ServerPrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
-
-	// READ-ONLY; State of the private endpoint connection.
-	ProvisioningState *PrivateEndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-type ServerPrivateLinkServiceConnectionStateProperty struct {
-	// REQUIRED; The private link service connection description.
-	Description *string `json:"description,omitempty"`
-
-	// REQUIRED; The private link service connection status.
-	Status *PrivateLinkServiceConnectionStateStatus `json:"status,omitempty"`
-
-	// READ-ONLY; The actions required for private link service connection.
-	ActionsRequired *PrivateLinkServiceConnectionStateActionsRequire `json:"actionsRequired,omitempty" azure:"ro"`
 }
 
 // ServerProperties - The properties of a server.
@@ -866,343 +793,108 @@ type ServerProperties struct {
 	// creation).
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
 
-	// Earliest restore point creation time (ISO8601 format)
-	EarliestRestoreDate *time.Time `json:"earliestRestoreDate,omitempty"`
-
-	// The fully qualified domain name of a server.
-	FullyQualifiedDomainName *string `json:"fullyQualifiedDomainName,omitempty"`
-
-	// Status showing whether the server enabled infrastructure encryption.
-	InfrastructureEncryption *InfrastructureEncryption `json:"infrastructureEncryption,omitempty"`
-
-	// The master server id of a replica server.
-	MasterServerID *string `json:"masterServerId,omitempty"`
-
-	// Enforce a minimal Tls version for the server.
-	MinimalTLSVersion *MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
-
-	// Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'
-	PublicNetworkAccess *PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
-
-	// The maximum number of replicas that a master server can have.
-	ReplicaCapacity *int32 `json:"replicaCapacity,omitempty"`
-
-	// The replication role of the server.
-	ReplicationRole *string `json:"replicationRole,omitempty"`
-
-	// Enable ssl enforcement or not when connect to server.
-	SSLEnforcement *SSLEnforcementEnum `json:"sslEnforcement,omitempty"`
-
-	// Storage profile of a server.
-	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
-
-	// A state of a server that is visible to user.
-	UserVisibleState *ServerState `json:"userVisibleState,omitempty"`
-
-	// Server version.
-	Version *ServerVersion `json:"version,omitempty"`
-
-	// READ-ONLY; Status showing whether the server data encryption is enabled with customer-managed keys.
-	ByokEnforcement *string `json:"byokEnforcement,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of private endpoint connections on a server
-	PrivateEndpointConnections []*ServerPrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
-}
-
-// ServerPropertiesForCreateClassification provides polymorphic access to related types.
-// Call the interface's GetServerPropertiesForCreate() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *ServerPropertiesForCreate, *ServerPropertiesForDefaultCreate, *ServerPropertiesForGeoRestore, *ServerPropertiesForReplica,
-// - *ServerPropertiesForRestore
-type ServerPropertiesForCreateClassification interface {
-	// GetServerPropertiesForCreate returns the ServerPropertiesForCreate content of the underlying type.
-	GetServerPropertiesForCreate() *ServerPropertiesForCreate
-}
-
-// ServerPropertiesForCreate - The properties used to create a new server.
-type ServerPropertiesForCreate struct {
-	// REQUIRED; The mode to create a new server.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
-
-	// Status showing whether the server enabled infrastructure encryption.
-	InfrastructureEncryption *InfrastructureEncryption `json:"infrastructureEncryption,omitempty"`
-
-	// Enforce a minimal Tls version for the server.
-	MinimalTLSVersion *MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
-
-	// Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'
-	PublicNetworkAccess *PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
-
-	// Enable ssl enforcement or not when connect to server.
-	SSLEnforcement *SSLEnforcementEnum `json:"sslEnforcement,omitempty"`
-
-	// Storage profile of a server.
-	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
-
-	// Server version.
-	Version *ServerVersion `json:"version,omitempty"`
-}
-
-// GetServerPropertiesForCreate implements the ServerPropertiesForCreateClassification interface for type ServerPropertiesForCreate.
-func (s *ServerPropertiesForCreate) GetServerPropertiesForCreate() *ServerPropertiesForCreate {
-	return s
-}
-
-// ServerPropertiesForDefaultCreate - The properties used to create a new server.
-type ServerPropertiesForDefaultCreate struct {
-	// REQUIRED; The administrator's login name of a server. Can only be specified when the server is being created (and is required
-	// for creation).
-	AdministratorLogin *string `json:"administratorLogin,omitempty"`
-
-	// REQUIRED; The password of the administrator login.
+	// The administrator login password (required for server creation).
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
 
-	// REQUIRED; The mode to create a new server.
+	// AuthConfig properties of a server.
+	AuthConfig *AuthConfig `json:"authConfig,omitempty"`
+
+	// availability zone information of the server.
+	AvailabilityZone *string `json:"availabilityZone,omitempty"`
+
+	// Backup properties of a server.
+	Backup *Backup `json:"backup,omitempty"`
+
+	// The mode to create a new PostgreSQL server.
 	CreateMode *CreateMode `json:"createMode,omitempty"`
 
-	// Status showing whether the server enabled infrastructure encryption.
-	InfrastructureEncryption *InfrastructureEncryption `json:"infrastructureEncryption,omitempty"`
+	// Data encryption properties of a server.
+	DataEncryption *DataEncryption `json:"dataEncryption,omitempty"`
 
-	// Enforce a minimal Tls version for the server.
-	MinimalTLSVersion *MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
+	// High availability properties of a server.
+	HighAvailability *HighAvailability `json:"highAvailability,omitempty"`
 
-	// Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'
-	PublicNetworkAccess *PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
+	// Maintenance window properties of a server.
+	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
 
-	// Enable ssl enforcement or not when connect to server.
-	SSLEnforcement *SSLEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// Network properties of a server.
+	Network *Network `json:"network,omitempty"`
 
-	// Storage profile of a server.
-	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
+	// Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when 'createMode' is 'PointInTimeRestore'
+	// or 'GeoRestore'.
+	PointInTimeUTC *time.Time `json:"pointInTimeUTC,omitempty"`
 
-	// Server version.
+	// Replicas allowed for a server.
+	ReplicaCapacity *int32 `json:"replicaCapacity,omitempty"`
+
+	// Replication role of the server
+	ReplicationRole *ReplicationRole `json:"replicationRole,omitempty"`
+
+	// The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'
+	// or 'Replica'.
+	SourceServerResourceID *string `json:"sourceServerResourceId,omitempty"`
+
+	// Storage properties of a server.
+	Storage *Storage `json:"storage,omitempty"`
+
+	// PostgreSQL Server version.
 	Version *ServerVersion `json:"version,omitempty"`
+
+	// READ-ONLY; The fully qualified domain name of a server.
+	FullyQualifiedDomainName *string `json:"fullyQualifiedDomainName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The minor version of the server.
+	MinorVersion *string `json:"minorVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; A state of a server that is visible to user.
+	State *ServerState `json:"state,omitempty" azure:"ro"`
 }
 
-// GetServerPropertiesForCreate implements the ServerPropertiesForCreateClassification interface for type ServerPropertiesForDefaultCreate.
-func (s *ServerPropertiesForDefaultCreate) GetServerPropertiesForCreate() *ServerPropertiesForCreate {
-	return &ServerPropertiesForCreate{
-		Version:                  s.Version,
-		SSLEnforcement:           s.SSLEnforcement,
-		MinimalTLSVersion:        s.MinimalTLSVersion,
-		InfrastructureEncryption: s.InfrastructureEncryption,
-		PublicNetworkAccess:      s.PublicNetworkAccess,
-		StorageProfile:           s.StorageProfile,
-		CreateMode:               s.CreateMode,
-	}
-}
-
-// ServerPropertiesForGeoRestore - The properties used to create a new server by restoring to a different region from a geo
-// replicated backup.
-type ServerPropertiesForGeoRestore struct {
-	// REQUIRED; The mode to create a new server.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
-
-	// REQUIRED; The source server id to restore from.
-	SourceServerID *string `json:"sourceServerId,omitempty"`
-
-	// Status showing whether the server enabled infrastructure encryption.
-	InfrastructureEncryption *InfrastructureEncryption `json:"infrastructureEncryption,omitempty"`
-
-	// Enforce a minimal Tls version for the server.
-	MinimalTLSVersion *MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
-
-	// Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'
-	PublicNetworkAccess *PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
-
-	// Enable ssl enforcement or not when connect to server.
-	SSLEnforcement *SSLEnforcementEnum `json:"sslEnforcement,omitempty"`
-
-	// Storage profile of a server.
-	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
-
-	// Server version.
-	Version *ServerVersion `json:"version,omitempty"`
-}
-
-// GetServerPropertiesForCreate implements the ServerPropertiesForCreateClassification interface for type ServerPropertiesForGeoRestore.
-func (s *ServerPropertiesForGeoRestore) GetServerPropertiesForCreate() *ServerPropertiesForCreate {
-	return &ServerPropertiesForCreate{
-		Version:                  s.Version,
-		SSLEnforcement:           s.SSLEnforcement,
-		MinimalTLSVersion:        s.MinimalTLSVersion,
-		InfrastructureEncryption: s.InfrastructureEncryption,
-		PublicNetworkAccess:      s.PublicNetworkAccess,
-		StorageProfile:           s.StorageProfile,
-		CreateMode:               s.CreateMode,
-	}
-}
-
-// ServerPropertiesForReplica - The properties to create a new replica.
-type ServerPropertiesForReplica struct {
-	// REQUIRED; The mode to create a new server.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
-
-	// REQUIRED; The master server id to create replica from.
-	SourceServerID *string `json:"sourceServerId,omitempty"`
-
-	// Status showing whether the server enabled infrastructure encryption.
-	InfrastructureEncryption *InfrastructureEncryption `json:"infrastructureEncryption,omitempty"`
-
-	// Enforce a minimal Tls version for the server.
-	MinimalTLSVersion *MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
-
-	// Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'
-	PublicNetworkAccess *PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
-
-	// Enable ssl enforcement or not when connect to server.
-	SSLEnforcement *SSLEnforcementEnum `json:"sslEnforcement,omitempty"`
-
-	// Storage profile of a server.
-	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
-
-	// Server version.
-	Version *ServerVersion `json:"version,omitempty"`
-}
-
-// GetServerPropertiesForCreate implements the ServerPropertiesForCreateClassification interface for type ServerPropertiesForReplica.
-func (s *ServerPropertiesForReplica) GetServerPropertiesForCreate() *ServerPropertiesForCreate {
-	return &ServerPropertiesForCreate{
-		Version:                  s.Version,
-		SSLEnforcement:           s.SSLEnforcement,
-		MinimalTLSVersion:        s.MinimalTLSVersion,
-		InfrastructureEncryption: s.InfrastructureEncryption,
-		PublicNetworkAccess:      s.PublicNetworkAccess,
-		StorageProfile:           s.StorageProfile,
-		CreateMode:               s.CreateMode,
-	}
-}
-
-// ServerPropertiesForRestore - The properties used to create a new server by restoring from a backup.
-type ServerPropertiesForRestore struct {
-	// REQUIRED; The mode to create a new server.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
-
-	// REQUIRED; Restore point creation time (ISO8601 format), specifying the time to restore from.
-	RestorePointInTime *time.Time `json:"restorePointInTime,omitempty"`
-
-	// REQUIRED; The source server id to restore from.
-	SourceServerID *string `json:"sourceServerId,omitempty"`
-
-	// Status showing whether the server enabled infrastructure encryption.
-	InfrastructureEncryption *InfrastructureEncryption `json:"infrastructureEncryption,omitempty"`
-
-	// Enforce a minimal Tls version for the server.
-	MinimalTLSVersion *MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
-
-	// Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'
-	PublicNetworkAccess *PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
-
-	// Enable ssl enforcement or not when connect to server.
-	SSLEnforcement *SSLEnforcementEnum `json:"sslEnforcement,omitempty"`
-
-	// Storage profile of a server.
-	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
-
-	// Server version.
-	Version *ServerVersion `json:"version,omitempty"`
-}
-
-// GetServerPropertiesForCreate implements the ServerPropertiesForCreateClassification interface for type ServerPropertiesForRestore.
-func (s *ServerPropertiesForRestore) GetServerPropertiesForCreate() *ServerPropertiesForCreate {
-	return &ServerPropertiesForCreate{
-		Version:                  s.Version,
-		SSLEnforcement:           s.SSLEnforcement,
-		MinimalTLSVersion:        s.MinimalTLSVersion,
-		InfrastructureEncryption: s.InfrastructureEncryption,
-		PublicNetworkAccess:      s.PublicNetworkAccess,
-		StorageProfile:           s.StorageProfile,
-		CreateMode:               s.CreateMode,
-	}
-}
-
-// ServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerSecurityAlertPoliciesClient.BeginCreateOrUpdate
-// method.
-type ServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ServerSecurityAlertPoliciesClientGetOptions contains the optional parameters for the ServerSecurityAlertPoliciesClient.Get
-// method.
-type ServerSecurityAlertPoliciesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServerSecurityAlertPoliciesClientListByServerOptions contains the optional parameters for the ServerSecurityAlertPoliciesClient.NewListByServerPager
-// method.
-type ServerSecurityAlertPoliciesClientListByServerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServerSecurityAlertPolicy - A server security alert policy.
-type ServerSecurityAlertPolicy struct {
-	// Resource properties.
-	Properties *SecurityAlertPolicyProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ServerSecurityAlertPolicyListResult - A list of the server's security alert policies.
-type ServerSecurityAlertPolicyListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Array of results.
-	Value []*ServerSecurityAlertPolicy `json:"value,omitempty" azure:"ro"`
-}
-
-// ServerUpdateParameters - Parameters allowed to update for a server.
-type ServerUpdateParameters struct {
-	// The Azure Active Directory identity of the server.
-	Identity *ResourceIdentity `json:"identity,omitempty"`
-
-	// The properties that can be updated for a server.
-	Properties *ServerUpdateParametersProperties `json:"properties,omitempty"`
-
-	// The SKU (pricing tier) of the server.
-	SKU *SKU `json:"sku,omitempty"`
-
-	// Application-specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// ServerUpdateParametersProperties - The properties that can be updated for a server.
-type ServerUpdateParametersProperties struct {
+type ServerPropertiesForUpdate struct {
 	// The password of the administrator login.
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
 
-	// Enforce a minimal Tls version for the server.
-	MinimalTLSVersion *MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
+	// AuthConfig properties of a server.
+	AuthConfig *AuthConfig `json:"authConfig,omitempty"`
 
-	// Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'
-	PublicNetworkAccess *PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
+	// Backup properties of a server.
+	Backup *Backup `json:"backup,omitempty"`
 
-	// The replication role of the server.
-	ReplicationRole *string `json:"replicationRole,omitempty"`
+	// The mode to update a new PostgreSQL server.
+	CreateMode *CreateModeForUpdate `json:"createMode,omitempty"`
 
-	// Enable ssl enforcement or not when connect to server.
-	SSLEnforcement *SSLEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// Data encryption properties of a server.
+	DataEncryption *DataEncryption `json:"dataEncryption,omitempty"`
 
-	// Storage profile of a server.
-	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
+	// High availability properties of a server.
+	HighAvailability *HighAvailability `json:"highAvailability,omitempty"`
 
-	// The version of a server.
+	// Maintenance window properties of a server.
+	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
+
+	// Replication role of the server
+	ReplicationRole *ReplicationRole `json:"replicationRole,omitempty"`
+
+	// Storage properties of a server.
+	Storage *Storage `json:"storage,omitempty"`
+
+	// PostgreSQL Server version.
 	Version *ServerVersion `json:"version,omitempty"`
+}
+
+// ServerVersionCapability - Server version capabilities.
+type ServerVersionCapability struct {
+	// READ-ONLY; server version
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	SupportedVcores []*VcoreCapability `json:"supportedVcores,omitempty" azure:"ro"`
+
+	// READ-ONLY; Supported servers versions to upgrade
+	SupportedVersionsToUpgrade []*string `json:"supportedVersionsToUpgrade,omitempty" azure:"ro"`
 }
 
 // ServersClientBeginCreateOptions contains the optional parameters for the ServersClient.BeginCreate method.
@@ -1219,6 +911,20 @@ type ServersClientBeginDeleteOptions struct {
 
 // ServersClientBeginRestartOptions contains the optional parameters for the ServersClient.BeginRestart method.
 type ServersClientBeginRestartOptions struct {
+	// The parameters for restarting a server.
+	Parameters *RestartParameter
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServersClientBeginStartOptions contains the optional parameters for the ServersClient.BeginStart method.
+type ServersClientBeginStartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServersClientBeginStopOptions contains the optional parameters for the ServersClient.BeginStop method.
+type ServersClientBeginStopOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1245,25 +951,78 @@ type ServersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageProfile - Storage Profile properties of a server
-type StorageProfile struct {
-	// Backup retention days for the server.
-	BackupRetentionDays *int32 `json:"backupRetentionDays,omitempty"`
-
-	// Enable Geo-redundant or not for server backup.
-	GeoRedundantBackup *GeoRedundantBackup `json:"geoRedundantBackup,omitempty"`
-
-	// Enable Storage Auto Grow.
-	StorageAutogrow *StorageAutogrow `json:"storageAutogrow,omitempty"`
-
+// Storage properties of a server
+type Storage struct {
 	// Max storage allowed for a server.
-	StorageMB *int32 `json:"storageMB,omitempty"`
+	StorageSizeGB *int32 `json:"storageSizeGB,omitempty"`
 }
 
-// TagsObject - Tags object for patch operations.
-type TagsObject struct {
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+// StorageEditionCapability - storage edition capability
+type StorageEditionCapability struct {
+	// READ-ONLY; storage edition name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	SupportedStorageMB []*StorageMBCapability `json:"supportedStorageMB,omitempty" azure:"ro"`
+}
+
+// StorageMBCapability - storage size in MB capability
+type StorageMBCapability struct {
+	// READ-ONLY; storage MB name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; storage size in MB
+	StorageSizeMB *int64 `json:"storageSizeMB,omitempty" azure:"ro"`
+
+	// READ-ONLY; supported IOPS
+	SupportedIops *int64 `json:"supportedIops,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	SupportedUpgradableTierList []*StorageTierCapability `json:"supportedUpgradableTierList,omitempty" azure:"ro"`
+}
+
+type StorageTierCapability struct {
+	// READ-ONLY; Supported IOPS for this storage tier
+	Iops *int64 `json:"iops,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicates if this is a baseline storage tier or not
+	IsBaseline *bool `json:"isBaseline,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name to represent Storage tier capability
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status os this storage tier
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; Storage tier name
+	TierName *string `json:"tierName,omitempty" azure:"ro"`
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
@@ -1281,67 +1040,69 @@ type TrackedResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// VirtualNetworkRule - A virtual network rule.
-type VirtualNetworkRule struct {
-	// Resource properties.
-	Properties *VirtualNetworkRuleProperties `json:"properties,omitempty"`
+// UserAssignedIdentity - Information describing the identities associated with this application.
+type UserAssignedIdentity struct {
+	// REQUIRED; the types of identities associated with this resource; currently restricted to 'SystemAssigned and UserAssigned'
+	Type *IdentityType `json:"type,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	// represents user assigned identities map.
+	UserAssignedIdentities map[string]*UserIdentity `json:"userAssignedIdentities,omitempty"`
+}
 
-	// READ-ONLY; The name of the resource
+// UserIdentity - Describes a single user-assigned identity associated with the application.
+type UserIdentity struct {
+	// the client identifier of the Service Principal which this identity represents.
+	ClientID *string `json:"clientId,omitempty"`
+
+	// the object identifier of the Service Principal which this identity represents.
+	PrincipalID *string `json:"principalId,omitempty"`
+}
+
+// VcoreCapability - Vcores capability
+type VcoreCapability struct {
+	// READ-ONLY; vCore name
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	// READ-ONLY; The status
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; supported IOPS
+	SupportedIops *int64 `json:"supportedIops,omitempty" azure:"ro"`
+
+	// READ-ONLY; supported memory per vCore in MB
+	SupportedMemoryPerVcoreMB *int64 `json:"supportedMemoryPerVcoreMB,omitempty" azure:"ro"`
+
+	// READ-ONLY; supported vCores
+	VCores *int64 `json:"vCores,omitempty" azure:"ro"`
 }
 
-// VirtualNetworkRuleListResult - A list of virtual network rules.
-type VirtualNetworkRuleListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Array of results.
-	Value []*VirtualNetworkRule `json:"value,omitempty" azure:"ro"`
-}
-
-// VirtualNetworkRuleProperties - Properties of a virtual network rule.
-type VirtualNetworkRuleProperties struct {
-	// REQUIRED; The ARM resource id of the virtual network subnet.
-	VirtualNetworkSubnetID *string `json:"virtualNetworkSubnetId,omitempty"`
-
-	// Create firewall rule before the virtual network has vnet service endpoint enabled.
-	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
-
-	// READ-ONLY; Virtual Network Rule State
-	State *VirtualNetworkRuleState `json:"state,omitempty" azure:"ro"`
-}
-
-// VirtualNetworkRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkRulesClient.BeginCreateOrUpdate
+// VirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the VirtualNetworkSubnetUsageClient.Execute
 // method.
-type VirtualNetworkRulesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// VirtualNetworkRulesClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkRulesClient.BeginDelete
-// method.
-type VirtualNetworkRulesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// VirtualNetworkRulesClientGetOptions contains the optional parameters for the VirtualNetworkRulesClient.Get method.
-type VirtualNetworkRulesClientGetOptions struct {
+type VirtualNetworkSubnetUsageClientExecuteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkRulesClientListByServerOptions contains the optional parameters for the VirtualNetworkRulesClient.NewListByServerPager
-// method.
-type VirtualNetworkRulesClientListByServerOptions struct {
-	// placeholder for future optional parameters
+// VirtualNetworkSubnetUsageParameter - Virtual network subnet usage parameter
+type VirtualNetworkSubnetUsageParameter struct {
+	// Virtual network resource id.
+	VirtualNetworkArmResourceID *string `json:"virtualNetworkArmResourceId,omitempty"`
+}
+
+// VirtualNetworkSubnetUsageResult - Virtual network subnet usage data.
+type VirtualNetworkSubnetUsageResult struct {
+	// READ-ONLY
+	DelegatedSubnetsUsage []*DelegatedSubnetUsage `json:"delegatedSubnetsUsage,omitempty" azure:"ro"`
+
+	// READ-ONLY; location of the delegated subnet usage
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; subscriptionId of the delegated subnet usage
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 }

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/FirewallRuleCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/FirewallRuleCreate.json
 func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFirewallRulesClient().BeginCreateOrUpdate(ctx, "TestGroup", "testserver", "rule1", armpostgresql.FirewallRule{
+	poller, err := clientFactory.NewFirewallRulesClient().BeginCreateOrUpdate(ctx, "testrg", "testserver", "rule1", armpostgresql.FirewallRule{
 		Properties: &armpostgresql.FirewallRuleProperties{
 			EndIPAddress:   to.Ptr("255.255.255.255"),
 			StartIPAddress: to.Ptr("0.0.0.0"),
@@ -47,8 +47,8 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.FirewallRule = armpostgresql.FirewallRule{
 	// 	Name: to.Ptr("rule1"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/servers/firewallRules"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/servers/testserver/firewallRules/rule1"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/firewallRules"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/testserver/firewallRules/rule1"),
 	// 	Properties: &armpostgresql.FirewallRuleProperties{
 	// 		EndIPAddress: to.Ptr("255.255.255.255"),
 	// 		StartIPAddress: to.Ptr("0.0.0.0"),
@@ -56,7 +56,7 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/FirewallRuleDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/FirewallRuleDelete.json
 func ExampleFirewallRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFirewallRulesClient().BeginDelete(ctx, "TestGroup", "testserver", "rule1", nil)
+	poller, err := clientFactory.NewFirewallRulesClient().BeginDelete(ctx, "testrg", "testserver", "rule1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -77,7 +77,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/FirewallRuleGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/FirewallRuleGet.json
 func ExampleFirewallRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleFirewallRulesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewFirewallRulesClient().Get(ctx, "TestGroup", "testserver", "rule1", nil)
+	res, err := clientFactory.NewFirewallRulesClient().Get(ctx, "testrg", "testserver", "rule1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -97,8 +97,8 @@ func ExampleFirewallRulesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.FirewallRule = armpostgresql.FirewallRule{
 	// 	Name: to.Ptr("rule1"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/servers/firewallRules"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/servers/testserver/firewallRules/rule1"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/firewallRules"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/testserver/firewallRules/rule1"),
 	// 	Properties: &armpostgresql.FirewallRuleProperties{
 	// 		EndIPAddress: to.Ptr("255.255.255.255"),
 	// 		StartIPAddress: to.Ptr("0.0.0.0"),
@@ -106,7 +106,7 @@ func ExampleFirewallRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/FirewallRuleListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/FirewallRuleListByServer.json
 func ExampleFirewallRulesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleFirewallRulesClient_NewListByServerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFirewallRulesClient().NewListByServerPager("TestGroup", "testserver", nil)
+	pager := clientFactory.NewFirewallRulesClient().NewListByServerPager("testrg", "testserver", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -132,8 +132,8 @@ func ExampleFirewallRulesClient_NewListByServerPager() {
 		// 	Value: []*armpostgresql.FirewallRule{
 		// 		{
 		// 			Name: to.Ptr("rule1"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers/firewallRules"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/servers/testserver/firewallRules/rule1"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/firewallRules"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/testserver/firewallRules/rule1"),
 		// 			Properties: &armpostgresql.FirewallRuleProperties{
 		// 				EndIPAddress: to.Ptr("255.255.255.255"),
 		// 				StartIPAddress: to.Ptr("0.0.0.0"),
@@ -141,8 +141,8 @@ func ExampleFirewallRulesClient_NewListByServerPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("rule2"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers/firewallRules"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/servers/testserver/firewallRules/rule2"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/firewallRules"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/testserver/firewallRules/rule2"),
 		// 			Properties: &armpostgresql.FirewallRuleProperties{
 		// 				EndIPAddress: to.Ptr("255.0.0.0"),
 		// 				StartIPAddress: to.Ptr("1.0.0.0"),

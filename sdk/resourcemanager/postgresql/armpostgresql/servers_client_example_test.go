@@ -17,10 +17,90 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerCreatePointInTimeRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateGeoRestore.json
+func ExampleServersClient_BeginCreate_createADatabaseAsAGeoRestoreInGeoPairedLocation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginCreate(ctx, "testrg", "pgtestsvc5geo", armpostgresql.Server{
+		Location: to.Ptr("eastus"),
+		Properties: &armpostgresql.ServerProperties{
+			CreateMode:             to.Ptr(armpostgresql.CreateModeGeoRestore),
+			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.4078005+00:00"); return t }()),
+			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresql.Server{
+	// 	Name: to.Ptr("pgtestsvc5geo"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc5geo"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("2"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.7279547+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumEnabled),
+	// 		},
+	// 		DataEncryption: &armpostgresql.DataEncryption{
+	// 			Type: to.Ptr(armpostgresql.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc5geo.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeDisabled),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateNotEnabled),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateEnabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](512),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresql.SKU{
+	// 		Name: to.Ptr("Standard_D4s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreatePointInTimeRestore.json
 func ExampleServersClient_BeginCreate_createADatabaseAsAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,21 +111,12 @@ func ExampleServersClient_BeginCreate_createADatabaseAsAPointInTimeRestore() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServersClient().BeginCreate(ctx, "TargetResourceGroup", "targetserver", armpostgresql.ServerForCreate{
-		Location: to.Ptr("brazilsouth"),
-		Properties: &armpostgresql.ServerPropertiesForRestore{
-			CreateMode:         to.Ptr(armpostgresql.CreateModePointInTimeRestore),
-			RestorePointInTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-14T00:00:37.467Z"); return t }()),
-			SourceServerID:     to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/SourceResourceGroup/providers/Microsoft.DBforPostgreSQL/servers/sourceserver"),
-		},
-		SKU: &armpostgresql.SKU{
-			Name:     to.Ptr("B_Gen5_2"),
-			Capacity: to.Ptr[int32](2),
-			Family:   to.Ptr("Gen5"),
-			Tier:     to.Ptr(armpostgresql.SKUTierBasic),
-		},
-		Tags: map[string]*string{
-			"ElasticServer": to.Ptr("1"),
+	poller, err := clientFactory.NewServersClient().BeginCreate(ctx, "testrg", "pgtestsvc5", armpostgresql.Server{
+		Location: to.Ptr("westus"),
+		Properties: &armpostgresql.ServerProperties{
+			CreateMode:             to.Ptr(armpostgresql.CreateModePointInTimeRestore),
+			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.4078005+00:00"); return t }()),
+			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
 		},
 	}, nil)
 	if err != nil {
@@ -59,36 +130,57 @@ func ExampleServersClient_BeginCreate_createADatabaseAsAPointInTimeRestore() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Server = armpostgresql.Server{
-	// 	Name: to.Ptr("targetserver"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/targetserver"),
-	// 	Location: to.Ptr("brazilsouth"),
+	// 	Name: to.Ptr("pgtestsvc5"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc5"),
+	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"ElasticServer": to.Ptr("1"),
 	// 	},
 	// 	Properties: &armpostgresql.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-14T21:08:24.637+00:00"); return t}()),
-	// 		FullyQualifiedDomainName: to.Ptr("targetserver.postgres.database.azure.com"),
-	// 		SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-	// 		StorageProfile: &armpostgresql.StorageProfile{
-	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-	// 			StorageMB: to.Ptr[int32](128000),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
 	// 		},
-	// 		UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-	// 		Version: to.Ptr(armpostgresql.ServerVersionNine6),
+	// 		AvailabilityZone: to.Ptr("2"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.7279547+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresql.DataEncryption{
+	// 			Type: to.Ptr(armpostgresql.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc5.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeDisabled),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateNotEnabled),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateEnabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](512),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
 	// 	},
 	// 	SKU: &armpostgresql.SKU{
-	// 		Name: to.Ptr("B_Gen5_2"),
-	// 		Capacity: to.Ptr[int32](2),
-	// 		Family: to.Ptr("Gen5"),
-	// 		Tier: to.Ptr(armpostgresql.SKUTierBasic),
+	// 		Name: to.Ptr("Standard_D4s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreate.json
 func ExampleServersClient_BeginCreate_createANewServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,28 +191,35 @@ func ExampleServersClient_BeginCreate_createANewServer() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServersClient().BeginCreate(ctx, "TestGroup", "pgtestsvc4", armpostgresql.ServerForCreate{
+	poller, err := clientFactory.NewServersClient().BeginCreate(ctx, "testrg", "pgtestsvc4", armpostgresql.Server{
 		Location: to.Ptr("westus"),
-		Properties: &armpostgresql.ServerPropertiesForDefaultCreate{
-			CreateMode:        to.Ptr(armpostgresql.CreateModeDefault),
-			MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
-			SSLEnforcement:    to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-			StorageProfile: &armpostgresql.StorageProfile{
-				BackupRetentionDays: to.Ptr[int32](7),
-				GeoRedundantBackup:  to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-				StorageMB:           to.Ptr[int32](128000),
-			},
+		Tags: map[string]*string{
+			"ElasticServer": to.Ptr("1"),
+		},
+		Properties: &armpostgresql.ServerProperties{
 			AdministratorLogin:         to.Ptr("cloudsa"),
-			AdministratorLoginPassword: to.Ptr("<administratorLoginPassword>"),
+			AdministratorLoginPassword: to.Ptr("password"),
+			AvailabilityZone:           to.Ptr("1"),
+			Backup: &armpostgresql.Backup{
+				BackupRetentionDays: to.Ptr[int32](7),
+				GeoRedundantBackup:  to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+			},
+			CreateMode: to.Ptr(armpostgresql.CreateModeCreate),
+			HighAvailability: &armpostgresql.HighAvailability{
+				Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+			},
+			Network: &armpostgresql.Network{
+				DelegatedSubnetResourceID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+				PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourcegroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+			},
+			Storage: &armpostgresql.Storage{
+				StorageSizeGB: to.Ptr[int32](512),
+			},
+			Version: to.Ptr(armpostgresql.ServerVersionTwelve),
 		},
 		SKU: &armpostgresql.SKU{
-			Name:     to.Ptr("B_Gen5_2"),
-			Capacity: to.Ptr[int32](2),
-			Family:   to.Ptr("Gen5"),
-			Tier:     to.Ptr(armpostgresql.SKUTierBasic),
-		},
-		Tags: map[string]*string{
-			"ElasticServer": to.Ptr("1"),
+			Name: to.Ptr("Standard_D4s_v3"),
+			Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		},
 	}, nil)
 	if err != nil {
@@ -135,100 +234,60 @@ func ExampleServersClient_BeginCreate_createANewServer() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Server = armpostgresql.Server{
 	// 	Name: to.Ptr("pgtestsvc4"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc4"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"ElasticServer": to.Ptr("1"),
 	// 	},
 	// 	Properties: &armpostgresql.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637+00:00"); return t}()),
-	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc4.postgres.database.azure.com"),
-	// 		SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-	// 		StorageProfile: &armpostgresql.StorageProfile{
-	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-	// 			StorageMB: to.Ptr[int32](128000),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
 	// 		},
-	// 		UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-	// 		Version: to.Ptr(armpostgresql.ServerVersionNine6),
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:08:06.7197478+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresql.DataEncryption{
+	// 			Type: to.Ptr(armpostgresql.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](512),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
 	// 	},
 	// 	SKU: &armpostgresql.SKU{
-	// 		Name: to.Ptr("B_Gen5_2"),
-	// 		Capacity: to.Ptr[int32](2),
-	// 		Family: to.Ptr("Gen5"),
-	// 		Tier: to.Ptr(armpostgresql.SKUTierBasic),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerCreateReplicaMode.json
-func ExampleServersClient_BeginCreate_createAReplicaServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginCreate(ctx, "TestGroup_WestCentralUS", "testserver-replica1", armpostgresql.ServerForCreate{
-		Location: to.Ptr("westcentralus"),
-		Properties: &armpostgresql.ServerPropertiesForReplica{
-			CreateMode:     to.Ptr(armpostgresql.CreateModeReplica),
-			SourceServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
-		},
-		SKU: &armpostgresql.SKU{
-			Name:     to.Ptr("GP_Gen5_2"),
-			Capacity: to.Ptr[int32](2),
-			Family:   to.Ptr("Gen5"),
-			Tier:     to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Server = armpostgresql.Server{
-	// 	Name: to.Ptr("testserver-replica1"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-replica1"),
-	// 	Location: to.Ptr("westcentralus"),
-	// 	Properties: &armpostgresql.ServerProperties{
-	// 		AdministratorLogin: to.Ptr("postgres"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-20T00:17:56.677+00:00"); return t}()),
-	// 		FullyQualifiedDomainName: to.Ptr("testserver-replica1.postgres.database.azure.com"),
-	// 		MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
-	// 		ReplicaCapacity: to.Ptr[int32](0),
-	// 		ReplicationRole: to.Ptr("Replica"),
-	// 		SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumDisabled),
-	// 		StorageProfile: &armpostgresql.StorageProfile{
-	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-	// 			StorageMB: to.Ptr[int32](2048000),
-	// 		},
-	// 		UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-	// 		Version: to.Ptr(armpostgresql.ServerVersionNine6),
-	// 	},
-	// 	SKU: &armpostgresql.SKU{
-	// 		Name: to.Ptr("GP_Gen5_2"),
-	// 		Capacity: to.Ptr[int32](2),
-	// 		Family: to.Ptr("Gen4"),
+	// 		Name: to.Ptr("Standard_D4s_v3"),
 	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerCreateGeoRestoreMode.json
-func ExampleServersClient_BeginCreate_createAServerAsAGeoRestore() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateWithAadAuthEnabled.json
+func ExampleServersClient_BeginCreate_createANewServerWithActiveDirectoryAuthenticationEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -238,78 +297,43 @@ func ExampleServersClient_BeginCreate_createAServerAsAGeoRestore() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServersClient().BeginCreate(ctx, "TargetResourceGroup", "targetserver", armpostgresql.ServerForCreate{
+	poller, err := clientFactory.NewServersClient().BeginCreate(ctx, "testrg", "pgtestsvc4", armpostgresql.Server{
 		Location: to.Ptr("westus"),
-		Properties: &armpostgresql.ServerPropertiesForGeoRestore{
-			CreateMode:     to.Ptr(armpostgresql.CreateModeGeoRestore),
-			SourceServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/SourceResourceGroup/providers/Microsoft.DBforPostgreSQL/servers/sourceserver"),
-		},
-		SKU: &armpostgresql.SKU{
-			Name:     to.Ptr("GP_Gen5_2"),
-			Capacity: to.Ptr[int32](2),
-			Family:   to.Ptr("Gen5"),
-			Tier:     to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-		},
 		Tags: map[string]*string{
 			"ElasticServer": to.Ptr("1"),
 		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Server = armpostgresql.Server{
-	// 	Name: to.Ptr("targetserver"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/targetserver"),
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 		"ElasticServer": to.Ptr("1"),
-	// 	},
-	// 	Properties: &armpostgresql.ServerProperties{
-	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637+00:00"); return t}()),
-	// 		FullyQualifiedDomainName: to.Ptr("targetserver.postgres.database.azure.com"),
-	// 		SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-	// 		StorageProfile: &armpostgresql.StorageProfile{
-	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-	// 			StorageMB: to.Ptr[int32](128000),
-	// 		},
-	// 		UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-	// 		Version: to.Ptr(armpostgresql.ServerVersionNine6),
-	// 	},
-	// 	SKU: &armpostgresql.SKU{
-	// 		Name: to.Ptr("GP_Gen5_2"),
-	// 		Capacity: to.Ptr[int32](2),
-	// 		Family: to.Ptr("Gen5"),
-	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerUpdate.json
-func ExampleServersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "testrg", "pgtestsvc4", armpostgresql.ServerUpdateParameters{
-		Properties: &armpostgresql.ServerUpdateParametersProperties{
-			AdministratorLoginPassword: to.Ptr("<administratorLoginPassword>"),
-			MinimalTLSVersion:          to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
-			SSLEnforcement:             to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
+		Properties: &armpostgresql.ServerProperties{
+			AdministratorLogin:         to.Ptr("cloudsa"),
+			AdministratorLoginPassword: to.Ptr("password"),
+			AuthConfig: &armpostgresql.AuthConfig{
+				ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumEnabled),
+				PasswordAuth:        to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+				TenantID:            to.Ptr("tttttt-tttt-tttt-tttt-tttttttttttt"),
+			},
+			AvailabilityZone: to.Ptr("1"),
+			Backup: &armpostgresql.Backup{
+				BackupRetentionDays: to.Ptr[int32](7),
+				GeoRedundantBackup:  to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+			},
+			CreateMode: to.Ptr(armpostgresql.CreateModeCreate),
+			DataEncryption: &armpostgresql.DataEncryption{
+				Type: to.Ptr(armpostgresql.ArmServerKeyTypeSystemManaged),
+			},
+			HighAvailability: &armpostgresql.HighAvailability{
+				Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+			},
+			Network: &armpostgresql.Network{
+				DelegatedSubnetResourceID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+				PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourcegroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+			},
+			Storage: &armpostgresql.Storage{
+				StorageSizeGB: to.Ptr[int32](512),
+			},
+			Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+		},
+		SKU: &armpostgresql.SKU{
+			Name: to.Ptr("Standard_D4s_v3"),
+			Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		},
 	}, nil)
 	if err != nil {
@@ -324,36 +348,739 @@ func ExampleServersClient_BeginUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Server = armpostgresql.Server{
 	// 	Name: to.Ptr("pgtestsvc4"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc4"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"ElasticServer": to.Ptr("1"),
 	// 	},
 	// 	Properties: &armpostgresql.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637+00:00"); return t}()),
-	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc4.postgres.database.azure.com"),
-	// 		MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
-	// 		SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-	// 		StorageProfile: &armpostgresql.StorageProfile{
-	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-	// 			StorageMB: to.Ptr[int32](128000),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumEnabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+	// 			TenantID: to.Ptr("tttttt-tttt-tttt-tttt-tttttttttttt"),
 	// 		},
-	// 		UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-	// 		Version: to.Ptr(armpostgresql.ServerVersionNine6),
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:08:06.7197478+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](512),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
 	// 	},
 	// 	SKU: &armpostgresql.SKU{
-	// 		Name: to.Ptr("B_Gen4_2"),
-	// 		Capacity: to.Ptr[int32](2),
-	// 		Family: to.Ptr("Gen4"),
-	// 		Tier: to.Ptr(armpostgresql.SKUTierBasic),
+	// 		Name: to.Ptr("Standard_D4s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateReplica.json
+func ExampleServersClient_BeginCreate_serverCreateReplica() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginCreate(ctx, "testrg", "pgtestsvc5rep", armpostgresql.Server{
+		Location: to.Ptr("westus"),
+		Properties: &armpostgresql.ServerProperties{
+			CreateMode:             to.Ptr(armpostgresql.CreateModeReplica),
+			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.4078005+00:00"); return t }()),
+			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresql.Server{
+	// 	Name: to.Ptr("pgtestsvc5rep"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc5rep"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("2"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.7279547+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresql.DataEncryption{
+	// 			Type: to.Ptr(armpostgresql.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc5rep.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeDisabled),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateNotEnabled),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateEnabled),
+	// 		},
+	// 		ReplicaCapacity: to.Ptr[int32](0),
+	// 		ReplicationRole: to.Ptr(armpostgresql.ReplicationRoleAsyncReplica),
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](512),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresql.SKU{
+	// 		Name: to.Ptr("Standard_D4s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateWithDataEncryptionEnabled.json
+func ExampleServersClient_BeginCreate_serverCreateWithDataEncryptionEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginCreate(ctx, "testrg", "pgtestsvc4", armpostgresql.Server{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"ElasticServer": to.Ptr("1"),
+		},
+		Identity: &armpostgresql.UserAssignedIdentity{
+			Type: to.Ptr(armpostgresql.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armpostgresql.UserIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity": {},
+			},
+		},
+		Properties: &armpostgresql.ServerProperties{
+			AdministratorLogin:         to.Ptr("cloudsa"),
+			AdministratorLoginPassword: to.Ptr("password"),
+			AvailabilityZone:           to.Ptr("1"),
+			Backup: &armpostgresql.Backup{
+				BackupRetentionDays: to.Ptr[int32](7),
+				GeoRedundantBackup:  to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+			},
+			CreateMode: to.Ptr(armpostgresql.CreateModeCreate),
+			DataEncryption: &armpostgresql.DataEncryption{
+				Type:                          to.Ptr(armpostgresql.ArmServerKeyTypeAzureKeyVault),
+				PrimaryKeyURI:                 to.Ptr("https://test-kv.vault.azure.net/keys/test-key1/77f57315bab34b0189daa113fbc78787"),
+				PrimaryUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity"),
+			},
+			HighAvailability: &armpostgresql.HighAvailability{
+				Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+			},
+			Network: &armpostgresql.Network{
+				DelegatedSubnetResourceID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+				PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourcegroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+			},
+			Storage: &armpostgresql.Storage{
+				StorageSizeGB: to.Ptr[int32](512),
+			},
+			Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+		},
+		SKU: &armpostgresql.SKU{
+			Name: to.Ptr("Standard_D4s_v3"),
+			Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresql.Server{
+	// 	Name: to.Ptr("pgtestsvc4"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Identity: &armpostgresql.UserAssignedIdentity{
+	// 		Type: to.Ptr(armpostgresql.IdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armpostgresql.UserIdentity{
+	// 			"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity": &armpostgresql.UserIdentity{
+	// 				ClientID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 				PrincipalID: to.Ptr("0a4e0c6e-7751-4078-ae1f-a477306c11e9"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Properties: &armpostgresql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumEnabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:08:06.7197478+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresql.DataEncryption{
+	// 			Type: to.Ptr(armpostgresql.ArmServerKeyTypeAzureKeyVault),
+	// 			PrimaryKeyURI: to.Ptr("https://test-kv.vault.azure.net/keys/test-key1/77f57315bab34b0189daa113fbc78787"),
+	// 			PrimaryUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity"),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](512),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresql.SKU{
+	// 		Name: to.Ptr("Standard_D4s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdate.json
+func ExampleServersClient_BeginUpdate_serverUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "TestGroup", "pgtestsvc4", armpostgresql.ServerForUpdate{
+		Properties: &armpostgresql.ServerPropertiesForUpdate{
+			AdministratorLoginPassword: to.Ptr("newpassword"),
+			Backup: &armpostgresql.Backup{
+				BackupRetentionDays: to.Ptr[int32](20),
+			},
+			CreateMode: to.Ptr(armpostgresql.CreateModeForUpdateUpdate),
+			Storage: &armpostgresql.Storage{
+				StorageSizeGB: to.Ptr[int32](1024),
+			},
+		},
+		SKU: &armpostgresql.SKU{
+			Name: to.Ptr("Standard_D8s_v3"),
+			Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresql.Server{
+	// 	Name: to.Ptr("pgtestsvc4"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](20),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresql.DataEncryption{
+	// 			Type: to.Ptr(armpostgresql.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](1024),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresql.SKU{
+	// 		Name: to.Ptr("Standard_D8s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithAadAuthEnabled.json
+func ExampleServersClient_BeginUpdate_serverUpdateWithAadAuthEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "TestGroup", "pgtestsvc4", armpostgresql.ServerForUpdate{
+		Properties: &armpostgresql.ServerPropertiesForUpdate{
+			AdministratorLoginPassword: to.Ptr("newpassword"),
+			AuthConfig: &armpostgresql.AuthConfig{
+				ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumEnabled),
+				PasswordAuth:        to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+				TenantID:            to.Ptr("tttttt-tttt-tttt-tttt-tttttttttttt"),
+			},
+			Backup: &armpostgresql.Backup{
+				BackupRetentionDays: to.Ptr[int32](20),
+			},
+			CreateMode: to.Ptr(armpostgresql.CreateModeForUpdateUpdate),
+			Storage: &armpostgresql.Storage{
+				StorageSizeGB: to.Ptr[int32](1024),
+			},
+		},
+		SKU: &armpostgresql.SKU{
+			Name: to.Ptr("Standard_D8s_v3"),
+			Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresql.Server{
+	// 	Name: to.Ptr("pgtestsvc4"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumEnabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+	// 			TenantID: to.Ptr("tttttt-tttt-tttt-tttt-tttttttttttt"),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](20),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresql.DataEncryption{
+	// 			Type: to.Ptr(armpostgresql.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](1024),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresql.SKU{
+	// 		Name: to.Ptr("Standard_D8s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithCustomerMaintenanceWindow.json
+func ExampleServersClient_BeginUpdate_serverUpdateWithCustomerMaintenanceWindow() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "testrg", "pgtestsvc4", armpostgresql.ServerForUpdate{
+		Properties: &armpostgresql.ServerPropertiesForUpdate{
+			CreateMode: to.Ptr(armpostgresql.CreateModeForUpdateUpdate),
+			MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+				CustomWindow: to.Ptr("Enabled"),
+				DayOfWeek:    to.Ptr[int32](0),
+				StartHour:    to.Ptr[int32](8),
+				StartMinute:  to.Ptr[int32](0),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresql.Server{
+	// 	Name: to.Ptr("pgtestsvc4"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresql.DataEncryption{
+	// 			Type: to.Ptr(armpostgresql.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Enabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](8),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](512),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresql.SKU{
+	// 		Name: to.Ptr("Standard_D4s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithDataEncryptionEnabled.json
+func ExampleServersClient_BeginUpdate_serverUpdateWithDataEncryptionEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "TestGroup", "pgtestsvc4", armpostgresql.ServerForUpdate{
+		Identity: &armpostgresql.UserAssignedIdentity{
+			Type: to.Ptr(armpostgresql.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armpostgresql.UserIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity": {},
+			},
+		},
+		Properties: &armpostgresql.ServerPropertiesForUpdate{
+			AdministratorLoginPassword: to.Ptr("newpassword"),
+			Backup: &armpostgresql.Backup{
+				BackupRetentionDays: to.Ptr[int32](20),
+			},
+			CreateMode: to.Ptr(armpostgresql.CreateModeForUpdateUpdate),
+			DataEncryption: &armpostgresql.DataEncryption{
+				Type:                          to.Ptr(armpostgresql.ArmServerKeyTypeAzureKeyVault),
+				PrimaryKeyURI:                 to.Ptr("https://test-kv.vault.azure.net/keys/test-key1/77f57315bab34b0189daa113fbc78787"),
+				PrimaryUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity"),
+			},
+			Storage: &armpostgresql.Storage{
+				StorageSizeGB: to.Ptr[int32](1024),
+			},
+		},
+		SKU: &armpostgresql.SKU{
+			Name: to.Ptr("Standard_D8s_v3"),
+			Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresql.Server{
+	// 	Name: to.Ptr("pgtestsvc4"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Identity: &armpostgresql.UserAssignedIdentity{
+	// 		Type: to.Ptr(armpostgresql.IdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armpostgresql.UserIdentity{
+	// 			"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity": &armpostgresql.UserIdentity{
+	// 				ClientID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 				PrincipalID: to.Ptr("0a4e0c6e-7751-4078-ae1f-a477306c11e9"),
+	// 			},
+	// 			"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity-1": &armpostgresql.UserIdentity{
+	// 				ClientID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 				PrincipalID: to.Ptr("90008082-e024-4cc3-8fcf-63bcdb9cf6b6"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Properties: &armpostgresql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](20),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresql.DataEncryption{
+	// 			Type: to.Ptr(armpostgresql.ArmServerKeyTypeAzureKeyVault),
+	// 			PrimaryKeyURI: to.Ptr("https://test-kv.vault.azure.net/keys/test-key1/77f57315bab34b0189daa113fbc78787"),
+	// 			PrimaryUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity"),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](1024),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresql.SKU{
+	// 		Name: to.Ptr("Standard_D8s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithMajorVersionUpgrade.json
+func ExampleServersClient_BeginUpdate_serverUpdateWithMajorVersionUpgrade() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "testrg", "pgtestsvc4", armpostgresql.ServerForUpdate{
+		Properties: &armpostgresql.ServerPropertiesForUpdate{
+			CreateMode: to.Ptr(armpostgresql.CreateModeForUpdateUpdate),
+			Version:    to.Ptr(armpostgresql.ServerVersionFourteen),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresql.Server{
+	// 	Name: to.Ptr("pgtestsvc4"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresql.DataEncryption{
+	// 			Type: to.Ptr(armpostgresql.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](512),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionFourteen),
+	// 	},
+	// 	SKU: &armpostgresql.SKU{
+	// 		Name: to.Ptr("Standard_D4s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerDelete.json
 func ExampleServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -364,7 +1091,7 @@ func ExampleServersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServersClient().BeginDelete(ctx, "TestGroup", "testserver", nil)
+	poller, err := clientFactory.NewServersClient().BeginDelete(ctx, "testrg", "testserver", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -374,8 +1101,8 @@ func ExampleServersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerGet.json
-func ExampleServersClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerGet.json
+func ExampleServersClient_Get_serverGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -394,51 +1121,122 @@ func ExampleServersClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Server = armpostgresql.Server{
 	// 	Name: to.Ptr("pgtestsvc1"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc1"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc1"),
 	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
 	// 	Properties: &armpostgresql.ServerProperties{
-	// 		AdministratorLogin: to.Ptr("testuser"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-04T21:00:58.9243541+00:00"); return t}()),
-	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
-	// 		MasterServerID: to.Ptr(""),
-	// 		MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
-	// 		PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc1/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-	// 				Properties: &armpostgresql.ServerPrivateEndpointConnectionProperties{
-	// 					PrivateEndpoint: &armpostgresql.PrivateEndpointProperty{
-	// 						ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-	// 					},
-	// 					PrivateLinkServiceConnectionState: &armpostgresql.ServerPrivateLinkServiceConnectionStateProperty{
-	// 						Description: to.Ptr("Auto-approved"),
-	// 						ActionsRequired: to.Ptr(armpostgresql.PrivateLinkServiceConnectionStateActionsRequireNone),
-	// 						Status: to.Ptr(armpostgresql.PrivateLinkServiceConnectionStateStatusApproved),
-	// 					},
-	// 					ProvisioningState: to.Ptr(armpostgresql.PrivateEndpointProvisioningState("Succeeded")),
-	// 				},
-	// 		}},
-	// 		PublicNetworkAccess: to.Ptr(armpostgresql.PublicNetworkAccessEnumEnabled),
-	// 		ReplicationRole: to.Ptr(""),
-	// 		SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-	// 		StorageProfile: &armpostgresql.StorageProfile{
-	// 			BackupRetentionDays: to.Ptr[int32](10),
-	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-	// 			StorageMB: to.Ptr[int32](5120),
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
 	// 		},
-	// 		UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-	// 		Version: to.Ptr(armpostgresql.ServerVersionNine5),
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T23:07:25.8166567+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeDisabled),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateNotEnabled),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateEnabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](512),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
 	// 	},
 	// 	SKU: &armpostgresql.SKU{
-	// 		Name: to.Ptr("B_Gen4_1"),
-	// 		Capacity: to.Ptr[int32](1),
-	// 		Family: to.Ptr("Gen4"),
-	// 		Tier: to.Ptr(armpostgresql.SKUTierBasic),
+	// 		Name: to.Ptr("Standard_D4s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerGetWithVnet.json
+func ExampleServersClient_Get_serverGetWithVnet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServersClient().Get(ctx, "testrg", "pgtestsvc4", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresql.Server{
+	// 	Name: to.Ptr("pgtestsvc4"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresql.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresql.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresql.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresql.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		State: to.Ptr(armpostgresql.ServerStateReady),
+	// 		Storage: &armpostgresql.Storage{
+	// 			StorageSizeGB: to.Ptr[int32](512),
+	// 		},
+	// 		Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresql.SKU{
+	// 		Name: to.Ptr("Standard_D4s_v3"),
+	// 		Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerListByResourceGroup.json
 func ExampleServersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -449,7 +1247,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewServersClient().NewListByResourceGroupPager("TestGroup", nil)
+	pager := clientFactory.NewServersClient().NewListByResourceGroupPager("testrg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -463,110 +1261,93 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// page.ServerListResult = armpostgresql.ServerListResult{
 		// 	Value: []*armpostgresql.Server{
 		// 		{
-		// 			Name: to.Ptr("pgtestsvc1"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc1"),
-		// 			Location: to.Ptr("westus"),
-		// 			Properties: &armpostgresql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-04T21:01:55.1498475+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
-		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
-		// 				},
-		// 				PublicNetworkAccess: to.Ptr(armpostgresql.PublicNetworkAccessEnumEnabled),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
-		// 					BackupRetentionDays: to.Ptr[int32](10),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](5120),
-		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine5),
-		// 			},
-		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("B_Gen4_1"),
-		// 				Capacity: to.Ptr[int32](1),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierBasic),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("pgtestsvc2"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc2"),
-		// 			Location: to.Ptr("westus"),
-		// 			Properties: &armpostgresql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-07T21:01:55.1498475+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc2.postgres.database.azure.com"),
-		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
-		// 					{
-		// 						ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc2/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armpostgresql.ServerPrivateEndpointConnectionProperties{
-		// 							PrivateEndpoint: &armpostgresql.PrivateEndpointProperty{
-		// 								ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-		// 							},
-		// 							PrivateLinkServiceConnectionState: &armpostgresql.ServerPrivateLinkServiceConnectionStateProperty{
-		// 								Description: to.Ptr("Auto-approved"),
-		// 								ActionsRequired: to.Ptr(armpostgresql.PrivateLinkServiceConnectionStateActionsRequireNone),
-		// 								Status: to.Ptr(armpostgresql.PrivateLinkServiceConnectionStateStatusApproved),
-		// 							},
-		// 							ProvisioningState: to.Ptr(armpostgresql.PrivateEndpointProvisioningState("Succeeded")),
-		// 						},
-		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armpostgresql.PublicNetworkAccessEnumEnabled),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
-		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](5120),
-		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine6),
-		// 			},
-		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("GP_Gen4_2"),
-		// 				Capacity: to.Ptr[int32](2),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-		// 			},
-		// 		},
-		// 		{
 		// 			Name: to.Ptr("pgtestsvc4"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc4"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"ElasticServer": to.Ptr("1"),
 		// 			},
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("cloudsa"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc4.postgres.database.azure.com"),
-		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
+		// 				AuthConfig: &armpostgresql.AuthConfig{
+		// 					ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+		// 					PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
 		// 				},
-		// 				PublicNetworkAccess: to.Ptr(armpostgresql.PublicNetworkAccessEnumEnabled),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
+		// 				AvailabilityZone: to.Ptr("1"),
+		// 				Backup: &armpostgresql.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](128000),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
 		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine6),
+		// 				FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+		// 				HighAvailability: &armpostgresql.HighAvailability{
+		// 					Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+		// 					StandbyAvailabilityZone: to.Ptr("2"),
+		// 					State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+		// 				},
+		// 				MinorVersion: to.Ptr("6"),
+		// 				Network: &armpostgresql.Network{
+		// 					DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+		// 					PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+		// 					PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+		// 				},
+		// 				State: to.Ptr(armpostgresql.ServerStateReady),
+		// 				Storage: &armpostgresql.Storage{
+		// 					StorageSizeGB: to.Ptr[int32](512),
+		// 				},
+		// 				Version: to.Ptr(armpostgresql.ServerVersionTwelve),
 		// 			},
 		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("B_Gen4_2"),
-		// 				Capacity: to.Ptr[int32](2),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierBasic),
+		// 				Name: to.Ptr("Standard_D4s_v3"),
+		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("pgtestsvc1"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc1"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 				"ElasticServer": to.Ptr("1"),
+		// 			},
+		// 			Properties: &armpostgresql.ServerProperties{
+		// 				AdministratorLogin: to.Ptr("cloudsa"),
+		// 				AuthConfig: &armpostgresql.AuthConfig{
+		// 					ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+		// 					PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+		// 				},
+		// 				AvailabilityZone: to.Ptr("1"),
+		// 				Backup: &armpostgresql.Backup{
+		// 					BackupRetentionDays: to.Ptr[int32](7),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T23:15:38.8131437+00:00"); return t}()),
+		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+		// 				},
+		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
+		// 				HighAvailability: &armpostgresql.HighAvailability{
+		// 					Mode: to.Ptr(armpostgresql.HighAvailabilityModeDisabled),
+		// 					State: to.Ptr(armpostgresql.ServerHAStateNotEnabled),
+		// 				},
+		// 				MinorVersion: to.Ptr("6"),
+		// 				Network: &armpostgresql.Network{
+		// 					PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateEnabled),
+		// 				},
+		// 				State: to.Ptr(armpostgresql.ServerStateReady),
+		// 				Storage: &armpostgresql.Storage{
+		// 					StorageSizeGB: to.Ptr[int32](512),
+		// 				},
+		// 				Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+		// 			},
+		// 			SKU: &armpostgresql.SKU{
+		// 				Name: to.Ptr("Standard_D4s_v3"),
+		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerList.json
 func ExampleServersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -591,156 +1372,94 @@ func ExampleServersClient_NewListPager() {
 		// page.ServerListResult = armpostgresql.ServerListResult{
 		// 	Value: []*armpostgresql.Server{
 		// 		{
-		// 			Name: to.Ptr("pgtestsvc1"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc1"),
-		// 			Location: to.Ptr("westus"),
-		// 			Properties: &armpostgresql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-04T21:01:55.1498475+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
-		// 				MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS11),
-		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
-		// 				},
-		// 				PublicNetworkAccess: to.Ptr(armpostgresql.PublicNetworkAccessEnumEnabled),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
-		// 					BackupRetentionDays: to.Ptr[int32](10),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](5120),
-		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine5),
-		// 			},
-		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("B_Gen4_1"),
-		// 				Capacity: to.Ptr[int32](1),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierBasic),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("pgtestsvc2"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc2"),
-		// 			Location: to.Ptr("westus"),
-		// 			Properties: &armpostgresql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-07T21:01:55.1498475+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc2.postgres.database.azure.com"),
-		// 				MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
-		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
-		// 					{
-		// 						ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc2/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armpostgresql.ServerPrivateEndpointConnectionProperties{
-		// 							PrivateEndpoint: &armpostgresql.PrivateEndpointProperty{
-		// 								ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-		// 							},
-		// 							PrivateLinkServiceConnectionState: &armpostgresql.ServerPrivateLinkServiceConnectionStateProperty{
-		// 								Description: to.Ptr("Auto-approved"),
-		// 								ActionsRequired: to.Ptr(armpostgresql.PrivateLinkServiceConnectionStateActionsRequireNone),
-		// 								Status: to.Ptr(armpostgresql.PrivateLinkServiceConnectionStateStatusApproved),
-		// 							},
-		// 							ProvisioningState: to.Ptr(armpostgresql.PrivateEndpointProvisioningState("Succeeded")),
-		// 						},
-		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armpostgresql.PublicNetworkAccessEnumEnabled),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
-		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](5120),
-		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine6),
-		// 			},
-		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("GP_Gen4_2"),
-		// 				Capacity: to.Ptr[int32](2),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("pgtestsvc3"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg1/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc3"),
-		// 			Location: to.Ptr("westus"),
-		// 			Properties: &armpostgresql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T00:11:08.55+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc3.postgres.database.azure.com"),
-		// 				MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS10),
-		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
-		// 					{
-		// 						ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc3/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armpostgresql.ServerPrivateEndpointConnectionProperties{
-		// 							PrivateEndpoint: &armpostgresql.PrivateEndpointProperty{
-		// 								ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-		// 							},
-		// 							PrivateLinkServiceConnectionState: &armpostgresql.ServerPrivateLinkServiceConnectionStateProperty{
-		// 								Description: to.Ptr("Auto-approved"),
-		// 								ActionsRequired: to.Ptr(armpostgresql.PrivateLinkServiceConnectionStateActionsRequireNone),
-		// 								Status: to.Ptr(armpostgresql.PrivateLinkServiceConnectionStateStatusApproved),
-		// 							},
-		// 							ProvisioningState: to.Ptr(armpostgresql.PrivateEndpointProvisioningState("Succeeded")),
-		// 						},
-		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armpostgresql.PublicNetworkAccessEnumEnabled),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
-		// 					BackupRetentionDays: to.Ptr[int32](35),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnabled),
-		// 					StorageMB: to.Ptr[int32](204800),
-		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine6),
-		// 			},
-		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("GP_Gen4_4"),
-		// 				Capacity: to.Ptr[int32](4),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-		// 			},
-		// 		},
-		// 		{
 		// 			Name: to.Ptr("pgtestsvc4"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/servers/pgtestsvc4"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4"),
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"ElasticServer": to.Ptr("1"),
 		// 			},
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("cloudsa"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc4.postgres.database.azure.com"),
-		// 				MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS10),
-		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
+		// 				AuthConfig: &armpostgresql.AuthConfig{
+		// 					ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+		// 					PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
 		// 				},
-		// 				PublicNetworkAccess: to.Ptr(armpostgresql.PublicNetworkAccessEnumEnabled),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
+		// 				AvailabilityZone: to.Ptr("1"),
+		// 				Backup: &armpostgresql.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](128000),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
 		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine6),
+		// 				FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
+		// 				HighAvailability: &armpostgresql.HighAvailability{
+		// 					Mode: to.Ptr(armpostgresql.HighAvailabilityModeZoneRedundant),
+		// 					StandbyAvailabilityZone: to.Ptr("2"),
+		// 					State: to.Ptr(armpostgresql.ServerHAStateHealthy),
+		// 				},
+		// 				MinorVersion: to.Ptr("6"),
+		// 				Network: &armpostgresql.Network{
+		// 					DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+		// 					PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+		// 					PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+		// 				},
+		// 				State: to.Ptr(armpostgresql.ServerStateReady),
+		// 				Storage: &armpostgresql.Storage{
+		// 					StorageSizeGB: to.Ptr[int32](512),
+		// 				},
+		// 				Version: to.Ptr(armpostgresql.ServerVersionTwelve),
 		// 			},
 		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("B_Gen4_2"),
-		// 				Capacity: to.Ptr[int32](2),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierBasic),
+		// 				Name: to.Ptr("Standard_D4s_v3"),
+		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("pgtestsvc1"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc1"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 				"ElasticServer": to.Ptr("1"),
+		// 			},
+		// 			Properties: &armpostgresql.ServerProperties{
+		// 				AdministratorLogin: to.Ptr("cloudsa"),
+		// 				AuthConfig: &armpostgresql.AuthConfig{
+		// 					ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+		// 					PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
+		// 				},
+		// 				AvailabilityZone: to.Ptr("1"),
+		// 				Backup: &armpostgresql.Backup{
+		// 					BackupRetentionDays: to.Ptr[int32](7),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T23:15:38.8131437+00:00"); return t}()),
+		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+		// 				},
+		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
+		// 				HighAvailability: &armpostgresql.HighAvailability{
+		// 					Mode: to.Ptr(armpostgresql.HighAvailabilityModeDisabled),
+		// 					State: to.Ptr(armpostgresql.ServerHAStateNotEnabled),
+		// 				},
+		// 				MinorVersion: to.Ptr("6"),
+		// 				Network: &armpostgresql.Network{
+		// 					PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateEnabled),
+		// 				},
+		// 				State: to.Ptr(armpostgresql.ServerStateReady),
+		// 				Storage: &armpostgresql.Storage{
+		// 					StorageSizeGB: to.Ptr[int32](512),
+		// 				},
+		// 				Version: to.Ptr(armpostgresql.ServerVersionTwelve),
+		// 			},
+		// 			SKU: &armpostgresql.SKU{
+		// 				Name: to.Ptr("Standard_D4s_v3"),
+		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerRestart.json
-func ExampleServersClient_BeginRestart() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerRestart.json
+func ExampleServersClient_BeginRestart_serverRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -750,7 +1469,74 @@ func ExampleServersClient_BeginRestart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServersClient().BeginRestart(ctx, "TestGroup", "testserver", nil)
+	poller, err := clientFactory.NewServersClient().BeginRestart(ctx, "testrg", "testserver", &armpostgresql.ServersClientBeginRestartOptions{Parameters: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerRestartWithFailover.json
+func ExampleServersClient_BeginRestart_serverRestartWithFailover() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginRestart(ctx, "testrg", "testserver", &armpostgresql.ServersClientBeginRestartOptions{Parameters: &armpostgresql.RestartParameter{
+		FailoverMode:        to.Ptr(armpostgresql.FailoverModeForcedFailover),
+		RestartWithFailover: to.Ptr(true),
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerStart.json
+func ExampleServersClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginStart(ctx, "testrg", "testserver", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerStop.json
+func ExampleServersClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginStop(ctx, "testrg", "testserver", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

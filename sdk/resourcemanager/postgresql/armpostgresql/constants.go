@@ -11,96 +11,206 @@ package armpostgresql
 
 const (
 	moduleName    = "armpostgresql"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v3.0.0"
 )
 
-// CreateMode - The mode to create a new server.
+// ActiveDirectoryAuthEnum - If Enabled, Azure Active Directory authentication is enabled.
+type ActiveDirectoryAuthEnum string
+
+const (
+	ActiveDirectoryAuthEnumDisabled ActiveDirectoryAuthEnum = "Disabled"
+	ActiveDirectoryAuthEnumEnabled  ActiveDirectoryAuthEnum = "Enabled"
+)
+
+// PossibleActiveDirectoryAuthEnumValues returns the possible values for the ActiveDirectoryAuthEnum const type.
+func PossibleActiveDirectoryAuthEnumValues() []ActiveDirectoryAuthEnum {
+	return []ActiveDirectoryAuthEnum{
+		ActiveDirectoryAuthEnumDisabled,
+		ActiveDirectoryAuthEnumEnabled,
+	}
+}
+
+// ArmServerKeyType - Data encryption type to depict if it is System Managed vs Azure Key vault.
+type ArmServerKeyType string
+
+const (
+	ArmServerKeyTypeAzureKeyVault ArmServerKeyType = "AzureKeyVault"
+	ArmServerKeyTypeSystemManaged ArmServerKeyType = "SystemManaged"
+)
+
+// PossibleArmServerKeyTypeValues returns the possible values for the ArmServerKeyType const type.
+func PossibleArmServerKeyTypeValues() []ArmServerKeyType {
+	return []ArmServerKeyType{
+		ArmServerKeyTypeAzureKeyVault,
+		ArmServerKeyTypeSystemManaged,
+	}
+}
+
+// CheckNameAvailabilityReason - The reason why the given name is not available.
+type CheckNameAvailabilityReason string
+
+const (
+	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
+	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = "Invalid"
+)
+
+// PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{
+		CheckNameAvailabilityReasonAlreadyExists,
+		CheckNameAvailabilityReasonInvalid,
+	}
+}
+
+// ConfigurationDataType - Data type of the configuration.
+type ConfigurationDataType string
+
+const (
+	ConfigurationDataTypeBoolean     ConfigurationDataType = "Boolean"
+	ConfigurationDataTypeEnumeration ConfigurationDataType = "Enumeration"
+	ConfigurationDataTypeInteger     ConfigurationDataType = "Integer"
+	ConfigurationDataTypeNumeric     ConfigurationDataType = "Numeric"
+)
+
+// PossibleConfigurationDataTypeValues returns the possible values for the ConfigurationDataType const type.
+func PossibleConfigurationDataTypeValues() []ConfigurationDataType {
+	return []ConfigurationDataType{
+		ConfigurationDataTypeBoolean,
+		ConfigurationDataTypeEnumeration,
+		ConfigurationDataTypeInteger,
+		ConfigurationDataTypeNumeric,
+	}
+}
+
+// CreateMode - The mode to create a new PostgreSQL server.
 type CreateMode string
 
 const (
+	CreateModeCreate             CreateMode = "Create"
 	CreateModeDefault            CreateMode = "Default"
 	CreateModeGeoRestore         CreateMode = "GeoRestore"
 	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
 	CreateModeReplica            CreateMode = "Replica"
+	CreateModeUpdate             CreateMode = "Update"
 )
 
 // PossibleCreateModeValues returns the possible values for the CreateMode const type.
 func PossibleCreateModeValues() []CreateMode {
 	return []CreateMode{
+		CreateModeCreate,
 		CreateModeDefault,
 		CreateModeGeoRestore,
 		CreateModePointInTimeRestore,
 		CreateModeReplica,
+		CreateModeUpdate,
 	}
 }
 
-// GeoRedundantBackup - Enable Geo-redundant or not for server backup.
-type GeoRedundantBackup string
+// CreateModeForUpdate - The mode to update a new PostgreSQL server.
+type CreateModeForUpdate string
 
 const (
-	GeoRedundantBackupDisabled GeoRedundantBackup = "Disabled"
-	GeoRedundantBackupEnabled  GeoRedundantBackup = "Enabled"
+	CreateModeForUpdateDefault CreateModeForUpdate = "Default"
+	CreateModeForUpdateUpdate  CreateModeForUpdate = "Update"
 )
 
-// PossibleGeoRedundantBackupValues returns the possible values for the GeoRedundantBackup const type.
-func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
-	return []GeoRedundantBackup{
-		GeoRedundantBackupDisabled,
-		GeoRedundantBackupEnabled,
+// PossibleCreateModeForUpdateValues returns the possible values for the CreateModeForUpdate const type.
+func PossibleCreateModeForUpdateValues() []CreateModeForUpdate {
+	return []CreateModeForUpdate{
+		CreateModeForUpdateDefault,
+		CreateModeForUpdateUpdate,
 	}
 }
 
-// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
-// Directory principal for the resource.
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// FailoverMode - Failover mode.
+type FailoverMode string
+
+const (
+	FailoverModeForcedFailover    FailoverMode = "ForcedFailover"
+	FailoverModeForcedSwitchover  FailoverMode = "ForcedSwitchover"
+	FailoverModePlannedFailover   FailoverMode = "PlannedFailover"
+	FailoverModePlannedSwitchover FailoverMode = "PlannedSwitchover"
+)
+
+// PossibleFailoverModeValues returns the possible values for the FailoverMode const type.
+func PossibleFailoverModeValues() []FailoverMode {
+	return []FailoverMode{
+		FailoverModeForcedFailover,
+		FailoverModeForcedSwitchover,
+		FailoverModePlannedFailover,
+		FailoverModePlannedSwitchover,
+	}
+}
+
+// GeoRedundantBackupEnum - A value indicating whether Geo-Redundant backup is enabled on the server.
+type GeoRedundantBackupEnum string
+
+const (
+	GeoRedundantBackupEnumDisabled GeoRedundantBackupEnum = "Disabled"
+	GeoRedundantBackupEnumEnabled  GeoRedundantBackupEnum = "Enabled"
+)
+
+// PossibleGeoRedundantBackupEnumValues returns the possible values for the GeoRedundantBackupEnum const type.
+func PossibleGeoRedundantBackupEnumValues() []GeoRedundantBackupEnum {
+	return []GeoRedundantBackupEnum{
+		GeoRedundantBackupEnumDisabled,
+		GeoRedundantBackupEnumEnabled,
+	}
+}
+
+// HighAvailabilityMode - The HA mode for the server.
+type HighAvailabilityMode string
+
+const (
+	HighAvailabilityModeDisabled      HighAvailabilityMode = "Disabled"
+	HighAvailabilityModeSameZone      HighAvailabilityMode = "SameZone"
+	HighAvailabilityModeZoneRedundant HighAvailabilityMode = "ZoneRedundant"
+)
+
+// PossibleHighAvailabilityModeValues returns the possible values for the HighAvailabilityMode const type.
+func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
+	return []HighAvailabilityMode{
+		HighAvailabilityModeDisabled,
+		HighAvailabilityModeSameZone,
+		HighAvailabilityModeZoneRedundant,
+	}
+}
+
+// IdentityType - the types of identities associated with this resource; currently restricted to 'SystemAssigned and UserAssigned'
 type IdentityType string
 
 const (
+	IdentityTypeNone           IdentityType = "None"
 	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
+		IdentityTypeNone,
 		IdentityTypeSystemAssigned,
-	}
-}
-
-// InfrastructureEncryption - Add a second layer of encryption for your data using new encryption algorithm which gives additional
-// data protection. Value is optional but if passed in, must be 'Disabled' or 'Enabled'.
-type InfrastructureEncryption string
-
-const (
-	// InfrastructureEncryptionDisabled - Additional (2nd) layer of encryption for data at rest
-	InfrastructureEncryptionDisabled InfrastructureEncryption = "Disabled"
-	// InfrastructureEncryptionEnabled - Default value for single layer of encryption for data at rest.
-	InfrastructureEncryptionEnabled InfrastructureEncryption = "Enabled"
-)
-
-// PossibleInfrastructureEncryptionValues returns the possible values for the InfrastructureEncryption const type.
-func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
-	return []InfrastructureEncryption{
-		InfrastructureEncryptionDisabled,
-		InfrastructureEncryptionEnabled,
-	}
-}
-
-// MinimalTLSVersionEnum - Enforce a minimal Tls version for the server.
-type MinimalTLSVersionEnum string
-
-const (
-	MinimalTLSVersionEnumTLS10                  MinimalTLSVersionEnum = "TLS1_0"
-	MinimalTLSVersionEnumTLS11                  MinimalTLSVersionEnum = "TLS1_1"
-	MinimalTLSVersionEnumTLS12                  MinimalTLSVersionEnum = "TLS1_2"
-	MinimalTLSVersionEnumTLSEnforcementDisabled MinimalTLSVersionEnum = "TLSEnforcementDisabled"
-)
-
-// PossibleMinimalTLSVersionEnumValues returns the possible values for the MinimalTLSVersionEnum const type.
-func PossibleMinimalTLSVersionEnumValues() []MinimalTLSVersionEnum {
-	return []MinimalTLSVersionEnum{
-		MinimalTLSVersionEnumTLS10,
-		MinimalTLSVersionEnumTLS11,
-		MinimalTLSVersionEnumTLS12,
-		MinimalTLSVersionEnumTLSEnforcementDisabled,
+		IdentityTypeUserAssigned,
 	}
 }
 
@@ -122,84 +232,81 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	}
 }
 
-// PrivateEndpointProvisioningState - State of the private endpoint connection.
-type PrivateEndpointProvisioningState string
+// Origin - Backup type.
+type Origin string
 
 const (
-	PrivateEndpointProvisioningStateApproving PrivateEndpointProvisioningState = "Approving"
-	PrivateEndpointProvisioningStateDropping  PrivateEndpointProvisioningState = "Dropping"
-	PrivateEndpointProvisioningStateFailed    PrivateEndpointProvisioningState = "Failed"
-	PrivateEndpointProvisioningStateReady     PrivateEndpointProvisioningState = "Ready"
-	PrivateEndpointProvisioningStateRejecting PrivateEndpointProvisioningState = "Rejecting"
+	OriginFull Origin = "Full"
 )
 
-// PossiblePrivateEndpointProvisioningStateValues returns the possible values for the PrivateEndpointProvisioningState const type.
-func PossiblePrivateEndpointProvisioningStateValues() []PrivateEndpointProvisioningState {
-	return []PrivateEndpointProvisioningState{
-		PrivateEndpointProvisioningStateApproving,
-		PrivateEndpointProvisioningStateDropping,
-		PrivateEndpointProvisioningStateFailed,
-		PrivateEndpointProvisioningStateReady,
-		PrivateEndpointProvisioningStateRejecting,
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginFull,
 	}
 }
 
-// PrivateLinkServiceConnectionStateActionsRequire - The actions required for private link service connection.
-type PrivateLinkServiceConnectionStateActionsRequire string
+// PasswordAuthEnum - If Enabled, Password authentication is enabled.
+type PasswordAuthEnum string
 
 const (
-	PrivateLinkServiceConnectionStateActionsRequireNone PrivateLinkServiceConnectionStateActionsRequire = "None"
+	PasswordAuthEnumDisabled PasswordAuthEnum = "Disabled"
+	PasswordAuthEnumEnabled  PasswordAuthEnum = "Enabled"
 )
 
-// PossiblePrivateLinkServiceConnectionStateActionsRequireValues returns the possible values for the PrivateLinkServiceConnectionStateActionsRequire const type.
-func PossiblePrivateLinkServiceConnectionStateActionsRequireValues() []PrivateLinkServiceConnectionStateActionsRequire {
-	return []PrivateLinkServiceConnectionStateActionsRequire{
-		PrivateLinkServiceConnectionStateActionsRequireNone,
+// PossiblePasswordAuthEnumValues returns the possible values for the PasswordAuthEnum const type.
+func PossiblePasswordAuthEnumValues() []PasswordAuthEnum {
+	return []PasswordAuthEnum{
+		PasswordAuthEnumDisabled,
+		PasswordAuthEnumEnabled,
 	}
 }
 
-// PrivateLinkServiceConnectionStateStatus - The private link service connection status.
-type PrivateLinkServiceConnectionStateStatus string
+// PrincipalType - The principal type used to represent the type of Active Directory Administrator.
+type PrincipalType string
 
 const (
-	PrivateLinkServiceConnectionStateStatusApproved     PrivateLinkServiceConnectionStateStatus = "Approved"
-	PrivateLinkServiceConnectionStateStatusDisconnected PrivateLinkServiceConnectionStateStatus = "Disconnected"
-	PrivateLinkServiceConnectionStateStatusPending      PrivateLinkServiceConnectionStateStatus = "Pending"
-	PrivateLinkServiceConnectionStateStatusRejected     PrivateLinkServiceConnectionStateStatus = "Rejected"
+	PrincipalTypeGroup            PrincipalType = "Group"
+	PrincipalTypeServicePrincipal PrincipalType = "ServicePrincipal"
+	PrincipalTypeUnknown          PrincipalType = "Unknown"
+	PrincipalTypeUser             PrincipalType = "User"
 )
 
-// PossiblePrivateLinkServiceConnectionStateStatusValues returns the possible values for the PrivateLinkServiceConnectionStateStatus const type.
-func PossiblePrivateLinkServiceConnectionStateStatusValues() []PrivateLinkServiceConnectionStateStatus {
-	return []PrivateLinkServiceConnectionStateStatus{
-		PrivateLinkServiceConnectionStateStatusApproved,
-		PrivateLinkServiceConnectionStateStatusDisconnected,
-		PrivateLinkServiceConnectionStateStatusPending,
-		PrivateLinkServiceConnectionStateStatusRejected,
+// PossiblePrincipalTypeValues returns the possible values for the PrincipalType const type.
+func PossiblePrincipalTypeValues() []PrincipalType {
+	return []PrincipalType{
+		PrincipalTypeGroup,
+		PrincipalTypeServicePrincipal,
+		PrincipalTypeUnknown,
+		PrincipalTypeUser,
 	}
 }
 
-// PublicNetworkAccessEnum - Whether or not public network access is allowed for this server. Value is optional but if passed
-// in, must be 'Enabled' or 'Disabled'
-type PublicNetworkAccessEnum string
+// ReplicationRole - Used to indicate role of the server in replication set.
+type ReplicationRole string
 
 const (
-	PublicNetworkAccessEnumDisabled PublicNetworkAccessEnum = "Disabled"
-	PublicNetworkAccessEnumEnabled  PublicNetworkAccessEnum = "Enabled"
+	ReplicationRoleAsyncReplica    ReplicationRole = "AsyncReplica"
+	ReplicationRoleGeoAsyncReplica ReplicationRole = "GeoAsyncReplica"
+	ReplicationRoleNone            ReplicationRole = "None"
+	ReplicationRolePrimary         ReplicationRole = "Primary"
 )
 
-// PossiblePublicNetworkAccessEnumValues returns the possible values for the PublicNetworkAccessEnum const type.
-func PossiblePublicNetworkAccessEnumValues() []PublicNetworkAccessEnum {
-	return []PublicNetworkAccessEnum{
-		PublicNetworkAccessEnumDisabled,
-		PublicNetworkAccessEnumEnabled,
+// PossibleReplicationRoleValues returns the possible values for the ReplicationRole const type.
+func PossibleReplicationRoleValues() []ReplicationRole {
+	return []ReplicationRole{
+		ReplicationRoleAsyncReplica,
+		ReplicationRoleGeoAsyncReplica,
+		ReplicationRoleNone,
+		ReplicationRolePrimary,
 	}
 }
 
-// SKUTier - The tier of the particular SKU, e.g. Basic.
+// SKUTier - The tier of the particular SKU, e.g. Burstable.
 type SKUTier string
 
 const (
-	SKUTierBasic           SKUTier = "Basic"
+	SKUTierBurstable       SKUTier = "Burstable"
 	SKUTierGeneralPurpose  SKUTier = "GeneralPurpose"
 	SKUTierMemoryOptimized SKUTier = "MemoryOptimized"
 )
@@ -207,68 +314,49 @@ const (
 // PossibleSKUTierValues returns the possible values for the SKUTier const type.
 func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
-		SKUTierBasic,
+		SKUTierBurstable,
 		SKUTierGeneralPurpose,
 		SKUTierMemoryOptimized,
 	}
 }
 
-// SSLEnforcementEnum - Enable ssl enforcement or not when connect to server.
-type SSLEnforcementEnum string
+// ServerHAState - A state of a HA server that is visible to user.
+type ServerHAState string
 
 const (
-	SSLEnforcementEnumEnabled  SSLEnforcementEnum = "Enabled"
-	SSLEnforcementEnumDisabled SSLEnforcementEnum = "Disabled"
+	ServerHAStateCreatingStandby ServerHAState = "CreatingStandby"
+	ServerHAStateFailingOver     ServerHAState = "FailingOver"
+	ServerHAStateHealthy         ServerHAState = "Healthy"
+	ServerHAStateNotEnabled      ServerHAState = "NotEnabled"
+	ServerHAStateRemovingStandby ServerHAState = "RemovingStandby"
+	ServerHAStateReplicatingData ServerHAState = "ReplicatingData"
 )
 
-// PossibleSSLEnforcementEnumValues returns the possible values for the SSLEnforcementEnum const type.
-func PossibleSSLEnforcementEnumValues() []SSLEnforcementEnum {
-	return []SSLEnforcementEnum{
-		SSLEnforcementEnumEnabled,
-		SSLEnforcementEnumDisabled,
+// PossibleServerHAStateValues returns the possible values for the ServerHAState const type.
+func PossibleServerHAStateValues() []ServerHAState {
+	return []ServerHAState{
+		ServerHAStateCreatingStandby,
+		ServerHAStateFailingOver,
+		ServerHAStateHealthy,
+		ServerHAStateNotEnabled,
+		ServerHAStateRemovingStandby,
+		ServerHAStateReplicatingData,
 	}
 }
 
-type SecurityAlertPolicyName string
+// ServerPublicNetworkAccessState - public network access is enabled or not
+type ServerPublicNetworkAccessState string
 
 const (
-	SecurityAlertPolicyNameDefault SecurityAlertPolicyName = "Default"
+	ServerPublicNetworkAccessStateDisabled ServerPublicNetworkAccessState = "Disabled"
+	ServerPublicNetworkAccessStateEnabled  ServerPublicNetworkAccessState = "Enabled"
 )
 
-// PossibleSecurityAlertPolicyNameValues returns the possible values for the SecurityAlertPolicyName const type.
-func PossibleSecurityAlertPolicyNameValues() []SecurityAlertPolicyName {
-	return []SecurityAlertPolicyName{
-		SecurityAlertPolicyNameDefault,
-	}
-}
-
-// ServerKeyType - The key type like 'AzureKeyVault'.
-type ServerKeyType string
-
-const (
-	ServerKeyTypeAzureKeyVault ServerKeyType = "AzureKeyVault"
-)
-
-// PossibleServerKeyTypeValues returns the possible values for the ServerKeyType const type.
-func PossibleServerKeyTypeValues() []ServerKeyType {
-	return []ServerKeyType{
-		ServerKeyTypeAzureKeyVault,
-	}
-}
-
-// ServerSecurityAlertPolicyState - Specifies the state of the policy, whether it is enabled or disabled.
-type ServerSecurityAlertPolicyState string
-
-const (
-	ServerSecurityAlertPolicyStateEnabled  ServerSecurityAlertPolicyState = "Enabled"
-	ServerSecurityAlertPolicyStateDisabled ServerSecurityAlertPolicyState = "Disabled"
-)
-
-// PossibleServerSecurityAlertPolicyStateValues returns the possible values for the ServerSecurityAlertPolicyState const type.
-func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyState {
-	return []ServerSecurityAlertPolicyState{
-		ServerSecurityAlertPolicyStateEnabled,
-		ServerSecurityAlertPolicyStateDisabled,
+// PossibleServerPublicNetworkAccessStateValues returns the possible values for the ServerPublicNetworkAccessState const type.
+func PossibleServerPublicNetworkAccessStateValues() []ServerPublicNetworkAccessState {
+	return []ServerPublicNetworkAccessState{
+		ServerPublicNetworkAccessStateDisabled,
+		ServerPublicNetworkAccessStateEnabled,
 	}
 }
 
@@ -276,10 +364,13 @@ func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyS
 type ServerState string
 
 const (
-	ServerStateDisabled     ServerState = "Disabled"
-	ServerStateDropping     ServerState = "Dropping"
-	ServerStateInaccessible ServerState = "Inaccessible"
-	ServerStateReady        ServerState = "Ready"
+	ServerStateDisabled ServerState = "Disabled"
+	ServerStateDropping ServerState = "Dropping"
+	ServerStateReady    ServerState = "Ready"
+	ServerStateStarting ServerState = "Starting"
+	ServerStateStopped  ServerState = "Stopped"
+	ServerStateStopping ServerState = "Stopping"
+	ServerStateUpdating ServerState = "Updating"
 )
 
 // PossibleServerStateValues returns the possible values for the ServerState const type.
@@ -287,8 +378,11 @@ func PossibleServerStateValues() []ServerState {
 	return []ServerState{
 		ServerStateDisabled,
 		ServerStateDropping,
-		ServerStateInaccessible,
 		ServerStateReady,
+		ServerStateStarting,
+		ServerStateStopped,
+		ServerStateStopping,
+		ServerStateUpdating,
 	}
 }
 
@@ -296,60 +390,18 @@ func PossibleServerStateValues() []ServerState {
 type ServerVersion string
 
 const (
-	ServerVersionEleven ServerVersion = "11"
-	ServerVersionNine5  ServerVersion = "9.5"
-	ServerVersionNine6  ServerVersion = "9.6"
-	ServerVersionTen    ServerVersion = "10"
-	ServerVersionTen0   ServerVersion = "10.0"
-	ServerVersionTen2   ServerVersion = "10.2"
+	ServerVersionEleven   ServerVersion = "11"
+	ServerVersionFourteen ServerVersion = "14"
+	ServerVersionThirteen ServerVersion = "13"
+	ServerVersionTwelve   ServerVersion = "12"
 )
 
 // PossibleServerVersionValues returns the possible values for the ServerVersion const type.
 func PossibleServerVersionValues() []ServerVersion {
 	return []ServerVersion{
 		ServerVersionEleven,
-		ServerVersionNine5,
-		ServerVersionNine6,
-		ServerVersionTen,
-		ServerVersionTen0,
-		ServerVersionTen2,
-	}
-}
-
-// StorageAutogrow - Enable Storage Auto Grow.
-type StorageAutogrow string
-
-const (
-	StorageAutogrowDisabled StorageAutogrow = "Disabled"
-	StorageAutogrowEnabled  StorageAutogrow = "Enabled"
-)
-
-// PossibleStorageAutogrowValues returns the possible values for the StorageAutogrow const type.
-func PossibleStorageAutogrowValues() []StorageAutogrow {
-	return []StorageAutogrow{
-		StorageAutogrowDisabled,
-		StorageAutogrowEnabled,
-	}
-}
-
-// VirtualNetworkRuleState - Virtual Network Rule State
-type VirtualNetworkRuleState string
-
-const (
-	VirtualNetworkRuleStateDeleting     VirtualNetworkRuleState = "Deleting"
-	VirtualNetworkRuleStateInProgress   VirtualNetworkRuleState = "InProgress"
-	VirtualNetworkRuleStateInitializing VirtualNetworkRuleState = "Initializing"
-	VirtualNetworkRuleStateReady        VirtualNetworkRuleState = "Ready"
-	VirtualNetworkRuleStateUnknown      VirtualNetworkRuleState = "Unknown"
-)
-
-// PossibleVirtualNetworkRuleStateValues returns the possible values for the VirtualNetworkRuleState const type.
-func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
-	return []VirtualNetworkRuleState{
-		VirtualNetworkRuleStateDeleting,
-		VirtualNetworkRuleStateInProgress,
-		VirtualNetworkRuleStateInitializing,
-		VirtualNetworkRuleStateReady,
-		VirtualNetworkRuleStateUnknown,
+		ServerVersionFourteen,
+		ServerVersionThirteen,
+		ServerVersionTwelve,
 	}
 }

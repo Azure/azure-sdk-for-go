@@ -9,14 +9,44 @@
 
 package armpostgresql
 
+// AdministratorsClientCreateResponse contains the response from method AdministratorsClient.BeginCreate.
+type AdministratorsClientCreateResponse struct {
+	ActiveDirectoryAdministrator
+}
+
+// AdministratorsClientDeleteResponse contains the response from method AdministratorsClient.BeginDelete.
+type AdministratorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AdministratorsClientGetResponse contains the response from method AdministratorsClient.Get.
+type AdministratorsClientGetResponse struct {
+	ActiveDirectoryAdministrator
+}
+
+// AdministratorsClientListByServerResponse contains the response from method AdministratorsClient.NewListByServerPager.
+type AdministratorsClientListByServerResponse struct {
+	AdministratorListResult
+}
+
+// BackupsClientGetResponse contains the response from method BackupsClient.Get.
+type BackupsClientGetResponse struct {
+	ServerBackup
+}
+
+// BackupsClientListByServerResponse contains the response from method BackupsClient.NewListByServerPager.
+type BackupsClientListByServerResponse struct {
+	ServerBackupListResult
+}
+
 // CheckNameAvailabilityClientExecuteResponse contains the response from method CheckNameAvailabilityClient.Execute.
 type CheckNameAvailabilityClientExecuteResponse struct {
 	NameAvailability
 }
 
-// ConfigurationsClientCreateOrUpdateResponse contains the response from method ConfigurationsClient.BeginCreateOrUpdate.
-type ConfigurationsClientCreateOrUpdateResponse struct {
-	Configuration
+// CheckNameAvailabilityWithLocationClientExecuteResponse contains the response from method CheckNameAvailabilityWithLocationClient.Execute.
+type CheckNameAvailabilityWithLocationClientExecuteResponse struct {
+	NameAvailability
 }
 
 // ConfigurationsClientGetResponse contains the response from method ConfigurationsClient.Get.
@@ -29,8 +59,18 @@ type ConfigurationsClientListByServerResponse struct {
 	ConfigurationListResult
 }
 
-// DatabasesClientCreateOrUpdateResponse contains the response from method DatabasesClient.BeginCreateOrUpdate.
-type DatabasesClientCreateOrUpdateResponse struct {
+// ConfigurationsClientPutResponse contains the response from method ConfigurationsClient.BeginPut.
+type ConfigurationsClientPutResponse struct {
+	Configuration
+}
+
+// ConfigurationsClientUpdateResponse contains the response from method ConfigurationsClient.BeginUpdate.
+type ConfigurationsClientUpdateResponse struct {
+	Configuration
+}
+
+// DatabasesClientCreateResponse contains the response from method DatabasesClient.BeginCreate.
+type DatabasesClientCreateResponse struct {
 	Database
 }
 
@@ -69,14 +109,15 @@ type FirewallRulesClientListByServerResponse struct {
 	FirewallRuleListResult
 }
 
-// LocationBasedPerformanceTierClientListResponse contains the response from method LocationBasedPerformanceTierClient.NewListPager.
-type LocationBasedPerformanceTierClientListResponse struct {
-	PerformanceTierListResult
+// GetPrivateDNSZoneSuffixClientExecuteResponse contains the response from method GetPrivateDNSZoneSuffixClient.Execute.
+type GetPrivateDNSZoneSuffixClientExecuteResponse struct {
+	// Represents a resource name availability.
+	Value *string
 }
 
-// LogFilesClientListByServerResponse contains the response from method LogFilesClient.NewListByServerPager.
-type LogFilesClientListByServerResponse struct {
-	LogFileListResult
+// LocationBasedCapabilitiesClientExecuteResponse contains the response from method LocationBasedCapabilitiesClient.NewExecutePager.
+type LocationBasedCapabilitiesClientExecuteResponse struct {
+	CapabilitiesListResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
@@ -84,114 +125,9 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.
-type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
-	PrivateEndpointConnection
-}
-
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
-type PrivateEndpointConnectionsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
-type PrivateEndpointConnectionsClientGetResponse struct {
-	PrivateEndpointConnection
-}
-
-// PrivateEndpointConnectionsClientListByServerResponse contains the response from method PrivateEndpointConnectionsClient.NewListByServerPager.
-type PrivateEndpointConnectionsClientListByServerResponse struct {
-	PrivateEndpointConnectionListResult
-}
-
-// PrivateEndpointConnectionsClientUpdateTagsResponse contains the response from method PrivateEndpointConnectionsClient.BeginUpdateTags.
-type PrivateEndpointConnectionsClientUpdateTagsResponse struct {
-	PrivateEndpointConnection
-}
-
-// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
-type PrivateLinkResourcesClientGetResponse struct {
-	PrivateLinkResource
-}
-
-// PrivateLinkResourcesClientListByServerResponse contains the response from method PrivateLinkResourcesClient.NewListByServerPager.
-type PrivateLinkResourcesClientListByServerResponse struct {
-	PrivateLinkResourceListResult
-}
-
-// RecoverableServersClientGetResponse contains the response from method RecoverableServersClient.Get.
-type RecoverableServersClientGetResponse struct {
-	RecoverableServerResource
-}
-
 // ReplicasClientListByServerResponse contains the response from method ReplicasClient.NewListByServerPager.
 type ReplicasClientListByServerResponse struct {
 	ServerListResult
-}
-
-// ServerAdministratorsClientCreateOrUpdateResponse contains the response from method ServerAdministratorsClient.BeginCreateOrUpdate.
-type ServerAdministratorsClientCreateOrUpdateResponse struct {
-	ServerAdministratorResource
-}
-
-// ServerAdministratorsClientDeleteResponse contains the response from method ServerAdministratorsClient.BeginDelete.
-type ServerAdministratorsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ServerAdministratorsClientGetResponse contains the response from method ServerAdministratorsClient.Get.
-type ServerAdministratorsClientGetResponse struct {
-	ServerAdministratorResource
-}
-
-// ServerAdministratorsClientListResponse contains the response from method ServerAdministratorsClient.NewListPager.
-type ServerAdministratorsClientListResponse struct {
-	ServerAdministratorResourceListResult
-}
-
-// ServerBasedPerformanceTierClientListResponse contains the response from method ServerBasedPerformanceTierClient.NewListPager.
-type ServerBasedPerformanceTierClientListResponse struct {
-	PerformanceTierListResult
-}
-
-// ServerKeysClientCreateOrUpdateResponse contains the response from method ServerKeysClient.BeginCreateOrUpdate.
-type ServerKeysClientCreateOrUpdateResponse struct {
-	ServerKey
-}
-
-// ServerKeysClientDeleteResponse contains the response from method ServerKeysClient.BeginDelete.
-type ServerKeysClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ServerKeysClientGetResponse contains the response from method ServerKeysClient.Get.
-type ServerKeysClientGetResponse struct {
-	ServerKey
-}
-
-// ServerKeysClientListResponse contains the response from method ServerKeysClient.NewListPager.
-type ServerKeysClientListResponse struct {
-	ServerKeyListResult
-}
-
-// ServerParametersClientListUpdateConfigurationsResponse contains the response from method ServerParametersClient.BeginListUpdateConfigurations.
-type ServerParametersClientListUpdateConfigurationsResponse struct {
-	ConfigurationListResult
-}
-
-// ServerSecurityAlertPoliciesClientCreateOrUpdateResponse contains the response from method ServerSecurityAlertPoliciesClient.BeginCreateOrUpdate.
-type ServerSecurityAlertPoliciesClientCreateOrUpdateResponse struct {
-	ServerSecurityAlertPolicy
-}
-
-// ServerSecurityAlertPoliciesClientGetResponse contains the response from method ServerSecurityAlertPoliciesClient.Get.
-type ServerSecurityAlertPoliciesClientGetResponse struct {
-	ServerSecurityAlertPolicy
-}
-
-// ServerSecurityAlertPoliciesClientListByServerResponse contains the response from method ServerSecurityAlertPoliciesClient.NewListByServerPager.
-type ServerSecurityAlertPoliciesClientListByServerResponse struct {
-	ServerSecurityAlertPolicyListResult
 }
 
 // ServersClientCreateResponse contains the response from method ServersClient.BeginCreate.
@@ -224,27 +160,22 @@ type ServersClientRestartResponse struct {
 	// placeholder for future response values
 }
 
+// ServersClientStartResponse contains the response from method ServersClient.BeginStart.
+type ServersClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// ServersClientStopResponse contains the response from method ServersClient.BeginStop.
+type ServersClientStopResponse struct {
+	// placeholder for future response values
+}
+
 // ServersClientUpdateResponse contains the response from method ServersClient.BeginUpdate.
 type ServersClientUpdateResponse struct {
 	Server
 }
 
-// VirtualNetworkRulesClientCreateOrUpdateResponse contains the response from method VirtualNetworkRulesClient.BeginCreateOrUpdate.
-type VirtualNetworkRulesClientCreateOrUpdateResponse struct {
-	VirtualNetworkRule
-}
-
-// VirtualNetworkRulesClientDeleteResponse contains the response from method VirtualNetworkRulesClient.BeginDelete.
-type VirtualNetworkRulesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// VirtualNetworkRulesClientGetResponse contains the response from method VirtualNetworkRulesClient.Get.
-type VirtualNetworkRulesClientGetResponse struct {
-	VirtualNetworkRule
-}
-
-// VirtualNetworkRulesClientListByServerResponse contains the response from method VirtualNetworkRulesClient.NewListByServerPager.
-type VirtualNetworkRulesClientListByServerResponse struct {
-	VirtualNetworkRuleListResult
+// VirtualNetworkSubnetUsageClientExecuteResponse contains the response from method VirtualNetworkSubnetUsageClient.Execute.
+type VirtualNetworkSubnetUsageClientExecuteResponse struct {
+	VirtualNetworkSubnetUsageResult
 }

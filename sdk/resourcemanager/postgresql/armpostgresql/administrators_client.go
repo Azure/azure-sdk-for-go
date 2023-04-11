@@ -21,58 +21,59 @@ import (
 	"strings"
 )
 
-// DatabasesClient contains the methods for the Databases group.
-// Don't use this type directly, use NewDatabasesClient() instead.
-type DatabasesClient struct {
+// AdministratorsClient contains the methods for the Administrators group.
+// Don't use this type directly, use NewAdministratorsClient() instead.
+type AdministratorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewDatabasesClient creates a new instance of DatabasesClient with the specified values.
+// NewAdministratorsClient creates a new instance of AdministratorsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasesClient, error) {
-	cl, err := arm.NewClient(moduleName+".DatabasesClient", moduleVersion, credential, options)
+func NewAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdministratorsClient, error) {
+	cl, err := arm.NewClient(moduleName+".AdministratorsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &DatabasesClient{
+	client := &AdministratorsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreate - Creates a new database or updates an existing database.
+// BeginCreate - Creates a new server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - parameters - The required parameters for creating or updating a database.
-//   - options - DatabasesClientBeginCreateOptions contains the optional parameters for the DatabasesClient.BeginCreate method.
-func (client *DatabasesClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesClientBeginCreateOptions) (*runtime.Poller[DatabasesClientCreateResponse], error) {
+//   - objectID - Guid of the objectId for the administrator.
+//   - parameters - The required parameters for adding an active directory administrator for a server.
+//   - options - AdministratorsClientBeginCreateOptions contains the optional parameters for the AdministratorsClient.BeginCreate
+//     method.
+func (client *AdministratorsClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, objectID string, parameters ActiveDirectoryAdministratorAdd, options *AdministratorsClientBeginCreateOptions) (*runtime.Poller[AdministratorsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, serverName, databaseName, parameters, options)
+		resp, err := client.create(ctx, resourceGroupName, serverName, objectID, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdministratorsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[AdministratorsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// Create - Creates a new database or updates an existing database.
+// Create - Creates a new server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-12-01
-func (client *DatabasesClient) create(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesClientBeginCreateOptions) (*http.Response, error) {
-	req, err := client.createCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
+func (client *AdministratorsClient) create(ctx context.Context, resourceGroupName string, serverName string, objectID string, parameters ActiveDirectoryAdministratorAdd, options *AdministratorsClientBeginCreateOptions) (*http.Response, error) {
+	req, err := client.createCreateRequest(ctx, resourceGroupName, serverName, objectID, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -87,8 +88,8 @@ func (client *DatabasesClient) create(ctx context.Context, resourceGroupName str
 }
 
 // createCreateRequest creates the Create request.
-func (client *DatabasesClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesClientBeginCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases/{databaseName}"
+func (client *AdministratorsClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, objectID string, parameters ActiveDirectoryAdministratorAdd, options *AdministratorsClientBeginCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -101,10 +102,10 @@ func (client *DatabasesClient) createCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
+	if objectID == "" {
+		return nil, errors.New("parameter objectID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	urlPath = strings.ReplaceAll(urlPath, "{objectId}", url.PathEscape(objectID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -116,34 +117,35 @@ func (client *DatabasesClient) createCreateRequest(ctx context.Context, resource
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// BeginDelete - Deletes a database.
+// BeginDelete - Deletes an Active Directory Administrator associated with the server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - options - DatabasesClientBeginDeleteOptions contains the optional parameters for the DatabasesClient.BeginDelete method.
-func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*runtime.Poller[DatabasesClientDeleteResponse], error) {
+//   - objectID - Guid of the objectId for the administrator.
+//   - options - AdministratorsClientBeginDeleteOptions contains the optional parameters for the AdministratorsClient.BeginDelete
+//     method.
+func (client *AdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, objectID string, options *AdministratorsClientBeginDeleteOptions) (*runtime.Poller[AdministratorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, objectID, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdministratorsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[AdministratorsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// Delete - Deletes a database.
+// Delete - Deletes an Active Directory Administrator associated with the server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-12-01
-func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+func (client *AdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, objectID string, options *AdministratorsClientBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, objectID, options)
 	if err != nil {
 		return nil, err
 	}
@@ -158,8 +160,8 @@ func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGrou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases/{databaseName}"
+func (client *AdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, objectID string, options *AdministratorsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -172,10 +174,10 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
+	if objectID == "" {
+		return nil, errors.New("parameter objectID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	urlPath = strings.ReplaceAll(urlPath, "{objectId}", url.PathEscape(objectID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -187,32 +189,32 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// Get - Gets information about a database.
+// Get - Gets information about a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - options - DatabasesClientGetOptions contains the optional parameters for the DatabasesClient.Get method.
-func (client *DatabasesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientGetOptions) (DatabasesClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+//   - objectID - Guid of the objectId for the administrator.
+//   - options - AdministratorsClientGetOptions contains the optional parameters for the AdministratorsClient.Get method.
+func (client *AdministratorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, objectID string, options *AdministratorsClientGetOptions) (AdministratorsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, objectID, options)
 	if err != nil {
-		return DatabasesClientGetResponse{}, err
+		return AdministratorsClientGetResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DatabasesClientGetResponse{}, err
+		return AdministratorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabasesClientGetResponse{}, runtime.NewResponseError(resp)
+		return AdministratorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases/{databaseName}"
+func (client *AdministratorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, objectID string, options *AdministratorsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -225,10 +227,10 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
+	if objectID == "" {
+		return nil, errors.New("parameter objectID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	urlPath = strings.ReplaceAll(urlPath, "{objectId}", url.PathEscape(objectID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -241,27 +243,27 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabasesClient) getHandleResponse(resp *http.Response) (DatabasesClientGetResponse, error) {
-	result := DatabasesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Database); err != nil {
-		return DatabasesClientGetResponse{}, err
+func (client *AdministratorsClient) getHandleResponse(resp *http.Response) (AdministratorsClientGetResponse, error) {
+	result := AdministratorsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ActiveDirectoryAdministrator); err != nil {
+		return AdministratorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByServerPager - List all the databases in a given server.
+// NewListByServerPager - List all the AAD administrators for a given server.
 //
 // Generated from API version 2022-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - options - DatabasesClientListByServerOptions contains the optional parameters for the DatabasesClient.NewListByServerPager
+//   - options - AdministratorsClientListByServerOptions contains the optional parameters for the AdministratorsClient.NewListByServerPager
 //     method.
-func (client *DatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DatabasesClientListByServerResponse]{
-		More: func(page DatabasesClientListByServerResponse) bool {
+func (client *AdministratorsClient) NewListByServerPager(resourceGroupName string, serverName string, options *AdministratorsClientListByServerOptions) *runtime.Pager[AdministratorsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AdministratorsClientListByServerResponse]{
+		More: func(page AdministratorsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *DatabasesClientListByServerResponse) (DatabasesClientListByServerResponse, error) {
+		Fetcher: func(ctx context.Context, page *AdministratorsClientListByServerResponse) (AdministratorsClientListByServerResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -270,14 +272,14 @@ func (client *DatabasesClient) NewListByServerPager(resourceGroupName string, se
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return DatabasesClientListByServerResponse{}, err
+				return AdministratorsClientListByServerResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return DatabasesClientListByServerResponse{}, err
+				return AdministratorsClientListByServerResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DatabasesClientListByServerResponse{}, runtime.NewResponseError(resp)
+				return AdministratorsClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
@@ -285,8 +287,8 @@ func (client *DatabasesClient) NewListByServerPager(resourceGroupName string, se
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *DatabasesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *DatabasesClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases"
+func (client *AdministratorsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *AdministratorsClientListByServerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -311,10 +313,10 @@ func (client *DatabasesClient) listByServerCreateRequest(ctx context.Context, re
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *DatabasesClient) listByServerHandleResponse(resp *http.Response) (DatabasesClientListByServerResponse, error) {
-	result := DatabasesClientListByServerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseListResult); err != nil {
-		return DatabasesClientListByServerResponse{}, err
+func (client *AdministratorsClient) listByServerHandleResponse(resp *http.Response) (AdministratorsClientListByServerResponse, error) {
+	result := AdministratorsClientListByServerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AdministratorListResult); err != nil {
+		return AdministratorsClientListByServerResponse{}, err
 	}
 	return result, nil
 }

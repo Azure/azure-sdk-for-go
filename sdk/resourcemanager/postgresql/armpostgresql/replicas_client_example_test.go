@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ReplicasListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicasClient().NewListByServerPager("TestGroup_WestCentralUS", "testserver-master", nil)
+	pager := clientFactory.NewReplicasClient().NewListByServerPager("testrg", "sourcepgservername", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -42,142 +42,53 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// page.ServerListResult = armpostgresql.ServerListResult{
 		// 	Value: []*armpostgresql.Server{
 		// 		{
-		// 			Name: to.Ptr("testserver-replica1"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-replica1"),
-		// 			Location: to.Ptr("westcentralus"),
+		// 			Name: to.Ptr("pgtestsvc5rep"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc5rep"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 				"ElasticServer": to.Ptr("1"),
+		// 			},
 		// 			Properties: &armpostgresql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("postgres"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.2695756+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("testserver-replica1.postgres.database.azure.com"),
-		// 				MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
-		// 				ReplicaCapacity: to.Ptr[int32](0),
-		// 				ReplicationRole: to.Ptr("Replica"),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumDisabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
-		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](2048000),
+		// 				AdministratorLogin: to.Ptr("cloudsa"),
+		// 				AuthConfig: &armpostgresql.AuthConfig{
+		// 					ActiveDirectoryAuth: to.Ptr(armpostgresql.ActiveDirectoryAuthEnumDisabled),
+		// 					PasswordAuth: to.Ptr(armpostgresql.PasswordAuthEnumEnabled),
 		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine6),
+		// 				AvailabilityZone: to.Ptr("2"),
+		// 				Backup: &armpostgresql.Backup{
+		// 					BackupRetentionDays: to.Ptr[int32](7),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.7279547+00:00"); return t}()),
+		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupEnumDisabled),
+		// 				},
+		// 				DataEncryption: &armpostgresql.DataEncryption{
+		// 					Type: to.Ptr(armpostgresql.ArmServerKeyTypeSystemManaged),
+		// 				},
+		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc5rep.postgres.database.azure.com"),
+		// 				HighAvailability: &armpostgresql.HighAvailability{
+		// 					Mode: to.Ptr(armpostgresql.HighAvailabilityModeDisabled),
+		// 					State: to.Ptr(armpostgresql.ServerHAStateNotEnabled),
+		// 				},
+		// 				MaintenanceWindow: &armpostgresql.MaintenanceWindow{
+		// 					CustomWindow: to.Ptr("Disabled"),
+		// 					DayOfWeek: to.Ptr[int32](0),
+		// 					StartHour: to.Ptr[int32](0),
+		// 					StartMinute: to.Ptr[int32](0),
+		// 				},
+		// 				MinorVersion: to.Ptr("6"),
+		// 				Network: &armpostgresql.Network{
+		// 					PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateEnabled),
+		// 				},
+		// 				ReplicaCapacity: to.Ptr[int32](0),
+		// 				ReplicationRole: to.Ptr(armpostgresql.ReplicationRoleAsyncReplica),
+		// 				State: to.Ptr(armpostgresql.ServerStateReady),
+		// 				Storage: &armpostgresql.Storage{
+		// 					StorageSizeGB: to.Ptr[int32](512),
+		// 				},
+		// 				Version: to.Ptr(armpostgresql.ServerVersionTwelve),
 		// 			},
 		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("GP_Gen4_16"),
-		// 				Capacity: to.Ptr[int32](16),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("testserver-replica2"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-replica2"),
-		// 			Location: to.Ptr("westcentralus"),
-		// 			Properties: &armpostgresql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("postgres"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.2695756+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("testserver-replica2.postgres.database.azure.com"),
-		// 				MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
-		// 				ReplicaCapacity: to.Ptr[int32](0),
-		// 				ReplicationRole: to.Ptr("Replica"),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumDisabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
-		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](2048000),
-		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine6),
-		// 			},
-		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("GP_Gen4_16"),
-		// 				Capacity: to.Ptr[int32](16),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("testserver-replica3"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-replica3"),
-		// 			Location: to.Ptr("westcentralus"),
-		// 			Properties: &armpostgresql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("postgres"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.2695756+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("testserver-replica3.postgres.database.azure.com"),
-		// 				MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
-		// 				ReplicaCapacity: to.Ptr[int32](0),
-		// 				ReplicationRole: to.Ptr("Replica"),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumDisabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
-		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](2048000),
-		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine6),
-		// 			},
-		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("GP_Gen4_16"),
-		// 				Capacity: to.Ptr[int32](16),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("testserver-replica4"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-replica4"),
-		// 			Location: to.Ptr("westcentralus"),
-		// 			Properties: &armpostgresql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("postgres"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.2695756+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("testserver-replica4.postgres.database.azure.com"),
-		// 				MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
-		// 				ReplicaCapacity: to.Ptr[int32](0),
-		// 				ReplicationRole: to.Ptr("Replica"),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumDisabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
-		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](2048000),
-		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine6),
-		// 			},
-		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("GP_Gen4_16"),
-		// 				Capacity: to.Ptr[int32](16),
-		// 				Family: to.Ptr("Gen4"),
-		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("testserver-replica5"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-replica5"),
-		// 			Location: to.Ptr("westcentralus"),
-		// 			Properties: &armpostgresql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("postgres"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.2695756+00:00"); return t}()),
-		// 				FullyQualifiedDomainName: to.Ptr("testserver-replica5.postgres.database.azure.com"),
-		// 				MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
-		// 				ReplicaCapacity: to.Ptr[int32](0),
-		// 				ReplicationRole: to.Ptr("Replica"),
-		// 				SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumDisabled),
-		// 				StorageProfile: &armpostgresql.StorageProfile{
-		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-		// 					StorageMB: to.Ptr[int32](2048000),
-		// 				},
-		// 				UserVisibleState: to.Ptr(armpostgresql.ServerStateReady),
-		// 				Version: to.Ptr(armpostgresql.ServerVersionNine6),
-		// 			},
-		// 			SKU: &armpostgresql.SKU{
-		// 				Name: to.Ptr("GP_Gen4_16"),
-		// 				Capacity: to.Ptr[int32](16),
-		// 				Family: to.Ptr("Gen4"),
+		// 				Name: to.Ptr("Standard_D4s_v3"),
 		// 				Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		// 			},
 		// 	}},

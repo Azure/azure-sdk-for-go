@@ -38,63 +38,18 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-func (c *ClientFactory) NewServersClient() *ServersClient {
-	subClient, _ := NewServersClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewAdministratorsClient() *AdministratorsClient {
+	subClient, _ := NewAdministratorsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewReplicasClient() *ReplicasClient {
-	subClient, _ := NewReplicasClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewBackupsClient() *BackupsClient {
+	subClient, _ := NewBackupsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
-	subClient, _ := NewFirewallRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewVirtualNetworkRulesClient() *VirtualNetworkRulesClient {
-	subClient, _ := NewVirtualNetworkRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewDatabasesClient() *DatabasesClient {
-	subClient, _ := NewDatabasesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewConfigurationsClient() *ConfigurationsClient {
-	subClient, _ := NewConfigurationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewServerParametersClient() *ServerParametersClient {
-	subClient, _ := NewServerParametersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewLogFilesClient() *LogFilesClient {
-	subClient, _ := NewLogFilesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewServerAdministratorsClient() *ServerAdministratorsClient {
-	subClient, _ := NewServerAdministratorsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewRecoverableServersClient() *RecoverableServersClient {
-	subClient, _ := NewRecoverableServersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewServerBasedPerformanceTierClient() *ServerBasedPerformanceTierClient {
-	subClient, _ := NewServerBasedPerformanceTierClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewLocationBasedPerformanceTierClient() *LocationBasedPerformanceTierClient {
-	subClient, _ := NewLocationBasedPerformanceTierClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewLocationBasedCapabilitiesClient() *LocationBasedCapabilitiesClient {
+	subClient, _ := NewLocationBasedCapabilitiesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -103,27 +58,47 @@ func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityC
 	return subClient
 }
 
+func (c *ClientFactory) NewCheckNameAvailabilityWithLocationClient() *CheckNameAvailabilityWithLocationClient {
+	subClient, _ := NewCheckNameAvailabilityWithLocationClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewConfigurationsClient() *ConfigurationsClient {
+	subClient, _ := NewConfigurationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewDatabasesClient() *DatabasesClient {
+	subClient, _ := NewDatabasesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
+	subClient, _ := NewFirewallRulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewServersClient() *ServersClient {
+	subClient, _ := NewServersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewServerSecurityAlertPoliciesClient() *ServerSecurityAlertPoliciesClient {
-	subClient, _ := NewServerSecurityAlertPoliciesClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewGetPrivateDNSZoneSuffixClient() *GetPrivateDNSZoneSuffixClient {
+	subClient, _ := NewGetPrivateDNSZoneSuffixClient(c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
-	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewReplicasClient() *ReplicasClient {
+	subClient, _ := NewReplicasClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
-	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewServerKeysClient() *ServerKeysClient {
-	subClient, _ := NewServerKeysClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewVirtualNetworkSubnetUsageClient() *VirtualNetworkSubnetUsageClient {
+	subClient, _ := NewVirtualNetworkSubnetUsageClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

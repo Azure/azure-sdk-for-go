@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/CheckNameAvailability.json
-func ExampleCheckNameAvailabilityClient_Execute() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/CheckNameAvailabilityLocationBased.json
+func ExampleCheckNameAvailabilityWithLocationClient_Execute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleCheckNameAvailabilityClient_Execute() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCheckNameAvailabilityClient().Execute(ctx, armpostgresql.CheckNameAvailabilityRequest{
+	res, err := clientFactory.NewCheckNameAvailabilityWithLocationClient().Execute(ctx, "westus", armpostgresql.CheckNameAvailabilityRequest{
 		Name: to.Ptr("name1"),
 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
 	}, nil)

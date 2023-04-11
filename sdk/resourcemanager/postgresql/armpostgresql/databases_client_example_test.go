@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/DatabaseCreate.json
-func ExampleDatabasesClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/DatabaseCreate.json
+func ExampleDatabasesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,10 +29,10 @@ func ExampleDatabasesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDatabasesClient().BeginCreateOrUpdate(ctx, "TestGroup", "testserver", "db1", armpostgresql.Database{
+	poller, err := clientFactory.NewDatabasesClient().BeginCreate(ctx, "TestGroup", "testserver", "db1", armpostgresql.Database{
 		Properties: &armpostgresql.DatabaseProperties{
-			Charset:   to.Ptr("UTF8"),
-			Collation: to.Ptr("English_United States.1252"),
+			Charset:   to.Ptr("utf8"),
+			Collation: to.Ptr("en_US.utf8"),
 		},
 	}, nil)
 	if err != nil {
@@ -47,16 +47,16 @@ func ExampleDatabasesClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Database = armpostgresql.Database{
 	// 	Name: to.Ptr("db1"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/servers/testserver/databases/db1"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/databases"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/testserver/databases/db1"),
 	// 	Properties: &armpostgresql.DatabaseProperties{
-	// 		Charset: to.Ptr("UTF8"),
-	// 		Collation: to.Ptr("English_United States.1252"),
+	// 		Charset: to.Ptr("utf8"),
+	// 		Collation: to.Ptr("en_US.utf8"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/DatabaseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/DatabaseDelete.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/DatabaseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/DatabaseGet.json
 func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,16 +97,16 @@ func ExampleDatabasesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Database = armpostgresql.Database{
 	// 	Name: to.Ptr("db1"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/servers/testserver/databases/db1"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/databases"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/testserver/databases/db1"),
 	// 	Properties: &armpostgresql.DatabaseProperties{
-	// 		Charset: to.Ptr("UTF8"),
-	// 		Collation: to.Ptr("English_United States.1252"),
+	// 		Charset: to.Ptr("utf8"),
+	// 		Collation: to.Ptr("en_US.utf8"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/DatabaseListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/DatabasesListByServer.json
 func ExampleDatabasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,20 +132,20 @@ func ExampleDatabasesClient_NewListByServerPager() {
 		// 	Value: []*armpostgresql.Database{
 		// 		{
 		// 			Name: to.Ptr("db1"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/servers/testserver/databases/db1"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/databases"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/testserver/databases/db1"),
 		// 			Properties: &armpostgresql.DatabaseProperties{
-		// 				Charset: to.Ptr("UTF8"),
-		// 				Collation: to.Ptr("English_United States.1252"),
+		// 				Charset: to.Ptr("utf8"),
+		// 				Collation: to.Ptr("en_US.utf8"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("db2"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/servers/testserver/databases/db2"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/databases"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/testserver/databases/db2"),
 		// 			Properties: &armpostgresql.DatabaseProperties{
-		// 				Charset: to.Ptr("UTF8"),
-		// 				Collation: to.Ptr("English_United States.1252"),
+		// 				Charset: to.Ptr("utf8"),
+		// 				Collation: to.Ptr("en_US.utf8"),
 		// 			},
 		// 	}},
 		// }

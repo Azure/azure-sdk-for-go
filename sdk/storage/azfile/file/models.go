@@ -36,9 +36,6 @@ type LeaseAccessConditions = generated.LeaseAccessConditions
 // SourceModifiedAccessConditions contains a group of parameters for the FileClient.UploadRangeFromURL method.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
-// CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.
-type CopyFileSMBInfo = generated.CopyFileSMBInfo
-
 // HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
 // ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
 // which has an offset but no zero value count indicates from the offset to the resource's end.
@@ -216,8 +213,83 @@ func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOption
 		FilePermissionKey: permissionKey,
 		Metadata:          o.Metadata,
 	}
-	return opts, o.CopyFileSMBInfo, o.LeaseAccessConditions
+	return opts, o.CopyFileSMBInfo.format(), o.LeaseAccessConditions
 }
+
+// CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.
+type CopyFileSMBInfo struct {
+	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes
+	// to set on a target file.
+	Attributes CopyFileAttributes
+	// Specifies either the option to copy file creation time from a source file(source) to a target file or a time value in ISO
+	// 8601 format to set as creation time on a target file.
+	CreationTime CopyFileCreationTime
+	// Specifies either the option to copy file last write time from a source file(source) to a target file or a time value in
+	// ISO 8601 format to set as last write time on a target file.
+	LastWriteTime CopyFileLastWriteTime
+	// Specifies the option to copy file security descriptor from source file or to set it using the value which is defined by
+	// the header value of x-ms-file-permission or x-ms-file-permission-key.
+	PermissionCopyMode *PermissionCopyModeType
+	// Specifies the option to overwrite the target file if it already exists and has read-only attribute set.
+	IgnoreReadOnly *bool
+	// Specifies the option to set archive attribute on a target file. True means archive attribute will be set on a target file
+	// despite attribute overrides or a source file state.
+	SetArchiveAttribute *bool
+}
+
+func (c *CopyFileSMBInfo) format() *generated.CopyFileSMBInfo {
+	if c == nil {
+		return nil
+	}
+
+	opts := &generated.CopyFileSMBInfo{
+		FilePermissionCopyMode: c.PermissionCopyMode,
+		IgnoreReadOnly:         c.IgnoreReadOnly,
+		SetArchiveAttribute:    c.SetArchiveAttribute,
+	}
+
+	if c.Attributes != nil {
+		opts.FileAttributes = c.Attributes.FormatAttributes()
+	}
+	if c.CreationTime != nil {
+		opts.FileCreationTime = c.CreationTime.FormatCreationTime()
+	}
+	if c.LastWriteTime != nil {
+		opts.FileLastWriteTime = c.LastWriteTime.FormatLastWriteTime()
+	}
+
+	return opts
+}
+
+// CopyFileAttributes specifies either the option to copy file attributes from a source file(source) to a target file or
+// a list of attributes to set on a target file.
+type CopyFileAttributes = exported.CopyFileAttributes
+
+// SourceCopyFileAttributes specifies to copy file attributes from a source file(source) to a target file
+type SourceCopyFileAttributes = exported.SourceCopyFileAttributes
+
+// DestinationCopyFileAttributes specifies a list of attributes to set on a target file.
+type DestinationCopyFileAttributes = exported.DestinationCopyFileAttributes
+
+// CopyFileCreationTime specifies either the option to copy file creation time from a source file(source) to a target file or
+// a time value in ISO 8601 format to set as creation time on a target file.
+type CopyFileCreationTime = exported.CopyFileCreationTime
+
+// SourceCopyFileCreationTime specifies to copy file creation time from a source file(source) to a target file.
+type SourceCopyFileCreationTime = exported.SourceCopyFileCreationTime
+
+// DestinationCopyFileCreationTime specifies a time value in ISO 8601 format to set as creation time on a target file.
+type DestinationCopyFileCreationTime = exported.DestinationCopyFileCreationTime
+
+// CopyFileLastWriteTime specifies either the option to copy file last write time from a source file(source) to a target file or
+// a time value in ISO 8601 format to set as last write time on a target file.
+type CopyFileLastWriteTime = exported.CopyFileLastWriteTime
+
+// SourceCopyFileLastWriteTime specifies to copy file last write time from a source file(source) to a target file.
+type SourceCopyFileLastWriteTime = exported.SourceCopyFileLastWriteTime
+
+// DestinationCopyFileLastWriteTime specifies a time value in ISO 8601 format to set as last write time on a target file.
+type DestinationCopyFileLastWriteTime = exported.DestinationCopyFileLastWriteTime
 
 // ---------------------------------------------------------------------------------------------------------------------
 

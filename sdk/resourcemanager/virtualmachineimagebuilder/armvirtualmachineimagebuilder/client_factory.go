@@ -44,6 +44,11 @@ func (c *ClientFactory) NewVirtualMachineImageTemplatesClient() *VirtualMachineI
 	return subClient
 }
 
+func (c *ClientFactory) NewTriggersClient() *TriggersClient {
+	subClient, _ := NewTriggersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient

@@ -11,12 +11,52 @@ package armvirtualmachineimagebuilder
 
 import "time"
 
-type ComponentsVrq145SchemasImagetemplateidentityPropertiesUserassignedidentitiesAdditionalproperties struct {
-	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+// DistributeVersionerClassification provides polymorphic access to related types.
+// Call the interface's GetDistributeVersioner() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DistributeVersioner, *DistributeVersionerLatest, *DistributeVersionerSource
+type DistributeVersionerClassification interface {
+	// GetDistributeVersioner returns the DistributeVersioner content of the underlying type.
+	GetDistributeVersioner() *DistributeVersioner
+}
 
-	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+// DistributeVersioner - Describes how to generate new x.y.z version number for distribution.
+type DistributeVersioner struct {
+	// REQUIRED; Version numbering scheme to be used.
+	Scheme *string `json:"scheme,omitempty"`
+}
+
+// GetDistributeVersioner implements the DistributeVersionerClassification interface for type DistributeVersioner.
+func (d *DistributeVersioner) GetDistributeVersioner() *DistributeVersioner { return d }
+
+// DistributeVersionerLatest - Generates version number that will be latest based on existing version numbers.
+type DistributeVersionerLatest struct {
+	// REQUIRED; Version numbering scheme to be used.
+	Scheme *string `json:"scheme,omitempty"`
+
+	// Major version for the generated version number. Determine what is "latest" based on versions with this value as the major
+	// version. -1 is equivalent to leaving it unset.
+	Major *int32 `json:"major,omitempty"`
+}
+
+// GetDistributeVersioner implements the DistributeVersionerClassification interface for type DistributeVersionerLatest.
+func (d *DistributeVersionerLatest) GetDistributeVersioner() *DistributeVersioner {
+	return &DistributeVersioner{
+		Scheme: d.Scheme,
+	}
+}
+
+// DistributeVersionerSource - Generates version number based on version number of source image
+type DistributeVersionerSource struct {
+	// REQUIRED; Version numbering scheme to be used.
+	Scheme *string `json:"scheme,omitempty"`
+}
+
+// GetDistributeVersioner implements the DistributeVersionerClassification interface for type DistributeVersionerSource.
+func (d *DistributeVersionerSource) GetDistributeVersioner() *DistributeVersioner {
+	return &DistributeVersioner{
+		Scheme: d.Scheme,
+	}
 }
 
 // ImageTemplate - Image template is an ARM resource managed by Microsoft.VirtualMachineImages provider
@@ -119,21 +159,52 @@ func (i *ImageTemplateFileCustomizer) GetImageTemplateCustomizer() *ImageTemplat
 	}
 }
 
+// ImageTemplateFileValidator - Uploads files required for validation to VMs (Linux, Windows). Corresponds to Packer file
+// provisioner
+type ImageTemplateFileValidator struct {
+	// REQUIRED; The type of validation you want to use on the Image. For example, "Shell" can be shell validation
+	Type *string `json:"type,omitempty"`
+
+	// The absolute path to a file (with nested directory structures already created) where the file (from sourceUri) will be
+	// uploaded to in the VM
+	Destination *string `json:"destination,omitempty"`
+
+	// Friendly Name to provide context on what this validation step does
+	Name *string `json:"name,omitempty"`
+
+	// SHA256 checksum of the file provided in the sourceUri field above
+	SHA256Checksum *string `json:"sha256Checksum,omitempty"`
+
+	// The URI of the file to be uploaded to the VM for validation. It can be a github link, Azure Storage URI (authorized or
+	// SAS), etc
+	SourceURI *string `json:"sourceUri,omitempty"`
+}
+
+// GetImageTemplateInVMValidator implements the ImageTemplateInVMValidatorClassification interface for type ImageTemplateFileValidator.
+func (i *ImageTemplateFileValidator) GetImageTemplateInVMValidator() *ImageTemplateInVMValidator {
+	return &ImageTemplateInVMValidator{
+		Type: i.Type,
+		Name: i.Name,
+	}
+}
+
 // ImageTemplateIdentity - Identity for the image template.
 type ImageTemplateIdentity struct {
 	// The type of identity used for the image template. The type 'None' will remove any identities from the image template.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the image template. The user identity dictionary key references will be ARM
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
 	// resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*ComponentsVrq145SchemasImagetemplateidentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 }
 
 // ImageTemplateInVMValidatorClassification provides polymorphic access to related types.
 // Call the interface's GetImageTemplateInVMValidator() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ImageTemplateInVMValidator, *ImageTemplatePowerShellValidator, *ImageTemplateShellValidator
+// - *ImageTemplateFileValidator, *ImageTemplateInVMValidator, *ImageTemplatePowerShellValidator, *ImageTemplateShellValidator
 type ImageTemplateInVMValidatorClassification interface {
 	// GetImageTemplateInVMValidator returns the ImageTemplateInVMValidator content of the underlying type.
 	GetImageTemplateInVMValidator() *ImageTemplateInVMValidator
@@ -341,12 +412,15 @@ type ImageTemplateProperties struct {
 	// REQUIRED; Specifies the properties used to describe the source image.
 	Source ImageTemplateSourceClassification `json:"source,omitempty"`
 
-	// Maximum duration to wait while building the image template (includes all customizations, validations, and distributions).
-	// Omit or specify 0 to use the default (4 hours).
+	// Maximum duration to wait while building the image template (includes all customizations, optimization, validations, and
+	// distributions). Omit or specify 0 to use the default (4 hours).
 	BuildTimeoutInMinutes *int32 `json:"buildTimeoutInMinutes,omitempty"`
 
 	// Specifies the properties used to describe the customization steps of the image, like Image source etc
 	Customize []ImageTemplateCustomizerClassification `json:"customize,omitempty"`
+
+	// Specifies optimization to be performed on image.
+	Optimize *ImageTemplatePropertiesOptimize `json:"optimize,omitempty"`
 
 	// The staging resource group id in the same subscription as the image template that will be used to build the image. If this
 	// field is empty, a resource group with a random name will be created. If the
@@ -376,6 +450,18 @@ type ImageTemplateProperties struct {
 
 	// READ-ONLY; Provisioning state of the resource
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// ImageTemplatePropertiesOptimize - Specifies optimization to be performed on image.
+type ImageTemplatePropertiesOptimize struct {
+	// Optimization is applied on the image for a faster VM boot.
+	VMBoot *ImageTemplatePropertiesOptimizeVMBoot `json:"vmBoot,omitempty"`
+}
+
+// ImageTemplatePropertiesOptimizeVMBoot - Optimization is applied on the image for a faster VM boot.
+type ImageTemplatePropertiesOptimizeVMBoot struct {
+	// Enabling this field will improve VM boot time by optimizing the final customized image output.
+	State *VMBootOptimizationState `json:"state,omitempty"`
 }
 
 // ImageTemplatePropertiesValidate - Configuration options and list of validations to be performed on the resulting image.
@@ -422,13 +508,10 @@ func (i *ImageTemplateRestartCustomizer) GetImageTemplateCustomizer() *ImageTemp
 	}
 }
 
-// ImageTemplateSharedImageDistributor - Distribute via Shared Image Gallery.
+// ImageTemplateSharedImageDistributor - Distribute via Azure Compute Gallery.
 type ImageTemplateSharedImageDistributor struct {
-	// REQUIRED; Resource Id of the Shared Image Gallery image
+	// REQUIRED; Resource Id of the Azure Compute Gallery image
 	GalleryImageID *string `json:"galleryImageId,omitempty"`
-
-	// REQUIRED; A list of regions that the image will be replicated to
-	ReplicationRegions []*string `json:"replicationRegions,omitempty"`
 
 	// REQUIRED; The name to be used for the associated RunOutput.
 	RunOutputName *string `json:"runOutputName,omitempty"`
@@ -442,8 +525,21 @@ type ImageTemplateSharedImageDistributor struct {
 	// Flag that indicates whether created image version should be excluded from latest. Omit to use the default (false).
 	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
 
-	// Storage account type to be used to store the shared image. Omit to use the default (Standard_LRS).
+	// [Deprecated] A list of regions that the image will be replicated to. This list can be specified only if targetRegions is
+	// not specified. This field is deprecated - use targetRegions instead.
+	ReplicationRegions []*string `json:"replicationRegions,omitempty"`
+
+	// [Deprecated] Storage account type to be used to store the shared image. Omit to use the default (Standard_LRS). This field
+	// can be specified only if replicationRegions is specified. This field is
+	// deprecated - use targetRegions instead.
 	StorageAccountType *SharedImageStorageAccountType `json:"storageAccountType,omitempty"`
+
+	// The target regions where the distributed Image Version is going to be replicated to. This object supersedes replicationRegions
+	// and can be specified only if replicationRegions is not specified.
+	TargetRegions []*TargetRegion `json:"targetRegions,omitempty"`
+
+	// Describes how to generate new x.y.z version number for distribution.
+	Versioning DistributeVersionerClassification `json:"versioning,omitempty"`
 }
 
 // GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateSharedImageDistributor.
@@ -455,13 +551,19 @@ func (i *ImageTemplateSharedImageDistributor) GetImageTemplateDistributor() *Ima
 	}
 }
 
-// ImageTemplateSharedImageVersionSource - Describes an image source that is an image version in a shared image gallery.
+// ImageTemplateSharedImageVersionSource - Describes an image source that is an image version in an Azure Compute Gallery
+// or a Direct Shared Gallery.
 type ImageTemplateSharedImageVersionSource struct {
-	// REQUIRED; ARM resource id of the image version in the shared image gallery
+	// REQUIRED; ARM resource id of the image version. When image version name is 'latest', the version is evaluated when the
+	// image build takes place.
 	ImageVersionID *string `json:"imageVersionId,omitempty"`
 
 	// REQUIRED; Specifies the type of source image you want to start with.
 	Type *string `json:"type,omitempty"`
+
+	// READ-ONLY; Exact ARM resource id of the image version. This readonly field differs from the image version Id in 'imageVersionId'
+	// only if the version name specified in 'imageVersionId' field is 'latest'.
+	ExactVersion *string `json:"exactVersion,omitempty" azure:"ro"`
 }
 
 // GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplateSharedImageVersionSource.
@@ -580,6 +682,10 @@ type ImageTemplateVhdDistributor struct {
 
 	// Tags that will be applied to the artifact once it has been created/updated by the distributor.
 	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
+
+	// Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty string) in which case VHD would
+	// be published to the storage account in the staging resource group.
+	URI *string `json:"uri,omitempty"`
 }
 
 // GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateVhdDistributor.
@@ -758,6 +864,27 @@ type RunOutputProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// SourceImageTriggerProperties - Properties of SourceImage kind of trigger
+type SourceImageTriggerProperties struct {
+	// REQUIRED; The kind of trigger.
+	Kind *string `json:"kind,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Trigger status
+	Status *TriggerStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetTriggerProperties implements the TriggerPropertiesClassification interface for type SourceImageTriggerProperties.
+func (s *SourceImageTriggerProperties) GetTriggerProperties() *TriggerProperties {
+	return &TriggerProperties{
+		Kind:              s.Kind,
+		Status:            s.Status,
+		ProvisioningState: s.ProvisioningState,
+	}
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -777,6 +904,18 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// TargetRegion - Describes the target region information.
+type TargetRegion struct {
+	// REQUIRED; The name of the region.
+	Name *string `json:"name,omitempty"`
+
+	// The number of replicas of the Image Version to be created in this region. Omit to use the default (1).
+	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+
+	// Specifies the storage account type to be used to store the image in this region. Omit to use the default (Standard_LRS).
+	StorageAccountType *SharedImageStorageAccountType `json:"storageAccountType,omitempty"`
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
@@ -799,6 +938,101 @@ type TrackedResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// Trigger - Represents a trigger that can invoke an image template build.
+type Trigger struct {
+	// The properties of a trigger
+	Properties TriggerPropertiesClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// TriggerCollection - The result of List triggers operation
+type TriggerCollection struct {
+	// REQUIRED; An array of triggers
+	Value []*Trigger `json:"value,omitempty"`
+
+	// The continuation token.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// TriggerPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetTriggerProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *SourceImageTriggerProperties, *TriggerProperties
+type TriggerPropertiesClassification interface {
+	// GetTriggerProperties returns the TriggerProperties content of the underlying type.
+	GetTriggerProperties() *TriggerProperties
+}
+
+// TriggerProperties - Describes the properties of a trigger
+type TriggerProperties struct {
+	// REQUIRED; The kind of trigger.
+	Kind *string `json:"kind,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Trigger status
+	Status *TriggerStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetTriggerProperties implements the TriggerPropertiesClassification interface for type TriggerProperties.
+func (t *TriggerProperties) GetTriggerProperties() *TriggerProperties { return t }
+
+// TriggerStatus - Describes the status of a trigger
+type TriggerStatus struct {
+	// READ-ONLY; The status code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The detailed status message, including for alerts and error messages.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time of the status.
+	Time *time.Time `json:"time,omitempty" azure:"ro"`
+}
+
+// TriggersClientBeginCreateOrUpdateOptions contains the optional parameters for the TriggersClient.BeginCreateOrUpdate method.
+type TriggersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TriggersClientBeginDeleteOptions contains the optional parameters for the TriggersClient.BeginDelete method.
+type TriggersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TriggersClientGetOptions contains the optional parameters for the TriggersClient.Get method.
+type TriggersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TriggersClientListByImageTemplateOptions contains the optional parameters for the TriggersClient.NewListByImageTemplatePager
+// method.
+type TriggersClientListByImageTemplateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
 // VirtualMachineImageTemplatesClientBeginCancelOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginCancel

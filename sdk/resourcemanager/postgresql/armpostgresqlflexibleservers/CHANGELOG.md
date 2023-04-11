@@ -1,5 +1,16 @@
 # Release History
 
+## 3.0.0 (2023-04-28)
+### Breaking Changes
+
+- Const `ArmServerKeyTypeSystemAssigned` from type alias `ArmServerKeyType` has been removed
+- Const `ReplicationRoleGeoSyncReplica`, `ReplicationRoleSecondary`, `ReplicationRoleSyncReplica`, `ReplicationRoleWalReplica` from type alias `ReplicationRole` has been removed
+
+### Features Added
+
+- New value `ArmServerKeyTypeSystemManaged` added to enum type `ArmServerKeyType`
+
+
 ## 2.1.0 (2023-03-27)
 ### Features Added
 

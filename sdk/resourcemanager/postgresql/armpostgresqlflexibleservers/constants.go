@@ -11,7 +11,7 @@ package armpostgresqlflexibleservers
 
 const (
 	moduleName    = "armpostgresqlflexibleservers"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v3.0.0"
 )
 
 // ActiveDirectoryAuthEnum - If Enabled, Azure Active Directory authentication is enabled.
@@ -30,19 +30,19 @@ func PossibleActiveDirectoryAuthEnumValues() []ActiveDirectoryAuthEnum {
 	}
 }
 
-// ArmServerKeyType - Data encryption type to depict if it is System assigned vs Azure Key vault.
+// ArmServerKeyType - Data encryption type to depict if it is System Managed vs Azure Key vault.
 type ArmServerKeyType string
 
 const (
-	ArmServerKeyTypeAzureKeyVault  ArmServerKeyType = "AzureKeyVault"
-	ArmServerKeyTypeSystemAssigned ArmServerKeyType = "SystemAssigned"
+	ArmServerKeyTypeAzureKeyVault ArmServerKeyType = "AzureKeyVault"
+	ArmServerKeyTypeSystemManaged ArmServerKeyType = "SystemManaged"
 )
 
 // PossibleArmServerKeyTypeValues returns the possible values for the ArmServerKeyType const type.
 func PossibleArmServerKeyTypeValues() []ArmServerKeyType {
 	return []ArmServerKeyType{
 		ArmServerKeyTypeAzureKeyVault,
-		ArmServerKeyTypeSystemAssigned,
+		ArmServerKeyTypeSystemManaged,
 	}
 }
 
@@ -288,12 +288,8 @@ type ReplicationRole string
 const (
 	ReplicationRoleAsyncReplica    ReplicationRole = "AsyncReplica"
 	ReplicationRoleGeoAsyncReplica ReplicationRole = "GeoAsyncReplica"
-	ReplicationRoleGeoSyncReplica  ReplicationRole = "GeoSyncReplica"
 	ReplicationRoleNone            ReplicationRole = "None"
 	ReplicationRolePrimary         ReplicationRole = "Primary"
-	ReplicationRoleSecondary       ReplicationRole = "Secondary"
-	ReplicationRoleSyncReplica     ReplicationRole = "SyncReplica"
-	ReplicationRoleWalReplica      ReplicationRole = "WalReplica"
 )
 
 // PossibleReplicationRoleValues returns the possible values for the ReplicationRole const type.
@@ -301,12 +297,8 @@ func PossibleReplicationRoleValues() []ReplicationRole {
 	return []ReplicationRole{
 		ReplicationRoleAsyncReplica,
 		ReplicationRoleGeoAsyncReplica,
-		ReplicationRoleGeoSyncReplica,
 		ReplicationRoleNone,
 		ReplicationRolePrimary,
-		ReplicationRoleSecondary,
-		ReplicationRoleSyncReplica,
-		ReplicationRoleWalReplica,
 	}
 }
 

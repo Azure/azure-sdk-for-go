@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"hash/crc64"
 	"net"
 	"strings"
 )
@@ -35,6 +36,10 @@ const (
 )
 
 const StorageAnalyticsVersion = "1.0"
+
+const crc64Polynomial uint64 = 0x9A6C9329AC4BC9B5
+
+var CRC64Table = crc64.MakeTable(crc64Polynomial)
 
 const (
 	// DefaultFilePermissionString is a constant for all intents and purposes.

@@ -18,188 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasCheckNameAvailability.json
-func ExampleDisasterRecoveryConfigsClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDisasterRecoveryConfigsClient().CheckNameAvailability(ctx, "exampleResourceGroup", "sdk-Namespace-9080", armeventhub.CheckNameAvailabilityParameter{
-		Name: to.Ptr("sdk-DisasterRecovery-9474"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CheckNameAvailabilityResult = armeventhub.CheckNameAvailabilityResult{
-	// 	Message: to.Ptr(""),
-	// 	NameAvailable: to.Ptr(true),
-	// 	Reason: to.Ptr(armeventhub.UnavailableReasonNone),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasList.json
-func ExampleDisasterRecoveryConfigsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDisasterRecoveryConfigsClient().NewListPager("exampleResourceGroup", "sdk-Namespace-8859", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ArmDisasterRecoveryListResult = armeventhub.ArmDisasterRecoveryListResult{
-		// 	Value: []*armeventhub.ArmDisasterRecovery{
-		// 		{
-		// 			Name: to.Ptr("sdk-DisasterRecovery-3814"),
-		// 			Type: to.Ptr("Microsoft.EventHub/Namespaces/DisasterRecoveryConfig"),
-		// 			ID: to.Ptr("/subscriptions/exampleSubscriptionId/resourceGroups/exampleResourceGroup/providers/Microsoft.EventHub/namespaces/sdk-Namespace-8859/disasterRecoveryConfig/sdk-DisasterRecovery-3814"),
-		// 			Properties: &armeventhub.ArmDisasterRecoveryProperties{
-		// 				PartnerNamespace: to.Ptr("sdk-Namespace-37"),
-		// 				ProvisioningState: to.Ptr(armeventhub.ProvisioningStateDRSucceeded),
-		// 				Role: to.Ptr(armeventhub.RoleDisasterRecoveryPrimary),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasCreate.json
-func ExampleDisasterRecoveryConfigsClient_CreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDisasterRecoveryConfigsClient().CreateOrUpdate(ctx, "exampleResourceGroup", "sdk-Namespace-8859", "sdk-DisasterRecovery-3814", armeventhub.ArmDisasterRecovery{
-		Properties: &armeventhub.ArmDisasterRecoveryProperties{
-			PartnerNamespace: to.Ptr("sdk-Namespace-37"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ArmDisasterRecovery = armeventhub.ArmDisasterRecovery{
-	// 	Name: to.Ptr("sdk-DisasterRecovery-3814"),
-	// 	Type: to.Ptr("Microsoft.EventHub/Namespaces/DisasterRecoveryConfig"),
-	// 	ID: to.Ptr("/subscriptions/exampleResourceGroup/resourceGroups/exampleResourceGroup/providers/Microsoft.EventHub/namespaces/sdk-Namespace-8859/disasterRecoveryConfig/sdk-DisasterRecovery-3814"),
-	// 	Properties: &armeventhub.ArmDisasterRecoveryProperties{
-	// 		PartnerNamespace: to.Ptr("sdk-Namespace-37"),
-	// 		ProvisioningState: to.Ptr(armeventhub.ProvisioningStateDRSucceeded),
-	// 		Role: to.Ptr(armeventhub.RoleDisasterRecoveryPrimary),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasDelete.json
-func ExampleDisasterRecoveryConfigsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewDisasterRecoveryConfigsClient().Delete(ctx, "exampleResourceGroup", "sdk-Namespace-5849", "sdk-DisasterRecovery-3814", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasGet.json
-func ExampleDisasterRecoveryConfigsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDisasterRecoveryConfigsClient().Get(ctx, "exampleResourceGroup", "sdk-Namespace-8859", "sdk-DisasterRecovery-3814", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ArmDisasterRecovery = armeventhub.ArmDisasterRecovery{
-	// 	Name: to.Ptr("sdk-DisasterRecovery-3814"),
-	// 	Type: to.Ptr("Microsoft.EventHub/Namespaces/DisasterRecoveryConfig"),
-	// 	ID: to.Ptr("/subscriptions/exampleSubscriptionId/resourceGroups/exampleResourceGroup/providers/Microsoft.EventHub/namespaces/sdk-Namespace-37/disasterRecoveryConfig/sdk-DisasterRecovery-3814"),
-	// 	Properties: &armeventhub.ArmDisasterRecoveryProperties{
-	// 		PartnerNamespace: to.Ptr("sdk-Namespace-8859"),
-	// 		PendingReplicationOperationsCount: to.Ptr[int64](0),
-	// 		ProvisioningState: to.Ptr(armeventhub.ProvisioningStateDRSucceeded),
-	// 		Role: to.Ptr(armeventhub.RoleDisasterRecoverySecondary),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasBreakPairing.json
-func ExampleDisasterRecoveryConfigsClient_BreakPairing() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewDisasterRecoveryConfigsClient().BreakPairing(ctx, "exampleResourceGroup", "sdk-Namespace-8859", "sdk-DisasterRecovery-3814", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasFailOver.json
-func ExampleDisasterRecoveryConfigsClient_FailOver() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewDisasterRecoveryConfigsClient().FailOver(ctx, "exampleResourceGroup", "sdk-Namespace-8859", "sdk-DisasterRecovery-3814", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasAuthorizationRuleListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasAuthorizationRuleListAll.json
 func ExampleDisasterRecoveryConfigsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +87,7 @@ func ExampleDisasterRecoveryConfigsClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasAuthorizationRuleGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasAuthorizationRuleGet.json
 func ExampleDisasterRecoveryConfigsClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,7 +117,7 @@ func ExampleDisasterRecoveryConfigsClient_GetAuthorizationRule() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasAuthorizationRuleListKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasAuthorizationRuleListKey.json
 func ExampleDisasterRecoveryConfigsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,4 +142,185 @@ func ExampleDisasterRecoveryConfigsClient_ListKeys() {
 	// 	PrimaryKey: to.Ptr("############################################"),
 	// 	SecondaryKey: to.Ptr("############################################"),
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasCheckNameAvailability.json
+func ExampleDisasterRecoveryConfigsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDisasterRecoveryConfigsClient().CheckNameAvailability(ctx, "exampleResourceGroup", "sdk-Namespace-9080", armeventhub.CheckNameAvailabilityParameter{
+		Name: to.Ptr("sdk-DisasterRecovery-9474"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CheckNameAvailabilityResult = armeventhub.CheckNameAvailabilityResult{
+	// 	Message: to.Ptr(""),
+	// 	NameAvailable: to.Ptr(true),
+	// 	Reason: to.Ptr(armeventhub.UnavailableReasonNone),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasList.json
+func ExampleDisasterRecoveryConfigsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDisasterRecoveryConfigsClient().NewListPager("exampleResourceGroup", "sdk-Namespace-8859", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ArmDisasterRecoveryListResult = armeventhub.ArmDisasterRecoveryListResult{
+		// 	Value: []*armeventhub.ArmDisasterRecovery{
+		// 		{
+		// 			Name: to.Ptr("sdk-DisasterRecovery-3814"),
+		// 			Type: to.Ptr("Microsoft.EventHub/Namespaces/DisasterRecoveryConfig"),
+		// 			ID: to.Ptr("/subscriptions/exampleSubscriptionId/resourceGroups/exampleResourceGroup/providers/Microsoft.EventHub/namespaces/sdk-Namespace-8859/disasterRecoveryConfig/sdk-DisasterRecovery-3814"),
+		// 			Properties: &armeventhub.ArmDisasterRecoveryProperties{
+		// 				PartnerNamespace: to.Ptr("sdk-Namespace-37"),
+		// 				ProvisioningState: to.Ptr(armeventhub.ProvisioningStateDRSucceeded),
+		// 				Role: to.Ptr(armeventhub.RoleDisasterRecoveryPrimary),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasCreate.json
+func ExampleDisasterRecoveryConfigsClient_CreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDisasterRecoveryConfigsClient().CreateOrUpdate(ctx, "exampleResourceGroup", "sdk-Namespace-8859", "sdk-DisasterRecovery-3814", armeventhub.ArmDisasterRecovery{
+		Properties: &armeventhub.ArmDisasterRecoveryProperties{
+			PartnerNamespace: to.Ptr("sdk-Namespace-37"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ArmDisasterRecovery = armeventhub.ArmDisasterRecovery{
+	// 	Name: to.Ptr("sdk-DisasterRecovery-3814"),
+	// 	Type: to.Ptr("Microsoft.EventHub/Namespaces/DisasterRecoveryConfig"),
+	// 	ID: to.Ptr("/subscriptions/exampleResourceGroup/resourceGroups/exampleResourceGroup/providers/Microsoft.EventHub/namespaces/sdk-Namespace-8859/disasterRecoveryConfig/sdk-DisasterRecovery-3814"),
+	// 	Properties: &armeventhub.ArmDisasterRecoveryProperties{
+	// 		PartnerNamespace: to.Ptr("sdk-Namespace-37"),
+	// 		ProvisioningState: to.Ptr(armeventhub.ProvisioningStateDRSucceeded),
+	// 		Role: to.Ptr(armeventhub.RoleDisasterRecoveryPrimary),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasDelete.json
+func ExampleDisasterRecoveryConfigsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewDisasterRecoveryConfigsClient().Delete(ctx, "exampleResourceGroup", "sdk-Namespace-5849", "sdk-DisasterRecovery-3814", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasGet.json
+func ExampleDisasterRecoveryConfigsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDisasterRecoveryConfigsClient().Get(ctx, "exampleResourceGroup", "sdk-Namespace-8859", "sdk-DisasterRecovery-3814", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ArmDisasterRecovery = armeventhub.ArmDisasterRecovery{
+	// 	Name: to.Ptr("sdk-DisasterRecovery-3814"),
+	// 	Type: to.Ptr("Microsoft.EventHub/Namespaces/DisasterRecoveryConfig"),
+	// 	ID: to.Ptr("/subscriptions/exampleSubscriptionId/resourceGroups/exampleResourceGroup/providers/Microsoft.EventHub/namespaces/sdk-Namespace-37/disasterRecoveryConfig/sdk-DisasterRecovery-3814"),
+	// 	Properties: &armeventhub.ArmDisasterRecoveryProperties{
+	// 		PartnerNamespace: to.Ptr("sdk-Namespace-8859"),
+	// 		PendingReplicationOperationsCount: to.Ptr[int64](0),
+	// 		ProvisioningState: to.Ptr(armeventhub.ProvisioningStateDRSucceeded),
+	// 		Role: to.Ptr(armeventhub.RoleDisasterRecoverySecondary),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasBreakPairing.json
+func ExampleDisasterRecoveryConfigsClient_BreakPairing() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewDisasterRecoveryConfigsClient().BreakPairing(ctx, "exampleResourceGroup", "sdk-Namespace-8859", "sdk-DisasterRecovery-3814", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasFailOver.json
+func ExampleDisasterRecoveryConfigsClient_FailOver() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewDisasterRecoveryConfigsClient().FailOver(ctx, "exampleResourceGroup", "sdk-Namespace-8859", "sdk-DisasterRecovery-3814", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
 }

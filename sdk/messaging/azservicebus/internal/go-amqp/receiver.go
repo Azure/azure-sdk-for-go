@@ -29,6 +29,7 @@ type Receiver struct {
 	// message receiving
 	receiverReady chan struct{}          // receiver sends on this when mux is paused to indicate it can handle more messages
 	messagesQ     *queue.Holder[Message] // used to send completed messages to receiver
+	txDisposition chan frameBodyEnvelope // used to funnel disposition frames through the mux
 
 	unsettledMessages     map[string]struct{} // used to keep track of messages being handled downstream
 	unsettledMessagesLock sync.RWMutex        // lock to protect concurrent access to unsettledMessages
@@ -89,7 +90,7 @@ func (r *Receiver) Prefetched() *Message {
 		return nil
 	}
 
-	debug.Log(3, "RX (Receiver): prefetched delivery ID %d", msg.deliveryID)
+	debug.Log(3, "RX (Receiver %p): prefetched delivery ID %d", r, msg.deliveryID)
 
 	if msg.settled {
 		r.onSettlement(1)
@@ -119,7 +120,7 @@ func (r *Receiver) Receive(ctx context.Context, opts *ReceiveOptions) (*Message,
 	case q := <-r.messagesQ.Wait():
 		msg := q.Dequeue()
 		debug.Assert(msg != nil)
-		debug.Log(3, "RX (Receiver): received delivery ID %d", msg.deliveryID)
+		debug.Log(3, "RX (Receiver %p): received delivery ID %d", r, msg.deliveryID)
 		r.messagesQ.Release(q)
 		if msg.settled {
 			r.onSettlement(1)
@@ -234,14 +235,15 @@ func (r *Receiver) LinkSourceFilterValue(name string) any {
 //   - ctx controls waiting for the peer to acknowledge the close
 //
 // If the context's deadline expires or is cancelled before the operation
-// completes, the application can be left in an unknown state, potentially
-// resulting in connection errors.
+// completes, an error is returned.  However, the operation will continue to
+// execute in the background. Subsequent calls will return a *LinkError
+// that contains the context's error message.
 func (r *Receiver) Close(ctx context.Context) error {
 	return r.l.closeLink(ctx)
 }
 
 // sendDisposition sends a disposition frame to the peer
-func (r *Receiver) sendDisposition(first uint32, last *uint32, state encoding.DeliveryState) error {
+func (r *Receiver) sendDisposition(ctx context.Context, first uint32, last *uint32, state encoding.DeliveryState) error {
 	fr := &frames.PerformDisposition{
 		Role:    encoding.RoleReceiver,
 		First:   first,
@@ -250,12 +252,15 @@ func (r *Receiver) sendDisposition(first uint32, last *uint32, state encoding.De
 		State:   state,
 	}
 
+	sent := make(chan error, 1)
 	select {
+	case r.txDisposition <- frameBodyEnvelope{Ctx: ctx, FrameBody: fr, Sent: sent}:
+		debug.Log(2, "TX (Receiver %p): mux txDisposition %s", r, fr)
+		return <-sent
 	case <-r.l.done:
 		return r.l.doneErr
-	default:
-		// TODO: this is racy
-		return r.l.session.txFrame(fr, nil)
+	case <-ctx.Done():
+		return ctx.Err()
 	}
 }
 
@@ -264,13 +269,17 @@ func (r *Receiver) messageDisposition(ctx context.Context, msg *Message, state e
 		return nil
 	}
 
+	// NOTE: we MUST add to the in-flight map before sending the disposition. if not, it's possible
+	// to receive the ack'ing disposition frame *before* the in-flight map has been updated which
+	// will cause the below <-wait to never trigger.
+
 	var wait chan error
 	if r.l.receiverSettleMode != nil && *r.l.receiverSettleMode == ReceiverSettleModeSecond {
-		debug.Log(3, "TX (Receiver): delivery ID %d is in flight", msg.deliveryID)
+		debug.Log(3, "TX (Receiver %p): delivery ID %d is in flight", r, msg.deliveryID)
 		wait = r.inFlight.add(msg.deliveryID)
 	}
 
-	if err := r.sendDisposition(msg.deliveryID, nil, state); err != nil {
+	if err := r.sendDisposition(ctx, msg.deliveryID, nil, state); err != nil {
 		return err
 	}
 
@@ -283,12 +292,24 @@ func (r *Receiver) messageDisposition(ctx context.Context, msg *Message, state e
 
 	select {
 	case err := <-wait:
-		debug.Log(3, "RX (Receiver): delivery ID %d has been settled", msg.deliveryID)
-		// we've received confirmation of disposition
-		r.deleteUnsettled(msg)
-		r.onSettlement(1)
-		msg.settled = true
+		// err has three possibilities
+		//   - nil, meaning the peer acknowledged the settlement
+		//   - an *Error, meaning the peer rejected the message with a provided error
+		//   - a non-AMQP error. this comes from calls to inFlight.clear() during mux unwind.
+		// only for the first two cases is the message considered settled
+
+		if amqpErr := (&Error{}); err == nil || errors.As(err, &amqpErr) {
+			debug.Log(3, "RX (Receiver %p): delivery ID %d has been settled", r, msg.deliveryID)
+			// we've received confirmation of disposition
+			r.deleteUnsettled(msg)
+			r.onSettlement(1)
+			msg.settled = true
+			return err
+		}
+
+		debug.Log(3, "RX (Receiver %p): error settling delivery ID %d: %v", r, msg.deliveryID, err)
 		return err
+
 	case <-ctx.Done():
 		// didn't receive the ack in the time allotted, leave message as unsettled
 		return ctx.Err()
@@ -342,6 +363,7 @@ func newReceiver(source string, session *Session, opts *ReceiverOptions) (*Recei
 		l:             l,
 		autoSendFlow:  true,
 		receiverReady: make(chan struct{}, 1),
+		txDisposition: make(chan frameBodyEnvelope),
 	}
 
 	r.messagesQ = queue.NewHolder(queue.New[Message](int(session.incomingWindow)))
@@ -451,12 +473,24 @@ func (r *Receiver) attach(ctx context.Context) error {
 		return err
 	}
 
-	go r.mux()
-
 	return nil
 }
 
-func (r *Receiver) mux() {
+func nop() {}
+
+type receiverTestHooks struct {
+	MuxStart  func()
+	MuxSelect func()
+}
+
+func (r *Receiver) mux(hooks receiverTestHooks) {
+	if hooks.MuxSelect == nil {
+		hooks.MuxSelect = nop
+	}
+	if hooks.MuxStart == nil {
+		hooks.MuxStart = nop
+	}
+
 	defer func() {
 		// unblock any in flight message dispositions
 		r.inFlight.clear(r.l.doneErr)
@@ -466,9 +500,10 @@ func (r *Receiver) mux() {
 			r.creditor.EndDrain()
 		}
 
-		r.l.session.deallocateHandle(&r.l)
 		close(r.l.done)
 	}()
+
+	hooks.MuxStart()
 
 	if r.autoSendFlow {
 		r.l.doneErr = r.muxFlow(r.l.linkCredit, false)
@@ -493,10 +528,12 @@ func (r *Receiver) mux() {
 		// fixed threshold to ensure credit is reclaimed in cases where the number of unsettled
 		// messages remains high for whatever reason.
 		if r.autoSendFlow && previousSettlementCount > 0 && previousSettlementCount >= r.l.linkCredit {
-			debug.Log(1, "RX (Receiver) (auto): source: %q, inflight: %d, linkCredit: %d, deliveryCount: %d, messages: %d, unsettled: %d, settlementCount: %d, settleMode: %s", r.l.source.Address, r.inFlight.len(), r.l.linkCredit, r.l.deliveryCount, msgLen, r.countUnsettled(), previousSettlementCount, r.l.receiverSettleMode.String())
+			debug.Log(1, "RX (Receiver %p) (auto): source: %q, inflight: %d, linkCredit: %d, deliveryCount: %d, messages: %d, unsettled: %d, settlementCount: %d, settleMode: %s",
+				r, r.l.source.Address, r.inFlight.len(), r.l.linkCredit, r.l.deliveryCount, msgLen, r.countUnsettled(), previousSettlementCount, r.l.receiverSettleMode.String())
 			r.l.doneErr = r.creditor.IssueCredit(previousSettlementCount)
 		} else if r.l.linkCredit == 0 {
-			debug.Log(1, "RX (Receiver) (pause): source: %q, inflight: %d, linkCredit: %d, deliveryCount: %d, messages: %d, unsettled: %d, settlementCount: %d, settleMode: %s", r.l.source.Address, r.inFlight.len(), r.l.linkCredit, r.l.deliveryCount, msgLen, r.countUnsettled(), previousSettlementCount, r.l.receiverSettleMode.String())
+			debug.Log(1, "RX (Receiver %p) (pause): source: %q, inflight: %d, linkCredit: %d, deliveryCount: %d, messages: %d, unsettled: %d, settlementCount: %d, settleMode: %s",
+				r, r.l.source.Address, r.inFlight.len(), r.l.linkCredit, r.l.deliveryCount, msgLen, r.countUnsettled(), previousSettlementCount, r.l.receiverSettleMode.String())
 		}
 
 		if r.l.doneErr != nil {
@@ -505,8 +542,8 @@ func (r *Receiver) mux() {
 
 		drain, credits := r.creditor.FlowBits(r.l.linkCredit)
 		if drain || credits > 0 {
-			debug.Log(1, "RX (Receiver) (flow): source: %q, inflight: %d, curLinkCredit: %d, newLinkCredit: %d, drain: %v, deliveryCount: %d, messages: %d, unsettled: %d, settlementCount: %d, settleMode: %s",
-				r.l.source.Address, r.inFlight.len(), r.l.linkCredit, credits, drain, r.l.deliveryCount, msgLen, r.countUnsettled(), previousSettlementCount, r.l.receiverSettleMode.String())
+			debug.Log(1, "RX (Receiver %p) (flow): source: %q, inflight: %d, curLinkCredit: %d, newLinkCredit: %d, drain: %v, deliveryCount: %d, messages: %d, unsettled: %d, settlementCount: %d, settleMode: %s",
+				r, r.l.source.Address, r.inFlight.len(), r.l.linkCredit, credits, drain, r.l.deliveryCount, msgLen, r.countUnsettled(), previousSettlementCount, r.l.receiverSettleMode.String())
 
 			// send a flow frame.
 			r.l.doneErr = r.muxFlow(credits, drain)
@@ -516,18 +553,21 @@ func (r *Receiver) mux() {
 			return
 		}
 
+		txDisposition := r.txDisposition
 		closed := r.l.close
 		if r.l.closeInProgress {
 			// swap out channel so it no longer triggers
 			closed = nil
+
+			// disable sending of disposition frames once closing is in progress.
+			// this is to prevent races between mux shutdown and clearing of
+			// any in-flight dispositions.
+			txDisposition = nil
 		}
 
-		select {
-		case <-r.l.forceClose:
-			// the call to r.Close() timed out waiting for the ack
-			r.l.doneErr = &LinkError{inner: errors.New("the receiver was forcibly closed")}
-			return
+		hooks.MuxSelect()
 
+		select {
 		case q := <-r.l.rxQ.Wait():
 			// populated queue
 			fr := *q.Dequeue()
@@ -541,6 +581,9 @@ func (r *Receiver) mux() {
 				return
 			}
 
+		case env := <-txDisposition:
+			r.l.txFrame(env.Ctx, env.FrameBody, env.Sent)
+
 		case <-r.receiverReady:
 			continue
 
@@ -549,13 +592,14 @@ func (r *Receiver) mux() {
 				// a client-side close due to protocol error is in progress
 				continue
 			}
+
 			// receiver is being closed by the client
 			r.l.closeInProgress = true
 			fr := &frames.PerformDetach{
 				Handle: r.l.handle,
 				Closed: true,
 			}
-			_ = r.l.session.txFrame(fr, nil)
+			r.l.txFrame(context.Background(), fr, nil)
 
 		case <-r.l.session.done:
 			r.l.doneErr = r.l.session.doneErr
@@ -590,8 +634,8 @@ func (r *Receiver) muxFlow(linkCredit uint32, drain bool) error {
 	}
 
 	select {
-	case r.l.session.tx <- fr:
-		debug.Log(2, "TX (Receiver): %s", fr)
+	case r.l.session.tx <- frameBodyEnvelope{Ctx: context.Background(), FrameBody: fr}:
+		debug.Log(2, "TX (Receiver %p): mux frame to Session (%p): %d, %s", r, r.l.session, r.l.session.channel, fr)
 		return nil
 	case <-r.l.close:
 		return nil
@@ -602,7 +646,7 @@ func (r *Receiver) muxFlow(linkCredit uint32, drain bool) error {
 
 // muxHandleFrame processes fr based on type.
 func (r *Receiver) muxHandleFrame(fr frames.FrameBody) error {
-	debug.Log(2, "RX (Receiver): %s", fr)
+	debug.Log(2, "RX (Receiver %p): %s", r, fr)
 	switch fr := fr.(type) {
 	// message frame
 	case *frames.PerformTransfer:
@@ -634,8 +678,8 @@ func (r *Receiver) muxHandleFrame(fr frames.FrameBody) error {
 		}
 
 		select {
-		case r.l.session.tx <- resp:
-			debug.Log(2, "TX (Sender): %s", resp)
+		case r.l.session.tx <- frameBodyEnvelope{Ctx: context.Background(), FrameBody: resp}:
+			debug.Log(2, "TX (Receiver %p): mux frame to Session (%p): %d, %s", r, r.l.session, r.l.session.channel, resp)
 		case <-r.l.close:
 			return nil
 		case <-r.l.session.done:
@@ -758,7 +802,7 @@ func (r *Receiver) muxReceive(fr frames.PerformTransfer) {
 	// send to receiver
 	if !r.msg.settled {
 		r.addUnsettled(&r.msg)
-		debug.Log(3, "RX (Receiver): add unsettled delivery ID %d", r.msg.deliveryID)
+		debug.Log(3, "RX (Receiver %p): add unsettled delivery ID %d", r, r.msg.deliveryID)
 	}
 
 	q := r.messagesQ.Acquire()
@@ -773,7 +817,7 @@ func (r *Receiver) muxReceive(fr frames.PerformTransfer) {
 	// decrement link-credit after entire message received
 	r.l.deliveryCount++
 	r.l.linkCredit--
-	debug.Log(3, "RX (Receiver) link %s - deliveryCount: %d, linkCredit: %d, len(messages): %d", r.l.key.name, r.l.deliveryCount, r.l.linkCredit, msgLen)
+	debug.Log(3, "RX (Receiver %p) link %s - deliveryCount: %d, linkCredit: %d, len(messages): %d", r, r.l.key.name, r.l.deliveryCount, r.l.linkCredit, msgLen)
 }
 
 // inFlight tracks in-flight message dispositions allowing receivers

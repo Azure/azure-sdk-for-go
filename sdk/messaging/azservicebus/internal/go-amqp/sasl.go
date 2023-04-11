@@ -4,6 +4,7 @@
 package amqp
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/debug"
@@ -35,7 +36,7 @@ func SASLTypePlain(username, password string) SASLType {
 		}
 
 		// add the handler the the map
-		c.saslHandlers[saslMechanismPLAIN] = func() (stateFunc, error) {
+		c.saslHandlers[saslMechanismPLAIN] = func(ctx context.Context) (stateFunc, error) {
 			// send saslInit with PLAIN payload
 			init := &frames.SASLInit{
 				Mechanism:       "PLAIN",
@@ -46,8 +47,8 @@ func SASLTypePlain(username, password string) SASLType {
 				Type: frames.TypeSASL,
 				Body: init,
 			}
-			debug.Log(1, "TX (ConnSASLPlain): %s", fr)
-			err := c.writeFrame(fr)
+			debug.Log(1, "TX (ConnSASLPlain %p): %s", c, fr)
+			err := c.writeFrame(c.getWriteTimeout(ctx), fr)
 			if err != nil {
 				return nil, err
 			}
@@ -68,7 +69,7 @@ func SASLTypeAnonymous() SASLType {
 		}
 
 		// add the handler the the map
-		c.saslHandlers[saslMechanismANONYMOUS] = func() (stateFunc, error) {
+		c.saslHandlers[saslMechanismANONYMOUS] = func(ctx context.Context) (stateFunc, error) {
 			init := &frames.SASLInit{
 				Mechanism:       saslMechanismANONYMOUS,
 				InitialResponse: []byte("anonymous"),
@@ -77,8 +78,8 @@ func SASLTypeAnonymous() SASLType {
 				Type: frames.TypeSASL,
 				Body: init,
 			}
-			debug.Log(1, "TX (ConnSASLAnonymous): %s", fr)
-			err := c.writeFrame(fr)
+			debug.Log(1, "TX (ConnSASLAnonymous %p): %s", c, fr)
+			err := c.writeFrame(c.getWriteTimeout(ctx), fr)
 			if err != nil {
 				return nil, err
 			}
@@ -101,7 +102,7 @@ func SASLTypeExternal(resp string) SASLType {
 		}
 
 		// add the handler the the map
-		c.saslHandlers[saslMechanismEXTERNAL] = func() (stateFunc, error) {
+		c.saslHandlers[saslMechanismEXTERNAL] = func(ctx context.Context) (stateFunc, error) {
 			init := &frames.SASLInit{
 				Mechanism:       saslMechanismEXTERNAL,
 				InitialResponse: []byte(resp),
@@ -110,8 +111,8 @@ func SASLTypeExternal(resp string) SASLType {
 				Type: frames.TypeSASL,
 				Body: init,
 			}
-			debug.Log(1, "TX (ConnSASLExternal): %s", fr)
-			err := c.writeFrame(fr)
+			debug.Log(1, "TX (ConnSASLExternal %p): %s", c, fr)
+			err := c.writeFrame(c.getWriteTimeout(ctx), fr)
 			if err != nil {
 				return nil, err
 			}
@@ -163,12 +164,12 @@ type saslXOAUTH2Handler struct {
 	errorResponse        []byte // https://developers.google.com/gmail/imap/xoauth2-protocol#error_response
 }
 
-func (s saslXOAUTH2Handler) init() (stateFunc, error) {
+func (s saslXOAUTH2Handler) init(ctx context.Context) (stateFunc, error) {
 	originalPeerMaxFrameSize := s.conn.peerMaxFrameSize
 	if s.maxFrameSizeOverride > s.conn.peerMaxFrameSize {
 		s.conn.peerMaxFrameSize = s.maxFrameSizeOverride
 	}
-	err := s.conn.writeFrame(frames.Frame{
+	err := s.conn.writeFrame(s.conn.getWriteTimeout(ctx), frames.Frame{
 		Type: frames.TypeSASL,
 		Body: &frames.SASLInit{
 			Mechanism:       saslMechanismXOAUTH2,
@@ -183,7 +184,7 @@ func (s saslXOAUTH2Handler) init() (stateFunc, error) {
 	return s.step, nil
 }
 
-func (s saslXOAUTH2Handler) step() (stateFunc, error) {
+func (s saslXOAUTH2Handler) step(ctx context.Context) (stateFunc, error) {
 	// read challenge or outcome frame
 	fr, err := s.conn.readFrame()
 	if err != nil {
@@ -206,7 +207,7 @@ func (s saslXOAUTH2Handler) step() (stateFunc, error) {
 			s.errorResponse = v.Challenge
 
 			// The SASL protocol requires clients to send an empty response to this challenge.
-			err := s.conn.writeFrame(frames.Frame{
+			err := s.conn.writeFrame(s.conn.getWriteTimeout(ctx), frames.Frame{
 				Type: frames.TypeSASL,
 				Body: &frames.SASLResponse{
 					Response: []byte{},

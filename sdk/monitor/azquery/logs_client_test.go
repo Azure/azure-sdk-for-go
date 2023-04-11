@@ -159,7 +159,6 @@ func TestQueryResource(t *testing.T) {
 		Timespan: to.Ptr(timespan),
 	}
 	testSerde(t, &body)
-	_ = body
 
 	res, err := client.QueryResource(context.Background(), resourceURI, body, nil)
 	require.NoError(t, err)

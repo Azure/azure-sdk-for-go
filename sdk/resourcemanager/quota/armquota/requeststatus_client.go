@@ -47,7 +47,7 @@ func NewRequestStatusClient(credential azcore.TokenCredential, options *arm.Clie
 // operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-03-15-preview
+// Generated from API version 2023-02-01
 //   - id - Quota request ID.
 //   - scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 //     This is the target Azure
@@ -82,7 +82,7 @@ func (client *RequestStatusClient) getCreateRequest(ctx context.Context, id stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-15-preview")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,7 +100,7 @@ func (client *RequestStatusClient) getHandleResponse(resp *http.Response) (Reque
 // NewListPager - For the specified scope, get the current quota requests for a one year period ending at the time is made.
 // Use the oData filter to select quota requests.
 //
-// Generated from API version 2021-03-15-preview
+// Generated from API version 2023-02-01
 //   - scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 //     This is the target Azure
 //     resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
@@ -143,7 +143,7 @@ func (client *RequestStatusClient) listCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-15-preview")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

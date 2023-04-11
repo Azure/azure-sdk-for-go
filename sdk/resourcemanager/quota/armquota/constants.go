@@ -11,7 +11,7 @@ package armquota
 
 const (
 	moduleName    = "armquota"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v1.0.0"
 )
 
 // LimitType - The limit object type.

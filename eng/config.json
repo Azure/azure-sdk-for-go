@@ -83,7 +83,7 @@
         },
         {
             "Name": "monitor/azquery",
-            "CoverageGoal": 0.80
+            "CoverageGoal": 0.85
         },
         {
             "Name": "resourcemanager",

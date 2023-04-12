@@ -1112,7 +1112,7 @@ func batchClean(cntClients []*container.Client) {
 	}
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceBlobBatchDeleteUsingSharedKey() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1155,7 +1155,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceBlobBatchDeleteUsingSharedKey() {
 	}
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1211,28 +1211,13 @@ func (s *ServiceRecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey() 
 	}
 }
 
-/*
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUsingTokenCredential() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
-	if !ok {
-		panic("AZURE_STORAGE_TENANT_ID could not be found")
-	}
-	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
-	if !ok {
-		panic("AZURE_STORAGE_CLIENT_ID could not be found")
-	}
-	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
-	if !ok {
-		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
-	}
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
-	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
@@ -1301,24 +1286,10 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUs
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTokenCredential() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
-	if !ok {
-		panic("AZURE_STORAGE_TENANT_ID could not be found")
-	}
-	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
-	if !ok {
-		panic("AZURE_STORAGE_CLIENT_ID could not be found")
-	}
-	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
-	if !ok {
-		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
-	}
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
-	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
@@ -1382,7 +1353,6 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTok
 		_require.Equal(ctrCool, 2)
 	}
 }
-*/
 
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingAccountSAS() {
 	_require := require.New(s.T())
@@ -1542,28 +1512,13 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingServiceSAS(
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }
 
-/*
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingUserDelegationSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
-	if !ok {
-		panic("AZURE_STORAGE_TENANT_ID could not be found")
-	}
-	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
-	if !ok {
-		panic("AZURE_STORAGE_CLIENT_ID could not be found")
-	}
-	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
-	if !ok {
-		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
-	}
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
 
-	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	svcClientTokenCred, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
@@ -1611,7 +1566,6 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingUserDelega
 	_require.Nil(resp.RequestID)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }
-*/
 
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteMoreThan256() {
 	_require := require.New(s.T())

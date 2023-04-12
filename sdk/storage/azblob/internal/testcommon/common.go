@@ -10,11 +10,12 @@ package testcommon
 import (
 	"bytes"
 	"context"
-	crypto_rand "crypto/rand"
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"hash/crc64"
 	"io"
 	"math/rand"
 	"os"
@@ -82,15 +83,12 @@ func GetReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 	return streaming.NopCloser(r)
 }
 
-func GetRandomDataAndReader(n int) (*bytes.Reader, []byte) {
+func GetDataAndReader(testName string, n int) (*bytes.Reader, []byte) {
+	// Random seed for data generation
+	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
+	random := rand.New(rand.NewSource(seed))
 	data := make([]byte, n)
-	_, _ = crypto_rand.Read(data)
-	return bytes.NewReader(data), data
-}
-
-func GetDataAndReader(r *rand.Rand, n int) (*bytes.Reader, []byte) {
-	data := make([]byte, n)
-	_, _ = r.Read(data)
+	_, _ = random.Read(data)
 	return bytes.NewReader(data), data
 }
 
@@ -189,6 +187,7 @@ func GetRequiredEnv(name string) (string, error) {
 func BeforeTest(t *testing.T, suite string, test string) {
 	const urlRegex = `https://\S+\.blob\.core\.windows\.net`
 	const tokenRegex = `(?:Bearer\s).*`
+	//const queryParamRegex = `=([^&|\n|\t\s]+)` // Note: Add query param name before this
 	require.NoError(t, recording.AddURISanitizer(FakeStorageURL, urlRegex, nil))
 	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-copy-source", FakeStorageURL, urlRegex, nil))
 	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-copy-source-authorization", FakeToken, tokenRegex, nil))

@@ -57,6 +57,7 @@ const (
 	FakeStorageAccount = "fakestorage"
 	FakeStorageURL     = "https://fakestorage.blob.core.windows.net"
 	FakeToken          = "faketoken"
+	FakeBatchBoundary  = "batch_00000000-0000-0000-0000-000000000000"
 )
 
 var (

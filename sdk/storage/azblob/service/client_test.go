@@ -1112,7 +1112,7 @@ func batchClean(cntClients []*container.Client) {
 	}
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingSharedKey() {
+func (s *ServiceRecordedTestsSuite) TestServiceBlobBatchDeleteUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1155,7 +1155,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingSharedKey()
 	}
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey() {
+func (s *ServiceRecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

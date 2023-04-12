@@ -2240,7 +2240,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
 	_require.Nil(err)
 }
 
-func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteSuccessUsingSharedKey() {
+func (s *ContainerRecordedTestsSuite) TestContainerBlobBatchDeleteSuccessUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2292,7 +2292,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteSuccessUsing
 	_require.Equal(ctr, 0)
 }
 
-func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierPartialFailureUsingSharedKey() {
+func (s *ContainerRecordedTestsSuite) TestContainerBlobBatchSetTierPartialFailureUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

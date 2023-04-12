@@ -189,9 +189,11 @@ func GetRequiredEnv(name string) (string, error) {
 func BeforeTest(t *testing.T, suite string, test string) {
 	const urlRegex = `https://\S+\.blob\.core\.windows\.net`
 	const tokenRegex = `(?:Bearer\s).*`
+	const batchBoundaryRegex = `batch_.{8}-.{4}-.{4}-.{4}-.{12}`
 	require.NoError(t, recording.AddURISanitizer(FakeStorageURL, urlRegex, nil))
 	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-copy-source", FakeStorageURL, urlRegex, nil))
 	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-copy-source-authorization", FakeToken, tokenRegex, nil))
+	require.NoError(t, recording.AddHeaderRegexSanitizer("Content-Type", FakeBatchBoundary, batchBoundaryRegex, nil))
 	// we freeze request IDs and timestamps to avoid creating noisy diffs
 	// NOTE: we can't freeze time stamps as that breaks some tests that use if-modified-since etc (maybe it can be fixed?)
 	//testframework.AddHeaderRegexSanitizer("X-Ms-Date", "Wed, 10 Aug 2022 23:34:14 GMT", "", nil)
@@ -200,6 +202,7 @@ func BeforeTest(t *testing.T, suite string, test string) {
 	// TODO: more freezing
 	//testframework.AddBodyRegexSanitizer("RequestId:00000000-0000-0000-0000-000000000000", `RequestId:\w{8}-\w{4}-\w{4}-\w{4}-\w{12}`, nil)
 	//testframework.AddBodyRegexSanitizer("Time:2022-08-11T00:21:56.4562741Z", `Time:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?Z`, nil)
+	require.NoError(t, recording.AddBodyRegexSanitizer(FakeBatchBoundary, batchBoundaryRegex, nil))
 	require.NoError(t, recording.Start(t, "sdk/storage/azblob/testdata", nil))
 }
 

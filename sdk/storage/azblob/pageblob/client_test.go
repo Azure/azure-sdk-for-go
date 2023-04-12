@@ -237,7 +237,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithMD5() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
-	r, sourceData := testcommon.GetRandomDataAndReader(contentSize)
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	md5Value := md5.Sum(sourceData)
 	contentMD5 := md5Value[:]
 	srcBlob := createNewPageBlobWithSize(context.Background(), _require, "srcblob"+testName, containerClient, int64(contentSize))
@@ -281,7 +281,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithMD5() {
 	_require.EqualValues(destData, sourceData)
 
 	// Upload page from URL with bad MD5
-	r, badMD5 := testcommon.GetRandomDataAndReader(contentSize)
+	r, badMD5 := testcommon.GetDataAndReader(testName+"bad-md5", contentSize)
 	badContentMD5 := badMD5[:]
 	uploadPagesFromURLOptions = pageblob.UploadPagesFromURLOptions{
 		SourceContentValidation: blob.SourceContentValidationTypeMD5(badContentMD5),
@@ -302,7 +302,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithCRC64() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
-	r, sourceData := testcommon.GetRandomDataAndReader(contentSize)
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	crc64Value := crc64.Checksum(sourceData, shared.CRC64Table)
 	crc := make([]byte, 8)
 	binary.LittleEndian.PutUint64(crc, crc64Value)

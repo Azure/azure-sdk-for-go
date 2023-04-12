@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraClusterListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraClusterListBySubscription.json
 func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraClusterListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraClusterListByResourceGroup.json
 func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraClusterGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraClusterGet.json
 func ExampleCassandraClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +265,7 @@ func ExampleCassandraClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraClusterDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraClusterDelete.json
 func ExampleCassandraClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func ExampleCassandraClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraClusterCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraClusterCreate.json
 func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -396,7 +396,7 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraClusterPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraClusterPatch.json
 func ExampleCassandraClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +499,7 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraCommand.json
 func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -523,7 +523,7 @@ func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraClusterDeallocate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraClusterDeallocate.json
 func ExampleCassandraClustersClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -544,7 +544,7 @@ func ExampleCassandraClustersClient_BeginDeallocate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraClusterStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraClusterStart.json
 func ExampleCassandraClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -565,7 +565,7 @@ func ExampleCassandraClustersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraStatus.json
 func ExampleCassandraClustersClient_Status() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -592,6 +592,7 @@ func ExampleCassandraClustersClient_Status() {
 	// 			Nodes: []*armcosmos.ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems{
 	// 				{
 	// 					Address: to.Ptr("10.0.8.10"),
+	// 					CassandraProcessStatus: to.Ptr("Running"),
 	// 					CPUUsage: to.Ptr[float64](0.9),
 	// 					DiskFreeKB: to.Ptr[int64](1001260056),
 	// 					DiskUsedKB: to.Ptr[int64](749836),
@@ -603,8 +604,8 @@ func ExampleCassandraClustersClient_Status() {
 	// 					MemoryUsedKB: to.Ptr[int64](11061032),
 	// 					Rack: to.Ptr("rack1"),
 	// 					Size: to.Ptr[int32](16),
-	// 					State: to.Ptr(armcosmos.NodeState("")),
-	// 					Status: to.Ptr(""),
+	// 					State: to.Ptr(armcosmos.NodeStateNormal),
+	// 					Status: to.Ptr("Up"),
 	// 					Timestamp: to.Ptr("10/05/2021, 14:35:20.028"),
 	// 					Tokens: []*string{
 	// 						to.Ptr("-7785254003841681178"),
@@ -626,6 +627,7 @@ func ExampleCassandraClustersClient_Status() {
 	// 					},
 	// 					{
 	// 						Address: to.Ptr("10.0.8.11"),
+	// 						CassandraProcessStatus: to.Ptr("Running"),
 	// 						CPUUsage: to.Ptr[float64](1.2),
 	// 						DiskFreeKB: to.Ptr[int64](1001283028),
 	// 						DiskUsedKB: to.Ptr[int64](726864),
@@ -637,8 +639,8 @@ func ExampleCassandraClustersClient_Status() {
 	// 						MemoryUsedKB: to.Ptr[int64](11055676),
 	// 						Rack: to.Ptr("rack2"),
 	// 						Size: to.Ptr[int32](16),
-	// 						State: to.Ptr(armcosmos.NodeState("")),
-	// 						Status: to.Ptr(""),
+	// 						State: to.Ptr(armcosmos.NodeStateNormal),
+	// 						Status: to.Ptr("Up"),
 	// 						Timestamp: to.Ptr("10/05/2021, 14:35:20.028"),
 	// 						Tokens: []*string{
 	// 							to.Ptr("-8726238055665903210"),
@@ -660,6 +662,7 @@ func ExampleCassandraClustersClient_Status() {
 	// 						},
 	// 						{
 	// 							Address: to.Ptr("10.0.8.12"),
+	// 							CassandraProcessStatus: to.Ptr("Running"),
 	// 							CPUUsage: to.Ptr[float64](0.4),
 	// 							DiskFreeKB: to.Ptr[int64](1001252352),
 	// 							DiskUsedKB: to.Ptr[int64](757540),
@@ -671,8 +674,8 @@ func ExampleCassandraClustersClient_Status() {
 	// 							MemoryUsedKB: to.Ptr[int64](11051608),
 	// 							Rack: to.Ptr("rack3"),
 	// 							Size: to.Ptr[int32](16),
-	// 							State: to.Ptr(armcosmos.NodeState("")),
-	// 							Status: to.Ptr(""),
+	// 							State: to.Ptr(armcosmos.NodeStateNormal),
+	// 							Status: to.Ptr("Up"),
 	// 							Timestamp: to.Ptr("10/05/2021, 14:35:20.028"),
 	// 							Tokens: []*string{
 	// 								to.Ptr("-5679481051867296621"),

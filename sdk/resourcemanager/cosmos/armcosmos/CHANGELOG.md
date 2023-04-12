@@ -1,5 +1,27 @@
 # Release History
 
+## 2.4.0 (2023-04-28)
+### Features Added
+
+- New value `AuthenticationMethodLdap` added to enum type `AuthenticationMethod`
+- New enum type `Kind` with values `KindPrimary`, `KindPrimaryReadonly`, `KindSecondary`, `KindSecondaryReadonly`
+- New enum type `Status` with values `StatusDeleting`, `StatusInitializing`, `StatusInternallyReady`, `StatusOnline`, `StatusUninitialized`
+- New enum type `Type` with values `TypeCassandra`, `TypeCassandraConnectorMetadata`, `TypeGremlin`, `TypeGremlinV2`, `TypeMongoDB`, `TypeSQL`, `TypeSQLDedicatedGateway`, `TypeTable`, `TypeUndefined`
+- New struct `AuthenticationMethodLdapProperties`
+- New struct `CassandraError`
+- New field `Errors` in struct `CassandraClusterPublicStatus`
+- New field `ProvisionError` in struct `ClusterResourceProperties`
+- New field `CassandraProcessStatus` in struct `ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems`
+- New field `AuthenticationMethodLdapProperties` in struct `DataCenterResourceProperties`
+- New field `Deallocated` in struct `DataCenterResourceProperties`
+- New field `ProvisionError` in struct `DataCenterResourceProperties`
+- New field `KeyKind` in struct `DatabaseAccountConnectionString`
+- New field `Type` in struct `DatabaseAccountConnectionString`
+- New field `IsSubscriptionRegionAccessAllowedForAz` in struct `LocationProperties`
+- New field `IsSubscriptionRegionAccessAllowedForRegular` in struct `LocationProperties`
+- New field `Status` in struct `LocationProperties`
+
+
 ## 2.3.0 (2023-04-07)
 ### Features Added
 

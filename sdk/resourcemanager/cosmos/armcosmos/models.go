@@ -64,6 +64,31 @@ type AnalyticalStorageConfiguration struct {
 	SchemaType *AnalyticalStorageSchemaType `json:"schemaType,omitempty"`
 }
 
+// AuthenticationMethodLdapProperties - Ldap authentication method properties. This feature is in preview.
+type AuthenticationMethodLdapProperties struct {
+	// Timeout for connecting to the LDAP server in miliseconds. The default is 5000 ms.
+	ConnectionTimeoutInMs *int32 `json:"connectionTimeoutInMs,omitempty"`
+
+	// Distinguished name of the object to start the recursive search of users from.
+	SearchBaseDistinguishedName *string `json:"searchBaseDistinguishedName,omitempty"`
+
+	// Template to use for searching. Defaults to (cn=%s) where %s will be replaced by the username used to login.
+	SearchFilterTemplate *string        `json:"searchFilterTemplate,omitempty"`
+	ServerCertificates   []*Certificate `json:"serverCertificates,omitempty"`
+
+	// Hostname of the LDAP server.
+	ServerHostname *string `json:"serverHostname,omitempty"`
+
+	// Port of the LDAP server.
+	ServerPort *int32 `json:"serverPort,omitempty"`
+
+	// Distinguished name of the look up user account, who can look up user details on authentication.
+	ServiceUserDistinguishedName *string `json:"serviceUserDistinguishedName,omitempty"`
+
+	// Password of the look up user.
+	ServiceUserPassword *string `json:"serviceUserPassword,omitempty"`
+}
+
 // AutoUpgradePolicyResource - Cosmos DB resource auto-upgrade policy
 type AutoUpgradePolicyResource struct {
 	// Represents throughput policy which service must adhere to for auto-upgrade
@@ -147,9 +172,12 @@ type CassandraClusterPublicStatus struct {
 	ConnectionErrors []*ConnectionError `json:"connectionErrors,omitempty"`
 
 	// List of the status of each datacenter in this cluster.
-	DataCenters  []*CassandraClusterPublicStatusDataCentersItem `json:"dataCenters,omitempty"`
-	ETag         *string                                        `json:"eTag,omitempty"`
-	ReaperStatus *ManagedCassandraReaperStatus                  `json:"reaperStatus,omitempty"`
+	DataCenters []*CassandraClusterPublicStatusDataCentersItem `json:"dataCenters,omitempty"`
+	ETag        *string                                        `json:"eTag,omitempty"`
+
+	// List relevant information about any errors about cluster, data center and connection error.
+	Errors       []*CassandraError             `json:"errors,omitempty"`
+	ReaperStatus *ManagedCassandraReaperStatus `json:"reaperStatus,omitempty"`
 }
 
 type CassandraClusterPublicStatusDataCentersItem struct {
@@ -254,6 +282,20 @@ type CassandraDataCentersClientGetOptions struct {
 // method.
 type CassandraDataCentersClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+type CassandraError struct {
+	// Additional information about the error.
+	AdditionalErrorInfo *string `json:"additionalErrorInfo,omitempty"`
+
+	// The code of error that occurred.
+	Code *string `json:"code,omitempty"`
+
+	// The message of the error.
+	Message *string `json:"message,omitempty"`
+
+	// The target resource of the error.
+	Target *string `json:"target,omitempty"`
 }
 
 // CassandraKeyspaceCreateUpdateParameters - Parameters to create and update Cosmos DB Cassandra keyspace.
@@ -782,7 +824,7 @@ type ClusterResourceProperties struct {
 	// nodes.
 	ExternalSeedNodes []*SeedNode `json:"externalSeedNodes,omitempty"`
 
-	// Number of hours to wait between taking a backup of the cluster. To disable backups, set this property to 0.
+	// (Deprecated) Number of hours to wait between taking a backup of the cluster.
 	HoursBetweenBackups *int32 `json:"hoursBetweenBackups,omitempty"`
 
 	// Initial password for clients connecting as admin to the cluster. Should be changed after cluster creation. Returns null
@@ -792,6 +834,9 @@ type ClusterResourceProperties struct {
 
 	// Hostname or IP address where the Prometheus endpoint containing data about the managed Cassandra nodes can be reached.
 	PrometheusEndpoint *SeedNode `json:"prometheusEndpoint,omitempty"`
+
+	// Error related to resource provisioning.
+	ProvisionError *CassandraError `json:"provisionError,omitempty"`
 
 	// The status of the resource at the time the operation was called.
 	ProvisioningState *ManagedCassandraProvisioningState `json:"provisioningState,omitempty"`
@@ -905,6 +950,9 @@ type ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersIte
 
 	// A float representing the current system-wide CPU utilization as a percentage.
 	CPUUsage *float64 `json:"cpuUsage,omitempty"`
+
+	// Cassandra service status on this node
+	CassandraProcessStatus *string `json:"cassandraProcessStatus,omitempty"`
 
 	// The amount of disk free, in kB, of the directory /var/lib/cassandra.
 	DiskFreeKB *int64 `json:"diskFreeKB,omitempty"`
@@ -1091,8 +1139,11 @@ type DataCenterResource struct {
 
 // DataCenterResourceProperties - Properties of a managed Cassandra data center.
 type DataCenterResourceProperties struct {
-	// If the azure data center has Availability Zone support, apply it to the Virtual Machine ScaleSet that host the cassandra
-	// data center virtual machines.
+	// Ldap authentication method properties. This feature is in preview.
+	AuthenticationMethodLdapProperties *AuthenticationMethodLdapProperties `json:"authenticationMethodLdapProperties,omitempty"`
+
+	// If the data center has Availability Zone support, apply it to the Virtual Machine ScaleSet that host the cassandra data
+	// center virtual machines.
 	AvailabilityZone *bool `json:"availabilityZone,omitempty"`
 
 	// Indicates the Key Uri of the customer key to use for encryption of the backup storage account.
@@ -1105,6 +1156,9 @@ type DataCenterResourceProperties struct {
 	// The region this data center should be created in.
 	DataCenterLocation *string `json:"dataCenterLocation,omitempty"`
 
+	// Whether the data center has been deallocated.
+	Deallocated *bool `json:"deallocated,omitempty"`
+
 	// Resource id of a subnet the nodes in this data center should have their network interfaces connected to. The subnet must
 	// be in the same region specified in 'dataCenterLocation' and must be able to
 	// route to the subnet specified in the cluster's 'delegatedManagementSubnetId' property. This resource id will be of the
@@ -1112,7 +1166,7 @@ type DataCenterResourceProperties struct {
 	// /providers/Microsoft.Network/virtualNetworks//subnets/'.
 	DelegatedSubnetID *string `json:"delegatedSubnetId,omitempty"`
 
-	// Number of disk used for data centers. Default value is 4.
+	// Number of disks attached to each node. Default is 4.
 	DiskCapacity *int32 `json:"diskCapacity,omitempty"`
 
 	// Disk SKU used for data centers. Default value is P30.
@@ -1126,6 +1180,9 @@ type DataCenterResourceProperties struct {
 	// the data center to be scaled to match. To monitor the number of nodes and their
 	// status, use the fetchNodeStatus method on the cluster.
 	NodeCount *int32 `json:"nodeCount,omitempty"`
+
+	// Error related to resource provisioning.
+	ProvisionError *CassandraError `json:"provisionError,omitempty"`
 
 	// The status of the resource at the time the operation was called.
 	ProvisioningState *ManagedCassandraProvisioningState `json:"provisioningState,omitempty"`
@@ -1200,6 +1257,12 @@ type DatabaseAccountConnectionString struct {
 
 	// READ-ONLY; Description of the connection string
 	Description *string `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; Kind of the connection string key
+	KeyKind *Kind `json:"keyKind,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the connection string
+	Type *Type `json:"type,omitempty" azure:"ro"`
 }
 
 // DatabaseAccountCreateUpdateParameters - Parameters to create and update Cosmos DB database accounts.
@@ -2404,6 +2467,15 @@ type LocationProperties struct {
 
 	// READ-ONLY; Flag indicating whether the location is residency sensitive.
 	IsResidencyRestricted *bool `json:"isResidencyRestricted,omitempty" azure:"ro"`
+
+	// READ-ONLY; Flag indicating whether the subscription have access in region for Availability Zones(Az).
+	IsSubscriptionRegionAccessAllowedForAz *bool `json:"isSubscriptionRegionAccessAllowedForAz,omitempty" azure:"ro"`
+
+	// READ-ONLY; Flag indicating whether the subscription have access in region for Non-Availability Zones.
+	IsSubscriptionRegionAccessAllowedForRegular *bool `json:"isSubscriptionRegionAccessAllowedForRegular,omitempty" azure:"ro"`
+
+	// READ-ONLY; Enum to indicate current buildout status of the region.
+	Status *Status `json:"status,omitempty" azure:"ro"`
 
 	// READ-ONLY; Flag indicating whether the location supports availability zones or not.
 	SupportsAvailabilityZone *bool `json:"supportsAvailabilityZone,omitempty" azure:"ro"`

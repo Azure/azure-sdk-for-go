@@ -55,6 +55,7 @@ type PackageInfo struct {
 	Config      string
 	SpecName    string
 	RequestLink string
+	Tag         string
 	ReleaseDate *time.Time
 }
 
@@ -449,8 +450,8 @@ func GetAlwaysSetBodyParamRequiredFlag(path string) (string, error) {
 	return "", nil
 }
 
-// AddPackageConfig add config in file
-func AddPackageConfig(path, config string) error {
+// AddTagSet add tag in file
+func AddTagSet(path, tag string) error {
 	b, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -459,7 +460,7 @@ func AddPackageConfig(path, config string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, "tag:") {
-			lines[i] = config
+			lines[i] = tag
 			break
 		}
 
@@ -468,13 +469,13 @@ func AddPackageConfig(path, config string) error {
 			for j := len(lines) - 1; j > 0; j-- {
 				if strings.Contains(lines[j], "```") {
 					if lines[j-1] == "" {
-						lines[j-1] = config
+						lines[j-1] = tag
 						break
 					} else {
 						newLines := make([]string, len(lines))
 						copy(newLines, lines)
 
-						newLines = append(newLines[:j], config)
+						newLines = append(newLines[:j], tag)
 						tailLines := lines[j:]
 						lines = append(newLines, tailLines...)
 						break

@@ -198,12 +198,22 @@ func getNewContents(c *delta.Content) []string {
 		modified := c.GetModifiedStructs()
 		for _, s := range sortChangeItem(modified) {
 			f := modified[s]
+			afs := ""
+			sort.Strings(f.AnonymousFields)
 			for _, af := range f.AnonymousFields {
-				line := fmt.Sprintf("New anonymous field `%s` in struct `%s`", af, s)
+				afs = fmt.Sprintf("%s`%s`, ", afs, af)
+			}
+			if afs != "" {
+				line := fmt.Sprintf("New anonymous field %s in struct `%s`", strings.TrimSuffix(strings.TrimSpace(afs), ","), s)
 				items = append(items, line)
 			}
+
+			newFields := ""
 			for _, field := range sortChangeItem(f.Fields) {
-				line := fmt.Sprintf("New field `%s` in struct `%s`", field, s)
+				newFields = fmt.Sprintf("%s`%s`, ", newFields, field)
+			}
+			if newFields != "" {
+				line := fmt.Sprintf("New field %s in struct `%s`", strings.TrimSuffix(strings.TrimSpace(newFields), ","), s)
 				items = append(items, line)
 			}
 		}
@@ -353,12 +363,22 @@ func getRemovedContent(removed *delta.Content) []string {
 	if len(modified) > 0 {
 		for _, s := range sortChangeItem(modified) {
 			f := modified[s]
+			afs := ""
+			sort.Strings(f.AnonymousFields)
 			for _, af := range f.AnonymousFields {
-				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", af, s)
+				afs = fmt.Sprintf("%s`%s`, ", afs, af)
+			}
+			if afs != "" {
+				line := fmt.Sprintf("Field %s of struct `%s` has been removed", strings.TrimSuffix(strings.TrimSpace(afs), ","), s)
 				items = append(items, line)
 			}
+
+			newFields := ""
 			for _, field := range sortChangeItem(f.Fields) {
-				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", field, s)
+				newFields = fmt.Sprintf("%s`%s`, ", newFields, field)
+			}
+			if newFields != "" {
+				line := fmt.Sprintf("Field %s of struct `%s` has been removed", strings.TrimSuffix(strings.TrimSpace(newFields), ","), s)
 				items = append(items, line)
 			}
 		}

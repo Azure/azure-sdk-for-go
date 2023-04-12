@@ -214,7 +214,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			c.rpName = arm
 			c.namespaceName = info.Name
 			c.flags.SpecRPName = info.SpecName
-			c.flags.PackageConfig = info.Config
+			c.flags.PackageConfig = info.Tag
 			if info.ReleaseDate != nil {
 				c.flags.ReleaseDate = info.ReleaseDate.Format("2006-01-02")
 			}

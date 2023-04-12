@@ -246,6 +246,30 @@ func (n *NotificationHubClient) UpdateInstallation(installationId string, patche
 	return n.createNotificationResponse(res)
 }
 
+// Deletes an installation from Azure Notification Hubs.
+func (n *NotificationHubClient) DeleteInstallation(installationId string) (*NotificationResponse, error) {
+	requestUri := fmt.Sprintf("%v%v/installations/%v?api-version=%v", n.endpointUrl, n.hubName, installationId, AZNHApiVersion)
+
+	client := &http.Client{Timeout: time.Second * 15}
+	req, err := http.NewRequest(http.MethodDelete, requestUri, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	n.addRequestHeaders(req)
+
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if res.StatusCode != 204 {
+		return nil, fmt.Errorf("invalid response from Azure Notification Hubs: %v", res.StatusCode)
+	}
+
+	return n.createNotificationResponse(res)
+}
+
 func generateUserAgent() string {
 	return fmt.Sprintf("NHub/%v} (api-origin=GoSDK;)", AZNHApiVersion)
 }

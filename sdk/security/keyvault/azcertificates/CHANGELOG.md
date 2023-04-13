@@ -1,16 +1,18 @@
 # Release History
 
-## 0.9.0 (Unreleased)
-
-### Features Added
+## 0.10.0 (2023-04-13)
 
 ### Breaking Changes
 * Moved module from `sdk/keyvault/azadmin` to `sdk/security/keyvault/azadmin`
+
+## 0.9.0 (2023-04-13)
+
+### Features Added
+* Upgraded to api version 7.4
+
+### Breaking Changes
+* Renamed `ActionType` to `CertificatePolicyAction`
 * Changed `Error` struct to `ErrorInfo`
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.8.0 (2022-11-08)
 

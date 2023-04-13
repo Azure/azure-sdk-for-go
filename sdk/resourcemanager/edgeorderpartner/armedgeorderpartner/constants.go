@@ -11,7 +11,7 @@ package armedgeorderpartner
 
 const (
 	moduleName    = "armedgeorderpartner"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v0.6.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

@@ -1,4 +1,4 @@
-// Deprecated: The latest supported version of this library is at github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets
+// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets instead
 module github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
 
 go 1.18

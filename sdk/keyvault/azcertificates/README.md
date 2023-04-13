@@ -1,5 +1,5 @@
 # Azure Key Vault Certificates client module for Go
-> Deprecated: The latest supported version of this module is at github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates
+> Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates instead
 
 * Certificate management (this module) - create, manage, and deploy public and private SSL/TLS certificates
 * Cryptographic key management ([azkeys](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys)) - create, store, and control access to the keys used to encrypt your data

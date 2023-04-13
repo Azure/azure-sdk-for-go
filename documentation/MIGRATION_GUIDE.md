@@ -283,7 +283,7 @@ clientFactory, err := armresources.NewClientFactory(<subscription ID>, credentia
 if err != nil {
     log.Fatal(err)
 }
-client = clientFactory.NewResourceGroupsClient()
+client := clientFactory.NewResourceGroupsClient()
 ```
 
 ## Need help?

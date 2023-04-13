@@ -152,7 +152,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 ```
 
 ```go
-clientFactory, err := armresources.NewClientFactory(subscriptionId, credential, 
+clientFactory, err := armresources.NewClientFactory(subscriptionId, credential,
     &arm.ClientOptions{
         ClientOptions: policy.ClientOptions{
             Retry: policy.RetryOptions{

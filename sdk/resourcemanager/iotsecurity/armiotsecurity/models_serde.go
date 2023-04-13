@@ -188,7 +188,7 @@ func (d DeviceGroupModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", d.ID)
 	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", &d.Properties)
+	populateAny(objectMap, "properties", d.Properties)
 	populate(objectMap, "systemData", d.SystemData)
 	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
@@ -303,7 +303,7 @@ func (d *DeviceModel) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DeviceProperties.
 func (d DeviceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalFields", &d.AdditionalFields)
+	populateAny(objectMap, "additionalFields", d.AdditionalFields)
 	populate(objectMap, "authorizedState", d.AuthorizedState)
 	populate(objectMap, "businessFunction", d.BusinessFunction)
 	populate(objectMap, "cpes", d.Cpes)
@@ -509,7 +509,7 @@ func (d *DimensionProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -715,7 +715,7 @@ func (e *ErrorResponseModelError) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Firmware.
 func (f Firmware) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalFields", &f.AdditionalFields)
+	populateAny(objectMap, "additionalFields", f.AdditionalFields)
 	populate(objectMap, "moduleAddress", f.ModuleAddress)
 	populate(objectMap, "name", f.Name)
 	populate(objectMap, "serial", f.Serial)
@@ -830,7 +830,7 @@ func (l LocationModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", l.ID)
 	populate(objectMap, "name", l.Name)
-	populate(objectMap, "properties", &l.Properties)
+	populateAny(objectMap, "properties", l.Properties)
 	populate(objectMap, "systemData", l.SystemData)
 	populate(objectMap, "type", l.Type)
 	return json.Marshal(objectMap)
@@ -959,7 +959,7 @@ func (o OnPremiseSensor) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", o.ID)
 	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", &o.Properties)
+	populateAny(objectMap, "properties", o.Properties)
 	populate(objectMap, "systemData", o.SystemData)
 	populate(objectMap, "type", o.Type)
 	return json.Marshal(objectMap)
@@ -2036,7 +2036,7 @@ func (s *SitesList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Slot.
 func (s Slot) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalData", &s.AdditionalData)
+	populateAny(objectMap, "additionalData", s.AdditionalData)
 	populate(objectMap, "cpes", s.Cpes)
 	populate(objectMap, "firmwareVersion", s.FirmwareVersion)
 	populate(objectMap, "hardwareRevision", s.HardwareRevision)
@@ -2196,6 +2196,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

@@ -1,70 +1,9 @@
 # Release History
 
-## 0.10.0 (2023-04-14)
-### Features Added
+## 0.10.1 (2023-04-14)
+### Bug Fixes
 
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
-- New function `*ClientFactory.NewAccountConnectorsClient() *AccountConnectorsClient`
-- New function `*ClientFactory.NewAdaptiveApplicationControlsClient() *AdaptiveApplicationControlsClient`
-- New function `*ClientFactory.NewAdaptiveNetworkHardeningsClient() *AdaptiveNetworkHardeningsClient`
-- New function `*ClientFactory.NewAdvancedThreatProtectionClient() *AdvancedThreatProtectionClient`
-- New function `*ClientFactory.NewAlertsClient() *AlertsClient`
-- New function `*ClientFactory.NewAlertsSuppressionRulesClient() *AlertsSuppressionRulesClient`
-- New function `*ClientFactory.NewAllowedConnectionsClient() *AllowedConnectionsClient`
-- New function `*ClientFactory.NewApplicationClient() *ApplicationClient`
-- New function `*ClientFactory.NewApplicationsClient() *ApplicationsClient`
-- New function `*ClientFactory.NewAssessmentsClient() *AssessmentsClient`
-- New function `*ClientFactory.NewAssessmentsMetadataClient() *AssessmentsMetadataClient`
-- New function `*ClientFactory.NewAutoProvisioningSettingsClient() *AutoProvisioningSettingsClient`
-- New function `*ClientFactory.NewAutomationsClient() *AutomationsClient`
-- New function `*ClientFactory.NewComplianceResultsClient() *ComplianceResultsClient`
-- New function `*ClientFactory.NewCompliancesClient() *CompliancesClient`
-- New function `*ClientFactory.NewConnectorApplicationClient() *ConnectorApplicationClient`
-- New function `*ClientFactory.NewConnectorApplicationsClient() *ConnectorApplicationsClient`
-- New function `*ClientFactory.NewConnectorGovernanceRuleClient() *ConnectorGovernanceRuleClient`
-- New function `*ClientFactory.NewConnectorGovernanceRulesClient() *ConnectorGovernanceRulesClient`
-- New function `*ClientFactory.NewConnectorGovernanceRulesExecuteStatusClient() *ConnectorGovernanceRulesExecuteStatusClient`
-- New function `*ClientFactory.NewConnectorsClient() *ConnectorsClient`
-- New function `*ClientFactory.NewContactsClient() *ContactsClient`
-- New function `*ClientFactory.NewCustomAssessmentAutomationsClient() *CustomAssessmentAutomationsClient`
-- New function `*ClientFactory.NewCustomEntityStoreAssignmentsClient() *CustomEntityStoreAssignmentsClient`
-- New function `*ClientFactory.NewDeviceSecurityGroupsClient() *DeviceSecurityGroupsClient`
-- New function `*ClientFactory.NewDiscoveredSecuritySolutionsClient() *DiscoveredSecuritySolutionsClient`
-- New function `*ClientFactory.NewExternalSecuritySolutionsClient() *ExternalSecuritySolutionsClient`
-- New function `*ClientFactory.NewGovernanceAssignmentsClient() *GovernanceAssignmentsClient`
-- New function `*ClientFactory.NewGovernanceRuleClient() *GovernanceRuleClient`
-- New function `*ClientFactory.NewGovernanceRulesClient() *GovernanceRulesClient`
-- New function `*ClientFactory.NewInformationProtectionPoliciesClient() *InformationProtectionPoliciesClient`
-- New function `*ClientFactory.NewIngestionSettingsClient() *IngestionSettingsClient`
-- New function `*ClientFactory.NewIotSecuritySolutionAnalyticsClient() *IotSecuritySolutionAnalyticsClient`
-- New function `*ClientFactory.NewIotSecuritySolutionClient() *IotSecuritySolutionClient`
-- New function `*ClientFactory.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient() *IotSecuritySolutionsAnalyticsAggregatedAlertClient`
-- New function `*ClientFactory.NewIotSecuritySolutionsAnalyticsRecommendationClient() *IotSecuritySolutionsAnalyticsRecommendationClient`
-- New function `*ClientFactory.NewJitNetworkAccessPoliciesClient() *JitNetworkAccessPoliciesClient`
-- New function `*ClientFactory.NewLocationsClient() *LocationsClient`
-- New function `*ClientFactory.NewMdeOnboardingsClient() *MdeOnboardingsClient`
-- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
-- New function `*ClientFactory.NewPricingsClient() *PricingsClient`
-- New function `*ClientFactory.NewRegulatoryComplianceAssessmentsClient() *RegulatoryComplianceAssessmentsClient`
-- New function `*ClientFactory.NewRegulatoryComplianceControlsClient() *RegulatoryComplianceControlsClient`
-- New function `*ClientFactory.NewRegulatoryComplianceStandardsClient() *RegulatoryComplianceStandardsClient`
-- New function `*ClientFactory.NewSQLVulnerabilityAssessmentBaselineRulesClient() *SQLVulnerabilityAssessmentBaselineRulesClient`
-- New function `*ClientFactory.NewSQLVulnerabilityAssessmentScanResultsClient() *SQLVulnerabilityAssessmentScanResultsClient`
-- New function `*ClientFactory.NewSQLVulnerabilityAssessmentScansClient() *SQLVulnerabilityAssessmentScansClient`
-- New function `*ClientFactory.NewSecureScoreControlDefinitionsClient() *SecureScoreControlDefinitionsClient`
-- New function `*ClientFactory.NewSecureScoreControlsClient() *SecureScoreControlsClient`
-- New function `*ClientFactory.NewSecureScoresClient() *SecureScoresClient`
-- New function `*ClientFactory.NewServerVulnerabilityAssessmentClient() *ServerVulnerabilityAssessmentClient`
-- New function `*ClientFactory.NewSettingsClient() *SettingsClient`
-- New function `*ClientFactory.NewSoftwareInventoriesClient() *SoftwareInventoriesClient`
-- New function `*ClientFactory.NewSolutionsClient() *SolutionsClient`
-- New function `*ClientFactory.NewSolutionsReferenceDataClient() *SolutionsReferenceDataClient`
-- New function `*ClientFactory.NewSubAssessmentsClient() *SubAssessmentsClient`
-- New function `*ClientFactory.NewSubscriptionGovernanceRulesExecuteStatusClient() *SubscriptionGovernanceRulesExecuteStatusClient`
-- New function `*ClientFactory.NewTasksClient() *TasksClient`
-- New function `*ClientFactory.NewTopologyClient() *TopologyClient`
-- New function `*ClientFactory.NewWorkspaceSettingsClient() *WorkspaceSettingsClient`
-- New struct `ClientFactory`
+- Fix serialization bug of empty value of `any` type.
 
 
 ## 0.10.0 (2023-03-27)

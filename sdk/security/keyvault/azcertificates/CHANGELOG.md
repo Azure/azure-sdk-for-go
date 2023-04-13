@@ -4,7 +4,6 @@
 
 ### Breaking Changes
 * Moved module from `sdk/keyvault/azadmin` to `sdk/security/keyvault/azadmin`
-* Changed `Error` struct to `ErrorInfo`
 
 ## 0.9.0 (2023-04-13)
 
@@ -13,6 +12,7 @@
 
 ### Breaking Changes
 * Renamed `ActionType` to `CertificatePolicyAction`
+* Changed `Error` struct to `ErrorInfo`
 
 ## 0.8.0 (2022-11-08)
 

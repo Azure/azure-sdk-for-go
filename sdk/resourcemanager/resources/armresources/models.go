@@ -13,78 +13,78 @@ import "time"
 
 type APIProfile struct {
 	// READ-ONLY; The API version.
-	APIVersion *string `json:"apiVersion,omitempty" azure:"ro"`
+	APIVersion *string
 
 	// READ-ONLY; The profile version.
-	ProfileVersion *string `json:"profileVersion,omitempty" azure:"ro"`
+	ProfileVersion *string
 }
 
 // Alias - The alias type.
 type Alias struct {
 	// The default path for an alias.
-	DefaultPath *string `json:"defaultPath,omitempty"`
+	DefaultPath *string
 
 	// The default pattern for an alias.
-	DefaultPattern *AliasPattern `json:"defaultPattern,omitempty"`
+	DefaultPattern *AliasPattern
 
 	// The alias name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The paths for an alias.
-	Paths []*AliasPath `json:"paths,omitempty"`
+	Paths []*AliasPath
 
 	// The type of the alias.
-	Type *AliasType `json:"type,omitempty"`
+	Type *AliasType
 
 	// READ-ONLY; The default alias path metadata. Applies to the default path and to any alias path that doesn't have metadata
-	DefaultMetadata *AliasPathMetadata `json:"defaultMetadata,omitempty" azure:"ro"`
+	DefaultMetadata *AliasPathMetadata
 }
 
 // AliasPath - The type of the paths for alias.
 type AliasPath struct {
 	// The API versions.
-	APIVersions []*string `json:"apiVersions,omitempty"`
+	APIVersions []*string
 
 	// The path of an alias.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// The pattern for an alias path.
-	Pattern *AliasPattern `json:"pattern,omitempty"`
+	Pattern *AliasPattern
 
 	// READ-ONLY; The metadata of the alias path. If missing, fall back to the default metadata of the alias.
-	Metadata *AliasPathMetadata `json:"metadata,omitempty" azure:"ro"`
+	Metadata *AliasPathMetadata
 }
 
 type AliasPathMetadata struct {
 	// READ-ONLY; The attributes of the token that the alias path is referring to.
-	Attributes *AliasPathAttributes `json:"attributes,omitempty" azure:"ro"`
+	Attributes *AliasPathAttributes
 
 	// READ-ONLY; The type of the token that the alias path is referring to.
-	Type *AliasPathTokenType `json:"type,omitempty" azure:"ro"`
+	Type *AliasPathTokenType
 }
 
 // AliasPattern - The type of the pattern for an alias path.
 type AliasPattern struct {
 	// The alias pattern phrase.
-	Phrase *string `json:"phrase,omitempty"`
+	Phrase *string
 
 	// The type of alias pattern
-	Type *AliasPatternType `json:"type,omitempty"`
+	Type *AliasPatternType
 
 	// The alias pattern variable.
-	Variable *string `json:"variable,omitempty"`
+	Variable *string
 }
 
 // BasicDependency - Deployment dependency information.
 type BasicDependency struct {
 	// The ID of the dependency.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The dependency resource name.
-	ResourceName *string `json:"resourceName,omitempty"`
+	ResourceName *string
 
 	// The dependency resource type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // ClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the Client.BeginCreateOrUpdateByID method.
@@ -216,123 +216,123 @@ type DebugSetting struct {
 	// none. When setting this value, carefully consider the type of information you are passing in during deployment. By logging
 	// information about the request or response, you could potentially expose
 	// sensitive data that is retrieved through the deployment operations.
-	DetailLevel *string `json:"detailLevel,omitempty"`
+	DetailLevel *string
 }
 
 // Dependency - Deployment dependency information.
 type Dependency struct {
 	// The list of dependencies.
-	DependsOn []*BasicDependency `json:"dependsOn,omitempty"`
+	DependsOn []*BasicDependency
 
 	// The ID of the dependency.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The dependency resource name.
-	ResourceName *string `json:"resourceName,omitempty"`
+	ResourceName *string
 
 	// The dependency resource type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // Deployment operation parameters.
 type Deployment struct {
 	// REQUIRED; The deployment properties.
-	Properties *DeploymentProperties `json:"properties,omitempty"`
+	Properties *DeploymentProperties
 
 	// The location to store the deployment data.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Deployment tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DeploymentExportResult - The deployment export result.
 type DeploymentExportResult struct {
 	// The template content.
-	Template any `json:"template,omitempty"`
+	Template any
 }
 
 // DeploymentExtended - Deployment information.
 type DeploymentExtended struct {
 	// the location of the deployment.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Deployment properties.
-	Properties *DeploymentPropertiesExtended `json:"properties,omitempty"`
+	Properties *DeploymentPropertiesExtended
 
 	// Deployment tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The ID of the deployment.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the deployment.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the deployment.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeploymentExtendedFilter - Deployment filter.
 type DeploymentExtendedFilter struct {
 	// The provisioning state.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 }
 
 // DeploymentListResult - List of deployments.
 type DeploymentListResult struct {
 	// An array of deployments.
-	Value []*DeploymentExtended `json:"value,omitempty"`
+	Value []*DeploymentExtended
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DeploymentOperation - Deployment operation information.
 type DeploymentOperation struct {
 	// Deployment properties.
-	Properties *DeploymentOperationProperties `json:"properties,omitempty"`
+	Properties *DeploymentOperationProperties
 
 	// READ-ONLY; Full deployment operation ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Deployment operation ID.
-	OperationID *string `json:"operationId,omitempty" azure:"ro"`
+	OperationID *string
 }
 
 // DeploymentOperationProperties - Deployment operation properties.
 type DeploymentOperationProperties struct {
 	// READ-ONLY; The duration of the operation.
-	Duration *string `json:"duration,omitempty" azure:"ro"`
+	Duration *string
 
 	// READ-ONLY; The name of the current provisioning operation.
-	ProvisioningOperation *ProvisioningOperation `json:"provisioningOperation,omitempty" azure:"ro"`
+	ProvisioningOperation *ProvisioningOperation
 
 	// READ-ONLY; The state of the provisioning.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The HTTP request message.
-	Request *HTTPMessage `json:"request,omitempty" azure:"ro"`
+	Request *HTTPMessage
 
 	// READ-ONLY; The HTTP response message.
-	Response *HTTPMessage `json:"response,omitempty" azure:"ro"`
+	Response *HTTPMessage
 
 	// READ-ONLY; Deployment operation service request id.
-	ServiceRequestID *string `json:"serviceRequestId,omitempty" azure:"ro"`
+	ServiceRequestID *string
 
 	// READ-ONLY; Operation status code from the resource provider. This property may not be set if a response has not yet been
 	// received.
-	StatusCode *string `json:"statusCode,omitempty" azure:"ro"`
+	StatusCode *string
 
 	// READ-ONLY; Operation status message from the resource provider. This property is optional. It will only be provided if
 	// an error was received from the resource provider.
-	StatusMessage *StatusMessage `json:"statusMessage,omitempty" azure:"ro"`
+	StatusMessage *StatusMessage
 
 	// READ-ONLY; The target resource.
-	TargetResource *TargetResource `json:"targetResource,omitempty" azure:"ro"`
+	TargetResource *TargetResource
 
 	// READ-ONLY; The date and time of the operation.
-	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
+	Timestamp *time.Time
 }
 
 // DeploymentOperationsClientGetAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtManagementGroupScope
@@ -402,10 +402,10 @@ type DeploymentOperationsClientListOptions struct {
 // DeploymentOperationsListResult - List of deployment operations.
 type DeploymentOperationsListResult struct {
 	// An array of deployment operations.
-	Value []*DeploymentOperation `json:"value,omitempty"`
+	Value []*DeploymentOperation
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DeploymentProperties - Deployment properties.
@@ -415,107 +415,107 @@ type DeploymentProperties struct {
 	// the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included
 	// in the template are deleted. Be careful when using Complete mode as you may
 	// unintentionally delete resources.
-	Mode *DeploymentMode `json:"mode,omitempty"`
+	Mode *DeploymentMode
 
 	// The debug setting of the deployment.
-	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
+	DebugSetting *DebugSetting
 
 	// Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable
 	// to nested templates. If not specified, default value is outer.
-	ExpressionEvaluationOptions *ExpressionEvaluationOptions `json:"expressionEvaluationOptions,omitempty"`
+	ExpressionEvaluationOptions *ExpressionEvaluationOptions
 
 	// The deployment on error behavior.
-	OnErrorDeployment *OnErrorDeployment `json:"onErrorDeployment,omitempty"`
+	OnErrorDeployment *OnErrorDeployment
 
 	// Name and value pairs that define the deployment parameters for the template. You use this element when you want to provide
 	// the parameter values directly in the request rather than link to an existing
 	// parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or
 	// a well formed JSON string.
-	Parameters any `json:"parameters,omitempty"`
+	Parameters any
 
 	// The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink
 	// property or the parameters property, but not both.
-	ParametersLink *ParametersLink `json:"parametersLink,omitempty"`
+	ParametersLink *ParametersLink
 
 	// The template content. You use this element when you want to pass the template syntax directly in the request rather than
 	// link to an existing template. It can be a JObject or well-formed JSON string.
 	// Use either the templateLink property or the template property, but not both.
-	Template any `json:"template,omitempty"`
+	Template any
 
 	// The URI of the template. Use either the templateLink property or the template property, but not both.
-	TemplateLink *TemplateLink `json:"templateLink,omitempty"`
+	TemplateLink *TemplateLink
 }
 
 // DeploymentPropertiesExtended - Deployment properties with additional details.
 type DeploymentPropertiesExtended struct {
 	// READ-ONLY; The correlation ID of the deployment.
-	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
+	CorrelationID *string
 
 	// READ-ONLY; The debug setting of the deployment.
-	DebugSetting *DebugSetting `json:"debugSetting,omitempty" azure:"ro"`
+	DebugSetting *DebugSetting
 
 	// READ-ONLY; The list of deployment dependencies.
-	Dependencies []*Dependency `json:"dependencies,omitempty" azure:"ro"`
+	Dependencies []*Dependency
 
 	// READ-ONLY; The duration of the template deployment.
-	Duration *string `json:"duration,omitempty" azure:"ro"`
+	Duration *string
 
 	// READ-ONLY; The deployment error.
-	Error *ErrorResponse `json:"error,omitempty" azure:"ro"`
+	Error *ErrorResponse
 
 	// READ-ONLY; The deployment mode. Possible values are Incremental and Complete.
-	Mode *DeploymentMode `json:"mode,omitempty" azure:"ro"`
+	Mode *DeploymentMode
 
 	// READ-ONLY; The deployment on error behavior.
-	OnErrorDeployment *OnErrorDeploymentExtended `json:"onErrorDeployment,omitempty" azure:"ro"`
+	OnErrorDeployment *OnErrorDeploymentExtended
 
 	// READ-ONLY; Array of provisioned resources.
-	OutputResources []*ResourceReference `json:"outputResources,omitempty" azure:"ro"`
+	OutputResources []*ResourceReference
 
 	// READ-ONLY; Key/value pairs that represent deployment output.
-	Outputs any `json:"outputs,omitempty" azure:"ro"`
+	Outputs any
 
 	// READ-ONLY; Deployment parameters.
-	Parameters any `json:"parameters,omitempty" azure:"ro"`
+	Parameters any
 
 	// READ-ONLY; The URI referencing the parameters.
-	ParametersLink *ParametersLink `json:"parametersLink,omitempty" azure:"ro"`
+	ParametersLink *ParametersLink
 
 	// READ-ONLY; The list of resource providers needed for the deployment.
-	Providers []*Provider `json:"providers,omitempty" azure:"ro"`
+	Providers []*Provider
 
 	// READ-ONLY; Denotes the state of provisioning.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The hash produced for the template.
-	TemplateHash *string `json:"templateHash,omitempty" azure:"ro"`
+	TemplateHash *string
 
 	// READ-ONLY; The URI referencing the template.
-	TemplateLink *TemplateLink `json:"templateLink,omitempty" azure:"ro"`
+	TemplateLink *TemplateLink
 
 	// READ-ONLY; The timestamp of the template deployment.
-	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
+	Timestamp *time.Time
 
 	// READ-ONLY; Array of validated resources.
-	ValidatedResources []*ResourceReference `json:"validatedResources,omitempty" azure:"ro"`
+	ValidatedResources []*ResourceReference
 }
 
 // DeploymentValidateResult - Information from validate template deployment response.
 type DeploymentValidateResult struct {
 	// The template deployment properties.
-	Properties *DeploymentPropertiesExtended `json:"properties,omitempty"`
+	Properties *DeploymentPropertiesExtended
 
 	// READ-ONLY; The deployment validation error.
-	Error *ErrorResponse `json:"error,omitempty" azure:"ro"`
+	Error *ErrorResponse
 }
 
 // DeploymentWhatIf - Deployment What-if operation parameters.
 type DeploymentWhatIf struct {
 	// REQUIRED; The deployment properties.
-	Properties *DeploymentWhatIfProperties `json:"properties,omitempty"`
+	Properties *DeploymentWhatIfProperties
 
 	// The location to store the deployment data.
-	Location *string `json:"location,omitempty"`
+	Location *string
 }
 
 // DeploymentWhatIfProperties - Deployment What-if properties.
@@ -525,44 +525,44 @@ type DeploymentWhatIfProperties struct {
 	// the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included
 	// in the template are deleted. Be careful when using Complete mode as you may
 	// unintentionally delete resources.
-	Mode *DeploymentMode `json:"mode,omitempty"`
+	Mode *DeploymentMode
 
 	// The debug setting of the deployment.
-	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
+	DebugSetting *DebugSetting
 
 	// Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable
 	// to nested templates. If not specified, default value is outer.
-	ExpressionEvaluationOptions *ExpressionEvaluationOptions `json:"expressionEvaluationOptions,omitempty"`
+	ExpressionEvaluationOptions *ExpressionEvaluationOptions
 
 	// The deployment on error behavior.
-	OnErrorDeployment *OnErrorDeployment `json:"onErrorDeployment,omitempty"`
+	OnErrorDeployment *OnErrorDeployment
 
 	// Name and value pairs that define the deployment parameters for the template. You use this element when you want to provide
 	// the parameter values directly in the request rather than link to an existing
 	// parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or
 	// a well formed JSON string.
-	Parameters any `json:"parameters,omitempty"`
+	Parameters any
 
 	// The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink
 	// property or the parameters property, but not both.
-	ParametersLink *ParametersLink `json:"parametersLink,omitempty"`
+	ParametersLink *ParametersLink
 
 	// The template content. You use this element when you want to pass the template syntax directly in the request rather than
 	// link to an existing template. It can be a JObject or well-formed JSON string.
 	// Use either the templateLink property or the template property, but not both.
-	Template any `json:"template,omitempty"`
+	Template any
 
 	// The URI of the template. Use either the templateLink property or the template property, but not both.
-	TemplateLink *TemplateLink `json:"templateLink,omitempty"`
+	TemplateLink *TemplateLink
 
 	// Optional What-If operation settings.
-	WhatIfSettings *DeploymentWhatIfSettings `json:"whatIfSettings,omitempty"`
+	WhatIfSettings *DeploymentWhatIfSettings
 }
 
 // DeploymentWhatIfSettings - Deployment What-If operation settings.
 type DeploymentWhatIfSettings struct {
 	// The format of the What-If results
-	ResultFormat *WhatIfResultFormat `json:"resultFormat,omitempty"`
+	ResultFormat *WhatIfResultFormat
 }
 
 // DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope
@@ -861,29 +861,29 @@ type DeploymentsClientListByResourceGroupOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponse
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ExportTemplateRequest - Export resource group template request parameters.
@@ -891,220 +891,220 @@ type ExportTemplateRequest struct {
 	// The export template options. A CSV-formatted list containing zero or more of the following: 'IncludeParameterDefaultValue',
 	// 'IncludeComments', 'SkipResourceNameParameterization',
 	// 'SkipAllParameterization'
-	Options *string `json:"options,omitempty"`
+	Options *string
 
 	// The IDs of the resources to filter the export by. To export all resources, supply an array with single entry '*'.
-	Resources []*string `json:"resources,omitempty"`
+	Resources []*string
 }
 
 // ExpressionEvaluationOptions - Specifies whether template expressions are evaluated within the scope of the parent template
 // or nested template.
 type ExpressionEvaluationOptions struct {
 	// The scope to be used for evaluation of parameters, variables and functions in a nested template.
-	Scope *ExpressionEvaluationOptionsScopeType `json:"scope,omitempty"`
+	Scope *ExpressionEvaluationOptionsScopeType
 }
 
 // ExtendedLocation - Resource extended location.
 type ExtendedLocation struct {
 	// The extended location name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The extended location type.
-	Type *ExtendedLocationType `json:"type,omitempty"`
+	Type *ExtendedLocationType
 }
 
 // GenericResource - Resource information.
 type GenericResource struct {
 	// Resource extended location.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+	ExtendedLocation *ExtendedLocation
 
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The kind of the resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ID of the resource that manages this resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// The plan of the resource.
-	Plan *Plan `json:"plan,omitempty"`
+	Plan *Plan
 
 	// The resource properties.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// The SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GenericResourceExpanded - Resource information.
 type GenericResourceExpanded struct {
 	// Resource extended location.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+	ExtendedLocation *ExtendedLocation
 
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The kind of the resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ID of the resource that manages this resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// The plan of the resource.
-	Plan *Plan `json:"plan,omitempty"`
+	Plan *Plan
 
 	// The resource properties.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// The SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The changed time of the resource. This is only present if requested via the $expand query parameter.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; The created time of the resource. This is only present if requested via the $expand query parameter.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; Resource ID
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The provisioning state of the resource. This is only present if requested via the $expand query parameter.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GenericResourceFilter - Resource filter.
 type GenericResourceFilter struct {
 	// The resource type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The tag name.
-	Tagname *string `json:"tagname,omitempty"`
+	Tagname *string
 
 	// The tag value.
-	Tagvalue *string `json:"tagvalue,omitempty"`
+	Tagvalue *string
 }
 
 // HTTPMessage - HTTP message.
 type HTTPMessage struct {
 	// HTTP message content.
-	Content any `json:"content,omitempty"`
+	Content any
 }
 
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*IdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*IdentityUserAssignedIdentitiesValue
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 type IdentityUserAssignedIdentitiesValue struct {
 	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // MoveInfo - Parameters of move resources.
 type MoveInfo struct {
 	// The IDs of the resources.
-	Resources []*string `json:"resources,omitempty"`
+	Resources []*string
 
 	// The target resource group.
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
+	TargetResourceGroup *string
 }
 
 // OnErrorDeployment - Deployment on error behavior.
 type OnErrorDeployment struct {
 	// The deployment to be used on error case.
-	DeploymentName *string `json:"deploymentName,omitempty"`
+	DeploymentName *string
 
 	// The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment.
-	Type *OnErrorDeploymentType `json:"type,omitempty"`
+	Type *OnErrorDeploymentType
 }
 
 // OnErrorDeploymentExtended - Deployment on error behavior with additional details.
 type OnErrorDeploymentExtended struct {
 	// The deployment to be used on error case.
-	DeploymentName *string `json:"deploymentName,omitempty"`
+	DeploymentName *string
 
 	// The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment.
-	Type *OnErrorDeploymentType `json:"type,omitempty"`
+	Type *OnErrorDeploymentType
 
 	// READ-ONLY; The state of the provisioning for the on error deployment.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // Operation - Microsoft.Resources operation
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.Resources
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed: Profile, endpoint, etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list Microsoft.Resources operations. It contains a list of operations and
 // a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Microsoft.Resources operations.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -1115,161 +1115,161 @@ type OperationsClientListOptions struct {
 // ParametersLink - Entity representing the reference to the deployment parameters.
 type ParametersLink struct {
 	// REQUIRED; The URI of the parameters file.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// If included, must match the ContentVersion in the template.
-	ContentVersion *string `json:"contentVersion,omitempty"`
+	ContentVersion *string
 }
 
 // Permission - Role definition permissions.
 type Permission struct {
 	// Allowed actions.
-	Actions []*string `json:"actions,omitempty"`
+	Actions []*string
 
 	// Allowed Data actions.
-	DataActions []*string `json:"dataActions,omitempty"`
+	DataActions []*string
 
 	// Denied actions.
-	NotActions []*string `json:"notActions,omitempty"`
+	NotActions []*string
 
 	// Denied Data actions.
-	NotDataActions []*string `json:"notDataActions,omitempty"`
+	NotDataActions []*string
 }
 
 // Plan for the resource.
 type Plan struct {
 	// The plan ID.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The offer ID.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// The promotion code.
-	PromotionCode *string `json:"promotionCode,omitempty"`
+	PromotionCode *string
 
 	// The publisher ID.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// The plan's version.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // Provider - Resource provider information.
 type Provider struct {
 	// The namespace of the resource provider.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 
 	// The provider authorization consent state.
-	ProviderAuthorizationConsentState *ProviderAuthorizationConsentState `json:"providerAuthorizationConsentState,omitempty"`
+	ProviderAuthorizationConsentState *ProviderAuthorizationConsentState
 
 	// READ-ONLY; The provider ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The registration policy of the resource provider.
-	RegistrationPolicy *string `json:"registrationPolicy,omitempty" azure:"ro"`
+	RegistrationPolicy *string
 
 	// READ-ONLY; The registration state of the resource provider.
-	RegistrationState *string `json:"registrationState,omitempty" azure:"ro"`
+	RegistrationState *string
 
 	// READ-ONLY; The collection of provider resource types.
-	ResourceTypes []*ProviderResourceType `json:"resourceTypes,omitempty" azure:"ro"`
+	ResourceTypes []*ProviderResourceType
 }
 
 // ProviderConsentDefinition - The provider consent.
 type ProviderConsentDefinition struct {
 	// A value indicating whether authorization is consented or not.
-	ConsentToAuthorization *bool `json:"consentToAuthorization,omitempty"`
+	ConsentToAuthorization *bool
 }
 
 // ProviderExtendedLocation - The provider extended location.
 type ProviderExtendedLocation struct {
 	// The extended locations for the azure location.
-	ExtendedLocations []*string `json:"extendedLocations,omitempty"`
+	ExtendedLocations []*string
 
 	// The azure location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The extended location type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ProviderListResult - List of resource providers.
 type ProviderListResult struct {
 	// An array of resource providers.
-	Value []*Provider `json:"value,omitempty"`
+	Value []*Provider
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ProviderPermission - The provider permission
 type ProviderPermission struct {
 	// The application id.
-	ApplicationID *string `json:"applicationId,omitempty"`
+	ApplicationID *string
 
 	// Role definition properties.
-	ManagedByRoleDefinition *RoleDefinition `json:"managedByRoleDefinition,omitempty"`
+	ManagedByRoleDefinition *RoleDefinition
 
 	// The provider authorization consent state.
-	ProviderAuthorizationConsentState *ProviderAuthorizationConsentState `json:"providerAuthorizationConsentState,omitempty"`
+	ProviderAuthorizationConsentState *ProviderAuthorizationConsentState
 
 	// Role definition properties.
-	RoleDefinition *RoleDefinition `json:"roleDefinition,omitempty"`
+	RoleDefinition *RoleDefinition
 }
 
 // ProviderPermissionListResult - List of provider permissions.
 type ProviderPermissionListResult struct {
 	// An array of provider permissions.
-	Value []*ProviderPermission `json:"value,omitempty"`
+	Value []*ProviderPermission
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ProviderRegistrationRequest - The provider registration definition.
 type ProviderRegistrationRequest struct {
 	// The provider consent.
-	ThirdPartyProviderConsent *ProviderConsentDefinition `json:"thirdPartyProviderConsent,omitempty"`
+	ThirdPartyProviderConsent *ProviderConsentDefinition
 }
 
 // ProviderResourceType - Resource type managed by the resource provider.
 type ProviderResourceType struct {
 	// The API version.
-	APIVersions []*string `json:"apiVersions,omitempty"`
+	APIVersions []*string
 
 	// The aliases that are supported by this resource type.
-	Aliases []*Alias `json:"aliases,omitempty"`
+	Aliases []*Alias
 
 	// The additional capabilities offered by this resource type.
-	Capabilities *string `json:"capabilities,omitempty"`
+	Capabilities *string
 
 	// The location mappings that are supported by this resource type.
-	LocationMappings []*ProviderExtendedLocation `json:"locationMappings,omitempty"`
+	LocationMappings []*ProviderExtendedLocation
 
 	// The collection of locations where this resource type can be created.
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 
 	// The properties.
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 
 	// The resource type.
-	ResourceType *string        `json:"resourceType,omitempty"`
-	ZoneMappings []*ZoneMapping `json:"zoneMappings,omitempty"`
+	ResourceType *string
+	ZoneMappings []*ZoneMapping
 
 	// READ-ONLY; The API profiles for the resource provider.
-	APIProfiles []*APIProfile `json:"apiProfiles,omitempty" azure:"ro"`
+	APIProfiles []*APIProfile
 
 	// READ-ONLY; The default API version.
-	DefaultAPIVersion *string `json:"defaultApiVersion,omitempty" azure:"ro"`
+	DefaultAPIVersion *string
 }
 
 // ProviderResourceTypeListResult - List of resource types of a resource provider.
 type ProviderResourceTypeListResult struct {
 	// An array of resource types.
-	Value []*ProviderResourceType `json:"value,omitempty"`
+	Value []*ProviderResourceType
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ProviderResourceTypesClientListOptions contains the optional parameters for the ProviderResourceTypesClient.List method.
@@ -1333,95 +1333,95 @@ type ProvidersClientUnregisterOptions struct {
 // Resource - Specified resource.
 type Resource struct {
 	// Resource extended location.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+	ExtendedLocation *ExtendedLocation
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceGroup - Resource group information.
 type ResourceGroup struct {
 	// REQUIRED; The location of the resource group. It cannot be changed after the resource group has been created. It must be
 	// one of the supported Azure locations.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The ID of the resource that manages this resource group.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// The resource group properties.
-	Properties *ResourceGroupProperties `json:"properties,omitempty"`
+	Properties *ResourceGroupProperties
 
 	// The tags attached to the resource group.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The ID of the resource group.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource group.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource group.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceGroupExportResult - Resource group export result.
 type ResourceGroupExportResult struct {
 	// The template export error.
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 
 	// The template content.
-	Template any `json:"template,omitempty"`
+	Template any
 }
 
 // ResourceGroupFilter - Resource group filter.
 type ResourceGroupFilter struct {
 	// The tag name.
-	TagName *string `json:"tagName,omitempty"`
+	TagName *string
 
 	// The tag value.
-	TagValue *string `json:"tagValue,omitempty"`
+	TagValue *string
 }
 
 // ResourceGroupListResult - List of resource groups.
 type ResourceGroupListResult struct {
 	// An array of resource groups.
-	Value []*ResourceGroup `json:"value,omitempty"`
+	Value []*ResourceGroup
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ResourceGroupPatchable - Resource group information.
 type ResourceGroupPatchable struct {
 	// The ID of the resource that manages this resource group.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// The name of the resource group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The resource group properties.
-	Properties *ResourceGroupProperties `json:"properties,omitempty"`
+	Properties *ResourceGroupProperties
 
 	// The tags attached to the resource group.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ResourceGroupProperties - The resource group properties.
 type ResourceGroupProperties struct {
 	// READ-ONLY; The provisioning state.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // ResourceGroupsClientBeginDeleteOptions contains the optional parameters for the ResourceGroupsClient.BeginDelete method.
@@ -1474,152 +1474,152 @@ type ResourceGroupsClientUpdateOptions struct {
 // ResourceListResult - List of resource groups.
 type ResourceListResult struct {
 	// An array of resources.
-	Value []*GenericResourceExpanded `json:"value,omitempty"`
+	Value []*GenericResourceExpanded
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ResourceProviderOperationDisplayProperties - Resource provider operation's display properties.
 type ResourceProviderOperationDisplayProperties struct {
 	// Operation description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Resource provider operation.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Operation provider.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Operation description.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// Operation resource.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // ResourceReference - The resource Id model.
 type ResourceReference struct {
 	// READ-ONLY; The fully qualified resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // RoleDefinition - Role definition properties.
 type RoleDefinition struct {
 	// The role definition ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// If this is a service role.
-	IsServiceRole *bool `json:"isServiceRole,omitempty"`
+	IsServiceRole *bool
 
 	// The role definition name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Role definition permissions.
-	Permissions []*Permission `json:"permissions,omitempty"`
+	Permissions []*Permission
 
 	// Role definition assignable scopes.
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
 }
 
 // SKU for the resource.
 type SKU struct {
 	// The SKU capacity.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// The SKU family.
-	Family *string `json:"family,omitempty"`
+	Family *string
 
 	// The SKU model.
-	Model *string `json:"model,omitempty"`
+	Model *string
 
 	// The SKU name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The SKU size.
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// The SKU tier.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // ScopedDeployment - Deployment operation parameters.
 type ScopedDeployment struct {
 	// REQUIRED; The location to store the deployment data.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The deployment properties.
-	Properties *DeploymentProperties `json:"properties,omitempty"`
+	Properties *DeploymentProperties
 
 	// Deployment tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ScopedDeploymentWhatIf - Deployment What-if operation parameters.
 type ScopedDeploymentWhatIf struct {
 	// REQUIRED; The location to store the deployment data.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The deployment properties.
-	Properties *DeploymentWhatIfProperties `json:"properties,omitempty"`
+	Properties *DeploymentWhatIfProperties
 }
 
 // StatusMessage - Operation status message object.
 type StatusMessage struct {
 	// The error reported by the operation.
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 
 	// Status of the deployment operation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // SubResource - Sub-resource.
 type SubResource struct {
 	// Resource ID
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // TagCount - Tag count.
 type TagCount struct {
 	// Type of count.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Value of count.
-	Value *int32 `json:"value,omitempty"`
+	Value *int32
 }
 
 // TagDetails - Tag details.
 type TagDetails struct {
 	// The total number of resources that use the resource tag. When a tag is initially created and has no associated resources,
 	// the value is 0.
-	Count *TagCount `json:"count,omitempty"`
+	Count *TagCount
 
 	// The tag name.
-	TagName *string `json:"tagName,omitempty"`
+	TagName *string
 
 	// The list of tag values.
-	Values []*TagValue `json:"values,omitempty"`
+	Values []*TagValue
 
 	// READ-ONLY; The tag name ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // TagValue - Tag information.
 type TagValue struct {
 	// The tag value count.
-	Count *TagCount `json:"count,omitempty"`
+	Count *TagCount
 
 	// The tag value.
-	TagValue *string `json:"tagValue,omitempty"`
+	TagValue *string
 
 	// READ-ONLY; The tag value ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // Tags - A dictionary of name and value pairs.
 type Tags struct {
 	// Dictionary of
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // TagsClientCreateOrUpdateAtScopeOptions contains the optional parameters for the TagsClient.CreateOrUpdateAtScope method.
@@ -1670,139 +1670,139 @@ type TagsClientUpdateAtScopeOptions struct {
 // TagsListResult - List of subscription tags.
 type TagsListResult struct {
 	// An array of tags.
-	Value []*TagDetails `json:"value,omitempty"`
+	Value []*TagDetails
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // TagsPatchResource - Wrapper resource for tags patch API request only.
 type TagsPatchResource struct {
 	// The operation type for the patch API.
-	Operation *TagsPatchOperation `json:"operation,omitempty"`
+	Operation *TagsPatchOperation
 
 	// The set of tags.
-	Properties *Tags `json:"properties,omitempty"`
+	Properties *Tags
 }
 
 // TagsResource - Wrapper resource for tags API requests and responses.
 type TagsResource struct {
 	// REQUIRED; The set of tags.
-	Properties *Tags `json:"properties,omitempty"`
+	Properties *Tags
 
 	// READ-ONLY; The ID of the tags wrapper resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the tags wrapper resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the tags wrapper resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TargetResource - Target resource.
 type TargetResource struct {
 	// The ID of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The name of the resource.
-	ResourceName *string `json:"resourceName,omitempty"`
+	ResourceName *string
 
 	// The type of the resource.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // TemplateHashResult - Result of the request to calculate template hash. It contains a string of minified template and its
 // hash.
 type TemplateHashResult struct {
 	// The minified template string.
-	MinifiedTemplate *string `json:"minifiedTemplate,omitempty"`
+	MinifiedTemplate *string
 
 	// The template hash.
-	TemplateHash *string `json:"templateHash,omitempty"`
+	TemplateHash *string
 }
 
 // TemplateLink - Entity representing the reference to the template.
 type TemplateLink struct {
 	// If included, must match the ContentVersion in the template.
-	ContentVersion *string `json:"contentVersion,omitempty"`
+	ContentVersion *string
 
 	// The resource id of a Template Spec. Use either the id or uri property, but not both.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The query string (for example, a SAS token) to be used with the templateLink URI.
-	QueryString *string `json:"queryString,omitempty"`
+	QueryString *string
 
 	// The relativePath property can be used to deploy a linked template at a location relative to the parent. If the parent template
 	// was linked with a TemplateSpec, this will reference an artifact in the
 	// TemplateSpec. If the parent was linked with a URI, the child deployment will be a combination of the parent and relativePath
 	// URIs
-	RelativePath *string `json:"relativePath,omitempty"`
+	RelativePath *string
 
 	// The URI of the template to deploy. Use either the uri or id property, but not both.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // WhatIfChange - Information about a single resource change predicted by What-If operation.
 type WhatIfChange struct {
 	// REQUIRED; Type of change that will be made to the resource when the deployment is executed.
-	ChangeType *ChangeType `json:"changeType,omitempty"`
+	ChangeType *ChangeType
 
 	// REQUIRED; Resource ID
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// The predicted snapshot of the resource after the deployment is executed.
-	After any `json:"after,omitempty"`
+	After any
 
 	// The snapshot of the resource before the deployment is executed.
-	Before any `json:"before,omitempty"`
+	Before any
 
 	// The predicted changes to resource properties.
-	Delta []*WhatIfPropertyChange `json:"delta,omitempty"`
+	Delta []*WhatIfPropertyChange
 
 	// The explanation about why the resource is unsupported by What-If.
-	UnsupportedReason *string `json:"unsupportedReason,omitempty"`
+	UnsupportedReason *string
 }
 
 // WhatIfOperationProperties - Deployment operation properties.
 type WhatIfOperationProperties struct {
 	// List of resource changes predicted by What-If operation.
-	Changes []*WhatIfChange `json:"changes,omitempty"`
+	Changes []*WhatIfChange
 }
 
 // WhatIfOperationResult - Result of the What-If operation. Contains a list of predicted changes and a URL link to get to
 // the next set of results.
 type WhatIfOperationResult struct {
 	// Error when What-If operation fails.
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 
 	// What-If operation properties.
-	Properties *WhatIfOperationProperties `json:"properties,omitempty"`
+	Properties *WhatIfOperationProperties
 
 	// Status of the What-If operation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // WhatIfPropertyChange - The predicted change to the resource property.
 type WhatIfPropertyChange struct {
 	// REQUIRED; The path of the property.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// REQUIRED; The type of property change.
-	PropertyChangeType *PropertyChangeType `json:"propertyChangeType,omitempty"`
+	PropertyChangeType *PropertyChangeType
 
 	// The value of the property after the deployment is executed.
-	After any `json:"after,omitempty"`
+	After any
 
 	// The value of the property before the deployment is executed.
-	Before any `json:"before,omitempty"`
+	Before any
 
 	// Nested property changes.
-	Children []*WhatIfPropertyChange `json:"children,omitempty"`
+	Children []*WhatIfPropertyChange
 }
 
 type ZoneMapping struct {
 	// The location of the zone mapping.
-	Location *string   `json:"location,omitempty"`
-	Zones    []*string `json:"zones,omitempty"`
+	Location *string
+	Zones    []*string
 }

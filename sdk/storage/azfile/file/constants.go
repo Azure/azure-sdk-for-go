@@ -13,6 +13,8 @@ import (
 )
 
 const (
+	_1MiB = 1024 * 1024
+
 	// MaxUpdateRangeBytes indicates the maximum number of bytes that can be updated in a call to Client.UploadRange.
 	MaxUpdateRangeBytes = 4 * 1024 * 1024 // 4MiB
 

@@ -326,6 +326,16 @@ type DownloadStreamOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+func (o *DownloadStreamOptions) format() (*generated.FileClientDownloadOptions, *LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+	return &generated.FileClientDownloadOptions{
+		Range:              exported.FormatHTTPRange(o.Range),
+		RangeGetContentMD5: o.RangeGetContentMD5,
+	}, o.LeaseAccessConditions
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // DownloadBufferOptions contains the optional parameters for the Client.DownloadBuffer method.
@@ -346,11 +356,11 @@ type DownloadBufferOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
 	Concurrency uint16
 
-	// RetryReaderOptionsPerBlock is used when downloading each block.
-	RetryReaderOptionsPerBlock RetryReaderOptions
+	// RetryReaderOptionsPerRange is used when downloading each chunk.
+	RetryReaderOptionsPerRange RetryReaderOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -373,11 +383,11 @@ type DownloadFileOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
 	Concurrency uint16
 
-	// RetryReaderOptionsPerBlock is used when downloading each block.
-	RetryReaderOptionsPerBlock RetryReaderOptions
+	// RetryReaderOptionsPerRange is used when downloading each chunk.
+	RetryReaderOptionsPerRange RetryReaderOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -625,14 +635,14 @@ type Handle = generated.Handle
 
 // uploadFromReaderOptions identifies options used by the UploadBuffer and UploadFile functions.
 type uploadFromReaderOptions struct {
-	// ChunkSize specifies the chunk size to use; the default (and maximum size) is MaxUpdateRangeBytes.
+	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxUpdateRangeBytes.
 	ChunkSize int64
 
 	// Progress is a function that is invoked periodically as bytes are sent to the FileClient.
 	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
 	Progress func(bytesTransferred int64)
 
-	// Concurrency indicates the maximum number of blocks to upload in parallel (0=default)
+	// Concurrency indicates the maximum number of chunks to upload in parallel (default is 5)
 	Concurrency uint16
 
 	// LeaseAccessConditions contains optional parameters to access leased entity.
@@ -648,5 +658,36 @@ type UploadFileOptions = uploadFromReaderOptions
 func (o *uploadFromReaderOptions) getUploadRangeOptions() *UploadRangeOptions {
 	return &UploadRangeOptions{
 		LeaseAccessConditions: o.LeaseAccessConditions,
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// UploadStreamOptions provides set of configurations for Client.UploadStream operation.
+type UploadStreamOptions struct {
+	// ChunkSize defines the size of the buffer used during upload. The default and minimum value is 1 MiB.
+	ChunkSize int64
+
+	// Concurrency defines the max number of concurrent uploads to be performed to upload the file.
+	// Each concurrent upload will create a buffer of size ChunkSize.  The default value is one.
+	Concurrency int
+
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (u *UploadStreamOptions) setDefaults() {
+	if u.Concurrency == 0 {
+		u.Concurrency = 1
+	}
+
+	if u.ChunkSize < _1MiB {
+		u.ChunkSize = _1MiB
+	}
+}
+
+func (u *UploadStreamOptions) getUploadRangeOptions() *UploadRangeOptions {
+	return &UploadRangeOptions{
+		LeaseAccessConditions: u.LeaseAccessConditions,
 	}
 }

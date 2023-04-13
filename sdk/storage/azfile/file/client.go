@@ -162,23 +162,6 @@ func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCop
 	return resp, err
 }
 
-// DownloadStream operation reads or downloads a file from the system, including its metadata and properties.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file.
-func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOptions) (DownloadStreamResponse, error) {
-	return DownloadStreamResponse{}, nil
-}
-
-// DownloadBuffer downloads an Azure file to a buffer with parallel.
-func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
-	return 0, nil
-}
-
-// DownloadFile downloads an Azure file to a local file.
-// The file would be truncated if the size doesn't match.
-func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
-	return 0, nil
-}
-
 // Resize operation resizes the file to the specified size.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions) (ResizeResponse, error) {
@@ -350,14 +333,52 @@ func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *Uploa
 }
 
 // UploadFile uploads a file in blocks to a block blob.
-func (f *Client) UploadFile(ctx context.Context, file *os.File, o *UploadFileOptions) error {
+func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadFileOptions) error {
 	stat, err := file.Stat()
 	if err != nil {
 		return err
 	}
 	uploadOptions := uploadFromReaderOptions{}
-	if o != nil {
-		uploadOptions = *o
+	if options != nil {
+		uploadOptions = *options
 	}
 	return f.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
+}
+
+func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *UploadStreamOptions) error {
+	if options == nil {
+		options = &UploadStreamOptions{}
+	}
+
+	err := copyFromReader(ctx, body, f, *options, newMMBPool)
+	return err
+}
+
+// Concurrent Download Functions -----------------------------------------------------------------------------------------
+
+// DownloadStream operation reads or downloads a file from the system, including its metadata and properties.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file.
+func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOptions) (DownloadStreamResponse, error) {
+	opts, leaseAccessConditions := options.format()
+	if options == nil {
+		options = &DownloadStreamOptions{}
+	}
+
+	resp, err := f.generated().Download(ctx, opts, leaseAccessConditions)
+	return DownloadStreamResponse{
+		DownloadResponse: resp,
+		client:           f,
+		getInfo:          httpGetterInfo{Range: options.Range, ETag: resp.ETag},
+	}, err
+}
+
+// DownloadBuffer downloads an Azure file to a buffer with parallel.
+func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
+	return 0, nil
+}
+
+// DownloadFile downloads an Azure file to a local file.
+// The file would be truncated if the size doesn't match.
+func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
+	return 0, nil
 }

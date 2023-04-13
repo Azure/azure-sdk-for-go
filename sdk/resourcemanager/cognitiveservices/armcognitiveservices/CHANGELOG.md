@@ -3,6 +3,7 @@
 ## 1.4.1 (2023-04-14)
 ### Other Changes
 
+- Fix seralization bug of empty value of `any` type.
 
 ## 1.4.0 (2023-03-28)
 ### Features Added

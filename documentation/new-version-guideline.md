@@ -162,6 +162,9 @@ clientFactory, err := armresources.NewClientFactory(subscriptionId, credential,
         },
     },
 )
+if err != nil {
+    log.Fatal(err)
+}
 rgClient := clientFactory.NewResourceGroupsClient()
 ```
 
@@ -189,6 +192,9 @@ clientFactory, err := armresources.NewClientFactory(subscriptionId, credential,
         },
     },
 )
+if err != nil {
+    log.Fatal(err)
+}
 rgClient := clientFactory.NewResourceGroupsClient()
 ```
 
@@ -222,6 +228,9 @@ clientFactory, err := armresources.NewClientFactory(subscriptionId, credential,
         },
     },
 )
+if err != nil {
+    log.Fatal(err)
+}
 rgClient := clientFactory.NewResourceGroupsClient()
 ```
 

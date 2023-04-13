@@ -7,6 +7,7 @@
 
 ### Breaking Changes
 * Renamed `ActionType` to `CertificatePolicyAction`
+* Changed `Error` struct to `ErrorInfo`
 
 ### Bugs Fixed
 

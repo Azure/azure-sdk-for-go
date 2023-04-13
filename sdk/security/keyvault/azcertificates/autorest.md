@@ -83,13 +83,16 @@ directive:
   - where-model: X509CertificateProperties
     transform: $.properties.ekus["x-ms-client-name"] = "EKUs"
 
-  # delete unused KeyVaultError
+  # delete unused error models
   - from: models.go
     where: $
-    transform: return $.replace(/(?:\/\/.*\s)+type KeyVaultError.+\{(?:\s.+\s)+\}\s/g, "");
+    transform: return $.replace(/(?:\/\/.*\s)+type (?:Error|KeyVaultError).+\{(?:\s.+\s)+\}\s/g, "");
   - from: models_serde.go
     where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?KeyVaultError\).*\{\s(?:.+\s)+\}\s/g, "");
+    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:Error|KeyVaultError)\).*\{\s(?:.+\s)+\}\s/g, "");
+  - from: models.go
+    where: $
+    transform: return $.replace(/Error \*Error/g, "Error *ErrorInfo");
 
   # delete the Attributes model defined in common.json (it's used only with allOf)
   - from: models.go

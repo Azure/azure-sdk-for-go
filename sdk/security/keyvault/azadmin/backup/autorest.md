@@ -59,7 +59,7 @@ directive:
     transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:Error|KeyVaultError)\).*\{\s(?:.+\s)+\}\s/g, "");
   - from: models.go
     where: $
-    transform: return $.replace(/Error \*Error/g, "Error *ServerError");
+    transform: return $.replace(/Error \*Error/g, "Error *ErrorInfo");
 
   # modify Restore to use implementation with custom poller handler
   - from: client.go

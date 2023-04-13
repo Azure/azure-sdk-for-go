@@ -6,6 +6,7 @@
 
 ### Breaking Changes
 * Moved module from `sdk/keyvault/azadmin` to `sdk/security/keyvault/azadmin`
+* Changed `Error` struct to `ErrorInfo`
 
 ### Bugs Fixed
 

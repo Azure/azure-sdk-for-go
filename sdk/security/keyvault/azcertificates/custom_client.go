@@ -9,6 +9,9 @@ package azcertificates
 // this file contains handwritten additions to the generated code
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -60,4 +63,31 @@ func (i *ID) Version() string {
 		return ""
 	}
 	return *version
+}
+
+// ErrorInfo - Internal error from Azure Key Vault server.
+type ErrorInfo struct {
+	// REQUIRED; A machine readable error code.
+	Code string
+
+	// full error message detailing why the operation failed.
+	data []byte
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorInfo.
+func (e *ErrorInfo) UnmarshalJSON(data []byte) error {
+	e.data = data
+	ei := struct{ Code string }{}
+	if err := json.Unmarshal(data, &ei); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	e.Code = ei.Code
+
+	return nil
+}
+
+// Error implements a custom error for type ErrorInfo.
+// Returns full error message
+func (e *ErrorInfo) Error() string {
+	return string(e.data)
 }

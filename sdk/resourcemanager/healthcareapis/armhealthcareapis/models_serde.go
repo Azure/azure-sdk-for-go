@@ -1024,7 +1024,7 @@ func (i *IotFhirDestinationProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type IotMappingProperties.
 func (i IotMappingProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "content", &i.Content)
+	populateAny(objectMap, "content", i.Content)
 	return json.Marshal(objectMap)
 }
 
@@ -1378,7 +1378,7 @@ func (o OperationResultsDescription) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "endTime", o.EndTime)
 	populate(objectMap, "id", o.ID)
 	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", &o.Properties)
+	populateAny(objectMap, "properties", o.Properties)
 	populate(objectMap, "startTime", o.StartTime)
 	populate(objectMap, "status", o.Status)
 	return json.Marshal(objectMap)
@@ -2869,6 +2869,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

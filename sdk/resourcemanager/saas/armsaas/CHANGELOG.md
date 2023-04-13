@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2023-04-14)
+## 0.6.1 (2023-04-14)
 ### Bug Fixes
 
 - Fix serialization bug of empty value of `any` type.

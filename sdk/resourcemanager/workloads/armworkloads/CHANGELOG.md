@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2023-03-24)
+## 1.0.0 (2023-04-28)
 ### Breaking Changes
 
 - Field `ExactVersion` of struct `ImageReference` has been removed

@@ -1,3 +1,4 @@
+// Deprecated: The latest supported version of this library is at github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
 module github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
 
 go 1.18

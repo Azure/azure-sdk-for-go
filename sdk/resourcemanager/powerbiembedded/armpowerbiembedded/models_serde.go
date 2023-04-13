@@ -390,7 +390,7 @@ func (w Workspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", w.ID)
 	populate(objectMap, "name", w.Name)
-	populate(objectMap, "properties", &w.Properties)
+	populateAny(objectMap, "properties", w.Properties)
 	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
 }
@@ -430,7 +430,7 @@ func (w WorkspaceCollection) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", w.ID)
 	populate(objectMap, "location", w.Location)
 	populate(objectMap, "name", w.Name)
-	populate(objectMap, "properties", &w.Properties)
+	populateAny(objectMap, "properties", w.Properties)
 	populate(objectMap, "sku", w.SKU)
 	populate(objectMap, "tags", w.Tags)
 	populate(objectMap, "type", w.Type)
@@ -593,6 +593,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

@@ -387,8 +387,7 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.NoError(err)
 
 	md5Str := "MDAwMDAwMDA="
-	var testMd5 []byte
-	copy(testMd5[:], md5Str)
+	testMd5 := []byte(md5Str)
 
 	creationTime := time.Now().Add(-time.Hour)
 	lastWriteTime := time.Now().Add(-time.Minute * 15)
@@ -472,8 +471,7 @@ func (f *FileRecordedTestsSuite) TestFilePreservePermissions() {
 	attribs := getResp.FileAttributes
 
 	md5Str := "MDAwMDAwMDA="
-	var testMd5 []byte
-	copy(testMd5[:], md5Str)
+	testMd5 := []byte(md5Str)
 
 	properties := file.SetHTTPHeadersOptions{
 		HTTPHeaders: &file.HTTPHeaders{
@@ -541,8 +539,7 @@ func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesSnapshot() {
 	_require.NoError(err)
 
 	md5Str := "MDAwMDAwMDA="
-	var testMd5 []byte
-	copy(testMd5[:], md5Str)
+	testMd5 := []byte(md5Str)
 
 	fileSetHTTPHeadersOptions := file.SetHTTPHeadersOptions{
 		HTTPHeaders: &file.HTTPHeaders{
@@ -1519,7 +1516,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURL() {
 	_require.NoError(err)
 
 	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
-		SourceContentValidation: file.SourceContentValidationTypeCRC64(contentCRC64),
+		SourceContentCRC64: contentCRC64,
 	})
 	_require.NoError(err)
 	_require.NotNil(uResp.XMSContentCRC64)
@@ -1581,7 +1578,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuth() {
 	_require.NoError(err)
 
 	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFClient.URL(), 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
-		SourceContentValidation: file.SourceContentValidationTypeCRC64(contentCRC64),
+		SourceContentCRC64:      contentCRC64,
 		CopySourceAuthorization: to.Ptr("Bearer " + token.Token),
 	})
 	_require.NoError(err)

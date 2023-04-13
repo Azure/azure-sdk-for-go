@@ -7,6 +7,7 @@
 package file
 
 import (
+	"encoding/binary"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
@@ -491,8 +492,8 @@ func (o *ClearRangeOptions) format(contentRange HTTPRange) (string, *generated.L
 type UploadRangeFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
-	// SourceContentValidation contains the validation mechanism used on the range of bytes read from the source.
-	SourceContentValidation        SourceContentValidationType
+	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
+	SourceContentCRC64             uint64
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	LeaseAccessConditions          *LeaseAccessConditions
 }
@@ -520,10 +521,10 @@ func (o *UploadRangeFromURLOptions) format(sourceOffset int64, destinationOffset
 		opts.CopySourceAuthorization = o.CopySourceAuthorization
 		sourceModifiedAccessConditions = o.SourceModifiedAccessConditions
 		leaseAccessConditions = o.LeaseAccessConditions
-	}
 
-	if o != nil && o.SourceContentValidation != nil {
-		o.SourceContentValidation.Apply(opts)
+		buf := make([]byte, 8)
+		binary.LittleEndian.PutUint64(buf, o.SourceContentCRC64)
+		opts.SourceContentCRC64 = buf
 	}
 
 	return destRange, opts, sourceModifiedAccessConditions, leaseAccessConditions, nil

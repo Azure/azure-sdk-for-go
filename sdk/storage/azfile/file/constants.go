@@ -7,7 +7,6 @@
 package file
 
 import (
-	"encoding/binary"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 )
@@ -73,22 +72,3 @@ type TransferValidationType = exported.TransferValidationType
 
 // TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
 type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5
-
-// SourceContentValidationType abstracts the various mechanisms used to validate source content.
-// This interface is not publicly implementable.
-type SourceContentValidationType interface {
-	Apply(generated.SourceContentSetter)
-	notPubliclyImplementable()
-}
-
-// SourceContentValidationTypeCRC64 is a SourceContentValidationType used to provide a precomputed CRC64.
-type SourceContentValidationTypeCRC64 uint64
-
-// Apply implements the SourceContentValidationType interface for type SourceContentValidationTypeCRC64.
-func (s SourceContentValidationTypeCRC64) Apply(src generated.SourceContentSetter) {
-	buf := make([]byte, 8)
-	binary.LittleEndian.PutUint64(buf, uint64(s))
-	src.SetSourceContentCRC64(buf)
-}
-
-func (SourceContentValidationTypeCRC64) notPubliclyImplementable() {}

@@ -14,75 +14,75 @@ import "time"
 // ApplicationServerConfiguration - Gets or sets the application server configuration.
 type ApplicationServerConfiguration struct {
 	// REQUIRED; The number of app server instances.
-	InstanceCount *int64
+	InstanceCount *int64 `json:"instanceCount,omitempty"`
 
 	// REQUIRED; The subnet id.
-	SubnetID *string
+	SubnetID *string `json:"subnetId,omitempty"`
 
 	// REQUIRED; Gets or sets the virtual machine configuration.
-	VirtualMachineConfiguration *VirtualMachineConfiguration
+	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
 }
 
 // ApplicationServerFullResourceNames - The full resource names object for application layer resources. The number of entries
 // in this list should be equal to the number VMs to be created for application layer.
 type ApplicationServerFullResourceNames struct {
 	// The full name for availability set. In case name is not provided, it will be defaulted to {SID}-App-AvSet.
-	AvailabilitySetName *string
+	AvailabilitySetName *string `json:"availabilitySetName,omitempty"`
 
 	// The list of virtual machine naming details.
-	VirtualMachines []*VirtualMachineResourceNames
+	VirtualMachines []*VirtualMachineResourceNames `json:"virtualMachines,omitempty"`
 }
 
 // ApplicationServerVMDetails - The Application Server VM Details.
 type ApplicationServerVMDetails struct {
 	// READ-ONLY; Storage details of all the Storage Accounts attached to the App Virtual Machine. For e.g. NFS on AFS Shared
 	// Storage.
-	StorageDetails []*StorageInformation
+	StorageDetails []*StorageInformation `json:"storageDetails,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the type of application server VM.
-	Type *ApplicationServerVirtualMachineType
+	Type *ApplicationServerVirtualMachineType `json:"type,omitempty" azure:"ro"`
 
 	// READ-ONLY
-	VirtualMachineID *string
+	VirtualMachineID *string `json:"virtualMachineId,omitempty" azure:"ro"`
 }
 
 // CentralServerConfiguration - Gets or sets the central server configuration.
 type CentralServerConfiguration struct {
 	// REQUIRED; The number of central server VMs.
-	InstanceCount *int64
+	InstanceCount *int64 `json:"instanceCount,omitempty"`
 
 	// REQUIRED; The subnet id.
-	SubnetID *string
+	SubnetID *string `json:"subnetId,omitempty"`
 
 	// REQUIRED; Gets or sets the virtual machine configuration.
-	VirtualMachineConfiguration *VirtualMachineConfiguration
+	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
 }
 
 // CentralServerFullResourceNames - The full resource names object for central server layer resources.
 type CentralServerFullResourceNames struct {
 	// The full name for availability set. In case name is not provided, it will be defaulted to {SID}-ASCS-AvSet.
-	AvailabilitySetName *string
+	AvailabilitySetName *string `json:"availabilitySetName,omitempty"`
 
 	// The resource names object for load balancer and related resources.
-	LoadBalancer *LoadBalancerResourceNames
+	LoadBalancer *LoadBalancerResourceNames `json:"loadBalancer,omitempty"`
 
 	// The list of names for all ASCS virtual machines to be deployed. The number of entries in this list should be equal to the
 	// number VMs to be created for ASCS layer. At maximum, there can be two virtual
 	// machines at this layer: ASCS and ERS.
-	VirtualMachines []*VirtualMachineResourceNames
+	VirtualMachines []*VirtualMachineResourceNames `json:"virtualMachines,omitempty"`
 }
 
 // CentralServerVMDetails - The SAP Central Services Instance VM details.
 type CentralServerVMDetails struct {
 	// READ-ONLY; Storage details of all the Storage Accounts attached to the ASCS Virtual Machine. For e.g. NFS on AFS Shared
 	// Storage.
-	StorageDetails []*StorageInformation
+	StorageDetails []*StorageInformation `json:"storageDetails,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the type of central server VM.
-	Type *CentralServerVirtualMachineType
+	Type *CentralServerVirtualMachineType `json:"type,omitempty" azure:"ro"`
 
 	// READ-ONLY
-	VirtualMachineID *string
+	VirtualMachineID *string `json:"virtualMachineId,omitempty" azure:"ro"`
 }
 
 // ClientSAPAvailabilityZoneDetailsOptions contains the optional parameters for the Client.SAPAvailabilityZoneDetails method.
@@ -112,13 +112,13 @@ type ClientSAPSupportedSKUOptions struct {
 // CreateAndMountFileShareConfiguration - Gets or sets the file share configuration for file share created with the VIS case.
 type CreateAndMountFileShareConfiguration struct {
 	// REQUIRED; The type of file share config.
-	ConfigurationType *ConfigurationType
+	ConfigurationType *ConfigurationType `json:"configurationType,omitempty"`
 
 	// The name of file share resource group. The app rg is used in case of missing input.
-	ResourceGroup *string
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
 
 	// The name of file share storage account name . A custom name is used in case of missing input.
-	StorageAccountName *string
+	StorageAccountName *string `json:"storageAccountName,omitempty"`
 }
 
 // GetFileShareConfiguration implements the FileShareConfigurationClassification interface for type CreateAndMountFileShareConfiguration.
@@ -131,34 +131,34 @@ func (c *CreateAndMountFileShareConfiguration) GetFileShareConfiguration() *File
 // DB2ProviderInstanceProperties - Gets or sets the DB2 provider properties.
 type DB2ProviderInstanceProperties struct {
 	// REQUIRED; The provider type. For example, the value can be SapHana.
-	ProviderType *string
+	ProviderType *string `json:"providerType,omitempty"`
 
 	// Gets or sets the db2 database name.
-	DbName *string
+	DbName *string `json:"dbName,omitempty"`
 
 	// Gets or sets the db2 database password.
-	DbPassword *string
+	DbPassword *string `json:"dbPassword,omitempty"`
 
 	// Gets or sets the key vault URI to secret with the database password.
-	DbPasswordURI *string
+	DbPasswordURI *string `json:"dbPasswordUri,omitempty"`
 
 	// Gets or sets the db2 database sql port.
-	DbPort *string
+	DbPort *string `json:"dbPort,omitempty"`
 
 	// Gets or sets the db2 database user name.
-	DbUsername *string
+	DbUsername *string `json:"dbUsername,omitempty"`
 
 	// Gets or sets the target virtual machine name.
-	Hostname *string
+	Hostname *string `json:"hostname,omitempty"`
 
 	// Gets or sets the blob URI to SSL certificate for the DB2 Database.
-	SSLCertificateURI *string
+	SSLCertificateURI *string `json:"sslCertificateUri,omitempty"`
 
 	// Gets or sets certificate preference if secure communication is enabled.
-	SSLPreference *SSLPreference
+	SSLPreference *SSLPreference `json:"sslPreference,omitempty"`
 
 	// Gets or sets the SAP System Identifier
-	SapSid *string
+	SapSid *string `json:"sapSid,omitempty"`
 }
 
 // GetProviderSpecificProperties implements the ProviderSpecificPropertiesClassification interface for type DB2ProviderInstanceProperties.
@@ -171,69 +171,69 @@ func (d *DB2ProviderInstanceProperties) GetProviderSpecificProperties() *Provide
 // DatabaseConfiguration - Gets or sets the database configuration.
 type DatabaseConfiguration struct {
 	// REQUIRED; The number of database VMs.
-	InstanceCount *int64
+	InstanceCount *int64 `json:"instanceCount,omitempty"`
 
 	// REQUIRED; The subnet id.
-	SubnetID *string
+	SubnetID *string `json:"subnetId,omitempty"`
 
 	// REQUIRED; Gets or sets the virtual machine configuration.
-	VirtualMachineConfiguration *VirtualMachineConfiguration
+	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
 
 	// The database type.
-	DatabaseType *SAPDatabaseType
+	DatabaseType *SAPDatabaseType `json:"databaseType,omitempty"`
 
 	// Gets or sets the disk configuration.
-	DiskConfiguration *DiskConfiguration
+	DiskConfiguration *DiskConfiguration `json:"diskConfiguration,omitempty"`
 }
 
 // DatabaseServerFullResourceNames - The full resource names object for database layer resources. The number of entries in
 // this list should be equal to the number VMs to be created for database layer.
 type DatabaseServerFullResourceNames struct {
 	// The full name for availability set. In case name is not provided, it will be defaulted to {SID}-DB-AvSet.
-	AvailabilitySetName *string
+	AvailabilitySetName *string `json:"availabilitySetName,omitempty"`
 
 	// The resource names object for load balancer and related resources.
-	LoadBalancer *LoadBalancerResourceNames
+	LoadBalancer *LoadBalancerResourceNames `json:"loadBalancer,omitempty"`
 
 	// The list of virtual machine naming details.
-	VirtualMachines []*VirtualMachineResourceNames
+	VirtualMachines []*VirtualMachineResourceNames `json:"virtualMachines,omitempty"`
 }
 
 // DatabaseVMDetails - Database VM details.
 type DatabaseVMDetails struct {
 	// READ-ONLY; Defines the SAP Instance status.
-	Status *SAPVirtualInstanceStatus
+	Status *SAPVirtualInstanceStatus `json:"status,omitempty" azure:"ro"`
 
 	// READ-ONLY; Storage details of all the Storage Accounts attached to the Database Virtual Machine. For e.g. NFS on AFS Shared
 	// Storage.
-	StorageDetails []*StorageInformation
+	StorageDetails []*StorageInformation `json:"storageDetails,omitempty" azure:"ro"`
 
 	// READ-ONLY
-	VirtualMachineID *string
+	VirtualMachineID *string `json:"virtualMachineId,omitempty" azure:"ro"`
 }
 
 // DeployerVMPackages - Defines the url and storage account ID where deployer VM packages are uploaded
 type DeployerVMPackages struct {
 	// The deployer VM packages storage account id
-	StorageAccountID *string
+	StorageAccountID *string `json:"storageAccountId,omitempty"`
 
 	// The URL to the deployer VM packages file.
-	URL *string
+	URL *string `json:"url,omitempty"`
 }
 
 // DeploymentConfiguration - Deployment Configuration.
 type DeploymentConfiguration struct {
 	// REQUIRED; The configuration Type.
-	ConfigurationType *SAPConfigurationType
+	ConfigurationType *SAPConfigurationType `json:"configurationType,omitempty"`
 
 	// The geo-location where the SAP system is to be created.
-	AppLocation *string
+	AppLocation *string `json:"appLocation,omitempty"`
 
 	// The infrastructure configuration.
-	InfrastructureConfiguration InfrastructureConfigurationClassification
+	InfrastructureConfiguration InfrastructureConfigurationClassification `json:"infrastructureConfiguration,omitempty"`
 
 	// The software configuration.
-	SoftwareConfiguration SoftwareConfigurationClassification
+	SoftwareConfiguration SoftwareConfigurationClassification `json:"softwareConfiguration,omitempty"`
 }
 
 // GetSAPConfiguration implements the SAPConfigurationClassification interface for type DeploymentConfiguration.
@@ -246,19 +246,19 @@ func (d *DeploymentConfiguration) GetSAPConfiguration() *SAPConfiguration {
 // DeploymentWithOSConfiguration - Deployment along with OS Configuration.
 type DeploymentWithOSConfiguration struct {
 	// REQUIRED; The configuration Type.
-	ConfigurationType *SAPConfigurationType
+	ConfigurationType *SAPConfigurationType `json:"configurationType,omitempty"`
 
 	// The geo-location where the SAP system is to be created.
-	AppLocation *string
+	AppLocation *string `json:"appLocation,omitempty"`
 
 	// The infrastructure configuration.
-	InfrastructureConfiguration InfrastructureConfigurationClassification
+	InfrastructureConfiguration InfrastructureConfigurationClassification `json:"infrastructureConfiguration,omitempty"`
 
 	// The OS and SAP configuration.
-	OSSapConfiguration *OsSapConfiguration
+	OSSapConfiguration *OsSapConfiguration `json:"osSapConfiguration,omitempty"`
 
 	// The software configuration.
-	SoftwareConfiguration SoftwareConfigurationClassification
+	SoftwareConfiguration SoftwareConfigurationClassification `json:"softwareConfiguration,omitempty"`
 }
 
 // GetSAPConfiguration implements the SAPConfigurationClassification interface for type DeploymentWithOSConfiguration.
@@ -271,19 +271,19 @@ func (d *DeploymentWithOSConfiguration) GetSAPConfiguration() *SAPConfiguration 
 // DiscoveryConfiguration - Discovery Details.
 type DiscoveryConfiguration struct {
 	// REQUIRED; The configuration Type.
-	ConfigurationType *SAPConfigurationType
+	ConfigurationType *SAPConfigurationType `json:"configurationType,omitempty"`
 
 	// The virtual machine ID of the Central Server.
-	CentralServerVMID *string
+	CentralServerVMID *string `json:"centralServerVmId,omitempty"`
 
 	// The custom storage account name for the storage account created by the service in the managed resource group created as
 	// part of VIS deployment.
 	// Refer to the storage account naming rules here [https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage].
 	// If not provided, the service will create the storage account with a random name.
-	ManagedRgStorageAccountName *string
+	ManagedRgStorageAccountName *string `json:"managedRgStorageAccountName,omitempty"`
 
 	// READ-ONLY; The geo-location where the SAP system exists.
-	AppLocation *string
+	AppLocation *string `json:"appLocation,omitempty" azure:"ro"`
 }
 
 // GetSAPConfiguration implements the SAPConfigurationClassification interface for type DiscoveryConfiguration.
@@ -297,168 +297,168 @@ func (d *DiscoveryConfiguration) GetSAPConfiguration() *SAPConfiguration {
 type DiskConfiguration struct {
 	// The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log', hana/shared', 'usr/sap',
 	// 'os'], Optional volume : ['backup'].
-	DiskVolumeConfigurations map[string]*DiskVolumeConfiguration
+	DiskVolumeConfigurations map[string]*DiskVolumeConfiguration `json:"diskVolumeConfigurations,omitempty"`
 }
 
 // DiskDetails - The supported disk size details for a disk type.
 type DiskDetails struct {
 	// The disk tier, e.g. P10, E10.
-	DiskTier *string
+	DiskTier *string `json:"diskTier,omitempty"`
 
 	// The disk Iops.
-	IopsReadWrite *int64
+	IopsReadWrite *int64 `json:"iopsReadWrite,omitempty"`
 
 	// The maximum supported disk count.
-	MaximumSupportedDiskCount *int64
+	MaximumSupportedDiskCount *int64 `json:"maximumSupportedDiskCount,omitempty"`
 
 	// The disk provisioned throughput in MBps.
-	MbpsReadWrite *int64
+	MbpsReadWrite *int64 `json:"mbpsReadWrite,omitempty"`
 
 	// The minimum supported disk count.
-	MinimumSupportedDiskCount *int64
+	MinimumSupportedDiskCount *int64 `json:"minimumSupportedDiskCount,omitempty"`
 
 	// The disk sku.
-	SKU *DiskSKU
+	SKU *DiskSKU `json:"sku,omitempty"`
 
 	// The disk size in GB.
-	SizeGB *int64
+	SizeGB *int64 `json:"sizeGB,omitempty"`
 }
 
 // DiskSKU - The disk sku.
 type DiskSKU struct {
 	// Defines the disk sku name.
-	Name *DiskSKUName
+	Name *DiskSKUName `json:"name,omitempty"`
 }
 
 // DiskVolumeConfiguration - The disk configuration required for the selected volume.
 type DiskVolumeConfiguration struct {
 	// The total number of disks required for the concerned volume.
-	Count *int64
+	Count *int64 `json:"count,omitempty"`
 
 	// The disk SKU details.
-	SKU *DiskSKU
+	SKU *DiskSKU `json:"sku,omitempty"`
 
 	// The disk size in GB.
-	SizeGB *int64
+	SizeGB *int64 `json:"sizeGB,omitempty"`
 }
 
 // EnqueueReplicationServerProperties - Defines the SAP Enqueue Replication Server (ERS) properties.
 type EnqueueReplicationServerProperties struct {
 	// READ-ONLY; Defines the type of Enqueue Replication Server.
-	ErsVersion *EnqueueReplicationServerType
+	ErsVersion *EnqueueReplicationServerType `json:"ersVersion,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the health of SAP Instances.
-	Health *SAPHealthState
+	Health *SAPHealthState `json:"health,omitempty" azure:"ro"`
 
 	// READ-ONLY; ERS SAP Hostname.
-	Hostname *string
+	Hostname *string `json:"hostname,omitempty" azure:"ro"`
 
 	// READ-ONLY; ERS SAP IP Address.
-	IPAddress *string
+	IPAddress *string `json:"ipAddress,omitempty" azure:"ro"`
 
 	// READ-ONLY; ERS Instance Number.
-	InstanceNo *string
+	InstanceNo *string `json:"instanceNo,omitempty" azure:"ro"`
 
 	// READ-ONLY; ERS SAP Kernel Patch level.
-	KernelPatch *string
+	KernelPatch *string `json:"kernelPatch,omitempty" azure:"ro"`
 
 	// READ-ONLY; ERS SAP Kernel Version.
-	KernelVersion *string
+	KernelVersion *string `json:"kernelVersion,omitempty" azure:"ro"`
 }
 
 // EnqueueServerProperties - Defines the SAP Enqueue Server properties.
 type EnqueueServerProperties struct {
 	// READ-ONLY; Defines the health of SAP Instances.
-	Health *SAPHealthState
+	Health *SAPHealthState `json:"health,omitempty" azure:"ro"`
 
 	// READ-ONLY; Enqueue Server SAP Hostname.
-	Hostname *string
+	Hostname *string `json:"hostname,omitempty" azure:"ro"`
 
 	// READ-ONLY; Enqueue Server SAP IP Address.
-	IPAddress *string
+	IPAddress *string `json:"ipAddress,omitempty" azure:"ro"`
 
 	// READ-ONLY; Enqueue Server Port.
-	Port *int64
+	Port *int64 `json:"port,omitempty" azure:"ro"`
 }
 
 // Error - Standard error object.
 type Error struct {
 	// READ-ONLY; Server-defined set of error codes.
-	Code *string
+	Code *string `json:"code,omitempty" azure:"ro"`
 
 	// READ-ONLY; Array of details about specific errors that led to this reported error.
-	Details []*Error
+	Details []*Error `json:"details,omitempty" azure:"ro"`
 
 	// READ-ONLY; Object containing more specific information than the current object about the error.
-	InnerError *ErrorInnerError
+	InnerError *ErrorInnerError `json:"innerError,omitempty" azure:"ro"`
 
 	// READ-ONLY; Human-readable representation of the error.
-	Message *string
+	Message *string `json:"message,omitempty" azure:"ro"`
 
 	// READ-ONLY; Target of the error.
-	Target *string
+	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ErrorDefinition - Error definition.
 type ErrorDefinition struct {
 	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
-	Code *string
+	Code *string `json:"code,omitempty" azure:"ro"`
 
 	// READ-ONLY; Internal error details.
-	Details []*ErrorDefinition
+	Details []*ErrorDefinition `json:"details,omitempty" azure:"ro"`
 
 	// READ-ONLY; Description of the error.
-	Message *string
+	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error code.
-	Code *string
+	Code *string `json:"code,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error message.
-	Message *string
+	Message *string `json:"message,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error target.
-	Target *string
+	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
 // ErrorInnerError - Object containing more specific information than the current object about the error.
 type ErrorInnerError struct {
 	// Standard error object.
-	InnerError *Error
+	InnerError *Error `json:"innerError,omitempty"`
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // ExternalInstallationSoftwareConfiguration - The SAP Software configuration Input when the software is installed externally
 // outside the service.
 type ExternalInstallationSoftwareConfiguration struct {
 	// REQUIRED; The SAP software installation Type.
-	SoftwareInstallationType *SAPSoftwareInstallationType
+	SoftwareInstallationType *SAPSoftwareInstallationType `json:"softwareInstallationType,omitempty"`
 
 	// The resource ID of the virtual machine containing the central server instance.
-	CentralServerVMID *string
+	CentralServerVMID *string `json:"centralServerVmId,omitempty"`
 }
 
 // GetSoftwareConfiguration implements the SoftwareConfigurationClassification interface for type ExternalInstallationSoftwareConfiguration.
@@ -481,7 +481,7 @@ type FileShareConfigurationClassification interface {
 // on the VIS. The createAndMount option is selected in case of missing input.
 type FileShareConfiguration struct {
 	// REQUIRED; The type of file share config.
-	ConfigurationType *ConfigurationType
+	ConfigurationType *ConfigurationType `json:"configurationType,omitempty"`
 }
 
 // GetFileShareConfiguration implements the FileShareConfigurationClassification interface for type FileShareConfiguration.
@@ -490,49 +490,49 @@ func (f *FileShareConfiguration) GetFileShareConfiguration() *FileShareConfigura
 // GatewayServerProperties - Defines the SAP Gateway Server properties.
 type GatewayServerProperties struct {
 	// READ-ONLY; Defines the health of SAP Instances.
-	Health *SAPHealthState
+	Health *SAPHealthState `json:"health,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gateway Port.
-	Port *int64
+	Port *int64 `json:"port,omitempty" azure:"ro"`
 }
 
 // HanaDbProviderInstanceProperties - Gets or sets the provider properties.
 type HanaDbProviderInstanceProperties struct {
 	// REQUIRED; The provider type. For example, the value can be SapHana.
-	ProviderType *string
+	ProviderType *string `json:"providerType,omitempty"`
 
 	// Gets or sets the hana database name.
-	DbName *string
+	DbName *string `json:"dbName,omitempty"`
 
 	// Gets or sets the database password.
-	DbPassword *string
+	DbPassword *string `json:"dbPassword,omitempty"`
 
 	// Gets or sets the key vault URI to secret with the database password.
-	DbPasswordURI *string
+	DbPasswordURI *string `json:"dbPasswordUri,omitempty"`
 
 	// Gets or sets the database user name.
-	DbUsername *string
+	DbUsername *string `json:"dbUsername,omitempty"`
 
 	// Gets or sets the target virtual machine size.
-	Hostname *string
+	Hostname *string `json:"hostname,omitempty"`
 
 	// Gets or sets the database instance number.
-	InstanceNumber *string
+	InstanceNumber *string `json:"instanceNumber,omitempty"`
 
 	// Gets or sets the database sql port.
-	SQLPort *string
+	SQLPort *string `json:"sqlPort,omitempty"`
 
 	// Gets or sets the blob URI to SSL certificate for the DB.
-	SSLCertificateURI *string
+	SSLCertificateURI *string `json:"sslCertificateUri,omitempty"`
 
 	// Gets or sets the hostname(s) in the SSL certificate.
-	SSLHostNameInCertificate *string
+	SSLHostNameInCertificate *string `json:"sslHostNameInCertificate,omitempty"`
 
 	// Gets or sets certificate preference if secure communication is enabled.
-	SSLPreference *SSLPreference
+	SSLPreference *SSLPreference `json:"sslPreference,omitempty"`
 
 	// Gets or sets the SAP System Identifier.
-	SapSid *string
+	SapSid *string `json:"sapSid,omitempty"`
 }
 
 // GetProviderSpecificProperties implements the ProviderSpecificPropertiesClassification interface for type HanaDbProviderInstanceProperties.
@@ -545,17 +545,17 @@ func (h *HanaDbProviderInstanceProperties) GetProviderSpecificProperties() *Prov
 // HighAvailabilityConfiguration - Gets or sets the high availability configuration.
 type HighAvailabilityConfiguration struct {
 	// REQUIRED; The high availability type.
-	HighAvailabilityType *SAPHighAvailabilityType
+	HighAvailabilityType *SAPHighAvailabilityType `json:"highAvailabilityType,omitempty"`
 }
 
 // HighAvailabilitySoftwareConfiguration - Gets or sets the HA software configuration.
 type HighAvailabilitySoftwareConfiguration struct {
 	// REQUIRED; The fencing client id.
-	FencingClientID *string
+	FencingClientID *string `json:"fencingClientId,omitempty"`
 
 	// REQUIRED; The fencing client id secret/password. The secret should never expire. This will be used pacemaker to start/stop
 	// the cluster VMs.
-	FencingClientPassword *string
+	FencingClientPassword *string `json:"fencingClientPassword,omitempty"`
 }
 
 // ImageReference - Specifies information about the image to use. You can specify information about platform images, marketplace
@@ -564,28 +564,28 @@ type HighAvailabilitySoftwareConfiguration struct {
 // publisher and offer can only be set when you create the scale set.
 type ImageReference struct {
 	// Specifies the offer of the platform image or marketplace image used to create the virtual machine.
-	Offer *string
+	Offer *string `json:"offer,omitempty"`
 
 	// The image publisher.
-	Publisher *string
+	Publisher *string `json:"publisher,omitempty"`
 
 	// The image SKU.
-	SKU *string
+	SKU *string `json:"sku,omitempty"`
 
 	// Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image GET call.
-	SharedGalleryImageID *string
+	SharedGalleryImageID *string `json:"sharedGalleryImageId,omitempty"`
 
 	// Specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed formats
 	// are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers.
 	// Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image
 	// will not automatically update after deploy time even if a new version becomes
 	// available.
-	Version *string
+	Version *string `json:"version,omitempty"`
 
 	// READ-ONLY; Specifies in decimal numbers, the version of platform image or marketplace image used to create the virtual
 	// machine. This readonly field differs from 'version', only if the value specified in
 	// 'version' field is 'latest'.
-	ExactVersion *string
+	ExactVersion *string `json:"exactVersion,omitempty" azure:"ro"`
 }
 
 // InfrastructureConfigurationClassification provides polymorphic access to related types.
@@ -600,10 +600,10 @@ type InfrastructureConfigurationClassification interface {
 // InfrastructureConfiguration - Deploy SAP Infrastructure Details.
 type InfrastructureConfiguration struct {
 	// REQUIRED; The application resource group where SAP system resources will be deployed.
-	AppResourceGroup *string
+	AppResourceGroup *string `json:"appResourceGroup,omitempty"`
 
 	// REQUIRED; The type of SAP deployment, single server or Three tier.
-	DeploymentType *SAPDeploymentType
+	DeploymentType *SAPDeploymentType `json:"deploymentType,omitempty"`
 }
 
 // GetInfrastructureConfiguration implements the InfrastructureConfigurationClassification interface for type InfrastructureConfiguration.
@@ -615,16 +615,16 @@ func (i *InfrastructureConfiguration) GetInfrastructureConfiguration() *Infrastr
 // For a list of supported Linux distributions, see Linux on Azure-Endorsed Distributions [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
 type LinuxConfiguration struct {
 	// REQUIRED; The OS Type
-	OSType *OSType
+	OSType *OSType `json:"osType,omitempty"`
 
 	// Specifies whether password authentication should be disabled.
-	DisablePasswordAuthentication *bool
+	DisablePasswordAuthentication *bool `json:"disablePasswordAuthentication,omitempty"`
 
 	// Specifies the ssh key configuration for a Linux OS. (This property is deprecated, please use 'sshKeyPair' instead)
-	SSH *SSHConfiguration
+	SSH *SSHConfiguration `json:"ssh,omitempty"`
 
 	// The SSH Key-pair used to authenticate with the VM's.
-	SSHKeyPair *SSHKeyPair
+	SSHKeyPair *SSHKeyPair `json:"sshKeyPair,omitempty"`
 }
 
 // GetOSConfiguration implements the OSConfigurationClassification interface for type LinuxConfiguration.
@@ -637,143 +637,143 @@ func (l *LinuxConfiguration) GetOSConfiguration() *OSConfiguration {
 // LoadBalancerDetails - The Load Balancer details such as Load Balancer ID.
 type LoadBalancerDetails struct {
 	// READ-ONLY
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
 // LoadBalancerResourceNames - The resource names object for load balancer and related resources.
 type LoadBalancerResourceNames struct {
 	// The list of backend pool names. Currently, ACSS deploys only one backend pool and hence, size of this list should be 1
-	BackendPoolNames []*string
+	BackendPoolNames []*string `json:"backendPoolNames,omitempty"`
 
 	// The list of frontend IP configuration names. If provided as input, size of this list should be 2 for cs layer and should
 	// be 1 for database layer.
-	FrontendIPConfigurationNames []*string
+	FrontendIPConfigurationNames []*string `json:"frontendIpConfigurationNames,omitempty"`
 
 	// The list of health probe names. If provided as input, size of this list should be 2 for cs layer and should be 1 for database
 	// layer.
-	HealthProbeNames []*string
+	HealthProbeNames []*string `json:"healthProbeNames,omitempty"`
 
 	// The full resource name for load balancer. If this value is not provided, load balancer will be name as {ASCS/DB}-loadBalancer.
-	LoadBalancerName *string
+	LoadBalancerName *string `json:"loadBalancerName,omitempty"`
 }
 
 // ManagedRGConfiguration - Managed resource group configuration
 type ManagedRGConfiguration struct {
 	// Managed resource group name
-	Name *string
+	Name *string `json:"name,omitempty"`
 }
 
 // MessageServerProperties - Defines the SAP Message Server properties.
 type MessageServerProperties struct {
 	// READ-ONLY; Message Server HTTP Port.
-	HTTPPort *int64
+	HTTPPort *int64 `json:"httpPort,omitempty" azure:"ro"`
 
 	// READ-ONLY; Message Server HTTPS Port.
-	HTTPSPort *int64
+	HTTPSPort *int64 `json:"httpsPort,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the health of SAP Instances.
-	Health *SAPHealthState
+	Health *SAPHealthState `json:"health,omitempty" azure:"ro"`
 
 	// READ-ONLY; Message Server SAP Hostname.
-	Hostname *string
+	Hostname *string `json:"hostname,omitempty" azure:"ro"`
 
 	// READ-ONLY; Message server IP Address.
-	IPAddress *string
+	IPAddress *string `json:"ipAddress,omitempty" azure:"ro"`
 
 	// READ-ONLY; Message Server internal MS port.
-	InternalMsPort *int64
+	InternalMsPort *int64 `json:"internalMsPort,omitempty" azure:"ro"`
 
 	// READ-ONLY; Message Server port.
-	MSPort *int64
+	MSPort *int64 `json:"msPort,omitempty" azure:"ro"`
 }
 
 // Monitor - SAP monitor info on Azure (ARM properties and SAP monitor properties)
 type Monitor struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string
+	Location *string `json:"location,omitempty"`
 
 	// Managed service identity (user assigned identities)
-	Identity *UserAssignedServiceIdentity
+	Identity *UserAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// SAP monitor properties
-	Properties *MonitorProperties
+	Properties *MonitorProperties `json:"properties,omitempty"`
 
 	// Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MonitorListResult - The response from the List SAP monitors operation.
 type MonitorListResult struct {
 	// The URL to get the next set of SAP monitors.
-	NextLink *string
+	NextLink *string `json:"nextLink,omitempty"`
 
 	// The list of SAP monitors.
-	Value []*Monitor
+	Value []*Monitor `json:"value,omitempty"`
 }
 
 // MonitorProperties - Describes the properties of a SAP monitor.
 type MonitorProperties struct {
 	// The SAP monitor resources will be deployed in the SAP monitoring region. The subnet region should be same as the SAP monitoring
 	// region.
-	AppLocation *string
+	AppLocation *string `json:"appLocation,omitempty"`
 
 	// The ARM ID of the Log Analytics Workspace that is used for SAP monitoring.
-	LogAnalyticsWorkspaceArmID *string
+	LogAnalyticsWorkspaceArmID *string `json:"logAnalyticsWorkspaceArmId,omitempty"`
 
 	// Managed resource group configuration
-	ManagedResourceGroupConfiguration *ManagedRGConfiguration
+	ManagedResourceGroupConfiguration *ManagedRGConfiguration `json:"managedResourceGroupConfiguration,omitempty"`
 
 	// The subnet which the SAP monitor will be deployed in
-	MonitorSubnet *string
+	MonitorSubnet *string `json:"monitorSubnet,omitempty"`
 
 	// Sets the routing preference of the SAP monitor. By default only RFC1918 traffic is routed to the customer VNET.
-	RoutingPreference *RoutingPreference
+	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 
 	// Sets the preference for zone redundancy on resources created for the SAP monitor. By default resources will be created
 	// which do not support zone redundancy.
-	ZoneRedundancyPreference *string
+	ZoneRedundancyPreference *string `json:"zoneRedundancyPreference,omitempty"`
 
 	// READ-ONLY; Defines the SAP monitor errors.
-	Errors *MonitorPropertiesErrors
+	Errors *MonitorPropertiesErrors `json:"errors,omitempty" azure:"ro"`
 
 	// READ-ONLY; The ARM ID of the MSI used for SAP monitoring.
-	MsiArmID *string
+	MsiArmID *string `json:"msiArmId,omitempty" azure:"ro"`
 
 	// READ-ONLY; State of provisioning of the SAP monitor.
-	ProvisioningState *WorkloadMonitorProvisioningState
+	ProvisioningState *WorkloadMonitorProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The ARM ID of the Storage account used for SAP monitoring.
-	StorageAccountArmID *string
+	StorageAccountArmID *string `json:"storageAccountArmId,omitempty" azure:"ro"`
 }
 
 // MonitorPropertiesErrors - Defines the SAP monitor errors.
 type MonitorPropertiesErrors struct {
 	// READ-ONLY; Server-defined set of error codes.
-	Code *string
+	Code *string `json:"code,omitempty" azure:"ro"`
 
 	// READ-ONLY; Array of details about specific errors that led to this reported error.
-	Details []*Error
+	Details []*Error `json:"details,omitempty" azure:"ro"`
 
 	// READ-ONLY; Object containing more specific information than the current object about the error.
-	InnerError *ErrorInnerError
+	InnerError *ErrorInnerError `json:"innerError,omitempty" azure:"ro"`
 
 	// READ-ONLY; Human-readable representation of the error.
-	Message *string
+	Message *string `json:"message,omitempty" azure:"ro"`
 
 	// READ-ONLY; Target of the error.
-	Target *string
+	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
 // MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
@@ -812,13 +812,13 @@ type MonitorsClientUpdateOptions struct {
 // MountFileShareConfiguration - Gets or sets the file share configuration for externally mounted cases.
 type MountFileShareConfiguration struct {
 	// REQUIRED; The type of file share config.
-	ConfigurationType *ConfigurationType
+	ConfigurationType *ConfigurationType `json:"configurationType,omitempty"`
 
 	// REQUIRED; The fileshare resource ID
-	ID *string
+	ID *string `json:"id,omitempty"`
 
 	// REQUIRED; The private endpoint resource ID
-	PrivateEndpointID *string
+	PrivateEndpointID *string `json:"privateEndpointId,omitempty"`
 }
 
 // GetFileShareConfiguration implements the FileShareConfigurationClassification interface for type MountFileShareConfiguration.
@@ -831,31 +831,31 @@ func (m *MountFileShareConfiguration) GetFileShareConfiguration() *FileShareConf
 // MsSQLServerProviderInstanceProperties - Gets or sets the SQL server provider properties.
 type MsSQLServerProviderInstanceProperties struct {
 	// REQUIRED; The provider type. For example, the value can be SapHana.
-	ProviderType *string
+	ProviderType *string `json:"providerType,omitempty"`
 
 	// Gets or sets the database password.
-	DbPassword *string
+	DbPassword *string `json:"dbPassword,omitempty"`
 
 	// Gets or sets the key vault URI to secret with the database password.
-	DbPasswordURI *string
+	DbPasswordURI *string `json:"dbPasswordUri,omitempty"`
 
 	// Gets or sets the database sql port.
-	DbPort *string
+	DbPort *string `json:"dbPort,omitempty"`
 
 	// Gets or sets the database user name.
-	DbUsername *string
+	DbUsername *string `json:"dbUsername,omitempty"`
 
 	// Gets or sets the SQL server host name.
-	Hostname *string
+	Hostname *string `json:"hostname,omitempty"`
 
 	// Gets or sets the blob URI to SSL certificate for the SQL Database.
-	SSLCertificateURI *string
+	SSLCertificateURI *string `json:"sslCertificateUri,omitempty"`
 
 	// Gets or sets certificate preference if secure communication is enabled.
-	SSLPreference *SSLPreference
+	SSLPreference *SSLPreference `json:"sslPreference,omitempty"`
 
 	// Gets or sets the SAP System Identifier
-	SapSid *string
+	SapSid *string `json:"sapSid,omitempty"`
 }
 
 // GetProviderSpecificProperties implements the ProviderSpecificPropertiesClassification interface for type MsSQLServerProviderInstanceProperties.
@@ -868,7 +868,7 @@ func (m *MsSQLServerProviderInstanceProperties) GetProviderSpecificProperties() 
 // NetworkConfiguration - Defines the network configuration type for SAP system infrastructure that is being deployed
 type NetworkConfiguration struct {
 	// Specifies whether a secondary IP address should be added to the network interface on all VMs of the SAP system being deployed
-	IsSecondaryIPEnabled *bool
+	IsSecondaryIPEnabled *bool `json:"isSecondaryIpEnabled,omitempty"`
 }
 
 // NetworkInterfaceResourceNames - The resource names object for network interface and related resources.
@@ -878,7 +878,7 @@ type NetworkInterfaceResourceNames struct {
 	// default name will be {SID}-{App/ASCS/DB}-Zone{A/B}-Nic with an incrementor at the end in case of more than 1 instance per
 	// layer. For distributed and HA-AvSet systems, default name will be
 	// {SID}-{App/ASCS/DB}-Nic with an incrementor at the end in case of more than 1 instance per layer.
-	NetworkInterfaceName *string
+	NetworkInterfaceName *string `json:"networkInterfaceName,omitempty"`
 }
 
 // OSConfigurationClassification provides polymorphic access to related types.
@@ -893,7 +893,7 @@ type OSConfigurationClassification interface {
 // OSConfiguration - Defines the OS configuration.
 type OSConfiguration struct {
 	// REQUIRED; The OS Type
-	OSType *OSType
+	OSType *OSType `json:"osType,omitempty"`
 }
 
 // GetOSConfiguration implements the OSConfigurationClassification interface for type OSConfiguration.
@@ -917,7 +917,7 @@ type OSProfile struct {
 	// For resetting the password, see How to reset the Remote Desktop service or its login password in a Windows VM [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp]
 	// For resetting root password, see Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension
 	// [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection]
-	AdminPassword *string
+	AdminPassword *string `json:"adminPassword,omitempty"`
 
 	// Specifies the name of the administrator account.
 	// This property cannot be updated after the VM is created.
@@ -928,86 +928,86 @@ type OSProfile struct {
 	// Minimum-length (Linux): 1 character
 	// Max-length (Linux): 64 characters
 	// Max-length (Windows): 20 characters.
-	AdminUsername *string
+	AdminUsername *string `json:"adminUsername,omitempty"`
 
 	// Specifies Windows operating system settings on the virtual machine.
-	OSConfiguration OSConfigurationClassification
+	OSConfiguration OSConfigurationClassification `json:"osConfiguration,omitempty"`
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay
+	Display *OperationDisplay `json:"display,omitempty"`
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
+	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool
+	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin
+	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string
+	Description *string `json:"description,omitempty" azure:"ro"`
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string
+	Operation *string `json:"operation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string
+	Provider *string `json:"provider,omitempty" azure:"ro"`
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string
+	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation
+	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
 // OperationStatusResult - The current status of an async operation.
 type OperationStatusResult struct {
 	// REQUIRED; Operation status.
-	Status *string
+	Status *string `json:"status,omitempty"`
 
 	// The end time of the operation.
-	EndTime *time.Time
+	EndTime *time.Time `json:"endTime,omitempty"`
 
 	// If present, details of the operation error.
-	Error *ErrorDetail
+	Error *ErrorDetail `json:"error,omitempty"`
 
 	// Fully qualified ID for the async operation.
-	ID *string
+	ID *string `json:"id,omitempty"`
 
 	// Name of the async operation.
-	Name *string
+	Name *string `json:"name,omitempty"`
 
 	// The operations list.
-	Operations []*OperationStatusResult
+	Operations []*OperationStatusResult `json:"operations,omitempty"`
 
 	// Percent of the operation that is complete.
-	PercentComplete *float32
+	PercentComplete *float32 `json:"percentComplete,omitempty"`
 
 	// The start time of the operation.
-	StartTime *time.Time
+	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -1018,112 +1018,112 @@ type OperationsClientListOptions struct {
 // OperationsContent - Defines the workload operation content.
 type OperationsContent struct {
 	// Operations content.
-	Properties *OperationsDefinition
+	Properties *OperationsDefinition `json:"properties,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // OperationsDefinition - Properties of an Operation.
 type OperationsDefinition struct {
 	// REQUIRED; Display information of the operation.
-	Display *OperationsDefinitionDisplay
+	Display *OperationsDefinitionDisplay `json:"display,omitempty"`
 
 	// REQUIRED; Name of the operation.
-	Name *string
+	Name *string `json:"name,omitempty"`
 
 	// Defines the action type of workload operation.
-	ActionType *WorkloadMonitorActionType
+	ActionType *WorkloadMonitorActionType `json:"actionType,omitempty"`
 
 	// Indicates whether the operation applies to data-plane.
-	IsDataAction *bool
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 
 	// Defines the workload operation origin.
-	Origin *OperationProperties
+	Origin *OperationProperties `json:"origin,omitempty"`
 
 	// Defines the workload operation properties.
-	Properties any
+	Properties any `json:"properties,omitempty"`
 }
 
 // OperationsDefinitionArrayResponseWithContinuation - Defines the workload operation definition response.
 type OperationsDefinitionArrayResponseWithContinuation struct {
 	// The URL to get to the next set of results, if there are any.
-	NextLink *string
+	NextLink *string `json:"nextLink,omitempty"`
 
 	// Defines the workload operation definition response properties.
-	Value []*OperationsDefinition
+	Value []*OperationsDefinition `json:"value,omitempty"`
 }
 
 // OperationsDefinitionDisplay - Display information of the operation.
 type OperationsDefinitionDisplay struct {
 	// REQUIRED; Describes the workload operation.
-	Description *string
+	Description *string `json:"description,omitempty"`
 
 	// REQUIRED; Defines the workload operation.
-	Operation *string
+	Operation *string `json:"operation,omitempty"`
 
 	// REQUIRED; Defines the workload provider.
-	Provider *string
+	Provider *string `json:"provider,omitempty"`
 
 	// REQUIRED; Defines the workload resource.
-	Resource *string
+	Resource *string `json:"resource,omitempty"`
 }
 
 // OperationsDisplayDefinition - Defines the workload operation.
 type OperationsDisplayDefinition struct {
 	// REQUIRED; Describes the workload operation.
-	Description *string
+	Description *string `json:"description,omitempty"`
 
 	// REQUIRED; Defines the workload operation.
-	Operation *string
+	Operation *string `json:"operation,omitempty"`
 
 	// REQUIRED; Defines the workload provider.
-	Provider *string
+	Provider *string `json:"provider,omitempty"`
 
 	// REQUIRED; Defines the workload resource.
-	Resource *string
+	Resource *string `json:"resource,omitempty"`
 }
 
 // OsSapConfiguration - Defines the OS and SAP Configurations for Deployment
 type OsSapConfiguration struct {
 	// The url and storage account ID where deployer VM packages are uploaded
-	DeployerVMPackages *DeployerVMPackages
+	DeployerVMPackages *DeployerVMPackages `json:"deployerVmPackages,omitempty"`
 
 	// The FQDN to set for the SAP system
-	SapFqdn *string
+	SapFqdn *string `json:"sapFqdn,omitempty"`
 }
 
 // PrometheusHaClusterProviderInstanceProperties - Gets or sets the PrometheusHaCluster provider properties.
 type PrometheusHaClusterProviderInstanceProperties struct {
 	// REQUIRED; The provider type. For example, the value can be SapHana.
-	ProviderType *string
+	ProviderType *string `json:"providerType,omitempty"`
 
 	// Gets or sets the clusterName.
-	ClusterName *string
+	ClusterName *string `json:"clusterName,omitempty"`
 
 	// Gets or sets the target machine name.
-	Hostname *string
+	Hostname *string `json:"hostname,omitempty"`
 
 	// URL of the Node Exporter endpoint.
-	PrometheusURL *string
+	PrometheusURL *string `json:"prometheusUrl,omitempty"`
 
 	// Gets or sets the blob URI to SSL certificate for the HA cluster exporter.
-	SSLCertificateURI *string
+	SSLCertificateURI *string `json:"sslCertificateUri,omitempty"`
 
 	// Gets or sets certificate preference if secure communication is enabled.
-	SSLPreference *SSLPreference
+	SSLPreference *SSLPreference `json:"sslPreference,omitempty"`
 
 	// Gets or sets the cluster sid.
-	Sid *string
+	Sid *string `json:"sid,omitempty"`
 }
 
 // GetProviderSpecificProperties implements the ProviderSpecificPropertiesClassification interface for type PrometheusHaClusterProviderInstanceProperties.
@@ -1136,19 +1136,19 @@ func (p *PrometheusHaClusterProviderInstanceProperties) GetProviderSpecificPrope
 // PrometheusOSProviderInstanceProperties - Gets or sets the PrometheusOS provider properties.
 type PrometheusOSProviderInstanceProperties struct {
 	// REQUIRED; The provider type. For example, the value can be SapHana.
-	ProviderType *string
+	ProviderType *string `json:"providerType,omitempty"`
 
 	// URL of the Node Exporter endpoint
-	PrometheusURL *string
+	PrometheusURL *string `json:"prometheusUrl,omitempty"`
 
 	// Gets or sets the blob URI to SSL certificate for the prometheus node exporter.
-	SSLCertificateURI *string
+	SSLCertificateURI *string `json:"sslCertificateUri,omitempty"`
 
 	// Gets or sets certificate preference if secure communication is enabled.
-	SSLPreference *SSLPreference
+	SSLPreference *SSLPreference `json:"sslPreference,omitempty"`
 
 	// Gets or sets the SAP System Identifier
-	SapSid *string
+	SapSid *string `json:"sapSid,omitempty"`
 }
 
 // GetProviderSpecificProperties implements the ProviderSpecificPropertiesClassification interface for type PrometheusOSProviderInstanceProperties.
@@ -1161,61 +1161,61 @@ func (p *PrometheusOSProviderInstanceProperties) GetProviderSpecificProperties()
 // ProviderInstance - A provider instance associated with SAP monitor.
 type ProviderInstance struct {
 	// Managed service identity (user assigned identities)
-	Identity *UserAssignedServiceIdentity
+	Identity *UserAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// Provider Instance properties
-	Properties *ProviderInstanceProperties
+	Properties *ProviderInstanceProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ProviderInstanceListResult - The response from the List provider instances operation.
 type ProviderInstanceListResult struct {
 	// The URL to get the next set of provider instances.
-	NextLink *string
+	NextLink *string `json:"nextLink,omitempty"`
 
 	// The list of provider instances.
-	Value []*ProviderInstance
+	Value []*ProviderInstance `json:"value,omitempty"`
 }
 
 // ProviderInstanceProperties - Describes the properties of a provider instance.
 type ProviderInstanceProperties struct {
 	// Defines the provider instance errors.
-	ProviderSettings ProviderSpecificPropertiesClassification
+	ProviderSettings ProviderSpecificPropertiesClassification `json:"providerSettings,omitempty"`
 
 	// READ-ONLY; Defines the provider instance errors.
-	Errors *ProviderInstancePropertiesErrors
+	Errors *ProviderInstancePropertiesErrors `json:"errors,omitempty" azure:"ro"`
 
 	// READ-ONLY; State of provisioning of the provider instance
-	ProvisioningState *WorkloadMonitorProvisioningState
+	ProvisioningState *WorkloadMonitorProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // ProviderInstancePropertiesErrors - Defines the provider instance errors.
 type ProviderInstancePropertiesErrors struct {
 	// READ-ONLY; Server-defined set of error codes.
-	Code *string
+	Code *string `json:"code,omitempty" azure:"ro"`
 
 	// READ-ONLY; Array of details about specific errors that led to this reported error.
-	Details []*Error
+	Details []*Error `json:"details,omitempty" azure:"ro"`
 
 	// READ-ONLY; Object containing more specific information than the current object about the error.
-	InnerError *ErrorInnerError
+	InnerError *ErrorInnerError `json:"innerError,omitempty" azure:"ro"`
 
 	// READ-ONLY; Human-readable representation of the error.
-	Message *string
+	Message *string `json:"message,omitempty" azure:"ro"`
 
 	// READ-ONLY; Target of the error.
-	Target *string
+	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
 // ProviderInstancesClientBeginCreateOptions contains the optional parameters for the ProviderInstancesClient.BeginCreate
@@ -1255,7 +1255,7 @@ type ProviderSpecificPropertiesClassification interface {
 // ProviderSpecificProperties - Gets or sets the provider specific properties.
 type ProviderSpecificProperties struct {
 	// REQUIRED; The provider type. For example, the value can be SapHana.
-	ProviderType *string
+	ProviderType *string `json:"providerType,omitempty"`
 }
 
 // GetProviderSpecificProperties implements the ProviderSpecificPropertiesClassification interface for type ProviderSpecificProperties.
@@ -1267,64 +1267,64 @@ func (p *ProviderSpecificProperties) GetProviderSpecificProperties() *ProviderSp
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SAPApplicationServerInstance - Define the SAP Application Server Instance resource.
 type SAPApplicationServerInstance struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string
+	Location *string `json:"location,omitempty"`
 
 	// Defines the SAP Application Server instance properties.
-	Properties *SAPApplicationServerProperties
+	Properties *SAPApplicationServerProperties `json:"properties,omitempty"`
 
 	// Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SAPApplicationServerInstanceList - Defines the collection of SAP Application Server Instance resources.
 type SAPApplicationServerInstanceList struct {
 	// Gets the value of next link.
-	NextLink *string
+	NextLink *string `json:"nextLink,omitempty"`
 
 	// Gets the list of SAP Application Server instance resources.
-	Value []*SAPApplicationServerInstance
+	Value []*SAPApplicationServerInstance `json:"value,omitempty"`
 }
 
 // SAPApplicationServerInstancesClientBeginCreateOptions contains the optional parameters for the SAPApplicationServerInstancesClient.BeginCreate
@@ -1379,85 +1379,85 @@ type SAPApplicationServerInstancesClientListOptions struct {
 // SAPApplicationServerProperties - Defines the SAP Application Server instance properties.
 type SAPApplicationServerProperties struct {
 	// READ-ONLY; Defines the Application Instance errors.
-	Errors *SAPVirtualInstanceError
+	Errors *SAPVirtualInstanceError `json:"errors,omitempty" azure:"ro"`
 
 	// READ-ONLY; Application server instance gateway Port.
-	GatewayPort *int64
+	GatewayPort *int64 `json:"gatewayPort,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the health of SAP Instances.
-	Health *SAPHealthState
+	Health *SAPHealthState `json:"health,omitempty" azure:"ro"`
 
 	// READ-ONLY; Application server instance SAP hostname.
-	Hostname *string
+	Hostname *string `json:"hostname,omitempty" azure:"ro"`
 
 	// READ-ONLY; Application server instance SAP IP Address.
-	IPAddress *string
+	IPAddress *string `json:"ipAddress,omitempty" azure:"ro"`
 
 	// READ-ONLY; Application server instance ICM HTTP Port.
-	IcmHTTPPort *int64
+	IcmHTTPPort *int64 `json:"icmHttpPort,omitempty" azure:"ro"`
 
 	// READ-ONLY; Application server instance ICM HTTPS Port.
-	IcmHTTPSPort *int64
+	IcmHTTPSPort *int64 `json:"icmHttpsPort,omitempty" azure:"ro"`
 
 	// READ-ONLY; Application server Instance Number.
-	InstanceNo *string
+	InstanceNo *string `json:"instanceNo,omitempty" azure:"ro"`
 
 	// READ-ONLY; Application server instance SAP Kernel Patch level.
-	KernelPatch *string
+	KernelPatch *string `json:"kernelPatch,omitempty" azure:"ro"`
 
 	// READ-ONLY; Application server instance SAP Kernel Version.
-	KernelVersion *string
+	KernelVersion *string `json:"kernelVersion,omitempty" azure:"ro"`
 
 	// READ-ONLY; The Load Balancer details such as LoadBalancer ID attached to Application Server Virtual Machines
-	LoadBalancerDetails *LoadBalancerDetails
+	LoadBalancerDetails *LoadBalancerDetails `json:"loadBalancerDetails,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the provisioning states.
-	ProvisioningState *SapVirtualInstanceProvisioningState
+	ProvisioningState *SapVirtualInstanceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the SAP Instance status.
-	Status *SAPVirtualInstanceStatus
+	Status *SAPVirtualInstanceStatus `json:"status,omitempty" azure:"ro"`
 
 	// READ-ONLY; Application server Subnet.
-	Subnet *string
+	Subnet *string `json:"subnet,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of virtual machines.
-	VMDetails []*ApplicationServerVMDetails
+	VMDetails []*ApplicationServerVMDetails `json:"vmDetails,omitempty" azure:"ro"`
 }
 
 // SAPAvailabilityZoneDetailsRequest - The SAP request to get list of availability zones.
 type SAPAvailabilityZoneDetailsRequest struct {
 	// REQUIRED; The geo-location where the SAP resources will be created.
-	AppLocation *string
+	AppLocation *string `json:"appLocation,omitempty"`
 
 	// REQUIRED; The database type. Eg: HANA, DB2, etc
-	DatabaseType *SAPDatabaseType
+	DatabaseType *SAPDatabaseType `json:"databaseType,omitempty"`
 
 	// REQUIRED; Defines the SAP Product type.
-	SapProduct *SAPProductType
+	SapProduct *SAPProductType `json:"sapProduct,omitempty"`
 }
 
 // SAPAvailabilityZoneDetailsResult - The list of supported availability zone pairs which are part of SAP HA deployment.
 type SAPAvailabilityZoneDetailsResult struct {
 	// Gets the list of availability zone pairs.
-	AvailabilityZonePairs []*SAPAvailabilityZonePair
+	AvailabilityZonePairs []*SAPAvailabilityZonePair `json:"availabilityZonePairs,omitempty"`
 }
 
 // SAPAvailabilityZonePair - The SAP Availability Zone Pair.
 type SAPAvailabilityZonePair struct {
 	// The zone A.
-	ZoneA *int64
+	ZoneA *int64 `json:"zoneA,omitempty"`
 
 	// The zone B.
-	ZoneB *int64
+	ZoneB *int64 `json:"zoneB,omitempty"`
 }
 
 // SAPCentralInstanceList - Defines the collection of SAP Central Services Instance resources.
 type SAPCentralInstanceList struct {
 	// Gets the value of next link.
-	NextLink *string
+	NextLink *string `json:"nextLink,omitempty"`
 
 	// Gets the list of SAP central services instance resources.
-	Value []*SAPCentralServerInstance
+	Value []*SAPCentralServerInstance `json:"value,omitempty"`
 }
 
 // SAPCentralInstancesClientBeginCreateOptions contains the optional parameters for the SAPCentralInstancesClient.BeginCreate
@@ -1510,70 +1510,70 @@ type SAPCentralInstancesClientListOptions struct {
 // SAPCentralServerInstance - Define the SAP Central Services Instance resource.
 type SAPCentralServerInstance struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string
+	Location *string `json:"location,omitempty"`
 
 	// Defines the SAP Central Services Instance properties.
-	Properties *SAPCentralServerProperties
+	Properties *SAPCentralServerProperties `json:"properties,omitempty"`
 
 	// Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SAPCentralServerProperties - Defines the SAP Central Services Instance properties.
 type SAPCentralServerProperties struct {
 	// Defines the SAP Enqueue Replication Server (ERS) properties.
-	EnqueueReplicationServerProperties *EnqueueReplicationServerProperties
+	EnqueueReplicationServerProperties *EnqueueReplicationServerProperties `json:"enqueueReplicationServerProperties,omitempty"`
 
 	// Defines the SAP Enqueue Server properties.
-	EnqueueServerProperties *EnqueueServerProperties
+	EnqueueServerProperties *EnqueueServerProperties `json:"enqueueServerProperties,omitempty"`
 
 	// Defines the SAP Gateway Server properties.
-	GatewayServerProperties *GatewayServerProperties
+	GatewayServerProperties *GatewayServerProperties `json:"gatewayServerProperties,omitempty"`
 
 	// Defines the SAP Message Server properties.
-	MessageServerProperties *MessageServerProperties
+	MessageServerProperties *MessageServerProperties `json:"messageServerProperties,omitempty"`
 
 	// READ-ONLY; Defines the errors related to SAP Central Services Instance resource.
-	Errors *SAPVirtualInstanceError
+	Errors *SAPVirtualInstanceError `json:"errors,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the health of SAP Instances.
-	Health *SAPHealthState
+	Health *SAPHealthState `json:"health,omitempty" azure:"ro"`
 
 	// READ-ONLY; The central services instance number.
-	InstanceNo *string
+	InstanceNo *string `json:"instanceNo,omitempty" azure:"ro"`
 
 	// READ-ONLY; The central services instance Kernel Patch level.
-	KernelPatch *string
+	KernelPatch *string `json:"kernelPatch,omitempty" azure:"ro"`
 
 	// READ-ONLY; The central services instance Kernel Version.
-	KernelVersion *string
+	KernelVersion *string `json:"kernelVersion,omitempty" azure:"ro"`
 
 	// READ-ONLY; The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual Machines
-	LoadBalancerDetails *LoadBalancerDetails
+	LoadBalancerDetails *LoadBalancerDetails `json:"loadBalancerDetails,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the provisioning states.
-	ProvisioningState *SapVirtualInstanceProvisioningState
+	ProvisioningState *SapVirtualInstanceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the SAP Instance status.
-	Status *SAPVirtualInstanceStatus
+	Status *SAPVirtualInstanceStatus `json:"status,omitempty" azure:"ro"`
 
 	// READ-ONLY; The central services instance subnet.
-	Subnet *string
+	Subnet *string `json:"subnet,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of virtual machines corresponding to the Central Services instance.
-	VMDetails []*CentralServerVMDetails
+	VMDetails []*CentralServerVMDetails `json:"vmDetails,omitempty" azure:"ro"`
 }
 
 // SAPConfigurationClassification provides polymorphic access to related types.
@@ -1588,7 +1588,7 @@ type SAPConfigurationClassification interface {
 // SAPConfiguration - The SAP Configuration.
 type SAPConfiguration struct {
 	// REQUIRED; The configuration Type.
-	ConfigurationType *SAPConfigurationType
+	ConfigurationType *SAPConfigurationType `json:"configurationType,omitempty"`
 }
 
 // GetSAPConfiguration implements the SAPConfigurationClassification interface for type SAPConfiguration.
@@ -1597,34 +1597,34 @@ func (s *SAPConfiguration) GetSAPConfiguration() *SAPConfiguration { return s }
 // SAPDatabaseInstance - Define the Database resource.
 type SAPDatabaseInstance struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string
+	Location *string `json:"location,omitempty"`
 
 	// Defines the Database properties.
-	Properties *SAPDatabaseProperties
+	Properties *SAPDatabaseProperties `json:"properties,omitempty"`
 
 	// Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SAPDatabaseInstanceList - Defines the collection of SAP Database Instances.
 type SAPDatabaseInstanceList struct {
 	// Gets the value of next link.
-	NextLink *string
+	NextLink *string `json:"nextLink,omitempty"`
 
 	// Gets the list of SAP Database instances.
-	Value []*SAPDatabaseInstance
+	Value []*SAPDatabaseInstance `json:"value,omitempty"`
 }
 
 // SAPDatabaseInstancesClientBeginCreateOptions contains the optional parameters for the SAPDatabaseInstancesClient.BeginCreate
@@ -1678,88 +1678,88 @@ type SAPDatabaseInstancesClientListOptions struct {
 // SAPDatabaseProperties - Defines the Database properties.
 type SAPDatabaseProperties struct {
 	// READ-ONLY; Database SID name.
-	DatabaseSid *string
+	DatabaseSid *string `json:"databaseSid,omitempty" azure:"ro"`
 
 	// READ-ONLY; Database type, that is if the DB is HANA, DB2, Oracle, SAP ASE, Max DB or MS SQL Server.
-	DatabaseType *string
+	DatabaseType *string `json:"databaseType,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the errors related to Database resource.
-	Errors *SAPVirtualInstanceError
+	Errors *SAPVirtualInstanceError `json:"errors,omitempty" azure:"ro"`
 
 	// READ-ONLY; Database IP Address.
-	IPAddress *string
+	IPAddress *string `json:"ipAddress,omitempty" azure:"ro"`
 
 	// READ-ONLY; The Load Balancer details such as LoadBalancer ID attached to Database Virtual Machines
-	LoadBalancerDetails *LoadBalancerDetails
+	LoadBalancerDetails *LoadBalancerDetails `json:"loadBalancerDetails,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the provisioning states.
-	ProvisioningState *SapVirtualInstanceProvisioningState
+	ProvisioningState *SapVirtualInstanceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the SAP Instance status.
-	Status *SAPVirtualInstanceStatus
+	Status *SAPVirtualInstanceStatus `json:"status,omitempty" azure:"ro"`
 
 	// READ-ONLY; Database subnet.
-	Subnet *string
+	Subnet *string `json:"subnet,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of virtual machines corresponding to the Database resource.
-	VMDetails []*DatabaseVMDetails
+	VMDetails []*DatabaseVMDetails `json:"vmDetails,omitempty" azure:"ro"`
 }
 
 // SAPDiskConfiguration - The SAP Disk Configuration contains 'recommended disk' details and list of supported disks detail
 // for a volume type.
 type SAPDiskConfiguration struct {
 	// The recommended disk details for a given VM Sku.
-	RecommendedConfiguration *DiskVolumeConfiguration
+	RecommendedConfiguration *DiskVolumeConfiguration `json:"recommendedConfiguration,omitempty"`
 
 	// The list of supported disks for a given VM Sku.
-	SupportedConfigurations []*DiskDetails
+	SupportedConfigurations []*DiskDetails `json:"supportedConfigurations,omitempty"`
 }
 
 // SAPDiskConfigurationsRequest - The SAP request to get list of disk configurations.
 type SAPDiskConfigurationsRequest struct {
 	// REQUIRED; The geo-location where the SAP resources will be created.
-	AppLocation *string
+	AppLocation *string `json:"appLocation,omitempty"`
 
 	// REQUIRED; The database type. Eg: HANA, DB2, etc
-	DatabaseType *SAPDatabaseType
+	DatabaseType *SAPDatabaseType `json:"databaseType,omitempty"`
 
 	// REQUIRED; The VM SKU for database instance.
-	DbVMSKU *string
+	DbVMSKU *string `json:"dbVmSku,omitempty"`
 
 	// REQUIRED; The deployment type. Eg: SingleServer/ThreeTier
-	DeploymentType *SAPDeploymentType
+	DeploymentType *SAPDeploymentType `json:"deploymentType,omitempty"`
 
 	// REQUIRED; Defines the environment type - Production/Non Production.
-	Environment *SAPEnvironmentType
+	Environment *SAPEnvironmentType `json:"environment,omitempty"`
 
 	// REQUIRED; Defines the SAP Product type.
-	SapProduct *SAPProductType
+	SapProduct *SAPProductType `json:"sapProduct,omitempty"`
 }
 
 // SAPDiskConfigurationsResult - The list of disk configuration for vmSku which are part of SAP deployment.
 type SAPDiskConfigurationsResult struct {
 	// The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log', hana/shared', 'usr/sap',
 	// 'os'], Optional volume : ['backup'].
-	VolumeConfigurations map[string]*SAPDiskConfiguration
+	VolumeConfigurations map[string]*SAPDiskConfiguration `json:"volumeConfigurations,omitempty"`
 }
 
 // SAPInstallWithoutOSConfigSoftwareConfiguration - The SAP Software configuration Input when the software is to be installed
 // by service without OS Configurations
 type SAPInstallWithoutOSConfigSoftwareConfiguration struct {
 	// REQUIRED; The URL to the SAP Build of Materials(BOM) file.
-	BomURL *string
+	BomURL *string `json:"bomUrl,omitempty"`
 
 	// REQUIRED; The SAP bits storage account id.
-	SapBitsStorageAccountID *string
+	SapBitsStorageAccountID *string `json:"sapBitsStorageAccountId,omitempty"`
 
 	// REQUIRED; The SAP software installation Type.
-	SoftwareInstallationType *SAPSoftwareInstallationType
+	SoftwareInstallationType *SAPSoftwareInstallationType `json:"softwareInstallationType,omitempty"`
 
 	// REQUIRED; The software version to install.
-	SoftwareVersion *string
+	SoftwareVersion *string `json:"softwareVersion,omitempty"`
 
 	// Gets or sets the HA software configuration.
-	HighAvailabilitySoftwareConfiguration *HighAvailabilitySoftwareConfiguration
+	HighAvailabilitySoftwareConfiguration *HighAvailabilitySoftwareConfiguration `json:"highAvailabilitySoftwareConfiguration,omitempty"`
 }
 
 // GetSoftwareConfiguration implements the SoftwareConfigurationClassification interface for type SAPInstallWithoutOSConfigSoftwareConfiguration.
@@ -1772,31 +1772,31 @@ func (s *SAPInstallWithoutOSConfigSoftwareConfiguration) GetSoftwareConfiguratio
 // SAPSizingRecommendationRequest - The SAP Sizing Recommendation request.
 type SAPSizingRecommendationRequest struct {
 	// REQUIRED; The geo-location where the resource is to be created.
-	AppLocation *string
+	AppLocation *string `json:"appLocation,omitempty"`
 
 	// REQUIRED; The database type.
-	DatabaseType *SAPDatabaseType
+	DatabaseType *SAPDatabaseType `json:"databaseType,omitempty"`
 
 	// REQUIRED; The database memory configuration.
-	DbMemory *int64
+	DbMemory *int64 `json:"dbMemory,omitempty"`
 
 	// REQUIRED; The deployment type. Eg: SingleServer/ThreeTier
-	DeploymentType *SAPDeploymentType
+	DeploymentType *SAPDeploymentType `json:"deploymentType,omitempty"`
 
 	// REQUIRED; Defines the environment type - Production/Non Production.
-	Environment *SAPEnvironmentType
+	Environment *SAPEnvironmentType `json:"environment,omitempty"`
 
 	// REQUIRED; Defines the SAP Product type.
-	SapProduct *SAPProductType
+	SapProduct *SAPProductType `json:"sapProduct,omitempty"`
 
 	// REQUIRED; The SAP Application Performance Standard measurement.
-	Saps *int64
+	Saps *int64 `json:"saps,omitempty"`
 
 	// The DB scale method.
-	DbScaleMethod *SAPDatabaseScaleMethod
+	DbScaleMethod *SAPDatabaseScaleMethod `json:"dbScaleMethod,omitempty"`
 
 	// The high availability type.
-	HighAvailabilityType *SAPHighAvailabilityType
+	HighAvailabilityType *SAPHighAvailabilityType `json:"highAvailabilityType,omitempty"`
 }
 
 // SAPSizingRecommendationResultClassification provides polymorphic access to related types.
@@ -1811,7 +1811,7 @@ type SAPSizingRecommendationResultClassification interface {
 // SAPSizingRecommendationResult - The SAP sizing recommendation result.
 type SAPSizingRecommendationResult struct {
 	// REQUIRED; The type of SAP deployment, single server or Three tier.
-	DeploymentType *SAPDeploymentType
+	DeploymentType *SAPDeploymentType `json:"deploymentType,omitempty"`
 }
 
 // GetSAPSizingRecommendationResult implements the SAPSizingRecommendationResultClassification interface for type SAPSizingRecommendationResult.
@@ -1822,113 +1822,113 @@ func (s *SAPSizingRecommendationResult) GetSAPSizingRecommendationResult() *SAPS
 // SAPSupportedResourceSKUsResult - The list of supported SKUs for different resources which are part of SAP deployment.
 type SAPSupportedResourceSKUsResult struct {
 	// Gets the list of SAP supported SKUs.
-	SupportedSKUs []*SAPSupportedSKU
+	SupportedSKUs []*SAPSupportedSKU `json:"supportedSkus,omitempty"`
 }
 
 // SAPSupportedSKU - The SAP supported SKU.
 type SAPSupportedSKU struct {
 	// True if the Sku is certified for App server in the SAP system.
-	IsAppServerCertified *bool
+	IsAppServerCertified *bool `json:"isAppServerCertified,omitempty"`
 
 	// True if the Sku is certified for Database server in the SAP system.
-	IsDatabaseCertified *bool
+	IsDatabaseCertified *bool `json:"isDatabaseCertified,omitempty"`
 
 	// The VM Sku.
-	VMSKU *string
+	VMSKU *string `json:"vmSku,omitempty"`
 }
 
 // SAPSupportedSKUsRequest - The SAP request to get list of supported SKUs.
 type SAPSupportedSKUsRequest struct {
 	// REQUIRED; The geo-location where the resource is to be created.
-	AppLocation *string
+	AppLocation *string `json:"appLocation,omitempty"`
 
 	// REQUIRED; The database type. Eg: HANA, DB2, etc
-	DatabaseType *SAPDatabaseType
+	DatabaseType *SAPDatabaseType `json:"databaseType,omitempty"`
 
 	// REQUIRED; The deployment type. Eg: SingleServer/ThreeTier
-	DeploymentType *SAPDeploymentType
+	DeploymentType *SAPDeploymentType `json:"deploymentType,omitempty"`
 
 	// REQUIRED; Defines the environment type - Production/Non Production.
-	Environment *SAPEnvironmentType
+	Environment *SAPEnvironmentType `json:"environment,omitempty"`
 
 	// REQUIRED; Defines the SAP Product type.
-	SapProduct *SAPProductType
+	SapProduct *SAPProductType `json:"sapProduct,omitempty"`
 
 	// The high availability type.
-	HighAvailabilityType *SAPHighAvailabilityType
+	HighAvailabilityType *SAPHighAvailabilityType `json:"highAvailabilityType,omitempty"`
 }
 
 // SAPVirtualInstance - Define the Virtual Instance for SAP solutions resource.
 type SAPVirtualInstance struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string
+	Location *string `json:"location,omitempty"`
 
 	// REQUIRED; Defines the Virtual Instance for SAP solutions resource properties.
-	Properties *SAPVirtualInstanceProperties
+	Properties *SAPVirtualInstanceProperties `json:"properties,omitempty"`
 
 	// Managed service identity (user assigned identities)
-	Identity *UserAssignedServiceIdentity
+	Identity *UserAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SAPVirtualInstanceError - An error response from the Virtual Instance for SAP Workload service.
 type SAPVirtualInstanceError struct {
 	// The Virtual Instance for SAP error body.
-	Properties *ErrorDefinition
+	Properties *ErrorDefinition `json:"properties,omitempty"`
 }
 
 // SAPVirtualInstanceList - Defines the collection of Virtual Instance for SAP solutions resources.
 type SAPVirtualInstanceList struct {
 	// Gets the value of next link.
-	NextLink *string
+	NextLink *string `json:"nextLink,omitempty"`
 
 	// Gets the list of Virtual Instances for SAP solutions resources.
-	Value []*SAPVirtualInstance
+	Value []*SAPVirtualInstance `json:"value,omitempty"`
 }
 
 // SAPVirtualInstanceProperties - Defines the Virtual Instance for SAP solutions resource properties.
 type SAPVirtualInstanceProperties struct {
 	// REQUIRED; Defines if the SAP system is being created using Azure Center for SAP solutions (ACSS) or if an existing SAP
 	// system is being registered with ACSS
-	Configuration SAPConfigurationClassification
+	Configuration SAPConfigurationClassification `json:"configuration,omitempty"`
 
 	// REQUIRED; Defines the environment type - Production/Non Production.
-	Environment *SAPEnvironmentType
+	Environment *SAPEnvironmentType `json:"environment,omitempty"`
 
 	// REQUIRED; Defines the SAP Product type.
-	SapProduct *SAPProductType
+	SapProduct *SAPProductType `json:"sapProduct,omitempty"`
 
 	// Managed resource group configuration
-	ManagedResourceGroupConfiguration *ManagedRGConfiguration
+	ManagedResourceGroupConfiguration *ManagedRGConfiguration `json:"managedResourceGroupConfiguration,omitempty"`
 
 	// READ-ONLY; Indicates any errors on the Virtual Instance for SAP solutions resource.
-	Errors *SAPVirtualInstanceError
+	Errors *SAPVirtualInstanceError `json:"errors,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the health of SAP Instances.
-	Health *SAPHealthState
+	Health *SAPHealthState `json:"health,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the provisioning states.
-	ProvisioningState *SapVirtualInstanceProvisioningState
+	ProvisioningState *SapVirtualInstanceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the Virtual Instance for SAP state.
-	State *SAPVirtualInstanceState
+	State *SAPVirtualInstanceState `json:"state,omitempty" azure:"ro"`
 
 	// READ-ONLY; Defines the SAP Instance status.
-	Status *SAPVirtualInstanceStatus
+	Status *SAPVirtualInstanceStatus `json:"status,omitempty" azure:"ro"`
 }
 
 // SAPVirtualInstancesClientBeginCreateOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginCreate
@@ -1986,17 +1986,17 @@ type SAPVirtualInstancesClientUpdateOptions struct {
 // SSHConfiguration - SSH configuration for Linux based VMs running on Azure
 type SSHConfiguration struct {
 	// The list of SSH public keys used to authenticate with linux based VMs.
-	PublicKeys []*SSHPublicKey
+	PublicKeys []*SSHPublicKey `json:"publicKeys,omitempty"`
 }
 
 // SSHKeyPair - The SSH Key-pair used to authenticate with the VM. The key needs to be at least 2048-bit and in ssh-rsa format.
 // For creating ssh keys, see Create SSH keys on Linux and Mac for Linux VMs in Azure [https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed].
 type SSHKeyPair struct {
 	// SSH private key.
-	PrivateKey *string
+	PrivateKey *string `json:"privateKey,omitempty"`
 
 	// SSH public key
-	PublicKey *string
+	PublicKey *string `json:"publicKey,omitempty"`
 }
 
 // SSHPublicKey - Contains information about SSH certificate public key and the path on the Linux VM where the public key
@@ -2005,25 +2005,25 @@ type SSHPublicKey struct {
 	// SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa
 	// format.
 	// For creating ssh keys, see Create SSH keys on Linux and Mac for Linux VMs in Azure [https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed].
-	KeyData *string
+	KeyData *string `json:"keyData,omitempty"`
 }
 
 // SapLandscapeMonitor - configuration associated with SAP Landscape Monitor Dashboard.
 type SapLandscapeMonitor struct {
 	// Sap Landscape Monitor properties
-	Properties *SapLandscapeMonitorProperties
+	Properties *SapLandscapeMonitorProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SapLandscapeMonitorClientCreateOptions contains the optional parameters for the SapLandscapeMonitorClient.Create method.
@@ -2054,94 +2054,94 @@ type SapLandscapeMonitorClientUpdateOptions struct {
 // SapLandscapeMonitorListResult - The response from the List SAP Landscape Monitor Dashboard operation.
 type SapLandscapeMonitorListResult struct {
 	// The URL to get the next set of SAP Landscape Monitor Dashboard.
-	NextLink *string
+	NextLink *string `json:"nextLink,omitempty"`
 
 	// The list of Sap Landscape Monitor configuration.
-	Value []*SapLandscapeMonitor
+	Value []*SapLandscapeMonitor `json:"value,omitempty"`
 }
 
 // SapLandscapeMonitorMetricThresholds - Gets or sets the Threshold Values for Top Metrics Health.
 type SapLandscapeMonitorMetricThresholds struct {
 	// Gets or sets the threshold value for Green.
-	Green *float32
+	Green *float32 `json:"green,omitempty"`
 
 	// Gets or sets the name of the threshold.
-	Name *string
+	Name *string `json:"name,omitempty"`
 
 	// Gets or sets the threshold value for Red.
-	Red *float32
+	Red *float32 `json:"red,omitempty"`
 
 	// Gets or sets the threshold value for Yellow.
-	Yellow *float32
+	Yellow *float32 `json:"yellow,omitempty"`
 }
 
 // SapLandscapeMonitorProperties - Gets or sets the properties for Sap Landscape Monitor Dashboard.
 type SapLandscapeMonitorProperties struct {
 	// Gets or sets the SID groupings by landscape and Environment.
-	Grouping *SapLandscapeMonitorPropertiesGrouping
+	Grouping *SapLandscapeMonitorPropertiesGrouping `json:"grouping,omitempty"`
 
 	// Gets or sets the list Top Metric Thresholds for SAP Landscape Monitor Dashboard
-	TopMetricsThresholds []*SapLandscapeMonitorMetricThresholds
+	TopMetricsThresholds []*SapLandscapeMonitorMetricThresholds `json:"topMetricsThresholds,omitempty"`
 
 	// READ-ONLY; State of provisioning of the SAP monitor.
-	ProvisioningState *SapLandscapeMonitorProvisioningState
+	ProvisioningState *SapLandscapeMonitorProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // SapLandscapeMonitorPropertiesGrouping - Gets or sets the SID groupings by landscape and Environment.
 type SapLandscapeMonitorPropertiesGrouping struct {
 	// Gets or sets the list of landscape to SID mappings.
-	Landscape []*SapLandscapeMonitorSidMapping
+	Landscape []*SapLandscapeMonitorSidMapping `json:"landscape,omitempty"`
 
 	// Gets or sets the list of Sap Applications to SID mappings.
-	SapApplication []*SapLandscapeMonitorSidMapping
+	SapApplication []*SapLandscapeMonitorSidMapping `json:"sapApplication,omitempty"`
 }
 
 // SapLandscapeMonitorSidMapping - Gets or sets the mapping for SID to Environment/Applications.
 type SapLandscapeMonitorSidMapping struct {
 	// Gets or sets the name of the grouping.
-	Name *string
+	Name *string `json:"name,omitempty"`
 
 	// Gets or sets the list of SID's.
-	TopSid []*string
+	TopSid []*string `json:"topSid,omitempty"`
 }
 
 // SapNetWeaverProviderInstanceProperties - Gets or sets the provider properties.
 type SapNetWeaverProviderInstanceProperties struct {
 	// REQUIRED; The provider type. For example, the value can be SapHana.
-	ProviderType *string
+	ProviderType *string `json:"providerType,omitempty"`
 
 	// Gets or sets the blob URI to SSL certificate for the SAP system.
-	SSLCertificateURI *string
+	SSLCertificateURI *string `json:"sslCertificateUri,omitempty"`
 
 	// Gets or sets certificate preference if secure communication is enabled.
-	SSLPreference *SSLPreference
+	SSLPreference *SSLPreference `json:"sslPreference,omitempty"`
 
 	// Gets or sets the SAP Client ID.
-	SapClientID *string
+	SapClientID *string `json:"sapClientId,omitempty"`
 
 	// Gets or sets the list of HostFile Entries
-	SapHostFileEntries []*string
+	SapHostFileEntries []*string `json:"sapHostFileEntries,omitempty"`
 
 	// Gets or sets the target virtual machine IP Address/FQDN.
-	SapHostname *string
+	SapHostname *string `json:"sapHostname,omitempty"`
 
 	// Gets or sets the instance number of SAP NetWeaver.
-	SapInstanceNr *string
+	SapInstanceNr *string `json:"sapInstanceNr,omitempty"`
 
 	// Sets the SAP password.
-	SapPassword *string
+	SapPassword *string `json:"sapPassword,omitempty"`
 
 	// Gets or sets the key vault URI to secret with the SAP password.
-	SapPasswordURI *string
+	SapPasswordURI *string `json:"sapPasswordUri,omitempty"`
 
 	// Gets or sets the SAP HTTP port number.
-	SapPortNumber *string
+	SapPortNumber *string `json:"sapPortNumber,omitempty"`
 
 	// Gets or sets the SAP System Identifier
-	SapSid *string
+	SapSid *string `json:"sapSid,omitempty"`
 
 	// Gets or sets the SAP user name.
-	SapUsername *string
+	SapUsername *string `json:"sapUsername,omitempty"`
 }
 
 // GetProviderSpecificProperties implements the ProviderSpecificPropertiesClassification interface for type SapNetWeaverProviderInstanceProperties.
@@ -2154,25 +2154,25 @@ func (s *SapNetWeaverProviderInstanceProperties) GetProviderSpecificProperties()
 // ServiceInitiatedSoftwareConfiguration - The SAP Software configuration Input when the software is to be installed by service.
 type ServiceInitiatedSoftwareConfiguration struct {
 	// REQUIRED; The URL to the SAP Build of Materials(BOM) file.
-	BomURL *string
+	BomURL *string `json:"bomUrl,omitempty"`
 
 	// REQUIRED; The SSH private key.
-	SSHPrivateKey *string
+	SSHPrivateKey *string `json:"sshPrivateKey,omitempty"`
 
 	// REQUIRED; The SAP bits storage account id.
-	SapBitsStorageAccountID *string
+	SapBitsStorageAccountID *string `json:"sapBitsStorageAccountId,omitempty"`
 
 	// REQUIRED; The FQDN to set for the SAP system during install.
-	SapFqdn *string
+	SapFqdn *string `json:"sapFqdn,omitempty"`
 
 	// REQUIRED; The SAP software installation Type.
-	SoftwareInstallationType *SAPSoftwareInstallationType
+	SoftwareInstallationType *SAPSoftwareInstallationType `json:"softwareInstallationType,omitempty"`
 
 	// REQUIRED; The software version to install.
-	SoftwareVersion *string
+	SoftwareVersion *string `json:"softwareVersion,omitempty"`
 
 	// Gets or sets the HA software configuration.
-	HighAvailabilitySoftwareConfiguration *HighAvailabilitySoftwareConfiguration
+	HighAvailabilitySoftwareConfiguration *HighAvailabilitySoftwareConfiguration `json:"highAvailabilitySoftwareConfiguration,omitempty"`
 }
 
 // GetSoftwareConfiguration implements the SoftwareConfigurationClassification interface for type ServiceInitiatedSoftwareConfiguration.
@@ -2185,37 +2185,37 @@ func (s *ServiceInitiatedSoftwareConfiguration) GetSoftwareConfiguration() *Soft
 // SharedStorageResourceNames - The resource names object for shared storage.
 type SharedStorageResourceNames struct {
 	// The full name of the shared storage account. If it is not provided, it will be defaulted to {SID}nfs{guid of 15 chars}.
-	SharedStorageAccountName *string
+	SharedStorageAccountName *string `json:"sharedStorageAccountName,omitempty"`
 
 	// The full name of private end point for the shared storage account. If it is not provided, it will be defaulted to {storageAccountName}_pe
-	SharedStorageAccountPrivateEndPointName *string
+	SharedStorageAccountPrivateEndPointName *string `json:"sharedStorageAccountPrivateEndPointName,omitempty"`
 }
 
 // SingleServerConfiguration - Gets or sets the single server configuration.
 type SingleServerConfiguration struct {
 	// REQUIRED; The application resource group where SAP system resources will be deployed.
-	AppResourceGroup *string
+	AppResourceGroup *string `json:"appResourceGroup,omitempty"`
 
 	// REQUIRED; The type of SAP deployment, single server or Three tier.
-	DeploymentType *SAPDeploymentType
+	DeploymentType *SAPDeploymentType `json:"deploymentType,omitempty"`
 
 	// REQUIRED; The subnet id.
-	SubnetID *string
+	SubnetID *string `json:"subnetId,omitempty"`
 
 	// REQUIRED; Gets or sets the virtual machine configuration.
-	VirtualMachineConfiguration *VirtualMachineConfiguration
+	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
 
 	// The set of custom names to be used for underlying azure resources that are part of the SAP system.
-	CustomResourceNames SingleServerCustomResourceNamesClassification
+	CustomResourceNames SingleServerCustomResourceNamesClassification `json:"customResourceNames,omitempty"`
 
 	// The database type.
-	DatabaseType *SAPDatabaseType
+	DatabaseType *SAPDatabaseType `json:"databaseType,omitempty"`
 
 	// Gets or sets the disk configuration.
-	DbDiskConfiguration *DiskConfiguration
+	DbDiskConfiguration *DiskConfiguration `json:"dbDiskConfiguration,omitempty"`
 
 	// Network configuration for the server
-	NetworkConfiguration *NetworkConfiguration
+	NetworkConfiguration *NetworkConfiguration `json:"networkConfiguration,omitempty"`
 }
 
 // GetInfrastructureConfiguration implements the InfrastructureConfigurationClassification interface for type SingleServerConfiguration.
@@ -2239,7 +2239,7 @@ type SingleServerCustomResourceNamesClassification interface {
 // are part of a single server SAP system.
 type SingleServerCustomResourceNames struct {
 	// REQUIRED; The pattern type to be used for resource naming.
-	NamingPatternType *NamingPatternType
+	NamingPatternType *NamingPatternType `json:"namingPatternType,omitempty"`
 }
 
 // GetSingleServerCustomResourceNames implements the SingleServerCustomResourceNamesClassification interface for type SingleServerCustomResourceNames.
@@ -2251,10 +2251,10 @@ func (s *SingleServerCustomResourceNames) GetSingleServerCustomResourceNames() *
 // corresponding resources in a single server SAP system.
 type SingleServerFullResourceNames struct {
 	// REQUIRED; The pattern type to be used for resource naming.
-	NamingPatternType *NamingPatternType
+	NamingPatternType *NamingPatternType `json:"namingPatternType,omitempty"`
 
 	// The resource names object for virtual machine and related resources.
-	VirtualMachine *VirtualMachineResourceNames
+	VirtualMachine *VirtualMachineResourceNames `json:"virtualMachine,omitempty"`
 }
 
 // GetSingleServerCustomResourceNames implements the SingleServerCustomResourceNamesClassification interface for type SingleServerFullResourceNames.
@@ -2267,10 +2267,10 @@ func (s *SingleServerFullResourceNames) GetSingleServerCustomResourceNames() *Si
 // SingleServerRecommendationResult - The recommended configuration for a single server SAP system.
 type SingleServerRecommendationResult struct {
 	// REQUIRED; The type of SAP deployment, single server or Three tier.
-	DeploymentType *SAPDeploymentType
+	DeploymentType *SAPDeploymentType `json:"deploymentType,omitempty"`
 
 	// The recommended VM SKU for single server.
-	VMSKU *string
+	VMSKU *string `json:"vmSku,omitempty"`
 }
 
 // GetSAPSizingRecommendationResult implements the SAPSizingRecommendationResultClassification interface for type SingleServerRecommendationResult.
@@ -2283,7 +2283,7 @@ func (s *SingleServerRecommendationResult) GetSAPSizingRecommendationResult() *S
 // SkipFileShareConfiguration - Gets or sets the skip file share configuration
 type SkipFileShareConfiguration struct {
 	// REQUIRED; The type of file share config.
-	ConfigurationType *ConfigurationType
+	ConfigurationType *ConfigurationType `json:"configurationType,omitempty"`
 }
 
 // GetFileShareConfiguration implements the FileShareConfigurationClassification interface for type SkipFileShareConfiguration.
@@ -2306,7 +2306,7 @@ type SoftwareConfigurationClassification interface {
 // SoftwareConfiguration - The SAP Software configuration Input.
 type SoftwareConfiguration struct {
 	// REQUIRED; The SAP software installation Type.
-	SoftwareInstallationType *SAPSoftwareInstallationType
+	SoftwareInstallationType *SAPSoftwareInstallationType `json:"softwareInstallationType,omitempty"`
 }
 
 // GetSoftwareConfiguration implements the SoftwareConfigurationClassification interface for type SoftwareConfiguration.
@@ -2317,77 +2317,77 @@ type StopRequest struct {
 	// This parameter defines how long (in seconds) the soft shutdown waits until the RFC/HTTP clients no longer consider the
 	// server for calls with load balancing. Value 0 means that the kernel does not
 	// wait, but goes directly into the next shutdown state, i.e. hard stop.
-	SoftStopTimeoutSeconds *int64
+	SoftStopTimeoutSeconds *int64 `json:"softStopTimeoutSeconds,omitempty"`
 }
 
 // StorageConfiguration - Gets or sets the storage configuration.
 type StorageConfiguration struct {
 	// The properties of the transport directory attached to the VIS. The default for transportFileShareConfiguration is the createAndMount
 	// flow if storage configuration is missing.
-	TransportFileShareConfiguration FileShareConfigurationClassification
+	TransportFileShareConfiguration FileShareConfigurationClassification `json:"transportFileShareConfiguration,omitempty"`
 }
 
 // StorageInformation - Storage details of all the Storage accounts attached to the VM. For e.g. NFS on AFS Shared Storage.
 type StorageInformation struct {
 	// READ-ONLY
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
 
 	// The identity that created the resource.
-	CreatedBy *string
+	CreatedBy *string `json:"createdBy,omitempty"`
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // Tags field of the resource.
 type Tags struct {
 	// Tags field of the resource.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // ThreeTierConfiguration - Gets or sets the three tier SAP configuration.
 type ThreeTierConfiguration struct {
 	// REQUIRED; The application resource group where SAP system resources will be deployed.
-	AppResourceGroup *string
+	AppResourceGroup *string `json:"appResourceGroup,omitempty"`
 
 	// REQUIRED; The application server configuration.
-	ApplicationServer *ApplicationServerConfiguration
+	ApplicationServer *ApplicationServerConfiguration `json:"applicationServer,omitempty"`
 
 	// REQUIRED; The central server configuration.
-	CentralServer *CentralServerConfiguration
+	CentralServer *CentralServerConfiguration `json:"centralServer,omitempty"`
 
 	// REQUIRED; The database configuration.
-	DatabaseServer *DatabaseConfiguration
+	DatabaseServer *DatabaseConfiguration `json:"databaseServer,omitempty"`
 
 	// REQUIRED; The type of SAP deployment, single server or Three tier.
-	DeploymentType *SAPDeploymentType
+	DeploymentType *SAPDeploymentType `json:"deploymentType,omitempty"`
 
 	// The set of custom names to be used for underlying azure resources that are part of the SAP system.
-	CustomResourceNames ThreeTierCustomResourceNamesClassification
+	CustomResourceNames ThreeTierCustomResourceNamesClassification `json:"customResourceNames,omitempty"`
 
 	// The high availability configuration.
-	HighAvailabilityConfig *HighAvailabilityConfiguration
+	HighAvailabilityConfig *HighAvailabilityConfiguration `json:"highAvailabilityConfig,omitempty"`
 
 	// Network configuration common to all servers
-	NetworkConfiguration *NetworkConfiguration
+	NetworkConfiguration *NetworkConfiguration `json:"networkConfiguration,omitempty"`
 
 	// The storage configuration.
-	StorageConfiguration *StorageConfiguration
+	StorageConfiguration *StorageConfiguration `json:"storageConfiguration,omitempty"`
 }
 
 // GetInfrastructureConfiguration implements the InfrastructureConfigurationClassification interface for type ThreeTierConfiguration.
@@ -2411,7 +2411,7 @@ type ThreeTierCustomResourceNamesClassification interface {
 // part of a three tier SAP system.
 type ThreeTierCustomResourceNames struct {
 	// REQUIRED; The pattern type to be used for resource naming.
-	NamingPatternType *NamingPatternType
+	NamingPatternType *NamingPatternType `json:"namingPatternType,omitempty"`
 }
 
 // GetThreeTierCustomResourceNames implements the ThreeTierCustomResourceNamesClassification interface for type ThreeTierCustomResourceNames.
@@ -2423,21 +2423,21 @@ func (t *ThreeTierCustomResourceNames) GetThreeTierCustomResourceNames() *ThreeT
 // resources in a three tier SAP system.
 type ThreeTierFullResourceNames struct {
 	// REQUIRED; The pattern type to be used for resource naming.
-	NamingPatternType *NamingPatternType
+	NamingPatternType *NamingPatternType `json:"namingPatternType,omitempty"`
 
 	// The full resource names object for application layer resources. The number of entries in this list should be equal to the
 	// number VMs to be created for application layer.
-	ApplicationServer *ApplicationServerFullResourceNames
+	ApplicationServer *ApplicationServerFullResourceNames `json:"applicationServer,omitempty"`
 
 	// The full resource names object for central server layer resources.
-	CentralServer *CentralServerFullResourceNames
+	CentralServer *CentralServerFullResourceNames `json:"centralServer,omitempty"`
 
 	// The full resource names object for database layer resources. The number of entries in this list should be equal to the
 	// number VMs to be created for database layer.
-	DatabaseServer *DatabaseServerFullResourceNames
+	DatabaseServer *DatabaseServerFullResourceNames `json:"databaseServer,omitempty"`
 
 	// The resource names object for shared storage.
-	SharedStorage *SharedStorageResourceNames
+	SharedStorage *SharedStorageResourceNames `json:"sharedStorage,omitempty"`
 }
 
 // GetThreeTierCustomResourceNames implements the ThreeTierCustomResourceNamesClassification interface for type ThreeTierFullResourceNames.
@@ -2450,25 +2450,25 @@ func (t *ThreeTierFullResourceNames) GetThreeTierCustomResourceNames() *ThreeTie
 // ThreeTierRecommendationResult - The recommended configuration for a three tier SAP system.
 type ThreeTierRecommendationResult struct {
 	// REQUIRED; The type of SAP deployment, single server or Three tier.
-	DeploymentType *SAPDeploymentType
+	DeploymentType *SAPDeploymentType `json:"deploymentType,omitempty"`
 
 	// The application server instance count.
-	ApplicationServerInstanceCount *int64
+	ApplicationServerInstanceCount *int64 `json:"applicationServerInstanceCount,omitempty"`
 
 	// The application server VM SKU.
-	ApplicationServerVMSKU *string
+	ApplicationServerVMSKU *string `json:"applicationServerVmSku,omitempty"`
 
 	// The central server instance count.
-	CentralServerInstanceCount *int64
+	CentralServerInstanceCount *int64 `json:"centralServerInstanceCount,omitempty"`
 
 	// The central server VM SKU.
-	CentralServerVMSKU *string
+	CentralServerVMSKU *string `json:"centralServerVmSku,omitempty"`
 
 	// The database server instance count.
-	DatabaseInstanceCount *int64
+	DatabaseInstanceCount *int64 `json:"databaseInstanceCount,omitempty"`
 
 	// The database VM SKU.
-	DbVMSKU *string
+	DbVMSKU *string `json:"dbVmSku,omitempty"`
 }
 
 // GetSAPSizingRecommendationResult implements the SAPSizingRecommendationResultClassification interface for type ThreeTierRecommendationResult.
@@ -2482,88 +2482,88 @@ func (t *ThreeTierRecommendationResult) GetSAPSizingRecommendationResult() *SAPS
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string
+	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
-	Name *string
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UpdateMonitorRequest - Defines the request body for updating SAP monitor resource.
 type UpdateMonitorRequest struct {
 	// Managed service identity (user assigned identities)
-	Identity *UserAssignedServiceIdentity
+	Identity *UserAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // UpdateSAPApplicationInstanceRequest - Defines the request body for updating SAP Application Instance.
 type UpdateSAPApplicationInstanceRequest struct {
 	// Gets or sets the Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // UpdateSAPCentralInstanceRequest - Defines the request body for updating SAP Central Instance.
 type UpdateSAPCentralInstanceRequest struct {
 	// Gets or sets the Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // UpdateSAPDatabaseInstanceRequest - Defines the request body for updating SAP Database Instance.
 type UpdateSAPDatabaseInstanceRequest struct {
 	// Gets or sets the Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // UpdateSAPVirtualInstanceRequest - Defines the request body for updating Virtual Instance for SAP.
 type UpdateSAPVirtualInstanceRequest struct {
 	// Managed service identity (user assigned identities)
-	Identity *UserAssignedServiceIdentity
+	Identity *UserAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string
+	ClientID *string `json:"clientId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
 // UserAssignedServiceIdentity - Managed service identity (user assigned identities)
 type UserAssignedServiceIdentity struct {
 	// REQUIRED; Type of manage identity
-	Type *ManagedServiceIdentityType
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
 
 	// User assigned identities dictionary
-	UserAssignedIdentities map[string]*UserAssignedIdentity
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 }
 
 // VirtualMachineConfiguration - Defines the virtual machine configuration.
 type VirtualMachineConfiguration struct {
 	// REQUIRED; The image reference.
-	ImageReference *ImageReference
+	ImageReference *ImageReference `json:"imageReference,omitempty"`
 
 	// REQUIRED; The OS profile.
-	OSProfile *OSProfile
+	OSProfile *OSProfile `json:"osProfile,omitempty"`
 
 	// REQUIRED; The virtual machine size.
-	VMSize *string
+	VMSize *string `json:"vmSize,omitempty"`
 }
 
 // VirtualMachineResourceNames - The resource names object for virtual machine and related resources.
@@ -2571,34 +2571,34 @@ type VirtualMachineResourceNames struct {
 	// The full resource names for virtual machine data disks. This is a dictionary containing list of names of data disks per
 	// volume. Currently supported volumes for database layer are ['hana/data',
 	// 'hana/log', hana/shared', 'usr/sap', 'os', 'backup']. For application and cs layers, only 'default' volume is supported
-	DataDiskNames map[string][]*string
+	DataDiskNames map[string][]*string `json:"dataDiskNames,omitempty"`
 
 	// The full name for virtual-machine's host (computer name). Currently, ACSS only supports host names which are less than
 	// or equal to 13 characters long. If this value is not provided, vmName will be
 	// used as host name.
-	HostName *string
+	HostName *string `json:"hostName,omitempty"`
 
 	// The list of network interface name objects for the selected virtual machine. Currently, only one network interface is supported
 	// per virtual machine.
-	NetworkInterfaces []*NetworkInterfaceResourceNames
+	NetworkInterfaces []*NetworkInterfaceResourceNames `json:"networkInterfaces,omitempty"`
 
 	// The full name for OS disk attached to the VM. If this value is not provided, it will be named by ARM as per its default
 	// naming standards (prefixed with vm name). There is only one OS disk attached per
 	// Virtual Machine.
-	OSDiskName *string
+	OSDiskName *string `json:"osDiskName,omitempty"`
 
 	// The full name for virtual machine. The length of this field can be upto 64 characters. If name is not provided, service
 	// uses a default name based on the deployment type. For SingleServer, default name
 	// is {SID}vm. In case of HA-AvZone systems, default name will be {SID}{app/ascs/db}z{a/b}vm with an incrementor at the end
 	// in case of more than 1 vm per layer. For distributed and HA-AvSet systems,
 	// default name will be {SID}{app/ascs/db}vm with an incrementor at the end in case of more than 1 vm per layer.
-	VMName *string
+	VMName *string `json:"vmName,omitempty"`
 }
 
 // WindowsConfiguration - Specifies Windows operating system settings on the virtual machine.
 type WindowsConfiguration struct {
 	// REQUIRED; The OS Type
-	OSType *OSType
+	OSType *OSType `json:"osType,omitempty"`
 }
 
 // GetOSConfiguration implements the OSConfigurationClassification interface for type WindowsConfiguration.

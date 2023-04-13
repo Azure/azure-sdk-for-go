@@ -14,6 +14,8 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,8 +26,9 @@ import (
 // ProviderInstancesClient contains the methods for the ProviderInstances group.
 // Don't use this type directly, use NewProviderInstancesClient() instead.
 type ProviderInstancesClient struct {
-	internal       *arm.Client
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProviderInstancesClient creates a new instance of ProviderInstancesClient with the specified values.
@@ -33,13 +36,21 @@ type ProviderInstancesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProviderInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderInstancesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProviderInstancesClient", moduleVersion, credential, options)
+	if options == nil {
+		options = &arm.ClientOptions{}
+	}
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProviderInstancesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+		host:           ep,
+		pl:             pl,
 	}
 	return client, nil
 }
@@ -61,11 +72,11 @@ func (client *ProviderInstancesClient) BeginCreate(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProviderInstancesClientCreateResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ProviderInstancesClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ProviderInstancesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[ProviderInstancesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -78,7 +89,7 @@ func (client *ProviderInstancesClient) create(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.internal.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +118,7 @@ func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter providerInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerInstanceName}", url.PathEscape(providerInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,11 +145,11 @@ func (client *ProviderInstancesClient) BeginDelete(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProviderInstancesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ProviderInstancesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ProviderInstancesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[ProviderInstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -151,7 +162,7 @@ func (client *ProviderInstancesClient) deleteOperation(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.internal.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +191,7 @@ func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter providerInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerInstanceName}", url.PathEscape(providerInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -205,7 +216,7 @@ func (client *ProviderInstancesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ProviderInstancesClientGetResponse{}, err
 	}
-	resp, err := client.internal.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ProviderInstancesClientGetResponse{}, err
 	}
@@ -234,7 +245,7 @@ func (client *ProviderInstancesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter providerInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerInstanceName}", url.PathEscape(providerInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -278,7 +289,7 @@ func (client *ProviderInstancesClient) NewListPager(resourceGroupName string, mo
 			if err != nil {
 				return ProviderInstancesClientListResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
+			resp, err := client.pl.Do(req)
 			if err != nil {
 				return ProviderInstancesClientListResponse{}, err
 			}
@@ -305,7 +316,7 @@ func (client *ProviderInstancesClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

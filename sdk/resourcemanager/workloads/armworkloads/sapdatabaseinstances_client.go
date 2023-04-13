@@ -14,6 +14,8 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,8 +26,9 @@ import (
 // SAPDatabaseInstancesClient contains the methods for the SAPDatabaseInstances group.
 // Don't use this type directly, use NewSAPDatabaseInstancesClient() instead.
 type SAPDatabaseInstancesClient struct {
-	internal       *arm.Client
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSAPDatabaseInstancesClient creates a new instance of SAPDatabaseInstancesClient with the specified values.
@@ -33,13 +36,21 @@ type SAPDatabaseInstancesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSAPDatabaseInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SAPDatabaseInstancesClient, error) {
-	cl, err := arm.NewClient(moduleName+".SAPDatabaseInstancesClient", moduleVersion, credential, options)
+	if options == nil {
+		options = &arm.ClientOptions{}
+	}
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SAPDatabaseInstancesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+		host:           ep,
+		pl:             pl,
 	}
 	return client, nil
 }
@@ -61,11 +72,11 @@ func (client *SAPDatabaseInstancesClient) BeginCreate(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPDatabaseInstancesClientCreateResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SAPDatabaseInstancesClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SAPDatabaseInstancesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[SAPDatabaseInstancesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -79,7 +90,7 @@ func (client *SAPDatabaseInstancesClient) create(ctx context.Context, resourceGr
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.internal.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +119,7 @@ func (client *SAPDatabaseInstancesClient) createCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter databaseInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseInstanceName}", url.PathEscape(databaseInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,11 +146,11 @@ func (client *SAPDatabaseInstancesClient) BeginDelete(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPDatabaseInstancesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SAPDatabaseInstancesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SAPDatabaseInstancesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[SAPDatabaseInstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -153,7 +164,7 @@ func (client *SAPDatabaseInstancesClient) deleteOperation(ctx context.Context, r
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.internal.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +193,7 @@ func (client *SAPDatabaseInstancesClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter databaseInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseInstanceName}", url.PathEscape(databaseInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +218,7 @@ func (client *SAPDatabaseInstancesClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return SAPDatabaseInstancesClientGetResponse{}, err
 	}
-	resp, err := client.internal.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SAPDatabaseInstancesClientGetResponse{}, err
 	}
@@ -236,7 +247,7 @@ func (client *SAPDatabaseInstancesClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter databaseInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseInstanceName}", url.PathEscape(databaseInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -279,7 +290,7 @@ func (client *SAPDatabaseInstancesClient) NewListPager(resourceGroupName string,
 			if err != nil {
 				return SAPDatabaseInstancesClientListResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
+			resp, err := client.pl.Do(req)
 			if err != nil {
 				return SAPDatabaseInstancesClientListResponse{}, err
 			}
@@ -306,7 +317,7 @@ func (client *SAPDatabaseInstancesClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter sapVirtualInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sapVirtualInstanceName}", url.PathEscape(sapVirtualInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -341,11 +352,11 @@ func (client *SAPDatabaseInstancesClient) BeginStartInstance(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPDatabaseInstancesClientStartInstanceResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SAPDatabaseInstancesClientStartInstanceResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SAPDatabaseInstancesClientStartInstanceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[SAPDatabaseInstancesClientStartInstanceResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -358,7 +369,7 @@ func (client *SAPDatabaseInstancesClient) startInstance(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.internal.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -387,7 +398,7 @@ func (client *SAPDatabaseInstancesClient) startInstanceCreateRequest(ctx context
 		return nil, errors.New("parameter databaseInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseInstanceName}", url.PathEscape(databaseInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -413,11 +424,11 @@ func (client *SAPDatabaseInstancesClient) BeginStopInstance(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPDatabaseInstancesClientStopInstanceResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SAPDatabaseInstancesClientStopInstanceResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SAPDatabaseInstancesClientStopInstanceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[SAPDatabaseInstancesClientStopInstanceResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -430,7 +441,7 @@ func (client *SAPDatabaseInstancesClient) stopInstance(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.internal.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -459,7 +470,7 @@ func (client *SAPDatabaseInstancesClient) stopInstanceCreateRequest(ctx context.
 		return nil, errors.New("parameter databaseInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseInstanceName}", url.PathEscape(databaseInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -489,11 +500,11 @@ func (client *SAPDatabaseInstancesClient) BeginUpdate(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPDatabaseInstancesClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SAPDatabaseInstancesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SAPDatabaseInstancesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[SAPDatabaseInstancesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -506,7 +517,7 @@ func (client *SAPDatabaseInstancesClient) update(ctx context.Context, resourceGr
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.internal.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -535,7 +546,7 @@ func (client *SAPDatabaseInstancesClient) updateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter databaseInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseInstanceName}", url.PathEscape(databaseInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

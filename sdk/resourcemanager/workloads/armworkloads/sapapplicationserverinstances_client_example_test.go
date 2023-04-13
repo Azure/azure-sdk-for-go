@@ -25,11 +25,11 @@ func ExampleSAPApplicationServerInstancesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSAPApplicationServerInstancesClient().Get(ctx, "test-rg", "X00", "app01", nil)
+	res, err := client.Get(ctx, "test-rg", "X00", "app01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -79,11 +79,11 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_createSapApplication
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginCreate(ctx, "test-rg", "X00", "app01", armworkloads.SAPApplicationServerInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", "app01", armworkloads.SAPApplicationServerInstance{
 		Location:   to.Ptr("westcentralus"),
 		Tags:       map[string]*string{},
 		Properties: &armworkloads.SAPApplicationServerProperties{},
@@ -156,11 +156,11 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_sapApplicationServer
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginCreate(ctx, "test-rg", "X00", "app01", armworkloads.SAPApplicationServerInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", "app01", armworkloads.SAPApplicationServerInstance{
 		Location:   to.Ptr("westcentralus"),
 		Tags:       map[string]*string{},
 		Properties: &armworkloads.SAPApplicationServerProperties{},
@@ -218,11 +218,11 @@ func ExampleSAPApplicationServerInstancesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginUpdate(ctx, "test-rg", "X00", "app01", armworkloads.UpdateSAPApplicationInstanceRequest{
+	poller, err := client.BeginUpdate(ctx, "test-rg", "X00", "app01", armworkloads.UpdateSAPApplicationInstanceRequest{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 		},
@@ -280,11 +280,11 @@ func ExampleSAPApplicationServerInstancesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginDelete(ctx, "test-rg", "X00", "app01", nil)
+	poller, err := client.BeginDelete(ctx, "test-rg", "X00", "app01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -311,11 +311,11 @@ func ExampleSAPApplicationServerInstancesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSAPApplicationServerInstancesClient().NewListPager("test-rg", "X00", nil)
+	pager := client.NewListPager("test-rg", "X00", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -407,11 +407,11 @@ func ExampleSAPApplicationServerInstancesClient_BeginStartInstance() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPApplicationServerInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStartInstance(ctx, "test-rg", "X00", "app01", nil)
+	poller, err := client.BeginStartInstance(ctx, "test-rg", "X00", "app01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -438,11 +438,11 @@ func ExampleSAPApplicationServerInstancesClient_BeginStopInstance() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPApplicationServerInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStopInstance(ctx, "test-rg", "X00", "app01", &armworkloads.SAPApplicationServerInstancesClientBeginStopInstanceOptions{Body: &armworkloads.StopRequest{
+	poller, err := client.BeginStopInstance(ctx, "test-rg", "X00", "app01", &armworkloads.SAPApplicationServerInstancesClientBeginStopInstanceOptions{Body: &armworkloads.StopRequest{
 		SoftStopTimeoutSeconds: to.Ptr[int64](0),
 	},
 	})

@@ -25,11 +25,11 @@ func ExampleSapLandscapeMonitorClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSapLandscapeMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSapLandscapeMonitorClient().Get(ctx, "myResourceGroup", "mySapMonitor", nil)
+	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -83,11 +83,11 @@ func ExampleSapLandscapeMonitorClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSapLandscapeMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSapLandscapeMonitorClient().Create(ctx, "myResourceGroup", "mySapMonitor", armworkloads.SapLandscapeMonitor{
+	res, err := client.Create(ctx, "myResourceGroup", "mySapMonitor", armworkloads.SapLandscapeMonitor{
 		Properties: &armworkloads.SapLandscapeMonitorProperties{
 			Grouping: &armworkloads.SapLandscapeMonitorPropertiesGrouping{
 				Landscape: []*armworkloads.SapLandscapeMonitorSidMapping{
@@ -167,11 +167,11 @@ func ExampleSapLandscapeMonitorClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSapLandscapeMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewSapLandscapeMonitorClient().Delete(ctx, "myResourceGroup", "mySapMonitor", nil)
+	_, err = client.Delete(ctx, "myResourceGroup", "mySapMonitor", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -184,11 +184,11 @@ func ExampleSapLandscapeMonitorClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSapLandscapeMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSapLandscapeMonitorClient().Update(ctx, "myResourceGroup", "mySapMonitor", armworkloads.SapLandscapeMonitor{
+	res, err := client.Update(ctx, "myResourceGroup", "mySapMonitor", armworkloads.SapLandscapeMonitor{
 		Properties: &armworkloads.SapLandscapeMonitorProperties{
 			Grouping: &armworkloads.SapLandscapeMonitorPropertiesGrouping{
 				Landscape: []*armworkloads.SapLandscapeMonitorSidMapping{
@@ -268,11 +268,11 @@ func ExampleSapLandscapeMonitorClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSapLandscapeMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSapLandscapeMonitorClient().List(ctx, "myResourceGroup", "mySapMonitor", nil)
+	res, err := client.List(ctx, "myResourceGroup", "mySapMonitor", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

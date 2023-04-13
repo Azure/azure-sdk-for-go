@@ -25,11 +25,11 @@ func ExampleSAPCentralInstancesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPCentralInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSAPCentralInstancesClient().Get(ctx, "test-rg", "X00", "centralServer", nil)
+	res, err := client.Get(ctx, "test-rg", "X00", "centralServer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,11 +102,11 @@ func ExampleSAPCentralInstancesClient_BeginCreate_createSapCentralInstancesForHa
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPCentralInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginCreate(ctx, "test-rg", "X00", "centralServer", armworkloads.SAPCentralServerInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", "centralServer", armworkloads.SAPCentralServerInstance{
 		Location:   to.Ptr("westcentralus"),
 		Tags:       map[string]*string{},
 		Properties: &armworkloads.SAPCentralServerProperties{},
@@ -202,11 +202,11 @@ func ExampleSAPCentralInstancesClient_BeginCreate_sapCentralInstancesCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPCentralInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginCreate(ctx, "test-rg", "X00", "centralServer", armworkloads.SAPCentralServerInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", "centralServer", armworkloads.SAPCentralServerInstance{
 		Location:   to.Ptr("westcentralus"),
 		Tags:       map[string]*string{},
 		Properties: &armworkloads.SAPCentralServerProperties{},
@@ -287,11 +287,11 @@ func ExampleSAPCentralInstancesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPCentralInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginUpdate(ctx, "test-rg", "X00", "centralServer", armworkloads.UpdateSAPCentralInstanceRequest{
+	poller, err := client.BeginUpdate(ctx, "test-rg", "X00", "centralServer", armworkloads.UpdateSAPCentralInstanceRequest{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 		},
@@ -372,11 +372,11 @@ func ExampleSAPCentralInstancesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPCentralInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginDelete(ctx, "test-rg", "X00", "centralServer", nil)
+	poller, err := client.BeginDelete(ctx, "test-rg", "X00", "centralServer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -403,11 +403,11 @@ func ExampleSAPCentralInstancesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPCentralInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSAPCentralInstancesClient().NewListPager("test-rg", "X00", nil)
+	pager := client.NewListPager("test-rg", "X00", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -488,11 +488,11 @@ func ExampleSAPCentralInstancesClient_BeginStartInstance() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPCentralInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginStartInstance(ctx, "test-rg", "X00", "centralServer", nil)
+	poller, err := client.BeginStartInstance(ctx, "test-rg", "X00", "centralServer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -519,11 +519,11 @@ func ExampleSAPCentralInstancesClient_BeginStopInstance() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPCentralInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginStopInstance(ctx, "test-rg", "X00", "centralServer", &armworkloads.SAPCentralInstancesClientBeginStopInstanceOptions{Body: &armworkloads.StopRequest{
+	poller, err := client.BeginStopInstance(ctx, "test-rg", "X00", "centralServer", &armworkloads.SAPCentralInstancesClientBeginStopInstanceOptions{Body: &armworkloads.StopRequest{
 		SoftStopTimeoutSeconds: to.Ptr[int64](1200),
 	},
 	})

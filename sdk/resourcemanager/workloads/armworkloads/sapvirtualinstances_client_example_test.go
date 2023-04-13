@@ -25,11 +25,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -403,11 +403,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -887,11 +887,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -1365,11 +1365,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -1517,11 +1517,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForDis
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -1746,11 +1746,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaS
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -1981,11 +1981,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaS
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -2216,11 +2216,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForSin
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -2338,11 +2338,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -2650,11 +2650,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -2968,11 +2968,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -3286,11 +3286,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -3504,11 +3504,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -3724,11 +3724,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -3950,11 +3950,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -4176,11 +4176,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -4302,11 +4302,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithANewSa
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -4536,11 +4536,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithAnExis
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -4770,11 +4770,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithoutSap
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -5000,11 +5000,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("eastus2"),
 		Tags: map[string]*string{
 			"created by": to.Ptr("azureuser"),
@@ -5233,11 +5233,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -5365,11 +5365,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -5597,11 +5597,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -5829,11 +5829,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_installSapSoftwareOnDistribute
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("eastus2"),
 		Tags: map[string]*string{
 			"created by": to.Ptr("azureuser"),
@@ -6066,11 +6066,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_installSapSoftwareOnSingleServ
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("eastus2"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloads.SAPVirtualInstanceProperties{
@@ -6247,11 +6247,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVir
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("northeurope"),
 		Tags: map[string]*string{
 			"createdby": to.Ptr("abc@microsoft.com"),
@@ -6317,11 +6317,11 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVir
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
+	poller, err := client.BeginCreate(ctx, "test-rg", "X00", armworkloads.SAPVirtualInstance{
 		Location: to.Ptr("northeurope"),
 		Tags: map[string]*string{
 			"createdby": to.Ptr("abc@microsoft.com"),
@@ -6385,11 +6385,11 @@ func ExampleSAPVirtualInstancesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSAPVirtualInstancesClient().Get(ctx, "test-rg", "X00", nil)
+	res, err := client.Get(ctx, "test-rg", "X00", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -6526,11 +6526,11 @@ func ExampleSAPVirtualInstancesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSAPVirtualInstancesClient().Update(ctx, "test-rg", "X00", armworkloads.UpdateSAPVirtualInstanceRequest{
+	res, err := client.Update(ctx, "test-rg", "X00", armworkloads.UpdateSAPVirtualInstanceRequest{
 		Identity: &armworkloads.UserAssignedServiceIdentity{
 			Type: to.Ptr(armworkloads.ManagedServiceIdentityTypeNone),
 		},
@@ -6587,11 +6587,11 @@ func ExampleSAPVirtualInstancesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginDelete(ctx, "test-rg", "X00", nil)
+	poller, err := client.BeginDelete(ctx, "test-rg", "X00", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -6618,11 +6618,11 @@ func ExampleSAPVirtualInstancesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSAPVirtualInstancesClient().NewListByResourceGroupPager("test-rg", nil)
+	pager := client.NewListByResourceGroupPager("test-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -6885,11 +6885,11 @@ func ExampleSAPVirtualInstancesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSAPVirtualInstancesClient().NewListBySubscriptionPager(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -7152,11 +7152,11 @@ func ExampleSAPVirtualInstancesClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", nil)
+	poller, err := client.BeginStart(ctx, "test-rg", "X00", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -7183,11 +7183,11 @@ func ExampleSAPVirtualInstancesClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
+	client, err := armworkloads.NewSAPVirtualInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloads.SAPVirtualInstancesClientBeginStopOptions{Body: &armworkloads.StopRequest{
+	poller, err := client.BeginStop(ctx, "test-rg", "X00", &armworkloads.SAPVirtualInstancesClientBeginStopOptions{Body: &armworkloads.StopRequest{
 		SoftStopTimeoutSeconds: to.Ptr[int64](0),
 	},
 	})

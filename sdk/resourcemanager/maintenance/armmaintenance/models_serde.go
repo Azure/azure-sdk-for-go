@@ -439,7 +439,7 @@ func (o Operation) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isDataAction", o.IsDataAction)
 	populate(objectMap, "name", o.Name)
 	populate(objectMap, "origin", o.Origin)
-	populate(objectMap, "properties", &o.Properties)
+	populateAny(objectMap, "properties", o.Properties)
 	return json.Marshal(objectMap)
 }
 
@@ -750,6 +750,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

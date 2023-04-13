@@ -11,7 +11,7 @@ package armredisenterprise
 
 const (
 	moduleName    = "armredisenterprise"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // AccessKeyType - Which access key to regenerate.

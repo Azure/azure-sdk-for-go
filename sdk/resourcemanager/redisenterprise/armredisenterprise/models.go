@@ -12,10 +12,10 @@ package armredisenterprise
 // AccessKeys - The secret access keys used for authenticating connections to redis
 type AccessKeys struct {
 	// READ-ONLY; The current primary key that clients can use to authenticate
-	PrimaryKey *string `json:"primaryKey,omitempty" azure:"ro"`
+	PrimaryKey *string
 
 	// READ-ONLY; The current secondary key that clients can use to authenticate
-	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
+	SecondaryKey *string
 }
 
 // ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
@@ -54,140 +54,140 @@ type ClientListOptions struct {
 // Cluster - Describes the RedisEnterprise cluster
 type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The SKU to create, which affects price, performance, and features.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Other properties of the cluster.
-	Properties *ClusterProperties `json:"properties,omitempty"`
+	Properties *ClusterProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// The Availability Zones where this cluster will be deployed.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClusterList - The response of a list-all operation.
 type ClusterList struct {
 	// List of clusters.
-	Value []*Cluster `json:"value,omitempty"`
+	Value []*Cluster
 
 	// READ-ONLY; The URI to fetch the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ClusterProperties - Properties of RedisEnterprise clusters, as opposed to general resource properties like location, tags
 type ClusterProperties struct {
 	// The minimum TLS version for the cluster to support, e.g. '1.2'
-	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
+	MinimumTLSVersion *TLSVersion
 
 	// READ-ONLY; DNS name of the cluster endpoint
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
+	HostName *string
 
 	// READ-ONLY; List of private endpoint connections associated with the specified RedisEnterprise cluster
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Current provisioning status of the cluster
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Version of redis the cluster supports, e.g. '6'
-	RedisVersion *string `json:"redisVersion,omitempty" azure:"ro"`
+	RedisVersion *string
 
 	// READ-ONLY; Current resource status of the cluster
-	ResourceState *ResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *ResourceState
 }
 
 // ClusterUpdate - A partial update to the RedisEnterprise cluster
 type ClusterUpdate struct {
 	// Other properties of the cluster.
-	Properties *ClusterProperties `json:"properties,omitempty"`
+	Properties *ClusterProperties
 
 	// The SKU to create, which affects price, performance, and features.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // Database - Describes a database on the RedisEnterprise cluster
 type Database struct {
 	// Other properties of the database.
-	Properties *DatabaseProperties `json:"properties,omitempty"`
+	Properties *DatabaseProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DatabaseList - The response of a list-all operation.
 type DatabaseList struct {
 	// List of databases
-	Value []*Database `json:"value,omitempty"`
+	Value []*Database
 
 	// READ-ONLY; The URI to fetch the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DatabaseProperties - Properties of RedisEnterprise databases, as opposed to general resource properties like location,
 // tags
 type DatabaseProperties struct {
 	// Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted.
-	ClientProtocol *Protocol `json:"clientProtocol,omitempty"`
+	ClientProtocol *Protocol
 
 	// Clustering policy - default is OSSCluster. Specified at create time.
-	ClusteringPolicy *ClusteringPolicy `json:"clusteringPolicy,omitempty"`
+	ClusteringPolicy *ClusteringPolicy
 
 	// Redis eviction policy - default is VolatileLRU
-	EvictionPolicy *EvictionPolicy `json:"evictionPolicy,omitempty"`
+	EvictionPolicy *EvictionPolicy
 
 	// Optional set of properties to configure geo replication for this database.
-	GeoReplication *DatabasePropertiesGeoReplication `json:"geoReplication,omitempty"`
+	GeoReplication *DatabasePropertiesGeoReplication
 
 	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
-	Modules []*Module `json:"modules,omitempty"`
+	Modules []*Module
 
 	// Persistence settings
-	Persistence *Persistence `json:"persistence,omitempty"`
+	Persistence *Persistence
 
 	// TCP port of the database endpoint. Specified at create time. Defaults to an available port.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 
 	// READ-ONLY; Current provisioning status of the database
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Current resource status of the database
-	ResourceState *ResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *ResourceState
 }
 
 // DatabasePropertiesGeoReplication - Optional set of properties to configure geo replication for this database.
 type DatabasePropertiesGeoReplication struct {
 	// Name for the group of linked database resources
-	GroupNickname *string `json:"groupNickname,omitempty"`
+	GroupNickname *string
 
 	// List of database resources to link with this database
-	LinkedDatabases []*LinkedDatabase `json:"linkedDatabases,omitempty"`
+	LinkedDatabases []*LinkedDatabase
 }
 
 // DatabaseUpdate - A partial update to the RedisEnterprise database
 type DatabaseUpdate struct {
 	// Properties of the database.
-	Properties *DatabaseProperties `json:"properties,omitempty"`
+	Properties *DatabaseProperties
 }
 
 // DatabasesClientBeginCreateOptions contains the optional parameters for the DatabasesClient.BeginCreate method.
@@ -250,144 +250,144 @@ type DatabasesClientListKeysOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // ExportClusterParameters - Parameters for a Redis Enterprise export operation.
 type ExportClusterParameters struct {
 	// REQUIRED; SAS URI for the target directory to export to
-	SasURI *string `json:"sasUri,omitempty"`
+	SasURI *string
 }
 
 // ForceUnlinkParameters - Parameters for a Redis Enterprise Active Geo Replication Force Unlink operation.
 type ForceUnlinkParameters struct {
 	// REQUIRED; The resource IDs of the database resources to be unlinked.
-	IDs []*string `json:"ids,omitempty"`
+	IDs []*string
 }
 
 // ImportClusterParameters - Parameters for a Redis Enterprise import operation.
 type ImportClusterParameters struct {
 	// REQUIRED; SAS URIs for the target blobs to import from
-	SasUris []*string `json:"sasUris,omitempty"`
+	SasUris []*string
 }
 
 // LinkedDatabase - Specifies details of a linked database resource.
 type LinkedDatabase struct {
 	// Resource ID of a database resource to link with this database.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; State of the link between the database resources.
-	State *LinkState `json:"state,omitempty" azure:"ro"`
+	State *LinkState
 }
 
 // Module - Specifies configuration of a redis module
 type Module struct {
 	// REQUIRED; The name of the module, e.g. 'RedisBloom', 'RediSearch', 'RedisTimeSeries'
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Configuration options for the module, e.g. 'ERRORRATE 0.01 INITIALSIZE 400'.
-	Args *string `json:"args,omitempty"`
+	Args *string
 
 	// READ-ONLY; The version of the module, e.g. '1.0'.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationStatus - The status of a long-running operation.
 type OperationStatus struct {
 	// The end time of the operation.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// Error response describing why the operation failed.
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 
 	// The operation's unique id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The operation's name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The start time of the operation.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 
 	// The current status of the operation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -403,55 +403,55 @@ type OperationsStatusClientGetOptions struct {
 // Persistence-related configuration for the RedisEnterprise database
 type Persistence struct {
 	// Sets whether AOF is enabled.
-	AofEnabled *bool `json:"aofEnabled,omitempty"`
+	AofEnabled *bool
 
 	// Sets the frequency at which data is written to disk.
-	AofFrequency *AofFrequency `json:"aofFrequency,omitempty"`
+	AofFrequency *AofFrequency
 
 	// Sets whether RDB is enabled.
-	RdbEnabled *bool `json:"rdbEnabled,omitempty"`
+	RdbEnabled *bool
 
 	// Sets the frequency at which a snapshot of the database is created.
-	RdbFrequency *RdbFrequency `json:"rdbFrequency,omitempty"`
+	RdbFrequency *RdbFrequency
 }
 
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginPut
@@ -482,34 +482,34 @@ type PrivateEndpointConnectionsClientListOptions struct {
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkResourcesClientListByClusterOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByClusterPager
@@ -522,71 +522,71 @@ type PrivateLinkResourcesClientListByClusterOptions struct {
 // and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointServiceConnectionStatus
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RegenerateKeyParameters - Specifies which access keys to reset to a new random value.
 type RegenerateKeyParameters struct {
 	// REQUIRED; Which access key to regenerate.
-	KeyType *AccessKeyType `json:"keyType,omitempty"`
+	KeyType *AccessKeyType
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SKU parameters supplied to the create RedisEnterprise operation.
 type SKU struct {
 	// REQUIRED; The type of RedisEnterprise cluster to deploy. Possible values: (EnterpriseE10, EnterpriseFlashF300 etc.)
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 
 	// The size of the RedisEnterprise cluster. Defaults to 2 or 3 depending on SKU. Valid values are (2, 4, 6, …) for Enterprise
 	// SKUs and (3, 9, 15, …) for Flash SKUs.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }

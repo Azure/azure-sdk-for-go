@@ -11,7 +11,7 @@ package armsynapse
 
 const (
 	moduleName    = "armsynapse"
-	moduleVersion = "v0.7.0"
+	moduleVersion = "v0.7.1"
 )
 
 // ActualState - Actual state

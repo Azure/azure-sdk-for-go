@@ -61,7 +61,7 @@ func (n *NotificationHubClient) CancelScheduledNotification(notificationId strin
 		return nil, err
 	}
 
-	return n.createNotificationResponse(res)
+	return createNotificationResponse(res)
 }
 
 // Schedules a notification to be sent at a specified time.
@@ -98,12 +98,12 @@ func (n *NotificationHubClient) SendScheduledNotification(notificationRequest *N
 		return nil, fmt.Errorf("invalid response from Azure Notification Hubs: %v", res.StatusCode)
 	}
 
-	return n.createNotificationMessageResponse(res)
+	return createNotificationMessageResponse(res)
 }
 
 // Sends a direct notification to a device.
-func (n *NotificationHubClient) SendDirectNotification(notificationRequest *NotificationRequest, deviceToken string) (*NotificationMessageResponse, error) {
-	return n.sendNotification(notificationRequest, &deviceToken, nil)
+func (n *NotificationHubClient) SendDirectNotification(notificationRequest *NotificationRequest, deviceToken interface{}) (*NotificationMessageResponse, error) {
+	return n.sendNotification(notificationRequest, deviceToken, nil)
 }
 
 // Sends a notification to a tag expression or if not specified, to all devices.
@@ -111,9 +111,9 @@ func (n *NotificationHubClient) SendNotification(notificationRequest *Notificati
 	return n.sendNotification(notificationRequest, nil, &tagExpression)
 }
 
-func (n *NotificationHubClient) sendNotification(notificationRequest *NotificationRequest, deviceToken *string, tagExpression *string) (*NotificationMessageResponse, error) {
+func (n *NotificationHubClient) sendNotification(notificationRequest *NotificationRequest, deviceHandle interface{}, tagExpression *string) (*NotificationMessageResponse, error) {
 	requestUri := fmt.Sprintf("%v%v/messages/?api-version=%v", n.endpointUrl, n.hubName, AZNHApiVersion)
-	if deviceToken != nil {
+	if deviceHandle != nil {
 		requestUri += "&direct=true"
 	}
 
@@ -129,8 +129,11 @@ func (n *NotificationHubClient) sendNotification(notificationRequest *Notificati
 		req.Header.Add(headerName, headerValue)
 	}
 
-	if deviceToken != nil {
-		req.Header.Add("ServiceBusNotification-DeviceHandle", *deviceToken)
+	if deviceHandle != nil {
+		err := setDeviceHandle(deviceHandle, req)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	if tagExpression != nil {
@@ -150,7 +153,7 @@ func (n *NotificationHubClient) sendNotification(notificationRequest *Notificati
 		return nil, fmt.Errorf("invalid response from Azure Notification Hubs: %v", res.StatusCode)
 	}
 
-	return n.createNotificationMessageResponse(res)
+	return createNotificationMessageResponse(res)
 }
 
 // Gets the installation for the specified installation ID.
@@ -213,7 +216,7 @@ func (n *NotificationHubClient) CreateOrUpdateInstallation(installation *Install
 		return nil, fmt.Errorf("invalid response from Azure Notification Hubs: %v", res.StatusCode)
 	}
 
-	return n.createNotificationResponse(res)
+	return createNotificationResponse(res)
 }
 
 // Updates an installation with the specified patches.
@@ -243,7 +246,7 @@ func (n *NotificationHubClient) UpdateInstallation(installationId string, patche
 		return nil, fmt.Errorf("invalid response from Azure Notification Hubs: %v", res.StatusCode)
 	}
 
-	return n.createNotificationResponse(res)
+	return createNotificationResponse(res)
 }
 
 // Deletes an installation from Azure Notification Hubs.
@@ -267,7 +270,7 @@ func (n *NotificationHubClient) DeleteInstallation(installationId string) (*Noti
 		return nil, fmt.Errorf("invalid response from Azure Notification Hubs: %v", res.StatusCode)
 	}
 
-	return n.createNotificationResponse(res)
+	return createNotificationResponse(res)
 }
 
 func generateUserAgent() string {
@@ -281,7 +284,36 @@ func (n *NotificationHubClient) addRequestHeaders(req *http.Request) {
 	req.Header.Set("User-Agent", generateUserAgent())
 }
 
-func (*NotificationHubClient) createNotificationMessageResponse(res *http.Response) (*NotificationMessageResponse, error) {
+func setDeviceHandle(deviceHandle interface{}, req *http.Request) error {
+	var (
+		endpoint, p256dh, auth string
+		ok                     bool
+	)
+
+	switch v := deviceHandle.(type) {
+	case string:
+		req.Header.Set("ServiceBusNotification-DeviceHandle", v)
+	case map[string]interface{}:
+		if endpoint, ok = v["endpoint"].(string); !ok {
+			return fmt.Errorf("missing endpoint")
+		}
+		if p256dh, ok = v["p256dh"].(string); !ok {
+			return fmt.Errorf("missing p256dh")
+		}
+		if auth, ok = v["auth"].(string); !ok {
+			return fmt.Errorf("missing auth")
+		}
+		req.Header.Set("ServiceBusNotification-DeviceHandle", endpoint)
+		req.Header.Set("p256", p256dh)
+		req.Header.Set("auth", auth)
+	default:
+		return fmt.Errorf("invalid deviceHandle type")
+	}
+
+	return nil
+}
+
+func createNotificationMessageResponse(res *http.Response) (*NotificationMessageResponse, error) {
 	var notificationId string
 	correlationId := res.Header.Get("x-ms-correlation-request-id")
 	trackingId := res.Header.Get("TrackingId")
@@ -302,7 +334,7 @@ func (*NotificationHubClient) createNotificationMessageResponse(res *http.Respon
 	}, nil
 }
 
-func (*NotificationHubClient) createNotificationResponse(res *http.Response) (*NotificationResponse, error) {
+func createNotificationResponse(res *http.Response) (*NotificationResponse, error) {
 	correlationId := res.Header.Get("x-ms-correlation-request-id")
 	trackingId := res.Header.Get("TrackingId")
 	location := res.Header.Get("Location")

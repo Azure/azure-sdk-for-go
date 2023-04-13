@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2023-04-14)
+### Features Added
+
+- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
+- New function `*ClientFactory.NewClient() *Client`
+- New function `*ClientFactory.NewMonitorsClient() *MonitorsClient`
+- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
+- New function `*ClientFactory.NewProviderInstancesClient() *ProviderInstancesClient`
+- New function `*ClientFactory.NewSAPApplicationServerInstancesClient() *SAPApplicationServerInstancesClient`
+- New function `*ClientFactory.NewSAPCentralInstancesClient() *SAPCentralInstancesClient`
+- New function `*ClientFactory.NewSAPDatabaseInstancesClient() *SAPDatabaseInstancesClient`
+- New function `*ClientFactory.NewSAPVirtualInstancesClient() *SAPVirtualInstancesClient`
+- New function `*ClientFactory.NewSapLandscapeMonitorClient() *SapLandscapeMonitorClient`
+- New struct `ClientFactory`
+
+
 ## 0.3.0 (2023-02-24)
 ### Breaking Changes
 

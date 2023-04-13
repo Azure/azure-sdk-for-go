@@ -11,7 +11,7 @@ package armworkloads
 
 const (
 	moduleName    = "armworkloads"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

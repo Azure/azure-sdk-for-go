@@ -24,11 +24,11 @@ func ExampleClient_SAPSizingRecommendations_sapSizingRecommendationsS4HanaDistri
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPSizingRecommendations(ctx, "centralus", &armworkloads.ClientSAPSizingRecommendationsOptions{SAPSizingRecommendation: nil})
+	res, err := clientFactory.NewClient().SAPSizingRecommendations(ctx, "centralus", &armworkloads.ClientSAPSizingRecommendationsOptions{SAPSizingRecommendation: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -55,11 +55,11 @@ func ExampleClient_SAPSizingRecommendations_sapSizingRecommendationsS4HanaDistri
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPSizingRecommendations(ctx, "centralus", &armworkloads.ClientSAPSizingRecommendationsOptions{SAPSizingRecommendation: nil})
+	res, err := clientFactory.NewClient().SAPSizingRecommendations(ctx, "centralus", &armworkloads.ClientSAPSizingRecommendationsOptions{SAPSizingRecommendation: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -86,11 +86,11 @@ func ExampleClient_SAPSizingRecommendations_sapSizingRecommendationsS4HanaDistri
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPSizingRecommendations(ctx, "centralus", &armworkloads.ClientSAPSizingRecommendationsOptions{SAPSizingRecommendation: nil})
+	res, err := clientFactory.NewClient().SAPSizingRecommendations(ctx, "centralus", &armworkloads.ClientSAPSizingRecommendationsOptions{SAPSizingRecommendation: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -117,11 +117,11 @@ func ExampleClient_SAPSizingRecommendations_sapSizingRecommendationsS4HanaSingle
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPSizingRecommendations(ctx, "centralus", &armworkloads.ClientSAPSizingRecommendationsOptions{SAPSizingRecommendation: nil})
+	res, err := clientFactory.NewClient().SAPSizingRecommendations(ctx, "centralus", &armworkloads.ClientSAPSizingRecommendationsOptions{SAPSizingRecommendation: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -143,11 +143,11 @@ func ExampleClient_SAPSupportedSKU_sapSupportedSkusDistributed() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPSupportedSKU(ctx, "centralus", &armworkloads.ClientSAPSupportedSKUOptions{SAPSupportedSKU: nil})
+	res, err := clientFactory.NewClient().SAPSupportedSKU(ctx, "centralus", &armworkloads.ClientSAPSupportedSKUOptions{SAPSupportedSKU: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -256,11 +256,11 @@ func ExampleClient_SAPSupportedSKU_sapSupportedSkusDistributedHaAvSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPSupportedSKU(ctx, "centralus", &armworkloads.ClientSAPSupportedSKUOptions{SAPSupportedSKU: nil})
+	res, err := clientFactory.NewClient().SAPSupportedSKU(ctx, "centralus", &armworkloads.ClientSAPSupportedSKUOptions{SAPSupportedSKU: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -369,11 +369,11 @@ func ExampleClient_SAPSupportedSKU_sapSupportedSkusDistributedHaAvZone() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPSupportedSKU(ctx, "centralus", &armworkloads.ClientSAPSupportedSKUOptions{SAPSupportedSKU: nil})
+	res, err := clientFactory.NewClient().SAPSupportedSKU(ctx, "centralus", &armworkloads.ClientSAPSupportedSKUOptions{SAPSupportedSKU: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -462,11 +462,11 @@ func ExampleClient_SAPSupportedSKU_sapSupportedSkusSingleServer() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPSupportedSKU(ctx, "centralus", &armworkloads.ClientSAPSupportedSKUOptions{SAPSupportedSKU: nil})
+	res, err := clientFactory.NewClient().SAPSupportedSKU(ctx, "centralus", &armworkloads.ClientSAPSupportedSKUOptions{SAPSupportedSKU: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -505,11 +505,11 @@ func ExampleClient_SAPDiskConfigurations_sapDiskConfigurationsNonProd() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPDiskConfigurations(ctx, "centralus", &armworkloads.ClientSAPDiskConfigurationsOptions{SAPDiskConfigurations: nil})
+	res, err := clientFactory.NewClient().SAPDiskConfigurations(ctx, "centralus", &armworkloads.ClientSAPDiskConfigurationsOptions{SAPDiskConfigurations: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -897,11 +897,11 @@ func ExampleClient_SAPDiskConfigurations_sapDiskConfigurationsProd() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPDiskConfigurations(ctx, "centralus", &armworkloads.ClientSAPDiskConfigurationsOptions{SAPDiskConfigurations: nil})
+	res, err := clientFactory.NewClient().SAPDiskConfigurations(ctx, "centralus", &armworkloads.ClientSAPDiskConfigurationsOptions{SAPDiskConfigurations: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1146,11 +1146,11 @@ func ExampleClient_SAPAvailabilityZoneDetails_sapAvailabilityZoneDetailsEastus()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPAvailabilityZoneDetails(ctx, "centralus", &armworkloads.ClientSAPAvailabilityZoneDetailsOptions{SAPAvailabilityZoneDetails: nil})
+	res, err := clientFactory.NewClient().SAPAvailabilityZoneDetails(ctx, "centralus", &armworkloads.ClientSAPAvailabilityZoneDetailsOptions{SAPAvailabilityZoneDetails: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1173,11 +1173,11 @@ func ExampleClient_SAPAvailabilityZoneDetails_sapAvailabilityZoneDetailsNortheur
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.SAPAvailabilityZoneDetails(ctx, "centralus", &armworkloads.ClientSAPAvailabilityZoneDetailsOptions{SAPAvailabilityZoneDetails: nil})
+	res, err := clientFactory.NewClient().SAPAvailabilityZoneDetails(ctx, "centralus", &armworkloads.ClientSAPAvailabilityZoneDetailsOptions{SAPAvailabilityZoneDetails: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

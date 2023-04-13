@@ -112,7 +112,7 @@ For more details on how authentication works in `azidentity`, please see the doc
 
 ## Creating a Resource Management Client
 
-Once you have a credential, you need to create a client factory to use any client in this module. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients through the client factory to access the APIs you require using your `azcore.TokenCredential`.
+Once you have a credential, you will need to decide what service to use and create a client to connect to that service. We provide a client factory which could be used to create any client in one service module. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients through the client factory to access the APIs you require using your `azcore.TokenCredential`.
 
 To show an example, we will create a client to manage Virtual Machines. The code to achieve this task would be:
 
@@ -206,9 +206,9 @@ func main() {
         log.Fatalf("authentication failure: %+v", err)
     }
 	
-	clientFactory,err := armresources.NewClientFactory(subscriptionId, cred, nil)
+	clientFactory, err := armresources.NewClientFactory(subscriptionId, cred, nil)
     if err != nil {
-      log.Fatalf("new client factory failure: %+v", err)
+        log.Fatalf("cannot create client factory: %+v", err)
     }
     rgClient = clientFactory.NewResourceGroupsClient()
 	
@@ -287,9 +287,9 @@ func main() {
         log.Fatalf("authentication failure: %+v", err)
     }
 
-    clientFactory,err := armresources.NewClientFactory(subscriptionId, cred, nil)
+    clientFactory, err := armresources.NewClientFactory(subscriptionId, cred, nil)
     if err != nil {
-        log.Fatalf("new client factory failure: %+v", err)
+        log.Fatalf("cannot create client factory: %+v", err)
     }
     rgClient = clientFactory.NewResourceGroupsClient()
 

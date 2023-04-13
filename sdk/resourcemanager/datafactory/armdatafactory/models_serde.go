@@ -158,11 +158,11 @@ func (a *ActivityDependency) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ActivityPolicy.
 func (a ActivityPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "retry", &a.Retry)
+	populateAny(objectMap, "retry", a.Retry)
 	populate(objectMap, "retryIntervalInSeconds", a.RetryIntervalInSeconds)
 	populate(objectMap, "secureInput", a.SecureInput)
 	populate(objectMap, "secureOutput", a.SecureOutput)
-	populate(objectMap, "timeout", &a.Timeout)
+	populateAny(objectMap, "timeout", a.Timeout)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -222,10 +222,10 @@ func (a ActivityRun) MarshalJSON() ([]byte, error) {
 	populateTimeRFC3339(objectMap, "activityRunStart", a.ActivityRunStart)
 	populate(objectMap, "activityType", a.ActivityType)
 	populate(objectMap, "durationInMs", a.DurationInMs)
-	populate(objectMap, "error", &a.Error)
-	populate(objectMap, "input", &a.Input)
+	populateAny(objectMap, "error", a.Error)
+	populateAny(objectMap, "input", a.Input)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
-	populate(objectMap, "output", &a.Output)
+	populateAny(objectMap, "output", a.Output)
 	populate(objectMap, "pipelineName", a.PipelineName)
 	populate(objectMap, "pipelineRunId", a.PipelineRunID)
 	populate(objectMap, "status", a.Status)
@@ -426,16 +426,16 @@ func (a *AmazonMWSLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonMWSLinkedServiceTypeProperties.
 func (a AmazonMWSLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "accessKeyId", &a.AccessKeyID)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
-	populate(objectMap, "endpoint", &a.Endpoint)
-	populate(objectMap, "marketplaceID", &a.MarketplaceID)
+	populateAny(objectMap, "accessKeyId", a.AccessKeyID)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "endpoint", a.Endpoint)
+	populateAny(objectMap, "marketplaceID", a.MarketplaceID)
 	populate(objectMap, "mwsAuthToken", a.MwsAuthToken)
 	populate(objectMap, "secretKey", a.SecretKey)
-	populate(objectMap, "sellerID", &a.SellerID)
-	populate(objectMap, "useEncryptedEndpoints", &a.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &a.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &a.UsePeerVerification)
+	populateAny(objectMap, "sellerID", a.SellerID)
+	populateAny(objectMap, "useEncryptedEndpoints", a.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", a.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", a.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -494,8 +494,8 @@ func (a AmazonMWSObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AmazonMWSObject"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -563,13 +563,13 @@ func (a *AmazonMWSObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonMWSSource.
 func (a AmazonMWSSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "query", &a.Query)
-	populate(objectMap, "queryTimeout", &a.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "query", a.Query)
+	populateAny(objectMap, "queryTimeout", a.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	objectMap["type"] = "AmazonMWSSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -633,8 +633,8 @@ func (a *AmazonMWSSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonRdsForLinkedServiceTypeProperties.
 func (a AmazonRdsForLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &a.ConnectionString)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "password", a.Password)
 	return json.Marshal(objectMap)
 }
@@ -730,10 +730,10 @@ func (a *AmazonRdsForOracleLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonRdsForOraclePartitionSettings.
 func (a AmazonRdsForOraclePartitionSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "partitionColumnName", &a.PartitionColumnName)
-	populate(objectMap, "partitionLowerBound", &a.PartitionLowerBound)
-	populate(objectMap, "partitionNames", &a.PartitionNames)
-	populate(objectMap, "partitionUpperBound", &a.PartitionUpperBound)
+	populateAny(objectMap, "partitionColumnName", a.PartitionColumnName)
+	populateAny(objectMap, "partitionLowerBound", a.PartitionLowerBound)
+	populateAny(objectMap, "partitionNames", a.PartitionNames)
+	populateAny(objectMap, "partitionUpperBound", a.PartitionUpperBound)
 	return json.Marshal(objectMap)
 }
 
@@ -769,15 +769,15 @@ func (a *AmazonRdsForOraclePartitionSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonRdsForOracleSource.
 func (a AmazonRdsForOracleSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "oracleReaderQuery", &a.OracleReaderQuery)
-	populate(objectMap, "partitionOption", &a.PartitionOption)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "oracleReaderQuery", a.OracleReaderQuery)
+	populateAny(objectMap, "partitionOption", a.PartitionOption)
 	populate(objectMap, "partitionSettings", a.PartitionSettings)
-	populate(objectMap, "queryTimeout", &a.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "queryTimeout", a.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	objectMap["type"] = "AmazonRdsForOracleSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -852,8 +852,8 @@ func (a AmazonRdsForOracleTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AmazonRdsForOracleTable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -921,8 +921,8 @@ func (a *AmazonRdsForOracleTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonRdsForOracleTableDatasetTypeProperties.
 func (a AmazonRdsForOracleTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "table", &a.Table)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "table", a.Table)
 	return json.Marshal(objectMap)
 }
 
@@ -1015,10 +1015,10 @@ func (a *AmazonRdsForSQLServerLinkedService) UnmarshalJSON(data []byte) error {
 func (a AmazonRdsForSQLServerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alwaysEncryptedSettings", a.AlwaysEncryptedSettings)
-	populate(objectMap, "connectionString", &a.ConnectionString)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "password", a.Password)
-	populate(objectMap, "userName", &a.UserName)
+	populateAny(objectMap, "userName", a.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -1057,18 +1057,18 @@ func (a *AmazonRdsForSQLServerLinkedServiceTypeProperties) UnmarshalJSON(data []
 // MarshalJSON implements the json.Marshaller interface for type AmazonRdsForSQLServerSource.
 func (a AmazonRdsForSQLServerSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "partitionOption", &a.PartitionOption)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionOption", a.PartitionOption)
 	populate(objectMap, "partitionSettings", a.PartitionSettings)
-	populate(objectMap, "produceAdditionalTypes", &a.ProduceAdditionalTypes)
-	populate(objectMap, "queryTimeout", &a.QueryTimeout)
-	populate(objectMap, "sqlReaderQuery", &a.SQLReaderQuery)
-	populate(objectMap, "sqlReaderStoredProcedureName", &a.SQLReaderStoredProcedureName)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
-	populate(objectMap, "storedProcedureParameters", &a.StoredProcedureParameters)
+	populateAny(objectMap, "produceAdditionalTypes", a.ProduceAdditionalTypes)
+	populateAny(objectMap, "queryTimeout", a.QueryTimeout)
+	populateAny(objectMap, "sqlReaderQuery", a.SQLReaderQuery)
+	populateAny(objectMap, "sqlReaderStoredProcedureName", a.SQLReaderStoredProcedureName)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
+	populateAny(objectMap, "storedProcedureParameters", a.StoredProcedureParameters)
 	objectMap["type"] = "AmazonRdsForSqlServerSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -1152,8 +1152,8 @@ func (a AmazonRdsForSQLServerTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AmazonRdsForSqlServerTable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -1221,8 +1221,8 @@ func (a *AmazonRdsForSQLServerTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonRdsForSQLServerTableDatasetTypeProperties.
 func (a AmazonRdsForSQLServerTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "table", &a.Table)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "table", a.Table)
 	return json.Marshal(objectMap)
 }
 
@@ -1314,12 +1314,12 @@ func (a *AmazonRedshiftLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonRedshiftLinkedServiceTypeProperties.
 func (a AmazonRedshiftLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "database", &a.Database)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "database", a.Database)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "password", a.Password)
-	populate(objectMap, "port", &a.Port)
-	populate(objectMap, "server", &a.Server)
-	populate(objectMap, "username", &a.Username)
+	populateAny(objectMap, "port", a.Port)
+	populateAny(objectMap, "server", a.Server)
+	populateAny(objectMap, "username", a.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -1361,14 +1361,14 @@ func (a *AmazonRedshiftLinkedServiceTypeProperties) UnmarshalJSON(data []byte) e
 // MarshalJSON implements the json.Marshaller interface for type AmazonRedshiftSource.
 func (a AmazonRedshiftSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "query", &a.Query)
-	populate(objectMap, "queryTimeout", &a.QueryTimeout)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "query", a.Query)
+	populateAny(objectMap, "queryTimeout", a.QueryTimeout)
 	populate(objectMap, "redshiftUnloadSettings", a.RedshiftUnloadSettings)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	objectMap["type"] = "AmazonRedshiftSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -1440,8 +1440,8 @@ func (a AmazonRedshiftTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AmazonRedshiftTable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -1509,9 +1509,9 @@ func (a *AmazonRedshiftTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonRedshiftTableDatasetTypeProperties.
 func (a AmazonRedshiftTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "table", &a.Table)
-	populate(objectMap, "tableName", &a.TableName)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "table", a.Table)
+	populateAny(objectMap, "tableName", a.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -1606,11 +1606,11 @@ func (a *AmazonS3CompatibleLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonS3CompatibleLinkedServiceTypeProperties.
 func (a AmazonS3CompatibleLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "accessKeyId", &a.AccessKeyID)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
-	populate(objectMap, "forcePathStyle", &a.ForcePathStyle)
+	populateAny(objectMap, "accessKeyId", a.AccessKeyID)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "forcePathStyle", a.ForcePathStyle)
 	populate(objectMap, "secretAccessKey", a.SecretAccessKey)
-	populate(objectMap, "serviceUrl", &a.ServiceURL)
+	populateAny(objectMap, "serviceUrl", a.ServiceURL)
 	return json.Marshal(objectMap)
 }
 
@@ -1649,11 +1649,11 @@ func (a *AmazonS3CompatibleLinkedServiceTypeProperties) UnmarshalJSON(data []byt
 // MarshalJSON implements the json.Marshaller interface for type AmazonS3CompatibleLocation.
 func (a AmazonS3CompatibleLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "bucketName", &a.BucketName)
-	populate(objectMap, "fileName", &a.FileName)
-	populate(objectMap, "folderPath", &a.FolderPath)
+	populateAny(objectMap, "bucketName", a.BucketName)
+	populateAny(objectMap, "fileName", a.FileName)
+	populateAny(objectMap, "folderPath", a.FolderPath)
 	objectMap["type"] = "AmazonS3CompatibleLocation"
-	populate(objectMap, "version", &a.Version)
+	populateAny(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -1707,19 +1707,19 @@ func (a *AmazonS3CompatibleLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonS3CompatibleReadSettings.
 func (a AmazonS3CompatibleReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &a.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", a.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", a.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &a.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &a.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &a.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &a.PartitionRootPath)
-	populate(objectMap, "prefix", &a.Prefix)
-	populate(objectMap, "recursive", &a.Recursive)
+	populateAny(objectMap, "fileListPath", a.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", a.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", a.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", a.PartitionRootPath)
+	populateAny(objectMap, "prefix", a.Prefix)
+	populateAny(objectMap, "recursive", a.Recursive)
 	objectMap["type"] = "AmazonS3CompatibleReadSettings"
-	populate(objectMap, "wildcardFileName", &a.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &a.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", a.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", a.WildcardFolderPath)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -1802,8 +1802,8 @@ func (a AmazonS3Dataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AmazonS3Object"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -1871,14 +1871,14 @@ func (a *AmazonS3Dataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonS3DatasetTypeProperties.
 func (a AmazonS3DatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "bucketName", &a.BucketName)
+	populateAny(objectMap, "bucketName", a.BucketName)
 	populate(objectMap, "compression", a.Compression)
 	populate(objectMap, "format", a.Format)
-	populate(objectMap, "key", &a.Key)
-	populate(objectMap, "modifiedDatetimeEnd", &a.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &a.ModifiedDatetimeStart)
-	populate(objectMap, "prefix", &a.Prefix)
-	populate(objectMap, "version", &a.Version)
+	populateAny(objectMap, "key", a.Key)
+	populateAny(objectMap, "modifiedDatetimeEnd", a.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", a.ModifiedDatetimeStart)
+	populateAny(objectMap, "prefix", a.Prefix)
+	populateAny(objectMap, "version", a.Version)
 	return json.Marshal(objectMap)
 }
 
@@ -1988,11 +1988,11 @@ func (a *AmazonS3LinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonS3LinkedServiceTypeProperties.
 func (a AmazonS3LinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "accessKeyId", &a.AccessKeyID)
-	populate(objectMap, "authenticationType", &a.AuthenticationType)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "accessKeyId", a.AccessKeyID)
+	populateAny(objectMap, "authenticationType", a.AuthenticationType)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "secretAccessKey", a.SecretAccessKey)
-	populate(objectMap, "serviceUrl", &a.ServiceURL)
+	populateAny(objectMap, "serviceUrl", a.ServiceURL)
 	populate(objectMap, "sessionToken", a.SessionToken)
 	return json.Marshal(objectMap)
 }
@@ -2035,11 +2035,11 @@ func (a *AmazonS3LinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonS3Location.
 func (a AmazonS3Location) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "bucketName", &a.BucketName)
-	populate(objectMap, "fileName", &a.FileName)
-	populate(objectMap, "folderPath", &a.FolderPath)
+	populateAny(objectMap, "bucketName", a.BucketName)
+	populateAny(objectMap, "fileName", a.FileName)
+	populateAny(objectMap, "folderPath", a.FolderPath)
 	objectMap["type"] = "AmazonS3Location"
-	populate(objectMap, "version", &a.Version)
+	populateAny(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -2093,19 +2093,19 @@ func (a *AmazonS3Location) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonS3ReadSettings.
 func (a AmazonS3ReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &a.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", a.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", a.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &a.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &a.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &a.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &a.PartitionRootPath)
-	populate(objectMap, "prefix", &a.Prefix)
-	populate(objectMap, "recursive", &a.Recursive)
+	populateAny(objectMap, "fileListPath", a.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", a.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", a.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", a.PartitionRootPath)
+	populateAny(objectMap, "prefix", a.Prefix)
+	populateAny(objectMap, "recursive", a.Recursive)
 	objectMap["type"] = "AmazonS3ReadSettings"
-	populate(objectMap, "wildcardFileName", &a.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &a.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", a.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", a.WildcardFolderPath)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -2247,7 +2247,7 @@ func (a AppFiguresLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "clientKey", a.ClientKey)
 	populate(objectMap, "password", a.Password)
-	populate(objectMap, "userName", &a.UserName)
+	populateAny(objectMap, "userName", a.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -2342,7 +2342,7 @@ func (a *AppendVariableActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AppendVariableActivityTypeProperties.
 func (a AppendVariableActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "value", &a.Value)
+	populateAny(objectMap, "value", a.Value)
 	populate(objectMap, "variableName", a.VariableName)
 	return json.Marshal(objectMap)
 }
@@ -2463,7 +2463,7 @@ func (a *AsanaLinkedService) UnmarshalJSON(data []byte) error {
 func (a AsanaLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiToken", a.APIToken)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	return json.Marshal(objectMap)
 }
 
@@ -2498,8 +2498,8 @@ func (a AvroDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "Avro"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -2567,7 +2567,7 @@ func (a *AvroDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AvroDatasetTypeProperties.
 func (a AvroDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "avroCompressionCodec", &a.AvroCompressionCodec)
+	populateAny(objectMap, "avroCompressionCodec", a.AvroCompressionCodec)
 	populate(objectMap, "avroCompressionLevel", a.AvroCompressionLevel)
 	populate(objectMap, "location", a.Location)
 	return json.Marshal(objectMap)
@@ -2602,8 +2602,8 @@ func (a *AvroDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AvroFormat.
 func (a AvroFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deserializer", &a.Deserializer)
-	populate(objectMap, "serializer", &a.Serializer)
+	populateAny(objectMap, "deserializer", a.Deserializer)
+	populateAny(objectMap, "serializer", a.Serializer)
 	objectMap["type"] = "AvroFormat"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -2652,15 +2652,15 @@ func (a *AvroFormat) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AvroSink.
 func (a AvroSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
 	populate(objectMap, "formatSettings", a.FormatSettings)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
 	populate(objectMap, "storeSettings", a.StoreSettings)
 	objectMap["type"] = "AvroSink"
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -2726,11 +2726,11 @@ func (a *AvroSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AvroSource.
 func (a AvroSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	populate(objectMap, "storeSettings", a.StoreSettings)
 	objectMap["type"] = "AvroSource"
 	if a.AdditionalProperties != nil {
@@ -2792,8 +2792,8 @@ func (a *AvroSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AvroWriteSettings.
 func (a AvroWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileNamePrefix", &a.FileNamePrefix)
-	populate(objectMap, "maxRowsPerFile", &a.MaxRowsPerFile)
+	populateAny(objectMap, "fileNamePrefix", a.FileNamePrefix)
+	populateAny(objectMap, "maxRowsPerFile", a.MaxRowsPerFile)
 	populate(objectMap, "recordName", a.RecordName)
 	populate(objectMap, "recordNamespace", a.RecordNamespace)
 	objectMap["type"] = "AvroWriteSettings"
@@ -2971,12 +2971,12 @@ func (a *AzureBatchLinkedService) UnmarshalJSON(data []byte) error {
 func (a AzureBatchLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessKey", a.AccessKey)
-	populate(objectMap, "accountName", &a.AccountName)
-	populate(objectMap, "batchUri", &a.BatchURI)
+	populateAny(objectMap, "accountName", a.AccountName)
+	populateAny(objectMap, "batchUri", a.BatchURI)
 	populate(objectMap, "credential", a.Credential)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
-	populate(objectMap, "poolName", &a.PoolName)
+	populateAny(objectMap, "poolName", a.PoolName)
 	return json.Marshal(objectMap)
 }
 
@@ -3026,8 +3026,8 @@ func (a AzureBlobDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureBlob"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -3096,12 +3096,12 @@ func (a *AzureBlobDataset) UnmarshalJSON(data []byte) error {
 func (a AzureBlobDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compression", a.Compression)
-	populate(objectMap, "fileName", &a.FileName)
-	populate(objectMap, "folderPath", &a.FolderPath)
+	populateAny(objectMap, "fileName", a.FileName)
+	populateAny(objectMap, "folderPath", a.FolderPath)
 	populate(objectMap, "format", a.Format)
-	populate(objectMap, "modifiedDatetimeEnd", &a.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &a.ModifiedDatetimeStart)
-	populate(objectMap, "tableRootLocation", &a.TableRootLocation)
+	populateAny(objectMap, "modifiedDatetimeEnd", a.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", a.ModifiedDatetimeStart)
+	populateAny(objectMap, "tableRootLocation", a.TableRootLocation)
 	return json.Marshal(objectMap)
 }
 
@@ -3151,8 +3151,8 @@ func (a AzureBlobFSDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureBlobFSFile"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -3221,8 +3221,8 @@ func (a *AzureBlobFSDataset) UnmarshalJSON(data []byte) error {
 func (a AzureBlobFSDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compression", a.Compression)
-	populate(objectMap, "fileName", &a.FileName)
-	populate(objectMap, "folderPath", &a.FolderPath)
+	populateAny(objectMap, "fileName", a.FileName)
+	populateAny(objectMap, "folderPath", a.FolderPath)
 	populate(objectMap, "format", a.Format)
 	return json.Marshal(objectMap)
 }
@@ -3321,18 +3321,18 @@ func (a *AzureBlobFSLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureBlobFSLinkedServiceTypeProperties.
 func (a AzureBlobFSLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "accountKey", &a.AccountKey)
-	populate(objectMap, "azureCloudType", &a.AzureCloudType)
+	populateAny(objectMap, "accountKey", a.AccountKey)
+	populateAny(objectMap, "azureCloudType", a.AzureCloudType)
 	populate(objectMap, "credential", a.Credential)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "sasToken", a.SasToken)
-	populate(objectMap, "sasUri", &a.SasURI)
+	populateAny(objectMap, "sasUri", a.SasURI)
 	populate(objectMap, "servicePrincipalCredential", a.ServicePrincipalCredential)
-	populate(objectMap, "servicePrincipalCredentialType", &a.ServicePrincipalCredentialType)
-	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
+	populateAny(objectMap, "servicePrincipalCredentialType", a.ServicePrincipalCredentialType)
+	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
-	populate(objectMap, "tenant", &a.Tenant)
-	populate(objectMap, "url", &a.URL)
+	populateAny(objectMap, "tenant", a.Tenant)
+	populateAny(objectMap, "url", a.URL)
 	return json.Marshal(objectMap)
 }
 
@@ -3392,9 +3392,9 @@ func (a *AzureBlobFSLinkedServiceTypeProperties) UnmarshalJSON(data []byte) erro
 // MarshalJSON implements the json.Marshaller interface for type AzureBlobFSLocation.
 func (a AzureBlobFSLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileName", &a.FileName)
-	populate(objectMap, "fileSystem", &a.FileSystem)
-	populate(objectMap, "folderPath", &a.FolderPath)
+	populateAny(objectMap, "fileName", a.FileName)
+	populateAny(objectMap, "fileSystem", a.FileSystem)
+	populateAny(objectMap, "folderPath", a.FolderPath)
 	objectMap["type"] = "AzureBlobFSLocation"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -3446,18 +3446,18 @@ func (a *AzureBlobFSLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureBlobFSReadSettings.
 func (a AzureBlobFSReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &a.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", a.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", a.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &a.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &a.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &a.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &a.PartitionRootPath)
-	populate(objectMap, "recursive", &a.Recursive)
+	populateAny(objectMap, "fileListPath", a.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", a.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", a.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", a.PartitionRootPath)
+	populateAny(objectMap, "recursive", a.Recursive)
 	objectMap["type"] = "AzureBlobFSReadSettings"
-	populate(objectMap, "wildcardFileName", &a.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &a.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", a.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", a.WildcardFolderPath)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -3532,15 +3532,15 @@ func (a *AzureBlobFSReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureBlobFSSink.
 func (a AzureBlobFSSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "copyBehavior", &a.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
+	populateAny(objectMap, "copyBehavior", a.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
 	populate(objectMap, "metadata", a.Metadata)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
 	objectMap["type"] = "AzureBlobFSSink"
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -3606,13 +3606,13 @@ func (a *AzureBlobFSSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureBlobFSSource.
 func (a AzureBlobFSSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "recursive", &a.Recursive)
-	populate(objectMap, "skipHeaderLineCount", &a.SkipHeaderLineCount)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
-	populate(objectMap, "treatEmptyAsNull", &a.TreatEmptyAsNull)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "recursive", a.Recursive)
+	populateAny(objectMap, "skipHeaderLineCount", a.SkipHeaderLineCount)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
+	populateAny(objectMap, "treatEmptyAsNull", a.TreatEmptyAsNull)
 	objectMap["type"] = "AzureBlobFSSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -3676,10 +3676,10 @@ func (a *AzureBlobFSSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureBlobFSWriteSettings.
 func (a AzureBlobFSWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "blockSizeInMB", &a.BlockSizeInMB)
-	populate(objectMap, "copyBehavior", &a.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
+	populateAny(objectMap, "blockSizeInMB", a.BlockSizeInMB)
+	populateAny(objectMap, "copyBehavior", a.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
 	objectMap["type"] = "AzureBlobFSWriteSettings"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -3799,17 +3799,17 @@ func (a AzureBlobStorageLinkedServiceTypeProperties) MarshalJSON() ([]byte, erro
 	populate(objectMap, "accountKey", a.AccountKey)
 	populate(objectMap, "accountKind", a.AccountKind)
 	populate(objectMap, "authenticationType", a.AuthenticationType)
-	populate(objectMap, "azureCloudType", &a.AzureCloudType)
-	populate(objectMap, "connectionString", &a.ConnectionString)
-	populate(objectMap, "containerUri", &a.ContainerURI)
+	populateAny(objectMap, "azureCloudType", a.AzureCloudType)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populateAny(objectMap, "containerUri", a.ContainerURI)
 	populate(objectMap, "credential", a.Credential)
 	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "sasToken", a.SasToken)
-	populate(objectMap, "sasUri", &a.SasURI)
+	populateAny(objectMap, "sasUri", a.SasURI)
 	populate(objectMap, "serviceEndpoint", a.ServiceEndpoint)
-	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
+	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
-	populate(objectMap, "tenant", &a.Tenant)
+	populateAny(objectMap, "tenant", a.Tenant)
 	return json.Marshal(objectMap)
 }
 
@@ -3875,9 +3875,9 @@ func (a *AzureBlobStorageLinkedServiceTypeProperties) UnmarshalJSON(data []byte)
 // MarshalJSON implements the json.Marshaller interface for type AzureBlobStorageLocation.
 func (a AzureBlobStorageLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "container", &a.Container)
-	populate(objectMap, "fileName", &a.FileName)
-	populate(objectMap, "folderPath", &a.FolderPath)
+	populateAny(objectMap, "container", a.Container)
+	populateAny(objectMap, "fileName", a.FileName)
+	populateAny(objectMap, "folderPath", a.FolderPath)
 	objectMap["type"] = "AzureBlobStorageLocation"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -3929,19 +3929,19 @@ func (a *AzureBlobStorageLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureBlobStorageReadSettings.
 func (a AzureBlobStorageReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &a.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", a.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", a.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &a.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &a.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &a.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &a.PartitionRootPath)
-	populate(objectMap, "prefix", &a.Prefix)
-	populate(objectMap, "recursive", &a.Recursive)
+	populateAny(objectMap, "fileListPath", a.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", a.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", a.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", a.PartitionRootPath)
+	populateAny(objectMap, "prefix", a.Prefix)
+	populateAny(objectMap, "recursive", a.Recursive)
 	objectMap["type"] = "AzureBlobStorageReadSettings"
-	populate(objectMap, "wildcardFileName", &a.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &a.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", a.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", a.WildcardFolderPath)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -4019,10 +4019,10 @@ func (a *AzureBlobStorageReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureBlobStorageWriteSettings.
 func (a AzureBlobStorageWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "blockSizeInMB", &a.BlockSizeInMB)
-	populate(objectMap, "copyBehavior", &a.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
+	populateAny(objectMap, "blockSizeInMB", a.BlockSizeInMB)
+	populateAny(objectMap, "copyBehavior", a.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
 	objectMap["type"] = "AzureBlobStorageWriteSettings"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -4147,8 +4147,8 @@ func (a *AzureDataExplorerCommandActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureDataExplorerCommandActivityTypeProperties.
 func (a AzureDataExplorerCommandActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "command", &a.Command)
-	populate(objectMap, "commandTimeout", &a.CommandTimeout)
+	populateAny(objectMap, "command", a.Command)
+	populateAny(objectMap, "commandTimeout", a.CommandTimeout)
 	return json.Marshal(objectMap)
 }
 
@@ -4178,7 +4178,7 @@ func (a *AzureDataExplorerCommandActivityTypeProperties) UnmarshalJSON(data []by
 // MarshalJSON implements the json.Marshaller interface for type AzureDataExplorerDatasetTypeProperties.
 func (a AzureDataExplorerDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "table", &a.Table)
+	populateAny(objectMap, "table", a.Table)
 	return json.Marshal(objectMap)
 }
 
@@ -4268,11 +4268,11 @@ func (a *AzureDataExplorerLinkedService) UnmarshalJSON(data []byte) error {
 func (a AzureDataExplorerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "credential", a.Credential)
-	populate(objectMap, "database", &a.Database)
-	populate(objectMap, "endpoint", &a.Endpoint)
-	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
+	populateAny(objectMap, "database", a.Database)
+	populateAny(objectMap, "endpoint", a.Endpoint)
+	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
-	populate(objectMap, "tenant", &a.Tenant)
+	populateAny(objectMap, "tenant", a.Tenant)
 	return json.Marshal(objectMap)
 }
 
@@ -4314,16 +4314,16 @@ func (a *AzureDataExplorerLinkedServiceTypeProperties) UnmarshalJSON(data []byte
 // MarshalJSON implements the json.Marshaller interface for type AzureDataExplorerSink.
 func (a AzureDataExplorerSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "flushImmediately", &a.FlushImmediately)
-	populate(objectMap, "ingestionMappingAsJson", &a.IngestionMappingAsJSON)
-	populate(objectMap, "ingestionMappingName", &a.IngestionMappingName)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "flushImmediately", a.FlushImmediately)
+	populateAny(objectMap, "ingestionMappingAsJson", a.IngestionMappingAsJSON)
+	populateAny(objectMap, "ingestionMappingName", a.IngestionMappingName)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
 	objectMap["type"] = "AzureDataExplorerSink"
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -4392,14 +4392,14 @@ func (a *AzureDataExplorerSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureDataExplorerSource.
 func (a AzureDataExplorerSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "noTruncation", &a.NoTruncation)
-	populate(objectMap, "query", &a.Query)
-	populate(objectMap, "queryTimeout", &a.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "noTruncation", a.NoTruncation)
+	populateAny(objectMap, "query", a.Query)
+	populateAny(objectMap, "queryTimeout", a.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	objectMap["type"] = "AzureDataExplorerSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -4471,8 +4471,8 @@ func (a AzureDataExplorerTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureDataExplorerTable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -4602,14 +4602,14 @@ func (a *AzureDataLakeAnalyticsLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureDataLakeAnalyticsLinkedServiceTypeProperties.
 func (a AzureDataLakeAnalyticsLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "accountName", &a.AccountName)
-	populate(objectMap, "dataLakeAnalyticsUri", &a.DataLakeAnalyticsURI)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
-	populate(objectMap, "resourceGroupName", &a.ResourceGroupName)
-	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
+	populateAny(objectMap, "accountName", a.AccountName)
+	populateAny(objectMap, "dataLakeAnalyticsUri", a.DataLakeAnalyticsURI)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "resourceGroupName", a.ResourceGroupName)
+	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
-	populate(objectMap, "subscriptionId", &a.SubscriptionID)
-	populate(objectMap, "tenant", &a.Tenant)
+	populateAny(objectMap, "subscriptionId", a.SubscriptionID)
+	populateAny(objectMap, "tenant", a.Tenant)
 	return json.Marshal(objectMap)
 }
 
@@ -4662,8 +4662,8 @@ func (a AzureDataLakeStoreDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureDataLakeStoreFile"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -4732,8 +4732,8 @@ func (a *AzureDataLakeStoreDataset) UnmarshalJSON(data []byte) error {
 func (a AzureDataLakeStoreDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compression", a.Compression)
-	populate(objectMap, "fileName", &a.FileName)
-	populate(objectMap, "folderPath", &a.FolderPath)
+	populateAny(objectMap, "fileName", a.FileName)
+	populateAny(objectMap, "folderPath", a.FolderPath)
 	populate(objectMap, "format", a.Format)
 	return json.Marshal(objectMap)
 }
@@ -4832,16 +4832,16 @@ func (a *AzureDataLakeStoreLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureDataLakeStoreLinkedServiceTypeProperties.
 func (a AzureDataLakeStoreLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "accountName", &a.AccountName)
-	populate(objectMap, "azureCloudType", &a.AzureCloudType)
+	populateAny(objectMap, "accountName", a.AccountName)
+	populateAny(objectMap, "azureCloudType", a.AzureCloudType)
 	populate(objectMap, "credential", a.Credential)
-	populate(objectMap, "dataLakeStoreUri", &a.DataLakeStoreURI)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
-	populate(objectMap, "resourceGroupName", &a.ResourceGroupName)
-	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
+	populateAny(objectMap, "dataLakeStoreUri", a.DataLakeStoreURI)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "resourceGroupName", a.ResourceGroupName)
+	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
-	populate(objectMap, "subscriptionId", &a.SubscriptionID)
-	populate(objectMap, "tenant", &a.Tenant)
+	populateAny(objectMap, "subscriptionId", a.SubscriptionID)
+	populateAny(objectMap, "tenant", a.Tenant)
 	return json.Marshal(objectMap)
 }
 
@@ -4895,8 +4895,8 @@ func (a *AzureDataLakeStoreLinkedServiceTypeProperties) UnmarshalJSON(data []byt
 // MarshalJSON implements the json.Marshaller interface for type AzureDataLakeStoreLocation.
 func (a AzureDataLakeStoreLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileName", &a.FileName)
-	populate(objectMap, "folderPath", &a.FolderPath)
+	populateAny(objectMap, "fileName", a.FileName)
+	populateAny(objectMap, "folderPath", a.FolderPath)
 	objectMap["type"] = "AzureDataLakeStoreLocation"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -4945,20 +4945,20 @@ func (a *AzureDataLakeStoreLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureDataLakeStoreReadSettings.
 func (a AzureDataLakeStoreReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &a.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", a.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", a.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &a.FileListPath)
-	populate(objectMap, "listAfter", &a.ListAfter)
-	populate(objectMap, "listBefore", &a.ListBefore)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &a.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &a.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &a.PartitionRootPath)
-	populate(objectMap, "recursive", &a.Recursive)
+	populateAny(objectMap, "fileListPath", a.FileListPath)
+	populateAny(objectMap, "listAfter", a.ListAfter)
+	populateAny(objectMap, "listBefore", a.ListBefore)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", a.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", a.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", a.PartitionRootPath)
+	populateAny(objectMap, "recursive", a.Recursive)
 	objectMap["type"] = "AzureDataLakeStoreReadSettings"
-	populate(objectMap, "wildcardFileName", &a.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &a.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", a.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", a.WildcardFolderPath)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -5039,15 +5039,15 @@ func (a *AzureDataLakeStoreReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureDataLakeStoreSink.
 func (a AzureDataLakeStoreSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "copyBehavior", &a.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "enableAdlsSingleFileParallel", &a.EnableAdlsSingleFileParallel)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
+	populateAny(objectMap, "copyBehavior", a.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "enableAdlsSingleFileParallel", a.EnableAdlsSingleFileParallel)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
 	objectMap["type"] = "AzureDataLakeStoreSink"
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -5113,11 +5113,11 @@ func (a *AzureDataLakeStoreSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureDataLakeStoreSource.
 func (a AzureDataLakeStoreSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "recursive", &a.Recursive)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "recursive", a.Recursive)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	objectMap["type"] = "AzureDataLakeStoreSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -5175,10 +5175,10 @@ func (a *AzureDataLakeStoreSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureDataLakeStoreWriteSettings.
 func (a AzureDataLakeStoreWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "copyBehavior", &a.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "expiryDateTime", &a.ExpiryDateTime)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
+	populateAny(objectMap, "copyBehavior", a.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "expiryDateTime", a.ExpiryDateTime)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
 	objectMap["type"] = "AzureDataLakeStoreWriteSettings"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -5238,8 +5238,8 @@ func (a AzureDatabricksDeltaLakeDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureDatabricksDeltaLakeDataset"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -5307,8 +5307,8 @@ func (a *AzureDatabricksDeltaLakeDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureDatabricksDeltaLakeDatasetTypeProperties.
 func (a AzureDatabricksDeltaLakeDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "database", &a.Database)
-	populate(objectMap, "table", &a.Table)
+	populateAny(objectMap, "database", a.Database)
+	populateAny(objectMap, "table", a.Table)
 	return json.Marshal(objectMap)
 }
 
@@ -5338,8 +5338,8 @@ func (a *AzureDatabricksDeltaLakeDatasetTypeProperties) UnmarshalJSON(data []byt
 // MarshalJSON implements the json.Marshaller interface for type AzureDatabricksDeltaLakeExportCommand.
 func (a AzureDatabricksDeltaLakeExportCommand) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "dateFormat", &a.DateFormat)
-	populate(objectMap, "timestampFormat", &a.TimestampFormat)
+	populateAny(objectMap, "dateFormat", a.DateFormat)
+	populateAny(objectMap, "timestampFormat", a.TimestampFormat)
 	objectMap["type"] = "AzureDatabricksDeltaLakeExportCommand"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -5388,8 +5388,8 @@ func (a *AzureDatabricksDeltaLakeExportCommand) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type AzureDatabricksDeltaLakeImportCommand.
 func (a AzureDatabricksDeltaLakeImportCommand) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "dateFormat", &a.DateFormat)
-	populate(objectMap, "timestampFormat", &a.TimestampFormat)
+	populateAny(objectMap, "dateFormat", a.DateFormat)
+	populateAny(objectMap, "timestampFormat", a.TimestampFormat)
 	objectMap["type"] = "AzureDatabricksDeltaLakeImportCommand"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -5500,15 +5500,15 @@ func (a *AzureDatabricksDeltaLakeLinkedService) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type AzureDatabricksDeltaLakeSink.
 func (a AzureDatabricksDeltaLakeSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
 	populate(objectMap, "importSettings", a.ImportSettings)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &a.PreCopyScript)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", a.PreCopyScript)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
 	objectMap["type"] = "AzureDatabricksDeltaLakeSink"
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -5574,12 +5574,12 @@ func (a *AzureDatabricksDeltaLakeSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureDatabricksDeltaLakeSource.
 func (a AzureDatabricksDeltaLakeSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
 	populate(objectMap, "exportSettings", a.ExportSettings)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "query", &a.Query)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "query", a.Query)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	objectMap["type"] = "AzureDatabricksDeltaLakeSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -5641,11 +5641,11 @@ func (a *AzureDatabricksDeltaLakeSource) UnmarshalJSON(data []byte) error {
 func (a AzureDatabricksDetltaLakeLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessToken", a.AccessToken)
-	populate(objectMap, "clusterId", &a.ClusterID)
+	populateAny(objectMap, "clusterId", a.ClusterID)
 	populate(objectMap, "credential", a.Credential)
-	populate(objectMap, "domain", &a.Domain)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
-	populate(objectMap, "workspaceResourceId", &a.WorkspaceResourceID)
+	populateAny(objectMap, "domain", a.Domain)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "workspaceResourceId", a.WorkspaceResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -5750,24 +5750,24 @@ func (a *AzureDatabricksLinkedService) UnmarshalJSON(data []byte) error {
 func (a AzureDatabricksLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessToken", a.AccessToken)
-	populate(objectMap, "authentication", &a.Authentication)
+	populateAny(objectMap, "authentication", a.Authentication)
 	populate(objectMap, "credential", a.Credential)
-	populate(objectMap, "domain", &a.Domain)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
-	populate(objectMap, "existingClusterId", &a.ExistingClusterID)
-	populate(objectMap, "instancePoolId", &a.InstancePoolID)
+	populateAny(objectMap, "domain", a.Domain)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "existingClusterId", a.ExistingClusterID)
+	populateAny(objectMap, "instancePoolId", a.InstancePoolID)
 	populate(objectMap, "newClusterCustomTags", a.NewClusterCustomTags)
-	populate(objectMap, "newClusterDriverNodeType", &a.NewClusterDriverNodeType)
-	populate(objectMap, "newClusterEnableElasticDisk", &a.NewClusterEnableElasticDisk)
-	populate(objectMap, "newClusterInitScripts", &a.NewClusterInitScripts)
-	populate(objectMap, "newClusterLogDestination", &a.NewClusterLogDestination)
-	populate(objectMap, "newClusterNodeType", &a.NewClusterNodeType)
-	populate(objectMap, "newClusterNumOfWorker", &a.NewClusterNumOfWorker)
+	populateAny(objectMap, "newClusterDriverNodeType", a.NewClusterDriverNodeType)
+	populateAny(objectMap, "newClusterEnableElasticDisk", a.NewClusterEnableElasticDisk)
+	populateAny(objectMap, "newClusterInitScripts", a.NewClusterInitScripts)
+	populateAny(objectMap, "newClusterLogDestination", a.NewClusterLogDestination)
+	populateAny(objectMap, "newClusterNodeType", a.NewClusterNodeType)
+	populateAny(objectMap, "newClusterNumOfWorker", a.NewClusterNumOfWorker)
 	populate(objectMap, "newClusterSparkConf", a.NewClusterSparkConf)
 	populate(objectMap, "newClusterSparkEnvVars", a.NewClusterSparkEnvVars)
-	populate(objectMap, "newClusterVersion", &a.NewClusterVersion)
-	populate(objectMap, "policyId", &a.PolicyID)
-	populate(objectMap, "workspaceResourceId", &a.WorkspaceResourceID)
+	populateAny(objectMap, "newClusterVersion", a.NewClusterVersion)
+	populateAny(objectMap, "policyId", a.PolicyID)
+	populateAny(objectMap, "workspaceResourceId", a.WorkspaceResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -5911,15 +5911,15 @@ func (a *AzureFileStorageLinkedService) UnmarshalJSON(data []byte) error {
 func (a AzureFileStorageLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accountKey", a.AccountKey)
-	populate(objectMap, "connectionString", &a.ConnectionString)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
-	populate(objectMap, "fileShare", &a.FileShare)
-	populate(objectMap, "host", &a.Host)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "fileShare", a.FileShare)
+	populateAny(objectMap, "host", a.Host)
 	populate(objectMap, "password", a.Password)
 	populate(objectMap, "sasToken", a.SasToken)
-	populate(objectMap, "sasUri", &a.SasURI)
-	populate(objectMap, "snapshot", &a.Snapshot)
-	populate(objectMap, "userId", &a.UserID)
+	populateAny(objectMap, "sasUri", a.SasURI)
+	populateAny(objectMap, "snapshot", a.Snapshot)
+	populateAny(objectMap, "userId", a.UserID)
 	return json.Marshal(objectMap)
 }
 
@@ -5973,8 +5973,8 @@ func (a *AzureFileStorageLinkedServiceTypeProperties) UnmarshalJSON(data []byte)
 // MarshalJSON implements the json.Marshaller interface for type AzureFileStorageLocation.
 func (a AzureFileStorageLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileName", &a.FileName)
-	populate(objectMap, "folderPath", &a.FolderPath)
+	populateAny(objectMap, "fileName", a.FileName)
+	populateAny(objectMap, "folderPath", a.FolderPath)
 	objectMap["type"] = "AzureFileStorageLocation"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -6023,19 +6023,19 @@ func (a *AzureFileStorageLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureFileStorageReadSettings.
 func (a AzureFileStorageReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &a.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", a.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", a.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &a.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &a.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &a.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &a.PartitionRootPath)
-	populate(objectMap, "prefix", &a.Prefix)
-	populate(objectMap, "recursive", &a.Recursive)
+	populateAny(objectMap, "fileListPath", a.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", a.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", a.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", a.PartitionRootPath)
+	populateAny(objectMap, "prefix", a.Prefix)
+	populateAny(objectMap, "recursive", a.Recursive)
 	objectMap["type"] = "AzureFileStorageReadSettings"
-	populate(objectMap, "wildcardFileName", &a.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &a.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", a.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", a.WildcardFolderPath)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -6113,9 +6113,9 @@ func (a *AzureFileStorageReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureFileStorageWriteSettings.
 func (a AzureFileStorageWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "copyBehavior", &a.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
+	populateAny(objectMap, "copyBehavior", a.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
 	objectMap["type"] = "AzureFileStorageWriteSettings"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -6237,9 +6237,9 @@ func (a *AzureFunctionActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureFunctionActivityTypeProperties.
 func (a AzureFunctionActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "body", &a.Body)
-	populate(objectMap, "functionName", &a.FunctionName)
-	populate(objectMap, "headers", &a.Headers)
+	populateAny(objectMap, "body", a.Body)
+	populateAny(objectMap, "functionName", a.FunctionName)
+	populateAny(objectMap, "headers", a.Headers)
 	populate(objectMap, "method", a.Method)
 	return json.Marshal(objectMap)
 }
@@ -6338,12 +6338,12 @@ func (a *AzureFunctionLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureFunctionLinkedServiceTypeProperties.
 func (a AzureFunctionLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authentication", &a.Authentication)
+	populateAny(objectMap, "authentication", a.Authentication)
 	populate(objectMap, "credential", a.Credential)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
-	populate(objectMap, "functionAppUrl", &a.FunctionAppURL)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "functionAppUrl", a.FunctionAppURL)
 	populate(objectMap, "functionKey", a.FunctionKey)
-	populate(objectMap, "resourceId", &a.ResourceID)
+	populateAny(objectMap, "resourceId", a.ResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -6447,7 +6447,7 @@ func (a *AzureKeyVaultLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureKeyVaultLinkedServiceTypeProperties.
 func (a AzureKeyVaultLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "baseUrl", &a.BaseURL)
+	populateAny(objectMap, "baseUrl", a.BaseURL)
 	populate(objectMap, "credential", a.Credential)
 	return json.Marshal(objectMap)
 }
@@ -6478,8 +6478,8 @@ func (a *AzureKeyVaultLinkedServiceTypeProperties) UnmarshalJSON(data []byte) er
 // MarshalJSON implements the json.Marshaller interface for type AzureKeyVaultSecretReference.
 func (a AzureKeyVaultSecretReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "secretName", &a.SecretName)
-	populate(objectMap, "secretVersion", &a.SecretVersion)
+	populateAny(objectMap, "secretName", a.SecretName)
+	populateAny(objectMap, "secretVersion", a.SecretVersion)
 	populate(objectMap, "store", a.Store)
 	objectMap["type"] = "AzureKeyVaultSecret"
 	return json.Marshal(objectMap)
@@ -6692,14 +6692,14 @@ func (a *AzureMLExecutePipelineActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureMLExecutePipelineActivityTypeProperties.
 func (a AzureMLExecutePipelineActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "continueOnStepFailure", &a.ContinueOnStepFailure)
-	populate(objectMap, "dataPathAssignments", &a.DataPathAssignments)
-	populate(objectMap, "experimentName", &a.ExperimentName)
-	populate(objectMap, "mlParentRunId", &a.MlParentRunID)
-	populate(objectMap, "mlPipelineEndpointId", &a.MlPipelineEndpointID)
-	populate(objectMap, "mlPipelineId", &a.MlPipelineID)
-	populate(objectMap, "mlPipelineParameters", &a.MlPipelineParameters)
-	populate(objectMap, "version", &a.Version)
+	populateAny(objectMap, "continueOnStepFailure", a.ContinueOnStepFailure)
+	populateAny(objectMap, "dataPathAssignments", a.DataPathAssignments)
+	populateAny(objectMap, "experimentName", a.ExperimentName)
+	populateAny(objectMap, "mlParentRunId", a.MlParentRunID)
+	populateAny(objectMap, "mlPipelineEndpointId", a.MlPipelineEndpointID)
+	populateAny(objectMap, "mlPipelineId", a.MlPipelineID)
+	populateAny(objectMap, "mlPipelineParameters", a.MlPipelineParameters)
+	populateAny(objectMap, "version", a.Version)
 	return json.Marshal(objectMap)
 }
 
@@ -6810,13 +6810,13 @@ func (a *AzureMLLinkedService) UnmarshalJSON(data []byte) error {
 func (a AzureMLLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiKey", a.APIKey)
-	populate(objectMap, "authentication", &a.Authentication)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
-	populate(objectMap, "mlEndpoint", &a.MlEndpoint)
-	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
+	populateAny(objectMap, "authentication", a.Authentication)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "mlEndpoint", a.MlEndpoint)
+	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
-	populate(objectMap, "tenant", &a.Tenant)
-	populate(objectMap, "updateResourceEndpoint", &a.UpdateResourceEndpoint)
+	populateAny(objectMap, "tenant", a.Tenant)
+	populateAny(objectMap, "updateResourceEndpoint", a.UpdateResourceEndpoint)
 	return json.Marshal(objectMap)
 }
 
@@ -6926,13 +6926,13 @@ func (a *AzureMLServiceLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureMLServiceLinkedServiceTypeProperties.
 func (a AzureMLServiceLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
-	populate(objectMap, "mlWorkspaceName", &a.MlWorkspaceName)
-	populate(objectMap, "resourceGroupName", &a.ResourceGroupName)
-	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "mlWorkspaceName", a.MlWorkspaceName)
+	populateAny(objectMap, "resourceGroupName", a.ResourceGroupName)
+	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
-	populate(objectMap, "subscriptionId", &a.SubscriptionID)
-	populate(objectMap, "tenant", &a.Tenant)
+	populateAny(objectMap, "subscriptionId", a.SubscriptionID)
+	populateAny(objectMap, "tenant", a.Tenant)
 	return json.Marshal(objectMap)
 }
 
@@ -7047,9 +7047,9 @@ func (a *AzureMLUpdateResourceActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureMLUpdateResourceActivityTypeProperties.
 func (a AzureMLUpdateResourceActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "trainedModelFilePath", &a.TrainedModelFilePath)
+	populateAny(objectMap, "trainedModelFilePath", a.TrainedModelFilePath)
 	populate(objectMap, "trainedModelLinkedServiceName", a.TrainedModelLinkedServiceName)
-	populate(objectMap, "trainedModelName", &a.TrainedModelName)
+	populateAny(objectMap, "trainedModelName", a.TrainedModelName)
 	return json.Marshal(objectMap)
 }
 
@@ -7082,7 +7082,7 @@ func (a *AzureMLUpdateResourceActivityTypeProperties) UnmarshalJSON(data []byte)
 // MarshalJSON implements the json.Marshaller interface for type AzureMLWebServiceFile.
 func (a AzureMLWebServiceFile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "filePath", &a.FilePath)
+	populateAny(objectMap, "filePath", a.FilePath)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	return json.Marshal(objectMap)
 }
@@ -7175,8 +7175,8 @@ func (a *AzureMariaDBLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureMariaDBLinkedServiceTypeProperties.
 func (a AzureMariaDBLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &a.ConnectionString)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "pwd", a.Pwd)
 	return json.Marshal(objectMap)
 }
@@ -7210,13 +7210,13 @@ func (a *AzureMariaDBLinkedServiceTypeProperties) UnmarshalJSON(data []byte) err
 // MarshalJSON implements the json.Marshaller interface for type AzureMariaDBSource.
 func (a AzureMariaDBSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "query", &a.Query)
-	populate(objectMap, "queryTimeout", &a.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "query", a.Query)
+	populateAny(objectMap, "queryTimeout", a.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	objectMap["type"] = "AzureMariaDBSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -7285,8 +7285,8 @@ func (a AzureMariaDBTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureMariaDBTable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -7416,8 +7416,8 @@ func (a *AzureMySQLLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureMySQLLinkedServiceTypeProperties.
 func (a AzureMySQLLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &a.ConnectionString)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "password", a.Password)
 	return json.Marshal(objectMap)
 }
@@ -7451,14 +7451,14 @@ func (a *AzureMySQLLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type AzureMySQLSink.
 func (a AzureMySQLSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &a.PreCopyScript)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", a.PreCopyScript)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
 	objectMap["type"] = "AzureMySqlSink"
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -7521,13 +7521,13 @@ func (a *AzureMySQLSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureMySQLSource.
 func (a AzureMySQLSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "query", &a.Query)
-	populate(objectMap, "queryTimeout", &a.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "query", a.Query)
+	populateAny(objectMap, "queryTimeout", a.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	objectMap["type"] = "AzureMySqlSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -7596,8 +7596,8 @@ func (a AzureMySQLTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureMySqlTable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -7665,8 +7665,8 @@ func (a *AzureMySQLTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureMySQLTableDatasetTypeProperties.
 func (a AzureMySQLTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "table", &a.Table)
-	populate(objectMap, "tableName", &a.TableName)
+	populateAny(objectMap, "table", a.Table)
+	populateAny(objectMap, "tableName", a.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -7758,8 +7758,8 @@ func (a *AzurePostgreSQLLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzurePostgreSQLLinkedServiceTypeProperties.
 func (a AzurePostgreSQLLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &a.ConnectionString)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "password", a.Password)
 	return json.Marshal(objectMap)
 }
@@ -7793,14 +7793,14 @@ func (a *AzurePostgreSQLLinkedServiceTypeProperties) UnmarshalJSON(data []byte) 
 // MarshalJSON implements the json.Marshaller interface for type AzurePostgreSQLSink.
 func (a AzurePostgreSQLSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &a.PreCopyScript)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", a.PreCopyScript)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
 	objectMap["type"] = "AzurePostgreSqlSink"
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -7863,13 +7863,13 @@ func (a *AzurePostgreSQLSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzurePostgreSQLSource.
 func (a AzurePostgreSQLSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "query", &a.Query)
-	populate(objectMap, "queryTimeout", &a.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "query", a.Query)
+	populateAny(objectMap, "queryTimeout", a.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	objectMap["type"] = "AzurePostgreSqlSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -7938,8 +7938,8 @@ func (a AzurePostgreSQLTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzurePostgreSqlTable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -8007,9 +8007,9 @@ func (a *AzurePostgreSQLTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzurePostgreSQLTableDatasetTypeProperties.
 func (a AzurePostgreSQLTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "table", &a.Table)
-	populate(objectMap, "tableName", &a.TableName)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "table", a.Table)
+	populateAny(objectMap, "tableName", a.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -8042,13 +8042,13 @@ func (a *AzurePostgreSQLTableDatasetTypeProperties) UnmarshalJSON(data []byte) e
 // MarshalJSON implements the json.Marshaller interface for type AzureQueueSink.
 func (a AzureQueueSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
 	objectMap["type"] = "AzureQueueSink"
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -8170,14 +8170,14 @@ func (a *AzureSQLDWLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLDWLinkedServiceTypeProperties.
 func (a AzureSQLDWLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "azureCloudType", &a.AzureCloudType)
-	populate(objectMap, "connectionString", &a.ConnectionString)
+	populateAny(objectMap, "azureCloudType", a.AzureCloudType)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
 	populate(objectMap, "credential", a.Credential)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "password", a.Password)
-	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
+	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
-	populate(objectMap, "tenant", &a.Tenant)
+	populateAny(objectMap, "tenant", a.Tenant)
 	return json.Marshal(objectMap)
 }
 
@@ -8230,8 +8230,8 @@ func (a AzureSQLDWTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureSqlDWTable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -8299,9 +8299,9 @@ func (a *AzureSQLDWTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLDWTableDatasetTypeProperties.
 func (a AzureSQLDWTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "table", &a.Table)
-	populate(objectMap, "tableName", &a.TableName)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "table", a.Table)
+	populateAny(objectMap, "tableName", a.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -8397,14 +8397,14 @@ func (a *AzureSQLDatabaseLinkedService) UnmarshalJSON(data []byte) error {
 func (a AzureSQLDatabaseLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alwaysEncryptedSettings", a.AlwaysEncryptedSettings)
-	populate(objectMap, "azureCloudType", &a.AzureCloudType)
-	populate(objectMap, "connectionString", &a.ConnectionString)
+	populateAny(objectMap, "azureCloudType", a.AzureCloudType)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
 	populate(objectMap, "credential", a.Credential)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "password", a.Password)
-	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
+	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
-	populate(objectMap, "tenant", &a.Tenant)
+	populateAny(objectMap, "tenant", a.Tenant)
 	return json.Marshal(objectMap)
 }
 
@@ -8518,14 +8518,14 @@ func (a *AzureSQLMILinkedService) UnmarshalJSON(data []byte) error {
 func (a AzureSQLMILinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alwaysEncryptedSettings", a.AlwaysEncryptedSettings)
-	populate(objectMap, "azureCloudType", &a.AzureCloudType)
-	populate(objectMap, "connectionString", &a.ConnectionString)
+	populateAny(objectMap, "azureCloudType", a.AzureCloudType)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
 	populate(objectMap, "credential", a.Credential)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "password", a.Password)
-	populate(objectMap, "servicePrincipalId", &a.ServicePrincipalID)
+	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
-	populate(objectMap, "tenant", &a.Tenant)
+	populateAny(objectMap, "tenant", a.Tenant)
 	return json.Marshal(objectMap)
 }
 
@@ -8581,8 +8581,8 @@ func (a AzureSQLMITableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureSqlMITable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -8650,9 +8650,9 @@ func (a *AzureSQLMITableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLMITableDatasetTypeProperties.
 func (a AzureSQLMITableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "table", &a.Table)
-	populate(objectMap, "tableName", &a.TableName)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "table", a.Table)
+	populateAny(objectMap, "tableName", a.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -8685,22 +8685,22 @@ func (a *AzureSQLMITableDatasetTypeProperties) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLSink.
 func (a AzureSQLSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &a.PreCopyScript)
-	populate(objectMap, "sqlWriterStoredProcedureName", &a.SQLWriterStoredProcedureName)
-	populate(objectMap, "sqlWriterTableType", &a.SQLWriterTableType)
-	populate(objectMap, "sqlWriterUseTableLock", &a.SQLWriterUseTableLock)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
-	populate(objectMap, "storedProcedureParameters", &a.StoredProcedureParameters)
-	populate(objectMap, "storedProcedureTableTypeParameterName", &a.StoredProcedureTableTypeParameterName)
-	populate(objectMap, "tableOption", &a.TableOption)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", a.PreCopyScript)
+	populateAny(objectMap, "sqlWriterStoredProcedureName", a.SQLWriterStoredProcedureName)
+	populateAny(objectMap, "sqlWriterTableType", a.SQLWriterTableType)
+	populateAny(objectMap, "sqlWriterUseTableLock", a.SQLWriterUseTableLock)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
+	populateAny(objectMap, "storedProcedureParameters", a.StoredProcedureParameters)
+	populateAny(objectMap, "storedProcedureTableTypeParameterName", a.StoredProcedureTableTypeParameterName)
+	populateAny(objectMap, "tableOption", a.TableOption)
 	objectMap["type"] = "AzureSqlSink"
 	populate(objectMap, "upsertSettings", a.UpsertSettings)
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
-	populate(objectMap, "writeBehavior", &a.WriteBehavior)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBehavior", a.WriteBehavior)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -8787,18 +8787,18 @@ func (a *AzureSQLSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLSource.
 func (a AzureSQLSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "partitionOption", &a.PartitionOption)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionOption", a.PartitionOption)
 	populate(objectMap, "partitionSettings", a.PartitionSettings)
-	populate(objectMap, "produceAdditionalTypes", &a.ProduceAdditionalTypes)
-	populate(objectMap, "queryTimeout", &a.QueryTimeout)
-	populate(objectMap, "sqlReaderQuery", &a.SQLReaderQuery)
-	populate(objectMap, "sqlReaderStoredProcedureName", &a.SQLReaderStoredProcedureName)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
-	populate(objectMap, "storedProcedureParameters", &a.StoredProcedureParameters)
+	populateAny(objectMap, "produceAdditionalTypes", a.ProduceAdditionalTypes)
+	populateAny(objectMap, "queryTimeout", a.QueryTimeout)
+	populateAny(objectMap, "sqlReaderQuery", a.SQLReaderQuery)
+	populateAny(objectMap, "sqlReaderStoredProcedureName", a.SQLReaderStoredProcedureName)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
+	populateAny(objectMap, "storedProcedureParameters", a.StoredProcedureParameters)
 	objectMap["type"] = "AzureSqlSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -8882,8 +8882,8 @@ func (a AzureSQLTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureSqlTable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -8951,9 +8951,9 @@ func (a *AzureSQLTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLTableDatasetTypeProperties.
 func (a AzureSQLTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "table", &a.Table)
-	populate(objectMap, "tableName", &a.TableName)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "table", a.Table)
+	populateAny(objectMap, "tableName", a.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -8991,8 +8991,8 @@ func (a AzureSearchIndexDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureSearchIndex"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -9060,7 +9060,7 @@ func (a *AzureSearchIndexDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureSearchIndexDatasetTypeProperties.
 func (a AzureSearchIndexDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "indexName", &a.IndexName)
+	populateAny(objectMap, "indexName", a.IndexName)
 	return json.Marshal(objectMap)
 }
 
@@ -9087,13 +9087,13 @@ func (a *AzureSearchIndexDatasetTypeProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type AzureSearchIndexSink.
 func (a AzureSearchIndexSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
 	objectMap["type"] = "AzureSearchIndexSink"
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
 	populate(objectMap, "writeBehavior", a.WriteBehavior)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -9219,9 +9219,9 @@ func (a *AzureSearchLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureSearchLinkedServiceTypeProperties.
 func (a AzureSearchLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "encryptedCredential", &a.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "key", a.Key)
-	populate(objectMap, "url", &a.URL)
+	populateAny(objectMap, "url", a.URL)
 	return json.Marshal(objectMap)
 }
 
@@ -9317,10 +9317,10 @@ func (a *AzureStorageLinkedService) UnmarshalJSON(data []byte) error {
 func (a AzureStorageLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accountKey", a.AccountKey)
-	populate(objectMap, "connectionString", &a.ConnectionString)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
 	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populate(objectMap, "sasToken", a.SasToken)
-	populate(objectMap, "sasUri", &a.SasURI)
+	populateAny(objectMap, "sasUri", a.SasURI)
 	return json.Marshal(objectMap)
 }
 
@@ -9421,9 +9421,9 @@ func (a *AzureSynapseArtifactsLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureSynapseArtifactsLinkedServiceTypeProperties.
 func (a AzureSynapseArtifactsLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authentication", &a.Authentication)
-	populate(objectMap, "endpoint", &a.Endpoint)
-	populate(objectMap, "workspaceResourceId", &a.WorkspaceResourceID)
+	populateAny(objectMap, "authentication", a.Authentication)
+	populateAny(objectMap, "endpoint", a.Endpoint)
+	populateAny(objectMap, "workspaceResourceId", a.WorkspaceResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -9461,8 +9461,8 @@ func (a AzureTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", a.Folder)
 	populate(objectMap, "linkedServiceName", a.LinkedServiceName)
 	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "schema", &a.Schema)
-	populate(objectMap, "structure", &a.Structure)
+	populateAny(objectMap, "schema", a.Schema)
+	populateAny(objectMap, "structure", a.Structure)
 	objectMap["type"] = "AzureTable"
 	populate(objectMap, "typeProperties", a.TypeProperties)
 	if a.AdditionalProperties != nil {
@@ -9530,7 +9530,7 @@ func (a *AzureTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureTableDatasetTypeProperties.
 func (a AzureTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "tableName", &a.TableName)
+	populateAny(objectMap, "tableName", a.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -9557,17 +9557,17 @@ func (a *AzureTableDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureTableSink.
 func (a AzureTableSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "azureTableDefaultPartitionKeyValue", &a.AzureTableDefaultPartitionKeyValue)
-	populate(objectMap, "azureTableInsertType", &a.AzureTableInsertType)
-	populate(objectMap, "azureTablePartitionKeyName", &a.AzureTablePartitionKeyName)
-	populate(objectMap, "azureTableRowKeyName", &a.AzureTableRowKeyName)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &a.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &a.SinkRetryWait)
+	populateAny(objectMap, "azureTableDefaultPartitionKeyValue", a.AzureTableDefaultPartitionKeyValue)
+	populateAny(objectMap, "azureTableInsertType", a.AzureTableInsertType)
+	populateAny(objectMap, "azureTablePartitionKeyName", a.AzureTablePartitionKeyName)
+	populateAny(objectMap, "azureTableRowKeyName", a.AzureTableRowKeyName)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", a.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", a.SinkRetryWait)
 	objectMap["type"] = "AzureTableSink"
-	populate(objectMap, "writeBatchSize", &a.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &a.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", a.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", a.WriteBatchTimeout)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -9639,14 +9639,14 @@ func (a *AzureTableSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureTableSource.
 func (a AzureTableSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &a.AdditionalColumns)
-	populate(objectMap, "azureTableSourceIgnoreTableNotFound", &a.AzureTableSourceIgnoreTableNotFound)
-	populate(objectMap, "azureTableSourceQuery", &a.AzureTableSourceQuery)
-	populate(objectMap, "disableMetricsCollection", &a.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &a.MaxConcurrentConnections)
-	populate(objectMap, "queryTimeout", &a.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &a.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &a.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
+	populateAny(objectMap, "azureTableSourceIgnoreTableNotFound", a.AzureTableSourceIgnoreTableNotFound)
+	populateAny(objectMap, "azureTableSourceQuery", a.AzureTableSourceQuery)
+	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "queryTimeout", a.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", a.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", a.SourceRetryWait)
 	objectMap["type"] = "AzureTableSource"
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
@@ -9775,7 +9775,7 @@ func (a *AzureTableStorageLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BigDataPoolParametrizationReference.
 func (b BigDataPoolParametrizationReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "referenceName", &b.ReferenceName)
+	populateAny(objectMap, "referenceName", b.ReferenceName)
 	populate(objectMap, "type", b.Type)
 	return json.Marshal(objectMap)
 }
@@ -9811,8 +9811,8 @@ func (b BinaryDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", b.Folder)
 	populate(objectMap, "linkedServiceName", b.LinkedServiceName)
 	populate(objectMap, "parameters", b.Parameters)
-	populate(objectMap, "schema", &b.Schema)
-	populate(objectMap, "structure", &b.Structure)
+	populateAny(objectMap, "schema", b.Schema)
+	populateAny(objectMap, "structure", b.Structure)
 	objectMap["type"] = "Binary"
 	populate(objectMap, "typeProperties", b.TypeProperties)
 	if b.AdditionalProperties != nil {
@@ -9957,14 +9957,14 @@ func (b *BinaryReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BinarySink.
 func (b BinarySink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &b.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &b.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &b.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &b.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", b.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", b.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", b.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", b.SinkRetryWait)
 	populate(objectMap, "storeSettings", b.StoreSettings)
 	objectMap["type"] = "BinarySink"
-	populate(objectMap, "writeBatchSize", &b.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &b.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", b.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", b.WriteBatchTimeout)
 	if b.AdditionalProperties != nil {
 		for key, val := range b.AdditionalProperties {
 			objectMap[key] = val
@@ -10027,11 +10027,11 @@ func (b *BinarySink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BinarySource.
 func (b BinarySource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &b.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", b.DisableMetricsCollection)
 	populate(objectMap, "formatSettings", b.FormatSettings)
-	populate(objectMap, "maxConcurrentConnections", &b.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &b.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &b.SourceRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", b.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", b.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", b.SourceRetryWait)
 	populate(objectMap, "storeSettings", b.StoreSettings)
 	objectMap["type"] = "BinarySource"
 	if b.AdditionalProperties != nil {
@@ -10198,18 +10198,18 @@ func (b *BlobEventsTriggerTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BlobSink.
 func (b BlobSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "blobWriterAddHeader", &b.BlobWriterAddHeader)
-	populate(objectMap, "blobWriterDateTimeFormat", &b.BlobWriterDateTimeFormat)
-	populate(objectMap, "blobWriterOverwriteFiles", &b.BlobWriterOverwriteFiles)
-	populate(objectMap, "copyBehavior", &b.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &b.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &b.MaxConcurrentConnections)
+	populateAny(objectMap, "blobWriterAddHeader", b.BlobWriterAddHeader)
+	populateAny(objectMap, "blobWriterDateTimeFormat", b.BlobWriterDateTimeFormat)
+	populateAny(objectMap, "blobWriterOverwriteFiles", b.BlobWriterOverwriteFiles)
+	populateAny(objectMap, "copyBehavior", b.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", b.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", b.MaxConcurrentConnections)
 	populate(objectMap, "metadata", b.Metadata)
-	populate(objectMap, "sinkRetryCount", &b.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &b.SinkRetryWait)
+	populateAny(objectMap, "sinkRetryCount", b.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", b.SinkRetryWait)
 	objectMap["type"] = "BlobSink"
-	populate(objectMap, "writeBatchSize", &b.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &b.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", b.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", b.WriteBatchTimeout)
 	if b.AdditionalProperties != nil {
 		for key, val := range b.AdditionalProperties {
 			objectMap[key] = val
@@ -10284,13 +10284,13 @@ func (b *BlobSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BlobSource.
 func (b BlobSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &b.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &b.MaxConcurrentConnections)
-	populate(objectMap, "recursive", &b.Recursive)
-	populate(objectMap, "skipHeaderLineCount", &b.SkipHeaderLineCount)
-	populate(objectMap, "sourceRetryCount", &b.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &b.SourceRetryWait)
-	populate(objectMap, "treatEmptyAsNull", &b.TreatEmptyAsNull)
+	populateAny(objectMap, "disableMetricsCollection", b.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", b.MaxConcurrentConnections)
+	populateAny(objectMap, "recursive", b.Recursive)
+	populateAny(objectMap, "skipHeaderLineCount", b.SkipHeaderLineCount)
+	populateAny(objectMap, "sourceRetryCount", b.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", b.SourceRetryWait)
+	populateAny(objectMap, "treatEmptyAsNull", b.TreatEmptyAsNull)
 	objectMap["type"] = "BlobSource"
 	if b.AdditionalProperties != nil {
 		for key, val := range b.AdditionalProperties {
@@ -10540,12 +10540,12 @@ func (c *CassandraLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CassandraLinkedServiceTypeProperties.
 func (c CassandraLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authenticationType", &c.AuthenticationType)
-	populate(objectMap, "encryptedCredential", &c.EncryptedCredential)
-	populate(objectMap, "host", &c.Host)
+	populateAny(objectMap, "authenticationType", c.AuthenticationType)
+	populateAny(objectMap, "encryptedCredential", c.EncryptedCredential)
+	populateAny(objectMap, "host", c.Host)
 	populate(objectMap, "password", c.Password)
-	populate(objectMap, "port", &c.Port)
-	populate(objectMap, "username", &c.Username)
+	populateAny(objectMap, "port", c.Port)
+	populateAny(objectMap, "username", c.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -10587,14 +10587,14 @@ func (c *CassandraLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type CassandraSource.
 func (c CassandraSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &c.AdditionalColumns)
+	populateAny(objectMap, "additionalColumns", c.AdditionalColumns)
 	populate(objectMap, "consistencyLevel", c.ConsistencyLevel)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "query", &c.Query)
-	populate(objectMap, "queryTimeout", &c.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &c.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &c.SourceRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "query", c.Query)
+	populateAny(objectMap, "queryTimeout", c.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", c.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", c.SourceRetryWait)
 	objectMap["type"] = "CassandraSource"
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
@@ -10666,8 +10666,8 @@ func (c CassandraTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", c.Folder)
 	populate(objectMap, "linkedServiceName", c.LinkedServiceName)
 	populate(objectMap, "parameters", c.Parameters)
-	populate(objectMap, "schema", &c.Schema)
-	populate(objectMap, "structure", &c.Structure)
+	populateAny(objectMap, "schema", c.Schema)
+	populateAny(objectMap, "structure", c.Structure)
 	objectMap["type"] = "CassandraTable"
 	populate(objectMap, "typeProperties", c.TypeProperties)
 	if c.AdditionalProperties != nil {
@@ -10735,8 +10735,8 @@ func (c *CassandraTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CassandraTableDatasetTypeProperties.
 func (c CassandraTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "keyspace", &c.Keyspace)
-	populate(objectMap, "tableName", &c.TableName)
+	populateAny(objectMap, "keyspace", c.Keyspace)
+	populateAny(objectMap, "tableName", c.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -10891,8 +10891,8 @@ func (c *CmdkeySetup) UnmarshalJSON(data []byte) error {
 func (c CmdkeySetupTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "password", c.Password)
-	populate(objectMap, "targetName", &c.TargetName)
-	populate(objectMap, "userName", &c.UserName)
+	populateAny(objectMap, "targetName", c.TargetName)
+	populateAny(objectMap, "userName", c.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -10930,8 +10930,8 @@ func (c CommonDataServiceForAppsEntityDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", c.Folder)
 	populate(objectMap, "linkedServiceName", c.LinkedServiceName)
 	populate(objectMap, "parameters", c.Parameters)
-	populate(objectMap, "schema", &c.Schema)
-	populate(objectMap, "structure", &c.Structure)
+	populateAny(objectMap, "schema", c.Schema)
+	populateAny(objectMap, "structure", c.Structure)
 	objectMap["type"] = "CommonDataServiceForAppsEntity"
 	populate(objectMap, "typeProperties", c.TypeProperties)
 	if c.AdditionalProperties != nil {
@@ -10999,7 +10999,7 @@ func (c *CommonDataServiceForAppsEntityDataset) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type CommonDataServiceForAppsEntityDatasetTypeProperties.
 func (c CommonDataServiceForAppsEntityDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "entityName", &c.EntityName)
+	populateAny(objectMap, "entityName", c.EntityName)
 	return json.Marshal(objectMap)
 }
 
@@ -11088,18 +11088,18 @@ func (c *CommonDataServiceForAppsLinkedService) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type CommonDataServiceForAppsLinkedServiceTypeProperties.
 func (c CommonDataServiceForAppsLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authenticationType", &c.AuthenticationType)
-	populate(objectMap, "deploymentType", &c.DeploymentType)
-	populate(objectMap, "encryptedCredential", &c.EncryptedCredential)
-	populate(objectMap, "hostName", &c.HostName)
-	populate(objectMap, "organizationName", &c.OrganizationName)
+	populateAny(objectMap, "authenticationType", c.AuthenticationType)
+	populateAny(objectMap, "deploymentType", c.DeploymentType)
+	populateAny(objectMap, "encryptedCredential", c.EncryptedCredential)
+	populateAny(objectMap, "hostName", c.HostName)
+	populateAny(objectMap, "organizationName", c.OrganizationName)
 	populate(objectMap, "password", c.Password)
-	populate(objectMap, "port", &c.Port)
+	populateAny(objectMap, "port", c.Port)
 	populate(objectMap, "servicePrincipalCredential", c.ServicePrincipalCredential)
-	populate(objectMap, "servicePrincipalCredentialType", &c.ServicePrincipalCredentialType)
-	populate(objectMap, "servicePrincipalId", &c.ServicePrincipalID)
-	populate(objectMap, "serviceUri", &c.ServiceURI)
-	populate(objectMap, "username", &c.Username)
+	populateAny(objectMap, "servicePrincipalCredentialType", c.ServicePrincipalCredentialType)
+	populateAny(objectMap, "servicePrincipalId", c.ServicePrincipalID)
+	populateAny(objectMap, "serviceUri", c.ServiceURI)
+	populateAny(objectMap, "username", c.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -11159,15 +11159,15 @@ func (c *CommonDataServiceForAppsLinkedServiceTypeProperties) UnmarshalJSON(data
 // MarshalJSON implements the json.Marshaller interface for type CommonDataServiceForAppsSink.
 func (c CommonDataServiceForAppsSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "alternateKeyName", &c.AlternateKeyName)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "ignoreNullValues", &c.IgnoreNullValues)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &c.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &c.SinkRetryWait)
+	populateAny(objectMap, "alternateKeyName", c.AlternateKeyName)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "ignoreNullValues", c.IgnoreNullValues)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", c.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", c.SinkRetryWait)
 	objectMap["type"] = "CommonDataServiceForAppsSink"
-	populate(objectMap, "writeBatchSize", &c.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &c.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", c.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", c.WriteBatchTimeout)
 	populate(objectMap, "writeBehavior", c.WriteBehavior)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
@@ -11237,12 +11237,12 @@ func (c *CommonDataServiceForAppsSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CommonDataServiceForAppsSource.
 func (c CommonDataServiceForAppsSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &c.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "query", &c.Query)
-	populate(objectMap, "sourceRetryCount", &c.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &c.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", c.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "query", c.Query)
+	populateAny(objectMap, "sourceRetryCount", c.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", c.SourceRetryWait)
 	objectMap["type"] = "CommonDataServiceForAppsSource"
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
@@ -11438,14 +11438,14 @@ func (c *ConcurLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ConcurLinkedServiceTypeProperties.
 func (c ConcurLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clientId", &c.ClientID)
-	populate(objectMap, "connectionProperties", &c.ConnectionProperties)
-	populate(objectMap, "encryptedCredential", &c.EncryptedCredential)
+	populateAny(objectMap, "clientId", c.ClientID)
+	populateAny(objectMap, "connectionProperties", c.ConnectionProperties)
+	populateAny(objectMap, "encryptedCredential", c.EncryptedCredential)
 	populate(objectMap, "password", c.Password)
-	populate(objectMap, "useEncryptedEndpoints", &c.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &c.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &c.UsePeerVerification)
-	populate(objectMap, "username", &c.Username)
+	populateAny(objectMap, "useEncryptedEndpoints", c.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", c.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", c.UsePeerVerification)
+	populateAny(objectMap, "username", c.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -11498,8 +11498,8 @@ func (c ConcurObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", c.Folder)
 	populate(objectMap, "linkedServiceName", c.LinkedServiceName)
 	populate(objectMap, "parameters", c.Parameters)
-	populate(objectMap, "schema", &c.Schema)
-	populate(objectMap, "structure", &c.Structure)
+	populateAny(objectMap, "schema", c.Schema)
+	populateAny(objectMap, "structure", c.Structure)
 	objectMap["type"] = "ConcurObject"
 	populate(objectMap, "typeProperties", c.TypeProperties)
 	if c.AdditionalProperties != nil {
@@ -11567,13 +11567,13 @@ func (c *ConcurObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ConcurSource.
 func (c ConcurSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &c.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "query", &c.Query)
-	populate(objectMap, "queryTimeout", &c.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &c.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &c.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", c.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "query", c.Query)
+	populateAny(objectMap, "queryTimeout", c.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", c.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", c.SourceRetryWait)
 	objectMap["type"] = "ConcurSource"
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
@@ -11808,8 +11808,8 @@ func (c *CopyActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CopyActivityLogSettings.
 func (c CopyActivityLogSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "enableReliableLogging", &c.EnableReliableLogging)
-	populate(objectMap, "logLevel", &c.LogLevel)
+	populateAny(objectMap, "enableReliableLogging", c.EnableReliableLogging)
+	populateAny(objectMap, "logLevel", c.LogLevel)
 	return json.Marshal(objectMap)
 }
 
@@ -11839,12 +11839,12 @@ func (c *CopyActivityLogSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CopyActivityTypeProperties.
 func (c CopyActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "dataIntegrationUnits", &c.DataIntegrationUnits)
-	populate(objectMap, "enableSkipIncompatibleRow", &c.EnableSkipIncompatibleRow)
-	populate(objectMap, "enableStaging", &c.EnableStaging)
+	populateAny(objectMap, "dataIntegrationUnits", c.DataIntegrationUnits)
+	populateAny(objectMap, "enableSkipIncompatibleRow", c.EnableSkipIncompatibleRow)
+	populateAny(objectMap, "enableStaging", c.EnableStaging)
 	populate(objectMap, "logSettings", c.LogSettings)
 	populate(objectMap, "logStorageSettings", c.LogStorageSettings)
-	populate(objectMap, "parallelCopies", &c.ParallelCopies)
+	populateAny(objectMap, "parallelCopies", c.ParallelCopies)
 	populate(objectMap, "preserve", c.Preserve)
 	populate(objectMap, "preserveRules", c.PreserveRules)
 	populate(objectMap, "redirectIncompatibleRowSettings", c.RedirectIncompatibleRowSettings)
@@ -11852,8 +11852,8 @@ func (c CopyActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "skipErrorFile", c.SkipErrorFile)
 	populate(objectMap, "source", c.Source)
 	populate(objectMap, "stagingSettings", c.StagingSettings)
-	populate(objectMap, "translator", &c.Translator)
-	populate(objectMap, "validateDataConsistency", &c.ValidateDataConsistency)
+	populateAny(objectMap, "translator", c.Translator)
+	populateAny(objectMap, "validateDataConsistency", c.ValidateDataConsistency)
 	return json.Marshal(objectMap)
 }
 
@@ -11968,13 +11968,13 @@ func (c *CopyComputeScaleProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CopySink.
 func (c CopySink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &c.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &c.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", c.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", c.SinkRetryWait)
 	objectMap["type"] = c.Type
-	populate(objectMap, "writeBatchSize", &c.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &c.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", c.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", c.WriteBatchTimeout)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -12034,10 +12034,10 @@ func (c *CopySink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CopySource.
 func (c CopySource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &c.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &c.SourceRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", c.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", c.SourceRetryWait)
 	objectMap["type"] = c.Type
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
@@ -12154,18 +12154,18 @@ func (c *CosmosDbLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CosmosDbLinkedServiceTypeProperties.
 func (c CosmosDbLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "accountEndpoint", &c.AccountEndpoint)
+	populateAny(objectMap, "accountEndpoint", c.AccountEndpoint)
 	populate(objectMap, "accountKey", c.AccountKey)
-	populate(objectMap, "azureCloudType", &c.AzureCloudType)
+	populateAny(objectMap, "azureCloudType", c.AzureCloudType)
 	populate(objectMap, "connectionMode", c.ConnectionMode)
-	populate(objectMap, "connectionString", &c.ConnectionString)
+	populateAny(objectMap, "connectionString", c.ConnectionString)
 	populate(objectMap, "credential", c.Credential)
-	populate(objectMap, "database", &c.Database)
-	populate(objectMap, "encryptedCredential", &c.EncryptedCredential)
+	populateAny(objectMap, "database", c.Database)
+	populateAny(objectMap, "encryptedCredential", c.EncryptedCredential)
 	populate(objectMap, "servicePrincipalCredential", c.ServicePrincipalCredential)
 	populate(objectMap, "servicePrincipalCredentialType", c.ServicePrincipalCredentialType)
-	populate(objectMap, "servicePrincipalId", &c.ServicePrincipalID)
-	populate(objectMap, "tenant", &c.Tenant)
+	populateAny(objectMap, "servicePrincipalId", c.ServicePrincipalID)
+	populateAny(objectMap, "tenant", c.Tenant)
 	return json.Marshal(objectMap)
 }
 
@@ -12230,8 +12230,8 @@ func (c CosmosDbMongoDbAPICollectionDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", c.Folder)
 	populate(objectMap, "linkedServiceName", c.LinkedServiceName)
 	populate(objectMap, "parameters", c.Parameters)
-	populate(objectMap, "schema", &c.Schema)
-	populate(objectMap, "structure", &c.Structure)
+	populateAny(objectMap, "schema", c.Schema)
+	populateAny(objectMap, "structure", c.Structure)
 	objectMap["type"] = "CosmosDbMongoDbApiCollection"
 	populate(objectMap, "typeProperties", c.TypeProperties)
 	if c.AdditionalProperties != nil {
@@ -12299,7 +12299,7 @@ func (c *CosmosDbMongoDbAPICollectionDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CosmosDbMongoDbAPICollectionDatasetTypeProperties.
 func (c CosmosDbMongoDbAPICollectionDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "collection", &c.Collection)
+	populateAny(objectMap, "collection", c.Collection)
 	return json.Marshal(objectMap)
 }
 
@@ -12388,9 +12388,9 @@ func (c *CosmosDbMongoDbAPILinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CosmosDbMongoDbAPILinkedServiceTypeProperties.
 func (c CosmosDbMongoDbAPILinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &c.ConnectionString)
-	populate(objectMap, "database", &c.Database)
-	populate(objectMap, "isServerVersionAbove32", &c.IsServerVersionAbove32)
+	populateAny(objectMap, "connectionString", c.ConnectionString)
+	populateAny(objectMap, "database", c.Database)
+	populateAny(objectMap, "isServerVersionAbove32", c.IsServerVersionAbove32)
 	return json.Marshal(objectMap)
 }
 
@@ -12423,14 +12423,14 @@ func (c *CosmosDbMongoDbAPILinkedServiceTypeProperties) UnmarshalJSON(data []byt
 // MarshalJSON implements the json.Marshaller interface for type CosmosDbMongoDbAPISink.
 func (c CosmosDbMongoDbAPISink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &c.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &c.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", c.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", c.SinkRetryWait)
 	objectMap["type"] = "CosmosDbMongoDbApiSink"
-	populate(objectMap, "writeBatchSize", &c.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &c.WriteBatchTimeout)
-	populate(objectMap, "writeBehavior", &c.WriteBehavior)
+	populateAny(objectMap, "writeBatchSize", c.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", c.WriteBatchTimeout)
+	populateAny(objectMap, "writeBehavior", c.WriteBehavior)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -12493,15 +12493,15 @@ func (c *CosmosDbMongoDbAPISink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CosmosDbMongoDbAPISource.
 func (c CosmosDbMongoDbAPISource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &c.AdditionalColumns)
-	populate(objectMap, "batchSize", &c.BatchSize)
+	populateAny(objectMap, "additionalColumns", c.AdditionalColumns)
+	populateAny(objectMap, "batchSize", c.BatchSize)
 	populate(objectMap, "cursorMethods", c.CursorMethods)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "filter", &c.Filter)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "queryTimeout", &c.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &c.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &c.SourceRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "filter", c.Filter)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "queryTimeout", c.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", c.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", c.SourceRetryWait)
 	objectMap["type"] = "CosmosDbMongoDbApiSource"
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
@@ -12576,8 +12576,8 @@ func (c CosmosDbSQLAPICollectionDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", c.Folder)
 	populate(objectMap, "linkedServiceName", c.LinkedServiceName)
 	populate(objectMap, "parameters", c.Parameters)
-	populate(objectMap, "schema", &c.Schema)
-	populate(objectMap, "structure", &c.Structure)
+	populateAny(objectMap, "schema", c.Schema)
+	populateAny(objectMap, "structure", c.Structure)
 	objectMap["type"] = "CosmosDbSqlApiCollection"
 	populate(objectMap, "typeProperties", c.TypeProperties)
 	if c.AdditionalProperties != nil {
@@ -12645,7 +12645,7 @@ func (c *CosmosDbSQLAPICollectionDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CosmosDbSQLAPICollectionDatasetTypeProperties.
 func (c CosmosDbSQLAPICollectionDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "collectionName", &c.CollectionName)
+	populateAny(objectMap, "collectionName", c.CollectionName)
 	return json.Marshal(objectMap)
 }
 
@@ -12672,14 +12672,14 @@ func (c *CosmosDbSQLAPICollectionDatasetTypeProperties) UnmarshalJSON(data []byt
 // MarshalJSON implements the json.Marshaller interface for type CosmosDbSQLAPISink.
 func (c CosmosDbSQLAPISink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &c.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &c.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", c.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", c.SinkRetryWait)
 	objectMap["type"] = "CosmosDbSqlApiSink"
-	populate(objectMap, "writeBatchSize", &c.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &c.WriteBatchTimeout)
-	populate(objectMap, "writeBehavior", &c.WriteBehavior)
+	populateAny(objectMap, "writeBatchSize", c.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", c.WriteBatchTimeout)
+	populateAny(objectMap, "writeBehavior", c.WriteBehavior)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -12742,15 +12742,15 @@ func (c *CosmosDbSQLAPISink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CosmosDbSQLAPISource.
 func (c CosmosDbSQLAPISource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &c.AdditionalColumns)
-	populate(objectMap, "detectDatetime", &c.DetectDatetime)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "pageSize", &c.PageSize)
-	populate(objectMap, "preferredRegions", &c.PreferredRegions)
-	populate(objectMap, "query", &c.Query)
-	populate(objectMap, "sourceRetryCount", &c.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &c.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", c.AdditionalColumns)
+	populateAny(objectMap, "detectDatetime", c.DetectDatetime)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "pageSize", c.PageSize)
+	populateAny(objectMap, "preferredRegions", c.PreferredRegions)
+	populateAny(objectMap, "query", c.Query)
+	populateAny(objectMap, "sourceRetryCount", c.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", c.SourceRetryWait)
 	objectMap["type"] = "CosmosDbSqlApiSource"
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
@@ -12882,9 +12882,9 @@ func (c *CouchbaseLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CouchbaseLinkedServiceTypeProperties.
 func (c CouchbaseLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &c.ConnectionString)
+	populateAny(objectMap, "connectionString", c.ConnectionString)
 	populate(objectMap, "credString", c.CredString)
-	populate(objectMap, "encryptedCredential", &c.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", c.EncryptedCredential)
 	return json.Marshal(objectMap)
 }
 
@@ -12917,13 +12917,13 @@ func (c *CouchbaseLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type CouchbaseSource.
 func (c CouchbaseSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &c.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &c.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &c.MaxConcurrentConnections)
-	populate(objectMap, "query", &c.Query)
-	populate(objectMap, "queryTimeout", &c.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &c.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &c.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", c.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", c.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", c.MaxConcurrentConnections)
+	populateAny(objectMap, "query", c.Query)
+	populateAny(objectMap, "queryTimeout", c.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", c.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", c.SourceRetryWait)
 	objectMap["type"] = "CouchbaseSource"
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
@@ -12992,8 +12992,8 @@ func (c CouchbaseTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", c.Folder)
 	populate(objectMap, "linkedServiceName", c.LinkedServiceName)
 	populate(objectMap, "parameters", c.Parameters)
-	populate(objectMap, "schema", &c.Schema)
-	populate(objectMap, "structure", &c.Structure)
+	populateAny(objectMap, "schema", c.Schema)
+	populateAny(objectMap, "structure", c.Structure)
 	objectMap["type"] = "CouchbaseTable"
 	populate(objectMap, "typeProperties", c.TypeProperties)
 	if c.AdditionalProperties != nil {
@@ -13425,13 +13425,13 @@ func (c *CustomActivityReferenceObject) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CustomActivityTypeProperties.
 func (c CustomActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "autoUserSpecification", &c.AutoUserSpecification)
-	populate(objectMap, "command", &c.Command)
+	populateAny(objectMap, "autoUserSpecification", c.AutoUserSpecification)
+	populateAny(objectMap, "command", c.Command)
 	populate(objectMap, "extendedProperties", c.ExtendedProperties)
-	populate(objectMap, "folderPath", &c.FolderPath)
+	populateAny(objectMap, "folderPath", c.FolderPath)
 	populate(objectMap, "referenceObjects", c.ReferenceObjects)
 	populate(objectMap, "resourceLinkedService", c.ResourceLinkedService)
-	populate(objectMap, "retentionTimeInDays", &c.RetentionTimeInDays)
+	populateAny(objectMap, "retentionTimeInDays", c.RetentionTimeInDays)
 	return json.Marshal(objectMap)
 }
 
@@ -13481,7 +13481,7 @@ func (c CustomDataSourceLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "parameters", c.Parameters)
 	objectMap["type"] = "CustomDataSource"
-	populate(objectMap, "typeProperties", &c.TypeProperties)
+	populateAny(objectMap, "typeProperties", c.TypeProperties)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -13543,10 +13543,10 @@ func (c CustomDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", c.Folder)
 	populate(objectMap, "linkedServiceName", c.LinkedServiceName)
 	populate(objectMap, "parameters", c.Parameters)
-	populate(objectMap, "schema", &c.Schema)
-	populate(objectMap, "structure", &c.Structure)
+	populateAny(objectMap, "schema", c.Schema)
+	populateAny(objectMap, "structure", c.Structure)
 	objectMap["type"] = "CustomDataset"
-	populate(objectMap, "typeProperties", &c.TypeProperties)
+	populateAny(objectMap, "typeProperties", c.TypeProperties)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -13740,8 +13740,8 @@ func (c *CustomSetupBase) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DWCopyCommandDefaultValue.
 func (d DWCopyCommandDefaultValue) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "columnName", &d.ColumnName)
-	populate(objectMap, "defaultValue", &d.DefaultValue)
+	populateAny(objectMap, "columnName", d.ColumnName)
+	populateAny(objectMap, "defaultValue", d.DefaultValue)
 	return json.Marshal(objectMap)
 }
 
@@ -14012,7 +14012,7 @@ func (d *DataFlowDebugPackage) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DataFlowDebugPackageDebugSettings.
 func (d DataFlowDebugPackageDebugSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "datasetParameters", &d.DatasetParameters)
+	populateAny(objectMap, "datasetParameters", d.DatasetParameters)
 	populate(objectMap, "parameters", d.Parameters)
 	populate(objectMap, "sourceSettings", d.SourceSettings)
 	return json.Marshal(objectMap)
@@ -14210,7 +14210,7 @@ func (d *DataFlowListResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DataFlowReference.
 func (d DataFlowReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "datasetParameters", &d.DatasetParameters)
+	populateAny(objectMap, "datasetParameters", d.DatasetParameters)
 	populate(objectMap, "parameters", d.Parameters)
 	populate(objectMap, "referenceName", d.ReferenceName)
 	populate(objectMap, "type", d.Type)
@@ -14451,7 +14451,7 @@ func (d *DataFlowSourceSetting) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DataFlowStagingInfo.
 func (d DataFlowStagingInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "folderPath", &d.FolderPath)
+	populateAny(objectMap, "folderPath", d.FolderPath)
 	populate(objectMap, "linkedService", d.LinkedService)
 	return json.Marshal(objectMap)
 }
@@ -14552,13 +14552,13 @@ func (d *DataLakeAnalyticsUSQLActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DataLakeAnalyticsUSQLActivityTypeProperties.
 func (d DataLakeAnalyticsUSQLActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "compilationMode", &d.CompilationMode)
-	populate(objectMap, "degreeOfParallelism", &d.DegreeOfParallelism)
+	populateAny(objectMap, "compilationMode", d.CompilationMode)
+	populateAny(objectMap, "degreeOfParallelism", d.DegreeOfParallelism)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "priority", &d.Priority)
-	populate(objectMap, "runtimeVersion", &d.RuntimeVersion)
+	populateAny(objectMap, "priority", d.Priority)
+	populateAny(objectMap, "runtimeVersion", d.RuntimeVersion)
 	populate(objectMap, "scriptLinkedService", d.ScriptLinkedService)
-	populate(objectMap, "scriptPath", &d.ScriptPath)
+	populateAny(objectMap, "scriptPath", d.ScriptPath)
 	return json.Marshal(objectMap)
 }
 
@@ -14675,7 +14675,7 @@ func (d DatabricksNotebookActivityTypeProperties) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]any)
 	populate(objectMap, "baseParameters", d.BaseParameters)
 	populate(objectMap, "libraries", d.Libraries)
-	populate(objectMap, "notebookPath", &d.NotebookPath)
+	populateAny(objectMap, "notebookPath", d.NotebookPath)
 	return json.Marshal(objectMap)
 }
 
@@ -14779,7 +14779,7 @@ func (d *DatabricksSparkJarActivity) UnmarshalJSON(data []byte) error {
 func (d DatabricksSparkJarActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "libraries", d.Libraries)
-	populate(objectMap, "mainClassName", &d.MainClassName)
+	populateAny(objectMap, "mainClassName", d.MainClassName)
 	populate(objectMap, "parameters", d.Parameters)
 	return json.Marshal(objectMap)
 }
@@ -14885,7 +14885,7 @@ func (d DatabricksSparkPythonActivityTypeProperties) MarshalJSON() ([]byte, erro
 	objectMap := make(map[string]any)
 	populate(objectMap, "libraries", d.Libraries)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "pythonFile", &d.PythonFile)
+	populateAny(objectMap, "pythonFile", d.PythonFile)
 	return json.Marshal(objectMap)
 }
 
@@ -14923,8 +14923,8 @@ func (d Dataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", d.Folder)
 	populate(objectMap, "linkedServiceName", d.LinkedServiceName)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "schema", &d.Schema)
-	populate(objectMap, "structure", &d.Structure)
+	populateAny(objectMap, "schema", d.Schema)
+	populateAny(objectMap, "structure", d.Structure)
 	objectMap["type"] = d.Type
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -14988,8 +14988,8 @@ func (d *Dataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DatasetCompression.
 func (d DatasetCompression) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "level", &d.Level)
-	populate(objectMap, "type", &d.Type)
+	populateAny(objectMap, "level", d.Level)
+	populateAny(objectMap, "type", d.Type)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
 			objectMap[key] = val
@@ -15123,8 +15123,8 @@ func (d *DatasetListResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DatasetLocation.
 func (d DatasetLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileName", &d.FileName)
-	populate(objectMap, "folderPath", &d.FolderPath)
+	populateAny(objectMap, "fileName", d.FileName)
+	populateAny(objectMap, "folderPath", d.FolderPath)
 	objectMap["type"] = d.Type
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -15251,8 +15251,8 @@ func (d *DatasetResource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DatasetStorageFormat.
 func (d DatasetStorageFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deserializer", &d.Deserializer)
-	populate(objectMap, "serializer", &d.Serializer)
+	populateAny(objectMap, "deserializer", d.Deserializer)
+	populateAny(objectMap, "serializer", d.Serializer)
 	objectMap["type"] = d.Type
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -15364,7 +15364,7 @@ func (d *DataworldLinkedService) UnmarshalJSON(data []byte) error {
 func (d DataworldLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiToken", d.APIToken)
-	populate(objectMap, "encryptedCredential", &d.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", d.EncryptedCredential)
 	return json.Marshal(objectMap)
 }
 
@@ -15457,14 +15457,14 @@ func (d *Db2LinkedService) UnmarshalJSON(data []byte) error {
 func (d Db2LinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authenticationType", d.AuthenticationType)
-	populate(objectMap, "certificateCommonName", &d.CertificateCommonName)
-	populate(objectMap, "connectionString", &d.ConnectionString)
-	populate(objectMap, "database", &d.Database)
-	populate(objectMap, "encryptedCredential", &d.EncryptedCredential)
-	populate(objectMap, "packageCollection", &d.PackageCollection)
+	populateAny(objectMap, "certificateCommonName", d.CertificateCommonName)
+	populateAny(objectMap, "connectionString", d.ConnectionString)
+	populateAny(objectMap, "database", d.Database)
+	populateAny(objectMap, "encryptedCredential", d.EncryptedCredential)
+	populateAny(objectMap, "packageCollection", d.PackageCollection)
 	populate(objectMap, "password", d.Password)
-	populate(objectMap, "server", &d.Server)
-	populate(objectMap, "username", &d.Username)
+	populateAny(objectMap, "server", d.Server)
+	populateAny(objectMap, "username", d.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -15515,13 +15515,13 @@ func (d *Db2LinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Db2Source.
 func (d Db2Source) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &d.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "query", &d.Query)
-	populate(objectMap, "queryTimeout", &d.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &d.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &d.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", d.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "query", d.Query)
+	populateAny(objectMap, "queryTimeout", d.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", d.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", d.SourceRetryWait)
 	objectMap["type"] = "Db2Source"
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -15590,8 +15590,8 @@ func (d Db2TableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", d.Folder)
 	populate(objectMap, "linkedServiceName", d.LinkedServiceName)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "schema", &d.Schema)
-	populate(objectMap, "structure", &d.Structure)
+	populateAny(objectMap, "schema", d.Schema)
+	populateAny(objectMap, "structure", d.Structure)
 	objectMap["type"] = "Db2Table"
 	populate(objectMap, "typeProperties", d.TypeProperties)
 	if d.AdditionalProperties != nil {
@@ -15659,9 +15659,9 @@ func (d *Db2TableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Db2TableDatasetTypeProperties.
 func (d Db2TableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &d.Schema)
-	populate(objectMap, "table", &d.Table)
-	populate(objectMap, "tableName", &d.TableName)
+	populateAny(objectMap, "schema", d.Schema)
+	populateAny(objectMap, "table", d.Table)
+	populateAny(objectMap, "tableName", d.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -15765,10 +15765,10 @@ func (d *DeleteActivity) UnmarshalJSON(data []byte) error {
 func (d DeleteActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dataset", d.Dataset)
-	populate(objectMap, "enableLogging", &d.EnableLogging)
+	populateAny(objectMap, "enableLogging", d.EnableLogging)
 	populate(objectMap, "logStorageSettings", d.LogStorageSettings)
 	populate(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
-	populate(objectMap, "recursive", &d.Recursive)
+	populateAny(objectMap, "recursive", d.Recursive)
 	populate(objectMap, "storeSettings", d.StoreSettings)
 	return json.Marshal(objectMap)
 }
@@ -15843,8 +15843,8 @@ func (d DelimitedTextDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", d.Folder)
 	populate(objectMap, "linkedServiceName", d.LinkedServiceName)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "schema", &d.Schema)
-	populate(objectMap, "structure", &d.Structure)
+	populateAny(objectMap, "schema", d.Schema)
+	populateAny(objectMap, "structure", d.Structure)
 	objectMap["type"] = "DelimitedText"
 	populate(objectMap, "typeProperties", d.TypeProperties)
 	if d.AdditionalProperties != nil {
@@ -15912,16 +15912,16 @@ func (d *DelimitedTextDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DelimitedTextDatasetTypeProperties.
 func (d DelimitedTextDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "columnDelimiter", &d.ColumnDelimiter)
-	populate(objectMap, "compressionCodec", &d.CompressionCodec)
-	populate(objectMap, "compressionLevel", &d.CompressionLevel)
-	populate(objectMap, "encodingName", &d.EncodingName)
-	populate(objectMap, "escapeChar", &d.EscapeChar)
-	populate(objectMap, "firstRowAsHeader", &d.FirstRowAsHeader)
+	populateAny(objectMap, "columnDelimiter", d.ColumnDelimiter)
+	populateAny(objectMap, "compressionCodec", d.CompressionCodec)
+	populateAny(objectMap, "compressionLevel", d.CompressionLevel)
+	populateAny(objectMap, "encodingName", d.EncodingName)
+	populateAny(objectMap, "escapeChar", d.EscapeChar)
+	populateAny(objectMap, "firstRowAsHeader", d.FirstRowAsHeader)
 	populate(objectMap, "location", d.Location)
-	populate(objectMap, "nullValue", &d.NullValue)
-	populate(objectMap, "quoteChar", &d.QuoteChar)
-	populate(objectMap, "rowDelimiter", &d.RowDelimiter)
+	populateAny(objectMap, "nullValue", d.NullValue)
+	populateAny(objectMap, "quoteChar", d.QuoteChar)
+	populateAny(objectMap, "rowDelimiter", d.RowDelimiter)
 	return json.Marshal(objectMap)
 }
 
@@ -15976,7 +15976,7 @@ func (d *DelimitedTextDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 func (d DelimitedTextReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compressionProperties", d.CompressionProperties)
-	populate(objectMap, "skipLineCount", &d.SkipLineCount)
+	populateAny(objectMap, "skipLineCount", d.SkipLineCount)
 	objectMap["type"] = "DelimitedTextReadSettings"
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -16025,15 +16025,15 @@ func (d *DelimitedTextReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DelimitedTextSink.
 func (d DelimitedTextSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
 	populate(objectMap, "formatSettings", d.FormatSettings)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &d.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &d.SinkRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", d.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", d.SinkRetryWait)
 	populate(objectMap, "storeSettings", d.StoreSettings)
 	objectMap["type"] = "DelimitedTextSink"
-	populate(objectMap, "writeBatchSize", &d.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &d.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", d.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", d.WriteBatchTimeout)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
 			objectMap[key] = val
@@ -16099,12 +16099,12 @@ func (d *DelimitedTextSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DelimitedTextSource.
 func (d DelimitedTextSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &d.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
+	populateAny(objectMap, "additionalColumns", d.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
 	populate(objectMap, "formatSettings", d.FormatSettings)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &d.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &d.SourceRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", d.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", d.SourceRetryWait)
 	populate(objectMap, "storeSettings", d.StoreSettings)
 	objectMap["type"] = "DelimitedTextSource"
 	if d.AdditionalProperties != nil {
@@ -16169,10 +16169,10 @@ func (d *DelimitedTextSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DelimitedTextWriteSettings.
 func (d DelimitedTextWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileExtension", &d.FileExtension)
-	populate(objectMap, "fileNamePrefix", &d.FileNamePrefix)
-	populate(objectMap, "maxRowsPerFile", &d.MaxRowsPerFile)
-	populate(objectMap, "quoteAllText", &d.QuoteAllText)
+	populateAny(objectMap, "fileExtension", d.FileExtension)
+	populateAny(objectMap, "fileNamePrefix", d.FileNamePrefix)
+	populateAny(objectMap, "maxRowsPerFile", d.MaxRowsPerFile)
+	populateAny(objectMap, "quoteAllText", d.QuoteAllText)
 	objectMap["type"] = "DelimitedTextWriteSettings"
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -16254,9 +16254,9 @@ func (d *DependencyReference) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DistcpSettings.
 func (d DistcpSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "distcpOptions", &d.DistcpOptions)
-	populate(objectMap, "resourceManagerEndpoint", &d.ResourceManagerEndpoint)
-	populate(objectMap, "tempScriptPath", &d.TempScriptPath)
+	populateAny(objectMap, "distcpOptions", d.DistcpOptions)
+	populateAny(objectMap, "resourceManagerEndpoint", d.ResourceManagerEndpoint)
+	populateAny(objectMap, "tempScriptPath", d.TempScriptPath)
 	return json.Marshal(objectMap)
 }
 
@@ -16294,8 +16294,8 @@ func (d DocumentDbCollectionDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", d.Folder)
 	populate(objectMap, "linkedServiceName", d.LinkedServiceName)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "schema", &d.Schema)
-	populate(objectMap, "structure", &d.Structure)
+	populateAny(objectMap, "schema", d.Schema)
+	populateAny(objectMap, "structure", d.Structure)
 	objectMap["type"] = "DocumentDbCollection"
 	populate(objectMap, "typeProperties", d.TypeProperties)
 	if d.AdditionalProperties != nil {
@@ -16363,7 +16363,7 @@ func (d *DocumentDbCollectionDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DocumentDbCollectionDatasetTypeProperties.
 func (d DocumentDbCollectionDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "collectionName", &d.CollectionName)
+	populateAny(objectMap, "collectionName", d.CollectionName)
 	return json.Marshal(objectMap)
 }
 
@@ -16390,15 +16390,15 @@ func (d *DocumentDbCollectionDatasetTypeProperties) UnmarshalJSON(data []byte) e
 // MarshalJSON implements the json.Marshaller interface for type DocumentDbCollectionSink.
 func (d DocumentDbCollectionSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "nestingSeparator", &d.NestingSeparator)
-	populate(objectMap, "sinkRetryCount", &d.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &d.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "nestingSeparator", d.NestingSeparator)
+	populateAny(objectMap, "sinkRetryCount", d.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", d.SinkRetryWait)
 	objectMap["type"] = "DocumentDbCollectionSink"
-	populate(objectMap, "writeBatchSize", &d.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &d.WriteBatchTimeout)
-	populate(objectMap, "writeBehavior", &d.WriteBehavior)
+	populateAny(objectMap, "writeBatchSize", d.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", d.WriteBatchTimeout)
+	populateAny(objectMap, "writeBehavior", d.WriteBehavior)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
 			objectMap[key] = val
@@ -16464,14 +16464,14 @@ func (d *DocumentDbCollectionSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DocumentDbCollectionSource.
 func (d DocumentDbCollectionSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &d.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "nestingSeparator", &d.NestingSeparator)
-	populate(objectMap, "query", &d.Query)
-	populate(objectMap, "queryTimeout", &d.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &d.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &d.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", d.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "nestingSeparator", d.NestingSeparator)
+	populateAny(objectMap, "query", d.Query)
+	populateAny(objectMap, "queryTimeout", d.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", d.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", d.SourceRetryWait)
 	objectMap["type"] = "DocumentDbCollectionSource"
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -16538,9 +16538,9 @@ func (d *DocumentDbCollectionSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DrillDatasetTypeProperties.
 func (d DrillDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &d.Schema)
-	populate(objectMap, "table", &d.Table)
-	populate(objectMap, "tableName", &d.TableName)
+	populateAny(objectMap, "schema", d.Schema)
+	populateAny(objectMap, "table", d.Table)
+	populateAny(objectMap, "tableName", d.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -16635,8 +16635,8 @@ func (d *DrillLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DrillLinkedServiceTypeProperties.
 func (d DrillLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &d.ConnectionString)
-	populate(objectMap, "encryptedCredential", &d.EncryptedCredential)
+	populateAny(objectMap, "connectionString", d.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", d.EncryptedCredential)
 	populate(objectMap, "pwd", d.Pwd)
 	return json.Marshal(objectMap)
 }
@@ -16670,13 +16670,13 @@ func (d *DrillLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DrillSource.
 func (d DrillSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &d.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "query", &d.Query)
-	populate(objectMap, "queryTimeout", &d.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &d.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &d.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", d.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "query", d.Query)
+	populateAny(objectMap, "queryTimeout", d.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", d.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", d.SourceRetryWait)
 	objectMap["type"] = "DrillSource"
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -16745,8 +16745,8 @@ func (d DrillTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", d.Folder)
 	populate(objectMap, "linkedServiceName", d.LinkedServiceName)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "schema", &d.Schema)
-	populate(objectMap, "structure", &d.Structure)
+	populateAny(objectMap, "schema", d.Schema)
+	populateAny(objectMap, "structure", d.Structure)
 	objectMap["type"] = "DrillTable"
 	populate(objectMap, "typeProperties", d.TypeProperties)
 	if d.AdditionalProperties != nil {
@@ -16876,12 +16876,12 @@ func (d *DynamicsAXLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DynamicsAXLinkedServiceTypeProperties.
 func (d DynamicsAXLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "aadResourceId", &d.AADResourceID)
-	populate(objectMap, "encryptedCredential", &d.EncryptedCredential)
-	populate(objectMap, "servicePrincipalId", &d.ServicePrincipalID)
+	populateAny(objectMap, "aadResourceId", d.AADResourceID)
+	populateAny(objectMap, "encryptedCredential", d.EncryptedCredential)
+	populateAny(objectMap, "servicePrincipalId", d.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", d.ServicePrincipalKey)
-	populate(objectMap, "tenant", &d.Tenant)
-	populate(objectMap, "url", &d.URL)
+	populateAny(objectMap, "tenant", d.Tenant)
+	populateAny(objectMap, "url", d.URL)
 	return json.Marshal(objectMap)
 }
 
@@ -16928,8 +16928,8 @@ func (d DynamicsAXResourceDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", d.Folder)
 	populate(objectMap, "linkedServiceName", d.LinkedServiceName)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "schema", &d.Schema)
-	populate(objectMap, "structure", &d.Structure)
+	populateAny(objectMap, "schema", d.Schema)
+	populateAny(objectMap, "structure", d.Structure)
 	objectMap["type"] = "DynamicsAXResource"
 	populate(objectMap, "typeProperties", d.TypeProperties)
 	if d.AdditionalProperties != nil {
@@ -16997,7 +16997,7 @@ func (d *DynamicsAXResourceDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DynamicsAXResourceDatasetTypeProperties.
 func (d DynamicsAXResourceDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "path", &d.Path)
+	populateAny(objectMap, "path", d.Path)
 	return json.Marshal(objectMap)
 }
 
@@ -17024,14 +17024,14 @@ func (d *DynamicsAXResourceDatasetTypeProperties) UnmarshalJSON(data []byte) err
 // MarshalJSON implements the json.Marshaller interface for type DynamicsAXSource.
 func (d DynamicsAXSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &d.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
-	populate(objectMap, "httpRequestTimeout", &d.HTTPRequestTimeout)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "query", &d.Query)
-	populate(objectMap, "queryTimeout", &d.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &d.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &d.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", d.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
+	populateAny(objectMap, "httpRequestTimeout", d.HTTPRequestTimeout)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "query", d.Query)
+	populateAny(objectMap, "queryTimeout", d.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", d.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", d.SourceRetryWait)
 	objectMap["type"] = "DynamicsAXSource"
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -17103,8 +17103,8 @@ func (d DynamicsCrmEntityDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", d.Folder)
 	populate(objectMap, "linkedServiceName", d.LinkedServiceName)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "schema", &d.Schema)
-	populate(objectMap, "structure", &d.Structure)
+	populateAny(objectMap, "schema", d.Schema)
+	populateAny(objectMap, "structure", d.Structure)
 	objectMap["type"] = "DynamicsCrmEntity"
 	populate(objectMap, "typeProperties", d.TypeProperties)
 	if d.AdditionalProperties != nil {
@@ -17172,7 +17172,7 @@ func (d *DynamicsCrmEntityDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DynamicsCrmEntityDatasetTypeProperties.
 func (d DynamicsCrmEntityDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "entityName", &d.EntityName)
+	populateAny(objectMap, "entityName", d.EntityName)
 	return json.Marshal(objectMap)
 }
 
@@ -17261,18 +17261,18 @@ func (d *DynamicsCrmLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DynamicsCrmLinkedServiceTypeProperties.
 func (d DynamicsCrmLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authenticationType", &d.AuthenticationType)
-	populate(objectMap, "deploymentType", &d.DeploymentType)
-	populate(objectMap, "encryptedCredential", &d.EncryptedCredential)
-	populate(objectMap, "hostName", &d.HostName)
-	populate(objectMap, "organizationName", &d.OrganizationName)
+	populateAny(objectMap, "authenticationType", d.AuthenticationType)
+	populateAny(objectMap, "deploymentType", d.DeploymentType)
+	populateAny(objectMap, "encryptedCredential", d.EncryptedCredential)
+	populateAny(objectMap, "hostName", d.HostName)
+	populateAny(objectMap, "organizationName", d.OrganizationName)
 	populate(objectMap, "password", d.Password)
-	populate(objectMap, "port", &d.Port)
+	populateAny(objectMap, "port", d.Port)
 	populate(objectMap, "servicePrincipalCredential", d.ServicePrincipalCredential)
-	populate(objectMap, "servicePrincipalCredentialType", &d.ServicePrincipalCredentialType)
-	populate(objectMap, "servicePrincipalId", &d.ServicePrincipalID)
-	populate(objectMap, "serviceUri", &d.ServiceURI)
-	populate(objectMap, "username", &d.Username)
+	populateAny(objectMap, "servicePrincipalCredentialType", d.ServicePrincipalCredentialType)
+	populateAny(objectMap, "servicePrincipalId", d.ServicePrincipalID)
+	populateAny(objectMap, "serviceUri", d.ServiceURI)
+	populateAny(objectMap, "username", d.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -17332,15 +17332,15 @@ func (d *DynamicsCrmLinkedServiceTypeProperties) UnmarshalJSON(data []byte) erro
 // MarshalJSON implements the json.Marshaller interface for type DynamicsCrmSink.
 func (d DynamicsCrmSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "alternateKeyName", &d.AlternateKeyName)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
-	populate(objectMap, "ignoreNullValues", &d.IgnoreNullValues)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &d.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &d.SinkRetryWait)
+	populateAny(objectMap, "alternateKeyName", d.AlternateKeyName)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
+	populateAny(objectMap, "ignoreNullValues", d.IgnoreNullValues)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", d.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", d.SinkRetryWait)
 	objectMap["type"] = "DynamicsCrmSink"
-	populate(objectMap, "writeBatchSize", &d.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &d.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", d.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", d.WriteBatchTimeout)
 	populate(objectMap, "writeBehavior", d.WriteBehavior)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -17410,12 +17410,12 @@ func (d *DynamicsCrmSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DynamicsCrmSource.
 func (d DynamicsCrmSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &d.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "query", &d.Query)
-	populate(objectMap, "sourceRetryCount", &d.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &d.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", d.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "query", d.Query)
+	populateAny(objectMap, "sourceRetryCount", d.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", d.SourceRetryWait)
 	objectMap["type"] = "DynamicsCrmSource"
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -17481,8 +17481,8 @@ func (d DynamicsEntityDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", d.Folder)
 	populate(objectMap, "linkedServiceName", d.LinkedServiceName)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "schema", &d.Schema)
-	populate(objectMap, "structure", &d.Structure)
+	populateAny(objectMap, "schema", d.Schema)
+	populateAny(objectMap, "structure", d.Structure)
 	objectMap["type"] = "DynamicsEntity"
 	populate(objectMap, "typeProperties", d.TypeProperties)
 	if d.AdditionalProperties != nil {
@@ -17550,7 +17550,7 @@ func (d *DynamicsEntityDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DynamicsEntityDatasetTypeProperties.
 func (d DynamicsEntityDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "entityName", &d.EntityName)
+	populateAny(objectMap, "entityName", d.EntityName)
 	return json.Marshal(objectMap)
 }
 
@@ -17639,19 +17639,19 @@ func (d *DynamicsLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DynamicsLinkedServiceTypeProperties.
 func (d DynamicsLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authenticationType", &d.AuthenticationType)
+	populateAny(objectMap, "authenticationType", d.AuthenticationType)
 	populate(objectMap, "credential", d.Credential)
-	populate(objectMap, "deploymentType", &d.DeploymentType)
-	populate(objectMap, "encryptedCredential", &d.EncryptedCredential)
-	populate(objectMap, "hostName", &d.HostName)
-	populate(objectMap, "organizationName", &d.OrganizationName)
+	populateAny(objectMap, "deploymentType", d.DeploymentType)
+	populateAny(objectMap, "encryptedCredential", d.EncryptedCredential)
+	populateAny(objectMap, "hostName", d.HostName)
+	populateAny(objectMap, "organizationName", d.OrganizationName)
 	populate(objectMap, "password", d.Password)
-	populate(objectMap, "port", &d.Port)
+	populateAny(objectMap, "port", d.Port)
 	populate(objectMap, "servicePrincipalCredential", d.ServicePrincipalCredential)
-	populate(objectMap, "servicePrincipalCredentialType", &d.ServicePrincipalCredentialType)
-	populate(objectMap, "servicePrincipalId", &d.ServicePrincipalID)
-	populate(objectMap, "serviceUri", &d.ServiceURI)
-	populate(objectMap, "username", &d.Username)
+	populateAny(objectMap, "servicePrincipalCredentialType", d.ServicePrincipalCredentialType)
+	populateAny(objectMap, "servicePrincipalId", d.ServicePrincipalID)
+	populateAny(objectMap, "serviceUri", d.ServiceURI)
+	populateAny(objectMap, "username", d.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -17714,15 +17714,15 @@ func (d *DynamicsLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DynamicsSink.
 func (d DynamicsSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "alternateKeyName", &d.AlternateKeyName)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
-	populate(objectMap, "ignoreNullValues", &d.IgnoreNullValues)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &d.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &d.SinkRetryWait)
+	populateAny(objectMap, "alternateKeyName", d.AlternateKeyName)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
+	populateAny(objectMap, "ignoreNullValues", d.IgnoreNullValues)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", d.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", d.SinkRetryWait)
 	objectMap["type"] = "DynamicsSink"
-	populate(objectMap, "writeBatchSize", &d.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &d.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", d.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", d.WriteBatchTimeout)
 	populate(objectMap, "writeBehavior", d.WriteBehavior)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -17792,12 +17792,12 @@ func (d *DynamicsSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DynamicsSource.
 func (d DynamicsSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &d.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &d.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &d.MaxConcurrentConnections)
-	populate(objectMap, "query", &d.Query)
-	populate(objectMap, "sourceRetryCount", &d.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &d.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", d.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", d.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", d.MaxConcurrentConnections)
+	populateAny(objectMap, "query", d.Query)
+	populateAny(objectMap, "sourceRetryCount", d.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", d.SourceRetryWait)
 	objectMap["type"] = "DynamicsSource"
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
@@ -17920,13 +17920,13 @@ func (e *EloquaLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type EloquaLinkedServiceTypeProperties.
 func (e EloquaLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "encryptedCredential", &e.EncryptedCredential)
-	populate(objectMap, "endpoint", &e.Endpoint)
+	populateAny(objectMap, "encryptedCredential", e.EncryptedCredential)
+	populateAny(objectMap, "endpoint", e.Endpoint)
 	populate(objectMap, "password", e.Password)
-	populate(objectMap, "useEncryptedEndpoints", &e.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &e.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &e.UsePeerVerification)
-	populate(objectMap, "username", &e.Username)
+	populateAny(objectMap, "useEncryptedEndpoints", e.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", e.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", e.UsePeerVerification)
+	populateAny(objectMap, "username", e.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -17976,8 +17976,8 @@ func (e EloquaObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", e.Folder)
 	populate(objectMap, "linkedServiceName", e.LinkedServiceName)
 	populate(objectMap, "parameters", e.Parameters)
-	populate(objectMap, "schema", &e.Schema)
-	populate(objectMap, "structure", &e.Structure)
+	populateAny(objectMap, "schema", e.Schema)
+	populateAny(objectMap, "structure", e.Structure)
 	objectMap["type"] = "EloquaObject"
 	populate(objectMap, "typeProperties", e.TypeProperties)
 	if e.AdditionalProperties != nil {
@@ -18045,13 +18045,13 @@ func (e *EloquaObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type EloquaSource.
 func (e EloquaSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &e.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &e.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &e.MaxConcurrentConnections)
-	populate(objectMap, "query", &e.Query)
-	populate(objectMap, "queryTimeout", &e.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &e.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &e.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", e.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", e.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", e.MaxConcurrentConnections)
+	populateAny(objectMap, "query", e.Query)
+	populateAny(objectMap, "queryTimeout", e.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", e.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", e.SourceRetryWait)
 	objectMap["type"] = "EloquaSource"
 	if e.AdditionalProperties != nil {
 		for key, val := range e.AdditionalProperties {
@@ -18252,8 +18252,8 @@ func (e ExcelDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", e.Folder)
 	populate(objectMap, "linkedServiceName", e.LinkedServiceName)
 	populate(objectMap, "parameters", e.Parameters)
-	populate(objectMap, "schema", &e.Schema)
-	populate(objectMap, "structure", &e.Structure)
+	populateAny(objectMap, "schema", e.Schema)
+	populateAny(objectMap, "structure", e.Structure)
 	objectMap["type"] = "Excel"
 	populate(objectMap, "typeProperties", e.TypeProperties)
 	if e.AdditionalProperties != nil {
@@ -18322,12 +18322,12 @@ func (e *ExcelDataset) UnmarshalJSON(data []byte) error {
 func (e ExcelDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compression", e.Compression)
-	populate(objectMap, "firstRowAsHeader", &e.FirstRowAsHeader)
+	populateAny(objectMap, "firstRowAsHeader", e.FirstRowAsHeader)
 	populate(objectMap, "location", e.Location)
-	populate(objectMap, "nullValue", &e.NullValue)
-	populate(objectMap, "range", &e.Range)
-	populate(objectMap, "sheetIndex", &e.SheetIndex)
-	populate(objectMap, "sheetName", &e.SheetName)
+	populateAny(objectMap, "nullValue", e.NullValue)
+	populateAny(objectMap, "range", e.Range)
+	populateAny(objectMap, "sheetIndex", e.SheetIndex)
+	populateAny(objectMap, "sheetName", e.SheetName)
 	return json.Marshal(objectMap)
 }
 
@@ -18372,11 +18372,11 @@ func (e *ExcelDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExcelSource.
 func (e ExcelSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &e.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &e.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &e.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &e.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &e.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", e.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", e.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", e.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", e.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", e.SourceRetryWait)
 	populate(objectMap, "storeSettings", e.StoreSettings)
 	objectMap["type"] = "ExcelSource"
 	if e.AdditionalProperties != nil {
@@ -18509,13 +18509,13 @@ func (e *ExecuteDataFlowActivity) UnmarshalJSON(data []byte) error {
 func (e ExecuteDataFlowActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compute", e.Compute)
-	populate(objectMap, "continueOnError", &e.ContinueOnError)
+	populateAny(objectMap, "continueOnError", e.ContinueOnError)
 	populate(objectMap, "dataFlow", e.DataFlow)
 	populate(objectMap, "integrationRuntime", e.IntegrationRuntime)
-	populate(objectMap, "runConcurrently", &e.RunConcurrently)
-	populate(objectMap, "sourceStagingConcurrency", &e.SourceStagingConcurrency)
+	populateAny(objectMap, "runConcurrently", e.RunConcurrently)
+	populateAny(objectMap, "sourceStagingConcurrency", e.SourceStagingConcurrency)
 	populate(objectMap, "staging", e.Staging)
-	populate(objectMap, "traceLevel", &e.TraceLevel)
+	populateAny(objectMap, "traceLevel", e.TraceLevel)
 	return json.Marshal(objectMap)
 }
 
@@ -18563,8 +18563,8 @@ func (e *ExecuteDataFlowActivityTypeProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type ExecuteDataFlowActivityTypePropertiesCompute.
 func (e ExecuteDataFlowActivityTypePropertiesCompute) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "computeType", &e.ComputeType)
-	populate(objectMap, "coreCount", &e.CoreCount)
+	populateAny(objectMap, "computeType", e.ComputeType)
+	populateAny(objectMap, "coreCount", e.CoreCount)
 	return json.Marshal(objectMap)
 }
 
@@ -18738,15 +18738,15 @@ func (e *ExecutePipelineActivityTypeProperties) UnmarshalJSON(data []byte) error
 func (e ExecutePowerQueryActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compute", e.Compute)
-	populate(objectMap, "continueOnError", &e.ContinueOnError)
+	populateAny(objectMap, "continueOnError", e.ContinueOnError)
 	populate(objectMap, "dataFlow", e.DataFlow)
 	populate(objectMap, "integrationRuntime", e.IntegrationRuntime)
 	populate(objectMap, "queries", e.Queries)
-	populate(objectMap, "runConcurrently", &e.RunConcurrently)
+	populateAny(objectMap, "runConcurrently", e.RunConcurrently)
 	populate(objectMap, "sinks", e.Sinks)
-	populate(objectMap, "sourceStagingConcurrency", &e.SourceStagingConcurrency)
+	populateAny(objectMap, "sourceStagingConcurrency", e.SourceStagingConcurrency)
 	populate(objectMap, "staging", e.Staging)
-	populate(objectMap, "traceLevel", &e.TraceLevel)
+	populateAny(objectMap, "traceLevel", e.TraceLevel)
 	return json.Marshal(objectMap)
 }
 
@@ -18871,17 +18871,17 @@ func (e *ExecuteSSISPackageActivity) UnmarshalJSON(data []byte) error {
 func (e ExecuteSSISPackageActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "connectVia", e.ConnectVia)
-	populate(objectMap, "environmentPath", &e.EnvironmentPath)
+	populateAny(objectMap, "environmentPath", e.EnvironmentPath)
 	populate(objectMap, "executionCredential", e.ExecutionCredential)
 	populate(objectMap, "logLocation", e.LogLocation)
-	populate(objectMap, "loggingLevel", &e.LoggingLevel)
+	populateAny(objectMap, "loggingLevel", e.LoggingLevel)
 	populate(objectMap, "packageConnectionManagers", e.PackageConnectionManagers)
 	populate(objectMap, "packageLocation", e.PackageLocation)
 	populate(objectMap, "packageParameters", e.PackageParameters)
 	populate(objectMap, "projectConnectionManagers", e.ProjectConnectionManagers)
 	populate(objectMap, "projectParameters", e.ProjectParameters)
 	populate(objectMap, "propertyOverrides", e.PropertyOverrides)
-	populate(objectMap, "runtime", &e.Runtime)
+	populateAny(objectMap, "runtime", e.Runtime)
 	return json.Marshal(objectMap)
 }
 
@@ -19785,8 +19785,8 @@ func (f *FailActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FailActivityTypeProperties.
 func (f FailActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "errorCode", &f.ErrorCode)
-	populate(objectMap, "message", &f.Message)
+	populateAny(objectMap, "errorCode", f.ErrorCode)
+	populateAny(objectMap, "message", f.Message)
 	return json.Marshal(objectMap)
 }
 
@@ -19878,10 +19878,10 @@ func (f *FileServerLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FileServerLinkedServiceTypeProperties.
 func (f FileServerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "encryptedCredential", &f.EncryptedCredential)
-	populate(objectMap, "host", &f.Host)
+	populateAny(objectMap, "encryptedCredential", f.EncryptedCredential)
+	populateAny(objectMap, "host", f.Host)
 	populate(objectMap, "password", f.Password)
-	populate(objectMap, "userId", &f.UserID)
+	populateAny(objectMap, "userId", f.UserID)
 	return json.Marshal(objectMap)
 }
 
@@ -19917,8 +19917,8 @@ func (f *FileServerLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type FileServerLocation.
 func (f FileServerLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileName", &f.FileName)
-	populate(objectMap, "folderPath", &f.FolderPath)
+	populateAny(objectMap, "fileName", f.FileName)
+	populateAny(objectMap, "folderPath", f.FolderPath)
 	objectMap["type"] = "FileServerLocation"
 	if f.AdditionalProperties != nil {
 		for key, val := range f.AdditionalProperties {
@@ -19967,19 +19967,19 @@ func (f *FileServerLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FileServerReadSettings.
 func (f FileServerReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &f.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableMetricsCollection", &f.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", f.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableMetricsCollection", f.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", f.EnablePartitionDiscovery)
-	populate(objectMap, "fileFilter", &f.FileFilter)
-	populate(objectMap, "fileListPath", &f.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &f.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &f.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &f.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &f.PartitionRootPath)
-	populate(objectMap, "recursive", &f.Recursive)
+	populateAny(objectMap, "fileFilter", f.FileFilter)
+	populateAny(objectMap, "fileListPath", f.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", f.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", f.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", f.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", f.PartitionRootPath)
+	populateAny(objectMap, "recursive", f.Recursive)
 	objectMap["type"] = "FileServerReadSettings"
-	populate(objectMap, "wildcardFileName", &f.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &f.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", f.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", f.WildcardFolderPath)
 	if f.AdditionalProperties != nil {
 		for key, val := range f.AdditionalProperties {
 			objectMap[key] = val
@@ -20057,9 +20057,9 @@ func (f *FileServerReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FileServerWriteSettings.
 func (f FileServerWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "copyBehavior", &f.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &f.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &f.MaxConcurrentConnections)
+	populateAny(objectMap, "copyBehavior", f.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", f.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", f.MaxConcurrentConnections)
 	objectMap["type"] = "FileServerWriteSettings"
 	if f.AdditionalProperties != nil {
 		for key, val := range f.AdditionalProperties {
@@ -20116,8 +20116,8 @@ func (f FileShareDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", f.Folder)
 	populate(objectMap, "linkedServiceName", f.LinkedServiceName)
 	populate(objectMap, "parameters", f.Parameters)
-	populate(objectMap, "schema", &f.Schema)
-	populate(objectMap, "structure", &f.Structure)
+	populateAny(objectMap, "schema", f.Schema)
+	populateAny(objectMap, "structure", f.Structure)
 	objectMap["type"] = "FileShare"
 	populate(objectMap, "typeProperties", f.TypeProperties)
 	if f.AdditionalProperties != nil {
@@ -20186,12 +20186,12 @@ func (f *FileShareDataset) UnmarshalJSON(data []byte) error {
 func (f FileShareDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compression", f.Compression)
-	populate(objectMap, "fileFilter", &f.FileFilter)
-	populate(objectMap, "fileName", &f.FileName)
-	populate(objectMap, "folderPath", &f.FolderPath)
+	populateAny(objectMap, "fileFilter", f.FileFilter)
+	populateAny(objectMap, "fileName", f.FileName)
+	populateAny(objectMap, "folderPath", f.FolderPath)
 	populate(objectMap, "format", f.Format)
-	populate(objectMap, "modifiedDatetimeEnd", &f.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &f.ModifiedDatetimeStart)
+	populateAny(objectMap, "modifiedDatetimeEnd", f.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", f.ModifiedDatetimeStart)
 	return json.Marshal(objectMap)
 }
 
@@ -20236,14 +20236,14 @@ func (f *FileShareDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FileSystemSink.
 func (f FileSystemSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "copyBehavior", &f.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &f.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &f.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &f.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &f.SinkRetryWait)
+	populateAny(objectMap, "copyBehavior", f.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", f.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", f.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", f.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", f.SinkRetryWait)
 	objectMap["type"] = "FileSystemSink"
-	populate(objectMap, "writeBatchSize", &f.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &f.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", f.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", f.WriteBatchTimeout)
 	if f.AdditionalProperties != nil {
 		for key, val := range f.AdditionalProperties {
 			objectMap[key] = val
@@ -20306,12 +20306,12 @@ func (f *FileSystemSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FileSystemSource.
 func (f FileSystemSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &f.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &f.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &f.MaxConcurrentConnections)
-	populate(objectMap, "recursive", &f.Recursive)
-	populate(objectMap, "sourceRetryCount", &f.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &f.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", f.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", f.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", f.MaxConcurrentConnections)
+	populateAny(objectMap, "recursive", f.Recursive)
+	populateAny(objectMap, "sourceRetryCount", f.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", f.SourceRetryWait)
 	objectMap["type"] = "FileSystemSource"
 	if f.AdditionalProperties != nil {
 		for key, val := range f.AdditionalProperties {
@@ -20736,18 +20736,18 @@ func (f *FormatWriteSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FtpReadSettings.
 func (f FtpReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &f.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableChunking", &f.DisableChunking)
-	populate(objectMap, "disableMetricsCollection", &f.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", f.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableChunking", f.DisableChunking)
+	populateAny(objectMap, "disableMetricsCollection", f.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", f.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &f.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &f.MaxConcurrentConnections)
-	populate(objectMap, "partitionRootPath", &f.PartitionRootPath)
-	populate(objectMap, "recursive", &f.Recursive)
+	populateAny(objectMap, "fileListPath", f.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", f.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionRootPath", f.PartitionRootPath)
+	populateAny(objectMap, "recursive", f.Recursive)
 	objectMap["type"] = "FtpReadSettings"
 	populate(objectMap, "useBinaryTransfer", f.UseBinaryTransfer)
-	populate(objectMap, "wildcardFileName", &f.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &f.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", f.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", f.WildcardFolderPath)
 	if f.AdditionalProperties != nil {
 		for key, val := range f.AdditionalProperties {
 			objectMap[key] = val
@@ -20885,13 +20885,13 @@ func (f *FtpServerLinkedService) UnmarshalJSON(data []byte) error {
 func (f FtpServerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authenticationType", f.AuthenticationType)
-	populate(objectMap, "enableSsl", &f.EnableSSL)
-	populate(objectMap, "enableServerCertificateValidation", &f.EnableServerCertificateValidation)
-	populate(objectMap, "encryptedCredential", &f.EncryptedCredential)
-	populate(objectMap, "host", &f.Host)
+	populateAny(objectMap, "enableSsl", f.EnableSSL)
+	populateAny(objectMap, "enableServerCertificateValidation", f.EnableServerCertificateValidation)
+	populateAny(objectMap, "encryptedCredential", f.EncryptedCredential)
+	populateAny(objectMap, "host", f.Host)
 	populate(objectMap, "password", f.Password)
-	populate(objectMap, "port", &f.Port)
-	populate(objectMap, "userName", &f.UserName)
+	populateAny(objectMap, "port", f.Port)
+	populateAny(objectMap, "userName", f.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -20939,8 +20939,8 @@ func (f *FtpServerLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type FtpServerLocation.
 func (f FtpServerLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileName", &f.FileName)
-	populate(objectMap, "folderPath", &f.FolderPath)
+	populateAny(objectMap, "fileName", f.FileName)
+	populateAny(objectMap, "folderPath", f.FolderPath)
 	objectMap["type"] = "FtpServerLocation"
 	if f.AdditionalProperties != nil {
 		for key, val := range f.AdditionalProperties {
@@ -20989,7 +20989,7 @@ func (f *FtpServerLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GenericDatasetTypeProperties.
 func (g GenericDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "tableName", &g.TableName)
+	populateAny(objectMap, "tableName", g.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -21324,7 +21324,7 @@ func (g *GlobalParameterResource) UnmarshalJSON(data []byte) error {
 func (g GlobalParameterSpecification) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "type", g.Type)
-	populate(objectMap, "value", &g.Value)
+	populateAny(objectMap, "value", g.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -21417,17 +21417,17 @@ func (g *GoogleAdWordsLinkedService) UnmarshalJSON(data []byte) error {
 func (g GoogleAdWordsLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authenticationType", g.AuthenticationType)
-	populate(objectMap, "clientCustomerID", &g.ClientCustomerID)
-	populate(objectMap, "clientId", &g.ClientID)
+	populateAny(objectMap, "clientCustomerID", g.ClientCustomerID)
+	populateAny(objectMap, "clientId", g.ClientID)
 	populate(objectMap, "clientSecret", g.ClientSecret)
-	populate(objectMap, "connectionProperties", &g.ConnectionProperties)
+	populateAny(objectMap, "connectionProperties", g.ConnectionProperties)
 	populate(objectMap, "developerToken", g.DeveloperToken)
-	populate(objectMap, "email", &g.Email)
-	populate(objectMap, "encryptedCredential", &g.EncryptedCredential)
-	populate(objectMap, "keyFilePath", &g.KeyFilePath)
+	populateAny(objectMap, "email", g.Email)
+	populateAny(objectMap, "encryptedCredential", g.EncryptedCredential)
+	populateAny(objectMap, "keyFilePath", g.KeyFilePath)
 	populate(objectMap, "refreshToken", g.RefreshToken)
-	populate(objectMap, "trustedCertPath", &g.TrustedCertPath)
-	populate(objectMap, "useSystemTrustStore", &g.UseSystemTrustStore)
+	populateAny(objectMap, "trustedCertPath", g.TrustedCertPath)
+	populateAny(objectMap, "useSystemTrustStore", g.UseSystemTrustStore)
 	return json.Marshal(objectMap)
 }
 
@@ -21492,8 +21492,8 @@ func (g GoogleAdWordsObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", g.Folder)
 	populate(objectMap, "linkedServiceName", g.LinkedServiceName)
 	populate(objectMap, "parameters", g.Parameters)
-	populate(objectMap, "schema", &g.Schema)
-	populate(objectMap, "structure", &g.Structure)
+	populateAny(objectMap, "schema", g.Schema)
+	populateAny(objectMap, "structure", g.Structure)
 	objectMap["type"] = "GoogleAdWordsObject"
 	populate(objectMap, "typeProperties", g.TypeProperties)
 	if g.AdditionalProperties != nil {
@@ -21561,13 +21561,13 @@ func (g *GoogleAdWordsObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GoogleAdWordsSource.
 func (g GoogleAdWordsSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &g.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &g.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &g.MaxConcurrentConnections)
-	populate(objectMap, "query", &g.Query)
-	populate(objectMap, "queryTimeout", &g.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &g.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &g.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", g.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", g.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", g.MaxConcurrentConnections)
+	populateAny(objectMap, "query", g.Query)
+	populateAny(objectMap, "queryTimeout", g.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", g.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", g.SourceRetryWait)
 	objectMap["type"] = "GoogleAdWordsSource"
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
@@ -21631,9 +21631,9 @@ func (g *GoogleAdWordsSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GoogleBigQueryDatasetTypeProperties.
 func (g GoogleBigQueryDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "dataset", &g.Dataset)
-	populate(objectMap, "table", &g.Table)
-	populate(objectMap, "tableName", &g.TableName)
+	populateAny(objectMap, "dataset", g.Dataset)
+	populateAny(objectMap, "table", g.Table)
+	populateAny(objectMap, "tableName", g.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -21728,18 +21728,18 @@ func (g *GoogleBigQueryLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GoogleBigQueryLinkedServiceTypeProperties.
 func (g GoogleBigQueryLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalProjects", &g.AdditionalProjects)
+	populateAny(objectMap, "additionalProjects", g.AdditionalProjects)
 	populate(objectMap, "authenticationType", g.AuthenticationType)
-	populate(objectMap, "clientId", &g.ClientID)
+	populateAny(objectMap, "clientId", g.ClientID)
 	populate(objectMap, "clientSecret", g.ClientSecret)
-	populate(objectMap, "email", &g.Email)
-	populate(objectMap, "encryptedCredential", &g.EncryptedCredential)
-	populate(objectMap, "keyFilePath", &g.KeyFilePath)
-	populate(objectMap, "project", &g.Project)
+	populateAny(objectMap, "email", g.Email)
+	populateAny(objectMap, "encryptedCredential", g.EncryptedCredential)
+	populateAny(objectMap, "keyFilePath", g.KeyFilePath)
+	populateAny(objectMap, "project", g.Project)
 	populate(objectMap, "refreshToken", g.RefreshToken)
-	populate(objectMap, "requestGoogleDriveScope", &g.RequestGoogleDriveScope)
-	populate(objectMap, "trustedCertPath", &g.TrustedCertPath)
-	populate(objectMap, "useSystemTrustStore", &g.UseSystemTrustStore)
+	populateAny(objectMap, "requestGoogleDriveScope", g.RequestGoogleDriveScope)
+	populateAny(objectMap, "trustedCertPath", g.TrustedCertPath)
+	populateAny(objectMap, "useSystemTrustStore", g.UseSystemTrustStore)
 	return json.Marshal(objectMap)
 }
 
@@ -21804,8 +21804,8 @@ func (g GoogleBigQueryObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", g.Folder)
 	populate(objectMap, "linkedServiceName", g.LinkedServiceName)
 	populate(objectMap, "parameters", g.Parameters)
-	populate(objectMap, "schema", &g.Schema)
-	populate(objectMap, "structure", &g.Structure)
+	populateAny(objectMap, "schema", g.Schema)
+	populateAny(objectMap, "structure", g.Structure)
 	objectMap["type"] = "GoogleBigQueryObject"
 	populate(objectMap, "typeProperties", g.TypeProperties)
 	if g.AdditionalProperties != nil {
@@ -21873,13 +21873,13 @@ func (g *GoogleBigQueryObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GoogleBigQuerySource.
 func (g GoogleBigQuerySource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &g.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &g.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &g.MaxConcurrentConnections)
-	populate(objectMap, "query", &g.Query)
-	populate(objectMap, "queryTimeout", &g.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &g.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &g.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", g.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", g.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", g.MaxConcurrentConnections)
+	populateAny(objectMap, "query", g.Query)
+	populateAny(objectMap, "queryTimeout", g.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", g.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", g.SourceRetryWait)
 	objectMap["type"] = "GoogleBigQuerySource"
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
@@ -22005,10 +22005,10 @@ func (g *GoogleCloudStorageLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GoogleCloudStorageLinkedServiceTypeProperties.
 func (g GoogleCloudStorageLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "accessKeyId", &g.AccessKeyID)
-	populate(objectMap, "encryptedCredential", &g.EncryptedCredential)
+	populateAny(objectMap, "accessKeyId", g.AccessKeyID)
+	populateAny(objectMap, "encryptedCredential", g.EncryptedCredential)
 	populate(objectMap, "secretAccessKey", g.SecretAccessKey)
-	populate(objectMap, "serviceUrl", &g.ServiceURL)
+	populateAny(objectMap, "serviceUrl", g.ServiceURL)
 	return json.Marshal(objectMap)
 }
 
@@ -22044,11 +22044,11 @@ func (g *GoogleCloudStorageLinkedServiceTypeProperties) UnmarshalJSON(data []byt
 // MarshalJSON implements the json.Marshaller interface for type GoogleCloudStorageLocation.
 func (g GoogleCloudStorageLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "bucketName", &g.BucketName)
-	populate(objectMap, "fileName", &g.FileName)
-	populate(objectMap, "folderPath", &g.FolderPath)
+	populateAny(objectMap, "bucketName", g.BucketName)
+	populateAny(objectMap, "fileName", g.FileName)
+	populateAny(objectMap, "folderPath", g.FolderPath)
 	objectMap["type"] = "GoogleCloudStorageLocation"
-	populate(objectMap, "version", &g.Version)
+	populateAny(objectMap, "version", g.Version)
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
 			objectMap[key] = val
@@ -22102,19 +22102,19 @@ func (g *GoogleCloudStorageLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GoogleCloudStorageReadSettings.
 func (g GoogleCloudStorageReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &g.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableMetricsCollection", &g.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", g.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableMetricsCollection", g.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", g.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &g.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &g.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &g.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &g.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &g.PartitionRootPath)
-	populate(objectMap, "prefix", &g.Prefix)
-	populate(objectMap, "recursive", &g.Recursive)
+	populateAny(objectMap, "fileListPath", g.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", g.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", g.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", g.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", g.PartitionRootPath)
+	populateAny(objectMap, "prefix", g.Prefix)
+	populateAny(objectMap, "recursive", g.Recursive)
 	objectMap["type"] = "GoogleCloudStorageReadSettings"
-	populate(objectMap, "wildcardFileName", &g.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &g.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", g.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", g.WildcardFolderPath)
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
 			objectMap[key] = val
@@ -22255,7 +22255,7 @@ func (g *GoogleSheetsLinkedService) UnmarshalJSON(data []byte) error {
 func (g GoogleSheetsLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiToken", g.APIToken)
-	populate(objectMap, "encryptedCredential", &g.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", g.EncryptedCredential)
 	return json.Marshal(objectMap)
 }
 
@@ -22285,9 +22285,9 @@ func (g *GoogleSheetsLinkedServiceTypeProperties) UnmarshalJSON(data []byte) err
 // MarshalJSON implements the json.Marshaller interface for type GreenplumDatasetTypeProperties.
 func (g GreenplumDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &g.Schema)
-	populate(objectMap, "table", &g.Table)
-	populate(objectMap, "tableName", &g.TableName)
+	populateAny(objectMap, "schema", g.Schema)
+	populateAny(objectMap, "table", g.Table)
+	populateAny(objectMap, "tableName", g.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -22382,8 +22382,8 @@ func (g *GreenplumLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GreenplumLinkedServiceTypeProperties.
 func (g GreenplumLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &g.ConnectionString)
-	populate(objectMap, "encryptedCredential", &g.EncryptedCredential)
+	populateAny(objectMap, "connectionString", g.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", g.EncryptedCredential)
 	populate(objectMap, "pwd", g.Pwd)
 	return json.Marshal(objectMap)
 }
@@ -22417,13 +22417,13 @@ func (g *GreenplumLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type GreenplumSource.
 func (g GreenplumSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &g.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &g.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &g.MaxConcurrentConnections)
-	populate(objectMap, "query", &g.Query)
-	populate(objectMap, "queryTimeout", &g.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &g.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &g.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", g.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", g.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", g.MaxConcurrentConnections)
+	populateAny(objectMap, "query", g.Query)
+	populateAny(objectMap, "queryTimeout", g.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", g.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", g.SourceRetryWait)
 	objectMap["type"] = "GreenplumSource"
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
@@ -22492,8 +22492,8 @@ func (g GreenplumTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", g.Folder)
 	populate(objectMap, "linkedServiceName", g.LinkedServiceName)
 	populate(objectMap, "parameters", g.Parameters)
-	populate(objectMap, "schema", &g.Schema)
-	populate(objectMap, "structure", &g.Structure)
+	populateAny(objectMap, "schema", g.Schema)
+	populateAny(objectMap, "structure", g.Structure)
 	objectMap["type"] = "GreenplumTable"
 	populate(objectMap, "typeProperties", g.TypeProperties)
 	if g.AdditionalProperties != nil {
@@ -22623,17 +22623,17 @@ func (h *HBaseLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HBaseLinkedServiceTypeProperties.
 func (h HBaseLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "allowHostNameCNMismatch", &h.AllowHostNameCNMismatch)
-	populate(objectMap, "allowSelfSignedServerCert", &h.AllowSelfSignedServerCert)
+	populateAny(objectMap, "allowHostNameCNMismatch", h.AllowHostNameCNMismatch)
+	populateAny(objectMap, "allowSelfSignedServerCert", h.AllowSelfSignedServerCert)
 	populate(objectMap, "authenticationType", h.AuthenticationType)
-	populate(objectMap, "enableSsl", &h.EnableSSL)
-	populate(objectMap, "encryptedCredential", &h.EncryptedCredential)
-	populate(objectMap, "httpPath", &h.HTTPPath)
-	populate(objectMap, "host", &h.Host)
+	populateAny(objectMap, "enableSsl", h.EnableSSL)
+	populateAny(objectMap, "encryptedCredential", h.EncryptedCredential)
+	populateAny(objectMap, "httpPath", h.HTTPPath)
+	populateAny(objectMap, "host", h.Host)
 	populate(objectMap, "password", h.Password)
-	populate(objectMap, "port", &h.Port)
-	populate(objectMap, "trustedCertPath", &h.TrustedCertPath)
-	populate(objectMap, "username", &h.Username)
+	populateAny(objectMap, "port", h.Port)
+	populateAny(objectMap, "trustedCertPath", h.TrustedCertPath)
+	populateAny(objectMap, "username", h.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -22695,8 +22695,8 @@ func (h HBaseObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", h.Folder)
 	populate(objectMap, "linkedServiceName", h.LinkedServiceName)
 	populate(objectMap, "parameters", h.Parameters)
-	populate(objectMap, "schema", &h.Schema)
-	populate(objectMap, "structure", &h.Structure)
+	populateAny(objectMap, "schema", h.Schema)
+	populateAny(objectMap, "structure", h.Structure)
 	objectMap["type"] = "HBaseObject"
 	populate(objectMap, "typeProperties", h.TypeProperties)
 	if h.AdditionalProperties != nil {
@@ -22764,13 +22764,13 @@ func (h *HBaseObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HBaseSource.
 func (h HBaseSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &h.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &h.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &h.MaxConcurrentConnections)
-	populate(objectMap, "query", &h.Query)
-	populate(objectMap, "queryTimeout", &h.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &h.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &h.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", h.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", h.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", h.MaxConcurrentConnections)
+	populateAny(objectMap, "query", h.Query)
+	populateAny(objectMap, "queryTimeout", h.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", h.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", h.SourceRetryWait)
 	objectMap["type"] = "HBaseSource"
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
@@ -22909,7 +22909,7 @@ func (h HDInsightHiveActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "getDebugInfo", h.GetDebugInfo)
 	populate(objectMap, "queryTimeout", h.QueryTimeout)
 	populate(objectMap, "scriptLinkedService", h.ScriptLinkedService)
-	populate(objectMap, "scriptPath", &h.ScriptPath)
+	populateAny(objectMap, "scriptPath", h.ScriptPath)
 	populate(objectMap, "storageLinkedServices", h.StorageLinkedServices)
 	populate(objectMap, "variables", h.Variables)
 	return json.Marshal(objectMap)
@@ -23021,14 +23021,14 @@ func (h *HDInsightLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HDInsightLinkedServiceTypeProperties.
 func (h HDInsightLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clusterUri", &h.ClusterURI)
-	populate(objectMap, "encryptedCredential", &h.EncryptedCredential)
-	populate(objectMap, "fileSystem", &h.FileSystem)
+	populateAny(objectMap, "clusterUri", h.ClusterURI)
+	populateAny(objectMap, "encryptedCredential", h.EncryptedCredential)
+	populateAny(objectMap, "fileSystem", h.FileSystem)
 	populate(objectMap, "hcatalogLinkedServiceName", h.HcatalogLinkedServiceName)
-	populate(objectMap, "isEspEnabled", &h.IsEspEnabled)
+	populateAny(objectMap, "isEspEnabled", h.IsEspEnabled)
 	populate(objectMap, "linkedServiceName", h.LinkedServiceName)
 	populate(objectMap, "password", h.Password)
-	populate(objectMap, "userName", &h.UserName)
+	populateAny(objectMap, "userName", h.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -23147,10 +23147,10 @@ func (h *HDInsightMapReduceActivity) UnmarshalJSON(data []byte) error {
 func (h HDInsightMapReduceActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "arguments", h.Arguments)
-	populate(objectMap, "className", &h.ClassName)
+	populateAny(objectMap, "className", h.ClassName)
 	populate(objectMap, "defines", h.Defines)
 	populate(objectMap, "getDebugInfo", h.GetDebugInfo)
-	populate(objectMap, "jarFilePath", &h.JarFilePath)
+	populateAny(objectMap, "jarFilePath", h.JarFilePath)
 	populate(objectMap, "jarLibs", h.JarLibs)
 	populate(objectMap, "jarLinkedService", h.JarLinkedService)
 	populate(objectMap, "storageLinkedServices", h.StorageLinkedServices)
@@ -23264,39 +23264,39 @@ func (h *HDInsightOnDemandLinkedService) UnmarshalJSON(data []byte) error {
 func (h HDInsightOnDemandLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "additionalLinkedServiceNames", h.AdditionalLinkedServiceNames)
-	populate(objectMap, "clusterNamePrefix", &h.ClusterNamePrefix)
+	populateAny(objectMap, "clusterNamePrefix", h.ClusterNamePrefix)
 	populate(objectMap, "clusterPassword", h.ClusterPassword)
-	populate(objectMap, "clusterResourceGroup", &h.ClusterResourceGroup)
+	populateAny(objectMap, "clusterResourceGroup", h.ClusterResourceGroup)
 	populate(objectMap, "clusterSshPassword", h.ClusterSSHPassword)
-	populate(objectMap, "clusterSshUserName", &h.ClusterSSHUserName)
-	populate(objectMap, "clusterSize", &h.ClusterSize)
-	populate(objectMap, "clusterType", &h.ClusterType)
-	populate(objectMap, "clusterUserName", &h.ClusterUserName)
-	populate(objectMap, "coreConfiguration", &h.CoreConfiguration)
+	populateAny(objectMap, "clusterSshUserName", h.ClusterSSHUserName)
+	populateAny(objectMap, "clusterSize", h.ClusterSize)
+	populateAny(objectMap, "clusterType", h.ClusterType)
+	populateAny(objectMap, "clusterUserName", h.ClusterUserName)
+	populateAny(objectMap, "coreConfiguration", h.CoreConfiguration)
 	populate(objectMap, "credential", h.Credential)
-	populate(objectMap, "dataNodeSize", &h.DataNodeSize)
-	populate(objectMap, "encryptedCredential", &h.EncryptedCredential)
-	populate(objectMap, "hBaseConfiguration", &h.HBaseConfiguration)
+	populateAny(objectMap, "dataNodeSize", h.DataNodeSize)
+	populateAny(objectMap, "encryptedCredential", h.EncryptedCredential)
+	populateAny(objectMap, "hBaseConfiguration", h.HBaseConfiguration)
 	populate(objectMap, "hcatalogLinkedServiceName", h.HcatalogLinkedServiceName)
-	populate(objectMap, "hdfsConfiguration", &h.HdfsConfiguration)
-	populate(objectMap, "headNodeSize", &h.HeadNodeSize)
-	populate(objectMap, "hiveConfiguration", &h.HiveConfiguration)
-	populate(objectMap, "hostSubscriptionId", &h.HostSubscriptionID)
+	populateAny(objectMap, "hdfsConfiguration", h.HdfsConfiguration)
+	populateAny(objectMap, "headNodeSize", h.HeadNodeSize)
+	populateAny(objectMap, "hiveConfiguration", h.HiveConfiguration)
+	populateAny(objectMap, "hostSubscriptionId", h.HostSubscriptionID)
 	populate(objectMap, "linkedServiceName", h.LinkedServiceName)
-	populate(objectMap, "mapReduceConfiguration", &h.MapReduceConfiguration)
-	populate(objectMap, "oozieConfiguration", &h.OozieConfiguration)
+	populateAny(objectMap, "mapReduceConfiguration", h.MapReduceConfiguration)
+	populateAny(objectMap, "oozieConfiguration", h.OozieConfiguration)
 	populate(objectMap, "scriptActions", h.ScriptActions)
-	populate(objectMap, "servicePrincipalId", &h.ServicePrincipalID)
+	populateAny(objectMap, "servicePrincipalId", h.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", h.ServicePrincipalKey)
-	populate(objectMap, "sparkVersion", &h.SparkVersion)
-	populate(objectMap, "stormConfiguration", &h.StormConfiguration)
-	populate(objectMap, "subnetName", &h.SubnetName)
-	populate(objectMap, "tenant", &h.Tenant)
-	populate(objectMap, "timeToLive", &h.TimeToLive)
-	populate(objectMap, "version", &h.Version)
-	populate(objectMap, "virtualNetworkId", &h.VirtualNetworkID)
-	populate(objectMap, "yarnConfiguration", &h.YarnConfiguration)
-	populate(objectMap, "zookeeperNodeSize", &h.ZookeeperNodeSize)
+	populateAny(objectMap, "sparkVersion", h.SparkVersion)
+	populateAny(objectMap, "stormConfiguration", h.StormConfiguration)
+	populateAny(objectMap, "subnetName", h.SubnetName)
+	populateAny(objectMap, "tenant", h.Tenant)
+	populateAny(objectMap, "timeToLive", h.TimeToLive)
+	populateAny(objectMap, "version", h.Version)
+	populateAny(objectMap, "virtualNetworkId", h.VirtualNetworkID)
+	populateAny(objectMap, "yarnConfiguration", h.YarnConfiguration)
+	populateAny(objectMap, "zookeeperNodeSize", h.ZookeeperNodeSize)
 	return json.Marshal(objectMap)
 }
 
@@ -23492,11 +23492,11 @@ func (h *HDInsightPigActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HDInsightPigActivityTypeProperties.
 func (h HDInsightPigActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "arguments", &h.Arguments)
+	populateAny(objectMap, "arguments", h.Arguments)
 	populate(objectMap, "defines", h.Defines)
 	populate(objectMap, "getDebugInfo", h.GetDebugInfo)
 	populate(objectMap, "scriptLinkedService", h.ScriptLinkedService)
-	populate(objectMap, "scriptPath", &h.ScriptPath)
+	populateAny(objectMap, "scriptPath", h.ScriptPath)
 	populate(objectMap, "storageLinkedServices", h.StorageLinkedServices)
 	return json.Marshal(objectMap)
 }
@@ -23611,10 +23611,10 @@ func (h HDInsightSparkActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "arguments", h.Arguments)
 	populate(objectMap, "className", h.ClassName)
-	populate(objectMap, "entryFilePath", &h.EntryFilePath)
+	populateAny(objectMap, "entryFilePath", h.EntryFilePath)
 	populate(objectMap, "getDebugInfo", h.GetDebugInfo)
-	populate(objectMap, "proxyUser", &h.ProxyUser)
-	populate(objectMap, "rootPath", &h.RootPath)
+	populateAny(objectMap, "proxyUser", h.ProxyUser)
+	populateAny(objectMap, "rootPath", h.RootPath)
 	populate(objectMap, "sparkConfig", h.SparkConfig)
 	populate(objectMap, "sparkJobLinkedService", h.SparkJobLinkedService)
 	return json.Marshal(objectMap)
@@ -23735,16 +23735,16 @@ func (h *HDInsightStreamingActivity) UnmarshalJSON(data []byte) error {
 func (h HDInsightStreamingActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "arguments", h.Arguments)
-	populate(objectMap, "combiner", &h.Combiner)
+	populateAny(objectMap, "combiner", h.Combiner)
 	populate(objectMap, "commandEnvironment", h.CommandEnvironment)
 	populate(objectMap, "defines", h.Defines)
 	populate(objectMap, "fileLinkedService", h.FileLinkedService)
 	populate(objectMap, "filePaths", h.FilePaths)
 	populate(objectMap, "getDebugInfo", h.GetDebugInfo)
-	populate(objectMap, "input", &h.Input)
-	populate(objectMap, "mapper", &h.Mapper)
-	populate(objectMap, "output", &h.Output)
-	populate(objectMap, "reducer", &h.Reducer)
+	populateAny(objectMap, "input", h.Input)
+	populateAny(objectMap, "mapper", h.Mapper)
+	populateAny(objectMap, "output", h.Output)
+	populateAny(objectMap, "reducer", h.Reducer)
 	populate(objectMap, "storageLinkedServices", h.StorageLinkedServices)
 	return json.Marshal(objectMap)
 }
@@ -23810,8 +23810,8 @@ func (h HTTPDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", h.Folder)
 	populate(objectMap, "linkedServiceName", h.LinkedServiceName)
 	populate(objectMap, "parameters", h.Parameters)
-	populate(objectMap, "schema", &h.Schema)
-	populate(objectMap, "structure", &h.Structure)
+	populateAny(objectMap, "schema", h.Schema)
+	populateAny(objectMap, "structure", h.Structure)
 	objectMap["type"] = "HttpFile"
 	populate(objectMap, "typeProperties", h.TypeProperties)
 	if h.AdditionalProperties != nil {
@@ -23879,12 +23879,12 @@ func (h *HTTPDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HTTPDatasetTypeProperties.
 func (h HTTPDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalHeaders", &h.AdditionalHeaders)
+	populateAny(objectMap, "additionalHeaders", h.AdditionalHeaders)
 	populate(objectMap, "compression", h.Compression)
 	populate(objectMap, "format", h.Format)
-	populate(objectMap, "relativeUrl", &h.RelativeURL)
-	populate(objectMap, "requestBody", &h.RequestBody)
-	populate(objectMap, "requestMethod", &h.RequestMethod)
+	populateAny(objectMap, "relativeUrl", h.RelativeURL)
+	populateAny(objectMap, "requestBody", h.RequestBody)
+	populateAny(objectMap, "requestMethod", h.RequestMethod)
 	return json.Marshal(objectMap)
 }
 
@@ -23988,15 +23988,15 @@ func (h *HTTPLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HTTPLinkedServiceTypeProperties.
 func (h HTTPLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authHeaders", &h.AuthHeaders)
+	populateAny(objectMap, "authHeaders", h.AuthHeaders)
 	populate(objectMap, "authenticationType", h.AuthenticationType)
-	populate(objectMap, "certThumbprint", &h.CertThumbprint)
-	populate(objectMap, "embeddedCertData", &h.EmbeddedCertData)
-	populate(objectMap, "enableServerCertificateValidation", &h.EnableServerCertificateValidation)
-	populate(objectMap, "encryptedCredential", &h.EncryptedCredential)
+	populateAny(objectMap, "certThumbprint", h.CertThumbprint)
+	populateAny(objectMap, "embeddedCertData", h.EmbeddedCertData)
+	populateAny(objectMap, "enableServerCertificateValidation", h.EnableServerCertificateValidation)
+	populateAny(objectMap, "encryptedCredential", h.EncryptedCredential)
 	populate(objectMap, "password", h.Password)
-	populate(objectMap, "url", &h.URL)
-	populate(objectMap, "userName", &h.UserName)
+	populateAny(objectMap, "url", h.URL)
+	populateAny(objectMap, "userName", h.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -24047,14 +24047,14 @@ func (h *HTTPLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HTTPReadSettings.
 func (h HTTPReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalHeaders", &h.AdditionalHeaders)
-	populate(objectMap, "disableMetricsCollection", &h.DisableMetricsCollection)
+	populateAny(objectMap, "additionalHeaders", h.AdditionalHeaders)
+	populateAny(objectMap, "disableMetricsCollection", h.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", h.EnablePartitionDiscovery)
-	populate(objectMap, "maxConcurrentConnections", &h.MaxConcurrentConnections)
-	populate(objectMap, "partitionRootPath", &h.PartitionRootPath)
-	populate(objectMap, "requestBody", &h.RequestBody)
-	populate(objectMap, "requestMethod", &h.RequestMethod)
-	populate(objectMap, "requestTimeout", &h.RequestTimeout)
+	populateAny(objectMap, "maxConcurrentConnections", h.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionRootPath", h.PartitionRootPath)
+	populateAny(objectMap, "requestBody", h.RequestBody)
+	populateAny(objectMap, "requestMethod", h.RequestMethod)
+	populateAny(objectMap, "requestTimeout", h.RequestTimeout)
 	objectMap["type"] = "HttpReadSettings"
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
@@ -24121,9 +24121,9 @@ func (h *HTTPReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HTTPServerLocation.
 func (h HTTPServerLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileName", &h.FileName)
-	populate(objectMap, "folderPath", &h.FolderPath)
-	populate(objectMap, "relativeUrl", &h.RelativeURL)
+	populateAny(objectMap, "fileName", h.FileName)
+	populateAny(objectMap, "folderPath", h.FolderPath)
+	populateAny(objectMap, "relativeUrl", h.RelativeURL)
 	objectMap["type"] = "HttpServerLocation"
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
@@ -24175,11 +24175,11 @@ func (h *HTTPServerLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HTTPSource.
 func (h HTTPSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &h.DisableMetricsCollection)
-	populate(objectMap, "httpRequestTimeout", &h.HTTPRequestTimeout)
-	populate(objectMap, "maxConcurrentConnections", &h.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &h.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &h.SourceRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", h.DisableMetricsCollection)
+	populateAny(objectMap, "httpRequestTimeout", h.HTTPRequestTimeout)
+	populateAny(objectMap, "maxConcurrentConnections", h.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", h.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", h.SourceRetryWait)
 	objectMap["type"] = "HttpSource"
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
@@ -24299,11 +24299,11 @@ func (h *HdfsLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HdfsLinkedServiceTypeProperties.
 func (h HdfsLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authenticationType", &h.AuthenticationType)
-	populate(objectMap, "encryptedCredential", &h.EncryptedCredential)
+	populateAny(objectMap, "authenticationType", h.AuthenticationType)
+	populateAny(objectMap, "encryptedCredential", h.EncryptedCredential)
 	populate(objectMap, "password", h.Password)
-	populate(objectMap, "url", &h.URL)
-	populate(objectMap, "userName", &h.UserName)
+	populateAny(objectMap, "url", h.URL)
+	populateAny(objectMap, "userName", h.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -24342,8 +24342,8 @@ func (h *HdfsLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HdfsLocation.
 func (h HdfsLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileName", &h.FileName)
-	populate(objectMap, "folderPath", &h.FolderPath)
+	populateAny(objectMap, "fileName", h.FileName)
+	populateAny(objectMap, "folderPath", h.FolderPath)
 	objectMap["type"] = "HdfsLocation"
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
@@ -24392,19 +24392,19 @@ func (h *HdfsLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HdfsReadSettings.
 func (h HdfsReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &h.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableMetricsCollection", &h.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", h.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableMetricsCollection", h.DisableMetricsCollection)
 	populate(objectMap, "distcpSettings", h.DistcpSettings)
 	populate(objectMap, "enablePartitionDiscovery", h.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &h.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &h.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &h.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &h.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &h.PartitionRootPath)
-	populate(objectMap, "recursive", &h.Recursive)
+	populateAny(objectMap, "fileListPath", h.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", h.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", h.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", h.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", h.PartitionRootPath)
+	populateAny(objectMap, "recursive", h.Recursive)
 	objectMap["type"] = "HdfsReadSettings"
-	populate(objectMap, "wildcardFileName", &h.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &h.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", h.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", h.WildcardFolderPath)
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
 			objectMap[key] = val
@@ -24482,12 +24482,12 @@ func (h *HdfsReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HdfsSource.
 func (h HdfsSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &h.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", h.DisableMetricsCollection)
 	populate(objectMap, "distcpSettings", h.DistcpSettings)
-	populate(objectMap, "maxConcurrentConnections", &h.MaxConcurrentConnections)
-	populate(objectMap, "recursive", &h.Recursive)
-	populate(objectMap, "sourceRetryCount", &h.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &h.SourceRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", h.MaxConcurrentConnections)
+	populateAny(objectMap, "recursive", h.Recursive)
+	populateAny(objectMap, "sourceRetryCount", h.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", h.SourceRetryWait)
 	objectMap["type"] = "HdfsSource"
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
@@ -24548,9 +24548,9 @@ func (h *HdfsSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HiveDatasetTypeProperties.
 func (h HiveDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &h.Schema)
-	populate(objectMap, "table", &h.Table)
-	populate(objectMap, "tableName", &h.TableName)
+	populateAny(objectMap, "schema", h.Schema)
+	populateAny(objectMap, "table", h.Table)
+	populateAny(objectMap, "tableName", h.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -24645,23 +24645,23 @@ func (h *HiveLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HiveLinkedServiceTypeProperties.
 func (h HiveLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "allowHostNameCNMismatch", &h.AllowHostNameCNMismatch)
-	populate(objectMap, "allowSelfSignedServerCert", &h.AllowSelfSignedServerCert)
+	populateAny(objectMap, "allowHostNameCNMismatch", h.AllowHostNameCNMismatch)
+	populateAny(objectMap, "allowSelfSignedServerCert", h.AllowSelfSignedServerCert)
 	populate(objectMap, "authenticationType", h.AuthenticationType)
-	populate(objectMap, "enableSsl", &h.EnableSSL)
-	populate(objectMap, "encryptedCredential", &h.EncryptedCredential)
-	populate(objectMap, "httpPath", &h.HTTPPath)
-	populate(objectMap, "host", &h.Host)
+	populateAny(objectMap, "enableSsl", h.EnableSSL)
+	populateAny(objectMap, "encryptedCredential", h.EncryptedCredential)
+	populateAny(objectMap, "httpPath", h.HTTPPath)
+	populateAny(objectMap, "host", h.Host)
 	populate(objectMap, "password", h.Password)
-	populate(objectMap, "port", &h.Port)
+	populateAny(objectMap, "port", h.Port)
 	populate(objectMap, "serverType", h.ServerType)
-	populate(objectMap, "serviceDiscoveryMode", &h.ServiceDiscoveryMode)
+	populateAny(objectMap, "serviceDiscoveryMode", h.ServiceDiscoveryMode)
 	populate(objectMap, "thriftTransportProtocol", h.ThriftTransportProtocol)
-	populate(objectMap, "trustedCertPath", &h.TrustedCertPath)
-	populate(objectMap, "useNativeQuery", &h.UseNativeQuery)
-	populate(objectMap, "useSystemTrustStore", &h.UseSystemTrustStore)
-	populate(objectMap, "username", &h.Username)
-	populate(objectMap, "zooKeeperNameSpace", &h.ZooKeeperNameSpace)
+	populateAny(objectMap, "trustedCertPath", h.TrustedCertPath)
+	populateAny(objectMap, "useNativeQuery", h.UseNativeQuery)
+	populateAny(objectMap, "useSystemTrustStore", h.UseSystemTrustStore)
+	populateAny(objectMap, "username", h.Username)
+	populateAny(objectMap, "zooKeeperNameSpace", h.ZooKeeperNameSpace)
 	return json.Marshal(objectMap)
 }
 
@@ -24741,8 +24741,8 @@ func (h HiveObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", h.Folder)
 	populate(objectMap, "linkedServiceName", h.LinkedServiceName)
 	populate(objectMap, "parameters", h.Parameters)
-	populate(objectMap, "schema", &h.Schema)
-	populate(objectMap, "structure", &h.Structure)
+	populateAny(objectMap, "schema", h.Schema)
+	populateAny(objectMap, "structure", h.Structure)
 	objectMap["type"] = "HiveObject"
 	populate(objectMap, "typeProperties", h.TypeProperties)
 	if h.AdditionalProperties != nil {
@@ -24810,13 +24810,13 @@ func (h *HiveObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HiveSource.
 func (h HiveSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &h.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &h.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &h.MaxConcurrentConnections)
-	populate(objectMap, "query", &h.Query)
-	populate(objectMap, "queryTimeout", &h.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &h.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &h.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", h.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", h.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", h.MaxConcurrentConnections)
+	populateAny(objectMap, "query", h.Query)
+	populateAny(objectMap, "queryTimeout", h.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", h.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", h.SourceRetryWait)
 	objectMap["type"] = "HiveSource"
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
@@ -24943,13 +24943,13 @@ func (h *HubspotLinkedService) UnmarshalJSON(data []byte) error {
 func (h HubspotLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessToken", h.AccessToken)
-	populate(objectMap, "clientId", &h.ClientID)
+	populateAny(objectMap, "clientId", h.ClientID)
 	populate(objectMap, "clientSecret", h.ClientSecret)
-	populate(objectMap, "encryptedCredential", &h.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", h.EncryptedCredential)
 	populate(objectMap, "refreshToken", h.RefreshToken)
-	populate(objectMap, "useEncryptedEndpoints", &h.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &h.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &h.UsePeerVerification)
+	populateAny(objectMap, "useEncryptedEndpoints", h.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", h.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", h.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -25002,8 +25002,8 @@ func (h HubspotObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", h.Folder)
 	populate(objectMap, "linkedServiceName", h.LinkedServiceName)
 	populate(objectMap, "parameters", h.Parameters)
-	populate(objectMap, "schema", &h.Schema)
-	populate(objectMap, "structure", &h.Structure)
+	populateAny(objectMap, "schema", h.Schema)
+	populateAny(objectMap, "structure", h.Structure)
 	objectMap["type"] = "HubspotObject"
 	populate(objectMap, "typeProperties", h.TypeProperties)
 	if h.AdditionalProperties != nil {
@@ -25071,13 +25071,13 @@ func (h *HubspotObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HubspotSource.
 func (h HubspotSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &h.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &h.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &h.MaxConcurrentConnections)
-	populate(objectMap, "query", &h.Query)
-	populate(objectMap, "queryTimeout", &h.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &h.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &h.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", h.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", h.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", h.MaxConcurrentConnections)
+	populateAny(objectMap, "query", h.Query)
+	populateAny(objectMap, "queryTimeout", h.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", h.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", h.SourceRetryWait)
 	objectMap["type"] = "HubspotSource"
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
@@ -25238,9 +25238,9 @@ func (i *IfConditionActivityTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ImpalaDatasetTypeProperties.
 func (i ImpalaDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &i.Schema)
-	populate(objectMap, "table", &i.Table)
-	populate(objectMap, "tableName", &i.TableName)
+	populateAny(objectMap, "schema", i.Schema)
+	populateAny(objectMap, "table", i.Table)
+	populateAny(objectMap, "tableName", i.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -25335,17 +25335,17 @@ func (i *ImpalaLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ImpalaLinkedServiceTypeProperties.
 func (i ImpalaLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "allowHostNameCNMismatch", &i.AllowHostNameCNMismatch)
-	populate(objectMap, "allowSelfSignedServerCert", &i.AllowSelfSignedServerCert)
+	populateAny(objectMap, "allowHostNameCNMismatch", i.AllowHostNameCNMismatch)
+	populateAny(objectMap, "allowSelfSignedServerCert", i.AllowSelfSignedServerCert)
 	populate(objectMap, "authenticationType", i.AuthenticationType)
-	populate(objectMap, "enableSsl", &i.EnableSSL)
-	populate(objectMap, "encryptedCredential", &i.EncryptedCredential)
-	populate(objectMap, "host", &i.Host)
+	populateAny(objectMap, "enableSsl", i.EnableSSL)
+	populateAny(objectMap, "encryptedCredential", i.EncryptedCredential)
+	populateAny(objectMap, "host", i.Host)
 	populate(objectMap, "password", i.Password)
-	populate(objectMap, "port", &i.Port)
-	populate(objectMap, "trustedCertPath", &i.TrustedCertPath)
-	populate(objectMap, "useSystemTrustStore", &i.UseSystemTrustStore)
-	populate(objectMap, "username", &i.Username)
+	populateAny(objectMap, "port", i.Port)
+	populateAny(objectMap, "trustedCertPath", i.TrustedCertPath)
+	populateAny(objectMap, "useSystemTrustStore", i.UseSystemTrustStore)
+	populateAny(objectMap, "username", i.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -25407,8 +25407,8 @@ func (i ImpalaObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", i.Folder)
 	populate(objectMap, "linkedServiceName", i.LinkedServiceName)
 	populate(objectMap, "parameters", i.Parameters)
-	populate(objectMap, "schema", &i.Schema)
-	populate(objectMap, "structure", &i.Structure)
+	populateAny(objectMap, "schema", i.Schema)
+	populateAny(objectMap, "structure", i.Structure)
 	objectMap["type"] = "ImpalaObject"
 	populate(objectMap, "typeProperties", i.TypeProperties)
 	if i.AdditionalProperties != nil {
@@ -25476,13 +25476,13 @@ func (i *ImpalaObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ImpalaSource.
 func (i ImpalaSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &i.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &i.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &i.MaxConcurrentConnections)
-	populate(objectMap, "query", &i.Query)
-	populate(objectMap, "queryTimeout", &i.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &i.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &i.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", i.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", i.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", i.MaxConcurrentConnections)
+	populateAny(objectMap, "query", i.Query)
+	populateAny(objectMap, "queryTimeout", i.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", i.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", i.SourceRetryWait)
 	objectMap["type"] = "ImpalaSource"
 	if i.AdditionalProperties != nil {
 		for key, val := range i.AdditionalProperties {
@@ -25650,12 +25650,12 @@ func (i *InformixLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type InformixLinkedServiceTypeProperties.
 func (i InformixLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authenticationType", &i.AuthenticationType)
-	populate(objectMap, "connectionString", &i.ConnectionString)
+	populateAny(objectMap, "authenticationType", i.AuthenticationType)
+	populateAny(objectMap, "connectionString", i.ConnectionString)
 	populate(objectMap, "credential", i.Credential)
-	populate(objectMap, "encryptedCredential", &i.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", i.EncryptedCredential)
 	populate(objectMap, "password", i.Password)
-	populate(objectMap, "userName", &i.UserName)
+	populateAny(objectMap, "userName", i.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -25697,14 +25697,14 @@ func (i *InformixLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type InformixSink.
 func (i InformixSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &i.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &i.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &i.PreCopyScript)
-	populate(objectMap, "sinkRetryCount", &i.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &i.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", i.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", i.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", i.PreCopyScript)
+	populateAny(objectMap, "sinkRetryCount", i.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", i.SinkRetryWait)
 	objectMap["type"] = "InformixSink"
-	populate(objectMap, "writeBatchSize", &i.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &i.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", i.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", i.WriteBatchTimeout)
 	if i.AdditionalProperties != nil {
 		for key, val := range i.AdditionalProperties {
 			objectMap[key] = val
@@ -25767,13 +25767,13 @@ func (i *InformixSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type InformixSource.
 func (i InformixSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &i.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &i.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &i.MaxConcurrentConnections)
-	populate(objectMap, "query", &i.Query)
-	populate(objectMap, "queryTimeout", &i.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &i.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &i.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", i.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", i.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", i.MaxConcurrentConnections)
+	populateAny(objectMap, "query", i.Query)
+	populateAny(objectMap, "queryTimeout", i.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", i.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", i.SourceRetryWait)
 	objectMap["type"] = "InformixSource"
 	if i.AdditionalProperties != nil {
 		for key, val := range i.AdditionalProperties {
@@ -25842,8 +25842,8 @@ func (i InformixTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", i.Folder)
 	populate(objectMap, "linkedServiceName", i.LinkedServiceName)
 	populate(objectMap, "parameters", i.Parameters)
-	populate(objectMap, "schema", &i.Schema)
-	populate(objectMap, "structure", &i.Structure)
+	populateAny(objectMap, "schema", i.Schema)
+	populateAny(objectMap, "structure", i.Structure)
 	objectMap["type"] = "InformixTable"
 	populate(objectMap, "typeProperties", i.TypeProperties)
 	if i.AdditionalProperties != nil {
@@ -25911,7 +25911,7 @@ func (i *InformixTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type InformixTableDatasetTypeProperties.
 func (i InformixTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "tableName", &i.TableName)
+	populateAny(objectMap, "tableName", i.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -26973,8 +26973,8 @@ func (j JSONDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", j.Folder)
 	populate(objectMap, "linkedServiceName", j.LinkedServiceName)
 	populate(objectMap, "parameters", j.Parameters)
-	populate(objectMap, "schema", &j.Schema)
-	populate(objectMap, "structure", &j.Structure)
+	populateAny(objectMap, "schema", j.Schema)
+	populateAny(objectMap, "structure", j.Structure)
 	objectMap["type"] = "Json"
 	populate(objectMap, "typeProperties", j.TypeProperties)
 	if j.AdditionalProperties != nil {
@@ -27043,7 +27043,7 @@ func (j *JSONDataset) UnmarshalJSON(data []byte) error {
 func (j JSONDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compression", j.Compression)
-	populate(objectMap, "encodingName", &j.EncodingName)
+	populateAny(objectMap, "encodingName", j.EncodingName)
 	populate(objectMap, "location", j.Location)
 	return json.Marshal(objectMap)
 }
@@ -27077,13 +27077,13 @@ func (j *JSONDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JSONFormat.
 func (j JSONFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deserializer", &j.Deserializer)
-	populate(objectMap, "encodingName", &j.EncodingName)
-	populate(objectMap, "filePattern", &j.FilePattern)
-	populate(objectMap, "jsonNodeReference", &j.JSONNodeReference)
-	populate(objectMap, "jsonPathDefinition", &j.JSONPathDefinition)
-	populate(objectMap, "nestingSeparator", &j.NestingSeparator)
-	populate(objectMap, "serializer", &j.Serializer)
+	populateAny(objectMap, "deserializer", j.Deserializer)
+	populateAny(objectMap, "encodingName", j.EncodingName)
+	populateAny(objectMap, "filePattern", j.FilePattern)
+	populateAny(objectMap, "jsonNodeReference", j.JSONNodeReference)
+	populateAny(objectMap, "jsonPathDefinition", j.JSONPathDefinition)
+	populateAny(objectMap, "nestingSeparator", j.NestingSeparator)
+	populateAny(objectMap, "serializer", j.Serializer)
 	objectMap["type"] = "JsonFormat"
 	if j.AdditionalProperties != nil {
 		for key, val := range j.AdditionalProperties {
@@ -27193,15 +27193,15 @@ func (j *JSONReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JSONSink.
 func (j JSONSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &j.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", j.DisableMetricsCollection)
 	populate(objectMap, "formatSettings", j.FormatSettings)
-	populate(objectMap, "maxConcurrentConnections", &j.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &j.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &j.SinkRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", j.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", j.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", j.SinkRetryWait)
 	populate(objectMap, "storeSettings", j.StoreSettings)
 	objectMap["type"] = "JsonSink"
-	populate(objectMap, "writeBatchSize", &j.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &j.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", j.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", j.WriteBatchTimeout)
 	if j.AdditionalProperties != nil {
 		for key, val := range j.AdditionalProperties {
 			objectMap[key] = val
@@ -27267,12 +27267,12 @@ func (j *JSONSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JSONSource.
 func (j JSONSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &j.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &j.DisableMetricsCollection)
+	populateAny(objectMap, "additionalColumns", j.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", j.DisableMetricsCollection)
 	populate(objectMap, "formatSettings", j.FormatSettings)
-	populate(objectMap, "maxConcurrentConnections", &j.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &j.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &j.SourceRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", j.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", j.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", j.SourceRetryWait)
 	populate(objectMap, "storeSettings", j.StoreSettings)
 	objectMap["type"] = "JsonSource"
 	if j.AdditionalProperties != nil {
@@ -27337,7 +27337,7 @@ func (j *JSONSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JSONWriteSettings.
 func (j JSONWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "filePattern", &j.FilePattern)
+	populateAny(objectMap, "filePattern", j.FilePattern)
 	objectMap["type"] = "JsonWriteSettings"
 	if j.AdditionalProperties != nil {
 		for key, val := range j.AdditionalProperties {
@@ -27445,14 +27445,14 @@ func (j *JiraLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JiraLinkedServiceTypeProperties.
 func (j JiraLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "encryptedCredential", &j.EncryptedCredential)
-	populate(objectMap, "host", &j.Host)
+	populateAny(objectMap, "encryptedCredential", j.EncryptedCredential)
+	populateAny(objectMap, "host", j.Host)
 	populate(objectMap, "password", j.Password)
-	populate(objectMap, "port", &j.Port)
-	populate(objectMap, "useEncryptedEndpoints", &j.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &j.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &j.UsePeerVerification)
-	populate(objectMap, "username", &j.Username)
+	populateAny(objectMap, "port", j.Port)
+	populateAny(objectMap, "useEncryptedEndpoints", j.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", j.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", j.UsePeerVerification)
+	populateAny(objectMap, "username", j.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -27505,8 +27505,8 @@ func (j JiraObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", j.Folder)
 	populate(objectMap, "linkedServiceName", j.LinkedServiceName)
 	populate(objectMap, "parameters", j.Parameters)
-	populate(objectMap, "schema", &j.Schema)
-	populate(objectMap, "structure", &j.Structure)
+	populateAny(objectMap, "schema", j.Schema)
+	populateAny(objectMap, "structure", j.Structure)
 	objectMap["type"] = "JiraObject"
 	populate(objectMap, "typeProperties", j.TypeProperties)
 	if j.AdditionalProperties != nil {
@@ -27574,13 +27574,13 @@ func (j *JiraObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JiraSource.
 func (j JiraSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &j.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &j.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &j.MaxConcurrentConnections)
-	populate(objectMap, "query", &j.Query)
-	populate(objectMap, "queryTimeout", &j.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &j.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &j.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", j.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", j.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", j.MaxConcurrentConnections)
+	populateAny(objectMap, "query", j.Query)
+	populateAny(objectMap, "queryTimeout", j.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", j.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", j.SourceRetryWait)
 	objectMap["type"] = "JiraSource"
 	if j.AdditionalProperties != nil {
 		for key, val := range j.AdditionalProperties {
@@ -28037,7 +28037,7 @@ func (l *LinkedServiceResource) UnmarshalJSON(data []byte) error {
 func (l LogLocationSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "linkedServiceName", l.LinkedServiceName)
-	populate(objectMap, "path", &l.Path)
+	populateAny(objectMap, "path", l.Path)
 	return json.Marshal(objectMap)
 }
 
@@ -28068,7 +28068,7 @@ func (l *LogLocationSettings) UnmarshalJSON(data []byte) error {
 func (l LogSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "copyActivityLogSettings", l.CopyActivityLogSettings)
-	populate(objectMap, "enableCopyActivityLog", &l.EnableCopyActivityLog)
+	populateAny(objectMap, "enableCopyActivityLog", l.EnableCopyActivityLog)
 	populate(objectMap, "logLocationSettings", l.LogLocationSettings)
 	return json.Marshal(objectMap)
 }
@@ -28102,10 +28102,10 @@ func (l *LogSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type LogStorageSettings.
 func (l LogStorageSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "enableReliableLogging", &l.EnableReliableLogging)
+	populateAny(objectMap, "enableReliableLogging", l.EnableReliableLogging)
 	populate(objectMap, "linkedServiceName", l.LinkedServiceName)
-	populate(objectMap, "logLevel", &l.LogLevel)
-	populate(objectMap, "path", &l.Path)
+	populateAny(objectMap, "logLevel", l.LogLevel)
+	populateAny(objectMap, "path", l.Path)
 	if l.AdditionalProperties != nil {
 		for key, val := range l.AdditionalProperties {
 			objectMap[key] = val
@@ -28227,7 +28227,7 @@ func (l *LookupActivity) UnmarshalJSON(data []byte) error {
 func (l LookupActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dataset", l.Dataset)
-	populate(objectMap, "firstRowOnly", &l.FirstRowOnly)
+	populateAny(objectMap, "firstRowOnly", l.FirstRowOnly)
 	populate(objectMap, "source", l.Source)
 	return json.Marshal(objectMap)
 }
@@ -28324,11 +28324,11 @@ func (m *MagentoLinkedService) UnmarshalJSON(data []byte) error {
 func (m MagentoLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessToken", m.AccessToken)
-	populate(objectMap, "encryptedCredential", &m.EncryptedCredential)
-	populate(objectMap, "host", &m.Host)
-	populate(objectMap, "useEncryptedEndpoints", &m.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &m.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &m.UsePeerVerification)
+	populateAny(objectMap, "encryptedCredential", m.EncryptedCredential)
+	populateAny(objectMap, "host", m.Host)
+	populateAny(objectMap, "useEncryptedEndpoints", m.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", m.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", m.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -28375,8 +28375,8 @@ func (m MagentoObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", m.Folder)
 	populate(objectMap, "linkedServiceName", m.LinkedServiceName)
 	populate(objectMap, "parameters", m.Parameters)
-	populate(objectMap, "schema", &m.Schema)
-	populate(objectMap, "structure", &m.Structure)
+	populateAny(objectMap, "schema", m.Schema)
+	populateAny(objectMap, "structure", m.Structure)
 	objectMap["type"] = "MagentoObject"
 	populate(objectMap, "typeProperties", m.TypeProperties)
 	if m.AdditionalProperties != nil {
@@ -28444,13 +28444,13 @@ func (m *MagentoObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MagentoSource.
 func (m MagentoSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &m.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "query", &m.Query)
-	populate(objectMap, "queryTimeout", &m.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &m.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &m.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", m.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "query", m.Query)
+	populateAny(objectMap, "queryTimeout", m.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", m.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", m.SourceRetryWait)
 	objectMap["type"] = "MagentoSource"
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
@@ -29425,8 +29425,8 @@ func (m *MariaDBLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MariaDBLinkedServiceTypeProperties.
 func (m MariaDBLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &m.ConnectionString)
-	populate(objectMap, "encryptedCredential", &m.EncryptedCredential)
+	populateAny(objectMap, "connectionString", m.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", m.EncryptedCredential)
 	populate(objectMap, "pwd", m.Pwd)
 	return json.Marshal(objectMap)
 }
@@ -29460,13 +29460,13 @@ func (m *MariaDBLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MariaDBSource.
 func (m MariaDBSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &m.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "query", &m.Query)
-	populate(objectMap, "queryTimeout", &m.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &m.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &m.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", m.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "query", m.Query)
+	populateAny(objectMap, "queryTimeout", m.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", m.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", m.SourceRetryWait)
 	objectMap["type"] = "MariaDBSource"
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
@@ -29535,8 +29535,8 @@ func (m MariaDBTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", m.Folder)
 	populate(objectMap, "linkedServiceName", m.LinkedServiceName)
 	populate(objectMap, "parameters", m.Parameters)
-	populate(objectMap, "schema", &m.Schema)
-	populate(objectMap, "structure", &m.Structure)
+	populateAny(objectMap, "schema", m.Schema)
+	populateAny(objectMap, "structure", m.Structure)
 	objectMap["type"] = "MariaDBTable"
 	populate(objectMap, "typeProperties", m.TypeProperties)
 	if m.AdditionalProperties != nil {
@@ -29666,13 +29666,13 @@ func (m *MarketoLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MarketoLinkedServiceTypeProperties.
 func (m MarketoLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clientId", &m.ClientID)
+	populateAny(objectMap, "clientId", m.ClientID)
 	populate(objectMap, "clientSecret", m.ClientSecret)
-	populate(objectMap, "encryptedCredential", &m.EncryptedCredential)
-	populate(objectMap, "endpoint", &m.Endpoint)
-	populate(objectMap, "useEncryptedEndpoints", &m.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &m.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &m.UsePeerVerification)
+	populateAny(objectMap, "encryptedCredential", m.EncryptedCredential)
+	populateAny(objectMap, "endpoint", m.Endpoint)
+	populateAny(objectMap, "useEncryptedEndpoints", m.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", m.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", m.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -29722,8 +29722,8 @@ func (m MarketoObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", m.Folder)
 	populate(objectMap, "linkedServiceName", m.LinkedServiceName)
 	populate(objectMap, "parameters", m.Parameters)
-	populate(objectMap, "schema", &m.Schema)
-	populate(objectMap, "structure", &m.Structure)
+	populateAny(objectMap, "schema", m.Schema)
+	populateAny(objectMap, "structure", m.Structure)
 	objectMap["type"] = "MarketoObject"
 	populate(objectMap, "typeProperties", m.TypeProperties)
 	if m.AdditionalProperties != nil {
@@ -29791,13 +29791,13 @@ func (m *MarketoObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MarketoSource.
 func (m MarketoSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &m.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "query", &m.Query)
-	populate(objectMap, "queryTimeout", &m.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &m.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &m.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", m.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "query", m.Query)
+	populateAny(objectMap, "queryTimeout", m.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", m.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", m.SourceRetryWait)
 	objectMap["type"] = "MarketoSource"
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
@@ -29861,8 +29861,8 @@ func (m *MarketoSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MetadataItem.
 func (m MetadataItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "name", &m.Name)
-	populate(objectMap, "value", &m.Value)
+	populateAny(objectMap, "name", m.Name)
+	populateAny(objectMap, "value", m.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -29954,12 +29954,12 @@ func (m *MicrosoftAccessLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MicrosoftAccessLinkedServiceTypeProperties.
 func (m MicrosoftAccessLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authenticationType", &m.AuthenticationType)
-	populate(objectMap, "connectionString", &m.ConnectionString)
+	populateAny(objectMap, "authenticationType", m.AuthenticationType)
+	populateAny(objectMap, "connectionString", m.ConnectionString)
 	populate(objectMap, "credential", m.Credential)
-	populate(objectMap, "encryptedCredential", &m.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", m.EncryptedCredential)
 	populate(objectMap, "password", m.Password)
-	populate(objectMap, "userName", &m.UserName)
+	populateAny(objectMap, "userName", m.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -30001,14 +30001,14 @@ func (m *MicrosoftAccessLinkedServiceTypeProperties) UnmarshalJSON(data []byte) 
 // MarshalJSON implements the json.Marshaller interface for type MicrosoftAccessSink.
 func (m MicrosoftAccessSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &m.PreCopyScript)
-	populate(objectMap, "sinkRetryCount", &m.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &m.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", m.PreCopyScript)
+	populateAny(objectMap, "sinkRetryCount", m.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", m.SinkRetryWait)
 	objectMap["type"] = "MicrosoftAccessSink"
-	populate(objectMap, "writeBatchSize", &m.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &m.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", m.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", m.WriteBatchTimeout)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -30071,12 +30071,12 @@ func (m *MicrosoftAccessSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MicrosoftAccessSource.
 func (m MicrosoftAccessSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &m.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "query", &m.Query)
-	populate(objectMap, "sourceRetryCount", &m.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &m.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", m.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "query", m.Query)
+	populateAny(objectMap, "sourceRetryCount", m.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", m.SourceRetryWait)
 	objectMap["type"] = "MicrosoftAccessSource"
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
@@ -30142,8 +30142,8 @@ func (m MicrosoftAccessTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", m.Folder)
 	populate(objectMap, "linkedServiceName", m.LinkedServiceName)
 	populate(objectMap, "parameters", m.Parameters)
-	populate(objectMap, "schema", &m.Schema)
-	populate(objectMap, "structure", &m.Structure)
+	populateAny(objectMap, "schema", m.Schema)
+	populateAny(objectMap, "structure", m.Structure)
 	objectMap["type"] = "MicrosoftAccessTable"
 	populate(objectMap, "typeProperties", m.TypeProperties)
 	if m.AdditionalProperties != nil {
@@ -30211,7 +30211,7 @@ func (m *MicrosoftAccessTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MicrosoftAccessTableDatasetTypeProperties.
 func (m MicrosoftAccessTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "tableName", &m.TableName)
+	populateAny(objectMap, "tableName", m.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -30243,8 +30243,8 @@ func (m MongoDbAtlasCollectionDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", m.Folder)
 	populate(objectMap, "linkedServiceName", m.LinkedServiceName)
 	populate(objectMap, "parameters", m.Parameters)
-	populate(objectMap, "schema", &m.Schema)
-	populate(objectMap, "structure", &m.Structure)
+	populateAny(objectMap, "schema", m.Schema)
+	populateAny(objectMap, "structure", m.Structure)
 	objectMap["type"] = "MongoDbAtlasCollection"
 	populate(objectMap, "typeProperties", m.TypeProperties)
 	if m.AdditionalProperties != nil {
@@ -30312,7 +30312,7 @@ func (m *MongoDbAtlasCollectionDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MongoDbAtlasCollectionDatasetTypeProperties.
 func (m MongoDbAtlasCollectionDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "collection", &m.Collection)
+	populateAny(objectMap, "collection", m.Collection)
 	return json.Marshal(objectMap)
 }
 
@@ -30401,8 +30401,8 @@ func (m *MongoDbAtlasLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MongoDbAtlasLinkedServiceTypeProperties.
 func (m MongoDbAtlasLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &m.ConnectionString)
-	populate(objectMap, "database", &m.Database)
+	populateAny(objectMap, "connectionString", m.ConnectionString)
+	populateAny(objectMap, "database", m.Database)
 	return json.Marshal(objectMap)
 }
 
@@ -30432,14 +30432,14 @@ func (m *MongoDbAtlasLinkedServiceTypeProperties) UnmarshalJSON(data []byte) err
 // MarshalJSON implements the json.Marshaller interface for type MongoDbAtlasSink.
 func (m MongoDbAtlasSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &m.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &m.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", m.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", m.SinkRetryWait)
 	objectMap["type"] = "MongoDbAtlasSink"
-	populate(objectMap, "writeBatchSize", &m.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &m.WriteBatchTimeout)
-	populate(objectMap, "writeBehavior", &m.WriteBehavior)
+	populateAny(objectMap, "writeBatchSize", m.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", m.WriteBatchTimeout)
+	populateAny(objectMap, "writeBehavior", m.WriteBehavior)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -30502,15 +30502,15 @@ func (m *MongoDbAtlasSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MongoDbAtlasSource.
 func (m MongoDbAtlasSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &m.AdditionalColumns)
-	populate(objectMap, "batchSize", &m.BatchSize)
+	populateAny(objectMap, "additionalColumns", m.AdditionalColumns)
+	populateAny(objectMap, "batchSize", m.BatchSize)
 	populate(objectMap, "cursorMethods", m.CursorMethods)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "filter", &m.Filter)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "queryTimeout", &m.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &m.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &m.SourceRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "filter", m.Filter)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "queryTimeout", m.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", m.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", m.SourceRetryWait)
 	objectMap["type"] = "MongoDbAtlasSource"
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
@@ -30585,8 +30585,8 @@ func (m MongoDbCollectionDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", m.Folder)
 	populate(objectMap, "linkedServiceName", m.LinkedServiceName)
 	populate(objectMap, "parameters", m.Parameters)
-	populate(objectMap, "schema", &m.Schema)
-	populate(objectMap, "structure", &m.Structure)
+	populateAny(objectMap, "schema", m.Schema)
+	populateAny(objectMap, "structure", m.Structure)
 	objectMap["type"] = "MongoDbCollection"
 	populate(objectMap, "typeProperties", m.TypeProperties)
 	if m.AdditionalProperties != nil {
@@ -30654,7 +30654,7 @@ func (m *MongoDbCollectionDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MongoDbCollectionDatasetTypeProperties.
 func (m MongoDbCollectionDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "collectionName", &m.CollectionName)
+	populateAny(objectMap, "collectionName", m.CollectionName)
 	return json.Marshal(objectMap)
 }
 
@@ -30681,10 +30681,10 @@ func (m *MongoDbCollectionDatasetTypeProperties) UnmarshalJSON(data []byte) erro
 // MarshalJSON implements the json.Marshaller interface for type MongoDbCursorMethodsProperties.
 func (m MongoDbCursorMethodsProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "limit", &m.Limit)
-	populate(objectMap, "project", &m.Project)
-	populate(objectMap, "skip", &m.Skip)
-	populate(objectMap, "sort", &m.Sort)
+	populateAny(objectMap, "limit", m.Limit)
+	populateAny(objectMap, "project", m.Project)
+	populateAny(objectMap, "skip", m.Skip)
+	populateAny(objectMap, "sort", m.Sort)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -30797,16 +30797,16 @@ func (m *MongoDbLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MongoDbLinkedServiceTypeProperties.
 func (m MongoDbLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "allowSelfSignedServerCert", &m.AllowSelfSignedServerCert)
-	populate(objectMap, "authSource", &m.AuthSource)
+	populateAny(objectMap, "allowSelfSignedServerCert", m.AllowSelfSignedServerCert)
+	populateAny(objectMap, "authSource", m.AuthSource)
 	populate(objectMap, "authenticationType", m.AuthenticationType)
-	populate(objectMap, "databaseName", &m.DatabaseName)
-	populate(objectMap, "enableSsl", &m.EnableSSL)
-	populate(objectMap, "encryptedCredential", &m.EncryptedCredential)
+	populateAny(objectMap, "databaseName", m.DatabaseName)
+	populateAny(objectMap, "enableSsl", m.EnableSSL)
+	populateAny(objectMap, "encryptedCredential", m.EncryptedCredential)
 	populate(objectMap, "password", m.Password)
-	populate(objectMap, "port", &m.Port)
-	populate(objectMap, "server", &m.Server)
-	populate(objectMap, "username", &m.Username)
+	populateAny(objectMap, "port", m.Port)
+	populateAny(objectMap, "server", m.Server)
+	populateAny(objectMap, "username", m.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -30860,12 +30860,12 @@ func (m *MongoDbLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MongoDbSource.
 func (m MongoDbSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &m.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "query", &m.Query)
-	populate(objectMap, "sourceRetryCount", &m.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &m.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", m.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "query", m.Query)
+	populateAny(objectMap, "sourceRetryCount", m.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", m.SourceRetryWait)
 	objectMap["type"] = "MongoDbSource"
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
@@ -30931,8 +30931,8 @@ func (m MongoDbV2CollectionDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", m.Folder)
 	populate(objectMap, "linkedServiceName", m.LinkedServiceName)
 	populate(objectMap, "parameters", m.Parameters)
-	populate(objectMap, "schema", &m.Schema)
-	populate(objectMap, "structure", &m.Structure)
+	populateAny(objectMap, "schema", m.Schema)
+	populateAny(objectMap, "structure", m.Structure)
 	objectMap["type"] = "MongoDbV2Collection"
 	populate(objectMap, "typeProperties", m.TypeProperties)
 	if m.AdditionalProperties != nil {
@@ -31000,7 +31000,7 @@ func (m *MongoDbV2CollectionDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MongoDbV2CollectionDatasetTypeProperties.
 func (m MongoDbV2CollectionDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "collection", &m.Collection)
+	populateAny(objectMap, "collection", m.Collection)
 	return json.Marshal(objectMap)
 }
 
@@ -31089,8 +31089,8 @@ func (m *MongoDbV2LinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MongoDbV2LinkedServiceTypeProperties.
 func (m MongoDbV2LinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &m.ConnectionString)
-	populate(objectMap, "database", &m.Database)
+	populateAny(objectMap, "connectionString", m.ConnectionString)
+	populateAny(objectMap, "database", m.Database)
 	return json.Marshal(objectMap)
 }
 
@@ -31120,14 +31120,14 @@ func (m *MongoDbV2LinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type MongoDbV2Sink.
 func (m MongoDbV2Sink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &m.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &m.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", m.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", m.SinkRetryWait)
 	objectMap["type"] = "MongoDbV2Sink"
-	populate(objectMap, "writeBatchSize", &m.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &m.WriteBatchTimeout)
-	populate(objectMap, "writeBehavior", &m.WriteBehavior)
+	populateAny(objectMap, "writeBatchSize", m.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", m.WriteBatchTimeout)
+	populateAny(objectMap, "writeBehavior", m.WriteBehavior)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -31190,15 +31190,15 @@ func (m *MongoDbV2Sink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MongoDbV2Source.
 func (m MongoDbV2Source) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &m.AdditionalColumns)
-	populate(objectMap, "batchSize", &m.BatchSize)
+	populateAny(objectMap, "additionalColumns", m.AdditionalColumns)
+	populateAny(objectMap, "batchSize", m.BatchSize)
 	populate(objectMap, "cursorMethods", m.CursorMethods)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "filter", &m.Filter)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "queryTimeout", &m.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &m.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &m.SourceRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "filter", m.Filter)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "queryTimeout", m.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", m.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", m.SourceRetryWait)
 	objectMap["type"] = "MongoDbV2Source"
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
@@ -31388,8 +31388,8 @@ func (m *MySQLLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MySQLLinkedServiceTypeProperties.
 func (m MySQLLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &m.ConnectionString)
-	populate(objectMap, "encryptedCredential", &m.EncryptedCredential)
+	populateAny(objectMap, "connectionString", m.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", m.EncryptedCredential)
 	populate(objectMap, "password", m.Password)
 	return json.Marshal(objectMap)
 }
@@ -31423,13 +31423,13 @@ func (m *MySQLLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MySQLSource.
 func (m MySQLSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &m.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &m.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &m.MaxConcurrentConnections)
-	populate(objectMap, "query", &m.Query)
-	populate(objectMap, "queryTimeout", &m.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &m.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &m.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", m.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", m.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", m.MaxConcurrentConnections)
+	populateAny(objectMap, "query", m.Query)
+	populateAny(objectMap, "queryTimeout", m.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", m.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", m.SourceRetryWait)
 	objectMap["type"] = "MySqlSource"
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
@@ -31498,8 +31498,8 @@ func (m MySQLTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", m.Folder)
 	populate(objectMap, "linkedServiceName", m.LinkedServiceName)
 	populate(objectMap, "parameters", m.Parameters)
-	populate(objectMap, "schema", &m.Schema)
-	populate(objectMap, "structure", &m.Structure)
+	populateAny(objectMap, "schema", m.Schema)
+	populateAny(objectMap, "structure", m.Structure)
 	objectMap["type"] = "MySqlTable"
 	populate(objectMap, "typeProperties", m.TypeProperties)
 	if m.AdditionalProperties != nil {
@@ -31567,7 +31567,7 @@ func (m *MySQLTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MySQLTableDatasetTypeProperties.
 func (m MySQLTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "tableName", &m.TableName)
+	populateAny(objectMap, "tableName", m.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -31656,8 +31656,8 @@ func (n *NetezzaLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NetezzaLinkedServiceTypeProperties.
 func (n NetezzaLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &n.ConnectionString)
-	populate(objectMap, "encryptedCredential", &n.EncryptedCredential)
+	populateAny(objectMap, "connectionString", n.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", n.EncryptedCredential)
 	populate(objectMap, "pwd", n.Pwd)
 	return json.Marshal(objectMap)
 }
@@ -31691,9 +31691,9 @@ func (n *NetezzaLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NetezzaPartitionSettings.
 func (n NetezzaPartitionSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "partitionColumnName", &n.PartitionColumnName)
-	populate(objectMap, "partitionLowerBound", &n.PartitionLowerBound)
-	populate(objectMap, "partitionUpperBound", &n.PartitionUpperBound)
+	populateAny(objectMap, "partitionColumnName", n.PartitionColumnName)
+	populateAny(objectMap, "partitionLowerBound", n.PartitionLowerBound)
+	populateAny(objectMap, "partitionUpperBound", n.PartitionUpperBound)
 	return json.Marshal(objectMap)
 }
 
@@ -31726,15 +31726,15 @@ func (n *NetezzaPartitionSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NetezzaSource.
 func (n NetezzaSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &n.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &n.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &n.MaxConcurrentConnections)
-	populate(objectMap, "partitionOption", &n.PartitionOption)
+	populateAny(objectMap, "additionalColumns", n.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", n.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", n.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionOption", n.PartitionOption)
 	populate(objectMap, "partitionSettings", n.PartitionSettings)
-	populate(objectMap, "query", &n.Query)
-	populate(objectMap, "queryTimeout", &n.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &n.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &n.SourceRetryWait)
+	populateAny(objectMap, "query", n.Query)
+	populateAny(objectMap, "queryTimeout", n.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", n.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", n.SourceRetryWait)
 	objectMap["type"] = "NetezzaSource"
 	if n.AdditionalProperties != nil {
 		for key, val := range n.AdditionalProperties {
@@ -31809,8 +31809,8 @@ func (n NetezzaTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", n.Folder)
 	populate(objectMap, "linkedServiceName", n.LinkedServiceName)
 	populate(objectMap, "parameters", n.Parameters)
-	populate(objectMap, "schema", &n.Schema)
-	populate(objectMap, "structure", &n.Structure)
+	populateAny(objectMap, "schema", n.Schema)
+	populateAny(objectMap, "structure", n.Structure)
 	objectMap["type"] = "NetezzaTable"
 	populate(objectMap, "typeProperties", n.TypeProperties)
 	if n.AdditionalProperties != nil {
@@ -31878,9 +31878,9 @@ func (n *NetezzaTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NetezzaTableDatasetTypeProperties.
 func (n NetezzaTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &n.Schema)
-	populate(objectMap, "table", &n.Table)
-	populate(objectMap, "tableName", &n.TableName)
+	populateAny(objectMap, "schema", n.Schema)
+	populateAny(objectMap, "table", n.Table)
+	populateAny(objectMap, "tableName", n.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -31914,7 +31914,7 @@ func (n *NetezzaTableDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 func (n NotebookParameter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "type", n.Type)
-	populate(objectMap, "value", &n.Value)
+	populateAny(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -32006,20 +32006,20 @@ func (o *ODataLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ODataLinkedServiceTypeProperties.
 func (o ODataLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "aadResourceId", &o.AADResourceID)
+	populateAny(objectMap, "aadResourceId", o.AADResourceID)
 	populate(objectMap, "aadServicePrincipalCredentialType", o.AADServicePrincipalCredentialType)
-	populate(objectMap, "authHeaders", &o.AuthHeaders)
+	populateAny(objectMap, "authHeaders", o.AuthHeaders)
 	populate(objectMap, "authenticationType", o.AuthenticationType)
-	populate(objectMap, "azureCloudType", &o.AzureCloudType)
-	populate(objectMap, "encryptedCredential", &o.EncryptedCredential)
+	populateAny(objectMap, "azureCloudType", o.AzureCloudType)
+	populateAny(objectMap, "encryptedCredential", o.EncryptedCredential)
 	populate(objectMap, "password", o.Password)
 	populate(objectMap, "servicePrincipalEmbeddedCert", o.ServicePrincipalEmbeddedCert)
 	populate(objectMap, "servicePrincipalEmbeddedCertPassword", o.ServicePrincipalEmbeddedCertPassword)
-	populate(objectMap, "servicePrincipalId", &o.ServicePrincipalID)
+	populateAny(objectMap, "servicePrincipalId", o.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", o.ServicePrincipalKey)
-	populate(objectMap, "tenant", &o.Tenant)
-	populate(objectMap, "url", &o.URL)
-	populate(objectMap, "userName", &o.UserName)
+	populateAny(objectMap, "tenant", o.Tenant)
+	populateAny(objectMap, "url", o.URL)
+	populateAny(objectMap, "userName", o.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -32090,8 +32090,8 @@ func (o ODataResourceDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", o.Folder)
 	populate(objectMap, "linkedServiceName", o.LinkedServiceName)
 	populate(objectMap, "parameters", o.Parameters)
-	populate(objectMap, "schema", &o.Schema)
-	populate(objectMap, "structure", &o.Structure)
+	populateAny(objectMap, "schema", o.Schema)
+	populateAny(objectMap, "structure", o.Structure)
 	objectMap["type"] = "ODataResource"
 	populate(objectMap, "typeProperties", o.TypeProperties)
 	if o.AdditionalProperties != nil {
@@ -32159,7 +32159,7 @@ func (o *ODataResourceDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ODataResourceDatasetTypeProperties.
 func (o ODataResourceDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "path", &o.Path)
+	populateAny(objectMap, "path", o.Path)
 	return json.Marshal(objectMap)
 }
 
@@ -32186,13 +32186,13 @@ func (o *ODataResourceDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ODataSource.
 func (o ODataSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &o.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &o.DisableMetricsCollection)
-	populate(objectMap, "httpRequestTimeout", &o.HTTPRequestTimeout)
-	populate(objectMap, "maxConcurrentConnections", &o.MaxConcurrentConnections)
-	populate(objectMap, "query", &o.Query)
-	populate(objectMap, "sourceRetryCount", &o.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &o.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", o.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
+	populateAny(objectMap, "httpRequestTimeout", o.HTTPRequestTimeout)
+	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "query", o.Query)
+	populateAny(objectMap, "sourceRetryCount", o.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", o.SourceRetryWait)
 	objectMap["type"] = "ODataSource"
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
@@ -32318,12 +32318,12 @@ func (o *OdbcLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OdbcLinkedServiceTypeProperties.
 func (o OdbcLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authenticationType", &o.AuthenticationType)
-	populate(objectMap, "connectionString", &o.ConnectionString)
+	populateAny(objectMap, "authenticationType", o.AuthenticationType)
+	populateAny(objectMap, "connectionString", o.ConnectionString)
 	populate(objectMap, "credential", o.Credential)
-	populate(objectMap, "encryptedCredential", &o.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", o.EncryptedCredential)
 	populate(objectMap, "password", o.Password)
-	populate(objectMap, "userName", &o.UserName)
+	populateAny(objectMap, "userName", o.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -32365,14 +32365,14 @@ func (o *OdbcLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OdbcSink.
 func (o OdbcSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &o.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &o.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &o.PreCopyScript)
-	populate(objectMap, "sinkRetryCount", &o.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &o.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", o.PreCopyScript)
+	populateAny(objectMap, "sinkRetryCount", o.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", o.SinkRetryWait)
 	objectMap["type"] = "OdbcSink"
-	populate(objectMap, "writeBatchSize", &o.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &o.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", o.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", o.WriteBatchTimeout)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -32435,13 +32435,13 @@ func (o *OdbcSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OdbcSource.
 func (o OdbcSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &o.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &o.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &o.MaxConcurrentConnections)
-	populate(objectMap, "query", &o.Query)
-	populate(objectMap, "queryTimeout", &o.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &o.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &o.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", o.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "query", o.Query)
+	populateAny(objectMap, "queryTimeout", o.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", o.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", o.SourceRetryWait)
 	objectMap["type"] = "OdbcSource"
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
@@ -32510,8 +32510,8 @@ func (o OdbcTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", o.Folder)
 	populate(objectMap, "linkedServiceName", o.LinkedServiceName)
 	populate(objectMap, "parameters", o.Parameters)
-	populate(objectMap, "schema", &o.Schema)
-	populate(objectMap, "structure", &o.Structure)
+	populateAny(objectMap, "schema", o.Schema)
+	populateAny(objectMap, "structure", o.Structure)
 	objectMap["type"] = "OdbcTable"
 	populate(objectMap, "typeProperties", o.TypeProperties)
 	if o.AdditionalProperties != nil {
@@ -32579,7 +32579,7 @@ func (o *OdbcTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OdbcTableDatasetTypeProperties.
 func (o OdbcTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "tableName", &o.TableName)
+	populateAny(objectMap, "tableName", o.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -32611,8 +32611,8 @@ func (o Office365Dataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", o.Folder)
 	populate(objectMap, "linkedServiceName", o.LinkedServiceName)
 	populate(objectMap, "parameters", o.Parameters)
-	populate(objectMap, "schema", &o.Schema)
-	populate(objectMap, "structure", &o.Structure)
+	populateAny(objectMap, "schema", o.Schema)
+	populateAny(objectMap, "structure", o.Structure)
 	objectMap["type"] = "Office365Table"
 	populate(objectMap, "typeProperties", o.TypeProperties)
 	if o.AdditionalProperties != nil {
@@ -32680,8 +32680,8 @@ func (o *Office365Dataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Office365DatasetTypeProperties.
 func (o Office365DatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "predicate", &o.Predicate)
-	populate(objectMap, "tableName", &o.TableName)
+	populateAny(objectMap, "predicate", o.Predicate)
+	populateAny(objectMap, "tableName", o.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -32773,11 +32773,11 @@ func (o *Office365LinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Office365LinkedServiceTypeProperties.
 func (o Office365LinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "encryptedCredential", &o.EncryptedCredential)
-	populate(objectMap, "office365TenantId", &o.Office365TenantID)
-	populate(objectMap, "servicePrincipalId", &o.ServicePrincipalID)
+	populateAny(objectMap, "encryptedCredential", o.EncryptedCredential)
+	populateAny(objectMap, "office365TenantId", o.Office365TenantID)
+	populateAny(objectMap, "servicePrincipalId", o.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", o.ServicePrincipalKey)
-	populate(objectMap, "servicePrincipalTenantId", &o.ServicePrincipalTenantID)
+	populateAny(objectMap, "servicePrincipalTenantId", o.ServicePrincipalTenantID)
 	return json.Marshal(objectMap)
 }
 
@@ -32816,17 +32816,17 @@ func (o *Office365LinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type Office365Source.
 func (o Office365Source) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "allowedGroups", &o.AllowedGroups)
-	populate(objectMap, "dateFilterColumn", &o.DateFilterColumn)
-	populate(objectMap, "disableMetricsCollection", &o.DisableMetricsCollection)
-	populate(objectMap, "endTime", &o.EndTime)
-	populate(objectMap, "maxConcurrentConnections", &o.MaxConcurrentConnections)
-	populate(objectMap, "outputColumns", &o.OutputColumns)
-	populate(objectMap, "sourceRetryCount", &o.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &o.SourceRetryWait)
-	populate(objectMap, "startTime", &o.StartTime)
+	populateAny(objectMap, "allowedGroups", o.AllowedGroups)
+	populateAny(objectMap, "dateFilterColumn", o.DateFilterColumn)
+	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
+	populateAny(objectMap, "endTime", o.EndTime)
+	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "outputColumns", o.OutputColumns)
+	populateAny(objectMap, "sourceRetryCount", o.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", o.SourceRetryWait)
+	populateAny(objectMap, "startTime", o.StartTime)
 	objectMap["type"] = "Office365Source"
-	populate(objectMap, "userScopeFilterUri", &o.UserScopeFilterURI)
+	populateAny(objectMap, "userScopeFilterUri", o.UserScopeFilterURI)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -33291,10 +33291,10 @@ func (o *OracleCloudStorageLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OracleCloudStorageLinkedServiceTypeProperties.
 func (o OracleCloudStorageLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "accessKeyId", &o.AccessKeyID)
-	populate(objectMap, "encryptedCredential", &o.EncryptedCredential)
+	populateAny(objectMap, "accessKeyId", o.AccessKeyID)
+	populateAny(objectMap, "encryptedCredential", o.EncryptedCredential)
 	populate(objectMap, "secretAccessKey", o.SecretAccessKey)
-	populate(objectMap, "serviceUrl", &o.ServiceURL)
+	populateAny(objectMap, "serviceUrl", o.ServiceURL)
 	return json.Marshal(objectMap)
 }
 
@@ -33330,11 +33330,11 @@ func (o *OracleCloudStorageLinkedServiceTypeProperties) UnmarshalJSON(data []byt
 // MarshalJSON implements the json.Marshaller interface for type OracleCloudStorageLocation.
 func (o OracleCloudStorageLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "bucketName", &o.BucketName)
-	populate(objectMap, "fileName", &o.FileName)
-	populate(objectMap, "folderPath", &o.FolderPath)
+	populateAny(objectMap, "bucketName", o.BucketName)
+	populateAny(objectMap, "fileName", o.FileName)
+	populateAny(objectMap, "folderPath", o.FolderPath)
 	objectMap["type"] = "OracleCloudStorageLocation"
-	populate(objectMap, "version", &o.Version)
+	populateAny(objectMap, "version", o.Version)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -33388,19 +33388,19 @@ func (o *OracleCloudStorageLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OracleCloudStorageReadSettings.
 func (o OracleCloudStorageReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &o.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableMetricsCollection", &o.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", o.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", o.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &o.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &o.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &o.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &o.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &o.PartitionRootPath)
-	populate(objectMap, "prefix", &o.Prefix)
-	populate(objectMap, "recursive", &o.Recursive)
+	populateAny(objectMap, "fileListPath", o.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", o.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", o.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", o.PartitionRootPath)
+	populateAny(objectMap, "prefix", o.Prefix)
+	populateAny(objectMap, "recursive", o.Recursive)
 	objectMap["type"] = "OracleCloudStorageReadSettings"
-	populate(objectMap, "wildcardFileName", &o.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &o.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", o.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", o.WildcardFolderPath)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -33540,8 +33540,8 @@ func (o *OracleLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OracleLinkedServiceTypeProperties.
 func (o OracleLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &o.ConnectionString)
-	populate(objectMap, "encryptedCredential", &o.EncryptedCredential)
+	populateAny(objectMap, "connectionString", o.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", o.EncryptedCredential)
 	populate(objectMap, "password", o.Password)
 	return json.Marshal(objectMap)
 }
@@ -33575,10 +33575,10 @@ func (o *OracleLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OraclePartitionSettings.
 func (o OraclePartitionSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "partitionColumnName", &o.PartitionColumnName)
-	populate(objectMap, "partitionLowerBound", &o.PartitionLowerBound)
-	populate(objectMap, "partitionNames", &o.PartitionNames)
-	populate(objectMap, "partitionUpperBound", &o.PartitionUpperBound)
+	populateAny(objectMap, "partitionColumnName", o.PartitionColumnName)
+	populateAny(objectMap, "partitionLowerBound", o.PartitionLowerBound)
+	populateAny(objectMap, "partitionNames", o.PartitionNames)
+	populateAny(objectMap, "partitionUpperBound", o.PartitionUpperBound)
 	return json.Marshal(objectMap)
 }
 
@@ -33676,13 +33676,13 @@ func (o *OracleServiceCloudLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OracleServiceCloudLinkedServiceTypeProperties.
 func (o OracleServiceCloudLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "encryptedCredential", &o.EncryptedCredential)
-	populate(objectMap, "host", &o.Host)
+	populateAny(objectMap, "encryptedCredential", o.EncryptedCredential)
+	populateAny(objectMap, "host", o.Host)
 	populate(objectMap, "password", o.Password)
-	populate(objectMap, "useEncryptedEndpoints", &o.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &o.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &o.UsePeerVerification)
-	populate(objectMap, "username", &o.Username)
+	populateAny(objectMap, "useEncryptedEndpoints", o.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", o.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", o.UsePeerVerification)
+	populateAny(objectMap, "username", o.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -33732,8 +33732,8 @@ func (o OracleServiceCloudObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", o.Folder)
 	populate(objectMap, "linkedServiceName", o.LinkedServiceName)
 	populate(objectMap, "parameters", o.Parameters)
-	populate(objectMap, "schema", &o.Schema)
-	populate(objectMap, "structure", &o.Structure)
+	populateAny(objectMap, "schema", o.Schema)
+	populateAny(objectMap, "structure", o.Structure)
 	objectMap["type"] = "OracleServiceCloudObject"
 	populate(objectMap, "typeProperties", o.TypeProperties)
 	if o.AdditionalProperties != nil {
@@ -33801,13 +33801,13 @@ func (o *OracleServiceCloudObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OracleServiceCloudSource.
 func (o OracleServiceCloudSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &o.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &o.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &o.MaxConcurrentConnections)
-	populate(objectMap, "query", &o.Query)
-	populate(objectMap, "queryTimeout", &o.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &o.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &o.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", o.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "query", o.Query)
+	populateAny(objectMap, "queryTimeout", o.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", o.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", o.SourceRetryWait)
 	objectMap["type"] = "OracleServiceCloudSource"
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
@@ -33871,14 +33871,14 @@ func (o *OracleServiceCloudSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OracleSink.
 func (o OracleSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &o.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &o.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &o.PreCopyScript)
-	populate(objectMap, "sinkRetryCount", &o.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &o.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", o.PreCopyScript)
+	populateAny(objectMap, "sinkRetryCount", o.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", o.SinkRetryWait)
 	objectMap["type"] = "OracleSink"
-	populate(objectMap, "writeBatchSize", &o.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &o.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", o.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", o.WriteBatchTimeout)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -33941,15 +33941,15 @@ func (o *OracleSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OracleSource.
 func (o OracleSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &o.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &o.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &o.MaxConcurrentConnections)
-	populate(objectMap, "oracleReaderQuery", &o.OracleReaderQuery)
-	populate(objectMap, "partitionOption", &o.PartitionOption)
+	populateAny(objectMap, "additionalColumns", o.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "oracleReaderQuery", o.OracleReaderQuery)
+	populateAny(objectMap, "partitionOption", o.PartitionOption)
 	populate(objectMap, "partitionSettings", o.PartitionSettings)
-	populate(objectMap, "queryTimeout", &o.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &o.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &o.SourceRetryWait)
+	populateAny(objectMap, "queryTimeout", o.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", o.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", o.SourceRetryWait)
 	objectMap["type"] = "OracleSource"
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
@@ -34024,8 +34024,8 @@ func (o OracleTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", o.Folder)
 	populate(objectMap, "linkedServiceName", o.LinkedServiceName)
 	populate(objectMap, "parameters", o.Parameters)
-	populate(objectMap, "schema", &o.Schema)
-	populate(objectMap, "structure", &o.Structure)
+	populateAny(objectMap, "schema", o.Schema)
+	populateAny(objectMap, "structure", o.Structure)
 	objectMap["type"] = "OracleTable"
 	populate(objectMap, "typeProperties", o.TypeProperties)
 	if o.AdditionalProperties != nil {
@@ -34093,9 +34093,9 @@ func (o *OracleTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OracleTableDatasetTypeProperties.
 func (o OracleTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &o.Schema)
-	populate(objectMap, "table", &o.Table)
-	populate(objectMap, "tableName", &o.TableName)
+	populateAny(objectMap, "schema", o.Schema)
+	populateAny(objectMap, "table", o.Table)
+	populateAny(objectMap, "tableName", o.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -34133,8 +34133,8 @@ func (o OrcDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", o.Folder)
 	populate(objectMap, "linkedServiceName", o.LinkedServiceName)
 	populate(objectMap, "parameters", o.Parameters)
-	populate(objectMap, "schema", &o.Schema)
-	populate(objectMap, "structure", &o.Structure)
+	populateAny(objectMap, "schema", o.Schema)
+	populateAny(objectMap, "structure", o.Structure)
 	objectMap["type"] = "Orc"
 	populate(objectMap, "typeProperties", o.TypeProperties)
 	if o.AdditionalProperties != nil {
@@ -34203,7 +34203,7 @@ func (o *OrcDataset) UnmarshalJSON(data []byte) error {
 func (o OrcDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "location", o.Location)
-	populate(objectMap, "orcCompressionCodec", &o.OrcCompressionCodec)
+	populateAny(objectMap, "orcCompressionCodec", o.OrcCompressionCodec)
 	return json.Marshal(objectMap)
 }
 
@@ -34233,8 +34233,8 @@ func (o *OrcDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OrcFormat.
 func (o OrcFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deserializer", &o.Deserializer)
-	populate(objectMap, "serializer", &o.Serializer)
+	populateAny(objectMap, "deserializer", o.Deserializer)
+	populateAny(objectMap, "serializer", o.Serializer)
 	objectMap["type"] = "OrcFormat"
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
@@ -34283,15 +34283,15 @@ func (o *OrcFormat) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OrcSink.
 func (o OrcSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &o.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
 	populate(objectMap, "formatSettings", o.FormatSettings)
-	populate(objectMap, "maxConcurrentConnections", &o.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &o.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &o.SinkRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", o.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", o.SinkRetryWait)
 	populate(objectMap, "storeSettings", o.StoreSettings)
 	objectMap["type"] = "OrcSink"
-	populate(objectMap, "writeBatchSize", &o.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &o.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", o.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", o.WriteBatchTimeout)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -34357,11 +34357,11 @@ func (o *OrcSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OrcSource.
 func (o OrcSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &o.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &o.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &o.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &o.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &o.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", o.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", o.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", o.SourceRetryWait)
 	populate(objectMap, "storeSettings", o.StoreSettings)
 	objectMap["type"] = "OrcSource"
 	if o.AdditionalProperties != nil {
@@ -34423,8 +34423,8 @@ func (o *OrcSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OrcWriteSettings.
 func (o OrcWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileNamePrefix", &o.FileNamePrefix)
-	populate(objectMap, "maxRowsPerFile", &o.MaxRowsPerFile)
+	populateAny(objectMap, "fileNamePrefix", o.FileNamePrefix)
+	populateAny(objectMap, "maxRowsPerFile", o.MaxRowsPerFile)
 	objectMap["type"] = "OrcWriteSettings"
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
@@ -34504,7 +34504,7 @@ func (p *PackageStore) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ParameterSpecification.
 func (p ParameterSpecification) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "defaultValue", &p.DefaultValue)
+	populateAny(objectMap, "defaultValue", p.DefaultValue)
 	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
@@ -34540,8 +34540,8 @@ func (p ParquetDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", p.Folder)
 	populate(objectMap, "linkedServiceName", p.LinkedServiceName)
 	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "schema", &p.Schema)
-	populate(objectMap, "structure", &p.Structure)
+	populateAny(objectMap, "schema", p.Schema)
+	populateAny(objectMap, "structure", p.Structure)
 	objectMap["type"] = "Parquet"
 	populate(objectMap, "typeProperties", p.TypeProperties)
 	if p.AdditionalProperties != nil {
@@ -34609,7 +34609,7 @@ func (p *ParquetDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ParquetDatasetTypeProperties.
 func (p ParquetDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "compressionCodec", &p.CompressionCodec)
+	populateAny(objectMap, "compressionCodec", p.CompressionCodec)
 	populate(objectMap, "location", p.Location)
 	return json.Marshal(objectMap)
 }
@@ -34640,8 +34640,8 @@ func (p *ParquetDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ParquetFormat.
 func (p ParquetFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deserializer", &p.Deserializer)
-	populate(objectMap, "serializer", &p.Serializer)
+	populateAny(objectMap, "deserializer", p.Deserializer)
+	populateAny(objectMap, "serializer", p.Serializer)
 	objectMap["type"] = "ParquetFormat"
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
@@ -34690,15 +34690,15 @@ func (p *ParquetFormat) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ParquetSink.
 func (p ParquetSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &p.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", p.DisableMetricsCollection)
 	populate(objectMap, "formatSettings", p.FormatSettings)
-	populate(objectMap, "maxConcurrentConnections", &p.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &p.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &p.SinkRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", p.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", p.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", p.SinkRetryWait)
 	populate(objectMap, "storeSettings", p.StoreSettings)
 	objectMap["type"] = "ParquetSink"
-	populate(objectMap, "writeBatchSize", &p.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &p.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", p.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", p.WriteBatchTimeout)
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
 			objectMap[key] = val
@@ -34764,11 +34764,11 @@ func (p *ParquetSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ParquetSource.
 func (p ParquetSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &p.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &p.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &p.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &p.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &p.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", p.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", p.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", p.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", p.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", p.SourceRetryWait)
 	populate(objectMap, "storeSettings", p.StoreSettings)
 	objectMap["type"] = "ParquetSource"
 	if p.AdditionalProperties != nil {
@@ -34830,8 +34830,8 @@ func (p *ParquetSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ParquetWriteSettings.
 func (p ParquetWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileNamePrefix", &p.FileNamePrefix)
-	populate(objectMap, "maxRowsPerFile", &p.MaxRowsPerFile)
+	populateAny(objectMap, "fileNamePrefix", p.FileNamePrefix)
+	populateAny(objectMap, "maxRowsPerFile", p.MaxRowsPerFile)
 	objectMap["type"] = "ParquetWriteSettings"
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
@@ -34942,13 +34942,13 @@ func (p *PaypalLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PaypalLinkedServiceTypeProperties.
 func (p PaypalLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clientId", &p.ClientID)
+	populateAny(objectMap, "clientId", p.ClientID)
 	populate(objectMap, "clientSecret", p.ClientSecret)
-	populate(objectMap, "encryptedCredential", &p.EncryptedCredential)
-	populate(objectMap, "host", &p.Host)
-	populate(objectMap, "useEncryptedEndpoints", &p.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &p.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &p.UsePeerVerification)
+	populateAny(objectMap, "encryptedCredential", p.EncryptedCredential)
+	populateAny(objectMap, "host", p.Host)
+	populateAny(objectMap, "useEncryptedEndpoints", p.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", p.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", p.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -34998,8 +34998,8 @@ func (p PaypalObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", p.Folder)
 	populate(objectMap, "linkedServiceName", p.LinkedServiceName)
 	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "schema", &p.Schema)
-	populate(objectMap, "structure", &p.Structure)
+	populateAny(objectMap, "schema", p.Schema)
+	populateAny(objectMap, "structure", p.Structure)
 	objectMap["type"] = "PaypalObject"
 	populate(objectMap, "typeProperties", p.TypeProperties)
 	if p.AdditionalProperties != nil {
@@ -35067,13 +35067,13 @@ func (p *PaypalObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PaypalSource.
 func (p PaypalSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &p.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &p.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &p.MaxConcurrentConnections)
-	populate(objectMap, "query", &p.Query)
-	populate(objectMap, "queryTimeout", &p.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &p.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &p.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", p.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", p.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", p.MaxConcurrentConnections)
+	populateAny(objectMap, "query", p.Query)
+	populateAny(objectMap, "queryTimeout", p.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", p.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", p.SourceRetryWait)
 	objectMap["type"] = "PaypalSource"
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
@@ -35137,9 +35137,9 @@ func (p *PaypalSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PhoenixDatasetTypeProperties.
 func (p PhoenixDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &p.Schema)
-	populate(objectMap, "table", &p.Table)
-	populate(objectMap, "tableName", &p.TableName)
+	populateAny(objectMap, "schema", p.Schema)
+	populateAny(objectMap, "table", p.Table)
+	populateAny(objectMap, "tableName", p.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -35234,18 +35234,18 @@ func (p *PhoenixLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PhoenixLinkedServiceTypeProperties.
 func (p PhoenixLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "allowHostNameCNMismatch", &p.AllowHostNameCNMismatch)
-	populate(objectMap, "allowSelfSignedServerCert", &p.AllowSelfSignedServerCert)
+	populateAny(objectMap, "allowHostNameCNMismatch", p.AllowHostNameCNMismatch)
+	populateAny(objectMap, "allowSelfSignedServerCert", p.AllowSelfSignedServerCert)
 	populate(objectMap, "authenticationType", p.AuthenticationType)
-	populate(objectMap, "enableSsl", &p.EnableSSL)
-	populate(objectMap, "encryptedCredential", &p.EncryptedCredential)
-	populate(objectMap, "httpPath", &p.HTTPPath)
-	populate(objectMap, "host", &p.Host)
+	populateAny(objectMap, "enableSsl", p.EnableSSL)
+	populateAny(objectMap, "encryptedCredential", p.EncryptedCredential)
+	populateAny(objectMap, "httpPath", p.HTTPPath)
+	populateAny(objectMap, "host", p.Host)
 	populate(objectMap, "password", p.Password)
-	populate(objectMap, "port", &p.Port)
-	populate(objectMap, "trustedCertPath", &p.TrustedCertPath)
-	populate(objectMap, "useSystemTrustStore", &p.UseSystemTrustStore)
-	populate(objectMap, "username", &p.Username)
+	populateAny(objectMap, "port", p.Port)
+	populateAny(objectMap, "trustedCertPath", p.TrustedCertPath)
+	populateAny(objectMap, "useSystemTrustStore", p.UseSystemTrustStore)
+	populateAny(objectMap, "username", p.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -35310,8 +35310,8 @@ func (p PhoenixObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", p.Folder)
 	populate(objectMap, "linkedServiceName", p.LinkedServiceName)
 	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "schema", &p.Schema)
-	populate(objectMap, "structure", &p.Structure)
+	populateAny(objectMap, "schema", p.Schema)
+	populateAny(objectMap, "structure", p.Structure)
 	objectMap["type"] = "PhoenixObject"
 	populate(objectMap, "typeProperties", p.TypeProperties)
 	if p.AdditionalProperties != nil {
@@ -35379,13 +35379,13 @@ func (p *PhoenixObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PhoenixSource.
 func (p PhoenixSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &p.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &p.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &p.MaxConcurrentConnections)
-	populate(objectMap, "query", &p.Query)
-	populate(objectMap, "queryTimeout", &p.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &p.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &p.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", p.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", p.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", p.MaxConcurrentConnections)
+	populateAny(objectMap, "query", p.Query)
+	populateAny(objectMap, "queryTimeout", p.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", p.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", p.SourceRetryWait)
 	objectMap["type"] = "PhoenixSource"
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
@@ -35508,7 +35508,7 @@ func (p *Pipeline) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PipelineElapsedTimeMetricPolicy.
 func (p PipelineElapsedTimeMetricPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "duration", &p.Duration)
+	populateAny(objectMap, "duration", p.Duration)
 	return json.Marshal(objectMap)
 }
 
@@ -35919,10 +35919,10 @@ func (p *PipelineRunsQueryResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PolybaseSettings.
 func (p PolybaseSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "rejectSampleValue", &p.RejectSampleValue)
+	populateAny(objectMap, "rejectSampleValue", p.RejectSampleValue)
 	populate(objectMap, "rejectType", p.RejectType)
-	populate(objectMap, "rejectValue", &p.RejectValue)
-	populate(objectMap, "useTypeDefault", &p.UseTypeDefault)
+	populateAny(objectMap, "rejectValue", p.RejectValue)
+	populateAny(objectMap, "useTypeDefault", p.UseTypeDefault)
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
 			objectMap[key] = val
@@ -36035,8 +36035,8 @@ func (p *PostgreSQLLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PostgreSQLLinkedServiceTypeProperties.
 func (p PostgreSQLLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &p.ConnectionString)
-	populate(objectMap, "encryptedCredential", &p.EncryptedCredential)
+	populateAny(objectMap, "connectionString", p.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", p.EncryptedCredential)
 	populate(objectMap, "password", p.Password)
 	return json.Marshal(objectMap)
 }
@@ -36070,13 +36070,13 @@ func (p *PostgreSQLLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type PostgreSQLSource.
 func (p PostgreSQLSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &p.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &p.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &p.MaxConcurrentConnections)
-	populate(objectMap, "query", &p.Query)
-	populate(objectMap, "queryTimeout", &p.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &p.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &p.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", p.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", p.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", p.MaxConcurrentConnections)
+	populateAny(objectMap, "query", p.Query)
+	populateAny(objectMap, "queryTimeout", p.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", p.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", p.SourceRetryWait)
 	objectMap["type"] = "PostgreSqlSource"
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
@@ -36145,8 +36145,8 @@ func (p PostgreSQLTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", p.Folder)
 	populate(objectMap, "linkedServiceName", p.LinkedServiceName)
 	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "schema", &p.Schema)
-	populate(objectMap, "structure", &p.Structure)
+	populateAny(objectMap, "schema", p.Schema)
+	populateAny(objectMap, "structure", p.Structure)
 	objectMap["type"] = "PostgreSqlTable"
 	populate(objectMap, "typeProperties", p.TypeProperties)
 	if p.AdditionalProperties != nil {
@@ -36214,9 +36214,9 @@ func (p *PostgreSQLTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PostgreSQLTableDatasetTypeProperties.
 func (p PostgreSQLTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &p.Schema)
-	populate(objectMap, "table", &p.Table)
-	populate(objectMap, "tableName", &p.TableName)
+	populateAny(objectMap, "schema", p.Schema)
+	populateAny(objectMap, "table", p.Table)
+	populateAny(objectMap, "tableName", p.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -36421,9 +36421,9 @@ func (p *PowerQueryTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PrestoDatasetTypeProperties.
 func (p PrestoDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &p.Schema)
-	populate(objectMap, "table", &p.Table)
-	populate(objectMap, "tableName", &p.TableName)
+	populateAny(objectMap, "schema", p.Schema)
+	populateAny(objectMap, "table", p.Table)
+	populateAny(objectMap, "tableName", p.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -36518,20 +36518,20 @@ func (p *PrestoLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PrestoLinkedServiceTypeProperties.
 func (p PrestoLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "allowHostNameCNMismatch", &p.AllowHostNameCNMismatch)
-	populate(objectMap, "allowSelfSignedServerCert", &p.AllowSelfSignedServerCert)
+	populateAny(objectMap, "allowHostNameCNMismatch", p.AllowHostNameCNMismatch)
+	populateAny(objectMap, "allowSelfSignedServerCert", p.AllowSelfSignedServerCert)
 	populate(objectMap, "authenticationType", p.AuthenticationType)
-	populate(objectMap, "catalog", &p.Catalog)
-	populate(objectMap, "enableSsl", &p.EnableSSL)
-	populate(objectMap, "encryptedCredential", &p.EncryptedCredential)
-	populate(objectMap, "host", &p.Host)
+	populateAny(objectMap, "catalog", p.Catalog)
+	populateAny(objectMap, "enableSsl", p.EnableSSL)
+	populateAny(objectMap, "encryptedCredential", p.EncryptedCredential)
+	populateAny(objectMap, "host", p.Host)
 	populate(objectMap, "password", p.Password)
-	populate(objectMap, "port", &p.Port)
-	populate(objectMap, "serverVersion", &p.ServerVersion)
-	populate(objectMap, "timeZoneID", &p.TimeZoneID)
-	populate(objectMap, "trustedCertPath", &p.TrustedCertPath)
-	populate(objectMap, "useSystemTrustStore", &p.UseSystemTrustStore)
-	populate(objectMap, "username", &p.Username)
+	populateAny(objectMap, "port", p.Port)
+	populateAny(objectMap, "serverVersion", p.ServerVersion)
+	populateAny(objectMap, "timeZoneID", p.TimeZoneID)
+	populateAny(objectMap, "trustedCertPath", p.TrustedCertPath)
+	populateAny(objectMap, "useSystemTrustStore", p.UseSystemTrustStore)
+	populateAny(objectMap, "username", p.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -36602,8 +36602,8 @@ func (p PrestoObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", p.Folder)
 	populate(objectMap, "linkedServiceName", p.LinkedServiceName)
 	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "schema", &p.Schema)
-	populate(objectMap, "structure", &p.Structure)
+	populateAny(objectMap, "schema", p.Schema)
+	populateAny(objectMap, "structure", p.Structure)
 	objectMap["type"] = "PrestoObject"
 	populate(objectMap, "typeProperties", p.TypeProperties)
 	if p.AdditionalProperties != nil {
@@ -36671,13 +36671,13 @@ func (p *PrestoObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PrestoSource.
 func (p PrestoSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &p.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &p.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &p.MaxConcurrentConnections)
-	populate(objectMap, "query", &p.Query)
-	populate(objectMap, "queryTimeout", &p.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &p.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &p.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", p.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", p.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", p.MaxConcurrentConnections)
+	populateAny(objectMap, "query", p.Query)
+	populateAny(objectMap, "queryTimeout", p.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", p.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", p.SourceRetryWait)
 	objectMap["type"] = "PrestoSource"
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
@@ -37178,13 +37178,13 @@ func (q QuickBooksLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessToken", q.AccessToken)
 	populate(objectMap, "accessTokenSecret", q.AccessTokenSecret)
-	populate(objectMap, "companyId", &q.CompanyID)
-	populate(objectMap, "connectionProperties", &q.ConnectionProperties)
-	populate(objectMap, "consumerKey", &q.ConsumerKey)
+	populateAny(objectMap, "companyId", q.CompanyID)
+	populateAny(objectMap, "connectionProperties", q.ConnectionProperties)
+	populateAny(objectMap, "consumerKey", q.ConsumerKey)
 	populate(objectMap, "consumerSecret", q.ConsumerSecret)
-	populate(objectMap, "encryptedCredential", &q.EncryptedCredential)
-	populate(objectMap, "endpoint", &q.Endpoint)
-	populate(objectMap, "useEncryptedEndpoints", &q.UseEncryptedEndpoints)
+	populateAny(objectMap, "encryptedCredential", q.EncryptedCredential)
+	populateAny(objectMap, "endpoint", q.Endpoint)
+	populateAny(objectMap, "useEncryptedEndpoints", q.UseEncryptedEndpoints)
 	return json.Marshal(objectMap)
 }
 
@@ -37240,8 +37240,8 @@ func (q QuickBooksObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", q.Folder)
 	populate(objectMap, "linkedServiceName", q.LinkedServiceName)
 	populate(objectMap, "parameters", q.Parameters)
-	populate(objectMap, "schema", &q.Schema)
-	populate(objectMap, "structure", &q.Structure)
+	populateAny(objectMap, "schema", q.Schema)
+	populateAny(objectMap, "structure", q.Structure)
 	objectMap["type"] = "QuickBooksObject"
 	populate(objectMap, "typeProperties", q.TypeProperties)
 	if q.AdditionalProperties != nil {
@@ -37309,13 +37309,13 @@ func (q *QuickBooksObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type QuickBooksSource.
 func (q QuickBooksSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &q.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &q.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &q.MaxConcurrentConnections)
-	populate(objectMap, "query", &q.Query)
-	populate(objectMap, "queryTimeout", &q.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &q.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &q.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", q.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", q.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", q.MaxConcurrentConnections)
+	populateAny(objectMap, "query", q.Query)
+	populateAny(objectMap, "queryTimeout", q.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", q.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", q.SourceRetryWait)
 	objectMap["type"] = "QuickBooksSource"
 	if q.AdditionalProperties != nil {
 		for key, val := range q.AdditionalProperties {
@@ -37441,8 +37441,8 @@ func (q *QuickbaseLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type QuickbaseLinkedServiceTypeProperties.
 func (q QuickbaseLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "encryptedCredential", &q.EncryptedCredential)
-	populate(objectMap, "url", &q.URL)
+	populateAny(objectMap, "encryptedCredential", q.EncryptedCredential)
+	populateAny(objectMap, "url", q.URL)
 	populate(objectMap, "userToken", q.UserToken)
 	return json.Marshal(objectMap)
 }
@@ -37580,8 +37580,8 @@ func (r *RecurrenceScheduleOccurrence) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RedirectIncompatibleRowSettings.
 func (r RedirectIncompatibleRowSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "linkedServiceName", &r.LinkedServiceName)
-	populate(objectMap, "path", &r.Path)
+	populateAny(objectMap, "linkedServiceName", r.LinkedServiceName)
+	populateAny(objectMap, "path", r.Path)
 	if r.AdditionalProperties != nil {
 		for key, val := range r.AdditionalProperties {
 			objectMap[key] = val
@@ -37626,7 +37626,7 @@ func (r *RedirectIncompatibleRowSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RedshiftUnloadSettings.
 func (r RedshiftUnloadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "bucketName", &r.BucketName)
+	populateAny(objectMap, "bucketName", r.BucketName)
 	populate(objectMap, "s3LinkedServiceName", r.S3LinkedServiceName)
 	return json.Marshal(objectMap)
 }
@@ -37657,12 +37657,12 @@ func (r *RedshiftUnloadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RelationalSource.
 func (r RelationalSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &r.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &r.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &r.MaxConcurrentConnections)
-	populate(objectMap, "query", &r.Query)
-	populate(objectMap, "sourceRetryCount", &r.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &r.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", r.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", r.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", r.MaxConcurrentConnections)
+	populateAny(objectMap, "query", r.Query)
+	populateAny(objectMap, "sourceRetryCount", r.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", r.SourceRetryWait)
 	objectMap["type"] = "RelationalSource"
 	if r.AdditionalProperties != nil {
 		for key, val := range r.AdditionalProperties {
@@ -37728,8 +37728,8 @@ func (r RelationalTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", r.Folder)
 	populate(objectMap, "linkedServiceName", r.LinkedServiceName)
 	populate(objectMap, "parameters", r.Parameters)
-	populate(objectMap, "schema", &r.Schema)
-	populate(objectMap, "structure", &r.Structure)
+	populateAny(objectMap, "schema", r.Schema)
+	populateAny(objectMap, "structure", r.Structure)
 	objectMap["type"] = "RelationalTable"
 	populate(objectMap, "typeProperties", r.TypeProperties)
 	if r.AdditionalProperties != nil {
@@ -37797,7 +37797,7 @@ func (r *RelationalTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RelationalTableDatasetTypeProperties.
 func (r RelationalTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "tableName", &r.TableName)
+	populateAny(objectMap, "tableName", r.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -37917,7 +37917,7 @@ func (r *RerunTumblingWindowTrigger) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RerunTumblingWindowTriggerTypeProperties.
 func (r RerunTumblingWindowTriggerTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "parentTrigger", &r.ParentTrigger)
+	populateAny(objectMap, "parentTrigger", r.ParentTrigger)
 	populateTimeRFC3339(objectMap, "requestedEndTime", r.RequestedEndTime)
 	populateTimeRFC3339(objectMap, "requestedStartTime", r.RequestedStartTime)
 	populate(objectMap, "rerunConcurrency", r.RerunConcurrency)
@@ -38018,13 +38018,13 @@ func (r *ResponsysLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ResponsysLinkedServiceTypeProperties.
 func (r ResponsysLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clientId", &r.ClientID)
+	populateAny(objectMap, "clientId", r.ClientID)
 	populate(objectMap, "clientSecret", r.ClientSecret)
-	populate(objectMap, "encryptedCredential", &r.EncryptedCredential)
-	populate(objectMap, "endpoint", &r.Endpoint)
-	populate(objectMap, "useEncryptedEndpoints", &r.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &r.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &r.UsePeerVerification)
+	populateAny(objectMap, "encryptedCredential", r.EncryptedCredential)
+	populateAny(objectMap, "endpoint", r.Endpoint)
+	populateAny(objectMap, "useEncryptedEndpoints", r.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", r.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", r.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -38074,8 +38074,8 @@ func (r ResponsysObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", r.Folder)
 	populate(objectMap, "linkedServiceName", r.LinkedServiceName)
 	populate(objectMap, "parameters", r.Parameters)
-	populate(objectMap, "schema", &r.Schema)
-	populate(objectMap, "structure", &r.Structure)
+	populateAny(objectMap, "schema", r.Schema)
+	populateAny(objectMap, "structure", r.Structure)
 	objectMap["type"] = "ResponsysObject"
 	populate(objectMap, "typeProperties", r.TypeProperties)
 	if r.AdditionalProperties != nil {
@@ -38143,13 +38143,13 @@ func (r *ResponsysObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ResponsysSource.
 func (r ResponsysSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &r.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &r.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &r.MaxConcurrentConnections)
-	populate(objectMap, "query", &r.Query)
-	populate(objectMap, "queryTimeout", &r.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &r.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &r.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", r.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", r.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", r.MaxConcurrentConnections)
+	populateAny(objectMap, "query", r.Query)
+	populateAny(objectMap, "queryTimeout", r.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", r.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", r.SourceRetryWait)
 	objectMap["type"] = "ResponsysSource"
 	if r.AdditionalProperties != nil {
 		for key, val := range r.AdditionalProperties {
@@ -38218,8 +38218,8 @@ func (r RestResourceDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", r.Folder)
 	populate(objectMap, "linkedServiceName", r.LinkedServiceName)
 	populate(objectMap, "parameters", r.Parameters)
-	populate(objectMap, "schema", &r.Schema)
-	populate(objectMap, "structure", &r.Structure)
+	populateAny(objectMap, "schema", r.Schema)
+	populateAny(objectMap, "structure", r.Structure)
 	objectMap["type"] = "RestResource"
 	populate(objectMap, "typeProperties", r.TypeProperties)
 	if r.AdditionalProperties != nil {
@@ -38287,11 +38287,11 @@ func (r *RestResourceDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RestResourceDatasetTypeProperties.
 func (r RestResourceDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalHeaders", &r.AdditionalHeaders)
-	populate(objectMap, "paginationRules", &r.PaginationRules)
-	populate(objectMap, "relativeUrl", &r.RelativeURL)
-	populate(objectMap, "requestBody", &r.RequestBody)
-	populate(objectMap, "requestMethod", &r.RequestMethod)
+	populateAny(objectMap, "additionalHeaders", r.AdditionalHeaders)
+	populateAny(objectMap, "paginationRules", r.PaginationRules)
+	populateAny(objectMap, "relativeUrl", r.RelativeURL)
+	populateAny(objectMap, "requestBody", r.RequestBody)
+	populateAny(objectMap, "requestMethod", r.RequestMethod)
 	return json.Marshal(objectMap)
 }
 
@@ -38392,24 +38392,24 @@ func (r *RestServiceLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RestServiceLinkedServiceTypeProperties.
 func (r RestServiceLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "aadResourceId", &r.AADResourceID)
-	populate(objectMap, "authHeaders", &r.AuthHeaders)
+	populateAny(objectMap, "aadResourceId", r.AADResourceID)
+	populateAny(objectMap, "authHeaders", r.AuthHeaders)
 	populate(objectMap, "authenticationType", r.AuthenticationType)
-	populate(objectMap, "azureCloudType", &r.AzureCloudType)
-	populate(objectMap, "clientId", &r.ClientID)
+	populateAny(objectMap, "azureCloudType", r.AzureCloudType)
+	populateAny(objectMap, "clientId", r.ClientID)
 	populate(objectMap, "clientSecret", r.ClientSecret)
 	populate(objectMap, "credential", r.Credential)
-	populate(objectMap, "enableServerCertificateValidation", &r.EnableServerCertificateValidation)
-	populate(objectMap, "encryptedCredential", &r.EncryptedCredential)
+	populateAny(objectMap, "enableServerCertificateValidation", r.EnableServerCertificateValidation)
+	populateAny(objectMap, "encryptedCredential", r.EncryptedCredential)
 	populate(objectMap, "password", r.Password)
-	populate(objectMap, "resource", &r.Resource)
-	populate(objectMap, "scope", &r.Scope)
-	populate(objectMap, "servicePrincipalId", &r.ServicePrincipalID)
+	populateAny(objectMap, "resource", r.Resource)
+	populateAny(objectMap, "scope", r.Scope)
+	populateAny(objectMap, "servicePrincipalId", r.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", r.ServicePrincipalKey)
-	populate(objectMap, "tenant", &r.Tenant)
-	populate(objectMap, "tokenEndpoint", &r.TokenEndpoint)
-	populate(objectMap, "url", &r.URL)
-	populate(objectMap, "userName", &r.UserName)
+	populateAny(objectMap, "tenant", r.Tenant)
+	populateAny(objectMap, "tokenEndpoint", r.TokenEndpoint)
+	populateAny(objectMap, "url", r.URL)
+	populateAny(objectMap, "userName", r.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -38487,18 +38487,18 @@ func (r *RestServiceLinkedServiceTypeProperties) UnmarshalJSON(data []byte) erro
 // MarshalJSON implements the json.Marshaller interface for type RestSink.
 func (r RestSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalHeaders", &r.AdditionalHeaders)
-	populate(objectMap, "disableMetricsCollection", &r.DisableMetricsCollection)
-	populate(objectMap, "httpCompressionType", &r.HTTPCompressionType)
-	populate(objectMap, "httpRequestTimeout", &r.HTTPRequestTimeout)
-	populate(objectMap, "maxConcurrentConnections", &r.MaxConcurrentConnections)
-	populate(objectMap, "requestInterval", &r.RequestInterval)
-	populate(objectMap, "requestMethod", &r.RequestMethod)
-	populate(objectMap, "sinkRetryCount", &r.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &r.SinkRetryWait)
+	populateAny(objectMap, "additionalHeaders", r.AdditionalHeaders)
+	populateAny(objectMap, "disableMetricsCollection", r.DisableMetricsCollection)
+	populateAny(objectMap, "httpCompressionType", r.HTTPCompressionType)
+	populateAny(objectMap, "httpRequestTimeout", r.HTTPRequestTimeout)
+	populateAny(objectMap, "maxConcurrentConnections", r.MaxConcurrentConnections)
+	populateAny(objectMap, "requestInterval", r.RequestInterval)
+	populateAny(objectMap, "requestMethod", r.RequestMethod)
+	populateAny(objectMap, "sinkRetryCount", r.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", r.SinkRetryWait)
 	objectMap["type"] = "RestSink"
-	populate(objectMap, "writeBatchSize", &r.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &r.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", r.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", r.WriteBatchTimeout)
 	if r.AdditionalProperties != nil {
 		for key, val := range r.AdditionalProperties {
 			objectMap[key] = val
@@ -38573,17 +38573,17 @@ func (r *RestSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RestSource.
 func (r RestSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &r.AdditionalColumns)
-	populate(objectMap, "additionalHeaders", &r.AdditionalHeaders)
-	populate(objectMap, "disableMetricsCollection", &r.DisableMetricsCollection)
-	populate(objectMap, "httpRequestTimeout", &r.HTTPRequestTimeout)
-	populate(objectMap, "maxConcurrentConnections", &r.MaxConcurrentConnections)
-	populate(objectMap, "paginationRules", &r.PaginationRules)
-	populate(objectMap, "requestBody", &r.RequestBody)
-	populate(objectMap, "requestInterval", &r.RequestInterval)
-	populate(objectMap, "requestMethod", &r.RequestMethod)
-	populate(objectMap, "sourceRetryCount", &r.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &r.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", r.AdditionalColumns)
+	populateAny(objectMap, "additionalHeaders", r.AdditionalHeaders)
+	populateAny(objectMap, "disableMetricsCollection", r.DisableMetricsCollection)
+	populateAny(objectMap, "httpRequestTimeout", r.HTTPRequestTimeout)
+	populateAny(objectMap, "maxConcurrentConnections", r.MaxConcurrentConnections)
+	populateAny(objectMap, "paginationRules", r.PaginationRules)
+	populateAny(objectMap, "requestBody", r.RequestBody)
+	populateAny(objectMap, "requestInterval", r.RequestInterval)
+	populateAny(objectMap, "requestMethod", r.RequestMethod)
+	populateAny(objectMap, "sourceRetryCount", r.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", r.SourceRetryWait)
 	objectMap["type"] = "RestSource"
 	if r.AdditionalProperties != nil {
 		for key, val := range r.AdditionalProperties {
@@ -38659,7 +38659,7 @@ func (r *RestSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RetryPolicy.
 func (r RetryPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "count", &r.Count)
+	populateAny(objectMap, "count", r.Count)
 	populate(objectMap, "intervalInSeconds", r.IntervalInSeconds)
 	return json.Marshal(objectMap)
 }
@@ -38801,7 +38801,7 @@ func (s SQLAlwaysEncryptedProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alwaysEncryptedAkvAuthType", s.AlwaysEncryptedAkvAuthType)
 	populate(objectMap, "credential", s.Credential)
-	populate(objectMap, "servicePrincipalId", &s.ServicePrincipalID)
+	populateAny(objectMap, "servicePrincipalId", s.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", s.ServicePrincipalKey)
 	return json.Marshal(objectMap)
 }
@@ -38838,22 +38838,22 @@ func (s *SQLAlwaysEncryptedProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLDWSink.
 func (s SQLDWSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "allowCopyCommand", &s.AllowCopyCommand)
-	populate(objectMap, "allowPolyBase", &s.AllowPolyBase)
+	populateAny(objectMap, "allowCopyCommand", s.AllowCopyCommand)
+	populateAny(objectMap, "allowPolyBase", s.AllowPolyBase)
 	populate(objectMap, "copyCommandSettings", s.CopyCommandSettings)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
 	populate(objectMap, "polyBaseSettings", s.PolyBaseSettings)
-	populate(objectMap, "preCopyScript", &s.PreCopyScript)
-	populate(objectMap, "sqlWriterUseTableLock", &s.SQLWriterUseTableLock)
-	populate(objectMap, "sinkRetryCount", &s.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &s.SinkRetryWait)
-	populate(objectMap, "tableOption", &s.TableOption)
+	populateAny(objectMap, "preCopyScript", s.PreCopyScript)
+	populateAny(objectMap, "sqlWriterUseTableLock", s.SQLWriterUseTableLock)
+	populateAny(objectMap, "sinkRetryCount", s.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", s.SinkRetryWait)
+	populateAny(objectMap, "tableOption", s.TableOption)
 	objectMap["type"] = "SqlDWSink"
 	populate(objectMap, "upsertSettings", s.UpsertSettings)
-	populate(objectMap, "writeBatchSize", &s.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &s.WriteBatchTimeout)
-	populate(objectMap, "writeBehavior", &s.WriteBehavior)
+	populateAny(objectMap, "writeBatchSize", s.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", s.WriteBatchTimeout)
+	populateAny(objectMap, "writeBehavior", s.WriteBehavior)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -38940,17 +38940,17 @@ func (s *SQLDWSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLDWSource.
 func (s SQLDWSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "partitionOption", &s.PartitionOption)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionOption", s.PartitionOption)
 	populate(objectMap, "partitionSettings", s.PartitionSettings)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sqlReaderQuery", &s.SQLReaderQuery)
-	populate(objectMap, "sqlReaderStoredProcedureName", &s.SQLReaderStoredProcedureName)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
-	populate(objectMap, "storedProcedureParameters", &s.StoredProcedureParameters)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sqlReaderQuery", s.SQLReaderQuery)
+	populateAny(objectMap, "sqlReaderStoredProcedureName", s.SQLReaderStoredProcedureName)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
+	populateAny(objectMap, "storedProcedureParameters", s.StoredProcedureParameters)
 	objectMap["type"] = "SqlDWSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -39026,8 +39026,8 @@ func (s *SQLDWSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLDWUpsertSettings.
 func (s SQLDWUpsertSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "interimSchemaName", &s.InterimSchemaName)
-	populate(objectMap, "keys", &s.Keys)
+	populateAny(objectMap, "interimSchemaName", s.InterimSchemaName)
+	populateAny(objectMap, "keys", s.Keys)
 	return json.Marshal(objectMap)
 }
 
@@ -39057,22 +39057,22 @@ func (s *SQLDWUpsertSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLMISink.
 func (s SQLMISink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &s.PreCopyScript)
-	populate(objectMap, "sqlWriterStoredProcedureName", &s.SQLWriterStoredProcedureName)
-	populate(objectMap, "sqlWriterTableType", &s.SQLWriterTableType)
-	populate(objectMap, "sqlWriterUseTableLock", &s.SQLWriterUseTableLock)
-	populate(objectMap, "sinkRetryCount", &s.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &s.SinkRetryWait)
-	populate(objectMap, "storedProcedureParameters", &s.StoredProcedureParameters)
-	populate(objectMap, "storedProcedureTableTypeParameterName", &s.StoredProcedureTableTypeParameterName)
-	populate(objectMap, "tableOption", &s.TableOption)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", s.PreCopyScript)
+	populateAny(objectMap, "sqlWriterStoredProcedureName", s.SQLWriterStoredProcedureName)
+	populateAny(objectMap, "sqlWriterTableType", s.SQLWriterTableType)
+	populateAny(objectMap, "sqlWriterUseTableLock", s.SQLWriterUseTableLock)
+	populateAny(objectMap, "sinkRetryCount", s.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", s.SinkRetryWait)
+	populateAny(objectMap, "storedProcedureParameters", s.StoredProcedureParameters)
+	populateAny(objectMap, "storedProcedureTableTypeParameterName", s.StoredProcedureTableTypeParameterName)
+	populateAny(objectMap, "tableOption", s.TableOption)
 	objectMap["type"] = "SqlMISink"
 	populate(objectMap, "upsertSettings", s.UpsertSettings)
-	populate(objectMap, "writeBatchSize", &s.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &s.WriteBatchTimeout)
-	populate(objectMap, "writeBehavior", &s.WriteBehavior)
+	populateAny(objectMap, "writeBatchSize", s.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", s.WriteBatchTimeout)
+	populateAny(objectMap, "writeBehavior", s.WriteBehavior)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -39159,18 +39159,18 @@ func (s *SQLMISink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLMISource.
 func (s SQLMISource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "partitionOption", &s.PartitionOption)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionOption", s.PartitionOption)
 	populate(objectMap, "partitionSettings", s.PartitionSettings)
-	populate(objectMap, "produceAdditionalTypes", &s.ProduceAdditionalTypes)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sqlReaderQuery", &s.SQLReaderQuery)
-	populate(objectMap, "sqlReaderStoredProcedureName", &s.SQLReaderStoredProcedureName)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
-	populate(objectMap, "storedProcedureParameters", &s.StoredProcedureParameters)
+	populateAny(objectMap, "produceAdditionalTypes", s.ProduceAdditionalTypes)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sqlReaderQuery", s.SQLReaderQuery)
+	populateAny(objectMap, "sqlReaderStoredProcedureName", s.SQLReaderStoredProcedureName)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
+	populateAny(objectMap, "storedProcedureParameters", s.StoredProcedureParameters)
 	objectMap["type"] = "SqlMISource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -39249,9 +39249,9 @@ func (s *SQLMISource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLPartitionSettings.
 func (s SQLPartitionSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "partitionColumnName", &s.PartitionColumnName)
-	populate(objectMap, "partitionLowerBound", &s.PartitionLowerBound)
-	populate(objectMap, "partitionUpperBound", &s.PartitionUpperBound)
+	populateAny(objectMap, "partitionColumnName", s.PartitionColumnName)
+	populateAny(objectMap, "partitionLowerBound", s.PartitionLowerBound)
+	populateAny(objectMap, "partitionUpperBound", s.PartitionUpperBound)
 	return json.Marshal(objectMap)
 }
 
@@ -39347,10 +39347,10 @@ func (s *SQLServerLinkedService) UnmarshalJSON(data []byte) error {
 func (s SQLServerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alwaysEncryptedSettings", s.AlwaysEncryptedSettings)
-	populate(objectMap, "connectionString", &s.ConnectionString)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
+	populateAny(objectMap, "connectionString", s.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "userName", &s.UserName)
+	populateAny(objectMap, "userName", s.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -39389,22 +39389,22 @@ func (s *SQLServerLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type SQLServerSink.
 func (s SQLServerSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &s.PreCopyScript)
-	populate(objectMap, "sqlWriterStoredProcedureName", &s.SQLWriterStoredProcedureName)
-	populate(objectMap, "sqlWriterTableType", &s.SQLWriterTableType)
-	populate(objectMap, "sqlWriterUseTableLock", &s.SQLWriterUseTableLock)
-	populate(objectMap, "sinkRetryCount", &s.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &s.SinkRetryWait)
-	populate(objectMap, "storedProcedureParameters", &s.StoredProcedureParameters)
-	populate(objectMap, "storedProcedureTableTypeParameterName", &s.StoredProcedureTableTypeParameterName)
-	populate(objectMap, "tableOption", &s.TableOption)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", s.PreCopyScript)
+	populateAny(objectMap, "sqlWriterStoredProcedureName", s.SQLWriterStoredProcedureName)
+	populateAny(objectMap, "sqlWriterTableType", s.SQLWriterTableType)
+	populateAny(objectMap, "sqlWriterUseTableLock", s.SQLWriterUseTableLock)
+	populateAny(objectMap, "sinkRetryCount", s.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", s.SinkRetryWait)
+	populateAny(objectMap, "storedProcedureParameters", s.StoredProcedureParameters)
+	populateAny(objectMap, "storedProcedureTableTypeParameterName", s.StoredProcedureTableTypeParameterName)
+	populateAny(objectMap, "tableOption", s.TableOption)
 	objectMap["type"] = "SqlServerSink"
 	populate(objectMap, "upsertSettings", s.UpsertSettings)
-	populate(objectMap, "writeBatchSize", &s.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &s.WriteBatchTimeout)
-	populate(objectMap, "writeBehavior", &s.WriteBehavior)
+	populateAny(objectMap, "writeBatchSize", s.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", s.WriteBatchTimeout)
+	populateAny(objectMap, "writeBehavior", s.WriteBehavior)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -39491,18 +39491,18 @@ func (s *SQLServerSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLServerSource.
 func (s SQLServerSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "partitionOption", &s.PartitionOption)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionOption", s.PartitionOption)
 	populate(objectMap, "partitionSettings", s.PartitionSettings)
-	populate(objectMap, "produceAdditionalTypes", &s.ProduceAdditionalTypes)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sqlReaderQuery", &s.SQLReaderQuery)
-	populate(objectMap, "sqlReaderStoredProcedureName", &s.SQLReaderStoredProcedureName)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
-	populate(objectMap, "storedProcedureParameters", &s.StoredProcedureParameters)
+	populateAny(objectMap, "produceAdditionalTypes", s.ProduceAdditionalTypes)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sqlReaderQuery", s.SQLReaderQuery)
+	populateAny(objectMap, "sqlReaderStoredProcedureName", s.SQLReaderStoredProcedureName)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
+	populateAny(objectMap, "storedProcedureParameters", s.StoredProcedureParameters)
 	objectMap["type"] = "SqlServerSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -39651,8 +39651,8 @@ func (s *SQLServerStoredProcedureActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLServerStoredProcedureActivityTypeProperties.
 func (s SQLServerStoredProcedureActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "storedProcedureName", &s.StoredProcedureName)
-	populate(objectMap, "storedProcedureParameters", &s.StoredProcedureParameters)
+	populateAny(objectMap, "storedProcedureName", s.StoredProcedureName)
+	populateAny(objectMap, "storedProcedureParameters", s.StoredProcedureParameters)
 	return json.Marshal(objectMap)
 }
 
@@ -39687,8 +39687,8 @@ func (s SQLServerTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SqlServerTable"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -39756,9 +39756,9 @@ func (s *SQLServerTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLServerTableDatasetTypeProperties.
 func (s SQLServerTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "table", &s.Table)
-	populate(objectMap, "tableName", &s.TableName)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "table", s.Table)
+	populateAny(objectMap, "tableName", s.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -39791,22 +39791,22 @@ func (s *SQLServerTableDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLSink.
 func (s SQLSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &s.PreCopyScript)
-	populate(objectMap, "sqlWriterStoredProcedureName", &s.SQLWriterStoredProcedureName)
-	populate(objectMap, "sqlWriterTableType", &s.SQLWriterTableType)
-	populate(objectMap, "sqlWriterUseTableLock", &s.SQLWriterUseTableLock)
-	populate(objectMap, "sinkRetryCount", &s.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &s.SinkRetryWait)
-	populate(objectMap, "storedProcedureParameters", &s.StoredProcedureParameters)
-	populate(objectMap, "storedProcedureTableTypeParameterName", &s.StoredProcedureTableTypeParameterName)
-	populate(objectMap, "tableOption", &s.TableOption)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", s.PreCopyScript)
+	populateAny(objectMap, "sqlWriterStoredProcedureName", s.SQLWriterStoredProcedureName)
+	populateAny(objectMap, "sqlWriterTableType", s.SQLWriterTableType)
+	populateAny(objectMap, "sqlWriterUseTableLock", s.SQLWriterUseTableLock)
+	populateAny(objectMap, "sinkRetryCount", s.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", s.SinkRetryWait)
+	populateAny(objectMap, "storedProcedureParameters", s.StoredProcedureParameters)
+	populateAny(objectMap, "storedProcedureTableTypeParameterName", s.StoredProcedureTableTypeParameterName)
+	populateAny(objectMap, "tableOption", s.TableOption)
 	objectMap["type"] = "SqlSink"
 	populate(objectMap, "upsertSettings", s.UpsertSettings)
-	populate(objectMap, "writeBatchSize", &s.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &s.WriteBatchTimeout)
-	populate(objectMap, "writeBehavior", &s.WriteBehavior)
+	populateAny(objectMap, "writeBatchSize", s.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", s.WriteBatchTimeout)
+	populateAny(objectMap, "writeBehavior", s.WriteBehavior)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -39893,18 +39893,18 @@ func (s *SQLSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLSource.
 func (s SQLSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "isolationLevel", &s.IsolationLevel)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "partitionOption", &s.PartitionOption)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "isolationLevel", s.IsolationLevel)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionOption", s.PartitionOption)
 	populate(objectMap, "partitionSettings", s.PartitionSettings)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sqlReaderQuery", &s.SQLReaderQuery)
-	populate(objectMap, "sqlReaderStoredProcedureName", &s.SQLReaderStoredProcedureName)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
-	populate(objectMap, "storedProcedureParameters", &s.StoredProcedureParameters)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sqlReaderQuery", s.SQLReaderQuery)
+	populateAny(objectMap, "sqlReaderStoredProcedureName", s.SQLReaderStoredProcedureName)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
+	populateAny(objectMap, "storedProcedureParameters", s.StoredProcedureParameters)
 	objectMap["type"] = "SqlSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -39983,9 +39983,9 @@ func (s *SQLSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SQLUpsertSettings.
 func (s SQLUpsertSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "interimSchemaName", &s.InterimSchemaName)
-	populate(objectMap, "keys", &s.Keys)
-	populate(objectMap, "useTempDB", &s.UseTempDB)
+	populateAny(objectMap, "interimSchemaName", s.InterimSchemaName)
+	populateAny(objectMap, "keys", s.Keys)
+	populateAny(objectMap, "useTempDB", s.UseTempDB)
 	return json.Marshal(objectMap)
 }
 
@@ -40018,9 +40018,9 @@ func (s *SQLUpsertSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SSISAccessCredential.
 func (s SSISAccessCredential) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "domain", &s.Domain)
+	populateAny(objectMap, "domain", s.Domain)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "userName", &s.UserName)
+	populateAny(objectMap, "userName", s.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -40053,10 +40053,10 @@ func (s *SSISAccessCredential) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SSISChildPackage.
 func (s SSISChildPackage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "packageContent", &s.PackageContent)
+	populateAny(objectMap, "packageContent", s.PackageContent)
 	populate(objectMap, "packageLastModifiedDate", s.PackageLastModifiedDate)
 	populate(objectMap, "packageName", s.PackageName)
-	populate(objectMap, "packagePath", &s.PackagePath)
+	populateAny(objectMap, "packagePath", s.PackagePath)
 	return json.Marshal(objectMap)
 }
 
@@ -40092,9 +40092,9 @@ func (s *SSISChildPackage) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SSISExecutionCredential.
 func (s SSISExecutionCredential) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "domain", &s.Domain)
+	populateAny(objectMap, "domain", s.Domain)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "userName", &s.UserName)
+	populateAny(objectMap, "userName", s.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -40127,7 +40127,7 @@ func (s *SSISExecutionCredential) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SSISExecutionParameter.
 func (s SSISExecutionParameter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "value", &s.Value)
+	populateAny(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -40154,7 +40154,7 @@ func (s *SSISExecutionParameter) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SSISLogLocation.
 func (s SSISLogLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "logPath", &s.LogPath)
+	populateAny(objectMap, "logPath", s.LogPath)
 	populate(objectMap, "type", s.Type)
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	return json.Marshal(objectMap)
@@ -40190,7 +40190,7 @@ func (s *SSISLogLocation) UnmarshalJSON(data []byte) error {
 func (s SSISLogLocationTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessCredential", s.AccessCredential)
-	populate(objectMap, "logRefreshInterval", &s.LogRefreshInterval)
+	populateAny(objectMap, "logRefreshInterval", s.LogRefreshInterval)
 	return json.Marshal(objectMap)
 }
 
@@ -40220,7 +40220,7 @@ func (s *SSISLogLocationTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SSISPackageLocation.
 func (s SSISPackageLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "packagePath", &s.PackagePath)
+	populateAny(objectMap, "packagePath", s.PackagePath)
 	populate(objectMap, "type", s.Type)
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	return json.Marshal(objectMap)
@@ -40258,8 +40258,8 @@ func (s SSISPackageLocationTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "accessCredential", s.AccessCredential)
 	populate(objectMap, "childPackages", s.ChildPackages)
 	populate(objectMap, "configurationAccessCredential", s.ConfigurationAccessCredential)
-	populate(objectMap, "configurationPath", &s.ConfigurationPath)
-	populate(objectMap, "packageContent", &s.PackageContent)
+	populateAny(objectMap, "configurationPath", s.ConfigurationPath)
+	populateAny(objectMap, "packageContent", s.PackageContent)
 	populate(objectMap, "packageLastModifiedDate", s.PackageLastModifiedDate)
 	populate(objectMap, "packageName", s.PackageName)
 	populate(objectMap, "packagePassword", s.PackagePassword)
@@ -40311,7 +40311,7 @@ func (s *SSISPackageLocationTypeProperties) UnmarshalJSON(data []byte) error {
 func (s SSISPropertyOverride) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "isSensitive", s.IsSensitive)
-	populate(objectMap, "value", &s.Value)
+	populateAny(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -40403,12 +40403,12 @@ func (s *SalesforceLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SalesforceLinkedServiceTypeProperties.
 func (s SalesforceLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "apiVersion", &s.APIVersion)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "environmentUrl", &s.EnvironmentURL)
+	populateAny(objectMap, "apiVersion", s.APIVersion)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "environmentUrl", s.EnvironmentURL)
 	populate(objectMap, "password", s.Password)
 	populate(objectMap, "securityToken", s.SecurityToken)
-	populate(objectMap, "username", &s.Username)
+	populateAny(objectMap, "username", s.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -40512,13 +40512,13 @@ func (s *SalesforceMarketingCloudLinkedService) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type SalesforceMarketingCloudLinkedServiceTypeProperties.
 func (s SalesforceMarketingCloudLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clientId", &s.ClientID)
+	populateAny(objectMap, "clientId", s.ClientID)
 	populate(objectMap, "clientSecret", s.ClientSecret)
-	populate(objectMap, "connectionProperties", &s.ConnectionProperties)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "useEncryptedEndpoints", &s.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &s.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &s.UsePeerVerification)
+	populateAny(objectMap, "connectionProperties", s.ConnectionProperties)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "useEncryptedEndpoints", s.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", s.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", s.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -40568,8 +40568,8 @@ func (s SalesforceMarketingCloudObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SalesforceMarketingCloudObject"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -40637,13 +40637,13 @@ func (s *SalesforceMarketingCloudObjectDataset) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type SalesforceMarketingCloudSource.
 func (s SalesforceMarketingCloudSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SalesforceMarketingCloudSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -40712,8 +40712,8 @@ func (s SalesforceObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SalesforceObject"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -40781,7 +40781,7 @@ func (s *SalesforceObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SalesforceObjectDatasetTypeProperties.
 func (s SalesforceObjectDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "objectApiName", &s.ObjectAPIName)
+	populateAny(objectMap, "objectApiName", s.ObjectAPIName)
 	return json.Marshal(objectMap)
 }
 
@@ -40870,13 +40870,13 @@ func (s *SalesforceServiceCloudLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SalesforceServiceCloudLinkedServiceTypeProperties.
 func (s SalesforceServiceCloudLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "apiVersion", &s.APIVersion)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "environmentUrl", &s.EnvironmentURL)
-	populate(objectMap, "extendedProperties", &s.ExtendedProperties)
+	populateAny(objectMap, "apiVersion", s.APIVersion)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "environmentUrl", s.EnvironmentURL)
+	populateAny(objectMap, "extendedProperties", s.ExtendedProperties)
 	populate(objectMap, "password", s.Password)
 	populate(objectMap, "securityToken", s.SecurityToken)
-	populate(objectMap, "username", &s.Username)
+	populateAny(objectMap, "username", s.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -40926,8 +40926,8 @@ func (s SalesforceServiceCloudObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SalesforceServiceCloudObject"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -40995,7 +40995,7 @@ func (s *SalesforceServiceCloudObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SalesforceServiceCloudObjectDatasetTypeProperties.
 func (s SalesforceServiceCloudObjectDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "objectApiName", &s.ObjectAPIName)
+	populateAny(objectMap, "objectApiName", s.ObjectAPIName)
 	return json.Marshal(objectMap)
 }
 
@@ -41022,15 +41022,15 @@ func (s *SalesforceServiceCloudObjectDatasetTypeProperties) UnmarshalJSON(data [
 // MarshalJSON implements the json.Marshaller interface for type SalesforceServiceCloudSink.
 func (s SalesforceServiceCloudSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "externalIdFieldName", &s.ExternalIDFieldName)
-	populate(objectMap, "ignoreNullValues", &s.IgnoreNullValues)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &s.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &s.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "externalIdFieldName", s.ExternalIDFieldName)
+	populateAny(objectMap, "ignoreNullValues", s.IgnoreNullValues)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", s.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", s.SinkRetryWait)
 	objectMap["type"] = "SalesforceServiceCloudSink"
-	populate(objectMap, "writeBatchSize", &s.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &s.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", s.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", s.WriteBatchTimeout)
 	populate(objectMap, "writeBehavior", s.WriteBehavior)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -41100,13 +41100,13 @@ func (s *SalesforceServiceCloudSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SalesforceServiceCloudSource.
 func (s SalesforceServiceCloudSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
 	populate(objectMap, "readBehavior", s.ReadBehavior)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SalesforceServiceCloudSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -41170,15 +41170,15 @@ func (s *SalesforceServiceCloudSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SalesforceSink.
 func (s SalesforceSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "externalIdFieldName", &s.ExternalIDFieldName)
-	populate(objectMap, "ignoreNullValues", &s.IgnoreNullValues)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &s.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &s.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "externalIdFieldName", s.ExternalIDFieldName)
+	populateAny(objectMap, "ignoreNullValues", s.IgnoreNullValues)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", s.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", s.SinkRetryWait)
 	objectMap["type"] = "SalesforceSink"
-	populate(objectMap, "writeBatchSize", &s.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &s.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", s.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", s.WriteBatchTimeout)
 	populate(objectMap, "writeBehavior", s.WriteBehavior)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -41248,14 +41248,14 @@ func (s *SalesforceSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SalesforceSource.
 func (s SalesforceSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
 	populate(objectMap, "readBehavior", s.ReadBehavior)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SalesforceSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -41384,12 +41384,12 @@ func (s *SapBWLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapBWLinkedServiceTypeProperties.
 func (s SapBWLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clientId", &s.ClientID)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
+	populateAny(objectMap, "clientId", s.ClientID)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "server", &s.Server)
-	populate(objectMap, "systemNumber", &s.SystemNumber)
-	populate(objectMap, "userName", &s.UserName)
+	populateAny(objectMap, "server", s.Server)
+	populateAny(objectMap, "systemNumber", s.SystemNumber)
+	populateAny(objectMap, "userName", s.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -41436,8 +41436,8 @@ func (s SapBwCubeDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SapBwCube"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -41501,13 +41501,13 @@ func (s *SapBwCubeDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapBwSource.
 func (s SapBwSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SapBwSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -41633,10 +41633,10 @@ func (s *SapCloudForCustomerLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapCloudForCustomerLinkedServiceTypeProperties.
 func (s SapCloudForCustomerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "url", &s.URL)
-	populate(objectMap, "username", &s.Username)
+	populateAny(objectMap, "url", s.URL)
+	populateAny(objectMap, "username", s.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -41677,8 +41677,8 @@ func (s SapCloudForCustomerResourceDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SapCloudForCustomerResource"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -41746,7 +41746,7 @@ func (s *SapCloudForCustomerResourceDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapCloudForCustomerResourceDatasetTypeProperties.
 func (s SapCloudForCustomerResourceDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "path", &s.Path)
+	populateAny(objectMap, "path", s.Path)
 	return json.Marshal(objectMap)
 }
 
@@ -41773,14 +41773,14 @@ func (s *SapCloudForCustomerResourceDatasetTypeProperties) UnmarshalJSON(data []
 // MarshalJSON implements the json.Marshaller interface for type SapCloudForCustomerSink.
 func (s SapCloudForCustomerSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "httpRequestTimeout", &s.HTTPRequestTimeout)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "sinkRetryCount", &s.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &s.SinkRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "httpRequestTimeout", s.HTTPRequestTimeout)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "sinkRetryCount", s.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", s.SinkRetryWait)
 	objectMap["type"] = "SapCloudForCustomerSink"
-	populate(objectMap, "writeBatchSize", &s.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &s.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", s.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", s.WriteBatchTimeout)
 	populate(objectMap, "writeBehavior", s.WriteBehavior)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -41847,14 +41847,14 @@ func (s *SapCloudForCustomerSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapCloudForCustomerSource.
 func (s SapCloudForCustomerSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "httpRequestTimeout", &s.HTTPRequestTimeout)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "httpRequestTimeout", s.HTTPRequestTimeout)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SapCloudForCustomerSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -42027,8 +42027,8 @@ func (s SapEccResourceDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SapEccResource"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -42096,7 +42096,7 @@ func (s *SapEccResourceDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapEccResourceDatasetTypeProperties.
 func (s SapEccResourceDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "path", &s.Path)
+	populateAny(objectMap, "path", s.Path)
 	return json.Marshal(objectMap)
 }
 
@@ -42123,14 +42123,14 @@ func (s *SapEccResourceDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapEccSource.
 func (s SapEccSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "httpRequestTimeout", &s.HTTPRequestTimeout)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "httpRequestTimeout", s.HTTPRequestTimeout)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SapEccSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -42260,11 +42260,11 @@ func (s *SapHanaLinkedService) UnmarshalJSON(data []byte) error {
 func (s SapHanaLinkedServiceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authenticationType", s.AuthenticationType)
-	populate(objectMap, "connectionString", &s.ConnectionString)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
+	populateAny(objectMap, "connectionString", s.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "server", &s.Server)
-	populate(objectMap, "userName", &s.UserName)
+	populateAny(objectMap, "server", s.Server)
+	populateAny(objectMap, "userName", s.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -42306,7 +42306,7 @@ func (s *SapHanaLinkedServiceProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapHanaPartitionSettings.
 func (s SapHanaPartitionSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "partitionColumnName", &s.PartitionColumnName)
+	populateAny(objectMap, "partitionColumnName", s.PartitionColumnName)
 	return json.Marshal(objectMap)
 }
 
@@ -42333,16 +42333,16 @@ func (s *SapHanaPartitionSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapHanaSource.
 func (s SapHanaSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "packetSize", &s.PacketSize)
-	populate(objectMap, "partitionOption", &s.PartitionOption)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "packetSize", s.PacketSize)
+	populateAny(objectMap, "partitionOption", s.PartitionOption)
 	populate(objectMap, "partitionSettings", s.PartitionSettings)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SapHanaSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -42420,8 +42420,8 @@ func (s SapHanaTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SapHanaTable"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -42489,8 +42489,8 @@ func (s *SapHanaTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapHanaTableDatasetTypeProperties.
 func (s SapHanaTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "table", &s.Table)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "table", s.Table)
 	return json.Marshal(objectMap)
 }
 
@@ -42582,24 +42582,24 @@ func (s *SapOdpLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapOdpLinkedServiceTypeProperties.
 func (s SapOdpLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clientId", &s.ClientID)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "language", &s.Language)
-	populate(objectMap, "logonGroup", &s.LogonGroup)
-	populate(objectMap, "messageServer", &s.MessageServer)
-	populate(objectMap, "messageServerService", &s.MessageServerService)
+	populateAny(objectMap, "clientId", s.ClientID)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "language", s.Language)
+	populateAny(objectMap, "logonGroup", s.LogonGroup)
+	populateAny(objectMap, "messageServer", s.MessageServer)
+	populateAny(objectMap, "messageServerService", s.MessageServerService)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "server", &s.Server)
-	populate(objectMap, "sncLibraryPath", &s.SncLibraryPath)
-	populate(objectMap, "sncMode", &s.SncMode)
-	populate(objectMap, "sncMyName", &s.SncMyName)
-	populate(objectMap, "sncPartnerName", &s.SncPartnerName)
-	populate(objectMap, "sncQop", &s.SncQop)
-	populate(objectMap, "subscriberName", &s.SubscriberName)
-	populate(objectMap, "systemId", &s.SystemID)
-	populate(objectMap, "systemNumber", &s.SystemNumber)
-	populate(objectMap, "userName", &s.UserName)
-	populate(objectMap, "x509CertificatePath", &s.X509CertificatePath)
+	populateAny(objectMap, "server", s.Server)
+	populateAny(objectMap, "sncLibraryPath", s.SncLibraryPath)
+	populateAny(objectMap, "sncMode", s.SncMode)
+	populateAny(objectMap, "sncMyName", s.SncMyName)
+	populateAny(objectMap, "sncPartnerName", s.SncPartnerName)
+	populateAny(objectMap, "sncQop", s.SncQop)
+	populateAny(objectMap, "subscriberName", s.SubscriberName)
+	populateAny(objectMap, "systemId", s.SystemID)
+	populateAny(objectMap, "systemNumber", s.SystemNumber)
+	populateAny(objectMap, "userName", s.UserName)
+	populateAny(objectMap, "x509CertificatePath", s.X509CertificatePath)
 	return json.Marshal(objectMap)
 }
 
@@ -42682,8 +42682,8 @@ func (s SapOdpResourceDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SapOdpResource"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -42751,8 +42751,8 @@ func (s *SapOdpResourceDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapOdpResourceDatasetTypeProperties.
 func (s SapOdpResourceDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "context", &s.Context)
-	populate(objectMap, "objectName", &s.ObjectName)
+	populateAny(objectMap, "context", s.Context)
+	populateAny(objectMap, "objectName", s.ObjectName)
 	return json.Marshal(objectMap)
 }
 
@@ -42782,16 +42782,16 @@ func (s *SapOdpResourceDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapOdpSource.
 func (s SapOdpSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "extractionMode", &s.ExtractionMode)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "projection", &s.Projection)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "selection", &s.Selection)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
-	populate(objectMap, "subscriberProcess", &s.SubscriberProcess)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "extractionMode", s.ExtractionMode)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "projection", s.Projection)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "selection", s.Selection)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
+	populateAny(objectMap, "subscriberProcess", s.SubscriberProcess)
 	objectMap["type"] = "SapOdpSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -42926,17 +42926,17 @@ func (s *SapOpenHubLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapOpenHubLinkedServiceTypeProperties.
 func (s SapOpenHubLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clientId", &s.ClientID)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "language", &s.Language)
-	populate(objectMap, "logonGroup", &s.LogonGroup)
-	populate(objectMap, "messageServer", &s.MessageServer)
-	populate(objectMap, "messageServerService", &s.MessageServerService)
+	populateAny(objectMap, "clientId", s.ClientID)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "language", s.Language)
+	populateAny(objectMap, "logonGroup", s.LogonGroup)
+	populateAny(objectMap, "messageServer", s.MessageServer)
+	populateAny(objectMap, "messageServerService", s.MessageServerService)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "server", &s.Server)
-	populate(objectMap, "systemId", &s.SystemID)
-	populate(objectMap, "systemNumber", &s.SystemNumber)
-	populate(objectMap, "userName", &s.UserName)
+	populateAny(objectMap, "server", s.Server)
+	populateAny(objectMap, "systemId", s.SystemID)
+	populateAny(objectMap, "systemNumber", s.SystemNumber)
+	populateAny(objectMap, "userName", s.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -42993,16 +42993,16 @@ func (s *SapOpenHubLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type SapOpenHubSource.
 func (s SapOpenHubSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "baseRequestId", &s.BaseRequestID)
-	populate(objectMap, "customRfcReadTableFunctionModule", &s.CustomRFCReadTableFunctionModule)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "excludeLastRequest", &s.ExcludeLastRequest)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sapDataColumnDelimiter", &s.SapDataColumnDelimiter)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "baseRequestId", s.BaseRequestID)
+	populateAny(objectMap, "customRfcReadTableFunctionModule", s.CustomRFCReadTableFunctionModule)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "excludeLastRequest", s.ExcludeLastRequest)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sapDataColumnDelimiter", s.SapDataColumnDelimiter)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SapOpenHubSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -43080,8 +43080,8 @@ func (s SapOpenHubTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SapOpenHubTable"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -43149,9 +43149,9 @@ func (s *SapOpenHubTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapOpenHubTableDatasetTypeProperties.
 func (s SapOpenHubTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "baseRequestId", &s.BaseRequestID)
-	populate(objectMap, "excludeLastRequest", &s.ExcludeLastRequest)
-	populate(objectMap, "openHubDestinationName", &s.OpenHubDestinationName)
+	populateAny(objectMap, "baseRequestId", s.BaseRequestID)
+	populateAny(objectMap, "excludeLastRequest", s.ExcludeLastRequest)
+	populateAny(objectMap, "openHubDestinationName", s.OpenHubDestinationName)
 	return json.Marshal(objectMap)
 }
 
@@ -43246,22 +43246,22 @@ func (s *SapTableLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapTableLinkedServiceTypeProperties.
 func (s SapTableLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clientId", &s.ClientID)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "language", &s.Language)
-	populate(objectMap, "logonGroup", &s.LogonGroup)
-	populate(objectMap, "messageServer", &s.MessageServer)
-	populate(objectMap, "messageServerService", &s.MessageServerService)
+	populateAny(objectMap, "clientId", s.ClientID)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "language", s.Language)
+	populateAny(objectMap, "logonGroup", s.LogonGroup)
+	populateAny(objectMap, "messageServer", s.MessageServer)
+	populateAny(objectMap, "messageServerService", s.MessageServerService)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "server", &s.Server)
-	populate(objectMap, "sncLibraryPath", &s.SncLibraryPath)
-	populate(objectMap, "sncMode", &s.SncMode)
-	populate(objectMap, "sncMyName", &s.SncMyName)
-	populate(objectMap, "sncPartnerName", &s.SncPartnerName)
-	populate(objectMap, "sncQop", &s.SncQop)
-	populate(objectMap, "systemId", &s.SystemID)
-	populate(objectMap, "systemNumber", &s.SystemNumber)
-	populate(objectMap, "userName", &s.UserName)
+	populateAny(objectMap, "server", s.Server)
+	populateAny(objectMap, "sncLibraryPath", s.SncLibraryPath)
+	populateAny(objectMap, "sncMode", s.SncMode)
+	populateAny(objectMap, "sncMyName", s.SncMyName)
+	populateAny(objectMap, "sncPartnerName", s.SncPartnerName)
+	populateAny(objectMap, "sncQop", s.SncQop)
+	populateAny(objectMap, "systemId", s.SystemID)
+	populateAny(objectMap, "systemNumber", s.SystemNumber)
+	populateAny(objectMap, "userName", s.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -43333,10 +43333,10 @@ func (s *SapTableLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapTablePartitionSettings.
 func (s SapTablePartitionSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "maxPartitionsNumber", &s.MaxPartitionsNumber)
-	populate(objectMap, "partitionColumnName", &s.PartitionColumnName)
-	populate(objectMap, "partitionLowerBound", &s.PartitionLowerBound)
-	populate(objectMap, "partitionUpperBound", &s.PartitionUpperBound)
+	populateAny(objectMap, "maxPartitionsNumber", s.MaxPartitionsNumber)
+	populateAny(objectMap, "partitionColumnName", s.PartitionColumnName)
+	populateAny(objectMap, "partitionLowerBound", s.PartitionLowerBound)
+	populateAny(objectMap, "partitionUpperBound", s.PartitionUpperBound)
 	return json.Marshal(objectMap)
 }
 
@@ -43377,8 +43377,8 @@ func (s SapTableResourceDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SapTableResource"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -43446,7 +43446,7 @@ func (s *SapTableResourceDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SapTableResourceDatasetTypeProperties.
 func (s SapTableResourceDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "tableName", &s.TableName)
+	populateAny(objectMap, "tableName", s.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -43473,21 +43473,21 @@ func (s *SapTableResourceDatasetTypeProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type SapTableSource.
 func (s SapTableSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "batchSize", &s.BatchSize)
-	populate(objectMap, "customRfcReadTableFunctionModule", &s.CustomRFCReadTableFunctionModule)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "partitionOption", &s.PartitionOption)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "batchSize", s.BatchSize)
+	populateAny(objectMap, "customRfcReadTableFunctionModule", s.CustomRFCReadTableFunctionModule)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionOption", s.PartitionOption)
 	populate(objectMap, "partitionSettings", s.PartitionSettings)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "rfcTableFields", &s.RFCTableFields)
-	populate(objectMap, "rfcTableOptions", &s.RFCTableOptions)
-	populate(objectMap, "rowCount", &s.RowCount)
-	populate(objectMap, "rowSkips", &s.RowSkips)
-	populate(objectMap, "sapDataColumnDelimiter", &s.SapDataColumnDelimiter)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "rfcTableFields", s.RFCTableFields)
+	populateAny(objectMap, "rfcTableOptions", s.RFCTableOptions)
+	populateAny(objectMap, "rowCount", s.RowCount)
+	populateAny(objectMap, "rowSkips", s.RowSkips)
+	populateAny(objectMap, "sapDataColumnDelimiter", s.SapDataColumnDelimiter)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SapTableSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -43728,7 +43728,7 @@ func (s ScriptAction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "name", s.Name)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "roles", &s.Roles)
+	populateAny(objectMap, "roles", s.Roles)
 	populate(objectMap, "uri", s.URI)
 	return json.Marshal(objectMap)
 }
@@ -43836,10 +43836,10 @@ func (s *ScriptActivity) UnmarshalJSON(data []byte) error {
 func (s ScriptActivityParameter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "direction", s.Direction)
-	populate(objectMap, "name", &s.Name)
+	populateAny(objectMap, "name", s.Name)
 	populate(objectMap, "size", s.Size)
 	populate(objectMap, "type", s.Type)
-	populate(objectMap, "value", &s.Value)
+	populateAny(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -43879,7 +43879,7 @@ func (s *ScriptActivityParameter) UnmarshalJSON(data []byte) error {
 func (s ScriptActivityScriptBlock) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "text", &s.Text)
+	populateAny(objectMap, "text", s.Text)
 	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
@@ -43914,7 +43914,7 @@ func (s *ScriptActivityScriptBlock) UnmarshalJSON(data []byte) error {
 func (s ScriptActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "logSettings", s.LogSettings)
-	populate(objectMap, "scriptBlockExecutionTimeout", &s.ScriptBlockExecutionTimeout)
+	populateAny(objectMap, "scriptBlockExecutionTimeout", s.ScriptBlockExecutionTimeout)
 	populate(objectMap, "scripts", s.Scripts)
 	return json.Marshal(objectMap)
 }
@@ -44463,15 +44463,15 @@ func (s *ServiceNowLinkedService) UnmarshalJSON(data []byte) error {
 func (s ServiceNowLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authenticationType", s.AuthenticationType)
-	populate(objectMap, "clientId", &s.ClientID)
+	populateAny(objectMap, "clientId", s.ClientID)
 	populate(objectMap, "clientSecret", s.ClientSecret)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "endpoint", &s.Endpoint)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "endpoint", s.Endpoint)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "useEncryptedEndpoints", &s.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &s.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &s.UsePeerVerification)
-	populate(objectMap, "username", &s.Username)
+	populateAny(objectMap, "useEncryptedEndpoints", s.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", s.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", s.UsePeerVerification)
+	populateAny(objectMap, "username", s.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -44530,8 +44530,8 @@ func (s ServiceNowObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "ServiceNowObject"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -44599,13 +44599,13 @@ func (s *ServiceNowObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ServiceNowSource.
 func (s ServiceNowSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "ServiceNowSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -44723,9 +44723,9 @@ func (s *ServicePrincipalCredential) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ServicePrincipalCredentialTypeProperties.
 func (s ServicePrincipalCredentialTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "servicePrincipalId", &s.ServicePrincipalID)
+	populateAny(objectMap, "servicePrincipalId", s.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", s.ServicePrincipalKey)
-	populate(objectMap, "tenant", &s.Tenant)
+	populateAny(objectMap, "tenant", s.Tenant)
 	return json.Marshal(objectMap)
 }
 
@@ -44820,7 +44820,7 @@ func (s *SetVariableActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SetVariableActivityTypeProperties.
 func (s SetVariableActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "value", &s.Value)
+	populateAny(objectMap, "value", s.Value)
 	populate(objectMap, "variableName", s.VariableName)
 	return json.Marshal(objectMap)
 }
@@ -44851,8 +44851,8 @@ func (s *SetVariableActivityTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SftpLocation.
 func (s SftpLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileName", &s.FileName)
-	populate(objectMap, "folderPath", &s.FolderPath)
+	populateAny(objectMap, "fileName", s.FileName)
+	populateAny(objectMap, "folderPath", s.FolderPath)
 	objectMap["type"] = "SftpLocation"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -44901,19 +44901,19 @@ func (s *SftpLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SftpReadSettings.
 func (s SftpReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "deleteFilesAfterCompletion", &s.DeleteFilesAfterCompletion)
-	populate(objectMap, "disableChunking", &s.DisableChunking)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
+	populateAny(objectMap, "deleteFilesAfterCompletion", s.DeleteFilesAfterCompletion)
+	populateAny(objectMap, "disableChunking", s.DisableChunking)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
 	populate(objectMap, "enablePartitionDiscovery", s.EnablePartitionDiscovery)
-	populate(objectMap, "fileListPath", &s.FileListPath)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "modifiedDatetimeEnd", &s.ModifiedDatetimeEnd)
-	populate(objectMap, "modifiedDatetimeStart", &s.ModifiedDatetimeStart)
-	populate(objectMap, "partitionRootPath", &s.PartitionRootPath)
-	populate(objectMap, "recursive", &s.Recursive)
+	populateAny(objectMap, "fileListPath", s.FileListPath)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "modifiedDatetimeEnd", s.ModifiedDatetimeEnd)
+	populateAny(objectMap, "modifiedDatetimeStart", s.ModifiedDatetimeStart)
+	populateAny(objectMap, "partitionRootPath", s.PartitionRootPath)
+	populateAny(objectMap, "recursive", s.Recursive)
 	objectMap["type"] = "SftpReadSettings"
-	populate(objectMap, "wildcardFileName", &s.WildcardFileName)
-	populate(objectMap, "wildcardFolderPath", &s.WildcardFolderPath)
+	populateAny(objectMap, "wildcardFileName", s.WildcardFileName)
+	populateAny(objectMap, "wildcardFolderPath", s.WildcardFolderPath)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -45054,16 +45054,16 @@ func (s *SftpServerLinkedService) UnmarshalJSON(data []byte) error {
 func (s SftpServerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authenticationType", s.AuthenticationType)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "host", &s.Host)
-	populate(objectMap, "hostKeyFingerprint", &s.HostKeyFingerprint)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "host", s.Host)
+	populateAny(objectMap, "hostKeyFingerprint", s.HostKeyFingerprint)
 	populate(objectMap, "passPhrase", s.PassPhrase)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "port", &s.Port)
+	populateAny(objectMap, "port", s.Port)
 	populate(objectMap, "privateKeyContent", s.PrivateKeyContent)
-	populate(objectMap, "privateKeyPath", &s.PrivateKeyPath)
-	populate(objectMap, "skipHostKeyValidation", &s.SkipHostKeyValidation)
-	populate(objectMap, "userName", &s.UserName)
+	populateAny(objectMap, "privateKeyPath", s.PrivateKeyPath)
+	populateAny(objectMap, "skipHostKeyValidation", s.SkipHostKeyValidation)
+	populateAny(objectMap, "userName", s.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -45120,12 +45120,12 @@ func (s *SftpServerLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type SftpWriteSettings.
 func (s SftpWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "copyBehavior", &s.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "operationTimeout", &s.OperationTimeout)
+	populateAny(objectMap, "copyBehavior", s.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "operationTimeout", s.OperationTimeout)
 	objectMap["type"] = "SftpWriteSettings"
-	populate(objectMap, "useTempFileRename", &s.UseTempFileRename)
+	populateAny(objectMap, "useTempFileRename", s.UseTempFileRename)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -45182,7 +45182,7 @@ func (s *SftpWriteSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SharePointOnlineListDatasetTypeProperties.
 func (s SharePointOnlineListDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "listName", &s.ListName)
+	populateAny(objectMap, "listName", s.ListName)
 	return json.Marshal(objectMap)
 }
 
@@ -45271,11 +45271,11 @@ func (s *SharePointOnlineListLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SharePointOnlineListLinkedServiceTypeProperties.
 func (s SharePointOnlineListLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "servicePrincipalId", &s.ServicePrincipalID)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "servicePrincipalId", s.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", s.ServicePrincipalKey)
-	populate(objectMap, "siteUrl", &s.SiteURL)
-	populate(objectMap, "tenantId", &s.TenantID)
+	populateAny(objectMap, "siteUrl", s.SiteURL)
+	populateAny(objectMap, "tenantId", s.TenantID)
 	return json.Marshal(objectMap)
 }
 
@@ -45319,8 +45319,8 @@ func (s SharePointOnlineListResourceDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SharePointOnlineListResource"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -45388,12 +45388,12 @@ func (s *SharePointOnlineListResourceDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SharePointOnlineListSource.
 func (s SharePointOnlineListSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "httpRequestTimeout", &s.HTTPRequestTimeout)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "httpRequestTimeout", s.HTTPRequestTimeout)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SharePointOnlineListSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -45517,11 +45517,11 @@ func (s *ShopifyLinkedService) UnmarshalJSON(data []byte) error {
 func (s ShopifyLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessToken", s.AccessToken)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "host", &s.Host)
-	populate(objectMap, "useEncryptedEndpoints", &s.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &s.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &s.UsePeerVerification)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "host", s.Host)
+	populateAny(objectMap, "useEncryptedEndpoints", s.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", s.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", s.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -45568,8 +45568,8 @@ func (s ShopifyObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "ShopifyObject"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -45637,13 +45637,13 @@ func (s *ShopifyObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ShopifySource.
 func (s ShopifySource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "ShopifySource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -45707,8 +45707,8 @@ func (s *ShopifySource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SkipErrorFile.
 func (s SkipErrorFile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "dataInconsistency", &s.DataInconsistency)
-	populate(objectMap, "fileMissing", &s.FileMissing)
+	populateAny(objectMap, "dataInconsistency", s.DataInconsistency)
+	populateAny(objectMap, "fileMissing", s.FileMissing)
 	return json.Marshal(objectMap)
 }
 
@@ -45801,7 +45801,7 @@ func (s *SmartsheetLinkedService) UnmarshalJSON(data []byte) error {
 func (s SmartsheetLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiToken", s.APIToken)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
 	return json.Marshal(objectMap)
 }
 
@@ -45836,8 +45836,8 @@ func (s SnowflakeDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SnowflakeTable"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -45905,8 +45905,8 @@ func (s *SnowflakeDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SnowflakeDatasetTypeProperties.
 func (s SnowflakeDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "table", &s.Table)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "table", s.Table)
 	return json.Marshal(objectMap)
 }
 
@@ -46098,8 +46098,8 @@ func (s *SnowflakeLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SnowflakeLinkedServiceTypeProperties.
 func (s SnowflakeLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &s.ConnectionString)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
+	populateAny(objectMap, "connectionString", s.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
 	populate(objectMap, "password", s.Password)
 	return json.Marshal(objectMap)
 }
@@ -46133,15 +46133,15 @@ func (s *SnowflakeLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type SnowflakeSink.
 func (s SnowflakeSink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
 	populate(objectMap, "importSettings", s.ImportSettings)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "preCopyScript", &s.PreCopyScript)
-	populate(objectMap, "sinkRetryCount", &s.SinkRetryCount)
-	populate(objectMap, "sinkRetryWait", &s.SinkRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "preCopyScript", s.PreCopyScript)
+	populateAny(objectMap, "sinkRetryCount", s.SinkRetryCount)
+	populateAny(objectMap, "sinkRetryWait", s.SinkRetryWait)
 	objectMap["type"] = "SnowflakeSink"
-	populate(objectMap, "writeBatchSize", &s.WriteBatchSize)
-	populate(objectMap, "writeBatchTimeout", &s.WriteBatchTimeout)
+	populateAny(objectMap, "writeBatchSize", s.WriteBatchSize)
+	populateAny(objectMap, "writeBatchTimeout", s.WriteBatchTimeout)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -46207,12 +46207,12 @@ func (s *SnowflakeSink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SnowflakeSource.
 func (s SnowflakeSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
 	populate(objectMap, "exportSettings", s.ExportSettings)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SnowflakeSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -46273,7 +46273,7 @@ func (s *SnowflakeSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SparkConfigurationParametrizationReference.
 func (s SparkConfigurationParametrizationReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "referenceName", &s.ReferenceName)
+	populateAny(objectMap, "referenceName", s.ReferenceName)
 	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
@@ -46304,9 +46304,9 @@ func (s *SparkConfigurationParametrizationReference) UnmarshalJSON(data []byte) 
 // MarshalJSON implements the json.Marshaller interface for type SparkDatasetTypeProperties.
 func (s SparkDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "table", &s.Table)
-	populate(objectMap, "tableName", &s.TableName)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "table", s.Table)
+	populateAny(objectMap, "tableName", s.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -46401,20 +46401,20 @@ func (s *SparkLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SparkLinkedServiceTypeProperties.
 func (s SparkLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "allowHostNameCNMismatch", &s.AllowHostNameCNMismatch)
-	populate(objectMap, "allowSelfSignedServerCert", &s.AllowSelfSignedServerCert)
+	populateAny(objectMap, "allowHostNameCNMismatch", s.AllowHostNameCNMismatch)
+	populateAny(objectMap, "allowSelfSignedServerCert", s.AllowSelfSignedServerCert)
 	populate(objectMap, "authenticationType", s.AuthenticationType)
-	populate(objectMap, "enableSsl", &s.EnableSSL)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "httpPath", &s.HTTPPath)
-	populate(objectMap, "host", &s.Host)
+	populateAny(objectMap, "enableSsl", s.EnableSSL)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "httpPath", s.HTTPPath)
+	populateAny(objectMap, "host", s.Host)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "port", &s.Port)
+	populateAny(objectMap, "port", s.Port)
 	populate(objectMap, "serverType", s.ServerType)
 	populate(objectMap, "thriftTransportProtocol", s.ThriftTransportProtocol)
-	populate(objectMap, "trustedCertPath", &s.TrustedCertPath)
-	populate(objectMap, "useSystemTrustStore", &s.UseSystemTrustStore)
-	populate(objectMap, "username", &s.Username)
+	populateAny(objectMap, "trustedCertPath", s.TrustedCertPath)
+	populateAny(objectMap, "useSystemTrustStore", s.UseSystemTrustStore)
+	populateAny(objectMap, "username", s.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -46485,8 +46485,8 @@ func (s SparkObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SparkObject"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -46554,13 +46554,13 @@ func (s *SparkObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SparkSource.
 func (s SparkSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SparkSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -46686,15 +46686,15 @@ func (s *SquareLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SquareLinkedServiceTypeProperties.
 func (s SquareLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clientId", &s.ClientID)
+	populateAny(objectMap, "clientId", s.ClientID)
 	populate(objectMap, "clientSecret", s.ClientSecret)
-	populate(objectMap, "connectionProperties", &s.ConnectionProperties)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
-	populate(objectMap, "host", &s.Host)
-	populate(objectMap, "redirectUri", &s.RedirectURI)
-	populate(objectMap, "useEncryptedEndpoints", &s.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &s.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &s.UsePeerVerification)
+	populateAny(objectMap, "connectionProperties", s.ConnectionProperties)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "host", s.Host)
+	populateAny(objectMap, "redirectUri", s.RedirectURI)
+	populateAny(objectMap, "useEncryptedEndpoints", s.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", s.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", s.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -46750,8 +46750,8 @@ func (s SquareObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SquareObject"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -46819,13 +46819,13 @@ func (s *SquareObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SquareSource.
 func (s SquareSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SquareSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -47355,9 +47355,9 @@ func (s *SsisVariable) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type StagingSettings.
 func (s StagingSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "enableCompression", &s.EnableCompression)
+	populateAny(objectMap, "enableCompression", s.EnableCompression)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
-	populate(objectMap, "path", &s.Path)
+	populateAny(objectMap, "path", s.Path)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -47405,8 +47405,8 @@ func (s *StagingSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type StoreReadSettings.
 func (s StoreReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
 	objectMap["type"] = s.Type
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -47455,9 +47455,9 @@ func (s *StoreReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type StoreWriteSettings.
 func (s StoreWriteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "copyBehavior", &s.CopyBehavior)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
+	populateAny(objectMap, "copyBehavior", s.CopyBehavior)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
 	objectMap["type"] = s.Type
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -47700,12 +47700,12 @@ func (s *SybaseLinkedService) UnmarshalJSON(data []byte) error {
 func (s SybaseLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authenticationType", s.AuthenticationType)
-	populate(objectMap, "database", &s.Database)
-	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
+	populateAny(objectMap, "database", s.Database)
+	populateAny(objectMap, "encryptedCredential", s.EncryptedCredential)
 	populate(objectMap, "password", s.Password)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "server", &s.Server)
-	populate(objectMap, "username", &s.Username)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "server", s.Server)
+	populateAny(objectMap, "username", s.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -47750,13 +47750,13 @@ func (s *SybaseLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SybaseSource.
 func (s SybaseSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
-	populate(objectMap, "query", &s.Query)
-	populate(objectMap, "queryTimeout", &s.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", s.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
+	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
 	objectMap["type"] = "SybaseSource"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -47825,8 +47825,8 @@ func (s SybaseTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
 	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "schema", &s.Schema)
-	populate(objectMap, "structure", &s.Structure)
+	populateAny(objectMap, "schema", s.Schema)
+	populateAny(objectMap, "structure", s.Structure)
 	objectMap["type"] = "SybaseTable"
 	populate(objectMap, "typeProperties", s.TypeProperties)
 	if s.AdditionalProperties != nil {
@@ -47894,7 +47894,7 @@ func (s *SybaseTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SybaseTableDatasetTypeProperties.
 func (s SybaseTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "tableName", &s.TableName)
+	populateAny(objectMap, "tableName", s.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -47991,9 +47991,9 @@ func (s *SynapseNotebookActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SynapseNotebookActivityTypeProperties.
 func (s SynapseNotebookActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "conf", &s.Conf)
-	populate(objectMap, "driverSize", &s.DriverSize)
-	populate(objectMap, "executorSize", &s.ExecutorSize)
+	populateAny(objectMap, "conf", s.Conf)
+	populateAny(objectMap, "driverSize", s.DriverSize)
+	populateAny(objectMap, "executorSize", s.ExecutorSize)
 	populate(objectMap, "notebook", s.Notebook)
 	populate(objectMap, "numExecutors", s.NumExecutors)
 	populate(objectMap, "parameters", s.Parameters)
@@ -48042,7 +48042,7 @@ func (s *SynapseNotebookActivityTypeProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type SynapseNotebookReference.
 func (s SynapseNotebookReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "referenceName", &s.ReferenceName)
+	populateAny(objectMap, "referenceName", s.ReferenceName)
 	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
@@ -48074,17 +48074,17 @@ func (s *SynapseNotebookReference) UnmarshalJSON(data []byte) error {
 func (s SynapseSparkJobActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "args", s.Arguments)
-	populate(objectMap, "className", &s.ClassName)
-	populate(objectMap, "conf", &s.Conf)
+	populateAny(objectMap, "className", s.ClassName)
+	populateAny(objectMap, "conf", s.Conf)
 	populate(objectMap, "configurationType", s.ConfigurationType)
-	populate(objectMap, "driverSize", &s.DriverSize)
-	populate(objectMap, "executorSize", &s.ExecutorSize)
-	populate(objectMap, "file", &s.File)
+	populateAny(objectMap, "driverSize", s.DriverSize)
+	populateAny(objectMap, "executorSize", s.ExecutorSize)
+	populateAny(objectMap, "file", s.File)
 	populate(objectMap, "files", s.Files)
 	populate(objectMap, "filesV2", s.FilesV2)
-	populate(objectMap, "numExecutors", &s.NumExecutors)
+	populateAny(objectMap, "numExecutors", s.NumExecutors)
 	populate(objectMap, "pythonCodeReference", s.PythonCodeReference)
-	populate(objectMap, "scanFolder", &s.ScanFolder)
+	populateAny(objectMap, "scanFolder", s.ScanFolder)
 	populate(objectMap, "sparkConfig", s.SparkConfig)
 	populate(objectMap, "sparkJob", s.SparkJob)
 	populate(objectMap, "targetBigDataPool", s.TargetBigDataPool)
@@ -48230,7 +48230,7 @@ func (s *SynapseSparkJobDefinitionActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SynapseSparkJobReference.
 func (s SynapseSparkJobReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "referenceName", &s.ReferenceName)
+	populateAny(objectMap, "referenceName", s.ReferenceName)
 	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
@@ -48261,12 +48261,12 @@ func (s *SynapseSparkJobReference) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TabularSource.
 func (t TabularSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &t.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &t.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &t.MaxConcurrentConnections)
-	populate(objectMap, "queryTimeout", &t.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &t.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &t.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", t.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", t.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", t.MaxConcurrentConnections)
+	populateAny(objectMap, "queryTimeout", t.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", t.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", t.SourceRetryWait)
 	objectMap["type"] = "TabularSource"
 	if t.AdditionalProperties != nil {
 		for key, val := range t.AdditionalProperties {
@@ -48327,7 +48327,7 @@ func (t *TabularSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TarGZipReadSettings.
 func (t TarGZipReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "preserveCompressionFileNameAsFolder", &t.PreserveCompressionFileNameAsFolder)
+	populateAny(objectMap, "preserveCompressionFileNameAsFolder", t.PreserveCompressionFileNameAsFolder)
 	objectMap["type"] = "TarGZipReadSettings"
 	if t.AdditionalProperties != nil {
 		for key, val := range t.AdditionalProperties {
@@ -48373,7 +48373,7 @@ func (t *TarGZipReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TarReadSettings.
 func (t TarReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "preserveCompressionFileNameAsFolder", &t.PreserveCompressionFileNameAsFolder)
+	populateAny(objectMap, "preserveCompressionFileNameAsFolder", t.PreserveCompressionFileNameAsFolder)
 	objectMap["type"] = "TarReadSettings"
 	if t.AdditionalProperties != nil {
 		for key, val := range t.AdditionalProperties {
@@ -48483,10 +48483,10 @@ func (t TeamDeskLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiToken", t.APIToken)
 	populate(objectMap, "authenticationType", t.AuthenticationType)
-	populate(objectMap, "encryptedCredential", &t.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", t.EncryptedCredential)
 	populate(objectMap, "password", t.Password)
-	populate(objectMap, "url", &t.URL)
-	populate(objectMap, "userName", &t.UserName)
+	populateAny(objectMap, "url", t.URL)
+	populateAny(objectMap, "userName", t.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -48591,11 +48591,11 @@ func (t *TeradataLinkedService) UnmarshalJSON(data []byte) error {
 func (t TeradataLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authenticationType", t.AuthenticationType)
-	populate(objectMap, "connectionString", &t.ConnectionString)
-	populate(objectMap, "encryptedCredential", &t.EncryptedCredential)
+	populateAny(objectMap, "connectionString", t.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", t.EncryptedCredential)
 	populate(objectMap, "password", t.Password)
-	populate(objectMap, "server", &t.Server)
-	populate(objectMap, "username", &t.Username)
+	populateAny(objectMap, "server", t.Server)
+	populateAny(objectMap, "username", t.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -48637,9 +48637,9 @@ func (t *TeradataLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TeradataPartitionSettings.
 func (t TeradataPartitionSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "partitionColumnName", &t.PartitionColumnName)
-	populate(objectMap, "partitionLowerBound", &t.PartitionLowerBound)
-	populate(objectMap, "partitionUpperBound", &t.PartitionUpperBound)
+	populateAny(objectMap, "partitionColumnName", t.PartitionColumnName)
+	populateAny(objectMap, "partitionLowerBound", t.PartitionLowerBound)
+	populateAny(objectMap, "partitionUpperBound", t.PartitionUpperBound)
 	return json.Marshal(objectMap)
 }
 
@@ -48672,15 +48672,15 @@ func (t *TeradataPartitionSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TeradataSource.
 func (t TeradataSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &t.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &t.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &t.MaxConcurrentConnections)
-	populate(objectMap, "partitionOption", &t.PartitionOption)
+	populateAny(objectMap, "additionalColumns", t.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", t.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", t.MaxConcurrentConnections)
+	populateAny(objectMap, "partitionOption", t.PartitionOption)
 	populate(objectMap, "partitionSettings", t.PartitionSettings)
-	populate(objectMap, "query", &t.Query)
-	populate(objectMap, "queryTimeout", &t.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &t.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &t.SourceRetryWait)
+	populateAny(objectMap, "query", t.Query)
+	populateAny(objectMap, "queryTimeout", t.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", t.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", t.SourceRetryWait)
 	objectMap["type"] = "TeradataSource"
 	if t.AdditionalProperties != nil {
 		for key, val := range t.AdditionalProperties {
@@ -48755,8 +48755,8 @@ func (t TeradataTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", t.Folder)
 	populate(objectMap, "linkedServiceName", t.LinkedServiceName)
 	populate(objectMap, "parameters", t.Parameters)
-	populate(objectMap, "schema", &t.Schema)
-	populate(objectMap, "structure", &t.Structure)
+	populateAny(objectMap, "schema", t.Schema)
+	populateAny(objectMap, "structure", t.Structure)
 	objectMap["type"] = "TeradataTable"
 	populate(objectMap, "typeProperties", t.TypeProperties)
 	if t.AdditionalProperties != nil {
@@ -48824,8 +48824,8 @@ func (t *TeradataTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TeradataTableDatasetTypeProperties.
 func (t TeradataTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "database", &t.Database)
-	populate(objectMap, "table", &t.Table)
+	populateAny(objectMap, "database", t.Database)
+	populateAny(objectMap, "table", t.Table)
 	return json.Marshal(objectMap)
 }
 
@@ -48855,17 +48855,17 @@ func (t *TeradataTableDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TextFormat.
 func (t TextFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "columnDelimiter", &t.ColumnDelimiter)
-	populate(objectMap, "deserializer", &t.Deserializer)
-	populate(objectMap, "encodingName", &t.EncodingName)
-	populate(objectMap, "escapeChar", &t.EscapeChar)
-	populate(objectMap, "firstRowAsHeader", &t.FirstRowAsHeader)
-	populate(objectMap, "nullValue", &t.NullValue)
-	populate(objectMap, "quoteChar", &t.QuoteChar)
-	populate(objectMap, "rowDelimiter", &t.RowDelimiter)
-	populate(objectMap, "serializer", &t.Serializer)
-	populate(objectMap, "skipLineCount", &t.SkipLineCount)
-	populate(objectMap, "treatEmptyAsNull", &t.TreatEmptyAsNull)
+	populateAny(objectMap, "columnDelimiter", t.ColumnDelimiter)
+	populateAny(objectMap, "deserializer", t.Deserializer)
+	populateAny(objectMap, "encodingName", t.EncodingName)
+	populateAny(objectMap, "escapeChar", t.EscapeChar)
+	populateAny(objectMap, "firstRowAsHeader", t.FirstRowAsHeader)
+	populateAny(objectMap, "nullValue", t.NullValue)
+	populateAny(objectMap, "quoteChar", t.QuoteChar)
+	populateAny(objectMap, "rowDelimiter", t.RowDelimiter)
+	populateAny(objectMap, "serializer", t.Serializer)
+	populateAny(objectMap, "skipLineCount", t.SkipLineCount)
+	populateAny(objectMap, "treatEmptyAsNull", t.TreatEmptyAsNull)
 	objectMap["type"] = "TextFormat"
 	if t.AdditionalProperties != nil {
 		for key, val := range t.AdditionalProperties {
@@ -49508,7 +49508,7 @@ func (t *TumblingWindowTriggerDependencyReference) UnmarshalJSON(data []byte) er
 // MarshalJSON implements the json.Marshaller interface for type TumblingWindowTriggerTypeProperties.
 func (t TumblingWindowTriggerTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "delay", &t.Delay)
+	populateAny(objectMap, "delay", t.Delay)
 	populate(objectMap, "dependsOn", t.DependsOn)
 	populateTimeRFC3339(objectMap, "endTime", t.EndTime)
 	populate(objectMap, "frequency", t.Frequency)
@@ -49626,7 +49626,7 @@ func (t *TwilioLinkedService) UnmarshalJSON(data []byte) error {
 func (t TwilioLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "password", t.Password)
-	populate(objectMap, "userName", &t.UserName)
+	populateAny(objectMap, "userName", t.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -49720,7 +49720,7 @@ func (u UntilActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "activities", u.Activities)
 	populate(objectMap, "expression", u.Expression)
-	populate(objectMap, "timeout", &u.Timeout)
+	populateAny(objectMap, "timeout", u.Timeout)
 	return json.Marshal(objectMap)
 }
 
@@ -49855,7 +49855,7 @@ func (u *UserAccessPolicy) UnmarshalJSON(data []byte) error {
 func (u UserProperty) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "name", u.Name)
-	populate(objectMap, "value", &u.Value)
+	populateAny(objectMap, "value", u.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -49947,11 +49947,11 @@ func (v *ValidationActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ValidationActivityTypeProperties.
 func (v ValidationActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "childItems", &v.ChildItems)
+	populateAny(objectMap, "childItems", v.ChildItems)
 	populate(objectMap, "dataset", v.Dataset)
-	populate(objectMap, "minimumSize", &v.MinimumSize)
-	populate(objectMap, "sleep", &v.Sleep)
-	populate(objectMap, "timeout", &v.Timeout)
+	populateAny(objectMap, "minimumSize", v.MinimumSize)
+	populateAny(objectMap, "sleep", v.Sleep)
+	populateAny(objectMap, "timeout", v.Timeout)
 	return json.Marshal(objectMap)
 }
 
@@ -49990,7 +49990,7 @@ func (v *ValidationActivityTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VariableSpecification.
 func (v VariableSpecification) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "defaultValue", &v.DefaultValue)
+	populateAny(objectMap, "defaultValue", v.DefaultValue)
 	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
 }
@@ -50021,9 +50021,9 @@ func (v *VariableSpecification) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VerticaDatasetTypeProperties.
 func (v VerticaDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "schema", &v.Schema)
-	populate(objectMap, "table", &v.Table)
-	populate(objectMap, "tableName", &v.TableName)
+	populateAny(objectMap, "schema", v.Schema)
+	populateAny(objectMap, "table", v.Table)
+	populateAny(objectMap, "tableName", v.TableName)
 	return json.Marshal(objectMap)
 }
 
@@ -50118,8 +50118,8 @@ func (v *VerticaLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VerticaLinkedServiceTypeProperties.
 func (v VerticaLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionString", &v.ConnectionString)
-	populate(objectMap, "encryptedCredential", &v.EncryptedCredential)
+	populateAny(objectMap, "connectionString", v.ConnectionString)
+	populateAny(objectMap, "encryptedCredential", v.EncryptedCredential)
 	populate(objectMap, "pwd", v.Pwd)
 	return json.Marshal(objectMap)
 }
@@ -50153,13 +50153,13 @@ func (v *VerticaLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VerticaSource.
 func (v VerticaSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &v.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &v.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &v.MaxConcurrentConnections)
-	populate(objectMap, "query", &v.Query)
-	populate(objectMap, "queryTimeout", &v.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &v.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &v.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", v.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", v.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", v.MaxConcurrentConnections)
+	populateAny(objectMap, "query", v.Query)
+	populateAny(objectMap, "queryTimeout", v.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", v.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", v.SourceRetryWait)
 	objectMap["type"] = "VerticaSource"
 	if v.AdditionalProperties != nil {
 		for key, val := range v.AdditionalProperties {
@@ -50228,8 +50228,8 @@ func (v VerticaTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", v.Folder)
 	populate(objectMap, "linkedServiceName", v.LinkedServiceName)
 	populate(objectMap, "parameters", v.Parameters)
-	populate(objectMap, "schema", &v.Schema)
-	populate(objectMap, "structure", &v.Structure)
+	populateAny(objectMap, "schema", v.Schema)
+	populateAny(objectMap, "structure", v.Structure)
 	objectMap["type"] = "VerticaTable"
 	populate(objectMap, "typeProperties", v.TypeProperties)
 	if v.AdditionalProperties != nil {
@@ -50359,7 +50359,7 @@ func (w *WaitActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type WaitActivityTypeProperties.
 func (w WaitActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "waitTimeInSeconds", &w.WaitTimeInSeconds)
+	populateAny(objectMap, "waitTimeInSeconds", w.WaitTimeInSeconds)
 	return json.Marshal(objectMap)
 }
 
@@ -50459,10 +50459,10 @@ func (w WebActivityAuthentication) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "credential", w.Credential)
 	populate(objectMap, "password", w.Password)
 	populate(objectMap, "pfx", w.Pfx)
-	populate(objectMap, "resource", &w.Resource)
+	populateAny(objectMap, "resource", w.Resource)
 	populate(objectMap, "type", w.Type)
-	populate(objectMap, "userTenant", &w.UserTenant)
-	populate(objectMap, "username", &w.Username)
+	populateAny(objectMap, "userTenant", w.UserTenant)
+	populateAny(objectMap, "username", w.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -50508,14 +50508,14 @@ func (w *WebActivityAuthentication) UnmarshalJSON(data []byte) error {
 func (w WebActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authentication", w.Authentication)
-	populate(objectMap, "body", &w.Body)
+	populateAny(objectMap, "body", w.Body)
 	populate(objectMap, "connectVia", w.ConnectVia)
 	populate(objectMap, "datasets", w.Datasets)
 	populate(objectMap, "disableCertValidation", w.DisableCertValidation)
-	populate(objectMap, "headers", &w.Headers)
+	populateAny(objectMap, "headers", w.Headers)
 	populate(objectMap, "linkedServices", w.LinkedServices)
 	populate(objectMap, "method", w.Method)
-	populate(objectMap, "url", &w.URL)
+	populateAny(objectMap, "url", w.URL)
 	return json.Marshal(objectMap)
 }
 
@@ -50567,7 +50567,7 @@ func (w *WebActivityTypeProperties) UnmarshalJSON(data []byte) error {
 func (w WebAnonymousAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["authenticationType"] = WebAuthenticationTypeAnonymous
-	populate(objectMap, "url", &w.URL)
+	populateAny(objectMap, "url", w.URL)
 	return json.Marshal(objectMap)
 }
 
@@ -50599,8 +50599,8 @@ func (w WebBasicAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["authenticationType"] = WebAuthenticationTypeBasic
 	populate(objectMap, "password", w.Password)
-	populate(objectMap, "url", &w.URL)
-	populate(objectMap, "username", &w.Username)
+	populateAny(objectMap, "url", w.URL)
+	populateAny(objectMap, "username", w.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -50639,7 +50639,7 @@ func (w WebClientCertificateAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap["authenticationType"] = WebAuthenticationTypeClientCertificate
 	populate(objectMap, "password", w.Password)
 	populate(objectMap, "pfx", w.Pfx)
-	populate(objectMap, "url", &w.URL)
+	populateAny(objectMap, "url", w.URL)
 	return json.Marshal(objectMap)
 }
 
@@ -50738,12 +50738,12 @@ func (w *WebHookActivity) UnmarshalJSON(data []byte) error {
 func (w WebHookActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authentication", w.Authentication)
-	populate(objectMap, "body", &w.Body)
-	populate(objectMap, "headers", &w.Headers)
+	populateAny(objectMap, "body", w.Body)
+	populateAny(objectMap, "headers", w.Headers)
 	populate(objectMap, "method", w.Method)
-	populate(objectMap, "reportStatusOnCallBack", &w.ReportStatusOnCallBack)
+	populateAny(objectMap, "reportStatusOnCallBack", w.ReportStatusOnCallBack)
 	populate(objectMap, "timeout", w.Timeout)
-	populate(objectMap, "url", &w.URL)
+	populateAny(objectMap, "url", w.URL)
 	return json.Marshal(objectMap)
 }
 
@@ -50851,7 +50851,7 @@ func (w *WebLinkedService) UnmarshalJSON(data []byte) error {
 func (w WebLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["authenticationType"] = w.AuthenticationType
-	populate(objectMap, "url", &w.URL)
+	populateAny(objectMap, "url", w.URL)
 	return json.Marshal(objectMap)
 }
 
@@ -50881,11 +50881,11 @@ func (w *WebLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type WebSource.
 func (w WebSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &w.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &w.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &w.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &w.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &w.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", w.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", w.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", w.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", w.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", w.SourceRetryWait)
 	objectMap["type"] = "WebSource"
 	if w.AdditionalProperties != nil {
 		for key, val := range w.AdditionalProperties {
@@ -50948,8 +50948,8 @@ func (w WebTableDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", w.Folder)
 	populate(objectMap, "linkedServiceName", w.LinkedServiceName)
 	populate(objectMap, "parameters", w.Parameters)
-	populate(objectMap, "schema", &w.Schema)
-	populate(objectMap, "structure", &w.Structure)
+	populateAny(objectMap, "schema", w.Schema)
+	populateAny(objectMap, "structure", w.Structure)
 	objectMap["type"] = "WebTable"
 	populate(objectMap, "typeProperties", w.TypeProperties)
 	if w.AdditionalProperties != nil {
@@ -51017,8 +51017,8 @@ func (w *WebTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type WebTableDatasetTypeProperties.
 func (w WebTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "index", &w.Index)
-	populate(objectMap, "path", &w.Path)
+	populateAny(objectMap, "index", w.Index)
+	populateAny(objectMap, "path", w.Path)
 	return json.Marshal(objectMap)
 }
 
@@ -51096,8 +51096,8 @@ func (x XMLDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", x.Folder)
 	populate(objectMap, "linkedServiceName", x.LinkedServiceName)
 	populate(objectMap, "parameters", x.Parameters)
-	populate(objectMap, "schema", &x.Schema)
-	populate(objectMap, "structure", &x.Structure)
+	populateAny(objectMap, "schema", x.Schema)
+	populateAny(objectMap, "structure", x.Structure)
 	objectMap["type"] = "Xml"
 	populate(objectMap, "typeProperties", x.TypeProperties)
 	if x.AdditionalProperties != nil {
@@ -51166,9 +51166,9 @@ func (x *XMLDataset) UnmarshalJSON(data []byte) error {
 func (x XMLDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compression", x.Compression)
-	populate(objectMap, "encodingName", &x.EncodingName)
+	populateAny(objectMap, "encodingName", x.EncodingName)
 	populate(objectMap, "location", x.Location)
-	populate(objectMap, "nullValue", &x.NullValue)
+	populateAny(objectMap, "nullValue", x.NullValue)
 	return json.Marshal(objectMap)
 }
 
@@ -51205,11 +51205,11 @@ func (x *XMLDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 func (x XMLReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compressionProperties", x.CompressionProperties)
-	populate(objectMap, "detectDataType", &x.DetectDataType)
-	populate(objectMap, "namespacePrefixes", &x.NamespacePrefixes)
-	populate(objectMap, "namespaces", &x.Namespaces)
+	populateAny(objectMap, "detectDataType", x.DetectDataType)
+	populateAny(objectMap, "namespacePrefixes", x.NamespacePrefixes)
+	populateAny(objectMap, "namespaces", x.Namespaces)
 	objectMap["type"] = "XmlReadSettings"
-	populate(objectMap, "validationMode", &x.ValidationMode)
+	populateAny(objectMap, "validationMode", x.ValidationMode)
 	if x.AdditionalProperties != nil {
 		for key, val := range x.AdditionalProperties {
 			objectMap[key] = val
@@ -51266,12 +51266,12 @@ func (x *XMLReadSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type XMLSource.
 func (x XMLSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &x.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &x.DisableMetricsCollection)
+	populateAny(objectMap, "additionalColumns", x.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", x.DisableMetricsCollection)
 	populate(objectMap, "formatSettings", x.FormatSettings)
-	populate(objectMap, "maxConcurrentConnections", &x.MaxConcurrentConnections)
-	populate(objectMap, "sourceRetryCount", &x.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &x.SourceRetryWait)
+	populateAny(objectMap, "maxConcurrentConnections", x.MaxConcurrentConnections)
+	populateAny(objectMap, "sourceRetryCount", x.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", x.SourceRetryWait)
 	populate(objectMap, "storeSettings", x.StoreSettings)
 	objectMap["type"] = "XmlSource"
 	if x.AdditionalProperties != nil {
@@ -51398,14 +51398,14 @@ func (x *XeroLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type XeroLinkedServiceTypeProperties.
 func (x XeroLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionProperties", &x.ConnectionProperties)
+	populateAny(objectMap, "connectionProperties", x.ConnectionProperties)
 	populate(objectMap, "consumerKey", x.ConsumerKey)
-	populate(objectMap, "encryptedCredential", &x.EncryptedCredential)
-	populate(objectMap, "host", &x.Host)
+	populateAny(objectMap, "encryptedCredential", x.EncryptedCredential)
+	populateAny(objectMap, "host", x.Host)
 	populate(objectMap, "privateKey", x.PrivateKey)
-	populate(objectMap, "useEncryptedEndpoints", &x.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &x.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &x.UsePeerVerification)
+	populateAny(objectMap, "useEncryptedEndpoints", x.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", x.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", x.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -51458,8 +51458,8 @@ func (x XeroObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", x.Folder)
 	populate(objectMap, "linkedServiceName", x.LinkedServiceName)
 	populate(objectMap, "parameters", x.Parameters)
-	populate(objectMap, "schema", &x.Schema)
-	populate(objectMap, "structure", &x.Structure)
+	populateAny(objectMap, "schema", x.Schema)
+	populateAny(objectMap, "structure", x.Structure)
 	objectMap["type"] = "XeroObject"
 	populate(objectMap, "typeProperties", x.TypeProperties)
 	if x.AdditionalProperties != nil {
@@ -51527,13 +51527,13 @@ func (x *XeroObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type XeroSource.
 func (x XeroSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &x.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &x.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &x.MaxConcurrentConnections)
-	populate(objectMap, "query", &x.Query)
-	populate(objectMap, "queryTimeout", &x.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &x.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &x.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", x.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", x.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", x.MaxConcurrentConnections)
+	populateAny(objectMap, "query", x.Query)
+	populateAny(objectMap, "queryTimeout", x.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", x.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", x.SourceRetryWait)
 	objectMap["type"] = "XeroSource"
 	if x.AdditionalProperties != nil {
 		for key, val := range x.AdditionalProperties {
@@ -51661,10 +51661,10 @@ func (z ZendeskLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiToken", z.APIToken)
 	populate(objectMap, "authenticationType", z.AuthenticationType)
-	populate(objectMap, "encryptedCredential", &z.EncryptedCredential)
+	populateAny(objectMap, "encryptedCredential", z.EncryptedCredential)
 	populate(objectMap, "password", z.Password)
-	populate(objectMap, "url", &z.URL)
-	populate(objectMap, "userName", &z.UserName)
+	populateAny(objectMap, "url", z.URL)
+	populateAny(objectMap, "userName", z.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -51706,7 +51706,7 @@ func (z *ZendeskLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ZipDeflateReadSettings.
 func (z ZipDeflateReadSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "preserveZipFileNameAsFolder", &z.PreserveZipFileNameAsFolder)
+	populateAny(objectMap, "preserveZipFileNameAsFolder", z.PreserveZipFileNameAsFolder)
 	objectMap["type"] = "ZipDeflateReadSettings"
 	if z.AdditionalProperties != nil {
 		for key, val := range z.AdditionalProperties {
@@ -51815,12 +51815,12 @@ func (z *ZohoLinkedService) UnmarshalJSON(data []byte) error {
 func (z ZohoLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessToken", z.AccessToken)
-	populate(objectMap, "connectionProperties", &z.ConnectionProperties)
-	populate(objectMap, "encryptedCredential", &z.EncryptedCredential)
-	populate(objectMap, "endpoint", &z.Endpoint)
-	populate(objectMap, "useEncryptedEndpoints", &z.UseEncryptedEndpoints)
-	populate(objectMap, "useHostVerification", &z.UseHostVerification)
-	populate(objectMap, "usePeerVerification", &z.UsePeerVerification)
+	populateAny(objectMap, "connectionProperties", z.ConnectionProperties)
+	populateAny(objectMap, "encryptedCredential", z.EncryptedCredential)
+	populateAny(objectMap, "endpoint", z.Endpoint)
+	populateAny(objectMap, "useEncryptedEndpoints", z.UseEncryptedEndpoints)
+	populateAny(objectMap, "useHostVerification", z.UseHostVerification)
+	populateAny(objectMap, "usePeerVerification", z.UsePeerVerification)
 	return json.Marshal(objectMap)
 }
 
@@ -51870,8 +51870,8 @@ func (z ZohoObjectDataset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "folder", z.Folder)
 	populate(objectMap, "linkedServiceName", z.LinkedServiceName)
 	populate(objectMap, "parameters", z.Parameters)
-	populate(objectMap, "schema", &z.Schema)
-	populate(objectMap, "structure", &z.Structure)
+	populateAny(objectMap, "schema", z.Schema)
+	populateAny(objectMap, "structure", z.Structure)
 	objectMap["type"] = "ZohoObject"
 	populate(objectMap, "typeProperties", z.TypeProperties)
 	if z.AdditionalProperties != nil {
@@ -51939,13 +51939,13 @@ func (z *ZohoObjectDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ZohoSource.
 func (z ZohoSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalColumns", &z.AdditionalColumns)
-	populate(objectMap, "disableMetricsCollection", &z.DisableMetricsCollection)
-	populate(objectMap, "maxConcurrentConnections", &z.MaxConcurrentConnections)
-	populate(objectMap, "query", &z.Query)
-	populate(objectMap, "queryTimeout", &z.QueryTimeout)
-	populate(objectMap, "sourceRetryCount", &z.SourceRetryCount)
-	populate(objectMap, "sourceRetryWait", &z.SourceRetryWait)
+	populateAny(objectMap, "additionalColumns", z.AdditionalColumns)
+	populateAny(objectMap, "disableMetricsCollection", z.DisableMetricsCollection)
+	populateAny(objectMap, "maxConcurrentConnections", z.MaxConcurrentConnections)
+	populateAny(objectMap, "query", z.Query)
+	populateAny(objectMap, "queryTimeout", z.QueryTimeout)
+	populateAny(objectMap, "sourceRetryCount", z.SourceRetryCount)
+	populateAny(objectMap, "sourceRetryWait", z.SourceRetryWait)
 	objectMap["type"] = "ZohoSource"
 	if z.AdditionalProperties != nil {
 		for key, val := range z.AdditionalProperties {
@@ -52012,6 +52012,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

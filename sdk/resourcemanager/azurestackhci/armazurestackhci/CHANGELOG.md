@@ -1,9 +1,9 @@
 # Release History
 
 ## 1.1.1 (2023-04-14)
-### Other Changes
+### Bug Fixes
 
-- Fix seralization bug of empty value of `any` type.
+- Fix serialization bug of empty value of `any` type.
 
 ## 1.1.0 (2023-03-27)
 ### Features Added

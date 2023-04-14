@@ -14,229 +14,229 @@ import "time"
 // APIKeys - The access keys for the cognitive services account.
 type APIKeys struct {
 	// Gets the value of key 1.
-	Key1 *string `json:"key1,omitempty"`
+	Key1 *string
 
 	// Gets the value of key 2.
-	Key2 *string `json:"key2,omitempty"`
+	Key2 *string
 }
 
 // APIProperties - The api properties for special APIs.
 type APIProperties struct {
 	// (Metrics Advisor Only) The Azure AD Client Id (Application Id).
-	AADClientID *string `json:"aadClientId,omitempty"`
+	AADClientID *string
 
 	// (Metrics Advisor Only) The Azure AD Tenant Id.
-	AADTenantID *string `json:"aadTenantId,omitempty"`
+	AADTenantID *string
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
 
 	// (Personalization Only) The flag to enable statistics of Bing Search.
-	EventHubConnectionString *string `json:"eventHubConnectionString,omitempty"`
+	EventHubConnectionString *string
 
 	// (QnAMaker Only) The Azure Search endpoint id of QnAMaker.
-	QnaAzureSearchEndpointID *string `json:"qnaAzureSearchEndpointId,omitempty"`
+	QnaAzureSearchEndpointID *string
 
 	// (QnAMaker Only) The Azure Search endpoint key of QnAMaker.
-	QnaAzureSearchEndpointKey *string `json:"qnaAzureSearchEndpointKey,omitempty"`
+	QnaAzureSearchEndpointKey *string
 
 	// (QnAMaker Only) The runtime endpoint of QnAMaker.
-	QnaRuntimeEndpoint *string `json:"qnaRuntimeEndpoint,omitempty"`
+	QnaRuntimeEndpoint *string
 
 	// (Bing Search Only) The flag to enable statistics of Bing Search.
-	StatisticsEnabled *bool `json:"statisticsEnabled,omitempty"`
+	StatisticsEnabled *bool
 
 	// (Personalization Only) The storage account connection string.
-	StorageAccountConnectionString *string `json:"storageAccountConnectionString,omitempty"`
+	StorageAccountConnectionString *string
 
 	// (Metrics Advisor Only) The super user of Metrics Advisor.
-	SuperUser *string `json:"superUser,omitempty"`
+	SuperUser *string
 
 	// (Metrics Advisor Only) The website name of Metrics Advisor.
-	WebsiteName *string `json:"websiteName,omitempty"`
+	WebsiteName *string
 }
 
 // Account - Cognitive Services account is an Azure resource representing the provisioned account, it's type, location and
 // SKU.
 type Account struct {
 	// Identity for the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The Kind of the resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of Cognitive Services account.
-	Properties *AccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties
 
 	// The resource model definition representing SKU
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountListResult - The list of cognitive services accounts operation response.
 type AccountListResult struct {
 	// The link used to get the next page of accounts.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Gets the list of Cognitive Services accounts and their properties.
-	Value []*Account `json:"value,omitempty" azure:"ro"`
+	Value []*Account
 }
 
 // AccountModel - Cognitive Services account Model.
 type AccountModel struct {
 	// Base Model Identifier.
-	BaseModel *DeploymentModel `json:"baseModel,omitempty"`
+	BaseModel *DeploymentModel
 
 	// The capabilities.
-	Capabilities map[string]*string `json:"capabilities,omitempty"`
+	Capabilities map[string]*string
 
 	// Cognitive Services account ModelDeprecationInfo.
-	Deprecation *ModelDeprecationInfo `json:"deprecation,omitempty"`
+	Deprecation *ModelDeprecationInfo
 
 	// The capabilities for finetune models.
-	FinetuneCapabilities map[string]*string `json:"finetuneCapabilities,omitempty"`
+	FinetuneCapabilities map[string]*string
 
 	// Deployment model format.
-	Format *string `json:"format,omitempty"`
+	Format *string
 
 	// Model lifecycle status.
-	LifecycleStatus *ModelLifecycleStatus `json:"lifecycleStatus,omitempty"`
+	LifecycleStatus *ModelLifecycleStatus
 
 	// The max capacity.
-	MaxCapacity *int32 `json:"maxCapacity,omitempty"`
+	MaxCapacity *int32
 
 	// Deployment model name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Deployment model version.
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY; The call rate limit Cognitive Services account.
-	CallRateLimit *CallRateLimit `json:"callRateLimit,omitempty" azure:"ro"`
+	CallRateLimit *CallRateLimit
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 }
 
 // AccountModelListResult - The list of cognitive services accounts operation response.
 type AccountModelListResult struct {
 	// The link used to get the next page of Model.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets the list of Cognitive Services accounts Model and their properties.
-	Value []*AccountModel `json:"value,omitempty"`
+	Value []*AccountModel
 }
 
 // AccountProperties - Properties of Cognitive Services account.
 type AccountProperties struct {
 	// The api properties for special APIs.
-	APIProperties   *APIProperties `json:"apiProperties,omitempty"`
-	AllowedFqdnList []*string      `json:"allowedFqdnList,omitempty"`
+	APIProperties   *APIProperties
+	AllowedFqdnList []*string
 
 	// Optional subdomain name used for token-based authentication.
-	CustomSubDomainName *string `json:"customSubDomainName,omitempty"`
-	DisableLocalAuth    *bool   `json:"disableLocalAuth,omitempty"`
+	CustomSubDomainName *string
+	DisableLocalAuth    *bool
 
 	// The flag to enable dynamic throttling.
-	DynamicThrottlingEnabled *bool `json:"dynamicThrottlingEnabled,omitempty"`
+	DynamicThrottlingEnabled *bool
 
 	// The encryption properties for this resource.
-	Encryption *Encryption `json:"encryption,omitempty"`
+	Encryption *Encryption
 
 	// The multiregion settings of Cognitive Services account.
-	Locations *MultiRegionSettings `json:"locations,omitempty"`
+	Locations *MultiRegionSettings
 
 	// Resource migration token.
-	MigrationToken *string `json:"migrationToken,omitempty"`
+	MigrationToken *string
 
 	// A collection of rules governing the accessibility from specific network locations.
-	NetworkACLs *NetworkRuleSet `json:"networkAcls,omitempty"`
+	NetworkACLs *NetworkRuleSet
 
 	// Whether or not public endpoint access is allowed for this account.
-	PublicNetworkAccess           *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-	Restore                       *bool                `json:"restore,omitempty"`
-	RestrictOutboundNetworkAccess *bool                `json:"restrictOutboundNetworkAccess,omitempty"`
+	PublicNetworkAccess           *PublicNetworkAccess
+	Restore                       *bool
+	RestrictOutboundNetworkAccess *bool
 
 	// The storage accounts for this resource.
-	UserOwnedStorage []*UserOwnedStorage `json:"userOwnedStorage,omitempty"`
+	UserOwnedStorage []*UserOwnedStorage
 
 	// READ-ONLY; The call rate limit Cognitive Services account.
-	CallRateLimit *CallRateLimit `json:"callRateLimit,omitempty" azure:"ro"`
+	CallRateLimit *CallRateLimit
 
 	// READ-ONLY; Gets the capabilities of the cognitive services account. Each item indicates the capability of a specific feature.
 	// The values are read-only and for reference only.
-	Capabilities []*SKUCapability `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities []*SKUCapability
 
 	// READ-ONLY; The commitment plan associations of Cognitive Services account.
-	CommitmentPlanAssociations []*CommitmentPlanAssociation `json:"commitmentPlanAssociations,omitempty" azure:"ro"`
+	CommitmentPlanAssociations []*CommitmentPlanAssociation
 
 	// READ-ONLY; Gets the date of cognitive services account creation.
-	DateCreated *string `json:"dateCreated,omitempty" azure:"ro"`
+	DateCreated *string
 
 	// READ-ONLY; The deletion date, only available for deleted account.
-	DeletionDate *string `json:"deletionDate,omitempty" azure:"ro"`
+	DeletionDate *string
 
 	// READ-ONLY; Endpoint of the created account.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
 
 	// READ-ONLY; Dictionary of
-	Endpoints map[string]*string `json:"endpoints,omitempty" azure:"ro"`
+	Endpoints map[string]*string
 
 	// READ-ONLY; The internal identifier (deprecated, do not use this property).
-	InternalID *string `json:"internalId,omitempty" azure:"ro"`
+	InternalID *string
 
 	// READ-ONLY; If the resource is migrated from an existing key.
-	IsMigrated *bool `json:"isMigrated,omitempty" azure:"ro"`
+	IsMigrated *bool
 
 	// READ-ONLY; The private endpoint connection associated with the Cognitive Services account.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Gets the status of the cognitive services account at the time the operation was called.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY
-	QuotaLimit *QuotaLimit `json:"quotaLimit,omitempty" azure:"ro"`
+	QuotaLimit *QuotaLimit
 
 	// READ-ONLY; Sku change info of account.
-	SKUChangeInfo *SKUChangeInfo `json:"skuChangeInfo,omitempty" azure:"ro"`
+	SKUChangeInfo *SKUChangeInfo
 
 	// READ-ONLY; The scheduled purge date, only available for deleted account.
-	ScheduledPurgeDate *string `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+	ScheduledPurgeDate *string
 }
 
 // AccountSKU - Cognitive Services resource type and SKU.
 type AccountSKU struct {
 	// Resource Namespace and Type
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The SKU of Cognitive Services account.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 }
 
 // AccountSKUListResult - The list of cognitive services accounts operation response.
 type AccountSKUListResult struct {
 	// Gets the list of Cognitive Services accounts and their properties.
-	Value []*AccountSKU `json:"value,omitempty"`
+	Value []*AccountSKU
 }
 
 // AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
@@ -303,192 +303,192 @@ type AccountsClientRegenerateKeyOptions struct {
 // AzureEntityResource - The resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CallRateLimit - The call rate limit Cognitive Services account.
 type CallRateLimit struct {
 	// The count value of Call Rate Limit.
-	Count *float32 `json:"count,omitempty"`
+	Count *float32
 
 	// The renewal period in seconds of Call Rate Limit.
-	RenewalPeriod *float32          `json:"renewalPeriod,omitempty"`
-	Rules         []*ThrottlingRule `json:"rules,omitempty"`
+	RenewalPeriod *float32
+	Rules         []*ThrottlingRule
 }
 
 // CheckDomainAvailabilityParameter - Check Domain availability parameter.
 type CheckDomainAvailabilityParameter struct {
 	// REQUIRED; The subdomain name to use.
-	SubdomainName *string `json:"subdomainName,omitempty"`
+	SubdomainName *string
 
 	// REQUIRED; The Type of the resource.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The Kind of the resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 }
 
 // CheckSKUAvailabilityParameter - Check SKU availability parameter.
 type CheckSKUAvailabilityParameter struct {
 	// REQUIRED; The Kind of the resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// REQUIRED; The SKU of the resource.
-	SKUs []*string `json:"skus,omitempty"`
+	SKUs []*string
 
 	// REQUIRED; The Type of the resource.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CommitmentCost - Cognitive Services account commitment cost.
 type CommitmentCost struct {
 	// Commitment meter Id.
-	CommitmentMeterID *string `json:"commitmentMeterId,omitempty"`
+	CommitmentMeterID *string
 
 	// Overage meter Id.
-	OverageMeterID *string `json:"overageMeterId,omitempty"`
+	OverageMeterID *string
 }
 
 // CommitmentPeriod - Cognitive Services account commitment period.
 type CommitmentPeriod struct {
 	// Commitment period commitment count.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// Commitment period commitment tier.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 
 	// READ-ONLY; Commitment period end date.
-	EndDate *string `json:"endDate,omitempty" azure:"ro"`
+	EndDate *string
 
 	// READ-ONLY; Cognitive Services account commitment quota.
-	Quota *CommitmentQuota `json:"quota,omitempty" azure:"ro"`
+	Quota *CommitmentQuota
 
 	// READ-ONLY; Commitment period start date.
-	StartDate *string `json:"startDate,omitempty" azure:"ro"`
+	StartDate *string
 }
 
 // CommitmentPlan - Cognitive Services account commitment plan.
 type CommitmentPlan struct {
 	// The Kind of the resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of Cognitive Services account commitment plan.
-	Properties *CommitmentPlanProperties `json:"properties,omitempty"`
+	Properties *CommitmentPlanProperties
 
 	// The resource model definition representing SKU
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CommitmentPlanAccountAssociation - The commitment plan association.
 type CommitmentPlanAccountAssociation struct {
 	// Properties of Cognitive Services account commitment plan association.
-	Properties *CommitmentPlanAccountAssociationProperties `json:"properties,omitempty"`
+	Properties *CommitmentPlanAccountAssociationProperties
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CommitmentPlanAccountAssociationListResult - The list of cognitive services Commitment Plan Account Association operation
 // response.
 type CommitmentPlanAccountAssociationListResult struct {
 	// The link used to get the next page of Commitment Plan Account Association.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Gets the list of Cognitive Services Commitment Plan Account Association and their properties.
-	Value []*CommitmentPlanAccountAssociation `json:"value,omitempty" azure:"ro"`
+	Value []*CommitmentPlanAccountAssociation
 }
 
 // CommitmentPlanAccountAssociationProperties - The commitment plan account association properties.
 type CommitmentPlanAccountAssociationProperties struct {
 	// The Azure resource id of the account.
-	AccountID *string `json:"accountId,omitempty"`
+	AccountID *string
 }
 
 // CommitmentPlanAssociation - The commitment plan association.
 type CommitmentPlanAssociation struct {
 	// The Azure resource id of the commitment plan.
-	CommitmentPlanID *string `json:"commitmentPlanId,omitempty"`
+	CommitmentPlanID *string
 
 	// The location of of the commitment plan.
-	CommitmentPlanLocation *string `json:"commitmentPlanLocation,omitempty"`
+	CommitmentPlanLocation *string
 }
 
 // CommitmentPlanListResult - The list of cognitive services accounts operation response.
 type CommitmentPlanListResult struct {
 	// The link used to get the next page of CommitmentPlan.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Gets the list of Cognitive Services accounts CommitmentPlan and their properties.
-	Value []*CommitmentPlan `json:"value,omitempty" azure:"ro"`
+	Value []*CommitmentPlan
 }
 
 // CommitmentPlanProperties - Properties of Cognitive Services account commitment plan.
 type CommitmentPlanProperties struct {
 	// AutoRenew commitment plan.
-	AutoRenew *bool `json:"autoRenew,omitempty"`
+	AutoRenew *bool
 
 	// Commitment plan guid.
-	CommitmentPlanGUID *string `json:"commitmentPlanGuid,omitempty"`
+	CommitmentPlanGUID *string
 
 	// Cognitive Services account commitment period.
-	Current *CommitmentPeriod `json:"current,omitempty"`
+	Current *CommitmentPeriod
 
 	// Account hosting model.
-	HostingModel *HostingModel `json:"hostingModel,omitempty"`
+	HostingModel *HostingModel
 
 	// Cognitive Services account commitment period.
-	Next *CommitmentPeriod `json:"next,omitempty"`
+	Next *CommitmentPeriod
 
 	// Commitment plan type.
-	PlanType *string `json:"planType,omitempty"`
+	PlanType *string
 
 	// READ-ONLY; Cognitive Services account commitment period.
-	Last *CommitmentPeriod `json:"last,omitempty" azure:"ro"`
+	Last *CommitmentPeriod
 
 	// READ-ONLY; Gets the status of the resource at the time the operation was called.
-	ProvisioningState *CommitmentPlanProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *CommitmentPlanProvisioningState
 }
 
 // CommitmentPlansClientBeginCreateOrUpdateAssociationOptions contains the optional parameters for the CommitmentPlansClient.BeginCreateOrUpdateAssociation
@@ -580,46 +580,46 @@ type CommitmentPlansClientListPlansBySubscriptionOptions struct {
 // CommitmentQuota - Cognitive Services account commitment quota.
 type CommitmentQuota struct {
 	// Commitment quota quantity.
-	Quantity *int64 `json:"quantity,omitempty"`
+	Quantity *int64
 
 	// Commitment quota unit.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // CommitmentTier - Cognitive Services account commitment tier.
 type CommitmentTier struct {
 	// Cognitive Services account commitment cost.
-	Cost *CommitmentCost `json:"cost,omitempty"`
+	Cost *CommitmentCost
 
 	// Account hosting model.
-	HostingModel *HostingModel `json:"hostingModel,omitempty"`
+	HostingModel *HostingModel
 
 	// The Kind of the resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Commitment period commitment max count.
-	MaxCount *int32 `json:"maxCount,omitempty"`
+	MaxCount *int32
 
 	// Commitment plan type.
-	PlanType *string `json:"planType,omitempty"`
+	PlanType *string
 
 	// Cognitive Services account commitment quota.
-	Quota *CommitmentQuota `json:"quota,omitempty"`
+	Quota *CommitmentQuota
 
 	// The name of the SKU. Ex - P3. It is typically a letter+number code
-	SKUName *string `json:"skuName,omitempty"`
+	SKUName *string
 
 	// Commitment period commitment tier.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // CommitmentTierListResult - The list of cognitive services accounts operation response.
 type CommitmentTierListResult struct {
 	// The link used to get the next page of CommitmentTier.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Gets the list of Cognitive Services accounts CommitmentTier and their properties.
-	Value []*CommitmentTier `json:"value,omitempty" azure:"ro"`
+	Value []*CommitmentTier
 }
 
 // CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.NewListPager method.
@@ -646,79 +646,79 @@ type DeletedAccountsClientListOptions struct {
 // Deployment - Cognitive Services account deployment.
 type Deployment struct {
 	// Properties of Cognitive Services account deployment.
-	Properties *DeploymentProperties `json:"properties,omitempty"`
+	Properties *DeploymentProperties
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeploymentListResult - The list of cognitive services accounts operation response.
 type DeploymentListResult struct {
 	// The link used to get the next page of Deployment.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Gets the list of Cognitive Services accounts Deployment and their properties.
-	Value []*Deployment `json:"value,omitempty" azure:"ro"`
+	Value []*Deployment
 }
 
 // DeploymentModel - Properties of Cognitive Services account deployment model.
 type DeploymentModel struct {
 	// Deployment model format.
-	Format *string `json:"format,omitempty"`
+	Format *string
 
 	// Deployment model name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Deployment model version.
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY; The call rate limit Cognitive Services account.
-	CallRateLimit *CallRateLimit `json:"callRateLimit,omitempty" azure:"ro"`
+	CallRateLimit *CallRateLimit
 }
 
 // DeploymentProperties - Properties of Cognitive Services account deployment.
 type DeploymentProperties struct {
 	// Properties of Cognitive Services account deployment model.
-	Model *DeploymentModel `json:"model,omitempty"`
+	Model *DeploymentModel
 
 	// The name of RAI policy.
-	RaiPolicyName *string `json:"raiPolicyName,omitempty"`
+	RaiPolicyName *string
 
 	// Properties of Cognitive Services account deployment model.
-	ScaleSettings *DeploymentScaleSettings `json:"scaleSettings,omitempty"`
+	ScaleSettings *DeploymentScaleSettings
 
 	// READ-ONLY; The call rate limit Cognitive Services account.
-	CallRateLimit *CallRateLimit `json:"callRateLimit,omitempty" azure:"ro"`
+	CallRateLimit *CallRateLimit
 
 	// READ-ONLY; The capabilities.
-	Capabilities map[string]*string `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities map[string]*string
 
 	// READ-ONLY; Gets the status of the resource at the time the operation was called.
-	ProvisioningState *DeploymentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *DeploymentProvisioningState
 }
 
 // DeploymentScaleSettings - Properties of Cognitive Services account deployment model.
 type DeploymentScaleSettings struct {
 	// Deployment capacity.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// Deployment scale type.
-	ScaleType *DeploymentScaleType `json:"scaleType,omitempty"`
+	ScaleType *DeploymentScaleType
 
 	// READ-ONLY; Deployment active capacity. This value might be different from capacity if customer recently updated capacity.
-	ActiveCapacity *int32 `json:"activeCapacity,omitempty" azure:"ro"`
+	ActiveCapacity *int32
 }
 
 // DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
@@ -747,100 +747,100 @@ type DeploymentsClientListOptions struct {
 // DomainAvailability - Domain availability.
 type DomainAvailability struct {
 	// Indicates the given SKU is available or not.
-	IsSubdomainAvailable *bool `json:"isSubdomainAvailable,omitempty"`
+	IsSubdomainAvailable *bool
 
 	// The Kind of the resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Reason why the SKU is not available.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 
 	// The subdomain name to use.
-	SubdomainName *string `json:"subdomainName,omitempty"`
+	SubdomainName *string
 
 	// The Type of the resource.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // Encryption - Properties to configure Encryption
 type Encryption struct {
 	// Enumerates the possible value of keySource for Encryption
-	KeySource *KeySource `json:"keySource,omitempty"`
+	KeySource *KeySource
 
 	// Properties of KeyVault
-	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties *KeyVaultProperties
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // IPRule - A rule governing the accessibility from a specific ip address or ip range.
 type IPRule struct {
 	// REQUIRED; An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or '124.56.78.0/24' (all addresses
 	// that start with 124.56.78).
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// The list of user assigned identities associated with the resource. The user identity dictionary key references will be
 	// ARM resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // KeyVaultProperties - Properties to configure keyVault Properties
 type KeyVaultProperties struct {
-	IdentityClientID *string `json:"identityClientId,omitempty"`
+	IdentityClientID *string
 
 	// Name of the Key from KeyVault
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// Uri of KeyVault
-	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	KeyVaultURI *string
 
 	// Version of the Key from KeyVault
-	KeyVersion *string `json:"keyVersion,omitempty"`
+	KeyVersion *string
 }
 
 // ManagementClientCheckDomainAvailabilityOptions contains the optional parameters for the ManagementClient.CheckDomainAvailability
@@ -858,89 +858,89 @@ type ManagementClientCheckSKUAvailabilityOptions struct {
 // MetricName - A metric name.
 type MetricName struct {
 	// The friendly name of the metric.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// The name of the metric.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ModelDeprecationInfo - Cognitive Services account ModelDeprecationInfo.
 type ModelDeprecationInfo struct {
 	// The datetime of deprecation of the fineTune Model.
-	FineTune *string `json:"fineTune,omitempty"`
+	FineTune *string
 
 	// The datetime of deprecation of the inference Model.
-	Inference *string `json:"inference,omitempty"`
+	Inference *string
 }
 
 // MultiRegionSettings - The multiregion settings Cognitive Services account.
 type MultiRegionSettings struct {
-	Regions []*RegionSetting `json:"regions,omitempty"`
+	Regions []*RegionSetting
 
 	// Multiregion routing methods.
-	RoutingMethod *RoutingMethods `json:"routingMethod,omitempty"`
+	RoutingMethod *RoutingMethods
 }
 
 // NetworkRuleSet - A set of rules governing the network accessibility.
 type NetworkRuleSet struct {
 	// The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the bypass property
 	// has been evaluated.
-	DefaultAction *NetworkRuleAction `json:"defaultAction,omitempty"`
+	DefaultAction *NetworkRuleAction
 
 	// The list of IP address rules.
-	IPRules []*IPRule `json:"ipRules,omitempty"`
+	IPRules []*IPRule
 
 	// The list of virtual network rules.
-	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
+	VirtualNetworkRules []*VirtualNetworkRule
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -951,67 +951,67 @@ type OperationsClientListOptions struct {
 // PatchResourceTags - The object being used to update tags of a resource, in general used for PATCH operations.
 type PatchResourceTags struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PatchResourceTagsAndSKU - The object being used to update tags and sku of a resource, in general used for PATCH operations.
 type PatchResourceTagsAndSKU struct {
 	// The resource model definition representing SKU
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// The location of the private endpoint connection
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - A list of private endpoint connections
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// The private link resource group ids.
-	GroupIDs []*string `json:"groupIds,omitempty"`
+	GroupIDs []*string
 
 	// The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
@@ -1043,37 +1043,37 @@ type PrivateEndpointConnectionsClientListOptions struct {
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
@@ -1085,121 +1085,121 @@ type PrivateLinkResourcesClientListOptions struct {
 // and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointServiceConnectionStatus
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type QuotaLimit struct {
-	Count         *float32          `json:"count,omitempty"`
-	RenewalPeriod *float32          `json:"renewalPeriod,omitempty"`
-	Rules         []*ThrottlingRule `json:"rules,omitempty"`
+	Count         *float32
+	RenewalPeriod *float32
+	Rules         []*ThrottlingRule
 }
 
 // RegenerateKeyParameters - Regenerate key parameters.
 type RegenerateKeyParameters struct {
 	// REQUIRED; key name to generate (Key1|Key2)
-	KeyName *KeyName `json:"keyName,omitempty"`
+	KeyName *KeyName
 }
 
 // RegionSetting - The call rate limit Cognitive Services account.
 type RegionSetting struct {
 	// Maps the region to the regional custom subdomain.
-	Customsubdomain *string `json:"customsubdomain,omitempty"`
+	Customsubdomain *string
 
 	// Name of the region.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// A value for priority or weighted routing methods.
-	Value *float32 `json:"value,omitempty"`
+	Value *float32
 }
 
 type RequestMatchPattern struct {
-	Method *string `json:"method,omitempty"`
-	Path   *string `json:"path,omitempty"`
+	Method *string
+	Path   *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceSKU - Describes an available Cognitive Services SKU.
 type ResourceSKU struct {
 	// The Kind of resources that are supported in this SKU.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// The set of locations that the SKU is available.
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 
 	// The name of SKU.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The type of resource the SKU applies to.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
-	Restrictions []*ResourceSKURestrictions `json:"restrictions,omitempty"`
+	Restrictions []*ResourceSKURestrictions
 
 	// Specifies the tier of Cognitive Services account.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // ResourceSKUListResult - The Get Skus operation response.
 type ResourceSKUListResult struct {
 	// REQUIRED; The list of skus available for the subscription.
-	Value []*ResourceSKU `json:"value,omitempty"`
+	Value []*ResourceSKU
 
 	// The uri to fetch the next page of Skus.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 type ResourceSKURestrictionInfo struct {
 	// Locations where the SKU is restricted
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 
 	// List of availability zones where the SKU is restricted.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 // ResourceSKURestrictions - Describes restrictions of a SKU.
 type ResourceSKURestrictions struct {
 	// The reason for restriction.
-	ReasonCode *ResourceSKURestrictionsReasonCode `json:"reasonCode,omitempty"`
+	ReasonCode *ResourceSKURestrictionsReasonCode
 
 	// The information about the restriction where the SKU cannot be used.
-	RestrictionInfo *ResourceSKURestrictionInfo `json:"restrictionInfo,omitempty"`
+	RestrictionInfo *ResourceSKURestrictionInfo
 
 	// The type of restrictions.
-	Type *ResourceSKURestrictionsType `json:"type,omitempty"`
+	Type *ResourceSKURestrictionsType
 
 	// The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU
 	// is restricted.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.NewListPager method.
@@ -1210,156 +1210,156 @@ type ResourceSKUsClientListOptions struct {
 // SKU - The resource model definition representing SKU
 type SKU struct {
 	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
 	// resource this may be omitted.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
-	Family *string `json:"family,omitempty"`
+	Family *string
 
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
 	// on a PUT.
-	Tier *SKUTier `json:"tier,omitempty"`
+	Tier *SKUTier
 }
 
 // SKUAvailability - SKU availability.
 type SKUAvailability struct {
 	// The Kind of the resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Additional error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Reason why the SKU is not available.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 
 	// Indicates the given SKU is available or not.
-	SKUAvailable *bool `json:"skuAvailable,omitempty"`
+	SKUAvailable *bool
 
 	// The SKU of Cognitive Services account.
-	SKUName *string `json:"skuName,omitempty"`
+	SKUName *string
 
 	// The Type of the resource.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // SKUAvailabilityListResult - Check SKU availability result list.
 type SKUAvailabilityListResult struct {
 	// Check SKU availability result list.
-	Value []*SKUAvailability `json:"value,omitempty"`
+	Value []*SKUAvailability
 }
 
 // SKUCapability - SkuCapability indicates the capability of a certain feature.
 type SKUCapability struct {
 	// The name of the SkuCapability.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the SkuCapability.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // SKUChangeInfo - Sku change info of account.
 type SKUChangeInfo struct {
 	// Gets the count of downgrades.
-	CountOfDowngrades *float32 `json:"countOfDowngrades,omitempty"`
+	CountOfDowngrades *float32
 
 	// Gets the count of upgrades after downgrades.
-	CountOfUpgradesAfterDowngrades *float32 `json:"countOfUpgradesAfterDowngrades,omitempty"`
+	CountOfUpgradesAfterDowngrades *float32
 
 	// Gets the last change date.
-	LastChangeDate *string `json:"lastChangeDate,omitempty"`
+	LastChangeDate *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 type ThrottlingRule struct {
-	Count                    *float32               `json:"count,omitempty"`
-	DynamicThrottlingEnabled *bool                  `json:"dynamicThrottlingEnabled,omitempty"`
-	Key                      *string                `json:"key,omitempty"`
-	MatchPatterns            []*RequestMatchPattern `json:"matchPatterns,omitempty"`
-	MinCount                 *float32               `json:"minCount,omitempty"`
-	RenewalPeriod            *float32               `json:"renewalPeriod,omitempty"`
+	Count                    *float32
+	DynamicThrottlingEnabled *bool
+	Key                      *string
+	MatchPatterns            []*RequestMatchPattern
+	MinCount                 *float32
+	RenewalPeriod            *float32
 }
 
 // Usage - The usage data for a usage request.
 type Usage struct {
 	// Current value for this metric.
-	CurrentValue *float64 `json:"currentValue,omitempty"`
+	CurrentValue *float64
 
 	// Maximum value for this metric.
-	Limit *float64 `json:"limit,omitempty"`
+	Limit *float64
 
 	// The name information for the metric.
-	Name *MetricName `json:"name,omitempty"`
+	Name *MetricName
 
 	// Next reset time for current quota.
-	NextResetTime *string `json:"nextResetTime,omitempty"`
+	NextResetTime *string
 
 	// The quota period used to summarize the usage values.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
+	QuotaPeriod *string
 
 	// Cognitive Services account quota usage status.
-	Status *QuotaUsageStatus `json:"status,omitempty"`
+	Status *QuotaUsageStatus
 
 	// The unit of the metric.
-	Unit *UnitType `json:"unit,omitempty"`
+	Unit *UnitType
 }
 
 // UsageListResult - The response to a list usage request.
 type UsageListResult struct {
 	// The list of usages for Cognitive Service account.
-	Value []*Usage `json:"value,omitempty"`
+	Value []*Usage
 }
 
 // UserAssignedIdentity - User-assigned managed identity.
 type UserAssignedIdentity struct {
 	// READ-ONLY; Client App Id associated with this identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; Azure Active Directory principal ID associated with this Identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // UserOwnedStorage - The user owned storage for Cognitive Services account.
 type UserOwnedStorage struct {
-	IdentityClientID *string `json:"identityClientId,omitempty"`
+	IdentityClientID *string
 
 	// Full resource id of a Microsoft.Storage resource.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // VirtualNetworkRule - A rule governing the accessibility from a specific virtual network.
 type VirtualNetworkRule struct {
 	// REQUIRED; Full resource id of a vnet subnet, such as '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Ignore missing vnet service endpoint or not.
-	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
+	IgnoreMissingVnetServiceEndpoint *bool
 
 	// Gets the state of virtual network rule.
-	State *string `json:"state,omitempty"`
+	State *string
 }

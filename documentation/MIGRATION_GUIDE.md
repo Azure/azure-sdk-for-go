@@ -58,7 +58,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 
 ```go
 credential, err := azidentity.NewClientSecretCredential("<TenantId>", "<ClientId>", "<ClientSecret>", nil)
-client, err := armresources.NewResourceGroupsClient("<SubscriptionId>", credential, nil)
+clientFactory, err := armresources.NewClientFactory(<subscription ID>, credential, &options)
+if err != nil {
+  log.Fatal(err)
+}
+client := clientFactory.NewResourceGroupsClient()
 ```
 
 For detailed information on the benefits of using the new authentication types, please refer to [this page](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/README.md)

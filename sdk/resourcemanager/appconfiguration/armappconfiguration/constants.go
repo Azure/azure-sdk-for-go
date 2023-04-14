@@ -11,7 +11,7 @@ package armappconfiguration
 
 const (
 	moduleName    = "armappconfiguration"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // ActionsRequired - Any action that is required beyond basic workflow (approve/ reject/ disconnect)

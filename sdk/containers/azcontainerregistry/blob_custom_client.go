@@ -9,6 +9,7 @@ package azcontainerregistry
 import (
 	"context"
 	"crypto/sha256"
+	"encoding"
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -64,7 +65,8 @@ func NewBlobClient(endpoint string, credential azcore.TokenCredential, options *
 // BlobDigestCalculator help to calculate blob digest when uploading blob.
 // Don't use this type directly, use NewBlobDigestCalculator() instead.
 type BlobDigestCalculator struct {
-	h hash.Hash
+	h         hash.Hash
+	hashState []byte
 }
 
 type wrappedReadSeeker struct {
@@ -77,6 +79,19 @@ func NewBlobDigestCalculator() *BlobDigestCalculator {
 	return &BlobDigestCalculator{
 		h: sha256.New(),
 	}
+}
+
+func (b *BlobDigestCalculator) saveState() error {
+	var err error
+	b.hashState, err = b.h.(encoding.BinaryMarshaler).MarshalBinary()
+	return err
+}
+
+func (b *BlobDigestCalculator) restoreState() error {
+	if b.hashState == nil {
+		return nil
+	}
+	return b.h.(encoding.BinaryUnmarshaler).UnmarshalBinary(b.hashState)
 }
 
 // BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
@@ -94,12 +109,23 @@ type BlobClientUploadChunkOptions struct {
 //   - blobDigestCalculator - Calculator that help to calculate blob digest
 //   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
 func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeeker, blobDigestCalculator *BlobDigestCalculator, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
+	err := blobDigestCalculator.saveState()
+	if err != nil {
+		return BlobClientUploadChunkResponse{}, fmt.Errorf("could not save state of blog digest calculator with error %s", err)
+	}
 	wrappedChunkData := &wrappedReadSeeker{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData}
 	var requestOptions *blobClientUploadChunkOptions
 	if options != nil && options.RangeStart != nil && options.RangeEnd != nil {
 		requestOptions = &blobClientUploadChunkOptions{ContentRange: to.Ptr(fmt.Sprintf("%d-%d", *options.RangeStart, *options.RangeEnd))}
 	}
-	return client.uploadChunk(ctx, location, streaming.NopCloser(wrappedChunkData), requestOptions)
+	resp, err := client.uploadChunk(ctx, location, streaming.NopCloser(wrappedChunkData), requestOptions)
+	if err != nil {
+		restoreErr := blobDigestCalculator.restoreState()
+		if restoreErr != nil {
+			err = fmt.Errorf("could not restore state of blog digest calculator with error %s: %w", restoreErr, err)
+		}
+	}
+	return resp, err
 }
 
 // CompleteUpload - Complete the upload with previously uploaded content.

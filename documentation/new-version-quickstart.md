@@ -206,7 +206,7 @@ func main() {
         log.Fatalf("authentication failure: %+v", err)
     }
 	
-	clientFactory, err := armresources.NewClientFactory(subscriptionId, cred, nil)
+    clientFactory, err := armresources.NewClientFactory(subscriptionId, cred, nil)
     if err != nil {
         log.Fatalf("cannot create client factory: %+v", err)
     }

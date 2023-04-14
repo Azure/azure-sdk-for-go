@@ -113,7 +113,7 @@ options := arm.ClientOptions {
 }
 clientFactory, err := armcompute.NewClientFactory(<subscription ID>, credential, &options)
 if err != nil {
-	log.Fatal(err)
+    log.Fatal(err)
 }
 client := clientFactory.NewVirtualMachinesClient()
 ```

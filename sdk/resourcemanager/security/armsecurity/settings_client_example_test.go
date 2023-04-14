@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/GetSettings_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/24166cedd1055380f1b9d40df270bf51b287d7d9/specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/GetSettings_example.json
 func ExampleSettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,15 +42,6 @@ func ExampleSettingsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.SettingsList = armsecurity.SettingsList{
 		// 	Value: []armsecurity.SettingClassification{
-		// 		&armsecurity.DataExportSettings{
-		// 			Name: to.Ptr("MCAS"),
-		// 			Type: to.Ptr("Microsoft.Security/settings"),
-		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/settings/MCAS"),
-		// 			Kind: to.Ptr(armsecurity.SettingKindDataExportSettings),
-		// 			Properties: &armsecurity.DataExportSettingProperties{
-		// 				Enabled: to.Ptr(true),
-		// 			},
-		// 		},
 		// 		&armsecurity.DataExportSettings{
 		// 			Name: to.Ptr("WDATP"),
 		// 			Type: to.Ptr("Microsoft.Security/settings"),
@@ -91,7 +82,7 @@ func ExampleSettingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/GetSetting_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/24166cedd1055380f1b9d40df270bf51b287d7d9/specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/GetSetting_example.json
 func ExampleSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +93,7 @@ func ExampleSettingsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSettingsClient().Get(ctx, armsecurity.SettingNameMCAS, nil)
+	res, err := clientFactory.NewSettingsClient().Get(ctx, armsecurity.SettingNameWDATP, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -111,9 +102,9 @@ func ExampleSettingsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.SettingsClientGetResponse{
 	// 	                            SettingClassification: &armsecurity.DataExportSettings{
-	// 		Name: to.Ptr("MCAS"),
+	// 		Name: to.Ptr("WDATP"),
 	// 		Type: to.Ptr("Microsoft.Security/settings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/settings/MCAS"),
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/settings/WDATP"),
 	// 		Kind: to.Ptr(armsecurity.SettingKindDataExportSettings),
 	// 		Properties: &armsecurity.DataExportSettingProperties{
 	// 			Enabled: to.Ptr(true),
@@ -122,7 +113,7 @@ func ExampleSettingsClient_Get() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/UpdateSetting_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/24166cedd1055380f1b9d40df270bf51b287d7d9/specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/UpdateSetting_example.json
 func ExampleSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +124,7 @@ func ExampleSettingsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSettingsClient().Update(ctx, armsecurity.SettingNameMCAS, &armsecurity.DataExportSettings{
+	res, err := clientFactory.NewSettingsClient().Update(ctx, armsecurity.SettingNameWDATP, &armsecurity.DataExportSettings{
 		Kind: to.Ptr(armsecurity.SettingKindDataExportSettings),
 		Properties: &armsecurity.DataExportSettingProperties{
 			Enabled: to.Ptr(true),
@@ -147,9 +138,9 @@ func ExampleSettingsClient_Update() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.SettingsClientUpdateResponse{
 	// 	                            SettingClassification: &armsecurity.DataExportSettings{
-	// 		Name: to.Ptr("MCAS"),
+	// 		Name: to.Ptr("WDATP"),
 	// 		Type: to.Ptr("Microsoft.Security/settings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/settings/MCAS"),
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/settings/WDATP"),
 	// 		Kind: to.Ptr(armsecurity.SettingKindDataExportSettings),
 	// 		Properties: &armsecurity.DataExportSettingProperties{
 	// 			Enabled: to.Ptr(true),

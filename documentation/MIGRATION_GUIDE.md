@@ -60,7 +60,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 credential, err := azidentity.NewClientSecretCredential("<TenantId>", "<ClientId>", "<ClientSecret>", nil)
 clientFactory, err := armresources.NewClientFactory(<subscription ID>, credential, &options)
 if err != nil {
-  log.Fatal(err)
+    log.Fatal(err)
 }
 client := clientFactory.NewResourceGroupsClient()
 ```

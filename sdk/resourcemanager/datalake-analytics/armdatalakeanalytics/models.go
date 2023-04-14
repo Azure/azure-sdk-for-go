@@ -15,56 +15,56 @@ import "time"
 // account.
 type Account struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The properties defined by Data Lake Analytics all properties are specific to each resource provider.
-	Properties *AccountProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *AccountProperties
 
 	// READ-ONLY; The resource tags.
-	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountBasic - A Data Lake Analytics account object, containing all information associated with the named Data Lake Analytics
 // account.
 type AccountBasic struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The properties defined by Data Lake Analytics all properties are specific to each resource provider.
-	Properties *AccountPropertiesBasic `json:"properties,omitempty" azure:"ro"`
+	Properties *AccountPropertiesBasic
 
 	// READ-ONLY; The resource tags.
-	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountListResult - Data Lake Analytics account list information.
 type AccountListResult struct {
 	// READ-ONLY; The current number of data lake analytics accounts under this subscription.
-	Count *int32 `json:"count,omitempty" azure:"ro"`
+	Count *int32
 
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The results of the list operation.
-	Value []*AccountBasic `json:"value,omitempty" azure:"ro"`
+	Value []*AccountBasic
 }
 
 // AccountProperties - The account specific properties that are associated with an underlying Data Lake Analytics account.
@@ -72,118 +72,118 @@ type AccountListResult struct {
 type AccountProperties struct {
 	// The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled,
 	// this is not enforced.
-	FirewallAllowAzureIPs *FirewallAllowAzureIPsState `json:"firewallAllowAzureIps,omitempty"`
+	FirewallAllowAzureIPs *FirewallAllowAzureIPsState
 
 	// The current state of the IP address firewall for this account.
-	FirewallState *FirewallState `json:"firewallState,omitempty"`
+	FirewallState *FirewallState
 
 	// The maximum supported degree of parallelism for this account.
-	MaxDegreeOfParallelism *int32 `json:"maxDegreeOfParallelism,omitempty"`
+	MaxDegreeOfParallelism *int32
 
 	// The maximum supported degree of parallelism per job for this account.
-	MaxDegreeOfParallelismPerJob *int32 `json:"maxDegreeOfParallelismPerJob,omitempty"`
+	MaxDegreeOfParallelismPerJob *int32
 
 	// The maximum supported jobs running under the account at the same time.
-	MaxJobCount *int32 `json:"maxJobCount,omitempty"`
+	MaxJobCount *int32
 
 	// The commitment tier for the next month.
-	NewTier *TierType `json:"newTier,omitempty"`
+	NewTier *TierType
 
 	// The list of Data Lake Store accounts associated with this account.
-	PublicDataLakeStoreAccounts []*DataLakeStoreAccountInformation `json:"publicDataLakeStoreAccounts,omitempty"`
+	PublicDataLakeStoreAccounts []*DataLakeStoreAccountInformation
 
 	// The number of days that job metadata is retained.
-	QueryStoreRetention *int32 `json:"queryStoreRetention,omitempty"`
+	QueryStoreRetention *int32
 
 	// READ-ONLY; The unique identifier associated with this Data Lake Analytics account.
-	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+	AccountID *string
 
 	// READ-ONLY; The list of compute policies associated with this account.
-	ComputePolicies []*ComputePolicy `json:"computePolicies,omitempty" azure:"ro"`
+	ComputePolicies []*ComputePolicy
 
 	// READ-ONLY; The account creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; The commitment tier in use for the current month.
-	CurrentTier *TierType `json:"currentTier,omitempty" azure:"ro"`
+	CurrentTier *TierType
 
 	// READ-ONLY; The list of Data Lake Store accounts associated with this account.
-	DataLakeStoreAccounts []*DataLakeStoreAccountInformation `json:"dataLakeStoreAccounts,omitempty" azure:"ro"`
+	DataLakeStoreAccounts []*DataLakeStoreAccountInformation
 
 	// READ-ONLY; The current state of the DebugDataAccessLevel for this account.
-	DebugDataAccessLevel *DebugDataAccessLevel `json:"debugDataAccessLevel,omitempty" azure:"ro"`
+	DebugDataAccessLevel *DebugDataAccessLevel
 
 	// READ-ONLY; The default Data Lake Store account associated with this account.
-	DefaultDataLakeStoreAccount *string `json:"defaultDataLakeStoreAccount,omitempty" azure:"ro"`
+	DefaultDataLakeStoreAccount *string
 
 	// READ-ONLY; The type of the default Data Lake Store account associated with this account.
-	DefaultDataLakeStoreAccountType *string `json:"defaultDataLakeStoreAccountType,omitempty" azure:"ro"`
+	DefaultDataLakeStoreAccountType *string
 
 	// READ-ONLY; The full CName endpoint for this account.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
 
 	// READ-ONLY; The list of firewall rules associated with this account.
-	FirewallRules []*FirewallRule `json:"firewallRules,omitempty" azure:"ro"`
+	FirewallRules []*FirewallRule
 
 	// READ-ONLY; The list of hiveMetastores associated with this account.
-	HiveMetastores []*HiveMetastore `json:"hiveMetastores,omitempty" azure:"ro"`
+	HiveMetastores []*HiveMetastore
 
 	// READ-ONLY; The account last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; The maximum supported active jobs under the account at the same time.
-	MaxActiveJobCountPerUser *int32 `json:"maxActiveJobCountPerUser,omitempty" azure:"ro"`
+	MaxActiveJobCountPerUser *int32
 
 	// READ-ONLY; The maximum supported active jobs under the account at the same time.
-	MaxJobRunningTimeInMin *int32 `json:"maxJobRunningTimeInMin,omitempty" azure:"ro"`
+	MaxJobRunningTimeInMin *int32
 
 	// READ-ONLY; The maximum supported jobs queued under the account at the same time.
-	MaxQueuedJobCountPerUser *int32 `json:"maxQueuedJobCountPerUser,omitempty" azure:"ro"`
+	MaxQueuedJobCountPerUser *int32
 
 	// READ-ONLY; The minimum supported priority per job for this account.
-	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty" azure:"ro"`
+	MinPriorityPerJob *int32
 
 	// READ-ONLY; The provisioning status of the Data Lake Analytics account.
-	ProvisioningState *DataLakeAnalyticsAccountStatus `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *DataLakeAnalyticsAccountStatus
 
 	// READ-ONLY; The state of the Data Lake Analytics account.
-	State *DataLakeAnalyticsAccountState `json:"state,omitempty" azure:"ro"`
+	State *DataLakeAnalyticsAccountState
 
 	// READ-ONLY; The list of Azure Blob Storage accounts associated with this account.
-	StorageAccounts []*StorageAccountInformation `json:"storageAccounts,omitempty" azure:"ro"`
+	StorageAccounts []*StorageAccountInformation
 
 	// READ-ONLY; The system defined maximum supported degree of parallelism for this account, which restricts the maximum value
 	// of parallelism the user can set for the account.
-	SystemMaxDegreeOfParallelism *int32 `json:"systemMaxDegreeOfParallelism,omitempty" azure:"ro"`
+	SystemMaxDegreeOfParallelism *int32
 
 	// READ-ONLY; The system defined maximum supported jobs running under the account at the same time, which restricts the maximum
 	// number of running jobs the user can set for the account.
-	SystemMaxJobCount *int32 `json:"systemMaxJobCount,omitempty" azure:"ro"`
+	SystemMaxJobCount *int32
 
 	// READ-ONLY; The list of virtualNetwork rules associated with this account.
-	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty" azure:"ro"`
+	VirtualNetworkRules []*VirtualNetworkRule
 }
 
 // AccountPropertiesBasic - The basic account specific properties that are associated with an underlying Data Lake Analytics
 // account.
 type AccountPropertiesBasic struct {
 	// READ-ONLY; The unique identifier associated with this Data Lake Analytics account.
-	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+	AccountID *string
 
 	// READ-ONLY; The account creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; The full CName endpoint for this account.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
 
 	// READ-ONLY; The account last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; The provisioning status of the Data Lake Analytics account.
-	ProvisioningState *DataLakeAnalyticsAccountStatus `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *DataLakeAnalyticsAccountStatus
 
 	// READ-ONLY; The state of the Data Lake Analytics account.
-	State *DataLakeAnalyticsAccountState `json:"state,omitempty" azure:"ro"`
+	State *DataLakeAnalyticsAccountState
 }
 
 // AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
@@ -261,75 +261,75 @@ type AccountsClientListOptions struct {
 // AddDataLakeStoreParameters - The parameters used to add a new Data Lake Store account.
 type AddDataLakeStoreParameters struct {
 	// The Data Lake Store account properties to use when adding a new Data Lake Store account.
-	Properties *AddDataLakeStoreProperties `json:"properties,omitempty"`
+	Properties *AddDataLakeStoreProperties
 }
 
 // AddDataLakeStoreProperties - The Data Lake Store account properties to use when adding a new Data Lake Store account.
 type AddDataLakeStoreProperties struct {
 	// The optional suffix for the Data Lake Store account.
-	Suffix *string `json:"suffix,omitempty"`
+	Suffix *string
 }
 
 // AddDataLakeStoreWithAccountParameters - The parameters used to add a new Data Lake Store account while creating a new Data
 // Lake Analytics account.
 type AddDataLakeStoreWithAccountParameters struct {
 	// REQUIRED; The unique name of the Data Lake Store account to add.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The Data Lake Store account properties to use when adding a new Data Lake Store account.
-	Properties *AddDataLakeStoreProperties `json:"properties,omitempty"`
+	Properties *AddDataLakeStoreProperties
 }
 
 // AddStorageAccountParameters - The parameters used to add a new Azure Storage account.
 type AddStorageAccountParameters struct {
 	// REQUIRED; The Azure Storage account properties to use when adding a new Azure Storage account.
-	Properties *AddStorageAccountProperties `json:"properties,omitempty"`
+	Properties *AddStorageAccountProperties
 }
 
 // AddStorageAccountProperties - The Azure Storage account properties to use when adding a new Azure Storage account.
 type AddStorageAccountProperties struct {
 	// REQUIRED; The access key associated with this Azure Storage account that will be used to connect to it.
-	AccessKey *string `json:"accessKey,omitempty"`
+	AccessKey *string
 
 	// The optional suffix for the storage account.
-	Suffix *string `json:"suffix,omitempty"`
+	Suffix *string
 }
 
 // AddStorageAccountWithAccountParameters - The parameters used to add a new Azure Storage account while creating a new Data
 // Lake Analytics account.
 type AddStorageAccountWithAccountParameters struct {
 	// REQUIRED; The unique name of the Azure Storage account to add.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The Azure Storage account properties to use when adding a new Azure Storage account.
-	Properties *AddStorageAccountProperties `json:"properties,omitempty"`
+	Properties *AddStorageAccountProperties
 }
 
 // CapabilityInformation - Subscription-level properties and limits for Data Lake Analytics.
 type CapabilityInformation struct {
 	// READ-ONLY; The current number of accounts under this subscription.
-	AccountCount *int32 `json:"accountCount,omitempty" azure:"ro"`
+	AccountCount *int32
 
 	// READ-ONLY; The maximum supported number of accounts under this subscription.
-	MaxAccountCount *int32 `json:"maxAccountCount,omitempty" azure:"ro"`
+	MaxAccountCount *int32
 
 	// READ-ONLY; The Boolean value of true or false to indicate the maintenance state.
-	MigrationState *bool `json:"migrationState,omitempty" azure:"ro"`
+	MigrationState *bool
 
 	// READ-ONLY; The subscription state.
-	State *SubscriptionState `json:"state,omitempty" azure:"ro"`
+	State *SubscriptionState
 
 	// READ-ONLY; The subscription credentials that uniquely identifies the subscription.
-	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+	SubscriptionID *string
 }
 
 // CheckNameAvailabilityParameters - Data Lake Analytics account name availability check parameters.
 type CheckNameAvailabilityParameters struct {
 	// REQUIRED; The Data Lake Analytics name to check availability for.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The resource type. Note: This should not be set by the user, as the constant value is Microsoft.DataLakeAnalytics/accounts
-	Type *CheckNameAvailabilityParametersType `json:"type,omitempty"`
+	Type *CheckNameAvailabilityParametersType
 }
 
 // ComputePoliciesClientCreateOrUpdateOptions contains the optional parameters for the ComputePoliciesClient.CreateOrUpdate
@@ -363,184 +363,184 @@ type ComputePoliciesClientUpdateOptions struct {
 // ComputePolicy - Data Lake Analytics compute policy information.
 type ComputePolicy struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The compute policy properties.
-	Properties *ComputePolicyProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ComputePolicyProperties
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ComputePolicyListResult - The list of compute policies in the account.
 type ComputePolicyListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The results of the list operation.
-	Value []*ComputePolicy `json:"value,omitempty" azure:"ro"`
+	Value []*ComputePolicy
 }
 
 // ComputePolicyProperties - The compute policy properties.
 type ComputePolicyProperties struct {
 	// READ-ONLY; The maximum degree of parallelism per job this user can use to submit jobs.
-	MaxDegreeOfParallelismPerJob *int32 `json:"maxDegreeOfParallelismPerJob,omitempty" azure:"ro"`
+	MaxDegreeOfParallelismPerJob *int32
 
 	// READ-ONLY; The minimum priority per job this user can use to submit jobs.
-	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty" azure:"ro"`
+	MinPriorityPerJob *int32
 
 	// READ-ONLY; The AAD object identifier for the entity to create a policy for.
-	ObjectID *string `json:"objectId,omitempty" azure:"ro"`
+	ObjectID *string
 
 	// READ-ONLY; The type of AAD object the object identifier refers to.
-	ObjectType *AADObjectType `json:"objectType,omitempty" azure:"ro"`
+	ObjectType *AADObjectType
 }
 
 // CreateComputePolicyWithAccountParameters - The parameters used to create a new compute policy while creating a new Data
 // Lake Analytics account.
 type CreateComputePolicyWithAccountParameters struct {
 	// REQUIRED; The unique name of the compute policy to create.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The compute policy properties to use when creating a new compute policy.
-	Properties *CreateOrUpdateComputePolicyProperties `json:"properties,omitempty"`
+	Properties *CreateOrUpdateComputePolicyProperties
 }
 
 // CreateDataLakeAnalyticsAccountParameters - The parameters to use for creating a Data Lake Analytics account.
 type CreateDataLakeAnalyticsAccountParameters struct {
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The Data Lake Analytics account properties to use for creating.
-	Properties *CreateDataLakeAnalyticsAccountProperties `json:"properties,omitempty"`
+	Properties *CreateDataLakeAnalyticsAccountProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 type CreateDataLakeAnalyticsAccountProperties struct {
 	// REQUIRED; The list of Data Lake Store accounts associated with this account.
-	DataLakeStoreAccounts []*AddDataLakeStoreWithAccountParameters `json:"dataLakeStoreAccounts,omitempty"`
+	DataLakeStoreAccounts []*AddDataLakeStoreWithAccountParameters
 
 	// REQUIRED; The default Data Lake Store account associated with this account.
-	DefaultDataLakeStoreAccount *string `json:"defaultDataLakeStoreAccount,omitempty"`
+	DefaultDataLakeStoreAccount *string
 
 	// The list of compute policies associated with this account.
-	ComputePolicies []*CreateComputePolicyWithAccountParameters `json:"computePolicies,omitempty"`
+	ComputePolicies []*CreateComputePolicyWithAccountParameters
 
 	// The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled,
 	// this is not enforced.
-	FirewallAllowAzureIPs *FirewallAllowAzureIPsState `json:"firewallAllowAzureIps,omitempty"`
+	FirewallAllowAzureIPs *FirewallAllowAzureIPsState
 
 	// The list of firewall rules associated with this account.
-	FirewallRules []*CreateFirewallRuleWithAccountParameters `json:"firewallRules,omitempty"`
+	FirewallRules []*CreateFirewallRuleWithAccountParameters
 
 	// The current state of the IP address firewall for this account.
-	FirewallState *FirewallState `json:"firewallState,omitempty"`
+	FirewallState *FirewallState
 
 	// The maximum supported degree of parallelism for this account.
-	MaxDegreeOfParallelism *int32 `json:"maxDegreeOfParallelism,omitempty"`
+	MaxDegreeOfParallelism *int32
 
 	// The maximum supported degree of parallelism per job for this account.
-	MaxDegreeOfParallelismPerJob *int32 `json:"maxDegreeOfParallelismPerJob,omitempty"`
+	MaxDegreeOfParallelismPerJob *int32
 
 	// The maximum supported jobs running under the account at the same time.
-	MaxJobCount *int32 `json:"maxJobCount,omitempty"`
+	MaxJobCount *int32
 
 	// The minimum supported priority per job for this account.
-	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty"`
+	MinPriorityPerJob *int32
 
 	// The commitment tier for the next month.
-	NewTier *TierType `json:"newTier,omitempty"`
+	NewTier *TierType
 
 	// The number of days that job metadata is retained.
-	QueryStoreRetention *int32 `json:"queryStoreRetention,omitempty"`
+	QueryStoreRetention *int32
 
 	// The list of Azure Blob Storage accounts associated with this account.
-	StorageAccounts []*AddStorageAccountWithAccountParameters `json:"storageAccounts,omitempty"`
+	StorageAccounts []*AddStorageAccountWithAccountParameters
 }
 
 // CreateFirewallRuleWithAccountParameters - The parameters used to create a new firewall rule while creating a new Data Lake
 // Analytics account.
 type CreateFirewallRuleWithAccountParameters struct {
 	// REQUIRED; The unique name of the firewall rule to create.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The firewall rule properties to use when creating a new firewall rule.
-	Properties *CreateOrUpdateFirewallRuleProperties `json:"properties,omitempty"`
+	Properties *CreateOrUpdateFirewallRuleProperties
 }
 
 // CreateOrUpdateComputePolicyParameters - The parameters used to create a new compute policy.
 type CreateOrUpdateComputePolicyParameters struct {
 	// REQUIRED; The compute policy properties to use when creating a new compute policy.
-	Properties *CreateOrUpdateComputePolicyProperties `json:"properties,omitempty"`
+	Properties *CreateOrUpdateComputePolicyProperties
 }
 
 // CreateOrUpdateComputePolicyProperties - The compute policy properties to use when creating a new compute policy.
 type CreateOrUpdateComputePolicyProperties struct {
 	// REQUIRED; The AAD object identifier for the entity to create a policy for.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// REQUIRED; The type of AAD object the object identifier refers to.
-	ObjectType *AADObjectType `json:"objectType,omitempty"`
+	ObjectType *AADObjectType
 
 	// The maximum degree of parallelism per job this user can use to submit jobs. This property, the min priority per job property,
 	// or both must be passed.
-	MaxDegreeOfParallelismPerJob *int32 `json:"maxDegreeOfParallelismPerJob,omitempty"`
+	MaxDegreeOfParallelismPerJob *int32
 
 	// The minimum priority per job this user can use to submit jobs. This property, the max degree of parallelism per job property,
 	// or both must be passed.
-	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty"`
+	MinPriorityPerJob *int32
 }
 
 // CreateOrUpdateFirewallRuleParameters - The parameters used to create a new firewall rule.
 type CreateOrUpdateFirewallRuleParameters struct {
 	// REQUIRED; The firewall rule properties to use when creating a new firewall rule.
-	Properties *CreateOrUpdateFirewallRuleProperties `json:"properties,omitempty"`
+	Properties *CreateOrUpdateFirewallRuleProperties
 }
 
 // CreateOrUpdateFirewallRuleProperties - The firewall rule properties to use when creating a new firewall rule.
 type CreateOrUpdateFirewallRuleProperties struct {
 	// REQUIRED; The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
 	// protocol.
-	EndIPAddress *string `json:"endIpAddress,omitempty"`
+	EndIPAddress *string
 
 	// REQUIRED; The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
 	// protocol.
-	StartIPAddress *string `json:"startIpAddress,omitempty"`
+	StartIPAddress *string
 }
 
 // DataLakeStoreAccountInformation - Data Lake Store account information.
 type DataLakeStoreAccountInformation struct {
 	// The Data Lake Store account properties.
-	Properties *DataLakeStoreAccountInformationProperties `json:"properties,omitempty"`
+	Properties *DataLakeStoreAccountInformationProperties
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataLakeStoreAccountInformationListResult - Data Lake Store account list information.
 type DataLakeStoreAccountInformationListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The results of the list operation.
-	Value []*DataLakeStoreAccountInformation `json:"value,omitempty" azure:"ro"`
+	Value []*DataLakeStoreAccountInformation
 }
 
 // DataLakeStoreAccountInformationProperties - The Data Lake Store account properties.
 type DataLakeStoreAccountInformationProperties struct {
 	// READ-ONLY; The optional suffix for the Data Lake Store account.
-	Suffix *string `json:"suffix,omitempty" azure:"ro"`
+	Suffix *string
 }
 
 // DataLakeStoreAccountsClientAddOptions contains the optional parameters for the DataLakeStoreAccountsClient.Add method.
@@ -583,70 +583,70 @@ type DataLakeStoreAccountsClientListByAccountOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // FirewallRule - Data Lake Analytics firewall rule information.
 type FirewallRule struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The firewall rule properties.
-	Properties *FirewallRuleProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *FirewallRuleProperties
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FirewallRuleListResult - Data Lake Analytics firewall rule list information.
 type FirewallRuleListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The results of the list operation.
-	Value []*FirewallRule `json:"value,omitempty" azure:"ro"`
+	Value []*FirewallRule
 }
 
 // FirewallRuleProperties - The firewall rule properties.
 type FirewallRuleProperties struct {
 	// READ-ONLY; The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
 	// protocol.
-	EndIPAddress *string `json:"endIpAddress,omitempty" azure:"ro"`
+	EndIPAddress *string
 
 	// READ-ONLY; The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the
 	// same protocol.
-	StartIPAddress *string `json:"startIpAddress,omitempty" azure:"ro"`
+	StartIPAddress *string
 }
 
 // FirewallRulesClientCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.CreateOrUpdate method.
@@ -678,46 +678,46 @@ type FirewallRulesClientUpdateOptions struct {
 
 type HiveMetastore struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The HiveMetastoreProperties rule properties.
-	Properties *HiveMetastoreProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *HiveMetastoreProperties
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HiveMetastoreListResult - Data Lake Analytics HiveMetastore list information.
 type HiveMetastoreListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The results of the list operation.
-	Value []*HiveMetastore `json:"value,omitempty" azure:"ro"`
+	Value []*HiveMetastore
 }
 
 // HiveMetastoreProperties - The HiveMetastore properties.
 type HiveMetastoreProperties struct {
 	// READ-ONLY; The databaseName for the Hive MetaStore
-	DatabaseName *string `json:"databaseName,omitempty" azure:"ro"`
+	DatabaseName *string
 
 	// READ-ONLY; The current state of the NestedResource
-	NestedResourceProvisioningState *NestedResourceProvisioningState `json:"nestedResourceProvisioningState,omitempty" azure:"ro"`
+	NestedResourceProvisioningState *NestedResourceProvisioningState
 
 	// READ-ONLY; The password for the Hive MetaStore
-	Password *string `json:"password,omitempty" azure:"ro"`
+	Password *string
 
 	// READ-ONLY; The runtimeVersion for the Hive MetaStore
-	RuntimeVersion *string `json:"runtimeVersion,omitempty" azure:"ro"`
+	RuntimeVersion *string
 
 	// READ-ONLY; The serverUri for the Hive MetaStore
-	ServerURI *string `json:"serverUri,omitempty" azure:"ro"`
+	ServerURI *string
 
 	// READ-ONLY; The userName for the Hive MetaStore
-	UserName *string `json:"userName,omitempty" azure:"ro"`
+	UserName *string
 }
 
 // LocationsClientGetCapabilityOptions contains the optional parameters for the LocationsClient.GetCapability method.
@@ -728,105 +728,105 @@ type LocationsClientGetCapabilityOptions struct {
 // NameAvailabilityInformation - Data Lake Analytics account name availability result information.
 type NameAvailabilityInformation struct {
 	// READ-ONLY; The message describing why the Data Lake Analytics account name is not available, if nameAvailable is false.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The Boolean value of true or false to indicate whether the Data Lake Analytics account name is available or
 	// not.
-	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
+	NameAvailable *bool
 
 	// READ-ONLY; The reason why the Data Lake Analytics account name is not available, if nameAvailable is false.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 }
 
 // Operation - An available operation for Data Lake Analytics.
 type Operation struct {
 	// READ-ONLY; The display information for the operation.
-	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
+	Display *OperationDisplay
 
 	// READ-ONLY; The name of the operation.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation.
-	Origin *OperationOrigin `json:"origin,omitempty" azure:"ro"`
+	Origin *OperationOrigin
 
 	// READ-ONLY; The OperationMetaPropertyInfo for the operation.
-	Properties *OperationMetaPropertyInfo `json:"properties,omitempty" azure:"ro"`
+	Properties *OperationMetaPropertyInfo
 }
 
 // OperationDisplay - The display information for a particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; A friendly description of the operation.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; A friendly name of the operation.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The resource provider of the operation.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The resource type of the operation.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - The list of available operations for Data Lake Analytics.
 type OperationListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The results of the list operation.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 type OperationMetaLogSpecification struct {
 	// The blobDuration for OperationMetaLogSpecification.
-	BlobDuration *string `json:"blobDuration,omitempty"`
+	BlobDuration *string
 
 	// The displayName for OperationMetaLogSpecification.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The name for OperationMetaLogSpecification.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 type OperationMetaMetricAvailabilitiesSpecification struct {
 	// The blobDuration for OperationMetaMetricAvailabilitiesSpecification.
-	BlobDuration *string `json:"blobDuration,omitempty"`
+	BlobDuration *string
 
 	// The timegrain for OperationMetaMetricAvailabilitiesSpecification.
-	TimeGrain *string `json:"timeGrain,omitempty"`
+	TimeGrain *string
 }
 
 type OperationMetaMetricSpecification struct {
 	// The aggregationType for OperationMetaMetricSpecification.
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// The availabilities for OperationMetaMetricSpecification.
-	Availabilities []*OperationMetaMetricAvailabilitiesSpecification `json:"availabilities,omitempty"`
+	Availabilities []*OperationMetaMetricAvailabilitiesSpecification
 
 	// The displayName for OperationMetaMetricSpecification.
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// The displayName for OperationMetaMetricSpecification.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The name for OperationMetaMetricSpecification.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The unit for OperationMetaMetricSpecification.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 type OperationMetaPropertyInfo struct {
 	// The operations OperationMetaServiceSpecification.
-	ServiceSpecification *OperationMetaServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *OperationMetaServiceSpecification
 }
 
 type OperationMetaServiceSpecification struct {
 	// The logSpecifications for OperationMetaServiceSpecification.
-	LogSpecifications []*OperationMetaLogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*OperationMetaLogSpecification
 
 	// The metricSpecifications for OperationMetaServiceSpecification.
-	MetricSpecifications []*OperationMetaMetricSpecification `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*OperationMetaMetricSpecification
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -837,65 +837,65 @@ type OperationsClientListOptions struct {
 // Resource - The resource model definition.
 type Resource struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource tags.
-	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SasTokenInformation - SAS token information.
 type SasTokenInformation struct {
 	// READ-ONLY; The access token for the associated Azure Storage Container.
-	AccessToken *string `json:"accessToken,omitempty" azure:"ro"`
+	AccessToken *string
 }
 
 // SasTokenInformationListResult - The SAS response that contains the storage account, container and associated SAS token
 // for connection use.
 type SasTokenInformationListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The results of the list operation.
-	Value []*SasTokenInformation `json:"value,omitempty" azure:"ro"`
+	Value []*SasTokenInformation
 }
 
 // StorageAccountInformation - Azure Storage account information.
 type StorageAccountInformation struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The Azure Storage account properties.
-	Properties *StorageAccountInformationProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *StorageAccountInformationProperties
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageAccountInformationListResult - Azure Storage account list information.
 type StorageAccountInformationListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The results of the list operation.
-	Value []*StorageAccountInformation `json:"value,omitempty" azure:"ro"`
+	Value []*StorageAccountInformation
 }
 
 // StorageAccountInformationProperties - The Azure Storage account properties.
 type StorageAccountInformationProperties struct {
 	// READ-ONLY; The optional suffix for the storage account.
-	Suffix *string `json:"suffix,omitempty" azure:"ro"`
+	Suffix *string
 }
 
 // StorageAccountsClientAddOptions contains the optional parameters for the StorageAccountsClient.Add method.
@@ -962,225 +962,225 @@ type StorageAccountsClientUpdateOptions struct {
 // StorageContainer - Azure Storage blob container information.
 type StorageContainer struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The properties of the blob container.
-	Properties *StorageContainerProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *StorageContainerProperties
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageContainerListResult - The list of blob containers associated with the storage account attached to the Data Lake
 // Analytics account.
 type StorageContainerListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The results of the list operation.
-	Value []*StorageContainer `json:"value,omitempty" azure:"ro"`
+	Value []*StorageContainer
 }
 
 // StorageContainerProperties - Azure Storage blob container properties information.
 type StorageContainerProperties struct {
 	// READ-ONLY; The last modified time of the blob container.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 }
 
 // SubResource - The resource model definition for a nested resource.
 type SubResource struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UpdateComputePolicyParameters - The parameters used to update a compute policy.
 type UpdateComputePolicyParameters struct {
 	// The compute policy properties to use when updating a compute policy.
-	Properties *UpdateComputePolicyProperties `json:"properties,omitempty"`
+	Properties *UpdateComputePolicyProperties
 }
 
 // UpdateComputePolicyProperties - The compute policy properties to use when updating a compute policy.
 type UpdateComputePolicyProperties struct {
 	// The maximum degree of parallelism per job this user can use to submit jobs. This property, the min priority per job property,
 	// or both must be passed.
-	MaxDegreeOfParallelismPerJob *int32 `json:"maxDegreeOfParallelismPerJob,omitempty"`
+	MaxDegreeOfParallelismPerJob *int32
 
 	// The minimum priority per job this user can use to submit jobs. This property, the max degree of parallelism per job property,
 	// or both must be passed.
-	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty"`
+	MinPriorityPerJob *int32
 
 	// The AAD object identifier for the entity to create a policy for.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// The type of AAD object the object identifier refers to.
-	ObjectType *AADObjectType `json:"objectType,omitempty"`
+	ObjectType *AADObjectType
 }
 
 // UpdateComputePolicyWithAccountParameters - The parameters used to update a compute policy while updating a Data Lake Analytics
 // account.
 type UpdateComputePolicyWithAccountParameters struct {
 	// REQUIRED; The unique name of the compute policy to update.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The compute policy properties to use when updating a compute policy.
-	Properties *UpdateComputePolicyProperties `json:"properties,omitempty"`
+	Properties *UpdateComputePolicyProperties
 }
 
 // UpdateDataLakeAnalyticsAccountParameters - The parameters that can be used to update an existing Data Lake Analytics account.
 type UpdateDataLakeAnalyticsAccountParameters struct {
 	// The properties that can be updated in an existing Data Lake Analytics account.
-	Properties *UpdateDataLakeAnalyticsAccountProperties `json:"properties,omitempty"`
+	Properties *UpdateDataLakeAnalyticsAccountProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // UpdateDataLakeAnalyticsAccountProperties - The properties to update that are associated with an underlying Data Lake Analytics
 // account.
 type UpdateDataLakeAnalyticsAccountProperties struct {
 	// The list of compute policies associated with this account.
-	ComputePolicies []*UpdateComputePolicyWithAccountParameters `json:"computePolicies,omitempty"`
+	ComputePolicies []*UpdateComputePolicyWithAccountParameters
 
 	// The list of Data Lake Store accounts associated with this account.
-	DataLakeStoreAccounts []*UpdateDataLakeStoreWithAccountParameters `json:"dataLakeStoreAccounts,omitempty"`
+	DataLakeStoreAccounts []*UpdateDataLakeStoreWithAccountParameters
 
 	// The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled,
 	// this is not enforced.
-	FirewallAllowAzureIPs *FirewallAllowAzureIPsState `json:"firewallAllowAzureIps,omitempty"`
+	FirewallAllowAzureIPs *FirewallAllowAzureIPsState
 
 	// The list of firewall rules associated with this account.
-	FirewallRules []*UpdateFirewallRuleWithAccountParameters `json:"firewallRules,omitempty"`
+	FirewallRules []*UpdateFirewallRuleWithAccountParameters
 
 	// The current state of the IP address firewall for this account. Disabling the firewall does not remove existing rules, they
 	// will just be ignored until the firewall is re-enabled.
-	FirewallState *FirewallState `json:"firewallState,omitempty"`
+	FirewallState *FirewallState
 
 	// The maximum supported degree of parallelism for this account.
-	MaxDegreeOfParallelism *int32 `json:"maxDegreeOfParallelism,omitempty"`
+	MaxDegreeOfParallelism *int32
 
 	// The maximum supported degree of parallelism per job for this account.
-	MaxDegreeOfParallelismPerJob *int32 `json:"maxDegreeOfParallelismPerJob,omitempty"`
+	MaxDegreeOfParallelismPerJob *int32
 
 	// The maximum supported jobs running under the account at the same time.
-	MaxJobCount *int32 `json:"maxJobCount,omitempty"`
+	MaxJobCount *int32
 
 	// The minimum supported priority per job for this account.
-	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty"`
+	MinPriorityPerJob *int32
 
 	// The commitment tier to use for next month.
-	NewTier *TierType `json:"newTier,omitempty"`
+	NewTier *TierType
 
 	// The number of days that job metadata is retained.
-	QueryStoreRetention *int32 `json:"queryStoreRetention,omitempty"`
+	QueryStoreRetention *int32
 
 	// The list of Azure Blob storage accounts associated with this account.
-	StorageAccounts []*UpdateStorageAccountWithAccountParameters `json:"storageAccounts,omitempty"`
+	StorageAccounts []*UpdateStorageAccountWithAccountParameters
 }
 
 // UpdateDataLakeStoreProperties - The Data Lake Store account properties to use when updating a Data Lake Store account.
 type UpdateDataLakeStoreProperties struct {
 	// The optional suffix for the Data Lake Store account.
-	Suffix *string `json:"suffix,omitempty"`
+	Suffix *string
 }
 
 // UpdateDataLakeStoreWithAccountParameters - The parameters used to update a Data Lake Store account while updating a Data
 // Lake Analytics account.
 type UpdateDataLakeStoreWithAccountParameters struct {
 	// REQUIRED; The unique name of the Data Lake Store account to update.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The Data Lake Store account properties to use when updating a Data Lake Store account.
-	Properties *UpdateDataLakeStoreProperties `json:"properties,omitempty"`
+	Properties *UpdateDataLakeStoreProperties
 }
 
 // UpdateFirewallRuleParameters - The parameters used to update a firewall rule.
 type UpdateFirewallRuleParameters struct {
 	// The firewall rule properties to use when updating a firewall rule.
-	Properties *UpdateFirewallRuleProperties `json:"properties,omitempty"`
+	Properties *UpdateFirewallRuleProperties
 }
 
 // UpdateFirewallRuleProperties - The firewall rule properties to use when updating a firewall rule.
 type UpdateFirewallRuleProperties struct {
 	// The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same protocol.
-	EndIPAddress *string `json:"endIpAddress,omitempty"`
+	EndIPAddress *string
 
 	// The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same protocol.
-	StartIPAddress *string `json:"startIpAddress,omitempty"`
+	StartIPAddress *string
 }
 
 // UpdateFirewallRuleWithAccountParameters - The parameters used to update a firewall rule while updating a Data Lake Analytics
 // account.
 type UpdateFirewallRuleWithAccountParameters struct {
 	// REQUIRED; The unique name of the firewall rule to update.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The firewall rule properties to use when updating a firewall rule.
-	Properties *UpdateFirewallRuleProperties `json:"properties,omitempty"`
+	Properties *UpdateFirewallRuleProperties
 }
 
 // UpdateStorageAccountParameters - The parameters used to update an Azure Storage account.
 type UpdateStorageAccountParameters struct {
 	// The Azure Storage account properties to use when updating an Azure Storage account.
-	Properties *UpdateStorageAccountProperties `json:"properties,omitempty"`
+	Properties *UpdateStorageAccountProperties
 }
 
 // UpdateStorageAccountProperties - The Azure Storage account properties to use when updating an Azure Storage account.
 type UpdateStorageAccountProperties struct {
 	// The updated access key associated with this Azure Storage account that will be used to connect to it.
-	AccessKey *string `json:"accessKey,omitempty"`
+	AccessKey *string
 
 	// The optional suffix for the storage account.
-	Suffix *string `json:"suffix,omitempty"`
+	Suffix *string
 }
 
 // UpdateStorageAccountWithAccountParameters - The parameters used to update an Azure Storage account while updating a Data
 // Lake Analytics account.
 type UpdateStorageAccountWithAccountParameters struct {
 	// REQUIRED; The unique name of the Azure Storage account to update.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The Azure Storage account properties to use when updating an Azure Storage account.
-	Properties *UpdateStorageAccountProperties `json:"properties,omitempty"`
+	Properties *UpdateStorageAccountProperties
 }
 
 // VirtualNetworkRule - Data Lake Analytics VirtualNetwork Rule information.
 type VirtualNetworkRule struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The VirtualNetwork rule properties.
-	Properties *VirtualNetworkRuleProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *VirtualNetworkRuleProperties
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VirtualNetworkRuleListResult - Data Lake Analytics VirtualNetwork rule list information.
 type VirtualNetworkRuleListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The results of the list operation.
-	Value []*VirtualNetworkRule `json:"value,omitempty" azure:"ro"`
+	Value []*VirtualNetworkRule
 }
 
 // VirtualNetworkRuleProperties - The VirtualNetwork Rule properties.
 type VirtualNetworkRuleProperties struct {
 	// READ-ONLY; The resource identifier for the subnet
-	SubnetID *string `json:"subnetId,omitempty" azure:"ro"`
+	SubnetID *string
 
 	// READ-ONLY; The current state of the VirtualNetwork Rule
-	VirtualNetworkRuleState *VirtualNetworkRuleState `json:"virtualNetworkRuleState,omitempty" azure:"ro"`
+	VirtualNetworkRuleState *VirtualNetworkRuleState
 }

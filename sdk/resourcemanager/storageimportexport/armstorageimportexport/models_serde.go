@@ -224,7 +224,7 @@ func (e ErrorResponseError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", e.Code)
 	populate(objectMap, "details", e.Details)
-	populate(objectMap, "innererror", &e.Innererror)
+	populateAny(objectMap, "innererror", e.Innererror)
 	populate(objectMap, "message", e.Message)
 	populate(objectMap, "target", e.Target)
 	return json.Marshal(objectMap)
@@ -525,7 +525,7 @@ func (j JobResponse) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "name", j.Name)
 	populate(objectMap, "properties", j.Properties)
 	populate(objectMap, "systemData", j.SystemData)
-	populate(objectMap, "tags", &j.Tags)
+	populateAny(objectMap, "tags", j.Tags)
 	populate(objectMap, "type", j.Type)
 	return json.Marshal(objectMap)
 }
@@ -876,7 +876,7 @@ func (p PutJobParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "location", p.Location)
 	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "tags", &p.Tags)
+	populateAny(objectMap, "tags", p.Tags)
 	return json.Marshal(objectMap)
 }
 
@@ -1106,7 +1106,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 func (u UpdateJobParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "tags", &u.Tags)
+	populateAny(objectMap, "tags", u.Tags)
 	return json.Marshal(objectMap)
 }
 
@@ -1194,6 +1194,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

@@ -85,7 +85,7 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -160,7 +160,7 @@ func (e *ErrorResponse) UnmarshalJSON(data []byte) error {
 func (l LinkedTemplateArtifact) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "path", l.Path)
-	populate(objectMap, "template", &l.Template)
+	populateAny(objectMap, "template", l.Template)
 	return json.Marshal(objectMap)
 }
 
@@ -321,7 +321,7 @@ func (t TemplateSpecProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", t.Description)
 	populate(objectMap, "displayName", t.DisplayName)
-	populate(objectMap, "metadata", &t.Metadata)
+	populateAny(objectMap, "metadata", t.Metadata)
 	populate(objectMap, "versions", t.Versions)
 	return json.Marshal(objectMap)
 }
@@ -489,9 +489,9 @@ func (t TemplateSpecVersionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", t.Description)
 	populate(objectMap, "linkedTemplates", t.LinkedTemplates)
-	populate(objectMap, "mainTemplate", &t.MainTemplate)
-	populate(objectMap, "metadata", &t.Metadata)
-	populate(objectMap, "uiFormDefinition", &t.UIFormDefinition)
+	populateAny(objectMap, "mainTemplate", t.MainTemplate)
+	populateAny(objectMap, "metadata", t.Metadata)
+	populateAny(objectMap, "uiFormDefinition", t.UIFormDefinition)
 	return json.Marshal(objectMap)
 }
 
@@ -607,6 +607,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

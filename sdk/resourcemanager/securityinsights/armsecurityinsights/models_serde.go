@@ -3890,9 +3890,9 @@ func (m MailClusterEntityProperties) MarshalJSON() ([]byte, error) {
 	populateTimeRFC3339(objectMap, "clusterQueryStartTime", m.ClusterQueryStartTime)
 	populate(objectMap, "clusterSourceIdentifier", m.ClusterSourceIdentifier)
 	populate(objectMap, "clusterSourceType", m.ClusterSourceType)
-	populate(objectMap, "countByDeliveryStatus", &m.CountByDeliveryStatus)
-	populate(objectMap, "countByProtectionStatus", &m.CountByProtectionStatus)
-	populate(objectMap, "countByThreatType", &m.CountByThreatType)
+	populateAny(objectMap, "countByDeliveryStatus", m.CountByDeliveryStatus)
+	populateAny(objectMap, "countByProtectionStatus", m.CountByProtectionStatus)
+	populateAny(objectMap, "countByThreatType", m.CountByThreatType)
 	populate(objectMap, "friendlyName", m.FriendlyName)
 	populate(objectMap, "isVolumeAnomaly", m.IsVolumeAnomaly)
 	populate(objectMap, "mailCount", m.MailCount)
@@ -7341,9 +7341,9 @@ func (w WatchlistItemProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "created", w.Created)
 	populate(objectMap, "createdBy", w.CreatedBy)
-	populate(objectMap, "entityMapping", &w.EntityMapping)
+	populateAny(objectMap, "entityMapping", w.EntityMapping)
 	populate(objectMap, "isDeleted", w.IsDeleted)
-	populate(objectMap, "itemsKeyValue", &w.ItemsKeyValue)
+	populateAny(objectMap, "itemsKeyValue", w.ItemsKeyValue)
 	populate(objectMap, "tenantId", w.TenantID)
 	populateTimeRFC3339(objectMap, "updated", w.Updated)
 	populate(objectMap, "updatedBy", w.UpdatedBy)
@@ -7539,6 +7539,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

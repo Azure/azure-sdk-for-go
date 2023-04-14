@@ -20,68 +20,68 @@ type AuthorizationOperationsClientListOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // ManagementLockListResult - The list of locks.
 type ManagementLockListResult struct {
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of locks.
-	Value []*ManagementLockObject `json:"value,omitempty"`
+	Value []*ManagementLockObject
 }
 
 // ManagementLockObject - The lock information.
 type ManagementLockObject struct {
 	// REQUIRED; The properties of the lock.
-	Properties *ManagementLockProperties `json:"properties,omitempty"`
+	Properties *ManagementLockProperties
 
 	// READ-ONLY; The resource ID of the lock.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the lock.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type of the lock - Microsoft.Authorization/locks.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagementLockOwner - Lock owner properties.
 type ManagementLockOwner struct {
 	// The application ID of the lock owner.
-	ApplicationID *string `json:"applicationId,omitempty"`
+	ApplicationID *string
 }
 
 // ManagementLockProperties - The lock properties.
@@ -89,13 +89,13 @@ type ManagementLockProperties struct {
 	// REQUIRED; The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized
 	// users are able to read and modify the resources, but not delete. ReadOnly means
 	// authorized users can only read from a resource, but they can't modify or delete it.
-	Level *LockLevel `json:"level,omitempty"`
+	Level *LockLevel
 
 	// Notes about the lock. Maximum of 512 characters.
-	Notes *string `json:"notes,omitempty"`
+	Notes *string
 
 	// The owners of the lock.
-	Owners []*ManagementLockOwner `json:"owners,omitempty"`
+	Owners []*ManagementLockOwner
 }
 
 // ManagementLocksClientCreateOrUpdateAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtResourceGroupLevel
@@ -200,51 +200,51 @@ type ManagementLocksClientListByScopeOptions struct {
 // Operation - Microsoft.Authorization operation
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.Authorization
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed: Profile, endpoint, etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list Microsoft.Authorization operations. It contains a list of operations
 // and a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Microsoft.Authorization operations.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }

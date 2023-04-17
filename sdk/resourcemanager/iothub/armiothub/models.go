@@ -255,10 +255,10 @@ type DescriptionListResult struct {
 // EncryptionPropertiesDescription - The encryption properties for the IoT hub.
 type EncryptionPropertiesDescription struct {
 	// The source of the key.
-	KeySource *string `json:"keySource,omitempty"`
+	KeySource *string
 
 	// The properties of the KeyVault key.
-	KeyVaultProperties []*KeyVaultKeyProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties []*KeyVaultKeyProperties
 }
 
 // EndpointHealthData - The health data for an endpoint
@@ -554,10 +554,10 @@ type JobResponseListResult struct {
 // KeyVaultKeyProperties - The properties of the KeyVault key.
 type KeyVaultKeyProperties struct {
 	// Managed identity properties of KeyVault Key.
-	Identity *ManagedIdentity `json:"identity,omitempty"`
+	Identity *ManagedIdentity
 
 	// The identifier of the key.
-	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+	KeyIdentifier *string
 }
 
 // LocationDescription - Public representation of one of the locations where a resource is provisioned.
@@ -784,7 +784,7 @@ type Properties struct {
 	Comments *string
 
 	// The device streams properties of iothub.
-	DeviceStreams *PropertiesDeviceStreams `json:"deviceStreams,omitempty"`
+	DeviceStreams *PropertiesDeviceStreams
 
 	// If true, all device(including Edge devices but excluding modules) scoped SAS keys cannot be used for authentication.
 	DisableDeviceSAS *bool
@@ -802,7 +802,7 @@ type Properties struct {
 	EnableFileUploadNotifications *bool
 
 	// The encryption properties for the IoT hub.
-	Encryption *EncryptionPropertiesDescription `json:"encryption,omitempty"`
+	Encryption *EncryptionPropertiesDescription
 
 	// The Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has to be present
 	// in the dictionary while making create or update calls for the IoT hub.
@@ -815,7 +815,7 @@ type Properties struct {
 	IPFilterRules []*IPFilterRule
 
 	// This property specifies the IP Version the hub is currently utilizing.
-	IPVersion *IPVersion `json:"ipVersion,omitempty"`
+	IPVersion *IPVersion
 
 	// The messaging endpoint properties for the file upload notification queue.
 	MessagingEndpoints map[string]*MessagingEndpointProperties
@@ -837,7 +837,7 @@ type Properties struct {
 	RestrictOutboundNetworkAccess *bool
 
 	// This property store root certificate related information
-	RootCertificate *RootCertificateProperties `json:"rootCertificate,omitempty"`
+	RootCertificate *RootCertificateProperties
 
 	// The routing related properties of the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging
 	Routing *RoutingProperties
@@ -864,7 +864,7 @@ type Properties struct {
 // PropertiesDeviceStreams - The device streams properties of iothub.
 type PropertiesDeviceStreams struct {
 	// List of Device Streams Endpoints.
-	StreamingEndpoints []*string `json:"streamingEndpoints,omitempty"`
+	StreamingEndpoints []*string
 }
 
 // QuotaMetricInfo - Quota metrics properties.
@@ -1055,10 +1055,10 @@ type ResourceProviderCommonClientGetSubscriptionQuotaOptions struct {
 // RootCertificateProperties - This property store root certificate related information
 type RootCertificateProperties struct {
 	// This property when set to true, hub will use G2 cert; while it's set to false, hub uses Baltimore Cert.
-	EnableRootCertificateV2 *bool `json:"enableRootCertificateV2,omitempty"`
+	EnableRootCertificateV2 *bool
 
 	// READ-ONLY; the last update time to root certificate flag.
-	LastUpdatedTimeUTC *time.Time `json:"lastUpdatedTimeUtc,omitempty" azure:"ro"`
+	LastUpdatedTimeUTC *time.Time
 }
 
 // RouteCompilationError - Compilation error when evaluating route
@@ -1116,48 +1116,48 @@ type RouteProperties struct {
 // RoutingCosmosDBSQLAPIProperties - The properties related to a cosmos DB sql collection endpoint.
 type RoutingCosmosDBSQLAPIProperties struct {
 	// REQUIRED; The name of the cosmos DB sql collection in the cosmos DB database.
-	CollectionName *string `json:"collectionName,omitempty"`
+	CollectionName *string
 
 	// REQUIRED; The name of the cosmos DB database in the cosmos DB account.
-	DatabaseName *string `json:"databaseName,omitempty"`
+	DatabaseName *string
 
 	// REQUIRED; The url of the cosmos DB account. It must include the protocol https://
-	EndpointURI *string `json:"endpointUri,omitempty"`
+	EndpointURI *string
 
 	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
 	// hyphens and has a maximum length of 64 characters. The following names are reserved:
 	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Method used to authenticate against the cosmos DB sql collection endpoint
-	AuthenticationType *AuthenticationType `json:"authenticationType,omitempty"`
+	AuthenticationType *AuthenticationType
 
 	// Id of the cosmos DB sql collection endpoint
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Managed identity properties of routing cosmos DB collection endpoint.
-	Identity *ManagedIdentity `json:"identity,omitempty"`
+	Identity *ManagedIdentity
 
 	// The name of the partition key associated with this cosmos DB sql collection if one exists. This is an optional parameter.
-	PartitionKeyName *string `json:"partitionKeyName,omitempty"`
+	PartitionKeyName *string
 
 	// The template for generating a synthetic partition key value for use with this cosmos DB sql collection. The template must
 	// include at least one of the following placeholders: {iothub}, {deviceid},
 	// {DD}, {MM}, and {YYYY}. Any one placeholder may be specified at most once, but order and non-placeholder components are
 	// arbitrary. This parameter is only required if PartitionKeyName is specified.
-	PartitionKeyTemplate *string `json:"partitionKeyTemplate,omitempty"`
+	PartitionKeyTemplate *string
 
 	// The primary key of the cosmos DB account.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// The name of the resource group of the cosmos DB account.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// The secondary key of the cosmos DB account.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 
 	// The subscription identifier of the cosmos DB account.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 }
 
 // RoutingEndpoints - The properties related to the custom endpoints to which your IoT hub routes messages based on the routing
@@ -1165,7 +1165,7 @@ type RoutingCosmosDBSQLAPIProperties struct {
 // and only 1 custom endpoint is allowed across all endpoint types for free hubs.
 type RoutingEndpoints struct {
 	// The list of Cosmos DB collection endpoints that IoT hub routes messages to, based on the routing rules.
-	CosmosDBSQLCollections []*RoutingCosmosDBSQLAPIProperties `json:"cosmosDBSqlCollections,omitempty"`
+	CosmosDBSQLCollections []*RoutingCosmosDBSQLAPIProperties
 
 	// The list of Event Hubs endpoints that IoT hub routes messages to, based on the routing rules. This list does not include
 	// the built-in Event Hubs endpoint.

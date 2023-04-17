@@ -1,23 +1,9 @@
 # Release History
 
-## 2.0.0 (2023-04-28)
-### Breaking Changes
+## 1.1.1 (2023-04-14)
+### Bug Fixes
 
-- Function `*KeyValuesClient.NewListByConfigurationStorePager` has been removed
-
-### Features Added
-
-- New enum type `ReplicaProvisioningState` with values `ReplicaProvisioningStateCanceled`, `ReplicaProvisioningStateCreating`, `ReplicaProvisioningStateDeleting`, `ReplicaProvisioningStateFailed`, `ReplicaProvisioningStateSucceeded`
-- New function `*ClientFactory.NewReplicasClient() *ReplicasClient`
-- New function `NewReplicasClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ReplicasClient, error)`
-- New function `*ReplicasClient.BeginCreate(context.Context, string, string, string, Replica, *ReplicasClientBeginCreateOptions) (*runtime.Poller[ReplicasClientCreateResponse], error)`
-- New function `*ReplicasClient.BeginDelete(context.Context, string, string, string, *ReplicasClientBeginDeleteOptions) (*runtime.Poller[ReplicasClientDeleteResponse], error)`
-- New function `*ReplicasClient.Get(context.Context, string, string, string, *ReplicasClientGetOptions) (ReplicasClientGetResponse, error)`
-- New function `*ReplicasClient.NewListByConfigurationStorePager(string, string, *ReplicasClientListByConfigurationStoreOptions) *runtime.Pager[ReplicasClientListByConfigurationStoreResponse]`
-- New struct `Replica`
-- New struct `ReplicaListResult`
-- New struct `ReplicaProperties`
-
+- Fix serialization bug of empty value of `any` type.
 
 ## 1.1.0 (2023-03-27)
 ### Features Added

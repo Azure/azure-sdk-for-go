@@ -108,6 +108,12 @@ type LogsClientQueryBatchOptions struct {
 	// placeholder for future optional parameters
 }
 
+// LogsClientQueryResourceOptions contains the optional parameters for the LogsClient.QueryResource method.
+type LogsClientQueryResourceOptions struct {
+	// Optional. The prefer header to set server timeout, query statistics and visualization information.
+	Options *LogsQueryOptions
+}
+
 // LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
 type LogsClientQueryWorkspaceOptions struct {
 	// Optional. The prefer header to set server timeout, query statistics and visualization information.
@@ -260,13 +266,13 @@ type MetricValue struct {
 	Total *float64 `json:"total,omitempty"`
 }
 
-// MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.ListDefinitions method.
+// MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.NewListDefinitionsPager method.
 type MetricsClientListDefinitionsOptions struct {
 	// Metric namespace to query metric definitions for.
 	MetricNamespace *string
 }
 
-// MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.ListNamespaces method.
+// MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.NewListNamespacesPager method.
 type MetricsClientListNamespacesOptions struct {
 	// The ISO 8601 conform Date start time from which to query for metric namespaces.
 	StartTime *string

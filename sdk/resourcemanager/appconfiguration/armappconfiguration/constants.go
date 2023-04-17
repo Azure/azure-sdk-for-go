@@ -11,7 +11,7 @@ package armappconfiguration
 
 const (
 	moduleName    = "armappconfiguration"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v1.1.1"
 )
 
 // ActionsRequired - Any action that is required beyond basic workflow (approve/ reject/ disconnect)
@@ -159,27 +159,5 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
-	}
-}
-
-// ReplicaProvisioningState - The provisioning state of the replica.
-type ReplicaProvisioningState string
-
-const (
-	ReplicaProvisioningStateCanceled  ReplicaProvisioningState = "Canceled"
-	ReplicaProvisioningStateCreating  ReplicaProvisioningState = "Creating"
-	ReplicaProvisioningStateDeleting  ReplicaProvisioningState = "Deleting"
-	ReplicaProvisioningStateFailed    ReplicaProvisioningState = "Failed"
-	ReplicaProvisioningStateSucceeded ReplicaProvisioningState = "Succeeded"
-)
-
-// PossibleReplicaProvisioningStateValues returns the possible values for the ReplicaProvisioningState const type.
-func PossibleReplicaProvisioningStateValues() []ReplicaProvisioningState {
-	return []ReplicaProvisioningState{
-		ReplicaProvisioningStateCanceled,
-		ReplicaProvisioningStateCreating,
-		ReplicaProvisioningStateDeleting,
-		ReplicaProvisioningStateFailed,
-		ReplicaProvisioningStateSucceeded,
 	}
 }

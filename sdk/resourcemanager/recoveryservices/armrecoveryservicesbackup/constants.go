@@ -11,7 +11,7 @@ package armrecoveryservicesbackup
 
 const (
 	moduleName    = "armrecoveryservicesbackup"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v2.1.1"
 )
 
 // AcquireStorageAccountLock - Whether storage account lock is to be acquired for this container or not.

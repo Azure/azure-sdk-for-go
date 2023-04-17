@@ -639,7 +639,7 @@ func (b *Blueprint) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -811,7 +811,7 @@ func (m *ManagedServiceIdentity) UnmarshalJSON(data []byte) error {
 func (p ParameterDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "allowedValues", p.AllowedValues)
-	populate(objectMap, "defaultValue", &p.DefaultValue)
+	populateAny(objectMap, "defaultValue", p.DefaultValue)
 	populate(objectMap, "metadata", p.Metadata)
 	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
@@ -885,7 +885,7 @@ func (p *ParameterDefinitionMetadata) UnmarshalJSON(data []byte) error {
 func (p ParameterValue) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "reference", p.Reference)
-	populate(objectMap, "value", &p.Value)
+	populateAny(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -1007,12 +1007,12 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", p.Description)
 	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "layout", &p.Layout)
+	populateAny(objectMap, "layout", p.Layout)
 	populate(objectMap, "parameters", p.Parameters)
 	populate(objectMap, "resourceGroups", p.ResourceGroups)
 	populate(objectMap, "status", p.Status)
 	populate(objectMap, "targetScope", p.TargetScope)
-	populate(objectMap, "versions", &p.Versions)
+	populateAny(objectMap, "versions", p.Versions)
 	return json.Marshal(objectMap)
 }
 
@@ -1433,7 +1433,7 @@ func (r RoleAssignmentArtifactProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dependsOn", r.DependsOn)
 	populate(objectMap, "description", r.Description)
 	populate(objectMap, "displayName", r.DisplayName)
-	populate(objectMap, "principalIds", &r.PrincipalIDs)
+	populateAny(objectMap, "principalIds", r.PrincipalIDs)
 	populate(objectMap, "resourceGroup", r.ResourceGroup)
 	populate(objectMap, "roleDefinitionId", r.RoleDefinitionID)
 	return json.Marshal(objectMap)
@@ -1591,7 +1591,7 @@ func (t TemplateArtifactProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "displayName", t.DisplayName)
 	populate(objectMap, "parameters", t.Parameters)
 	populate(objectMap, "resourceGroup", t.ResourceGroup)
-	populate(objectMap, "template", &t.Template)
+	populateAny(objectMap, "template", t.Template)
 	return json.Marshal(objectMap)
 }
 
@@ -1733,6 +1733,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

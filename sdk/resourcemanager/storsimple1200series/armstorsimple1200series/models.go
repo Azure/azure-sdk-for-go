@@ -14,28 +14,28 @@ import "time"
 // AccessControlRecord - The access control record
 type AccessControlRecord struct {
 	// REQUIRED; Properties of AccessControlRecord
-	Properties *AccessControlRecordProperties `json:"properties,omitempty"`
+	Properties *AccessControlRecordProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccessControlRecordList - Collection of AccessControlRecords
 type AccessControlRecordList struct {
 	// REQUIRED; The value.
-	Value []*AccessControlRecord `json:"value,omitempty"`
+	Value []*AccessControlRecord
 }
 
 // AccessControlRecordProperties - Properties of access control record
 type AccessControlRecordProperties struct {
 	// REQUIRED; The Iscsi initiator name (IQN)
-	InitiatorName *string `json:"initiatorName,omitempty"`
+	InitiatorName *string
 }
 
 // AccessControlRecordsClientBeginCreateOrUpdateOptions contains the optional parameters for the AccessControlRecordsClient.BeginCreateOrUpdate
@@ -66,143 +66,143 @@ type AccessControlRecordsClientListByManagerOptions struct {
 // Alert class
 type Alert struct {
 	// REQUIRED; Properties of alert
-	Properties *AlertProperties `json:"properties,omitempty"`
+	Properties *AlertProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AlertErrorDetails - Error details for the alert
 type AlertErrorDetails struct {
 	// Error code.
-	ErrorCode *string `json:"errorCode,omitempty"`
+	ErrorCode *string
 
 	// Error Message
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// Number of occurrences.
-	Occurences *int32 `json:"occurences,omitempty"`
+	Occurences *int32
 }
 
 // AlertFilter - Filters that can be specified on the alert
 type AlertFilter struct {
 	// UTC time on which the alert appeared
-	AppearedOnTime *time.Time `json:"appearedOnTime,omitempty"`
+	AppearedOnTime *time.Time
 
 	// Severity of the alert
-	Severity *AlertSeverity `json:"severity,omitempty"`
+	Severity *AlertSeverity
 
 	// Source name of the alert
-	SourceName *string `json:"sourceName,omitempty"`
+	SourceName *string
 
 	// Source of the alert
-	SourceType *AlertSourceType `json:"sourceType,omitempty"`
+	SourceType *AlertSourceType
 
 	// Status of the alert
-	Status *AlertStatus `json:"status,omitempty"`
+	Status *AlertStatus
 }
 
 // AlertList - Collection of Alerts
 type AlertList struct {
 	// REQUIRED; The value.
-	Value []*Alert `json:"value,omitempty"`
+	Value []*Alert
 
 	// Id of the next page of alerts
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // AlertProperties - Properties of alert
 type AlertProperties struct {
 	// REQUIRED; Type of the alert
-	AlertType *string `json:"alertType,omitempty"`
+	AlertType *string
 
 	// REQUIRED; UTC time at which the alert appeared on the source
-	AppearedAtSourceTime *time.Time `json:"appearedAtSourceTime,omitempty"`
+	AppearedAtSourceTime *time.Time
 
 	// REQUIRED; UTC time at which the alert appeared
-	AppearedAtTime *time.Time `json:"appearedAtTime,omitempty"`
+	AppearedAtTime *time.Time
 
 	// REQUIRED; Device or Resource alert
-	Scope *AlertScope `json:"scope,omitempty"`
+	Scope *AlertScope
 
 	// REQUIRED; Severity of the alert
-	Severity *AlertSeverity `json:"severity,omitempty"`
+	Severity *AlertSeverity
 
 	// REQUIRED; Source at which the alert was cleared
-	Source *AlertSource `json:"source,omitempty"`
+	Source *AlertSource
 
 	// REQUIRED; Current status of the alert
-	Status *AlertStatus `json:"status,omitempty"`
+	Status *AlertStatus
 
 	// REQUIRED; Title of the alert
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// UTC time at which the alert was cleared on the source
-	ClearedAtSourceTime *time.Time `json:"clearedAtSourceTime,omitempty"`
+	ClearedAtSourceTime *time.Time
 
 	// UTC time at which the alert got cleared
-	ClearedAtTime *time.Time `json:"clearedAtTime,omitempty"`
+	ClearedAtTime *time.Time
 
 	// Other information about the alert
-	DetailedInformation map[string]*string `json:"detailedInformation,omitempty"`
+	DetailedInformation map[string]*string
 
 	// ErrorDetails of the alert
-	ErrorDetails *AlertErrorDetails `json:"errorDetails,omitempty"`
+	ErrorDetails *AlertErrorDetails
 
 	// Recommendation for acting on the alert
-	Recommendation *string `json:"recommendation,omitempty"`
+	Recommendation *string
 
 	// Reason for resolving the alert
-	ResolutionReason *string `json:"resolutionReason,omitempty"`
+	ResolutionReason *string
 }
 
 // AlertSettings on the device which represents how alerts will be processed
 type AlertSettings struct {
 	// REQUIRED; Properties of AlertSettings
-	Properties *AlertSettingsProperties `json:"properties,omitempty"`
+	Properties *AlertSettingsProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AlertSettingsProperties - Class containing the properties of AlertSettings
 type AlertSettingsProperties struct {
 	// REQUIRED; Culture setting to be used while building alert emails. For eg: "en-US"
-	AlertNotificationCulture *string `json:"alertNotificationCulture,omitempty"`
+	AlertNotificationCulture *string
 
 	// REQUIRED; Value indicating whether user/admins will receive emails when an alert condition occurs on the system
-	EmailNotification *AlertEmailNotificationStatus `json:"emailNotification,omitempty"`
+	EmailNotification *AlertEmailNotificationStatus
 
 	// REQUIRED; Value indicating whether service owners will receive emails when an alert condition occurs on the system. Applicable
 	// only if emailNotification flag is Enabled.
-	NotificationToServiceOwners *ServiceOwnersAlertNotificationStatus `json:"notificationToServiceOwners,omitempty"`
+	NotificationToServiceOwners *ServiceOwnersAlertNotificationStatus
 
 	// List of email addresses (apart from admin/co-admin of subscription) to whom the alert emails need to be sent
-	AdditionalRecipientEmailList []*string `json:"additionalRecipientEmailList,omitempty"`
+	AdditionalRecipientEmailList []*string
 }
 
 // AlertSource - source at which the alert can be raised
 type AlertSource struct {
 	// Source type of the alert.
-	AlertSourceType *AlertSourceType `json:"alertSourceType,omitempty"`
+	AlertSourceType *AlertSourceType
 
 	// Name of the source.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The time zone.
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // AlertsClientClearOptions contains the optional parameters for the AlertsClient.Clear method.
@@ -227,32 +227,32 @@ type AlertsClientSendTestEmailOptions struct {
 // algorithms.
 type AsymmetricEncryptedSecret struct {
 	// REQUIRED; Algorithm used to encrypt "Value"
-	EncryptionAlgorithm *EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
+	EncryptionAlgorithm *EncryptionAlgorithm
 
 	// REQUIRED; The value of the secret itself. If the secret is in plaintext then EncryptionAlgorithm will be none and EncryptionCertThumbprint
 	// will be null.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// Thumbprint certificate that was used to encrypt "Value"
-	EncryptionCertificateThumbprint *string `json:"encryptionCertificateThumbprint,omitempty"`
+	EncryptionCertificateThumbprint *string
 }
 
 // AvailableProviderOperation - Class represents provider operation
 type AvailableProviderOperation struct {
 	// Gets or sets Display information Contains the localized display information for this particular operation/action
-	Display *AvailableProviderOperationDisplay `json:"display,omitempty"`
+	Display *AvailableProviderOperationDisplay
 
 	// Gets or sets the name of the operation being performed on this particular object Return value format: "{resourceProviderNamespace}/{resourceType}/{read|write|deletion|action}"
 	// Eg:
 	// Microsoft.StorSimple/managers/devices/fileServers/read Microsoft.StorSimple/managers/devices/alerts/clearAlerts/action
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets Origin The intended executor of the operation; governs the display of the operation in the RBAC UX and the
 	// audit logs UX. Default value is “user,system”
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Gets or sets Properties Reserved for future use
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // AvailableProviderOperationDisplay - Contains the localized display information for this particular operation / action.
@@ -261,31 +261,31 @@ type AvailableProviderOperation struct {
 type AvailableProviderOperationDisplay struct {
 	// Gets or sets Description The localized friendly description for the operation, as it should be shown to the user. It should
 	// be thorough, yet concise – it will be used in tool tips and detailed views.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets Operation The localized friendly name for the operation, as it should be shown to the user. It should be concise
 	// (to fit in drop downs) but clear (i.e. self-documenting). It should use
 	// Title Casing and include the entity/resource to which it applies.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Gets or sets Provider The localized friendly form of the resource provider name – it is expected to also include the publisher/company
 	// responsible. It should use Title Casing and begin with
 	// “Microsoft” for 1st party services.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Gets or sets Resource The localized friendly form of the resource type related to this action/operation – it should match
 	// the public documentation for the resource provider. It should use Title Casing
 	// – for examples, please refer to the “name” section.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // AvailableProviderOperations - Class for set of operations used for discovery of available provider operations.
 type AvailableProviderOperations struct {
 	// REQUIRED; The value.
-	Value []*AvailableProviderOperation `json:"value,omitempty"`
+	Value []*AvailableProviderOperation
 
 	// The NextLink.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // AvailableProviderOperationsClientListOptions contains the optional parameters for the AvailableProviderOperationsClient.NewListPager
@@ -297,115 +297,115 @@ type AvailableProviderOperationsClientListOptions struct {
 // Backup - The backup.
 type Backup struct {
 	// REQUIRED; Properties of backup
-	Properties *BackupProperties `json:"properties,omitempty"`
+	Properties *BackupProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupElement - Class represents BackupElement
 type BackupElement struct {
 	// REQUIRED; The Properties of backup element
-	Properties *BackupElementProperties `json:"properties,omitempty"`
+	Properties *BackupElementProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupElementProperties - The backup element properties
 type BackupElementProperties struct {
 	// REQUIRED; The data policy of backed up endpoint.
-	DataPolicy *DataPolicy `json:"dataPolicy,omitempty"`
+	DataPolicy *DataPolicy
 
 	// REQUIRED; The name of the endpoint.
-	EndpointName *string `json:"endpointName,omitempty"`
+	EndpointName *string
 
 	// REQUIRED; The size in bytes.
-	SizeInBytes *int64 `json:"sizeInBytes,omitempty"`
+	SizeInBytes *int64
 }
 
 // BackupFilter - Backup OData filter class
 type BackupFilter struct {
 	// Gets or sets CreatedTime
-	CreatedTime *time.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time
 
 	// Gets or sets InitiatedBy
-	InitiatedBy *InitiatedBy `json:"initiatedBy,omitempty"`
+	InitiatedBy *InitiatedBy
 }
 
 // BackupList - Collection of backups
 type BackupList struct {
 	// REQUIRED; The value.
-	Value []*Backup `json:"value,omitempty"`
+	Value []*Backup
 
 	// The NextLink.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // BackupProperties - Class represents Backup properties
 type BackupProperties struct {
 	// REQUIRED; The Device Identifier.
-	DeviceID *string `json:"deviceId,omitempty"`
+	DeviceID *string
 
 	// REQUIRED; The backup elements.
-	Elements []*BackupElement `json:"elements,omitempty"`
+	Elements []*BackupElement
 
 	// REQUIRED; Indicates how the backup was initiated "Manual | Scheduled".
-	InitiatedBy *InitiatedBy `json:"initiatedBy,omitempty"`
+	InitiatedBy *InitiatedBy
 
 	// REQUIRED; The backup size in bytes.
-	SizeInBytes *int64 `json:"sizeInBytes,omitempty"`
+	SizeInBytes *int64
 
 	// The time when the backup was created.
-	CreatedTime *time.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time
 
 	// The time when the backup will expire.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty"`
+	ExpirationTime *time.Time
 
 	// The path id of the target FileServer or IscsiServer for which the backup was taken.
-	TargetID *string `json:"targetId,omitempty"`
+	TargetID *string
 
 	// Type of target, FileServer or IscsiServer
-	TargetType *string `json:"targetType,omitempty"`
+	TargetType *string
 }
 
 // BackupScheduleGroup - The Backup Schedule Group
 type BackupScheduleGroup struct {
 	// REQUIRED; Properties of BackupScheduleGroup
-	Properties *BackupScheduleGroupProperties `json:"properties,omitempty"`
+	Properties *BackupScheduleGroupProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupScheduleGroupList - The list response of backup schedule groups
 type BackupScheduleGroupList struct {
 	// REQUIRED; The value.
-	Value []*BackupScheduleGroup `json:"value,omitempty"`
+	Value []*BackupScheduleGroup
 }
 
 // BackupScheduleGroupProperties - The Backup Schedule Group Properties
 type BackupScheduleGroupProperties struct {
 	// REQUIRED; The start time. When this field is specified we will generate Default GrandFather Father Son Backup Schedules.
-	StartTime *Time `json:"startTime,omitempty"`
+	StartTime *Time
 }
 
 // BackupScheduleGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the BackupScheduleGroupsClient.BeginCreateOrUpdate
@@ -462,34 +462,34 @@ type BackupsClientListByManagerOptions struct {
 // BaseModel - Base class for models
 type BaseModel struct {
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ChapProperties - Chap properties
 type ChapProperties struct {
 	// REQUIRED; The chap password.
-	Password *AsymmetricEncryptedSecret `json:"password,omitempty"`
+	Password *AsymmetricEncryptedSecret
 }
 
 // ChapSettings - Challenge-Handshake Authentication Protocol (CHAP) setting
 type ChapSettings struct {
 	// REQUIRED; Chap properties
-	Properties *ChapProperties `json:"properties,omitempty"`
+	Properties *ChapProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ChapSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the ChapSettingsClient.BeginCreateOrUpdate
@@ -519,147 +519,147 @@ type ChapSettingsClientListByDeviceOptions struct {
 // ChapSettingsList - Collection of Chap setting entities
 type ChapSettingsList struct {
 	// REQUIRED; The chap settings entity collection
-	Value []*ChapSettings `json:"value,omitempty"`
+	Value []*ChapSettings
 }
 
 // ClearAlertRequest - Request for clearing the alert
 type ClearAlertRequest struct {
 	// REQUIRED; List of alert Ids to be cleared
-	Alerts []*string `json:"alerts,omitempty"`
+	Alerts []*string
 
 	// Resolution message while clearing the request
-	ResolutionMessage *string `json:"resolutionMessage,omitempty"`
+	ResolutionMessage *string
 }
 
 // CloneRequest - Clone Job Request Model.
 type CloneRequest struct {
 	// REQUIRED; CloneJob Properties are encapsulated in this object.
-	Properties *CloneRequestProperties `json:"properties,omitempty"`
+	Properties *CloneRequestProperties
 }
 
 // CloneRequestProperties - Properties of CloneRequest
 type CloneRequestProperties struct {
 	// REQUIRED; Name of new endpoint which will created as part of clone job.
-	NewEndpointName *string `json:"newEndpointName,omitempty"`
+	NewEndpointName *string
 
 	// REQUIRED; Access point Id on which clone job will performed.
-	TargetAccessPointID *string `json:"targetAccessPointId,omitempty"`
+	TargetAccessPointID *string
 
 	// REQUIRED; DeviceId of the device which will act as the Clone target
-	TargetDeviceID *string `json:"targetDeviceId,omitempty"`
+	TargetDeviceID *string
 
 	// Disk Object
-	Disk *ISCSIDisk `json:"disk,omitempty"`
+	Disk *ISCSIDisk
 
 	// Share Object.
-	Share *FileShare `json:"share,omitempty"`
+	Share *FileShare
 }
 
 // Device - Represents a StorSimple device object along with its properties
 type Device struct {
 	// Collection of properties for the device
-	Properties *DeviceProperties `json:"properties,omitempty"`
+	Properties *DeviceProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeviceDetails - Class containing more granular details about the device
 type DeviceDetails struct {
 	// Local pending storage available on the device in bytes
-	AvailableLocalStorageInBytes *int64 `json:"availableLocalStorageInBytes,omitempty"`
+	AvailableLocalStorageInBytes *int64
 
 	// Total pending available storage on the device in bytes
-	AvailableStorageInBytes *int64 `json:"availableStorageInBytes,omitempty"`
+	AvailableStorageInBytes *int64
 
 	// Total number of endpoints that are currently on the device ( i.e. number of shares on FileServer or number of volumes on
 	// IscsiServer)
-	EndpointCount *int32 `json:"endpointCount,omitempty"`
+	EndpointCount *int32
 
 	// Storage in bytes that has been provisioned locally on the device
-	ProvisionedLocalStorageInBytes *int64 `json:"provisionedLocalStorageInBytes,omitempty"`
+	ProvisionedLocalStorageInBytes *int64
 
 	// Storage in bytes that has been provisioned on the device including both local and cloud
-	ProvisionedStorageInBytes *int64 `json:"provisionedStorageInBytes,omitempty"`
+	ProvisionedStorageInBytes *int64
 
 	// Total size taken up by backups in bytes
-	TotalBackupSizeInBytes *int64 `json:"totalBackupSizeInBytes,omitempty"`
+	TotalBackupSizeInBytes *int64
 
 	// Total local storage capacity in device in bytes.
-	TotalLocalStorageInBytes *int64 `json:"totalLocalStorageInBytes,omitempty"`
+	TotalLocalStorageInBytes *int64
 
 	// Total storage available on the device in bytes.
-	TotalStorageInBytes *int64 `json:"totalStorageInBytes,omitempty"`
+	TotalStorageInBytes *int64
 
 	// Local Storage that is being currently used in bytes
-	UsingLocalStorageInBytes *int64 `json:"usingLocalStorageInBytes,omitempty"`
+	UsingLocalStorageInBytes *int64
 
 	// Storage that is being currently used in bytes including both local and cloud
-	UsingStorageInBytes *int64 `json:"usingStorageInBytes,omitempty"`
+	UsingStorageInBytes *int64
 }
 
 // DeviceList - Collection of Devices
 type DeviceList struct {
 	// REQUIRED; The value.
-	Value []*Device `json:"value,omitempty"`
+	Value []*Device
 }
 
 // DevicePatch - Class that represents the Input for the PATCH call on Device. Currently the only patchable property on device
 // is "DeviceDescription"
 type DevicePatch struct {
 	// Short description given for the device
-	DeviceDescription *string `json:"deviceDescription,omitempty"`
+	DeviceDescription *string
 }
 
 // DeviceProperties - Encases all the properties of the Device
 type DeviceProperties struct {
 	// The UTC time at which the device was activated
-	ActivationTime *time.Time `json:"activationTime,omitempty"`
+	ActivationTime *time.Time
 
 	// Operations that are allowed on the device based on its current state
-	AllowedDeviceOperations []*DeviceOperation `json:"allowedDeviceOperations,omitempty"`
+	AllowedDeviceOperations []*DeviceOperation
 
 	// Language culture setting on the device. For eg: "en-US"
-	Culture *string `json:"culture,omitempty"`
+	Culture *string
 
 	// subclass containing more storage-related information about the device. This field will be populated only if the get call
 	// is made with $expand = details.
-	Details *DeviceDetails `json:"details,omitempty"`
+	Details *DeviceDetails
 
 	// Device can be configured either as FileServer or IscsiServer
-	DeviceCapabilities []*SupportedDeviceCapabilities `json:"deviceCapabilities,omitempty"`
+	DeviceCapabilities []*SupportedDeviceCapabilities
 
 	// "Complete" if the device has been successfully registered as File/IscsiServer and the creation of share/volume is complete,
 	// "Pending" if the device is only registered but the creation of share/volume
 	// is complete is still pending
-	DeviceConfigurationStatus *DeviceConfigurationStatus `json:"deviceConfigurationStatus,omitempty"`
+	DeviceConfigurationStatus *DeviceConfigurationStatus
 
 	// Short description given for the device
-	DeviceDescription *string `json:"deviceDescription,omitempty"`
+	DeviceDescription *string
 
 	// Version number of the software running on the device
-	DeviceSoftwareVersion *string `json:"deviceSoftwareVersion,omitempty"`
+	DeviceSoftwareVersion *string
 
 	// Fully qualified name of the domain to which the device is attached
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// Friendly name for the software version
-	FriendlySoftwareName *string `json:"friendlySoftwareName,omitempty"`
+	FriendlySoftwareName *string
 
 	// Name of the device model
-	ModelDescription *string `json:"modelDescription,omitempty"`
+	ModelDescription *string
 
 	// Current status of the device
-	Status *DeviceStatus `json:"status,omitempty"`
+	Status *DeviceStatus
 
 	// Type of the device
-	Type *DeviceType `json:"type,omitempty"`
+	Type *DeviceType
 }
 
 // DevicesClientBeginCreateOrUpdateAlertSettingsOptions contains the optional parameters for the DevicesClient.BeginCreateOrUpdateAlertSettings
@@ -772,79 +772,79 @@ type DevicesClientListMetricsOptions struct {
 // EncryptionSettings - The EncryptionSettings
 type EncryptionSettings struct {
 	// REQUIRED; Properties of the EncryptionSettings.
-	Properties *EncryptionSettingsProperties `json:"properties,omitempty"`
+	Properties *EncryptionSettingsProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EncryptionSettingsProperties - The properties of EncryptionSettings
 type EncryptionSettingsProperties struct {
 	// REQUIRED; The encryption status which indicates if encryption is enabled or not.
-	EncryptionStatus *EncryptionStatus `json:"encryptionStatus,omitempty"`
+	EncryptionStatus *EncryptionStatus
 
 	// REQUIRED; The key rollover status which indicates if key rollover is required or not. If secrets encryption has been upgraded,
 	// then it requires key rollover.
-	KeyRolloverStatus *KeyRolloverStatus `json:"keyRolloverStatus,omitempty"`
+	KeyRolloverStatus *KeyRolloverStatus
 }
 
 type Error struct {
 	// REQUIRED
-	ErrorCode *string `json:"errorCode,omitempty"`
+	ErrorCode *string
 
 	// REQUIRED
-	Message *Message `json:"message,omitempty"`
-	Values  []*Item  `json:"values,omitempty"`
+	Message *Message
+	Values  []*Item
 }
 
 // FailoverRequest - The Failover request object.
 type FailoverRequest struct {
-	AccesspointIDs   []*string `json:"accesspointIds,omitempty"`
-	KeepSourceDevice *bool     `json:"keepSourceDevice,omitempty"`
-	SkipValidation   *bool     `json:"skipValidation,omitempty"`
-	TargetDeviceID   *string   `json:"targetDeviceId,omitempty"`
+	AccesspointIDs   []*string
+	KeepSourceDevice *bool
+	SkipValidation   *bool
+	TargetDeviceID   *string
 }
 
 // FileServer - The file server.
 type FileServer struct {
 	// REQUIRED; The properties.
-	Properties *FileServerProperties `json:"properties,omitempty"`
+	Properties *FileServerProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FileServerList - Collection of file servers
 type FileServerList struct {
 	// REQUIRED; The value.
-	Value []*FileServer `json:"value,omitempty"`
+	Value []*FileServer
 }
 
 // FileServerProperties - The file server properties.
 type FileServerProperties struct {
 	// REQUIRED; The backup policy id.
-	BackupScheduleGroupID *string `json:"backupScheduleGroupId,omitempty"`
+	BackupScheduleGroupID *string
 
 	// REQUIRED; Domain of the file server
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// REQUIRED; The storage domain id.
-	StorageDomainID *string `json:"storageDomainId,omitempty"`
+	StorageDomainID *string
 
 	// The description of the file server
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // FileServersClientBeginBackupNowOptions contains the optional parameters for the FileServersClient.BeginBackupNow method.
@@ -897,50 +897,50 @@ type FileServersClientListMetricsOptions struct {
 // FileShare - The File Share.
 type FileShare struct {
 	// REQUIRED; The properties.
-	Properties *FileShareProperties `json:"properties,omitempty"`
+	Properties *FileShareProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FileShareList - Collection of file shares
 type FileShareList struct {
 	// REQUIRED; The value.
-	Value []*FileShare `json:"value,omitempty"`
+	Value []*FileShare
 }
 
 // FileShareProperties - The File Share.
 type FileShareProperties struct {
 	// REQUIRED; The user/group who will have full permission in this share. Active directory email address. Example: xyz@contoso.com
 	// or Contoso\xyz.
-	AdminUser *string `json:"adminUser,omitempty"`
+	AdminUser *string
 
 	// REQUIRED; The data policy
-	DataPolicy *DataPolicy `json:"dataPolicy,omitempty"`
+	DataPolicy *DataPolicy
 
 	// REQUIRED; The monitoring status
-	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
+	MonitoringStatus *MonitoringStatus
 
 	// REQUIRED; The total provisioned capacity in Bytes
-	ProvisionedCapacityInBytes *int64 `json:"provisionedCapacityInBytes,omitempty"`
+	ProvisionedCapacityInBytes *int64
 
 	// REQUIRED; The Share Status
-	ShareStatus *ShareStatus `json:"shareStatus,omitempty"`
+	ShareStatus *ShareStatus
 
 	// Description for file share
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The local used capacity in Bytes.
-	LocalUsedCapacityInBytes *int64 `json:"localUsedCapacityInBytes,omitempty" azure:"ro"`
+	LocalUsedCapacityInBytes *int64
 
 	// READ-ONLY; The used capacity in Bytes.
-	UsedCapacityInBytes *int64 `json:"usedCapacityInBytes,omitempty" azure:"ro"`
+	UsedCapacityInBytes *int64
 }
 
 // FileSharesClientBeginCreateOrUpdateOptions contains the optional parameters for the FileSharesClient.BeginCreateOrUpdate
@@ -987,100 +987,100 @@ type FileSharesClientListMetricsOptions struct {
 // IPConfig - Details related to the IP address configuration
 type IPConfig struct {
 	// REQUIRED; The gateway of the network adapter.
-	Gateway *string `json:"gateway,omitempty"`
+	Gateway *string
 
 	// REQUIRED; The IP address of the network adapter, either ipv4 or ipv6.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The prefix length of the network adapter.
-	PrefixLength *int32 `json:"prefixLength,omitempty"`
+	PrefixLength *int32
 }
 
 // ISCSIDisk - The iSCSI disk.
 type ISCSIDisk struct {
 	// REQUIRED; The properties.
-	Properties *ISCSIDiskProperties `json:"properties,omitempty"`
+	Properties *ISCSIDiskProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ISCSIDiskList - Collection of Iscsi disk
 type ISCSIDiskList struct {
 	// REQUIRED; The value.
-	Value []*ISCSIDisk `json:"value,omitempty"`
+	Value []*ISCSIDisk
 }
 
 // ISCSIDiskProperties - The iSCSI disk properties.
 type ISCSIDiskProperties struct {
 	// REQUIRED; The access control records.
-	AccessControlRecords []*string `json:"accessControlRecords,omitempty"`
+	AccessControlRecords []*string
 
 	// REQUIRED; The data policy.
-	DataPolicy *DataPolicy `json:"dataPolicy,omitempty"`
+	DataPolicy *DataPolicy
 
 	// REQUIRED; The disk status.
-	DiskStatus *DiskStatus `json:"diskStatus,omitempty"`
+	DiskStatus *DiskStatus
 
 	// REQUIRED; The monitoring.
-	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
+	MonitoringStatus *MonitoringStatus
 
 	// REQUIRED; The provisioned capacity in bytes.
-	ProvisionedCapacityInBytes *int64 `json:"provisionedCapacityInBytes,omitempty"`
+	ProvisionedCapacityInBytes *int64
 
 	// The description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The local used capacity in bytes.
-	LocalUsedCapacityInBytes *int64 `json:"localUsedCapacityInBytes,omitempty" azure:"ro"`
+	LocalUsedCapacityInBytes *int64
 
 	// READ-ONLY; The used capacity in bytes.
-	UsedCapacityInBytes *int64 `json:"usedCapacityInBytes,omitempty" azure:"ro"`
+	UsedCapacityInBytes *int64
 }
 
 // ISCSIServer - The iSCSI server.
 type ISCSIServer struct {
 	// REQUIRED; The properties.
-	Properties *ISCSIServerProperties `json:"properties,omitempty"`
+	Properties *ISCSIServerProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ISCSIServerList - Collection of Iscsi servers
 type ISCSIServerList struct {
 	// REQUIRED; The value.
-	Value []*ISCSIServer `json:"value,omitempty"`
+	Value []*ISCSIServer
 }
 
 // ISCSIServerProperties - The iSCSI server properties.
 type ISCSIServerProperties struct {
 	// REQUIRED; The backup policy id.
-	BackupScheduleGroupID *string `json:"backupScheduleGroupId,omitempty"`
+	BackupScheduleGroupID *string
 
 	// REQUIRED; The storage domain id.
-	StorageDomainID *string `json:"storageDomainId,omitempty"`
+	StorageDomainID *string
 
 	// The chap id.
-	ChapID *string `json:"chapId,omitempty"`
+	ChapID *string
 
 	// The description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The reverse chap id.
-	ReverseChapID *string `json:"reverseChapId,omitempty"`
+	ReverseChapID *string
 }
 
 // IscsiDisksClientBeginCreateOrUpdateOptions contains the optional parameters for the IscsiDisksClient.BeginCreateOrUpdate
@@ -1174,154 +1174,154 @@ type IscsiServersClientListMetricsOptions struct {
 
 type Item struct {
 	// REQUIRED
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// REQUIRED
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Job - The Job.
 type Job struct {
 	// REQUIRED; The percentage of the job that is already complete
-	PercentComplete *int32 `json:"percentComplete,omitempty"`
+	PercentComplete *int32
 
 	// REQUIRED; Current status of the job
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatus
 
 	// The UTC time at which the job completed
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The Error details.
-	Error *JobErrorDetails `json:"error,omitempty"`
+	Error *JobErrorDetails
 
 	// Other properties of the job
-	Properties *JobProperties `json:"properties,omitempty"`
+	Properties *JobProperties
 
 	// The UTC time at which the job was started
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobErrorDetails - The job error information containing List of JobErrorItem.
 type JobErrorDetails struct {
 	// REQUIRED; The code intended for programmatic access
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; The message intended to describe the error in detail
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The error details.
-	ErrorDetails []*JobErrorItem `json:"errorDetails,omitempty"`
+	ErrorDetails []*JobErrorItem
 }
 
 // JobErrorItem - The job error items.
 type JobErrorItem struct {
 	// REQUIRED; The code intended for programmatic access
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; The message intended to describe the error in detail
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The recommended actions.
-	Recommendations []*string `json:"recommendations,omitempty"`
+	Recommendations []*string
 }
 
 // JobFilter - Filters that can be specified for the job
 type JobFilter struct {
 	// REQUIRED; The job type.
-	JobType *JobType `json:"jobType,omitempty"`
+	JobType *JobType
 
 	// REQUIRED; The job status.
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatus
 
 	// The start time of the job.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // JobList - Collection of jobs
 type JobList struct {
 	// REQUIRED; The value.
-	Value []*Job `json:"value,omitempty"`
+	Value []*Job
 
 	// The NextLink.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // JobProperties - properties for the job
 type JobProperties struct {
 	// REQUIRED; Type of the job
-	JobType *JobType `json:"jobType,omitempty"`
+	JobType *JobType
 
 	// The time of the backup used for the failover.
-	BackupPointInTime *time.Time `json:"backupPointInTime,omitempty"`
+	BackupPointInTime *time.Time
 
 	// The device id in which the job is currently running
-	DeviceID *string `json:"deviceId,omitempty"`
+	DeviceID *string
 
 	// The download progress.
-	DownloadProgress *UpdateDownloadProgress `json:"downloadProgress,omitempty"`
+	DownloadProgress *UpdateDownloadProgress
 
 	// The entity identifier for which the job ran.
-	EntityID *string `json:"entityId,omitempty"`
+	EntityID *string
 
 	// The entity type for which the job ran.
-	EntityType *string `json:"entityType,omitempty"`
+	EntityType *string
 
 	// The install progress.
-	InstallProgress *UpdateInstallProgress `json:"installProgress,omitempty"`
+	InstallProgress *UpdateInstallProgress
 
 	// Represents whether the job is cancellable or not
-	IsCancellable *bool `json:"isCancellable,omitempty"`
+	IsCancellable *bool
 
 	// The job stages.
-	JobStages []*JobStage `json:"jobStages,omitempty"`
+	JobStages []*JobStage
 
 	// The source device identifier of the failover job.
-	SourceDeviceID *string `json:"sourceDeviceId,omitempty"`
+	SourceDeviceID *string
 
 	// stats properties for the job
-	Stats *JobStats `json:"stats,omitempty"`
+	Stats *JobStats
 
 	// Id of the object that is created by the job
-	TargetID *string `json:"targetId,omitempty"`
+	TargetID *string
 
 	// The target type of the backup.
-	TargetType *TargetType `json:"targetType,omitempty"`
+	TargetType *TargetType
 }
 
 // JobStage - Contains details about the multiple job stages of a job
 type JobStage struct {
 	// REQUIRED; The stage status.
-	StageStatus *JobStatus `json:"stageStatus,omitempty"`
+	StageStatus *JobStatus
 
 	// The details of the stage.
-	Detail *string `json:"detail,omitempty"`
+	Detail *string
 
 	// The error code of the stage if any.
-	ErrorCode *string `json:"errorCode,omitempty"`
+	ErrorCode *string
 
 	// The message of the job stage.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // JobStats - Stats that are available for all jobs in common
 type JobStats struct {
 	// Completed work item count.
-	CompletedWorkItemCount *int32 `json:"completedWorkItemCount,omitempty"`
+	CompletedWorkItemCount *int32
 
 	// The estimated time remaining.
-	EstimatedTimeRemaining *int32 `json:"estimatedTimeRemaining,omitempty"`
+	EstimatedTimeRemaining *int32
 
 	// Total work item count.
-	TotalWorkItemCount *int32 `json:"totalWorkItemCount,omitempty"`
+	TotalWorkItemCount *int32
 }
 
 // JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
@@ -1344,103 +1344,103 @@ type JobsClientListByManagerOptions struct {
 // Manager - The StorSimple Manager
 type Manager struct {
 	// REQUIRED; The Geo location of the Manager
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ETag of the Manager
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// List of properties of the Manager
-	Properties *ManagerProperties `json:"properties,omitempty"`
+	Properties *ManagerProperties
 
 	// Tags attached to the Manager
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagerExtendedInfo - The extended info of the manager.
 type ManagerExtendedInfo struct {
 	// REQUIRED; The extended info properties.
-	Properties *ManagerExtendedInfoProperties `json:"properties,omitempty"`
+	Properties *ManagerExtendedInfoProperties
 
 	// ETag of the Resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagerExtendedInfoProperties - Properties of the ManagerExtendedInfo
 type ManagerExtendedInfoProperties struct {
 	// REQUIRED; Represents the encryption algorithm used to encrypt the other keys. None - if EncryptionKey is saved in plain
 	// text format. AlgorithmName - if encryption is used
-	Algorithm *string `json:"algorithm,omitempty"`
+	Algorithm *string
 
 	// REQUIRED; Represents the CIK of the resource
-	IntegrityKey *string `json:"integrityKey,omitempty"`
+	IntegrityKey *string
 
 	// Represents the CEK of the resource
-	EncryptionKey *string `json:"encryptionKey,omitempty"`
+	EncryptionKey *string
 
 	// Represents the Cert thumbprint that was used to encrypt the CEK
-	EncryptionKeyThumbprint *string `json:"encryptionKeyThumbprint,omitempty"`
+	EncryptionKeyThumbprint *string
 
 	// Represents the portal thumbprint which can be used optionally to encrypt the entire data before storing it.
-	PortalCertificateThumbprint *string `json:"portalCertificateThumbprint,omitempty"`
+	PortalCertificateThumbprint *string
 
 	// Represents the version of the ExtendedInfo object being persisted
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // ManagerIntrinsicSettings - Intrinsic settings which refers to the type of the StorSimple manager
 type ManagerIntrinsicSettings struct {
 	// REQUIRED; Refers to the type of the StorSimple Manager
-	Type *ManagerType `json:"type,omitempty"`
+	Type *ManagerType
 }
 
 // ManagerList - List of StorSimple Managers under a particular resourceGroup
 type ManagerList struct {
 	// REQUIRED; List of Managers
-	Value []*Manager `json:"value,omitempty"`
+	Value []*Manager
 }
 
 // ManagerPatch - The StorSimple Manager patch.
 type ManagerPatch struct {
 	// The tags attached to the StorSimple Manager.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ManagerProperties - The properties of the Manager
 type ManagerProperties struct {
 	// Specifies if the Manager is Garda or Helsinki
-	CisIntrinsicSettings *ManagerIntrinsicSettings `json:"cisIntrinsicSettings,omitempty"`
+	CisIntrinsicSettings *ManagerIntrinsicSettings
 
 	// Specifies the Sku
-	SKU *ManagerSKU `json:"sku,omitempty"`
+	SKU *ManagerSKU
 
 	// READ-ONLY; Specifies the state of the resource as it is getting provisioned. Value of "Succeeded" means the Manager was
 	// successfully created
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // ManagerSKU - The Sku.
 type ManagerSKU struct {
 	// CONSTANT; Refers to the sku name which should be "Standard"
 	// Field has constant value "Standard", any specified value is ignored.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ManagersClientCreateExtendedInfoOptions contains the optional parameters for the ManagersClient.CreateExtendedInfo method.
@@ -1524,285 +1524,285 @@ type ManagersClientUploadRegistrationCertificateOptions struct {
 }
 
 type Message struct {
-	Language *string `json:"language,omitempty"`
-	Value    *string `json:"value,omitempty"`
+	Language *string
+	Value    *string
 }
 
 // MetricAvailablity - Metric availability specifies the time grain (aggregation interval or frequency) and the retention
 // period for that time grain
 type MetricAvailablity struct {
 	// REQUIRED; The retention period for the metric at the specified timegrain
-	Retention *string `json:"retention,omitempty"`
+	Retention *string
 
 	// REQUIRED; The time grain, specifies the aggregation interval for the metric.
-	TimeGrain *string `json:"timeGrain,omitempty"`
+	TimeGrain *string
 }
 
 // MetricData - The metric data.
 type MetricData struct {
 	// REQUIRED; The average of all sample for the given instance
-	Average *float64 `json:"average,omitempty"`
+	Average *float64
 
 	// REQUIRED; The count of samples of the metric data available for the given instance
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// REQUIRED; The maximum of all samples available
-	Maximum *float64 `json:"maximum,omitempty"`
+	Maximum *float64
 
 	// REQUIRED; The minimum of all samples available
-	Minimum *float64 `json:"minimum,omitempty"`
+	Minimum *float64
 
 	// REQUIRED; The sum of all the samples available in the given instance of time for the specific metric data
-	Sum *float64 `json:"sum,omitempty"`
+	Sum *float64
 
 	// REQUIRED; The time when the metric data is fetched
-	TimeStamp *time.Time `json:"timeStamp,omitempty"`
+	TimeStamp *time.Time
 }
 
 // MetricDefinition - Monitoring metric definition represents the metadata of the metrics.
 type MetricDefinition struct {
 	// REQUIRED; The supported dimensions
-	Dimensions []*MetricDimension `json:"dimensions,omitempty"`
+	Dimensions []*MetricDimension
 
 	// REQUIRED; The available metric granularities
-	MetricAvailabilities []*MetricAvailablity `json:"metricAvailabilities,omitempty"`
+	MetricAvailabilities []*MetricAvailablity
 
 	// REQUIRED; The metric name
-	Name *MetricName `json:"name,omitempty"`
+	Name *MetricName
 
 	// REQUIRED; The metric aggregation type
-	PrimaryAggregationType *MetricAggregationType `json:"primaryAggregationType,omitempty"`
+	PrimaryAggregationType *MetricAggregationType
 
 	// REQUIRED; The metric source id
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// REQUIRED; The metric definition type
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// REQUIRED; The metric unit
-	Unit *MetricUnit `json:"unit,omitempty"`
+	Unit *MetricUnit
 }
 
 // MetricDefinitionList - List of metric definition
 type MetricDefinitionList struct {
 	// REQUIRED; The list of metric definition
-	Value []*MetricDefinition `json:"value,omitempty"`
+	Value []*MetricDefinition
 }
 
 // MetricDimension - Metric dimension
 type MetricDimension struct {
 	// REQUIRED; Metric dimension name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Metric dimension values
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // MetricFilter - class representing the filters to be passed while fetching metrics
 type MetricFilter struct {
 	// endtime for fetching metrics
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// filter for name property
-	Name *MetricNameFilter `json:"name,omitempty"`
+	Name *MetricNameFilter
 
 	// starttime for fetching metrics
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// timegrain of the metrics
-	TimeGrain *string `json:"timeGrain,omitempty"`
+	TimeGrain *string
 }
 
 // MetricList - Collection of metrics
 type MetricList struct {
 	// REQUIRED; The value.
-	Value []*Metrics `json:"value,omitempty"`
+	Value []*Metrics
 }
 
 // MetricName - The name of the metric
 type MetricName struct {
 	// REQUIRED; Localized name of the metric
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// REQUIRED; Name of the metric
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // MetricNameFilter - Class representing the name filter to be passed while fetching metrics
 type MetricNameFilter struct {
 	// The value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Metrics - Monitoring metric
 type Metrics struct {
 	// REQUIRED; The Metric dimension which indicates the source of the metric
-	Dimensions []*MetricDimension `json:"dimensions,omitempty"`
+	Dimensions []*MetricDimension
 
 	// REQUIRED; The metric end time
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// REQUIRED; The name of the metrics
-	Name *MetricName `json:"name,omitempty"`
+	Name *MetricName
 
 	// REQUIRED; The metric aggregation type
-	PrimaryAggregation *MetricAggregationType `json:"primaryAggregation,omitempty"`
+	PrimaryAggregation *MetricAggregationType
 
 	// REQUIRED; The id of metric source
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// REQUIRED; The metric start time
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// REQUIRED; The time grain, time grain indicates frequency of the metric data
-	TimeGrain *string `json:"timeGrain,omitempty"`
+	TimeGrain *string
 
 	// REQUIRED; The Type of the metric data
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// REQUIRED; The unit of the metric data
-	Unit *MetricUnit `json:"unit,omitempty"`
+	Unit *MetricUnit
 
 	// REQUIRED; The metric data
-	Values []*MetricData `json:"values,omitempty"`
+	Values []*MetricData
 }
 
 // NetworkAdapter - Represents a networkAdapter in a particular node.
 type NetworkAdapter struct {
 	// REQUIRED; Represents state of DHCP.
-	DhcpStatus *DhcpStatus `json:"dhcpStatus,omitempty"`
+	DhcpStatus *DhcpStatus
 
 	// REQUIRED; The name of the network adapter.
-	NetworkAdapterName *string `json:"networkAdapterName,omitempty"`
+	NetworkAdapterName *string
 
 	// The ipv4 configuration of the network adapter.
-	IPv4Info *IPConfig `json:"iPv4Info,omitempty"`
+	IPv4Info *IPConfig
 
 	// The ipv6 configuration of the network adapter.
-	IPv6Info *IPConfig `json:"iPv6Info,omitempty"`
+	IPv6Info *IPConfig
 
 	// The speed of the network adapter.
-	LinkSpeed *int64 `json:"linkSpeed,omitempty"`
+	LinkSpeed *int64
 }
 
 // NetworkSettings - The NetworkSettings of a device
 type NetworkSettings struct {
 	// REQUIRED; Properties of the given NetworkSettings.
-	Properties *NetworkSettingsProperties `json:"properties,omitempty"`
+	Properties *NetworkSettingsProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NetworkSettingsProperties - The properties of NetworkSettings
 type NetworkSettingsProperties struct {
 	// REQUIRED; The NetworkAdapters under each node of the device.
-	NodeNetworks []*NodeNetwork `json:"nodeNetworks,omitempty"`
+	NodeNetworks []*NodeNetwork
 
 	// REQUIRED; The Primary DNS server for the device
-	PrimaryDNSServer *string `json:"primaryDnsServer,omitempty"`
+	PrimaryDNSServer *string
 
 	// The secondary DNS server for the device
-	SecondaryDNSServer *string `json:"secondaryDnsServer,omitempty"`
+	SecondaryDNSServer *string
 }
 
 // NodeNetwork - Represents a single node in a device.
 type NodeNetwork struct {
 	// REQUIRED; The array of network adapters in the node.
-	NetworkAdapters []*NetworkAdapter `json:"networkAdapters,omitempty"`
+	NetworkAdapters []*NetworkAdapter
 }
 
 // RawCertificateData - Raw Certificate Data From IDM
 type RawCertificateData struct {
 	// REQUIRED; Gets or sets the base64 encoded certificate raw data string
-	Certificate *string `json:"certificate,omitempty"`
+	Certificate *string
 
 	// Specify the Authentication type
-	AuthType *AuthType `json:"authType,omitempty"`
+	AuthType *AuthType
 }
 
 // Resource - The Azure Resource.
 type Resource struct {
 	// REQUIRED; The Geo location of the Manager
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Tags attached to the Manager
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceCertificateAndAADDetails - Resource Certificate And AAD Details from IDM
 type ResourceCertificateAndAADDetails struct {
 	// REQUIRED; AAD tenant authority
-	AADAuthority *string `json:"aadAuthority,omitempty"`
+	AADAuthority *string
 
 	// REQUIRED; AAD tenant Id
-	AADTenantID *string `json:"aadTenantId,omitempty"`
+	AADTenantID *string
 
 	// REQUIRED; Azure Management Endpoint Audience
-	AzureManagementEndpointAudience *string `json:"azureManagementEndpointAudience,omitempty"`
+	AzureManagementEndpointAudience *string
 
 	// REQUIRED; Gets or sets the base64 encoded certificate raw data string
-	Certificate *string `json:"certificate,omitempty"`
+	Certificate *string
 
 	// REQUIRED; Certificate friendly name
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// REQUIRED; Certificate issuer
-	Issuer *string `json:"issuer,omitempty"`
+	Issuer *string
 
 	// REQUIRED; Gets or Sets the ResourceId
-	ResourceID *int64 `json:"resourceId,omitempty"`
+	ResourceID *int64
 
 	// REQUIRED; AAD service principal clientId
-	ServicePrincipalClientID *string `json:"servicePrincipalClientId,omitempty"`
+	ServicePrincipalClientID *string
 
 	// REQUIRED; AAD service principal ObjectId
-	ServicePrincipalObjectID *string `json:"servicePrincipalObjectId,omitempty"`
+	ServicePrincipalObjectID *string
 
 	// REQUIRED; Certificate Subject Name
-	Subject *string `json:"subject,omitempty"`
+	Subject *string
 
 	// REQUIRED; Certificate thumbprint
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 
 	// REQUIRED; Certificate Validity start Date time
-	ValidFrom *time.Time `json:"validFrom,omitempty"`
+	ValidFrom *time.Time
 
 	// REQUIRED; Certificate Validity End Date time
-	ValidTo *time.Time `json:"validTo,omitempty"`
+	ValidTo *time.Time
 
 	// Specify the Authentication type
-	AuthType *AuthType `json:"authType,omitempty"`
+	AuthType *AuthType
 }
 
 // SecuritySettings - The SecuritySettings of a device
 type SecuritySettings struct {
 	// REQUIRED; Properties of the SecuritySettings.
-	Properties *SecuritySettingsProperties `json:"properties,omitempty"`
+	Properties *SecuritySettingsProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SecuritySettingsProperties - The properties of SecuritySettings
@@ -1810,55 +1810,55 @@ type SecuritySettingsProperties struct {
 	// REQUIRED; Device administrator password as an encrypted string (encrypted using RSA PKCS #1) is used to log into the local
 	// web UI of the device. Actual password could have at least 8 characters that are a
 	// combination of uppercase, lowercase, numeric, and special characters
-	DeviceAdminPassword *AsymmetricEncryptedSecret `json:"deviceAdminPassword,omitempty"`
+	DeviceAdminPassword *AsymmetricEncryptedSecret
 }
 
 // SendTestAlertEmailRequest - Request for sending test alert email
 type SendTestAlertEmailRequest struct {
 	// REQUIRED; List of emails to send the test alerts
-	EmailList []*string `json:"emailList,omitempty"`
+	EmailList []*string
 }
 
 // StorageAccountCredential - The storage account credential
 type StorageAccountCredential struct {
 	// REQUIRED; Credential properties
-	Properties *StorageAccountCredentialProperties `json:"properties,omitempty"`
+	Properties *StorageAccountCredentialProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageAccountCredentialList - Collection of Storage account credential entities
 type StorageAccountCredentialList struct {
 	// REQUIRED; The value.
-	Value []*StorageAccountCredential `json:"value,omitempty"`
+	Value []*StorageAccountCredential
 }
 
 // StorageAccountCredentialProperties - Storage account properties
 type StorageAccountCredentialProperties struct {
 	// REQUIRED; The cloud service provider
-	CloudType *CloudType `json:"cloudType,omitempty"`
+	CloudType *CloudType
 
 	// REQUIRED; SSL needs to be enabled or not
-	EnableSSL *SSLStatus `json:"enableSSL,omitempty"`
+	EnableSSL *SSLStatus
 
 	// REQUIRED; The storage endpoint
-	EndPoint *string `json:"endPoint,omitempty"`
+	EndPoint *string
 
 	// REQUIRED; The storage account login
-	Login *string `json:"login,omitempty"`
+	Login *string
 
 	// The details of the storage account password
-	AccessKey *AsymmetricEncryptedSecret `json:"accessKey,omitempty"`
+	AccessKey *AsymmetricEncryptedSecret
 
 	// The storage account's geo location
-	Location *string `json:"location,omitempty"`
+	Location *string
 }
 
 // StorageAccountCredentialsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAccountCredentialsClient.BeginCreateOrUpdate
@@ -1890,34 +1890,34 @@ type StorageAccountCredentialsClientListByManagerOptions struct {
 // StorageDomain - The storage domain.
 type StorageDomain struct {
 	// REQUIRED; The properties.
-	Properties *StorageDomainProperties `json:"properties,omitempty"`
+	Properties *StorageDomainProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageDomainList - Collection of storage domains
 type StorageDomainList struct {
 	// REQUIRED; The value.
-	Value []*StorageDomain `json:"value,omitempty"`
+	Value []*StorageDomain
 }
 
 // StorageDomainProperties - The storage domain properties.
 type StorageDomainProperties struct {
 	// REQUIRED; The encryption status "Enabled | Disabled".
-	EncryptionStatus *EncryptionStatus `json:"encryptionStatus,omitempty"`
+	EncryptionStatus *EncryptionStatus
 
 	// REQUIRED; The storage account credentials.
-	StorageAccountCredentialIDs []*string `json:"storageAccountCredentialIds,omitempty"`
+	StorageAccountCredentialIDs []*string
 
 	// The encryption key used to encrypt the data. This is a user secret.
-	EncryptionKey *AsymmetricEncryptedSecret `json:"encryptionKey,omitempty"`
+	EncryptionKey *AsymmetricEncryptedSecret
 }
 
 // StorageDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageDomainsClient.BeginCreateOrUpdate
@@ -1950,167 +1950,167 @@ type StorageDomainsClientListByManagerOptions struct {
 // entities encrypted using different algorithms.
 type SymmetricEncryptedSecret struct {
 	// REQUIRED; Algorithm used to encrypt "Value"
-	EncryptionAlgorithm *EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
+	EncryptionAlgorithm *EncryptionAlgorithm
 
 	// REQUIRED; The value of the secret itself. If the secret is in plaintext or null then EncryptionAlgorithm will be none
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// Thumbprint cert that was used to encrypt "Value"
-	ValueCertificateThumbprint *string `json:"valueCertificateThumbprint,omitempty"`
+	ValueCertificateThumbprint *string
 }
 
 // Time - The Time.
 type Time struct {
 	// REQUIRED; The hour.
-	Hour *int32 `json:"hour,omitempty"`
+	Hour *int32
 
 	// REQUIRED; The minute.
-	Minute *int32 `json:"minute,omitempty"`
+	Minute *int32
 }
 
 // TimeSettings - The TimeSettings of a device
 type TimeSettings struct {
 	// REQUIRED; Properties of the TimeSettings.
-	Properties *TimeSettingsProperties `json:"properties,omitempty"`
+	Properties *TimeSettingsProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TimeSettingsProperties - The properties of TimeSettings
 type TimeSettingsProperties struct {
 	// REQUIRED; The primary Network Time Protocol (NTP) server name, like 'time.windows.com'.
-	PrimaryTimeServer *string `json:"primaryTimeServer,omitempty"`
+	PrimaryTimeServer *string
 
 	// REQUIRED; The timezone of device, like '(UTC -06:00) Central America'
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 
 	// The secondary Network Time Protocol (NTP) server name, like 'time.contoso.com'. It's optional.
-	SecondaryTimeServer *string `json:"secondaryTimeServer,omitempty"`
+	SecondaryTimeServer *string
 }
 
 // UpdateDownloadProgress - details available during the download
 type UpdateDownloadProgress struct {
 	// The download phase.
-	DownloadPhase *DownloadPhase `json:"downloadPhase,omitempty"`
+	DownloadPhase *DownloadPhase
 
 	// Number of updates downloaded.
-	NumberOfUpdatesDownloaded *int32 `json:"numberOfUpdatesDownloaded,omitempty"`
+	NumberOfUpdatesDownloaded *int32
 
 	// Number of updates to download.
-	NumberOfUpdatesToDownload *int32 `json:"numberOfUpdatesToDownload,omitempty"`
+	NumberOfUpdatesToDownload *int32
 
 	// Percentage of completion.
-	PercentComplete *int32 `json:"percentComplete,omitempty"`
+	PercentComplete *int32
 
 	// Total bytes downloaded.
-	TotalBytesDownloaded *float64 `json:"totalBytesDownloaded,omitempty"`
+	TotalBytesDownloaded *float64
 
 	// Total bytes to download.
-	TotalBytesToDownload *float64 `json:"totalBytesToDownload,omitempty"`
+	TotalBytesToDownload *float64
 }
 
 // UpdateInstallProgress - Class representing the progress during installation of updates
 type UpdateInstallProgress struct {
 	// Number of updates installed.
-	NumberOfUpdatesInstalled *int32 `json:"numberOfUpdatesInstalled,omitempty"`
+	NumberOfUpdatesInstalled *int32
 
 	// Number of updates to install.
-	NumberOfUpdatesToInstall *int32 `json:"numberOfUpdatesToInstall,omitempty"`
+	NumberOfUpdatesToInstall *int32
 
 	// Percentage of completion.
-	PercentComplete *int32 `json:"percentComplete,omitempty"`
+	PercentComplete *int32
 }
 
 // Updates - The updates profile
 type Updates struct {
 	// Update properties.
-	Properties *UpdatesProperties `json:"properties,omitempty"`
+	Properties *UpdatesProperties
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UpdatesProperties - Properties of the update profile
 type UpdatesProperties struct {
 	// The last time when the device did an update scan.
-	DeviceLastScannedTime *time.Time `json:"deviceLastScannedTime,omitempty"`
+	DeviceLastScannedTime *time.Time
 
 	// The current Device version.
-	DeviceVersion *string `json:"deviceVersion,omitempty"`
+	DeviceVersion *string
 
 	// If a download is in progress, this field contains the JobId of that particular download job
-	InProgressDownloadJobID *string `json:"inProgressDownloadJobId,omitempty"`
+	InProgressDownloadJobID *string
 
 	// The time when the currently running download (if any) started
-	InProgressDownloadJobStartedTime *time.Time `json:"inProgressDownloadJobStartedTime,omitempty"`
+	InProgressDownloadJobStartedTime *time.Time
 
 	// If an install is in progress, this field contains the JobId of that particular install job
-	InProgressInstallJobID *string `json:"inProgressInstallJobId,omitempty"`
+	InProgressInstallJobID *string
 
 	// The time when the currently running install (if any) started
-	InProgressInstallJobStartedTime *time.Time `json:"inProgressInstallJobStartedTime,omitempty"`
+	InProgressInstallJobStartedTime *time.Time
 
 	// The time when the currently running scan (if any) started
-	InProgressScanStartedTime *time.Time `json:"inProgressScanStartedTime,omitempty"`
+	InProgressScanStartedTime *time.Time
 
 	// The time when the last Download job was completed (success|cancelled|failed) on the device.
-	LastCompletedDownloadJobTime *time.Time `json:"lastCompletedDownloadJobTime,omitempty"`
+	LastCompletedDownloadJobTime *time.Time
 
 	// The time when the last Install job was completed (success|cancelled|failed) on the device.
-	LastCompletedInstallJobTime *time.Time `json:"lastCompletedInstallJobTime,omitempty"`
+	LastCompletedInstallJobTime *time.Time
 
 	// The time when the last scan job was completed (success|cancelled|failed) on the device.
-	LastCompletedScanTime *time.Time `json:"lastCompletedScanTime,omitempty"`
+	LastCompletedScanTime *time.Time
 
 	// Set to true if RegularUpdatesAvailable is true and if at least one of the updateItems detected has needs a reboot to install.
-	RebootRequiredForInstall *bool `json:"rebootRequiredForInstall,omitempty"`
+	RebootRequiredForInstall *bool
 
 	// Set to true if regular updates were detected for the current version of the device.
-	RegularUpdatesAvailable *bool `json:"regularUpdatesAvailable,omitempty"`
+	RegularUpdatesAvailable *bool
 
 	// The current update operation.
-	Status *UpdateOperation `json:"status,omitempty"`
+	Status *UpdateOperation
 
 	// The total number of items pending for download.
-	TotalItemsPendingForDownload *int32 `json:"totalItemsPendingForDownload,omitempty"`
+	TotalItemsPendingForDownload *int32
 
 	// The total number of items pending for install.
-	TotalItemsPendingForInstall *int32 `json:"totalItemsPendingForInstall,omitempty"`
+	TotalItemsPendingForInstall *int32
 }
 
 // UploadCertificateRequest - Upload Certificate Request to IDM
 type UploadCertificateRequest struct {
 	// REQUIRED; Raw Certificate Data From IDM
-	Properties *RawCertificateData `json:"properties,omitempty"`
+	Properties *RawCertificateData
 
 	// READ-ONLY; Gets ContractVersion
-	ContractVersion *ContractVersions `json:"contractVersion,omitempty" azure:"ro"`
+	ContractVersion *ContractVersions
 }
 
 // UploadCertificateResponse - Upload Certificate Response from IDM
 type UploadCertificateResponse struct {
 	// REQUIRED; Resource Certificate And AAD Details from IDM
-	Properties *ResourceCertificateAndAADDetails `json:"properties,omitempty"`
+	Properties *ResourceCertificateAndAADDetails
 
 	// READ-ONLY; The identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }

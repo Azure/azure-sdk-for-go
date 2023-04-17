@@ -13,37 +13,37 @@ import "time"
 
 type ComponentsVrq145SchemasImagetemplateidentityPropertiesUserassignedidentitiesAdditionalproperties struct {
 	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // ImageTemplate - Image template is an ARM resource managed by Microsoft.VirtualMachineImages provider
 type ImageTemplate struct {
 	// REQUIRED; The identity of the image template, if configured.
-	Identity *ImageTemplateIdentity `json:"identity,omitempty"`
+	Identity *ImageTemplateIdentity
 
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of the image template
-	Properties *ImageTemplateProperties `json:"properties,omitempty"`
+	Properties *ImageTemplateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ImageTemplateCustomizerClassification provides polymorphic access to related types.
@@ -59,10 +59,10 @@ type ImageTemplateCustomizerClassification interface {
 // ImageTemplateCustomizer - Describes a unit of image customization
 type ImageTemplateCustomizer struct {
 	// REQUIRED; The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Friendly Name to provide context on what this customization step does
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateCustomizer.
@@ -80,13 +80,13 @@ type ImageTemplateDistributorClassification interface {
 // ImageTemplateDistributor - Generic distribution object
 type ImageTemplateDistributor struct {
 	// REQUIRED; The name to be used for the associated RunOutput.
-	RunOutputName *string `json:"runOutputName,omitempty"`
+	RunOutputName *string
 
 	// REQUIRED; Type of distribution.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Tags that will be applied to the artifact once it has been created/updated by the distributor.
-	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
+	ArtifactTags map[string]*string
 }
 
 // GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateDistributor.
@@ -95,20 +95,20 @@ func (i *ImageTemplateDistributor) GetImageTemplateDistributor() *ImageTemplateD
 // ImageTemplateFileCustomizer - Uploads files to VMs (Linux, Windows). Corresponds to Packer file provisioner
 type ImageTemplateFileCustomizer struct {
 	// REQUIRED; The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The absolute path to a file (with nested directory structures already created) where the file (from sourceUri) will be
 	// uploaded to in the VM
-	Destination *string `json:"destination,omitempty"`
+	Destination *string
 
 	// Friendly Name to provide context on what this customization step does
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// SHA256 checksum of the file provided in the sourceUri field above
-	SHA256Checksum *string `json:"sha256Checksum,omitempty"`
+	SHA256Checksum *string
 
 	// The URI of the file to be uploaded for customizing the VM. It can be a github link, SAS URI for Azure Storage, etc
-	SourceURI *string `json:"sourceUri,omitempty"`
+	SourceURI *string
 }
 
 // GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateFileCustomizer.
@@ -122,12 +122,12 @@ func (i *ImageTemplateFileCustomizer) GetImageTemplateCustomizer() *ImageTemplat
 // ImageTemplateIdentity - Identity for the image template.
 type ImageTemplateIdentity struct {
 	// The type of identity used for the image template. The type 'None' will remove any identities from the image template.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// The list of user identities associated with the image template. The user identity dictionary key references will be ARM
 	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*ComponentsVrq145SchemasImagetemplateidentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*ComponentsVrq145SchemasImagetemplateidentityPropertiesUserassignedidentitiesAdditionalproperties
 }
 
 // ImageTemplateInVMValidatorClassification provides polymorphic access to related types.
@@ -142,10 +142,10 @@ type ImageTemplateInVMValidatorClassification interface {
 // ImageTemplateInVMValidator - Describes a unit of in-VM validation of image
 type ImageTemplateInVMValidator struct {
 	// REQUIRED; The type of validation you want to use on the Image. For example, "Shell" can be shell validation
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Friendly Name to provide context on what this validation step does
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // GetImageTemplateInVMValidator implements the ImageTemplateInVMValidatorClassification interface for type ImageTemplateInVMValidator.
@@ -156,46 +156,46 @@ func (i *ImageTemplateInVMValidator) GetImageTemplateInVMValidator() *ImageTempl
 // ImageTemplateLastRunStatus - Describes the latest status of running an image template
 type ImageTemplateLastRunStatus struct {
 	// End time of the last run (UTC)
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Verbose information about the last run state
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// State of the last run
-	RunState *RunState `json:"runState,omitempty"`
+	RunState *RunState
 
 	// Sub-state of the last run
-	RunSubState *RunSubState `json:"runSubState,omitempty"`
+	RunSubState *RunSubState
 
 	// Start time of the last run (UTC)
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // ImageTemplateListResult - The result of List image templates operation
 type ImageTemplateListResult struct {
 	// The continuation token.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// An array of image templates
-	Value []*ImageTemplate `json:"value,omitempty"`
+	Value []*ImageTemplate
 }
 
 // ImageTemplateManagedImageDistributor - Distribute as a Managed Disk Image.
 type ImageTemplateManagedImageDistributor struct {
 	// REQUIRED; Resource Id of the Managed Disk Image
-	ImageID *string `json:"imageId,omitempty"`
+	ImageID *string
 
 	// REQUIRED; Azure location for the image, should match if image already exists
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The name to be used for the associated RunOutput.
-	RunOutputName *string `json:"runOutputName,omitempty"`
+	RunOutputName *string
 
 	// REQUIRED; Type of distribution.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Tags that will be applied to the artifact once it has been created/updated by the distributor.
-	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
+	ArtifactTags map[string]*string
 }
 
 // GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateManagedImageDistributor.
@@ -211,10 +211,10 @@ func (i *ImageTemplateManagedImageDistributor) GetImageTemplateDistributor() *Im
 // must reside in the same subscription and region as the Image Builder template.
 type ImageTemplateManagedImageSource struct {
 	// REQUIRED; ARM resource id of the managed image in customer subscription
-	ImageID *string `json:"imageId,omitempty"`
+	ImageID *string
 
 	// REQUIRED; Specifies the type of source image you want to start with.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplateManagedImageSource.
@@ -227,29 +227,29 @@ func (i *ImageTemplateManagedImageSource) GetImageTemplateSource() *ImageTemplat
 // ImageTemplatePlatformImageSource - Describes an image source from Azure Gallery Images [https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages].
 type ImageTemplatePlatformImageSource struct {
 	// REQUIRED; Specifies the type of source image you want to start with.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Image offer from the Azure Gallery Images [https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages].
-	Offer *string `json:"offer,omitempty"`
+	Offer *string
 
 	// Optional configuration of purchase plan for platform image.
-	PlanInfo *PlatformImagePurchasePlan `json:"planInfo,omitempty"`
+	PlanInfo *PlatformImagePurchasePlan
 
 	// Image Publisher in Azure Gallery Images [https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages].
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// Image sku from the Azure Gallery Images [https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages].
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// Image version from the Azure Gallery Images [https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages]. If
 	// 'latest' is specified here, the version is evaluated when the image build takes
 	// place, not when the template is submitted.
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY; Image version from the Azure Gallery Images [https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages].
 	// This readonly field differs from 'version', only if the value specified in
 	// 'version' field is 'latest'.
-	ExactVersion *string `json:"exactVersion,omitempty" azure:"ro"`
+	ExactVersion *string
 }
 
 // GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplatePlatformImageSource.
@@ -263,29 +263,29 @@ func (i *ImageTemplatePlatformImageSource) GetImageTemplateSource() *ImageTempla
 // provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
 type ImageTemplatePowerShellCustomizer struct {
 	// REQUIRED; The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Array of PowerShell commands to execute
-	Inline []*string `json:"inline,omitempty"`
+	Inline []*string
 
 	// Friendly Name to provide context on what this customization step does
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only be true
 	// when the runElevated field above is set to true.
-	RunAsSystem *bool `json:"runAsSystem,omitempty"`
+	RunAsSystem *bool
 
 	// If specified, the PowerShell script will be run with elevated privileges
-	RunElevated *bool `json:"runElevated,omitempty"`
+	RunElevated *bool
 
 	// SHA256 checksum of the power shell script provided in the scriptUri field above
-	SHA256Checksum *string `json:"sha256Checksum,omitempty"`
+	SHA256Checksum *string
 
 	// URI of the PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
-	ScriptURI *string `json:"scriptUri,omitempty"`
+	ScriptURI *string
 
 	// Valid exit codes for the PowerShell script. [Default: 0]
-	ValidExitCodes []*int32 `json:"validExitCodes,omitempty"`
+	ValidExitCodes []*int32
 }
 
 // GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplatePowerShellCustomizer.
@@ -300,29 +300,29 @@ func (i *ImageTemplatePowerShellCustomizer) GetImageTemplateCustomizer() *ImageT
 // to Packer powershell provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
 type ImageTemplatePowerShellValidator struct {
 	// REQUIRED; The type of validation you want to use on the Image. For example, "Shell" can be shell validation
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Array of PowerShell commands to execute
-	Inline []*string `json:"inline,omitempty"`
+	Inline []*string
 
 	// Friendly Name to provide context on what this validation step does
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only be true
 	// when the runElevated field above is set to true.
-	RunAsSystem *bool `json:"runAsSystem,omitempty"`
+	RunAsSystem *bool
 
 	// If specified, the PowerShell script will be run with elevated privileges
-	RunElevated *bool `json:"runElevated,omitempty"`
+	RunElevated *bool
 
 	// SHA256 checksum of the power shell script provided in the scriptUri field above
-	SHA256Checksum *string `json:"sha256Checksum,omitempty"`
+	SHA256Checksum *string
 
 	// URI of the PowerShell script to be run for validation. It can be a github link, Azure Storage URI, etc
-	ScriptURI *string `json:"scriptUri,omitempty"`
+	ScriptURI *string
 
 	// Valid exit codes for the PowerShell script. [Default: 0]
-	ValidExitCodes []*int32 `json:"validExitCodes,omitempty"`
+	ValidExitCodes []*int32
 }
 
 // GetImageTemplateInVMValidator implements the ImageTemplateInVMValidatorClassification interface for type ImageTemplatePowerShellValidator.
@@ -336,17 +336,17 @@ func (i *ImageTemplatePowerShellValidator) GetImageTemplateInVMValidator() *Imag
 // ImageTemplateProperties - Describes the properties of an image template
 type ImageTemplateProperties struct {
 	// REQUIRED; The distribution targets where the image output needs to go to.
-	Distribute []ImageTemplateDistributorClassification `json:"distribute,omitempty"`
+	Distribute []ImageTemplateDistributorClassification
 
 	// REQUIRED; Specifies the properties used to describe the source image.
-	Source ImageTemplateSourceClassification `json:"source,omitempty"`
+	Source ImageTemplateSourceClassification
 
 	// Maximum duration to wait while building the image template (includes all customizations, validations, and distributions).
 	// Omit or specify 0 to use the default (4 hours).
-	BuildTimeoutInMinutes *int32 `json:"buildTimeoutInMinutes,omitempty"`
+	BuildTimeoutInMinutes *int32
 
 	// Specifies the properties used to describe the customization steps of the image, like Image source etc
-	Customize []ImageTemplateCustomizerClassification `json:"customize,omitempty"`
+	Customize []ImageTemplateCustomizerClassification
 
 	// The staging resource group id in the same subscription as the image template that will be used to build the image. If this
 	// field is empty, a resource group with a random name will be created. If the
@@ -355,27 +355,27 @@ type ImageTemplateProperties struct {
 	// resource group created will be deleted during template deletion if this field is empty or the resource group specified
 	// doesn't exist, but if the resource group specified exists the resources created
 	// in the resource group will be deleted during template deletion and the resource group itself will remain.
-	StagingResourceGroup *string `json:"stagingResourceGroup,omitempty"`
+	StagingResourceGroup *string
 
 	// Describes how virtual machine is set up to build images
-	VMProfile *ImageTemplateVMProfile `json:"vmProfile,omitempty"`
+	VMProfile *ImageTemplateVMProfile
 
 	// Configuration options and list of validations to be performed on the resulting image.
-	Validate *ImageTemplatePropertiesValidate `json:"validate,omitempty"`
+	Validate *ImageTemplatePropertiesValidate
 
 	// READ-ONLY; The staging resource group id in the same subscription as the image template that will be used to build the
 	// image. This read-only field differs from 'stagingResourceGroup' only if the value specified
 	// in the 'stagingResourceGroup' field is empty.
-	ExactStagingResourceGroup *string `json:"exactStagingResourceGroup,omitempty" azure:"ro"`
+	ExactStagingResourceGroup *string
 
 	// READ-ONLY; State of 'run' that is currently executing or was last executed.
-	LastRunStatus *ImageTemplateLastRunStatus `json:"lastRunStatus,omitempty" azure:"ro"`
+	LastRunStatus *ImageTemplateLastRunStatus
 
 	// READ-ONLY; Provisioning error, if any
-	ProvisioningError *ProvisioningError `json:"provisioningError,omitempty" azure:"ro"`
+	ProvisioningError *ProvisioningError
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ImageTemplatePropertiesValidate - Configuration options and list of validations to be performed on the resulting image.
@@ -385,33 +385,33 @@ type ImageTemplatePropertiesValidate struct {
 	// be distributed. Please use this option with caution as it may result in bad images being distributed for use. In either
 	// case (true or false), the end to end image run will be reported as having failed
 	// in case of a validation failure. [Note: This field has no effect if validation succeeds.]
-	ContinueDistributeOnFailure *bool `json:"continueDistributeOnFailure,omitempty"`
+	ContinueDistributeOnFailure *bool
 
 	// List of validations to be performed.
-	InVMValidations []ImageTemplateInVMValidatorClassification `json:"inVMValidations,omitempty"`
+	InVMValidations []ImageTemplateInVMValidatorClassification
 
 	// If this field is set to true, the image specified in the 'source' section will directly be validated. No separate build
 	// will be run to generate and then validate a customized image.
-	SourceValidationOnly *bool `json:"sourceValidationOnly,omitempty"`
+	SourceValidationOnly *bool
 }
 
 // ImageTemplateRestartCustomizer - Reboots a VM and waits for it to come back online (Windows). Corresponds to Packer windows-restart
 // provisioner
 type ImageTemplateRestartCustomizer struct {
 	// REQUIRED; The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Friendly Name to provide context on what this customization step does
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Command to check if restart succeeded [Default: '']
-	RestartCheckCommand *string `json:"restartCheckCommand,omitempty"`
+	RestartCheckCommand *string
 
 	// Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer restart"']
-	RestartCommand *string `json:"restartCommand,omitempty"`
+	RestartCommand *string
 
 	// Restart timeout specified as a string of magnitude and unit, e.g. '5m' (5 minutes) or '2h' (2 hours) [Default: '5m']
-	RestartTimeout *string `json:"restartTimeout,omitempty"`
+	RestartTimeout *string
 }
 
 // GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateRestartCustomizer.
@@ -425,25 +425,25 @@ func (i *ImageTemplateRestartCustomizer) GetImageTemplateCustomizer() *ImageTemp
 // ImageTemplateSharedImageDistributor - Distribute via Shared Image Gallery.
 type ImageTemplateSharedImageDistributor struct {
 	// REQUIRED; Resource Id of the Shared Image Gallery image
-	GalleryImageID *string `json:"galleryImageId,omitempty"`
+	GalleryImageID *string
 
 	// REQUIRED; A list of regions that the image will be replicated to
-	ReplicationRegions []*string `json:"replicationRegions,omitempty"`
+	ReplicationRegions []*string
 
 	// REQUIRED; The name to be used for the associated RunOutput.
-	RunOutputName *string `json:"runOutputName,omitempty"`
+	RunOutputName *string
 
 	// REQUIRED; Type of distribution.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Tags that will be applied to the artifact once it has been created/updated by the distributor.
-	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
+	ArtifactTags map[string]*string
 
 	// Flag that indicates whether created image version should be excluded from latest. Omit to use the default (false).
-	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
+	ExcludeFromLatest *bool
 
 	// Storage account type to be used to store the shared image. Omit to use the default (Standard_LRS).
-	StorageAccountType *SharedImageStorageAccountType `json:"storageAccountType,omitempty"`
+	StorageAccountType *SharedImageStorageAccountType
 }
 
 // GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateSharedImageDistributor.
@@ -458,10 +458,10 @@ func (i *ImageTemplateSharedImageDistributor) GetImageTemplateDistributor() *Ima
 // ImageTemplateSharedImageVersionSource - Describes an image source that is an image version in a shared image gallery.
 type ImageTemplateSharedImageVersionSource struct {
 	// REQUIRED; ARM resource id of the image version in the shared image gallery
-	ImageVersionID *string `json:"imageVersionId,omitempty"`
+	ImageVersionID *string
 
 	// REQUIRED; Specifies the type of source image you want to start with.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplateSharedImageVersionSource.
@@ -475,19 +475,19 @@ func (i *ImageTemplateSharedImageVersionSource) GetImageTemplateSource() *ImageT
 // provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
 type ImageTemplateShellCustomizer struct {
 	// REQUIRED; The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Array of shell commands to execute
-	Inline []*string `json:"inline,omitempty"`
+	Inline []*string
 
 	// Friendly Name to provide context on what this customization step does
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// SHA256 checksum of the shell script provided in the scriptUri field
-	SHA256Checksum *string `json:"sha256Checksum,omitempty"`
+	SHA256Checksum *string
 
 	// URI of the shell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
-	ScriptURI *string `json:"scriptUri,omitempty"`
+	ScriptURI *string
 }
 
 // GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateShellCustomizer.
@@ -502,19 +502,19 @@ func (i *ImageTemplateShellCustomizer) GetImageTemplateCustomizer() *ImageTempla
 // shell provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
 type ImageTemplateShellValidator struct {
 	// REQUIRED; The type of validation you want to use on the Image. For example, "Shell" can be shell validation
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Array of shell commands to execute
-	Inline []*string `json:"inline,omitempty"`
+	Inline []*string
 
 	// Friendly Name to provide context on what this validation step does
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// SHA256 checksum of the shell script provided in the scriptUri field
-	SHA256Checksum *string `json:"sha256Checksum,omitempty"`
+	SHA256Checksum *string
 
 	// URI of the shell script to be run for validation. It can be a github link, Azure Storage URI, etc
-	ScriptURI *string `json:"scriptUri,omitempty"`
+	ScriptURI *string
 }
 
 // GetImageTemplateInVMValidator implements the ImageTemplateInVMValidatorClassification interface for type ImageTemplateShellValidator.
@@ -537,7 +537,7 @@ type ImageTemplateSourceClassification interface {
 // ImageTemplateSource - Describes a virtual machine image source for building, customizing and distributing
 type ImageTemplateSource struct {
 	// REQUIRED; Specifies the type of source image you want to start with.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplateSource.
@@ -546,40 +546,40 @@ func (i *ImageTemplateSource) GetImageTemplateSource() *ImageTemplateSource { re
 // ImageTemplateUpdateParameters - Parameters for updating an image template.
 type ImageTemplateUpdateParameters struct {
 	// The identity of the image template, if configured.
-	Identity *ImageTemplateIdentity `json:"identity,omitempty"`
+	Identity *ImageTemplateIdentity
 
 	// The user-specified tags associated with the image template.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ImageTemplateVMProfile - Describes the virtual machines used to build and validate images
 type ImageTemplateVMProfile struct {
 	// Size of the OS disk in GB. Omit or specify 0 to use Azure's default OS disk size.
-	OSDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
+	OSDiskSizeGB *int32
 
 	// Optional array of resource IDs of user assigned managed identities to be configured on the build VM and validation VM.
 	// This may include the identity of the image template.
-	UserAssignedIdentities []*string `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities []*string
 
 	// Size of the virtual machine used to build, customize and capture images. Omit or specify empty string to use the default
 	// (StandardD1v2 for Gen1 images and StandardD2dsv4 for Gen2 images).
-	VMSize *string `json:"vmSize,omitempty"`
+	VMSize *string
 
 	// Optional configuration of the virtual network to use to deploy the build VM and validation VM in. Omit if no specific virtual
 	// network needs to be used.
-	VnetConfig *VirtualNetworkConfig `json:"vnetConfig,omitempty"`
+	VnetConfig *VirtualNetworkConfig
 }
 
 // ImageTemplateVhdDistributor - Distribute via VHD in a storage account.
 type ImageTemplateVhdDistributor struct {
 	// REQUIRED; The name to be used for the associated RunOutput.
-	RunOutputName *string `json:"runOutputName,omitempty"`
+	RunOutputName *string
 
 	// REQUIRED; Type of distribution.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Tags that will be applied to the artifact once it has been created/updated by the distributor.
-	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
+	ArtifactTags map[string]*string
 }
 
 // GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateVhdDistributor.
@@ -594,21 +594,21 @@ func (i *ImageTemplateVhdDistributor) GetImageTemplateDistributor() *ImageTempla
 // ImageTemplateWindowsUpdateCustomizer - Installs Windows Updates. Corresponds to Packer Windows Update Provisioner (https://github.com/rgl/packer-provisioner-windows-update)
 type ImageTemplateWindowsUpdateCustomizer struct {
 	// REQUIRED; The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Array of filters to select updates to apply. Omit or specify empty array to use the default (no filter). Refer to above
 	// link for examples and detailed description of this field.
-	Filters []*string `json:"filters,omitempty"`
+	Filters []*string
 
 	// Friendly Name to provide context on what this customization step does
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Criteria to search updates. Omit or specify empty string to use the default (search all). Refer to above link for examples
 	// and detailed description of this field.
-	SearchCriteria *string `json:"searchCriteria,omitempty"`
+	SearchCriteria *string
 
 	// Maximum number of updates to apply at a time. Omit or specify 0 to use the default (1000)
-	UpdateLimit *int32 `json:"updateLimit,omitempty"`
+	UpdateLimit *int32
 }
 
 // GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateWindowsUpdateCustomizer.
@@ -622,44 +622,44 @@ func (i *ImageTemplateWindowsUpdateCustomizer) GetImageTemplateCustomizer() *Ima
 // Operation - A REST API operation
 type Operation struct {
 	// The object that describes the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// The flag that indicates whether the operation applies to data plane.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// This is of the format {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The intended executor of the operation.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties of the operation.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // OperationDisplay - The object that describes the operation.
 type OperationDisplay struct {
 	// The friendly name of the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// For example: read, write, delete, or listKeys/action
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Friendly name of the resource provider.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// The resource type on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink
 // to get the next set of results.
 type OperationListResult struct {
 	// The URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of operations supported by the resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -670,135 +670,135 @@ type OperationsClientListOptions struct {
 // PlatformImagePurchasePlan - Purchase plan configuration for platform image.
 type PlatformImagePurchasePlan struct {
 	// REQUIRED; Name of the purchase plan.
-	PlanName *string `json:"planName,omitempty"`
+	PlanName *string
 
 	// REQUIRED; Product of the purchase plan.
-	PlanProduct *string `json:"planProduct,omitempty"`
+	PlanProduct *string
 
 	// REQUIRED; Publisher of the purchase plan.
-	PlanPublisher *string `json:"planPublisher,omitempty"`
+	PlanPublisher *string
 }
 
 // ProvisioningError - Describes the error happened when create or update an image template
 type ProvisioningError struct {
 	// Verbose error message about the provisioning failure
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Error code of the provisioning failure
-	ProvisioningErrorCode *ProvisioningErrorCode `json:"provisioningErrorCode,omitempty"`
+	ProvisioningErrorCode *ProvisioningErrorCode
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RunOutput - Represents an output that was created by running an image template.
 type RunOutput struct {
 	// The properties of the run output
-	Properties *RunOutputProperties `json:"properties,omitempty"`
+	Properties *RunOutputProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RunOutputCollection - The result of List run outputs operation
 type RunOutputCollection struct {
 	// The continuation token.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// An array of run outputs
-	Value []*RunOutput `json:"value,omitempty"`
+	Value []*RunOutput
 }
 
 // RunOutputProperties - Describes the properties of a run output
 type RunOutputProperties struct {
 	// The resource id of the artifact.
-	ArtifactID *string `json:"artifactId,omitempty"`
+	ArtifactID *string
 
 	// The location URI of the artifact.
-	ArtifactURI *string `json:"artifactUri,omitempty"`
+	ArtifactURI *string
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VirtualMachineImageTemplatesClientBeginCancelOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginCancel
@@ -870,8 +870,8 @@ type VirtualMachineImageTemplatesClientListRunOutputsOptions struct {
 type VirtualNetworkConfig struct {
 	// Size of the proxy virtual machine used to pass traffic to the build VM and validation VM. Omit or specify empty string
 	// to use the default (StandardA1v2).
-	ProxyVMSize *string `json:"proxyVmSize,omitempty"`
+	ProxyVMSize *string
 
 	// Resource id of a pre-existing subnet.
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 }

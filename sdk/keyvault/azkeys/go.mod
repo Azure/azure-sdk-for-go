@@ -1,3 +1,4 @@
+// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys instead
 module github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
 
 go 1.18

@@ -11,7 +11,7 @@ package armazurearcdata
 
 const (
 	moduleName    = "armazurearcdata"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v0.6.1"
 )
 
 // AccountProvisioningMode - The service account provisioning mode for this Active Directory connector.

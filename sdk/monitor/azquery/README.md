@@ -13,8 +13,8 @@ The Azure Monitor Query client module is used to execute read-only queries again
 
 * Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
 * Azure subscription - [Create a free account][azure_sub]
-* To query logs, an Azure Log Analytics workspace ID - Create an [Azure Log Analytics workspace][log_analytics_workspace_create]
-* To query metrics, the Resource URI of an Azure resource (Storage Account, Key Vault, CosmosDB, etc.) that you plan to monitor
+* To query some logs, an Azure Log Analytics workspace ID - Create an [Azure Log Analytics workspace][log_analytics_workspace_create]
+* To query metrics and some logs, the Resource URI of an Azure resource (Storage Account, Key Vault, CosmosDB, etc.) that you plan to monitor
 
 ### Install the packages
 
@@ -100,7 +100,7 @@ To do the same with `QueryBatch`, set the values in the `BatchQueryRequest.Heade
 
 Get started with our [examples][azquery_pkg_go_samples].
 
-* For the majority of log queries, use the `LogsClient.QueryWorkspace` method. Only use the `LogsClient.QueryBatch` method in advanced scenerios.
+* For the majority of log queries, use the `LogsClient.QueryWorkspace` or the `LogsClient.QueryResource` method. Only use the `LogsClient.QueryBatch` method in advanced scenerios.
 
 * Use `MetricsClient.QueryResource` for metric queries.
 

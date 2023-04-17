@@ -11,7 +11,7 @@ package armhybridnetwork
 
 const (
 	moduleName    = "armhybridnetwork"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // CreatedByType - The type of identity that created the resource.

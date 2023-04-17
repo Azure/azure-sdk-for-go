@@ -14,136 +14,136 @@ import "time"
 // AccountListResult - A list of Test Base Accounts.
 type AccountListResult struct {
 	// The list of Test Base Accounts.
-	Value []*AccountResource `json:"value,omitempty"`
+	Value []*AccountResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AccountResource - The Test Base Account resource.
 type AccountResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of a Test Base Account.
-	Properties *AccountResourceProperties `json:"properties,omitempty"`
+	Properties *AccountResourceProperties
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountResourceProperties - The properties of a Test Base Account resource.
 type AccountResourceProperties struct {
 	// REQUIRED; The SKU of the Test Base Account.
-	SKU *AccountSKU `json:"sku,omitempty"`
+	SKU *AccountSKU
 
 	// READ-ONLY; The access level of the Test Base Account.
-	AccessLevel *string `json:"accessLevel,omitempty" azure:"ro"`
+	AccessLevel *string
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // AccountSKU - Describes a Test Base Account SKU.
 type AccountSKU struct {
 	// REQUIRED; The name of the SKU. This is typically a letter + number code, such as B0 or S0.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The tier of this particular SKU.
-	Tier *Tier `json:"tier,omitempty"`
+	Tier *Tier
 
 	// The locations that the SKU is available.
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 
 	// The type of resource the SKU applies to.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// READ-ONLY; The capabilities of a SKU.
-	Capabilities []*AccountSKUCapability `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities []*AccountSKUCapability
 }
 
 // AccountSKUCapability - Properties of the Test Base Account SKU Capability.
 type AccountSKUCapability struct {
 	// REQUIRED; An invariant to describe the feature, such as 'SLA'.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; An invariant if the feature is measured by quantity, such as 99.9%.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // AccountSKUListResult - A list of Test Base Account SKUs.
 type AccountSKUListResult struct {
 	// The list of Test Base Account SKUs.
-	Value []*AccountSKU `json:"value,omitempty"`
+	Value []*AccountSKU
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AccountUpdateParameterProperties - Parameters supplied to update a Test Base Account.
 type AccountUpdateParameterProperties struct {
 	// The SKU of the Test Base Account.
-	SKU *AccountSKU `json:"sku,omitempty"`
+	SKU *AccountSKU
 }
 
 // AccountUpdateParameters - Parameters supplied to update a Test Base Account.
 type AccountUpdateParameters struct {
 	// Test Base Account update parameters.
-	Properties *AccountUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *AccountUpdateParameterProperties
 
 	// The tags of the Test Base Account.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AccountUsageData - The usage data of a Test Base Account.
 type AccountUsageData struct {
 	// Current value for the usage quota.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
+	CurrentValue *int64
 
 	// Fully qualified ARM resource id
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The maximum permitted value for the usage quota. If there is no limit, this value will be -1.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit *int64
 
 	// Localizable String object containing the name and a localized value.
-	Name *AccountUsageName `json:"name,omitempty"`
+	Name *AccountUsageName
 
 	// Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond, BytesPerSecond.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // AccountUsageDataList - A list of Test Base Account usage data.
 type AccountUsageDataList struct {
 	// The list of Test Base Account usage data.
-	Value []*AccountUsageData `json:"value,omitempty"`
+	Value []*AccountUsageData
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AccountUsageName - Localizable String object containing the name and a localized value.
 type AccountUsageName struct {
 	// Localized name of the usage.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// The identifier of the usage.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
@@ -207,28 +207,28 @@ type AccountsClientListBySubscriptionOptions struct {
 // in a singleton object.
 type AnalysisResultListResult struct {
 	// The list of Analysis Results.
-	Value []*AnalysisResultSingletonResource `json:"value,omitempty"`
+	Value []*AnalysisResultSingletonResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AnalysisResultSingletonResource - The Analysis Result Singleton Resource.
 type AnalysisResultSingletonResource struct {
 	// Properties of an Analysis Result.
-	Properties AnalysisResultSingletonResourcePropertiesClassification `json:"properties,omitempty"`
+	Properties AnalysisResultSingletonResourcePropertiesClassification
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AnalysisResultSingletonResourcePropertiesClassification provides polymorphic access to related types.
@@ -245,10 +245,10 @@ type AnalysisResultSingletonResourcePropertiesClassification interface {
 // AnalysisResultSingletonResourceProperties - The properties of Analysis Result resource.
 type AnalysisResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
-	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+	AnalysisResultType *AnalysisResultType
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 }
 
 // GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
@@ -280,61 +280,61 @@ type AvailableOSClientListOptions struct {
 // AvailableOSListResult - A list of available OSs.
 type AvailableOSListResult struct {
 	// The list of available OSs.
-	Value []*AvailableOSResource `json:"value,omitempty"`
+	Value []*AvailableOSResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AvailableOSProperties - The Available OS properties.
 type AvailableOSProperties struct {
 	// The insider channel of an Available OS of a Test Base Account.
-	InsiderChannel *string `json:"insiderChannel,omitempty"`
+	InsiderChannel *string
 
 	// The Id of an Available OS of a Test Base Account.
-	OSID *string `json:"osId,omitempty"`
+	OSID *string
 
 	// The name of an Available OS of a Test Base Account.
-	OSName *string `json:"osName,omitempty"`
+	OSName *string
 
 	// The Platform of an Available OS of a Test Base Account.
-	OSPlatform *string `json:"osPlatform,omitempty"`
+	OSPlatform *string
 
 	// The OS update type of an Available OS of a Test Base Account.
-	OSUpdateType *string `json:"osUpdateType,omitempty"`
+	OSUpdateType *string
 
 	// The version of an Available OS of a Test Base Account.
-	OSVersion *string `json:"osVersion,omitempty"`
+	OSVersion *string
 }
 
 // AvailableOSResource - The Available OS resource.
 type AvailableOSResource struct {
 	// Available OS properties.
-	Properties *AvailableOSProperties `json:"properties,omitempty"`
+	Properties *AvailableOSProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CPURegressionResultSingletonResourceProperties - The properties of CPU Regression Result.
 type CPURegressionResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
-	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+	AnalysisResultType *AnalysisResultType
 
 	// The result array data.
-	CPURegressionResults []*RegressionResult `json:"cpuRegressionResults,omitempty"`
+	CPURegressionResults []*RegressionResult
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 }
 
 // GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
@@ -349,13 +349,13 @@ func (c *CPURegressionResultSingletonResourceProperties) GetAnalysisResultSingle
 // CPUUtilizationResultSingletonResourceProperties - The properties of CPU Utilization Result.
 type CPUUtilizationResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
-	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+	AnalysisResultType *AnalysisResultType
 
 	// The result array data.
-	CPUUtilizationResults []*UtilizationResult `json:"cpuUtilizationResults,omitempty"`
+	CPUUtilizationResults []*UtilizationResult
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 }
 
 // GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
@@ -370,82 +370,82 @@ func (c *CPUUtilizationResultSingletonResourceProperties) GetAnalysisResultSingl
 // CheckNameAvailabilityResult - Description of a Check Name availability response properties.
 type CheckNameAvailabilityResult struct {
 	// Value indicating the availability of the name: true if the name is available; otherwise, false.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason for unavailability of a name. Required if nameAvailable == false.
-	Reason *Reason `json:"reason,omitempty"`
+	Reason *Reason
 
 	// READ-ONLY; The detailed info regarding the reason associated with the name. Required if nameAvailable == false.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // Command - The command used in the test
 type Command struct {
 	// REQUIRED; The action of the command.
-	Action *Action `json:"action,omitempty"`
+	Action *Action
 
 	// REQUIRED; The content of the command. The content depends on source type.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// REQUIRED; The type of command content.
-	ContentType *ContentType `json:"contentType,omitempty"`
+	ContentType *ContentType
 
 	// REQUIRED; The name of the command.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Specifies whether to run the command even if a previous command is failed.
-	AlwaysRun *bool `json:"alwaysRun,omitempty"`
+	AlwaysRun *bool
 
 	// Specifies whether to apply update before the command.
-	ApplyUpdateBefore *bool `json:"applyUpdateBefore,omitempty"`
+	ApplyUpdateBefore *bool
 
 	// Specifies the max run time of the command.
-	MaxRunTime *int32 `json:"maxRunTime,omitempty"`
+	MaxRunTime *int32
 
 	// Specifies whether to restart the VM after the command executed.
-	RestartAfter *bool `json:"restartAfter,omitempty"`
+	RestartAfter *bool
 
 	// Specifies whether to run the command in interactive mode.
-	RunAsInteractive *bool `json:"runAsInteractive,omitempty"`
+	RunAsInteractive *bool
 
 	// Specifies whether to run the command as administrator.
-	RunElevated *bool `json:"runElevated,omitempty"`
+	RunElevated *bool
 }
 
 // CustomerEventListResult - A list of Test Base Customer Events.
 type CustomerEventListResult struct {
 	// The list of Test Base Customer Events.
-	Value []*CustomerEventResource `json:"value,omitempty"`
+	Value []*CustomerEventResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // CustomerEventProperties - A notification events subscribed to be received by customer.
 type CustomerEventProperties struct {
 	// REQUIRED; The name of the event subscribed to.
-	EventName *string `json:"eventName,omitempty"`
+	EventName *string
 
 	// REQUIRED; The notification event receivers.
-	Receivers []*NotificationEventReceiver `json:"receivers,omitempty"`
+	Receivers []*NotificationEventReceiver
 }
 
 // CustomerEventResource - The Customer Notification Event resource.
 type CustomerEventResource struct {
 	// Customer Notification Event properties.
-	Properties *CustomerEventProperties `json:"properties,omitempty"`
+	Properties *CustomerEventProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CustomerEventsClientBeginCreateOptions contains the optional parameters for the CustomerEventsClient.BeginCreate method.
@@ -474,55 +474,55 @@ type CustomerEventsClientListByTestBaseAccountOptions struct {
 // DistributionGroupListReceiverValue - The user object receiver value.
 type DistributionGroupListReceiverValue struct {
 	// The list of distribution groups.
-	DistributionGroups []*string `json:"distributionGroups,omitempty"`
+	DistributionGroups []*string
 }
 
 // DownloadURLResponse - The response of getting a download URL.
 type DownloadURLResponse struct {
 	// READ-ONLY; The download URL.
-	DownloadURL *string `json:"downloadUrl,omitempty" azure:"ro"`
+	DownloadURL *string
 
 	// READ-ONLY; Expiry date of the download URL.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
+	ExpirationTime *time.Time
 }
 
 // EmailEventListResult - A list of email events.
 type EmailEventListResult struct {
 	// The list of email events.
-	Value []*EmailEventResource `json:"value,omitempty"`
+	Value []*EmailEventResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // EmailEventProperties - The Email Event properties.
 type EmailEventProperties struct {
 	// The display name of the email event.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The identifier of the email event.
-	EventID *string `json:"eventId,omitempty"`
+	EventID *string
 
 	// The name of the email event.
-	EventName *string `json:"eventName,omitempty"`
+	EventName *string
 }
 
 // EmailEventResource - The email event resource.
 type EmailEventResource struct {
 	// Email Event properties.
-	Properties *EmailEventProperties `json:"properties,omitempty"`
+	Properties *EmailEventProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EmailEventsClientGetOptions contains the optional parameters for the EmailEventsClient.Get method.
@@ -538,56 +538,56 @@ type EmailEventsClientListOptions struct {
 // ErrorDefinition - Error definition.
 type ErrorDefinition struct {
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDefinition `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDefinition
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The target of the particular error.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - The error response send when an operation fails.
 type ErrorResponse struct {
 	// The error details.
-	Error *ErrorDefinition `json:"error,omitempty"`
+	Error *ErrorDefinition
 }
 
 // FavoriteProcessListResult - A list of favorite processes for a package.
 type FavoriteProcessListResult struct {
 	// The list of favorite processes for a package.
-	Value []*FavoriteProcessResource `json:"value,omitempty"`
+	Value []*FavoriteProcessResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // FavoriteProcessProperties - Properties of a favorite process identifier.
 type FavoriteProcessProperties struct {
 	// REQUIRED; The actual name of the favorite process. It will be equal to resource name except for the scenario that the process
 	// name contains characters that are not allowed in the resource name.
-	ActualProcessName *string `json:"actualProcessName,omitempty"`
+	ActualProcessName *string
 }
 
 // FavoriteProcessResource - A favorite process identifier.
 type FavoriteProcessResource struct {
 	// Properties of a favorite process identifier.
-	Properties *FavoriteProcessProperties `json:"properties,omitempty"`
+	Properties *FavoriteProcessProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FavoriteProcessesClientCreateOptions contains the optional parameters for the FavoriteProcessesClient.Create method.
@@ -613,43 +613,43 @@ type FavoriteProcessesClientListOptions struct {
 // FileUploadURLResponse - The URL response
 type FileUploadURLResponse struct {
 	// READ-ONLY; The blob path of the uploaded package. It will be used as the 'blobPath' property of PackageResource.
-	BlobPath *string `json:"blobPath,omitempty" azure:"ro"`
+	BlobPath *string
 
 	// READ-ONLY; The URL used for uploading the package.
-	UploadURL *string `json:"uploadUrl,omitempty" azure:"ro"`
+	UploadURL *string
 }
 
 // FlightingRingListResult - A list of flighting rings.
 type FlightingRingListResult struct {
 	// The list of flighting rings.
-	Value []*FlightingRingResource `json:"value,omitempty"`
+	Value []*FlightingRingResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // FlightingRingProperties - The Flighting Ring properties.
 type FlightingRingProperties struct {
 	// The actual name of a flighting ring of a Test Base Account.
-	ActualFlightingRingName *string `json:"actualFlightingRingName,omitempty"`
+	ActualFlightingRingName *string
 }
 
 // FlightingRingResource - The flighting ring resource.
 type FlightingRingResource struct {
 	// Flighting Ring properties.
-	Properties *FlightingRingProperties `json:"properties,omitempty"`
+	Properties *FlightingRingProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FlightingRingsClientGetOptions contains the optional parameters for the FlightingRingsClient.Get method.
@@ -665,34 +665,34 @@ type FlightingRingsClientListOptions struct {
 // GetFileUploadURLParameters - The parameters supplied to the Test Base Account GetFileUploadURL action.
 type GetFileUploadURLParameters struct {
 	// The custom file name of the uploaded blob.
-	BlobName *string `json:"blobName,omitempty"`
+	BlobName *string
 }
 
 // IdentifiedFailure - The failure identified.
 type IdentifiedFailure struct {
 	// The category of the failure.
-	Category *Category `json:"category,omitempty"`
+	Category *Category
 
 	// Message that shows information about the failure.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// The Failure Id.
-	FailureID *string `json:"failureId,omitempty"`
+	FailureID *string
 
 	// Guidance that shows what the customer needs to do for this failure.
-	Guidance *string `json:"guidance,omitempty"`
+	Guidance *string
 }
 
 // MemoryRegressionResultSingletonResourceProperties - The properties of Memory Regression Result.
 type MemoryRegressionResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
-	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+	AnalysisResultType *AnalysisResultType
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// The result array data.
-	MemoryRegressionResults []*RegressionResult `json:"memoryRegressionResults,omitempty"`
+	MemoryRegressionResults []*RegressionResult
 }
 
 // GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
@@ -707,13 +707,13 @@ func (m *MemoryRegressionResultSingletonResourceProperties) GetAnalysisResultSin
 // MemoryUtilizationResultSingletonResourceProperties - The properties of Memory Utilization Result.
 type MemoryUtilizationResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
-	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+	AnalysisResultType *AnalysisResultType
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// The result array data.
-	MemoryUtilizationResults []*UtilizationResult `json:"memoryUtilizationResults,omitempty"`
+	MemoryUtilizationResults []*UtilizationResult
 }
 
 // GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
@@ -728,109 +728,109 @@ func (m *MemoryUtilizationResultSingletonResourceProperties) GetAnalysisResultSi
 // NotificationEventReceiver - A notification event receivers.
 type NotificationEventReceiver struct {
 	// The type of the notification event receiver.
-	ReceiverType *string `json:"receiverType,omitempty"`
+	ReceiverType *string
 
 	// The notification event receiver value.
-	ReceiverValue *NotificationReceiverValue `json:"receiverValue,omitempty"`
+	ReceiverValue *NotificationReceiverValue
 }
 
 // NotificationReceiverValue - A notification event receiver value.
 type NotificationReceiverValue struct {
 	// The user object receiver value.
-	DistributionGroupListReceiverValue *DistributionGroupListReceiverValue `json:"distributionGroupListReceiverValue,omitempty"`
+	DistributionGroupListReceiverValue *DistributionGroupListReceiverValue
 
 	// The user object receiver value.
-	SubscriptionReceiverValue *SubscriptionReceiverValue `json:"subscriptionReceiverValue,omitempty"`
+	SubscriptionReceiverValue *SubscriptionReceiverValue
 
 	// The user object receiver value.
-	UserObjectReceiverValue *UserObjectReceiverValue `json:"userObjectReceiverValue,omitempty"`
+	UserObjectReceiverValue *UserObjectReceiverValue
 }
 
 // OSUpdateListResult - A list of OS Updates.
 type OSUpdateListResult struct {
 	// The list of OS Updates.
-	Value []*OSUpdateResource `json:"value,omitempty"`
+	Value []*OSUpdateResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // OSUpdateProperties - Properties of an OS Update.
 type OSUpdateProperties struct {
 	// The build revision of the tested release (OS update)
-	BuildRevision *string `json:"buildRevision,omitempty"`
+	BuildRevision *string
 
 	// The build version of the tested release (OS update).
-	BuildVersion *string `json:"buildVersion,omitempty"`
+	BuildVersion *string
 
 	// The flighting ring, only for release of feature updates.
-	FlightingRing *string `json:"flightingRing,omitempty"`
+	FlightingRing *string
 
 	// The name of the OS.
-	OSName *string `json:"osName,omitempty"`
+	OSName *string
 
 	// The name of tested release.
-	Release *string `json:"release,omitempty"`
+	Release *string
 
 	// The release version date the tested release (OS update)
-	ReleaseVersionDate *time.Time `json:"releaseVersionDate,omitempty"`
+	ReleaseVersionDate *time.Time
 
 	// The type of this release (OS update).
-	Type *Type `json:"type,omitempty"`
+	Type *Type
 }
 
 // OSUpdateResource - An OS Update.
 type OSUpdateResource struct {
 	// Properties of an OS Update.
-	Properties *OSUpdateProperties `json:"properties,omitempty"`
+	Properties *OSUpdateProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OSUpdateTestSummary - The summary of a test.
 type OSUpdateTestSummary struct {
 	// The build revision of the tested release (OS update)
-	BuildRevision *string `json:"buildRevision,omitempty"`
+	BuildRevision *string
 
 	// The build version of the tested release (OS update)
-	BuildVersion *string `json:"buildVersion,omitempty"`
+	BuildVersion *string
 
 	// The execution status of the test.
-	ExecutionStatus *ExecutionStatus `json:"executionStatus,omitempty"`
+	ExecutionStatus *ExecutionStatus
 
 	// The flighting ring, only for release of feature updates.
-	FlightingRing *string `json:"flightingRing,omitempty"`
+	FlightingRing *string
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// The operating system name. e.g. Windows 10 1809.
-	OSName *string `json:"osName,omitempty"`
+	OSName *string
 
 	// The name of the tested release (OS update).
-	ReleaseName *string `json:"releaseName,omitempty"`
+	ReleaseName *string
 
 	// The release version date.
-	ReleaseVersionDate *time.Time `json:"releaseVersionDate,omitempty"`
+	ReleaseVersionDate *time.Time
 
 	// The run time of the test.
-	TestRunTime *string `json:"testRunTime,omitempty"`
+	TestRunTime *string
 
 	// The status of the test.
-	TestStatus *TestStatus `json:"testStatus,omitempty"`
+	TestStatus *TestStatus
 
 	// The test type of the package
-	TestType *string `json:"testType,omitempty"`
+	TestType *string
 }
 
 // OSUpdatesClientGetOptions contains the optional parameters for the OSUpdatesClient.Get method.
@@ -846,61 +846,61 @@ type OSUpdatesClientListOptions struct {
 // OSUpdatesTestSummary - The summary of some tests.
 type OSUpdatesTestSummary struct {
 	// The status of the last test.
-	ExecutionStatus *ExecutionStatus `json:"executionStatus,omitempty"`
+	ExecutionStatus *ExecutionStatus
 
 	// The grade of last test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// Detailed summary for each OS update
-	OSUpdateTestSummaries []*OSUpdateTestSummary `json:"osUpdateTestSummaries,omitempty"`
+	OSUpdateTestSummaries []*OSUpdateTestSummary
 
 	// The run time of the last test.
-	TestRunTime *string `json:"testRunTime,omitempty"`
+	TestRunTime *string
 
 	// The status of last test.
-	TestStatus *TestStatus `json:"testStatus,omitempty"`
+	TestStatus *TestStatus
 }
 
 // Operation - REST API operation
 type Operation struct {
 	// The object that describes the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Extra properties of the operation.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// READ-ONLY; Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Origin of the operation
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 }
 
 // OperationDisplay - The object that describes the operation.
 type OperationDisplay struct {
 	// READ-ONLY; Friendly name of the operation.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Operation type: read, write, delete, listPackages, etc.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The resource provider name: Microsoft.TestBase.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource type on which the operation is performed.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of operations supported by the resource provider.
 type OperationListResult struct {
 	// List of operations supported by the Test Base resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -911,130 +911,130 @@ type OperationsClientListOptions struct {
 // PackageCheckNameAvailabilityParameters - Parameters body to pass for Test Base Package name availability check.
 type PackageCheckNameAvailabilityParameters struct {
 	// REQUIRED; Application name to verify.
-	ApplicationName *string `json:"applicationName,omitempty"`
+	ApplicationName *string
 
 	// REQUIRED; Resource name to verify.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; fully qualified resource type which includes provider namespace.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// REQUIRED; Version name to verify.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // PackageListResult - A list of Test Base Packages.
 type PackageListResult struct {
 	// The list of Test Base Packages.
-	Value []*PackageResource `json:"value,omitempty"`
+	Value []*PackageResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PackageProperties - The properties of the Test Base Package.
 type PackageProperties struct {
 	// REQUIRED; Application name
-	ApplicationName *string `json:"applicationName,omitempty"`
+	ApplicationName *string
 
 	// REQUIRED; The file path of the package.
-	BlobPath *string `json:"blobPath,omitempty"`
+	BlobPath *string
 
 	// REQUIRED; The flighting ring for feature update.
-	FlightingRing *string `json:"flightingRing,omitempty"`
+	FlightingRing *string
 
 	// REQUIRED; Specifies the target OSs of specific OS Update types.
-	TargetOSList []*TargetOSInfo `json:"targetOSList,omitempty"`
+	TargetOSList []*TargetOSInfo
 
 	// REQUIRED; The detailed test information.
-	Tests []*Test `json:"tests,omitempty"`
+	Tests []*Test
 
 	// REQUIRED; Application version
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY; Flag showing that whether the package is enabled. It doesn't schedule test for package which is not enabled.
-	IsEnabled *bool `json:"isEnabled,omitempty" azure:"ro"`
+	IsEnabled *bool
 
 	// READ-ONLY; The UTC timestamp when the package was last modified.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; The status of the package.
-	PackageStatus *PackageStatus `json:"packageStatus,omitempty" azure:"ro"`
+	PackageStatus *PackageStatus
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; OOB, functional or both. Mapped to the data in 'tests' property.
-	TestTypes []*TestType `json:"testTypes,omitempty" azure:"ro"`
+	TestTypes []*TestType
 
 	// READ-ONLY; The validation results. There's validation on package when it's created or updated.
-	ValidationResults []*PackageValidationResult `json:"validationResults,omitempty" azure:"ro"`
+	ValidationResults []*PackageValidationResult
 }
 
 // PackageResource - The Test Base Package resource.
 type PackageResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Test Base Package properties.
-	Properties *PackageProperties `json:"properties,omitempty"`
+	Properties *PackageProperties
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PackageUpdateParameterProperties - Parameters supplied to update a Test Base Package.
 type PackageUpdateParameterProperties struct {
 	// The file name of the package.
-	BlobPath *string `json:"blobPath,omitempty"`
+	BlobPath *string
 
 	// The flighting ring for feature update.
-	FlightingRing *string `json:"flightingRing,omitempty"`
+	FlightingRing *string
 
 	// Specifies whether the package is enabled. It doesn't schedule test for package which is not enabled.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Specifies the target OSs of specific OS Update types.
-	TargetOSList []*TargetOSInfo `json:"targetOSList,omitempty"`
+	TargetOSList []*TargetOSInfo
 
 	// The detailed test information.
-	Tests []*Test `json:"tests,omitempty"`
+	Tests []*Test
 }
 
 // PackageUpdateParameters - Parameters supplied to update a Test Base Package.
 type PackageUpdateParameters struct {
 	// Test Base Package update parameters.
-	Properties *PackageUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *PackageUpdateParameterProperties
 
 	// The tags of the Package.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PackageValidationResult - The validation results. There's validation on package when it's created or updated.
 type PackageValidationResult struct {
 	// READ-ONLY; Error information.
-	Errors []*string `json:"errors,omitempty" azure:"ro"`
+	Errors []*string
 
 	// READ-ONLY; Indicates whether the package passed the validation.
-	IsValid *bool `json:"isValid,omitempty" azure:"ro"`
+	IsValid *bool
 
 	// READ-ONLY; Validation name.
-	ValidationName *string `json:"validationName,omitempty" azure:"ro"`
+	ValidationName *string
 }
 
 // PackagesClientBeginCreateOptions contains the optional parameters for the PackagesClient.BeginCreate method.
@@ -1081,82 +1081,82 @@ type PackagesClientListByTestBaseAccountOptions struct {
 // and tags
 type ProxyResource struct {
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RegressionResult - The regression result.
 type RegressionResult struct {
 	// Message that facilitates debugging a particular regression, if any was inferred.
-	Details *string `json:"details,omitempty"`
+	Details *string
 
 	// Difference between the two datasets being analyzed.
-	Diff *float64 `json:"diff,omitempty"`
+	Diff *float64
 
 	// FileName of the binary being analyzed.
-	FileName *string `json:"fileName,omitempty"`
+	FileName *string
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// Indicates if a regression was inferred.
-	IsRegressed *bool `json:"isRegressed,omitempty"`
+	IsRegressed *bool
 }
 
 // RegressionTestDetails - The details of a regression test.
 type RegressionTestDetails struct {
 	// Difference between the two datasets being analyzed.
-	Diff *float64 `json:"diff,omitempty"`
+	Diff *float64
 
 	// Indicates if a regression was inferred.
-	IsRegressed *bool `json:"isRegressed,omitempty"`
+	IsRegressed *bool
 }
 
 // ReliabilityResult - The Reliability Result.
 type ReliabilityResult struct {
 	// Count of number of crashes.
-	CrashCount *int32 `json:"crashCount,omitempty"`
+	CrashCount *int32
 
 	// The statistic regression grade for crash signal.
-	CrashRegressionGrade *Grade `json:"crashRegressionGrade,omitempty"`
+	CrashRegressionGrade *Grade
 
 	// Details related to the crash regression analysis.
-	CrashRegressionTestDetails *RegressionTestDetails `json:"crashRegressionTestDetails,omitempty"`
+	CrashRegressionTestDetails *RegressionTestDetails
 
 	// File name.
-	FileName *string `json:"fileName,omitempty"`
+	FileName *string
 
 	// Count of number of hangs.
-	HangCount *int32 `json:"hangCount,omitempty"`
+	HangCount *int32
 
 	// The statistic regression grade for hang signal.
-	HangRegressionGrade *Grade `json:"hangRegressionGrade,omitempty"`
+	HangRegressionGrade *Grade
 
 	// Details related to the hang regression analysis.
-	HangRegressionTestDetails *RegressionTestDetails `json:"hangRegressionTestDetails,omitempty"`
+	HangRegressionTestDetails *RegressionTestDetails
 
 	// Count of number of launches.
-	LaunchCount *int32 `json:"launchCount,omitempty"`
+	LaunchCount *int32
 
 	// The regression grade.
-	RegressionGrade *Grade `json:"regressionGrade,omitempty"`
+	RegressionGrade *Grade
 }
 
 // ReliabilityResultSingletonResourceProperties - The properties of Reliability Result.
 type ReliabilityResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
-	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+	AnalysisResultType *AnalysisResultType
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// The result array data.
-	ReliabilityResults []*ReliabilityResult `json:"reliabilityResults,omitempty"`
+	ReliabilityResults []*ReliabilityResult
 }
 
 // GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
@@ -1171,13 +1171,13 @@ func (r *ReliabilityResultSingletonResourceProperties) GetAnalysisResultSingleto
 // Resource - The Resource definition.
 type Resource struct {
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
@@ -1188,31 +1188,31 @@ type SKUsClientListOptions struct {
 // ScriptExecutionResult - The Script Execution Result.
 type ScriptExecutionResult struct {
 	// End time of script execution.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Exit code.
-	ExitCode *int32 `json:"exitCode,omitempty"`
+	ExitCode *int32
 
 	// Name of script.
-	ScriptName *string `json:"scriptName,omitempty"`
+	ScriptName *string
 
 	// Start time of script execution.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Whether the script execution is timed out.
-	TimedOut *bool `json:"timedOut,omitempty"`
+	TimedOut *bool
 }
 
 // ScriptExecutionResultSingletonResourceProperties - The properties of Script Execution Result.
 type ScriptExecutionResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
-	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+	AnalysisResultType *AnalysisResultType
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// The result array data.
-	ScriptExecutionResults []*ScriptExecutionResult `json:"scriptExecutionResults,omitempty"`
+	ScriptExecutionResults []*ScriptExecutionResult
 }
 
 // GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
@@ -1227,82 +1227,82 @@ func (s *ScriptExecutionResultSingletonResourceProperties) GetAnalysisResultSing
 // SubscriptionReceiverValue - The subscription role receiver value.
 type SubscriptionReceiverValue struct {
 	// The role of the notification receiver.
-	Role *string `json:"role,omitempty"`
+	Role *string
 
 	// The subscription id of the notification receiver.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// The subscription name of the notification receiver.
-	SubscriptionName *string `json:"subscriptionName,omitempty"`
+	SubscriptionName *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The type of identity that last modified the resource.
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TargetOSInfo - The information of the target OS to be tested.
 type TargetOSInfo struct {
 	// REQUIRED; Specifies the OS update type to test against, e.g., 'Security updates' or 'Feature updates'.
-	OSUpdateType *string `json:"osUpdateType,omitempty"`
+	OSUpdateType *string
 
 	// REQUIRED; Specifies the target OSs to be tested.
-	TargetOSs []*string `json:"targetOSs,omitempty"`
+	TargetOSs []*string
 }
 
 // Test - The definition of a Test.
 type Test struct {
 	// REQUIRED; The commands used in the test.
-	Commands []*Command `json:"commands,omitempty"`
+	Commands []*Command
 
 	// REQUIRED; The type of the test.
-	TestType *TestType `json:"testType,omitempty"`
+	TestType *TestType
 
 	// Indicates if this test is active.It doesn't schedule test for not active Test.
-	IsActive *bool `json:"isActive,omitempty"`
+	IsActive *bool
 
 	// READ-ONLY; The status of the validation run of the package.
-	ValidationRunStatus *ValidationRunStatus `json:"validationRunStatus,omitempty" azure:"ro"`
+	ValidationRunStatus *ValidationRunStatus
 }
 
 // TestAnalysisResult - The test analysis result.
 type TestAnalysisResult struct {
 	// The data to provide more failure analysis information.
-	BlobData *string `json:"blobData,omitempty"`
+	BlobData *string
 
 	// The array of identified failures.
-	IdentifiedFailures []*IdentifiedFailure `json:"identifiedFailures,omitempty"`
+	IdentifiedFailures []*IdentifiedFailure
 
 	// The status of the analysis.
-	TestAnalysisStatus *TestAnalysisStatus `json:"testAnalysisStatus,omitempty"`
+	TestAnalysisStatus *TestAnalysisStatus
 }
 
 // TestAnalysisResultSingletonResourceProperties - The properties of Test Analysis Result.
 type TestAnalysisResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
-	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+	AnalysisResultType *AnalysisResultType
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// The result of test analysis.
-	TestAnalysisResult *TestAnalysisResult `json:"testAnalysisResult,omitempty"`
+	TestAnalysisResult *TestAnalysisResult
 }
 
 // GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
@@ -1317,103 +1317,103 @@ func (t *TestAnalysisResultSingletonResourceProperties) GetAnalysisResultSinglet
 // TestResultAnalysisSummary - The summary of a Test Analysis Result.
 type TestResultAnalysisSummary struct {
 	// The analysis status.
-	AnalysisStatus *AnalysisStatus `json:"analysisStatus,omitempty"`
+	AnalysisStatus *AnalysisStatus
 
 	// The grade of the test result.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// Metric name
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // TestResultListResult - A list of Test Results.
 type TestResultListResult struct {
 	// The list of Test Results.
-	Value []*TestResultResource `json:"value,omitempty"`
+	Value []*TestResultResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // TestResultProperties - The properties of a Test Result.
 type TestResultProperties struct {
 	// List of analysis summaries.
-	AnalysisSummaries []*TestResultAnalysisSummary `json:"analysisSummaries,omitempty"`
+	AnalysisSummaries []*TestResultAnalysisSummary
 
 	// Application name.
-	ApplicationName *string `json:"applicationName,omitempty"`
+	ApplicationName *string
 
 	// Application version.
-	ApplicationVersion *string `json:"applicationVersion,omitempty"`
+	ApplicationVersion *string
 
 	// Azure Id of the baseline test result.
-	BaselineTestResultID *string `json:"baselineTestResultId,omitempty"`
+	BaselineTestResultID *string
 
 	// The build revision of the tested release (OS update).
-	BuildRevision *string `json:"buildRevision,omitempty"`
+	BuildRevision *string
 
 	// The build version of the tested release (OS update).
-	BuildVersion *string `json:"buildVersion,omitempty"`
+	BuildVersion *string
 
 	// The execution status of the test.
-	ExecutionStatus *ExecutionStatus `json:"executionStatus,omitempty"`
+	ExecutionStatus *ExecutionStatus
 
 	// The flighting ring, only for release of feature updates.
-	FlightingRing *string `json:"flightingRing,omitempty"`
+	FlightingRing *string
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// Whether download data is available.
-	IsDownloadDataAvailable *bool `json:"isDownloadDataAvailable,omitempty"`
+	IsDownloadDataAvailable *bool
 
 	// Whether video data is available.
-	IsVideoAvailable *bool `json:"isVideoAvailable,omitempty"`
+	IsVideoAvailable *bool
 
 	// KB number.
-	KbNumber *string `json:"kbNumber,omitempty"`
+	KbNumber *string
 
 	// The operating system name, e.g. Windows 10 1809.
-	OSName *string `json:"osName,omitempty"`
+	OSName *string
 
 	// Resource Id of the package.
-	PackageID *string `json:"packageId,omitempty"`
+	PackageID *string
 
 	// The version of the Windows update package.
-	PackageVersion *string `json:"packageVersion,omitempty"`
+	PackageVersion *string
 
 	// The name of the tested release (OS update).
-	ReleaseName *string `json:"releaseName,omitempty"`
+	ReleaseName *string
 
 	// The release version date of the tested release.
-	ReleaseVersionDate *time.Time `json:"releaseVersionDate,omitempty"`
+	ReleaseVersionDate *time.Time
 
 	// The run time of the test.
-	TestRunTime *string `json:"testRunTime,omitempty"`
+	TestRunTime *string
 
 	// The status of the test.
-	TestStatus *TestStatus `json:"testStatus,omitempty"`
+	TestStatus *TestStatus
 
 	// Test type. E.g. 'Out of box test' or 'Functional test'.
-	TestType *string `json:"testType,omitempty"`
+	TestType *string
 }
 
 // TestResultResource - The Test Result Resource.
 type TestResultResource struct {
 	// The properties of a Test Result.
-	Properties *TestResultProperties `json:"properties,omitempty"`
+	Properties *TestResultProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TestResultsClientGetDownloadURLOptions contains the optional parameters for the TestResultsClient.GetDownloadURL method.
@@ -1451,94 +1451,94 @@ type TestSummariesClientListOptions struct {
 // TestSummaryListResult - A list of Test Summaries.
 type TestSummaryListResult struct {
 	// The list of Test Summaries.
-	Value []*TestSummaryResource `json:"value,omitempty"`
+	Value []*TestSummaryResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // TestSummaryProperties - Properties of a Test Summary.
 type TestSummaryProperties struct {
 	// Application name.
-	ApplicationName *string `json:"applicationName,omitempty"`
+	ApplicationName *string
 
 	// Application version.
-	ApplicationVersion *string `json:"applicationVersion,omitempty"`
+	ApplicationVersion *string
 
 	// The execution status of last test.
-	ExecutionStatus *ExecutionStatus `json:"executionStatus,omitempty"`
+	ExecutionStatus *ExecutionStatus
 
 	// The result summary of tests triggered by feature updates
-	FeatureUpdatesTestSummary *OSUpdatesTestSummary `json:"featureUpdatesTestSummary,omitempty"`
+	FeatureUpdatesTestSummary *OSUpdatesTestSummary
 
 	// The grade of the test.
-	Grade *Grade `json:"grade,omitempty"`
+	Grade *Grade
 
 	// The Azure resource Id of package.
-	PackageID *string `json:"packageId,omitempty"`
+	PackageID *string
 
 	// The result summary of tests triggered by security updates
-	SecurityUpdatesTestSummary *OSUpdatesTestSummary `json:"securityUpdatesTestSummary,omitempty"`
+	SecurityUpdatesTestSummary *OSUpdatesTestSummary
 
 	// The run time of the last test.
-	TestRunTime *string `json:"testRunTime,omitempty"`
+	TestRunTime *string
 
 	// The status of last test.
-	TestStatus *TestStatus `json:"testStatus,omitempty"`
+	TestStatus *TestStatus
 
 	// The Id of the current Test Summary.
-	TestSummaryID *string `json:"testSummaryId,omitempty"`
+	TestSummaryID *string
 }
 
 // TestSummaryResource - Summary of a Test.
 type TestSummaryResource struct {
 	// Properties of a Test Summary.
-	Properties *TestSummaryProperties `json:"properties,omitempty"`
+	Properties *TestSummaryProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TestTypeListResult - A list of test types.
 type TestTypeListResult struct {
 	// The list of test types.
-	Value []*TestTypeResource `json:"value,omitempty"`
+	Value []*TestTypeResource
 
 	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // TestTypeProperties - The Test Type properties.
 type TestTypeProperties struct {
 	// The actual name of a test type of a Test Base Account.
-	ActualTestTypeName *string `json:"actualTestTypeName,omitempty"`
+	ActualTestTypeName *string
 }
 
 // TestTypeResource - The test type resource.
 type TestTypeResource struct {
 	// Test Type properties.
-	Properties *TestTypeProperties `json:"properties,omitempty"`
+	Properties *TestTypeProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TestTypesClientGetOptions contains the optional parameters for the TestTypesClient.Get method.
@@ -1554,22 +1554,22 @@ type TestTypesClientListOptions struct {
 // TrackedResource - The resource model definition for an ARM tracked top level resource
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UsageClientListOptions contains the optional parameters for the UsageClient.NewListPager method.
@@ -1581,38 +1581,38 @@ type UsageClientListOptions struct {
 // UserObjectReceiverValue - The user object receiver value.
 type UserObjectReceiverValue struct {
 	// user object ids.
-	UserObjectIDs []*string `json:"userObjectIds,omitempty"`
+	UserObjectIDs []*string
 }
 
 // UtilizationBound - The bound of a utilization result.
 type UtilizationBound struct {
 	// The percentile of the bound.
-	Percentile *float64 `json:"percentile,omitempty"`
+	Percentile *float64
 
 	// The value of the bound.
-	Value *float64 `json:"value,omitempty"`
+	Value *float64
 }
 
 // UtilizationEntry - The utilization entry.
 type UtilizationEntry struct {
 	// The timestamp.
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time
 
 	// The value.
-	Value *float64 `json:"value,omitempty"`
+	Value *float64
 }
 
 // UtilizationResult - The Utilization Result.
 type UtilizationResult struct {
 	// Lower bound
-	LowerBound *UtilizationBound `json:"lowerBound,omitempty"`
+	LowerBound *UtilizationBound
 
 	// Process name, or '_total' for all processes
-	Process *string `json:"process,omitempty"`
+	Process *string
 
 	// Upper bound
-	UpperBound *UtilizationBound `json:"upperBound,omitempty"`
+	UpperBound *UtilizationBound
 
 	// Utilization data
-	Utilization []*UtilizationEntry `json:"utilization,omitempty"`
+	Utilization []*UtilizationEntry
 }

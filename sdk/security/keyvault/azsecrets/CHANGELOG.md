@@ -1,15 +1,14 @@
 # Release History
 
-## 0.12.0 (Unreleased)
-
-### Features Added
+## 0.13.0 (2023-04-13)
 
 ### Breaking Changes
 * Moved from `sdk/keyvault/azsecrets` to `sdk/security/keyvault/azsecrets`
 
-### Bugs Fixed
+## 0.12.0 (2023-04-13)
 
-### Other Changes
+### Features Added
+* upgraded to api version 7.4
 
 ## 0.11.0 (2022-11-08)
 

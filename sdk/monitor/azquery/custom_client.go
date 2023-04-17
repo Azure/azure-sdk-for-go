@@ -32,20 +32,6 @@ type LogsClientOptions struct {
 	azcore.ClientOptions
 }
 
-// LogsClient contains the methods for the LogsClient group.
-// Don't use this type directly, use NewLogsClient() instead.
-type LogsClient struct {
-	host string
-	pl   runtime.Pipeline
-}
-
-// MetricsClient contains the methods for the Metrics group.
-// Don't use this type directly, use NewMetricsClient() instead.
-type MetricsClient struct {
-	host string
-	pl   runtime.Pipeline
-}
-
 // NewLogsClient creates a client that accesses Azure Monitor logs data.
 func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions) (*LogsClient, error) {
 	if options == nil {
@@ -60,8 +46,11 @@ func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, nil)
-	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &LogsClient{host: c.Endpoint, pl: pl}, nil
+	azcoreClient, err := azcore.NewClient("azquery.LogsClient", version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return &LogsClient{host: c.Endpoint, internal: azcoreClient}, nil
 }
 
 // NewMetricsClient creates a client that accesses Azure Monitor metrics data.
@@ -78,8 +67,11 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, nil)
-	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &MetricsClient{host: c.Endpoint, pl: pl}, nil
+	azcoreClient, err := azcore.NewClient("azquery.MetricsClient", version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return &MetricsClient{host: c.Endpoint, internal: azcoreClient}, nil
 }
 
 // ErrorInfo - The code and message for an error.

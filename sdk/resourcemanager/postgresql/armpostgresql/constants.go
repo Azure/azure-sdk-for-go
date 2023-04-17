@@ -11,7 +11,7 @@ package armpostgresql
 
 const (
 	moduleName    = "armpostgresql"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // CreateMode - The mode to create a new server.

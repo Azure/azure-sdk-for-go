@@ -158,7 +158,7 @@ func (l ListFilesInclude) format() []generated.ListFilesIncludeType {
 		return nil
 	}
 
-	include := []generated.ListFilesIncludeType{}
+	var include []generated.ListFilesIncludeType
 
 	if l.Timestamps {
 		include = append(include, ListFilesIncludeTypeTimestamps)

@@ -339,14 +339,10 @@ func (o *DownloadStreamOptions) format() (*generated.FileClientDownloadOptions, 
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// DownloadBufferOptions contains the optional parameters for the Client.DownloadBuffer method.
-type DownloadBufferOptions struct {
+// downloadOptions contains common options used by the Client.DownloadBuffer and Client.DownloadFile methods.
+type downloadOptions struct {
 	// Range specifies a range of bytes. The default value is all bytes.
 	Range HTTPRange
-
-	// When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the
-	// range, as long as the range is less than or equal to 4 MB in size.
-	RangeGetContentMD5 *bool
 
 	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
 	ChunkSize int64
@@ -360,8 +356,48 @@ type DownloadBufferOptions struct {
 	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
 	Concurrency uint16
 
-	// RetryReaderOptionsPerRange is used when downloading each chunk.
-	RetryReaderOptionsPerRange RetryReaderOptions
+	// RetryReaderOptionsPerChunk is used when downloading each chunk.
+	RetryReaderOptionsPerChunk RetryReaderOptions
+}
+
+func (o *downloadOptions) getFilePropertiesOptions() *GetPropertiesOptions {
+	if o == nil {
+		return nil
+	}
+	return &GetPropertiesOptions{
+		LeaseAccessConditions: o.LeaseAccessConditions,
+	}
+}
+
+func (o *downloadOptions) getDownloadFileOptions(rng HTTPRange) *DownloadStreamOptions {
+	downloadFileOptions := &DownloadStreamOptions{
+		Range: rng,
+	}
+	if o != nil {
+		downloadFileOptions.LeaseAccessConditions = o.LeaseAccessConditions
+	}
+	return downloadFileOptions
+}
+
+// DownloadBufferOptions contains the optional parameters for the Client.DownloadBuffer method.
+type DownloadBufferOptions struct {
+	// Range specifies a range of bytes. The default value is all bytes.
+	Range HTTPRange
+
+	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
+	ChunkSize int64
+
+	// Progress is a function that is invoked periodically as bytes are received.
+	Progress func(bytesTransferred int64)
+
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+
+	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
+	Concurrency uint16
+
+	// RetryReaderOptionsPerChunk is used when downloading each chunk.
+	RetryReaderOptionsPerChunk RetryReaderOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -371,10 +407,6 @@ type DownloadFileOptions struct {
 	// Range specifies a range of bytes. The default value is all bytes.
 	Range HTTPRange
 
-	// When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the
-	// range, as long as the range is less than or equal to 4 MB in size.
-	RangeGetContentMD5 *bool
-
 	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
 	ChunkSize int64
 
@@ -387,8 +419,8 @@ type DownloadFileOptions struct {
 	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
 	Concurrency uint16
 
-	// RetryReaderOptionsPerRange is used when downloading each chunk.
-	RetryReaderOptionsPerRange RetryReaderOptions
+	// RetryReaderOptionsPerChunk is used when downloading each chunk.
+	RetryReaderOptionsPerChunk RetryReaderOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

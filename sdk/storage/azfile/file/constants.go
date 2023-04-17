@@ -12,13 +12,17 @@ import (
 )
 
 const (
-	_1MiB = 1024 * 1024
+	_1MiB      = 1024 * 1024
+	CountToEnd = 0
 
 	// MaxUpdateRangeBytes indicates the maximum number of bytes that can be updated in a call to Client.UploadRange.
 	MaxUpdateRangeBytes = 4 * 1024 * 1024 // 4MiB
 
 	// MaxFileSize indicates the maximum size of the file allowed.
 	MaxFileSize = 4 * 1024 * 1024 * 1024 * 1024 // 4 TiB
+
+	// DefaultDownloadChunkSize is default chunk size
+	DefaultDownloadChunkSize = int64(4 * 1024 * 1024) // 4MiB
 )
 
 // CopyStatusType defines the states of the copy operation.

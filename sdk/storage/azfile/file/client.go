@@ -360,6 +360,74 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
+// download method downloads an Azure file to a WriterAt in parallel.
+func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOptions) (int64, error) {
+	if o.ChunkSize == 0 {
+		o.ChunkSize = DefaultDownloadChunkSize
+	}
+
+	count := o.Range.Count
+	if count == CountToEnd { // If size not specified, calculate it
+		// If we don't have the length at all, get it
+		getFilePropertiesOptions := o.getFilePropertiesOptions()
+		gr, err := f.GetProperties(ctx, getFilePropertiesOptions)
+		if err != nil {
+			return 0, err
+		}
+		count = *gr.ContentLength - o.Range.Offset
+	}
+
+	if count <= 0 {
+		// The file is empty, there is nothing to download.
+		return 0, nil
+	}
+
+	// Prepare and do parallel download.
+	progress := int64(0)
+	progressLock := &sync.Mutex{}
+
+	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
+		OperationName: "downloadFileToWriterAt",
+		TransferSize:  count,
+		ChunkSize:     o.ChunkSize,
+		Concurrency:   o.Concurrency,
+		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
+			downloadFileOptions := o.getDownloadFileOptions(HTTPRange{
+				Offset: chunkStart + o.Range.Offset,
+				Count:  count,
+			})
+			dr, err := f.DownloadStream(ctx, downloadFileOptions)
+			if err != nil {
+				return err
+			}
+			var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerChunk)
+			if o.Progress != nil {
+				rangeProgress := int64(0)
+				body = streaming.NewResponseProgress(
+					body,
+					func(bytesTransferred int64) {
+						diff := bytesTransferred - rangeProgress
+						rangeProgress = bytesTransferred
+						progressLock.Lock()
+						progress += diff
+						o.Progress(progress)
+						progressLock.Unlock()
+					})
+			}
+			_, err = io.Copy(shared.NewSectionWriter(writer, chunkStart, count), body)
+			if err != nil {
+				return err
+			}
+			err = body.Close()
+			return err
+		},
+	})
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
 // DownloadStream operation reads or downloads a file from the system, including its metadata and properties.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file.
 func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOptions) (DownloadStreamResponse, error) {
@@ -369,20 +437,65 @@ func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOpti
 	}
 
 	resp, err := f.generated().Download(ctx, opts, leaseAccessConditions)
+	if err != nil {
+		return DownloadStreamResponse{}, err
+	}
+
 	return DownloadStreamResponse{
-		DownloadResponse: resp,
-		client:           f,
-		getInfo:          httpGetterInfo{Range: options.Range, ETag: resp.ETag},
+		DownloadResponse:      resp,
+		client:                f,
+		getInfo:               httpGetterInfo{Range: options.Range},
+		leaseAccessConditions: options.LeaseAccessConditions,
 	}, err
 }
 
 // DownloadBuffer downloads an Azure file to a buffer with parallel.
 func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
-	return 0, nil
+	if o == nil {
+		o = &DownloadBufferOptions{}
+	}
+
+	return f.download(ctx, shared.NewBytesWriter(buffer), (downloadOptions)(*o))
 }
 
 // DownloadFile downloads an Azure file to a local file.
 // The file would be truncated if the size doesn't match.
 func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
-	return 0, nil
+	if o == nil {
+		o = &DownloadFileOptions{}
+	}
+	do := (*downloadOptions)(o)
+
+	// 1. Calculate the size of the destination file
+	var size int64
+
+	count := do.Range.Count
+	if count == CountToEnd {
+		// Try to get Azure file's size
+		getFilePropertiesOptions := do.getFilePropertiesOptions()
+		props, err := f.GetProperties(ctx, getFilePropertiesOptions)
+		if err != nil {
+			return 0, err
+		}
+		size = *props.ContentLength - do.Range.Offset
+	} else {
+		size = count
+	}
+
+	// 2. Compare and try to resize local file's size if it doesn't match Azure file's size.
+	stat, err := file.Stat()
+	if err != nil {
+		return 0, err
+	}
+	if stat.Size() != size {
+		if err = file.Truncate(size); err != nil {
+			return 0, err
+		}
+	}
+
+	if size > 0 {
+		return f.download(ctx, file, *do)
+	} else { // if the file's size is 0, there is no need in downloading it
+		return 0, nil
+	}
 }

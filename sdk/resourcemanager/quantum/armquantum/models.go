@@ -14,56 +14,56 @@ import "time"
 // CheckNameAvailabilityParameters - Details of check name availability request body.
 type CheckNameAvailabilityParameters struct {
 	// Name for checking availability.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The resource type of Quantum Workspace.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckNameAvailabilityResult - Result of check name availability.
 type CheckNameAvailabilityResult struct {
 	// Indicator of availability of the Quantum Workspace resource name.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason of unavailability.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 
 	// READ-ONLY; The detailed info regarding the reason associated with the Namespace.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // OfferingsClientListOptions contains the optional parameters for the OfferingsClient.NewListPager method.
@@ -74,37 +74,37 @@ type OfferingsClientListOptions struct {
 // OfferingsListResult - The response of a list Providers operation.
 type OfferingsListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of Providers.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of a list Providers operation.
-	Value []*ProviderDescription `json:"value,omitempty"`
+	Value []*ProviderDescription
 }
 
 // Operation provided by provider
 type Operation struct {
 	// Properties of the operation
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Name of the operation
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - Properties of the operation
 type OperationDisplay struct {
 	// Description of the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation name
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Provider name
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource name
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -115,273 +115,273 @@ type OperationsClientListOptions struct {
 // OperationsList - Lists the operations available.
 type OperationsList struct {
 	// REQUIRED; Array of operations
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 
 	// Url to follow for getting next page of operations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PricingDetail - Detailed pricing information for an sku.
 type PricingDetail struct {
 	// Unique id for this pricing information.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The unit cost of this sku.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // PricingDimension - Information about pricing dimension.
 type PricingDimension struct {
 	// Unique id of this pricing dimension.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The display name of this pricing dimension.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // Provider - Information about a Provider. A Provider is an entity that offers Targets to run Azure Quantum Jobs.
 type Provider struct {
 	// The provider's marketplace application display name.
-	ApplicationName *string `json:"applicationName,omitempty"`
+	ApplicationName *string
 
 	// A Uri identifying the specific instance of this provider.
-	InstanceURI *string `json:"instanceUri,omitempty"`
+	InstanceURI *string
 
 	// Unique id of this provider.
-	ProviderID *string `json:"providerId,omitempty"`
+	ProviderID *string
 
 	// The sku associated with pricing information for this provider.
-	ProviderSKU *string `json:"providerSku,omitempty"`
+	ProviderSKU *string
 
 	// Provisioning status field
-	ProvisioningState *Status `json:"provisioningState,omitempty"`
+	ProvisioningState *Status
 
 	// Id to track resource usage for the provider.
-	ResourceUsageID *string `json:"resourceUsageId,omitempty"`
+	ResourceUsageID *string
 }
 
 // ProviderDescription - Information about an offering. A provider offering is an entity that offers Targets to run Azure
 // Quantum Jobs.
 type ProviderDescription struct {
 	// Unique provider's id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// A list of provider-specific properties.
-	Properties *ProviderProperties `json:"properties,omitempty"`
+	Properties *ProviderProperties
 
 	// READ-ONLY; Provider's display name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // ProviderProperties - Provider properties.
 type ProviderProperties struct {
 	// Azure Active Directory info.
-	AAD *ProviderPropertiesAAD `json:"aad,omitempty"`
+	AAD *ProviderPropertiesAAD
 
 	// Provider's Managed-Application info
-	ManagedApplication *ProviderPropertiesManagedApplication `json:"managedApplication,omitempty"`
+	ManagedApplication *ProviderPropertiesManagedApplication
 
 	// The list of pricing dimensions from the provider.
-	PricingDimensions []*PricingDimension `json:"pricingDimensions,omitempty"`
+	PricingDimensions []*PricingDimension
 
 	// The list of quota dimensions from the provider.
-	QuotaDimensions []*QuotaDimension `json:"quotaDimensions,omitempty"`
+	QuotaDimensions []*QuotaDimension
 
 	// The list of skus available from this provider.
-	SKUs []*SKUDescription `json:"skus,omitempty"`
+	SKUs []*SKUDescription
 
 	// The list of targets available from this provider.
-	Targets []*TargetDescription `json:"targets,omitempty"`
+	Targets []*TargetDescription
 
 	// READ-ONLY; Company name.
-	Company *string `json:"company,omitempty" azure:"ro"`
+	Company *string
 
 	// READ-ONLY; Provider's default endpoint.
-	DefaultEndpoint *string `json:"defaultEndpoint,omitempty" azure:"ro"`
+	DefaultEndpoint *string
 
 	// READ-ONLY; A description about this provider.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Provider type.
-	ProviderType *string `json:"providerType,omitempty" azure:"ro"`
+	ProviderType *string
 }
 
 // ProviderPropertiesAAD - Azure Active Directory info.
 type ProviderPropertiesAAD struct {
 	// READ-ONLY; Provider's application id.
-	ApplicationID *string `json:"applicationId,omitempty" azure:"ro"`
+	ApplicationID *string
 
 	// READ-ONLY; Provider's tenant id.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // ProviderPropertiesManagedApplication - Provider's Managed-Application info
 type ProviderPropertiesManagedApplication struct {
 	// READ-ONLY; Provider's offer id.
-	OfferID *string `json:"offerId,omitempty" azure:"ro"`
+	OfferID *string
 
 	// READ-ONLY; Provider's publisher id.
-	PublisherID *string `json:"publisherId,omitempty" azure:"ro"`
+	PublisherID *string
 }
 
 // QuotaDimension - Information about a specific quota dimension.
 type QuotaDimension struct {
 	// A description about this quota dimension.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Unique id of this dimension.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The display name of this quota dimension.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The reset period of this quota dimension.
-	Period *string `json:"period,omitempty"`
+	Period *string
 
 	// The max limit of this dimension.
-	Quota *float32 `json:"quota,omitempty"`
+	Quota *float32
 
 	// The scope of this quota dimension.
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 
 	// The standard unit of measurement used for this quota dimension.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 
 	// The standard unit of measurement used for this quota dimension in plural form.
-	UnitPlural *string `json:"unitPlural,omitempty"`
+	UnitPlural *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SKUDescription - Information about a specific sku.
 type SKUDescription struct {
 	// Flag to indicate whether the sku should be automatically added during workspace creation.
-	AutoAdd *bool `json:"autoAdd,omitempty"`
+	AutoAdd *bool
 
 	// Description about this sku.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Unique sku id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Display name of this sku.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The list of pricing details for the sku.
-	PricingDetails []*PricingDetail `json:"pricingDetails,omitempty"`
+	PricingDetails []*PricingDetail
 
 	// The list of quota dimensions for this sku.
-	QuotaDimensions []*QuotaDimension `json:"quotaDimensions,omitempty"`
+	QuotaDimensions []*QuotaDimension
 
 	// Uri to subscribe to the restricted access sku.
-	RestrictedAccessURI *string `json:"restrictedAccessUri,omitempty"`
+	RestrictedAccessURI *string
 
 	// The list of targets available for this sku.
-	Targets []*string `json:"targets,omitempty"`
+	Targets []*string
 
 	// Display name of this sku.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagsObject - Tags object for patch operations.
 type TagsObject struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // TargetDescription - Information about a Target. A target is the component that can process a specific type of Job.
 type TargetDescription struct {
 	// List of content encodings accepted by this target.
-	AcceptedContentEncodings []*string `json:"acceptedContentEncodings,omitempty"`
+	AcceptedContentEncodings []*string
 
 	// List of data formats accepted by this target.
-	AcceptedDataFormats []*string `json:"acceptedDataFormats,omitempty"`
+	AcceptedDataFormats []*string
 
 	// A description about this target.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Unique target id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Display name of this target.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Workspace - The resource proxy definition object for quantum workspace.
 type Workspace struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Managed Identity information.
-	Identity *WorkspaceIdentity `json:"identity,omitempty"`
+	Identity *WorkspaceIdentity
 
 	// Gets or sets the properties. Define quantum workspace's specific properties.
-	Properties *WorkspaceResourceProperties `json:"properties,omitempty"`
+	Properties *WorkspaceResourceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; System metadata
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkspaceClientCheckNameAvailabilityOptions contains the optional parameters for the WorkspaceClient.CheckNameAvailability
@@ -393,40 +393,40 @@ type WorkspaceClientCheckNameAvailabilityOptions struct {
 // WorkspaceIdentity - Managed Identity information.
 type WorkspaceIdentity struct {
 	// The identity type.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // WorkspaceListResult - The response of a list Workspaces operation.
 type WorkspaceListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of Workspaces.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of a list Workspaces operation.
-	Value []*Workspace `json:"value,omitempty"`
+	Value []*Workspace
 }
 
 // WorkspaceResourceProperties - Properties of a Workspace
 type WorkspaceResourceProperties struct {
 	// List of Providers selected for this Workspace
-	Providers []*Provider `json:"providers,omitempty"`
+	Providers []*Provider
 
 	// ARM Resource Id of the storage account associated with this workspace.
-	StorageAccount *string `json:"storageAccount,omitempty"`
+	StorageAccount *string
 
 	// READ-ONLY; The URI of the workspace endpoint.
-	EndpointURI *string `json:"endpointUri,omitempty" azure:"ro"`
+	EndpointURI *string
 
 	// READ-ONLY; Provisioning status field
-	ProvisioningState *ProvisioningStatus `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningStatus
 
 	// READ-ONLY; Whether the current workspace is ready to accept Jobs.
-	Usable *UsableStatus `json:"usable,omitempty" azure:"ro"`
+	Usable *UsableStatus
 }
 
 // WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate

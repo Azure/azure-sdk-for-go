@@ -14,168 +14,168 @@ import "time"
 // Assignment - Guest configuration assignment is an association between a machine and guest configuration.
 type Assignment struct {
 	// Region where the VM is located.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Name of the guest configuration assignment.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the Guest configuration assignment.
-	Properties *AssignmentProperties `json:"properties,omitempty"`
+	Properties *AssignmentProperties
 
 	// READ-ONLY; ARM resource id of the guest configuration assignment.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssignmentInfo - Information about the guest configuration assignment.
 type AssignmentInfo struct {
 	// Information about the configuration.
-	Configuration *ConfigurationInfo `json:"configuration,omitempty"`
+	Configuration *ConfigurationInfo
 
 	// READ-ONLY; Name of the guest configuration assignment.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // AssignmentList - The response of the list guest configuration assignment operation.
 type AssignmentList struct {
 	// Result of the list guest configuration assignment operation.
-	Value []*Assignment `json:"value,omitempty"`
+	Value []*Assignment
 }
 
 // AssignmentProperties - Guest configuration assignment properties.
 type AssignmentProperties struct {
 	// The source which initiated the guest configuration assignment. Ex: Azure Policy
-	Context *string `json:"context,omitempty"`
+	Context *string
 
 	// The guest configuration to assign.
-	GuestConfiguration *Navigation `json:"guestConfiguration,omitempty"`
+	GuestConfiguration *Navigation
 
 	// Last reported guest configuration assignment report.
-	LatestAssignmentReport *CommonAssignmentReport `json:"latestAssignmentReport,omitempty"`
+	LatestAssignmentReport *CommonAssignmentReport
 
 	// The list of VM Compliance data for VMSS
-	VmssVMList []*VMSSVMInfo `json:"vmssVMList,omitempty"`
+	VmssVMList []*VMSSVMInfo
 
 	// READ-ONLY; Combined hash of the configuration package and parameters.
-	AssignmentHash *string `json:"assignmentHash,omitempty" azure:"ro"`
+	AssignmentHash *string
 
 	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
-	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
+	ComplianceStatus *ComplianceStatus
 
 	// READ-ONLY; Date and time when last compliance status was checked.
-	LastComplianceStatusChecked *time.Time `json:"lastComplianceStatusChecked,omitempty" azure:"ro"`
+	LastComplianceStatusChecked *time.Time
 
 	// READ-ONLY; Id of the latest report for the guest configuration assignment.
-	LatestReportID *string `json:"latestReportId,omitempty" azure:"ro"`
+	LatestReportID *string
 
 	// READ-ONLY; parameter hash for the guest configuration assignment.
-	ParameterHash *string `json:"parameterHash,omitempty" azure:"ro"`
+	ParameterHash *string
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Type of the resource - VMSS / VM
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 
 	// READ-ONLY; VM resource Id.
-	TargetResourceID *string `json:"targetResourceId,omitempty" azure:"ro"`
+	TargetResourceID *string
 }
 
 // AssignmentReport - Report for the guest configuration assignment. Report contains information such as compliance status,
 // reason, and more.
 type AssignmentReport struct {
 	// Properties of the guest configuration report.
-	Properties *AssignmentReportProperties `json:"properties,omitempty"`
+	Properties *AssignmentReportProperties
 
 	// READ-ONLY; ARM resource id of the report for the guest configuration assignment.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; GUID that identifies the guest configuration assignment report under a subscription, resource group.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // AssignmentReportDetails - Details of the guest configuration assignment report.
 type AssignmentReportDetails struct {
 	// The list of resources for which guest configuration assignment compliance is checked.
-	Resources []*AssignmentReportResource `json:"resources,omitempty"`
+	Resources []*AssignmentReportResource
 
 	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
-	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
+	ComplianceStatus *ComplianceStatus
 
 	// READ-ONLY; End date and time of the guest configuration assignment compliance status check.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; GUID of the report.
-	JobID *string `json:"jobId,omitempty" azure:"ro"`
+	JobID *string
 
 	// READ-ONLY; Type of report, Consistency or Initial
-	OperationType *Type `json:"operationType,omitempty" azure:"ro"`
+	OperationType *Type
 
 	// READ-ONLY; Start date and time of the guest configuration assignment compliance status check.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
 // AssignmentReportList - List of guest configuration assignment reports.
 type AssignmentReportList struct {
 	// List of reports for the guest configuration. Report contains information such as compliance status, reason and more.
-	Value []*AssignmentReport `json:"value,omitempty"`
+	Value []*AssignmentReport
 }
 
 // AssignmentReportProperties - Report for the guest configuration assignment. Report contains information such as compliance
 // status, reason, and more.
 type AssignmentReportProperties struct {
 	// Configuration details of the guest configuration assignment.
-	Assignment *AssignmentInfo `json:"assignment,omitempty"`
+	Assignment *AssignmentInfo
 
 	// Details of the assignment report.
-	Details *AssignmentReportDetails `json:"details,omitempty"`
+	Details *AssignmentReportDetails
 
 	// Information about the VM.
-	VM *VMInfo `json:"vm,omitempty"`
+	VM *VMInfo
 
 	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
-	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
+	ComplianceStatus *ComplianceStatus
 
 	// READ-ONLY; End date and time of the guest configuration assignment compliance status check.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; GUID that identifies the guest configuration assignment report under a subscription, resource group.
-	ReportID *string `json:"reportId,omitempty" azure:"ro"`
+	ReportID *string
 
 	// READ-ONLY; Start date and time of the guest configuration assignment compliance status check.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Azure resource Id of the VMSS.
-	VmssResourceID *string `json:"vmssResourceId,omitempty" azure:"ro"`
+	VmssResourceID *string
 }
 
 // AssignmentReportResource - The guest configuration assignment resource.
 type AssignmentReportResource struct {
 	// Compliance reason and reason code for a resource.
-	Reasons []*AssignmentReportResourceComplianceReason `json:"reasons,omitempty"`
+	Reasons []*AssignmentReportResourceComplianceReason
 
 	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
-	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
+	ComplianceStatus *ComplianceStatus
 
 	// READ-ONLY; Properties of a guest configuration assignment resource.
-	Properties any `json:"properties,omitempty" azure:"ro"`
+	Properties any
 
 	// READ-ONLY; Name of the guest configuration assignment resource setting.
-	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
+	ResourceID *string
 }
 
 // AssignmentReportResourceComplianceReason - Reason and code for the compliance of the guest configuration assignment resource.
 type AssignmentReportResourceComplianceReason struct {
 	// READ-ONLY; Code for the compliance of the guest configuration assignment resource.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Reason for the compliance of the guest configuration assignment resource.
-	Phrase *string `json:"phrase,omitempty" azure:"ro"`
+	Phrase *string
 }
 
 // AssignmentReportsClientGetOptions contains the optional parameters for the AssignmentReportsClient.Get method.
@@ -247,91 +247,91 @@ type AssignmentsVMSSClientListOptions struct {
 
 type CommonAssignmentReport struct {
 	// Configuration details of the guest configuration assignment.
-	Assignment *AssignmentInfo `json:"assignment,omitempty"`
+	Assignment *AssignmentInfo
 
 	// The list of resources for which guest configuration assignment compliance is checked.
-	Resources []*AssignmentReportResource `json:"resources,omitempty"`
+	Resources []*AssignmentReportResource
 
 	// Information about the VM.
-	VM *VMInfo `json:"vm,omitempty"`
+	VM *VMInfo
 
 	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
-	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
+	ComplianceStatus *ComplianceStatus
 
 	// READ-ONLY; End date and time of the guest configuration assignment compliance status check.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; ARM resource id of the report for the guest configuration assignment.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Type of report, Consistency or Initial
-	OperationType *Type `json:"operationType,omitempty" azure:"ro"`
+	OperationType *Type
 
 	// READ-ONLY; GUID that identifies the guest configuration assignment report under a subscription, resource group.
-	ReportID *string `json:"reportId,omitempty" azure:"ro"`
+	ReportID *string
 
 	// READ-ONLY; Start date and time of the guest configuration assignment compliance status check.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
 // ConfigurationInfo - Information about the configuration.
 type ConfigurationInfo struct {
 	// READ-ONLY; Name of the configuration.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Version of the configuration.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // ConfigurationParameter - Represents a configuration parameter.
 type ConfigurationParameter struct {
 	// Name of the configuration parameter.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Value of the configuration parameter.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ConfigurationSetting - Configuration setting of LCM (Local Configuration Manager).
 type ConfigurationSetting struct {
 	// READ-ONLY; Specifies what happens after a reboot during the application of a configuration. The possible values are ContinueConfiguration
 	// and StopConfiguration
-	ActionAfterReboot *ActionAfterReboot `json:"actionAfterReboot,omitempty" azure:"ro"`
+	ActionAfterReboot *ActionAfterReboot
 
 	// READ-ONLY; If true - new configurations downloaded from the pull service are allowed to overwrite the old ones on the target
 	// node. Otherwise, false
-	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty" azure:"ro"`
+	AllowModuleOverwrite *bool
 
 	// READ-ONLY; Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target nodes. Possible
 	// values are ApplyOnly, ApplyAndMonitor, and ApplyAndAutoCorrect.
-	ConfigurationMode *ConfigurationMode `json:"configurationMode,omitempty" azure:"ro"`
+	ConfigurationMode *ConfigurationMode
 
 	// READ-ONLY; How often, in minutes, the current configuration is checked and applied. This property is ignored if the ConfigurationMode
 	// property is set to ApplyOnly. The default value is 15.
-	ConfigurationModeFrequencyMins *float32 `json:"configurationModeFrequencyMins,omitempty" azure:"ro"`
+	ConfigurationModeFrequencyMins *float32
 
 	// READ-ONLY; Set this to true to automatically reboot the node after a configuration that requires reboot is applied. Otherwise,
 	// you will have to manually reboot the node for any configuration that requires it.
 	// The default value is false. To use this setting when a reboot condition is enacted by something other than DSC (such as
 	// Windows Installer), combine this setting with the xPendingReboot module.
-	RebootIfNeeded *bool `json:"rebootIfNeeded,omitempty" azure:"ro"`
+	RebootIfNeeded *bool
 
 	// READ-ONLY; The time interval, in minutes, at which the LCM checks a pull service to get updated configurations. This value
 	// is ignored if the LCM is not configured in pull mode. The default value is 30.
-	RefreshFrequencyMins *float32 `json:"refreshFrequencyMins,omitempty" azure:"ro"`
+	RefreshFrequencyMins *float32
 }
 
 // ErrorResponse - Error response of an operation failure
 type ErrorResponse struct {
-	Error *ErrorResponseError `json:"error,omitempty"`
+	Error *ErrorResponseError
 }
 
 type ErrorResponseError struct {
 	// Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Detail error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // HCRPAssignmentReportsClientGetOptions contains the optional parameters for the HCRPAssignmentReportsClient.Get method.
@@ -371,76 +371,76 @@ type HCRPAssignmentsClientListOptions struct {
 type Navigation struct {
 	// Specifies the assignment type and execution of the configuration. Possible values are Audit, DeployAndAutoCorrect, ApplyAndAutoCorrect
 	// and ApplyAndMonitor.
-	AssignmentType *AssignmentType `json:"assignmentType,omitempty"`
+	AssignmentType *AssignmentType
 
 	// The configuration parameters for the guest configuration.
-	ConfigurationParameter []*ConfigurationParameter `json:"configurationParameter,omitempty"`
+	ConfigurationParameter []*ConfigurationParameter
 
 	// The protected configuration parameters for the guest configuration.
-	ConfigurationProtectedParameter []*ConfigurationParameter `json:"configurationProtectedParameter,omitempty"`
+	ConfigurationProtectedParameter []*ConfigurationParameter
 
 	// Combined hash of the guest configuration package and configuration parameters.
-	ContentHash *string `json:"contentHash,omitempty"`
+	ContentHash *string
 
 	// Uri of the storage where guest configuration package is uploaded.
-	ContentURI *string `json:"contentUri,omitempty"`
+	ContentURI *string
 
 	// Kind of the guest configuration. For example:DSC
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// Name of the guest configuration.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Version of the guest configuration.
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY; Specifies the origin of the configuration.
-	AssignmentSource *string `json:"assignmentSource,omitempty" azure:"ro"`
+	AssignmentSource *string
 
 	// READ-ONLY; The configuration setting for the guest configuration.
-	ConfigurationSetting *ConfigurationSetting `json:"configurationSetting,omitempty" azure:"ro"`
+	ConfigurationSetting *ConfigurationSetting
 
 	// READ-ONLY; Specifies the content type of the configuration. Possible values could be Builtin or Custom.
-	ContentType *string `json:"contentType,omitempty" azure:"ro"`
+	ContentType *string
 }
 
 // Operation - GuestConfiguration REST API operation
 type Operation struct {
 	// Provider, Resource, Operation and description values.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: For ex. providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/write or read
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Provider, Resource, Operation and description values.
-	Properties *OperationProperties `json:"properties,omitempty"`
+	Properties *OperationProperties
 }
 
 // OperationDisplay - Provider, Resource, Operation and description values.
 type OperationDisplay struct {
 	// Description about operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.GuestConfiguration
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed: For ex.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationList - The response model for the list of Automation operations
 type OperationList struct {
 	// List of Automation operations supported by the Automation resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationProperties - Provider, Resource, Operation and description values.
 type OperationProperties struct {
 	// Service provider: Microsoft.GuestConfiguration
-	StatusCode *string `json:"statusCode,omitempty"`
+	StatusCode *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -451,77 +451,77 @@ type OperationsClientListOptions struct {
 // ProxyResource - ARM proxy resource.
 type ProxyResource struct {
 	// Region where the VM is located.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Name of the guest configuration assignment.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; ARM resource id of the guest configuration assignment.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Resource - The core properties of ARM resources
 type Resource struct {
 	// Region where the VM is located.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Name of the guest configuration assignment.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; ARM resource id of the guest configuration assignment.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // VMInfo - Information about the VM.
 type VMInfo struct {
 	// READ-ONLY; Azure resource Id of the VM.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; UUID(Universally Unique Identifier) of the VM.
-	UUID *string `json:"uuid,omitempty" azure:"ro"`
+	UUID *string
 }
 
 // VMSSVMInfo - Information about VMSS VM
 type VMSSVMInfo struct {
 	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
-	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
+	ComplianceStatus *ComplianceStatus
 
 	// READ-ONLY; Date and time when last compliance status was checked.
-	LastComplianceChecked *time.Time `json:"lastComplianceChecked,omitempty" azure:"ro"`
+	LastComplianceChecked *time.Time
 
 	// READ-ONLY; Id of the latest report for the guest configuration assignment.
-	LatestReportID *string `json:"latestReportId,omitempty" azure:"ro"`
+	LatestReportID *string
 
 	// READ-ONLY; UUID of the VM.
-	VMID *string `json:"vmId,omitempty" azure:"ro"`
+	VMID *string
 
 	// READ-ONLY; Azure resource Id of the VM.
-	VMResourceID *string `json:"vmResourceId,omitempty" azure:"ro"`
+	VMResourceID *string
 }

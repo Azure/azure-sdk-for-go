@@ -23,16 +23,16 @@ type ArtifactClassification interface {
 // Artifact - Represents a blueprint artifact.
 type Artifact struct {
 	// REQUIRED; Specifies the kind of blueprint artifact.
-	Kind *ArtifactKind `json:"kind,omitempty"`
+	Kind *ArtifactKind
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetArtifact implements the ArtifactClassification interface for type Artifact.
@@ -41,10 +41,10 @@ func (a *Artifact) GetArtifact() *Artifact { return a }
 // ArtifactList - List of blueprint artifacts.
 type ArtifactList struct {
 	// List of blueprint artifacts.
-	Value []ArtifactClassification `json:"value,omitempty"`
+	Value []ArtifactClassification
 
 	// READ-ONLY; Link to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ArtifactsClientCreateOrUpdateOptions contains the optional parameters for the ArtifactsClient.CreateOrUpdate method.
@@ -70,79 +70,79 @@ type ArtifactsClientListOptions struct {
 // Assignment - Represents a blueprint assignment.
 type Assignment struct {
 	// REQUIRED; Managed identity for this blueprint assignment.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// REQUIRED; The location of this blueprint assignment.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Properties for blueprint assignment object.
-	Properties *AssignmentProperties `json:"properties,omitempty"`
+	Properties *AssignmentProperties
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssignmentDeploymentJob - Represents individual job in given blueprint assignment operation.
 type AssignmentDeploymentJob struct {
 	// Name of the action performed in this job.
-	Action *string `json:"action,omitempty"`
+	Action *string
 
 	// Result of this deployment job for each retry.
-	History []*AssignmentDeploymentJobResult `json:"history,omitempty"`
+	History []*AssignmentDeploymentJobResult
 
 	// Id of this job.
-	JobID *string `json:"jobId,omitempty"`
+	JobID *string
 
 	// State of this job.
-	JobState *string `json:"jobState,omitempty"`
+	JobState *string
 
 	// Kind of job.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Reference to deployment job resource id.
-	RequestURI *string `json:"requestUri,omitempty"`
+	RequestURI *string
 
 	// Deployment job result.
-	Result *AssignmentDeploymentJobResult `json:"result,omitempty"`
+	Result *AssignmentDeploymentJobResult
 }
 
 // AssignmentDeploymentJobResult - Result of each individual deployment in a blueprint assignment.
 type AssignmentDeploymentJobResult struct {
 	// Contains error details if deployment job failed.
-	Error *AzureResourceManagerError `json:"error,omitempty"`
+	Error *AzureResourceManagerError
 
 	// Resources created as result of the deployment job.
-	Resources []*AssignmentJobCreatedResource `json:"resources,omitempty"`
+	Resources []*AssignmentJobCreatedResource
 }
 
 // AssignmentJobCreatedResource - Azure resource created from deployment job.
 type AssignmentJobCreatedResource struct {
 	// Additional properties in a dictionary.
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssignmentList - List of blueprint assignments
 type AssignmentList struct {
 	// List of blueprint assignments.
-	Value []*Assignment `json:"value,omitempty"`
+	Value []*Assignment
 
 	// READ-ONLY; Link to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AssignmentLockSettings - Defines how resources deployed by a blueprint assignment are locked.
@@ -153,58 +153,58 @@ type AssignmentLockSettings struct {
 	// If the lock mode is set to 'AllResourcesDoNotDelete', then
 	// the following actions are automatically appended to 'excludedActions': 'Microsoft.Authorization/locks/delete'. Duplicate
 	// actions will get removed.
-	ExcludedActions []*string `json:"excludedActions,omitempty"`
+	ExcludedActions []*string
 
 	// List of AAD principals excluded from blueprint locks. Up to 5 principals are permitted.
-	ExcludedPrincipals []*string `json:"excludedPrincipals,omitempty"`
+	ExcludedPrincipals []*string
 
 	// Lock mode.
-	Mode *AssignmentLockMode `json:"mode,omitempty"`
+	Mode *AssignmentLockMode
 }
 
 // AssignmentOperation - Represents underlying deployment detail for each update to the blueprint assignment.
 type AssignmentOperation struct {
 	// Properties for AssignmentOperation.
-	Properties *AssignmentOperationProperties `json:"properties,omitempty"`
+	Properties *AssignmentOperationProperties
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssignmentOperationList - List of AssignmentOperation.
 type AssignmentOperationList struct {
 	// List of AssignmentOperation.
-	Value []*AssignmentOperation `json:"value,omitempty"`
+	Value []*AssignmentOperation
 
 	// READ-ONLY; Link to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AssignmentOperationProperties - Properties of AssignmentOperation.
 type AssignmentOperationProperties struct {
 	// State of this blueprint assignment operation.
-	AssignmentState *string `json:"assignmentState,omitempty"`
+	AssignmentState *string
 
 	// The published version of the blueprint definition used for the blueprint assignment operation.
-	BlueprintVersion *string `json:"blueprintVersion,omitempty"`
+	BlueprintVersion *string
 
 	// List of jobs in this blueprint assignment operation.
-	Deployments []*AssignmentDeploymentJob `json:"deployments,omitempty"`
+	Deployments []*AssignmentDeploymentJob
 
 	// Create time of this blueprint assignment operation.
-	TimeCreated *string `json:"timeCreated,omitempty"`
+	TimeCreated *string
 
 	// Finish time of the overall underlying deployments.
-	TimeFinished *string `json:"timeFinished,omitempty"`
+	TimeFinished *string
 
 	// Start time of the underlying deployment.
-	TimeStarted *string `json:"timeStarted,omitempty"`
+	TimeStarted *string
 }
 
 // AssignmentOperationsClientGetOptions contains the optional parameters for the AssignmentOperationsClient.Get method.
@@ -221,44 +221,44 @@ type AssignmentOperationsClientListOptions struct {
 // AssignmentProperties - Detailed properties for a blueprint assignment.
 type AssignmentProperties struct {
 	// REQUIRED; Blueprint assignment parameter values.
-	Parameters map[string]*ParameterValue `json:"parameters,omitempty"`
+	Parameters map[string]*ParameterValue
 
 	// REQUIRED; Names and locations of resource group placeholders.
-	ResourceGroups map[string]*ResourceGroupValue `json:"resourceGroups,omitempty"`
+	ResourceGroups map[string]*ResourceGroupValue
 
 	// ID of the published version of a blueprint definition.
-	BlueprintID *string `json:"blueprintId,omitempty"`
+	BlueprintID *string
 
 	// Multi-line explain this resource.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// One-liner string explain this resource.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Defines how resources deployed by a blueprint assignment are locked.
-	Locks *AssignmentLockSettings `json:"locks,omitempty"`
+	Locks *AssignmentLockSettings
 
 	// The target subscription scope of the blueprint assignment (format: '/subscriptions/{subscriptionId}'). For management group
 	// level assignments, the property is required.
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 
 	// READ-ONLY; State of the blueprint assignment.
-	ProvisioningState *AssignmentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AssignmentProvisioningState
 
 	// READ-ONLY; Status of blueprint assignment. This field is readonly.
-	Status *AssignmentStatus `json:"status,omitempty" azure:"ro"`
+	Status *AssignmentStatus
 }
 
 // AssignmentStatus - The status of a blueprint assignment. This field is readonly.
 type AssignmentStatus struct {
 	// READ-ONLY; Last modified time of this blueprint definition.
-	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
+	LastModified *time.Time
 
 	// READ-ONLY; List of resources that were created by the blueprint assignment.
-	ManagedResources []*string `json:"managedResources,omitempty" azure:"ro"`
+	ManagedResources []*string
 
 	// READ-ONLY; Creation time of this blueprint definition.
-	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+	TimeCreated *time.Time
 }
 
 // AssignmentsClientCreateOrUpdateOptions contains the optional parameters for the AssignmentsClient.CreateOrUpdate method.
@@ -290,37 +290,37 @@ type AssignmentsClientWhoIsBlueprintOptions struct {
 // AzureResourceBase - Common properties for all Azure resources.
 type AzureResourceBase struct {
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AzureResourceManagerError - Error code and message
 type AzureResourceManagerError struct {
 	// Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // Blueprint - Represents a Blueprint definition.
 type Blueprint struct {
 	// REQUIRED; Detailed properties for blueprint definition.
-	Properties *Properties `json:"properties,omitempty"`
+	Properties *Properties
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BlueprintsClientCreateOrUpdateOptions contains the optional parameters for the BlueprintsClient.CreateOrUpdate method.
@@ -346,115 +346,115 @@ type BlueprintsClientListOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponse
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // KeyVaultReference - Specifies the link to a Key Vault.
 type KeyVaultReference struct {
 	// REQUIRED; Azure resource ID of the Key Vault.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // List of blueprint definitions.
 type List struct {
 	// List of blueprint definitions.
-	Value []*Blueprint `json:"value,omitempty"`
+	Value []*Blueprint
 
 	// READ-ONLY; Link to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ManagedServiceIdentity - Managed identity generic object.
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of the managed identity.
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// Azure Active Directory principal ID associated with this Identity.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// ID of the Azure Active Directory.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// The list of user-assigned managed identities associated with the resource. Key is the Azure resource Id of the managed
 	// identity.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 }
 
 // ParameterDefinition - Represent a parameter with constrains and metadata.
 type ParameterDefinition struct {
 	// REQUIRED; Allowed data types for Resource Manager template parameters.
-	Type *TemplateParameterType `json:"type,omitempty"`
+	Type *TemplateParameterType
 
 	// Array of allowed values for this parameter.
-	AllowedValues []any `json:"allowedValues,omitempty"`
+	AllowedValues []any
 
 	// Default Value for this parameter.
-	DefaultValue any `json:"defaultValue,omitempty"`
+	DefaultValue any
 
 	// User-friendly properties for this parameter.
-	Metadata *ParameterDefinitionMetadata `json:"metadata,omitempty"`
+	Metadata *ParameterDefinitionMetadata
 }
 
 // ParameterDefinitionMetadata - User-friendly properties for this parameter.
 type ParameterDefinitionMetadata struct {
 	// Description of this parameter/resourceGroup.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// DisplayName of this parameter/resourceGroup.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// StrongType for UI to render rich experience during blueprint assignment. Supported strong types are resourceType, principalId
 	// and location.
-	StrongType *string `json:"strongType,omitempty"`
+	StrongType *string
 }
 
 // ParameterValue - Value for the specified parameter. Can be either 'value' or 'reference' but not both.
 type ParameterValue struct {
 	// Parameter value as reference type.
-	Reference *SecretValueReference `json:"reference,omitempty"`
+	Reference *SecretValueReference
 
 	// Parameter value. Any valid JSON value is allowed including objects, arrays, strings, numbers and booleans.
-	Value any `json:"value,omitempty"`
+	Value any
 }
 
 // PolicyAssignmentArtifact - Blueprint artifact that applies a Policy assignment.
 type PolicyAssignmentArtifact struct {
 	// REQUIRED; Specifies the kind of blueprint artifact.
-	Kind *ArtifactKind `json:"kind,omitempty"`
+	Kind *ArtifactKind
 
 	// REQUIRED; properties for policyAssignment Artifact
-	Properties *PolicyAssignmentArtifactProperties `json:"properties,omitempty"`
+	Properties *PolicyAssignmentArtifactProperties
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetArtifact implements the ArtifactClassification interface for type PolicyAssignmentArtifact.
@@ -470,49 +470,49 @@ func (p *PolicyAssignmentArtifact) GetArtifact() *Artifact {
 // PolicyAssignmentArtifactProperties - Properties of a Policy assignment blueprint artifact.
 type PolicyAssignmentArtifactProperties struct {
 	// REQUIRED; Parameter values for the policy definition.
-	Parameters map[string]*ParameterValue `json:"parameters,omitempty"`
+	Parameters map[string]*ParameterValue
 
 	// REQUIRED; Azure resource ID of the policy definition.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	PolicyDefinitionID *string
 
 	// Artifacts which need to be deployed before the specified artifact.
-	DependsOn []*string `json:"dependsOn,omitempty"`
+	DependsOn []*string
 
 	// Multi-line explain this resource.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// One-liner string explain this resource.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name of the resource group placeholder to which the policy will be assigned.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 }
 
 // Properties - Schema for blueprint definition properties.
 type Properties struct {
 	// Multi-line explain this resource.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// One-liner string explain this resource.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Parameters required by this blueprint definition.
-	Parameters map[string]*ParameterDefinition `json:"parameters,omitempty"`
+	Parameters map[string]*ParameterDefinition
 
 	// Resource group placeholders defined by this blueprint definition.
-	ResourceGroups map[string]*ResourceGroupDefinition `json:"resourceGroups,omitempty"`
+	ResourceGroups map[string]*ResourceGroupDefinition
 
 	// The scope where this blueprint definition can be assigned.
-	TargetScope *BlueprintTargetScope `json:"targetScope,omitempty"`
+	TargetScope *BlueprintTargetScope
 
 	// Published versions of this blueprint definition.
-	Versions any `json:"versions,omitempty"`
+	Versions any
 
 	// READ-ONLY; Layout view of the blueprint definition for UI reference.
-	Layout any `json:"layout,omitempty" azure:"ro"`
+	Layout any
 
 	// READ-ONLY; Status of the blueprint. This field is readonly.
-	Status *Status `json:"status,omitempty" azure:"ro"`
+	Status *Status
 }
 
 // PublishedArtifactsClientGetOptions contains the optional parameters for the PublishedArtifactsClient.Get method.
@@ -528,52 +528,52 @@ type PublishedArtifactsClientListOptions struct {
 // PublishedBlueprint - Represents a published blueprint.
 type PublishedBlueprint struct {
 	// REQUIRED; Detailed properties for published blueprint.
-	Properties *PublishedBlueprintProperties `json:"properties,omitempty"`
+	Properties *PublishedBlueprintProperties
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PublishedBlueprintList - List of published blueprint definitions.
 type PublishedBlueprintList struct {
 	// List of published blueprint definitions.
-	Value []*PublishedBlueprint `json:"value,omitempty"`
+	Value []*PublishedBlueprint
 
 	// READ-ONLY; Link to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PublishedBlueprintProperties - Schema for published blueprint definition properties.
 type PublishedBlueprintProperties struct {
 	// Name of the published blueprint definition.
-	BlueprintName *string `json:"blueprintName,omitempty"`
+	BlueprintName *string
 
 	// Version-specific change notes.
-	ChangeNotes *string `json:"changeNotes,omitempty"`
+	ChangeNotes *string
 
 	// Multi-line explain this resource.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// One-liner string explain this resource.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Parameters required by this blueprint definition.
-	Parameters map[string]*ParameterDefinition `json:"parameters,omitempty"`
+	Parameters map[string]*ParameterDefinition
 
 	// Resource group placeholders defined by this blueprint definition.
-	ResourceGroups map[string]*ResourceGroupDefinition `json:"resourceGroups,omitempty"`
+	ResourceGroups map[string]*ResourceGroupDefinition
 
 	// The scope where this blueprint definition can be assigned.
-	TargetScope *BlueprintTargetScope `json:"targetScope,omitempty"`
+	TargetScope *BlueprintTargetScope
 
 	// READ-ONLY; Status of the blueprint. This field is readonly.
-	Status *Status `json:"status,omitempty" azure:"ro"`
+	Status *Status
 }
 
 // PublishedBlueprintsClientCreateOptions contains the optional parameters for the PublishedBlueprintsClient.Create method.
@@ -600,85 +600,85 @@ type PublishedBlueprintsClientListOptions struct {
 // ResourceGroupDefinition - Represents an Azure resource group in a blueprint definition.
 type ResourceGroupDefinition struct {
 	// Artifacts which need to be deployed before this resource group.
-	DependsOn []*string `json:"dependsOn,omitempty"`
+	DependsOn []*string
 
 	// Location of this resourceGroup. Leave empty if the resource group location will be specified during the blueprint assignment.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// User-friendly properties for this resource group.
-	Metadata *ParameterDefinitionMetadata `json:"metadata,omitempty"`
+	Metadata *ParameterDefinitionMetadata
 
 	// Name of this resourceGroup. Leave empty if the resource group name will be specified during the blueprint assignment.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Tags to be assigned to this resource group.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ResourceGroupValue - Represents an Azure resource group.
 type ResourceGroupValue struct {
 	// Location of the resource group.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Name of the resource group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ResourceProviderOperation - Supported operations of this resource provider.
 type ResourceProviderOperation struct {
 	// Display metadata associated with the operation.
-	Display *ResourceProviderOperationDisplay `json:"display,omitempty"`
+	Display *ResourceProviderOperationDisplay
 
 	// Operation name, in format of {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ResourceProviderOperationDisplay - Display metadata associated with the operation.
 type ResourceProviderOperationDisplay struct {
 	// Description of this operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Type of operation: get, read, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Resource provider: Microsoft Blueprint.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // ResourceProviderOperationList - Results of the request to list operations.
 type ResourceProviderOperationList struct {
 	// List of operations supported by this resource provider.
-	Value []*ResourceProviderOperation `json:"value,omitempty"`
+	Value []*ResourceProviderOperation
 }
 
 // ResourceStatusBase - Shared status properties between all blueprint resources.
 type ResourceStatusBase struct {
 	// READ-ONLY; Last modified time of this blueprint definition.
-	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
+	LastModified *time.Time
 
 	// READ-ONLY; Creation time of this blueprint definition.
-	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+	TimeCreated *time.Time
 }
 
 // RoleAssignmentArtifact - Blueprint artifact that applies a Role assignment.
 type RoleAssignmentArtifact struct {
 	// REQUIRED; Specifies the kind of blueprint artifact.
-	Kind *ArtifactKind `json:"kind,omitempty"`
+	Kind *ArtifactKind
 
 	// REQUIRED; Properties for a Role assignment blueprint artifact.
-	Properties *RoleAssignmentArtifactProperties `json:"properties,omitempty"`
+	Properties *RoleAssignmentArtifactProperties
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetArtifact implements the ArtifactClassification interface for type RoleAssignmentArtifact.
@@ -694,61 +694,61 @@ func (r *RoleAssignmentArtifact) GetArtifact() *Artifact {
 // RoleAssignmentArtifactProperties - Properties of a Role assignment blueprint artifact.
 type RoleAssignmentArtifactProperties struct {
 	// REQUIRED; Array of user or group identities in Azure Active Directory. The roleDefinition will apply to each identity.
-	PrincipalIDs any `json:"principalIds,omitempty"`
+	PrincipalIDs any
 
 	// REQUIRED; Azure resource ID of the RoleDefinition.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+	RoleDefinitionID *string
 
 	// Artifacts which need to be deployed before the specified artifact.
-	DependsOn []*string `json:"dependsOn,omitempty"`
+	DependsOn []*string
 
 	// Multi-line explain this resource.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// One-liner string explain this resource.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// RoleAssignment will be scope to this resourceGroup. If empty, it scopes to the subscription.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 }
 
 // SecretValueReference - Reference to a Key Vault secret.
 type SecretValueReference struct {
 	// REQUIRED; Specifies the reference to a given Azure Key Vault.
-	KeyVault *KeyVaultReference `json:"keyVault,omitempty"`
+	KeyVault *KeyVaultReference
 
 	// REQUIRED; Name of the secret.
-	SecretName *string `json:"secretName,omitempty"`
+	SecretName *string
 
 	// The version of the secret to use. If left blank, the latest version of the secret is used.
-	SecretVersion *string `json:"secretVersion,omitempty"`
+	SecretVersion *string
 }
 
 // Status - The status of the blueprint. This field is readonly.
 type Status struct {
 	// READ-ONLY; Last modified time of this blueprint definition.
-	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
+	LastModified *time.Time
 
 	// READ-ONLY; Creation time of this blueprint definition.
-	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+	TimeCreated *time.Time
 }
 
 // TemplateArtifact - Blueprint artifact that deploys a Resource Manager template.
 type TemplateArtifact struct {
 	// REQUIRED; Specifies the kind of blueprint artifact.
-	Kind *ArtifactKind `json:"kind,omitempty"`
+	Kind *ArtifactKind
 
 	// REQUIRED; Properties for a Resource Manager template blueprint artifact.
-	Properties *TemplateArtifactProperties `json:"properties,omitempty"`
+	Properties *TemplateArtifactProperties
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetArtifact implements the ArtifactClassification interface for type TemplateArtifact.
@@ -764,51 +764,51 @@ func (t *TemplateArtifact) GetArtifact() *Artifact {
 // TemplateArtifactProperties - Properties of a Resource Manager template blueprint artifact.
 type TemplateArtifactProperties struct {
 	// REQUIRED; Resource Manager template blueprint artifact parameter values.
-	Parameters map[string]*ParameterValue `json:"parameters,omitempty"`
+	Parameters map[string]*ParameterValue
 
 	// REQUIRED; The Resource Manager template blueprint artifact body.
-	Template any `json:"template,omitempty"`
+	Template any
 
 	// Artifacts which need to be deployed before the specified artifact.
-	DependsOn []*string `json:"dependsOn,omitempty"`
+	DependsOn []*string
 
 	// Multi-line explain this resource.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// One-liner string explain this resource.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// If applicable, the name of the resource group placeholder to which the Resource Manager template blueprint artifact will
 	// be deployed.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 }
 
 // TrackedResource - Common properties for all Azure tracked resources.
 type TrackedResource struct {
 	// REQUIRED; The location of this blueprint assignment.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UserAssignedIdentity - User-assigned managed identity.
 type UserAssignedIdentity struct {
 	// Client App Id associated with this identity.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// Azure Active Directory principal ID associated with this Identity.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 }
 
 // WhoIsBlueprintContract - Response schema for querying the Azure Blueprints service principal in the tenant.
 type WhoIsBlueprintContract struct {
 	// AAD object Id of the Azure Blueprints service principal in the tenant.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 }

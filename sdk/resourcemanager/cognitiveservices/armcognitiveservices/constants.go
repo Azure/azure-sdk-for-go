@@ -11,7 +11,7 @@ package armcognitiveservices
 
 const (
 	moduleName    = "armcognitiveservices"
-	moduleVersion = "v1.4.0"
+	moduleVersion = "v1.4.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

@@ -11,6 +11,7 @@ package azquery
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -18,10 +19,19 @@ import (
 	"strings"
 )
 
+// MetricsClient contains the methods for the Metrics group.
+// Don't use this type directly, use a constructor function instead.
+type MetricsClient struct {
+	host     string
+	internal *azcore.Client
+}
+
 // NewListDefinitionsPager - Lists the metric definitions for the resource.
+//
 // Generated from API version 2018-01-01
-// resourceURI - The identifier of the resource.
-// options - MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.ListDefinitions method.
+//   - resourceURI - The identifier of the resource.
+//   - options - MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.NewListDefinitionsPager
+//     method.
 func (client *MetricsClient) NewListDefinitionsPager(resourceURI string, options *MetricsClientListDefinitionsOptions) *runtime.Pager[MetricsClientListDefinitionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MetricsClientListDefinitionsResponse]{
 		More: func(page MetricsClientListDefinitionsResponse) bool {
@@ -32,7 +42,7 @@ func (client *MetricsClient) NewListDefinitionsPager(resourceURI string, options
 			if err != nil {
 				return MetricsClientListDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MetricsClientListDefinitionsResponse{}, err
 			}
@@ -72,9 +82,11 @@ func (client *MetricsClient) listDefinitionsHandleResponse(resp *http.Response) 
 }
 
 // NewListNamespacesPager - Lists the metric namespaces for the resource.
+//
 // Generated from API version 2017-12-01-preview
-// resourceURI - The identifier of the resource.
-// options - MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.ListNamespaces method.
+//   - resourceURI - The identifier of the resource.
+//   - options - MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.NewListNamespacesPager
+//     method.
 func (client *MetricsClient) NewListNamespacesPager(resourceURI string, options *MetricsClientListNamespacesOptions) *runtime.Pager[MetricsClientListNamespacesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MetricsClientListNamespacesResponse]{
 		More: func(page MetricsClientListNamespacesResponse) bool {
@@ -85,7 +97,7 @@ func (client *MetricsClient) NewListNamespacesPager(resourceURI string, options 
 			if err != nil {
 				return MetricsClientListNamespacesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MetricsClientListNamespacesResponse{}, err
 			}
@@ -126,15 +138,16 @@ func (client *MetricsClient) listNamespacesHandleResponse(resp *http.Response) (
 
 // QueryResource - Lists the metric values for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-01-01
-// resourceURI - The identifier of the resource.
-// options - MetricsClientQueryResourceOptions contains the optional parameters for the MetricsClient.QueryResource method.
+//   - resourceURI - The identifier of the resource.
+//   - options - MetricsClientQueryResourceOptions contains the optional parameters for the MetricsClient.QueryResource method.
 func (client *MetricsClient) QueryResource(ctx context.Context, resourceURI string, options *MetricsClientQueryResourceOptions) (MetricsClientQueryResourceResponse, error) {
 	req, err := client.queryResourceCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return MetricsClientQueryResourceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MetricsClientQueryResourceResponse{}, err
 	}

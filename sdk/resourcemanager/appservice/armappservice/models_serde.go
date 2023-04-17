@@ -4044,7 +4044,7 @@ func (c ContentLink) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "contentHash", c.ContentHash)
 	populate(objectMap, "contentSize", c.ContentSize)
 	populate(objectMap, "contentVersion", c.ContentVersion)
-	populate(objectMap, "metadata", &c.Metadata)
+	populateAny(objectMap, "metadata", c.Metadata)
 	populate(objectMap, "uri", c.URI)
 	return json.Marshal(objectMap)
 }
@@ -8134,7 +8134,7 @@ func (e Expression) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "error", e.Error)
 	populate(objectMap, "subexpressions", e.Subexpressions)
 	populate(objectMap, "text", e.Text)
-	populate(objectMap, "value", &e.Value)
+	populateAny(objectMap, "value", e.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -8174,7 +8174,7 @@ func (e ExpressionRoot) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "path", e.Path)
 	populate(objectMap, "subexpressions", e.Subexpressions)
 	populate(objectMap, "text", e.Text)
-	populate(objectMap, "value", &e.Value)
+	populateAny(objectMap, "value", e.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -8215,7 +8215,7 @@ func (e ExpressionTraces) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "inputs", e.Inputs)
 	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", &e.Value)
+	populateAny(objectMap, "value", e.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -8972,7 +8972,7 @@ func (f *FunctionEnvelopeCollection) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FunctionEnvelopeProperties.
 func (f FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "config", &f.Config)
+	populateAny(objectMap, "config", f.Config)
 	populate(objectMap, "config_href", f.ConfigHref)
 	populate(objectMap, "files", f.Files)
 	populate(objectMap, "function_app_id", f.FunctionAppID)
@@ -10848,7 +10848,7 @@ func (k *KeyInfo) UnmarshalJSON(data []byte) error {
 func (k KeyValuePairStringObject) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "key", k.Key)
-	populate(objectMap, "value", &k.Value)
+	populateAny(objectMap, "value", k.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -12582,16 +12582,16 @@ func (o OperationResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "code", o.Code)
 	populate(objectMap, "correlation", o.Correlation)
 	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "error", &o.Error)
-	populate(objectMap, "inputs", &o.Inputs)
+	populateAny(objectMap, "error", o.Error)
+	populateAny(objectMap, "inputs", o.Inputs)
 	populate(objectMap, "inputsLink", o.InputsLink)
 	populate(objectMap, "iterationCount", o.IterationCount)
-	populate(objectMap, "outputs", &o.Outputs)
+	populateAny(objectMap, "outputs", o.Outputs)
 	populate(objectMap, "outputsLink", o.OutputsLink)
 	populate(objectMap, "retryHistory", o.RetryHistory)
 	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
 	populate(objectMap, "status", o.Status)
-	populate(objectMap, "trackedProperties", &o.TrackedProperties)
+	populateAny(objectMap, "trackedProperties", o.TrackedProperties)
 	populate(objectMap, "trackingId", o.TrackingID)
 	return json.Marshal(objectMap)
 }
@@ -12661,7 +12661,7 @@ func (o OperationResultProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "code", o.Code)
 	populate(objectMap, "correlation", o.Correlation)
 	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "error", &o.Error)
+	populateAny(objectMap, "error", o.Error)
 	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
 	populate(objectMap, "status", o.Status)
 	return json.Marshal(objectMap)
@@ -15839,7 +15839,7 @@ func (r *RepetitionIndex) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Request.
 func (r Request) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "headers", &r.Headers)
+	populateAny(objectMap, "headers", r.Headers)
 	populate(objectMap, "method", r.Method)
 	populate(objectMap, "uri", r.URI)
 	return json.Marshal(objectMap)
@@ -16459,7 +16459,7 @@ func (r *ResourceReference) UnmarshalJSON(data []byte) error {
 func (r Response) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "bodyLink", r.BodyLink)
-	populate(objectMap, "headers", &r.Headers)
+	populateAny(objectMap, "headers", r.Headers)
 	populate(objectMap, "statusCode", r.StatusCode)
 	return json.Marshal(objectMap)
 }
@@ -25071,7 +25071,7 @@ func (w *Workflow) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type WorkflowArtifacts.
 func (w WorkflowArtifacts) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "appSettings", &w.AppSettings)
+	populateAny(objectMap, "appSettings", w.AppSettings)
 	populate(objectMap, "files", w.Files)
 	populate(objectMap, "filesToDelete", w.FilesToDelete)
 	return json.Marshal(objectMap)
@@ -25309,10 +25309,10 @@ func (w *WorkflowListResult) UnmarshalJSON(data []byte) error {
 func (w WorkflowOutputParameter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", w.Description)
-	populate(objectMap, "error", &w.Error)
-	populate(objectMap, "metadata", &w.Metadata)
+	populateAny(objectMap, "error", w.Error)
+	populateAny(objectMap, "metadata", w.Metadata)
 	populate(objectMap, "type", w.Type)
-	populate(objectMap, "value", &w.Value)
+	populateAny(objectMap, "value", w.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -25352,9 +25352,9 @@ func (w *WorkflowOutputParameter) UnmarshalJSON(data []byte) error {
 func (w WorkflowParameter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", w.Description)
-	populate(objectMap, "metadata", &w.Metadata)
+	populateAny(objectMap, "metadata", w.Metadata)
 	populate(objectMap, "type", w.Type)
-	populate(objectMap, "value", &w.Value)
+	populateAny(objectMap, "value", w.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -25394,7 +25394,7 @@ func (w WorkflowProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "accessEndpoint", w.AccessEndpoint)
 	populateTimeRFC3339(objectMap, "changedTime", w.ChangedTime)
 	populateTimeRFC3339(objectMap, "createdTime", w.CreatedTime)
-	populate(objectMap, "definition", &w.Definition)
+	populateAny(objectMap, "definition", w.Definition)
 	populate(objectMap, "endpointsConfiguration", w.EndpointsConfiguration)
 	populate(objectMap, "integrationAccount", w.IntegrationAccount)
 	populate(objectMap, "integrationServiceEnvironment", w.IntegrationServiceEnvironment)
@@ -25651,13 +25651,13 @@ func (w WorkflowRunActionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "code", w.Code)
 	populate(objectMap, "correlation", w.Correlation)
 	populateTimeRFC3339(objectMap, "endTime", w.EndTime)
-	populate(objectMap, "error", &w.Error)
+	populateAny(objectMap, "error", w.Error)
 	populate(objectMap, "inputsLink", w.InputsLink)
 	populate(objectMap, "outputsLink", w.OutputsLink)
 	populate(objectMap, "retryHistory", w.RetryHistory)
 	populateTimeRFC3339(objectMap, "startTime", w.StartTime)
 	populate(objectMap, "status", w.Status)
-	populate(objectMap, "trackedProperties", &w.TrackedProperties)
+	populateAny(objectMap, "trackedProperties", w.TrackedProperties)
 	populate(objectMap, "trackingId", w.TrackingID)
 	return json.Marshal(objectMap)
 }
@@ -25796,17 +25796,17 @@ func (w WorkflowRunActionRepetitionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "code", w.Code)
 	populate(objectMap, "correlation", w.Correlation)
 	populateTimeRFC3339(objectMap, "endTime", w.EndTime)
-	populate(objectMap, "error", &w.Error)
-	populate(objectMap, "inputs", &w.Inputs)
+	populateAny(objectMap, "error", w.Error)
+	populateAny(objectMap, "inputs", w.Inputs)
 	populate(objectMap, "inputsLink", w.InputsLink)
 	populate(objectMap, "iterationCount", w.IterationCount)
-	populate(objectMap, "outputs", &w.Outputs)
+	populateAny(objectMap, "outputs", w.Outputs)
 	populate(objectMap, "outputsLink", w.OutputsLink)
 	populate(objectMap, "repetitionIndexes", w.RepetitionIndexes)
 	populate(objectMap, "retryHistory", w.RetryHistory)
 	populateTimeRFC3339(objectMap, "startTime", w.StartTime)
 	populate(objectMap, "status", w.Status)
-	populate(objectMap, "trackedProperties", &w.TrackedProperties)
+	populateAny(objectMap, "trackedProperties", w.TrackedProperties)
 	populate(objectMap, "trackingId", w.TrackingID)
 	return json.Marshal(objectMap)
 }
@@ -25938,7 +25938,7 @@ func (w WorkflowRunProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "correlation", w.Correlation)
 	populate(objectMap, "correlationId", w.CorrelationID)
 	populateTimeRFC3339(objectMap, "endTime", w.EndTime)
-	populate(objectMap, "error", &w.Error)
+	populateAny(objectMap, "error", w.Error)
 	populate(objectMap, "outputs", w.Outputs)
 	populate(objectMap, "response", w.Response)
 	populateTimeRFC3339(objectMap, "startTime", w.StartTime)
@@ -26008,16 +26008,16 @@ func (w WorkflowRunTrigger) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "code", w.Code)
 	populate(objectMap, "correlation", w.Correlation)
 	populateTimeRFC3339(objectMap, "endTime", w.EndTime)
-	populate(objectMap, "error", &w.Error)
-	populate(objectMap, "inputs", &w.Inputs)
+	populateAny(objectMap, "error", w.Error)
+	populateAny(objectMap, "inputs", w.Inputs)
 	populate(objectMap, "inputsLink", w.InputsLink)
 	populate(objectMap, "name", w.Name)
-	populate(objectMap, "outputs", &w.Outputs)
+	populateAny(objectMap, "outputs", w.Outputs)
 	populate(objectMap, "outputsLink", w.OutputsLink)
 	populateTimeRFC3339(objectMap, "scheduledTime", w.ScheduledTime)
 	populateTimeRFC3339(objectMap, "startTime", w.StartTime)
 	populate(objectMap, "status", w.Status)
-	populate(objectMap, "trackedProperties", &w.TrackedProperties)
+	populateAny(objectMap, "trackedProperties", w.TrackedProperties)
 	populate(objectMap, "trackingId", w.TrackingID)
 	return json.Marshal(objectMap)
 }
@@ -26328,7 +26328,7 @@ func (w WorkflowTriggerHistoryProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "code", w.Code)
 	populate(objectMap, "correlation", w.Correlation)
 	populateTimeRFC3339(objectMap, "endTime", w.EndTime)
-	populate(objectMap, "error", &w.Error)
+	populateAny(objectMap, "error", w.Error)
 	populate(objectMap, "fired", w.Fired)
 	populate(objectMap, "inputsLink", w.InputsLink)
 	populate(objectMap, "outputsLink", w.OutputsLink)
@@ -26658,7 +26658,7 @@ func (w WorkflowVersionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "accessEndpoint", w.AccessEndpoint)
 	populateTimeRFC3339(objectMap, "changedTime", w.ChangedTime)
 	populateTimeRFC3339(objectMap, "createdTime", w.CreatedTime)
-	populate(objectMap, "definition", &w.Definition)
+	populateAny(objectMap, "definition", w.Definition)
 	populate(objectMap, "endpointsConfiguration", w.EndpointsConfiguration)
 	populate(objectMap, "integrationAccount", w.IntegrationAccount)
 	populate(objectMap, "parameters", w.Parameters)
@@ -26728,6 +26728,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }
